@@ -20,7 +20,7 @@ import (
 // ExpressRouteGatewaysClient contains the methods for the ExpressRouteGateways group.
 // Don't use this type directly, use NewExpressRouteGatewaysClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type ExpressRouteGatewaysClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -83,8 +83,7 @@ func (client *ExpressRouteGatewaysClient) createOrUpdate(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -109,7 +108,7 @@ func (client *ExpressRouteGatewaysClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -161,8 +160,7 @@ func (client *ExpressRouteGatewaysClient) deleteOperation(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -187,7 +185,7 @@ func (client *ExpressRouteGatewaysClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -212,12 +210,7 @@ func (client *ExpressRouteGatewaysClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return ExpressRouteGatewaysClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExpressRouteGatewaysClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -240,15 +233,18 @@ func (client *ExpressRouteGatewaysClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExpressRouteGatewaysClient) getHandleResponse(resp *http.Response) (ExpressRouteGatewaysClientGetResponse, error) {
+func (client *ExpressRouteGatewaysClient) getHandleResponse(resp *http.Response, successCodes ...int) (ExpressRouteGatewaysClientGetResponse, error) {
 	result := ExpressRouteGatewaysClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteGateway); err != nil {
 		return ExpressRouteGatewaysClientGetResponse{}, err
 	}
@@ -297,8 +293,7 @@ func (client *ExpressRouteGatewaysClient) getFailoverAllTestsDetails(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -323,7 +318,7 @@ func (client *ExpressRouteGatewaysClient) getFailoverAllTestsDetailsCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	if options != nil && options.FetchLatest != nil {
 		reqQP.Set("fetchLatest", strconv.FormatBool(*options.FetchLatest))
 	}
@@ -379,8 +374,7 @@ func (client *ExpressRouteGatewaysClient) getFailoverSingleTestDetails(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -405,7 +399,7 @@ func (client *ExpressRouteGatewaysClient) getFailoverSingleTestDetailsCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	reqQP.Set("failoverTestId", failoverTestID)
 	reqQP.Set("peeringLocation", peeringLocation)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
@@ -453,8 +447,7 @@ func (client *ExpressRouteGatewaysClient) getResiliencyInformation(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -479,7 +472,7 @@ func (client *ExpressRouteGatewaysClient) getResiliencyInformationCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	if options != nil && options.AttemptRefresh != nil {
 		reqQP.Set("attemptRefresh", strconv.FormatBool(*options.AttemptRefresh))
 	}
@@ -528,8 +521,7 @@ func (client *ExpressRouteGatewaysClient) getRoutesInformation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -554,7 +546,7 @@ func (client *ExpressRouteGatewaysClient) getRoutesInformationCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	if options != nil && options.AttemptRefresh != nil {
 		reqQP.Set("attemptRefresh", strconv.FormatBool(*options.AttemptRefresh))
 	}
@@ -582,12 +574,7 @@ func (client *ExpressRouteGatewaysClient) ListByResourceGroup(ctx context.Contex
 	if err != nil {
 		return ExpressRouteGatewaysClientListByResourceGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExpressRouteGatewaysClientListByResourceGroupResponse{}, err
-	}
-	resp, err := client.listByResourceGroupHandleResponse(httpResp)
-	return resp, err
+	return client.listByResourceGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -606,15 +593,18 @@ func (client *ExpressRouteGatewaysClient) listByResourceGroupCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ExpressRouteGatewaysClient) listByResourceGroupHandleResponse(resp *http.Response) (ExpressRouteGatewaysClientListByResourceGroupResponse, error) {
+func (client *ExpressRouteGatewaysClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ExpressRouteGatewaysClientListByResourceGroupResponse, error) {
 	result := ExpressRouteGatewaysClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteGatewayList); err != nil {
 		return ExpressRouteGatewaysClientListByResourceGroupResponse{}, err
 	}
@@ -639,12 +629,7 @@ func (client *ExpressRouteGatewaysClient) ListBySubscription(ctx context.Context
 	if err != nil {
 		return ExpressRouteGatewaysClientListBySubscriptionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExpressRouteGatewaysClientListBySubscriptionResponse{}, err
-	}
-	resp, err := client.listBySubscriptionHandleResponse(httpResp)
-	return resp, err
+	return client.listBySubscriptionHandleResponse(httpResp, http.StatusOK)
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -659,15 +644,18 @@ func (client *ExpressRouteGatewaysClient) listBySubscriptionCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ExpressRouteGatewaysClient) listBySubscriptionHandleResponse(resp *http.Response) (ExpressRouteGatewaysClientListBySubscriptionResponse, error) {
+func (client *ExpressRouteGatewaysClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (ExpressRouteGatewaysClientListBySubscriptionResponse, error) {
 	result := ExpressRouteGatewaysClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteGatewayList); err != nil {
 		return ExpressRouteGatewaysClientListBySubscriptionResponse{}, err
 	}
@@ -715,8 +703,7 @@ func (client *ExpressRouteGatewaysClient) startSiteFailoverTest(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -741,7 +728,7 @@ func (client *ExpressRouteGatewaysClient) startSiteFailoverTestCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	reqQP.Set("peeringLocation", peeringLocation)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -789,8 +776,7 @@ func (client *ExpressRouteGatewaysClient) stopSiteFailoverTest(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -815,7 +801,7 @@ func (client *ExpressRouteGatewaysClient) stopSiteFailoverTestCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -866,8 +852,7 @@ func (client *ExpressRouteGatewaysClient) updateTags(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -892,7 +877,7 @@ func (client *ExpressRouteGatewaysClient) updateTagsCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

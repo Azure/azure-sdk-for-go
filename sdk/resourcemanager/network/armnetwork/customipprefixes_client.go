@@ -19,7 +19,7 @@ import (
 // CustomIPPrefixesClient contains the methods for the CustomIPPrefixes group.
 // Don't use this type directly, use NewCustomIPPrefixesClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type CustomIPPrefixesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -82,8 +82,7 @@ func (client *CustomIPPrefixesClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -108,7 +107,7 @@ func (client *CustomIPPrefixesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -158,8 +157,7 @@ func (client *CustomIPPrefixesClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -184,7 +182,7 @@ func (client *CustomIPPrefixesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -208,12 +206,7 @@ func (client *CustomIPPrefixesClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return CustomIPPrefixesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CustomIPPrefixesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -239,15 +232,18 @@ func (client *CustomIPPrefixesClient) getCreateRequest(ctx context.Context, reso
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *CustomIPPrefixesClient) getHandleResponse(resp *http.Response) (CustomIPPrefixesClientGetResponse, error) {
+func (client *CustomIPPrefixesClient) getHandleResponse(resp *http.Response, successCodes ...int) (CustomIPPrefixesClientGetResponse, error) {
 	result := CustomIPPrefixesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomIPPrefix); err != nil {
 		return CustomIPPrefixesClientGetResponse{}, err
 	}
@@ -269,43 +265,57 @@ func (client *CustomIPPrefixesClient) NewListPager(resourceGroupName string, opt
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return CustomIPPrefixesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CustomIPPrefixesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *CustomIPPrefixesClient) listCreateRequest(ctx context.Context, resourceGroupName string, _ *CustomIPPrefixesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/customIpPrefixes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CustomIPPrefixesClient) listCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *CustomIPPrefixesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/customIpPrefixes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *CustomIPPrefixesClient) listHandleResponse(resp *http.Response) (CustomIPPrefixesClientListResponse, error) {
+func (client *CustomIPPrefixesClient) listHandleResponse(resp *http.Response, successCodes ...int) (CustomIPPrefixesClientListResponse, error) {
 	result := CustomIPPrefixesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomIPPrefixListResult); err != nil {
 		return CustomIPPrefixesClientListResponse{}, err
 	}
@@ -326,39 +336,53 @@ func (client *CustomIPPrefixesClient) NewListAllPager(options *CustomIPPrefixesC
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return CustomIPPrefixesClientListAllResponse{}, err
 			}
-			return client.listAllHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CustomIPPrefixesClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *CustomIPPrefixesClient) listAllCreateRequest(ctx context.Context, _ *CustomIPPrefixesClientListAllOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/customIpPrefixes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CustomIPPrefixesClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *CustomIPPrefixesClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/customIpPrefixes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *CustomIPPrefixesClient) listAllHandleResponse(resp *http.Response) (CustomIPPrefixesClientListAllResponse, error) {
+func (client *CustomIPPrefixesClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (CustomIPPrefixesClientListAllResponse, error) {
 	result := CustomIPPrefixesClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomIPPrefixListResult); err != nil {
 		return CustomIPPrefixesClientListAllResponse{}, err
 	}
@@ -386,12 +410,7 @@ func (client *CustomIPPrefixesClient) UpdateTags(ctx context.Context, resourceGr
 	if err != nil {
 		return CustomIPPrefixesClientUpdateTagsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CustomIPPrefixesClientUpdateTagsResponse{}, err
-	}
-	resp, err := client.updateTagsHandleResponse(httpResp)
-	return resp, err
+	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -414,7 +433,7 @@ func (client *CustomIPPrefixesClient) updateTagsCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -425,8 +444,11 @@ func (client *CustomIPPrefixesClient) updateTagsCreateRequest(ctx context.Contex
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *CustomIPPrefixesClient) updateTagsHandleResponse(resp *http.Response) (CustomIPPrefixesClientUpdateTagsResponse, error) {
+func (client *CustomIPPrefixesClient) updateTagsHandleResponse(resp *http.Response, successCodes ...int) (CustomIPPrefixesClientUpdateTagsResponse, error) {
 	result := CustomIPPrefixesClientUpdateTagsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomIPPrefix); err != nil {
 		return CustomIPPrefixesClientUpdateTagsResponse{}, err
 	}

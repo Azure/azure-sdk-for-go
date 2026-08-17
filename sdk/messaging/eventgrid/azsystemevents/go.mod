@@ -3,7 +3,7 @@ module github.com/Azure/azure-sdk-for-go/sdk/messaging/eventgrid/azsystemevents
 go 1.25.0
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.22.0
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.23.0
 	github.com/joho/godotenv v1.5.1
 	github.com/stretchr/testify v1.11.1
 )

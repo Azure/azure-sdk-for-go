@@ -23,9 +23,7 @@ var tokenScopes = []string{"https://eventgrid.azure.net/.default"}
 
 // NewClient creates a [Client] that authenticates using a TokenCredential.
 func NewClient(endpoint string, tokenCredential azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	if options == nil {
-		options = &ClientOptions{}
-	}
+	options = withRedirectProtection(options)
 
 	azc, err := azcore.NewClient(moduleName+".Client", moduleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{
@@ -47,9 +45,7 @@ func NewClient(endpoint string, tokenCredential azcore.TokenCredential, options 
 func NewClientWithSharedKeyCredential(endpoint string, keyCred *azcore.KeyCredential, options *ClientOptions) (*Client, error) {
 	const sasKeyHeader = "aeg-sas-key"
 
-	if options == nil {
-		options = &ClientOptions{}
-	}
+	options = withRedirectProtection(options)
 
 	azc, err := azcore.NewClient(moduleName+".Client", moduleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{
@@ -71,9 +67,7 @@ func NewClientWithSharedKeyCredential(endpoint string, keyCred *azcore.KeyCreden
 func NewClientWithSAS(endpoint string, sasCred *azcore.SASCredential, options *ClientOptions) (*Client, error) {
 	const sasTokenHeader = "aeg-sas-token"
 
-	if options == nil {
-		options = &ClientOptions{}
-	}
+	options = withRedirectProtection(options)
 
 	azc, err := azcore.NewClient(moduleName+".Client", moduleVersion, runtime.PipelineOptions{
 		PerRetry: []policy.Policy{

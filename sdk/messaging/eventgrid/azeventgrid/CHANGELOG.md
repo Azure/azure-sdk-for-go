@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* The publisher client no longer follows HTTP redirects. Event Grid topic endpoints do not issue redirects; not following them prevents the publishing credential (`aeg-sas-key`, `aeg-sas-token`, or `Authorization`) and the event payload from being sent to a redirect target.
 
 ### Other Changes
 * Regenerated code with the latest emitter.

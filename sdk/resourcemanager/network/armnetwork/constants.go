@@ -135,9 +135,10 @@ func PossibleAddressSpaceAggregationOptionValues() []AddressSpaceAggregationOpti
 
 // AddressUpdateAction - Specifies the type of update operation to perform on addresses within the address location of service
 // gateway.
-// - FullUpdate: Replaces all existing address data with the new list provided in the request. Any previously defined addresses
-// not included will be removed.
-// - PartialUpdate: Updates only the specified addresses.
+//
+//   - FullUpdate: Replaces all existing address data with the new list provided in the request. Any previously defined addresses
+//     not included will be removed.
+//   - PartialUpdate: Updates only the specified addresses.
 type AddressUpdateAction string
 
 const (
@@ -2609,10 +2610,11 @@ func PossibleFirewallPolicyIDPSSignatureSeverityValues() []FirewallPolicyIDPSSig
 
 // FirewallPolicyIntrusionDetectionProfileType - Specifies the Intrusion Detection signature profile to apply.
 // Values:
-// - Off: IDPS profiles disabled; uses the same signature set that existed before profiles.
-// - Emerging: Signatures of the newest, most recent threats.
-// - Core: Complete, modern, standard set of signatures.
-// - Extended: Core signatures plus older legacy signatures for maximum coverage.
+//
+//   - Off: IDPS profiles disabled; uses the same signature set that existed before profiles.
+//   - Emerging: Signatures of the newest, most recent threats.
+//   - Core: Complete, modern, standard set of signatures.
+//   - Extended: Core signatures plus older legacy signatures for maximum coverage.
 type FirewallPolicyIntrusionDetectionProfileType string
 
 const (
@@ -5222,9 +5224,10 @@ func PossibleServiceTypeValues() []ServiceType {
 }
 
 // ServiceUpdateAction - Specifies the type of update operation to perform on services within the service gateway.
-// - FullUpdate: Replaces all existing services with the new list provided in the request. Any previously defined services
-// not included will be removed.
-// - PartialUpdate: Updates only the specified services.
+//
+//   - FullUpdate: Replaces all existing services with the new list provided in the request. Any previously defined services not
+//     included will be removed.
+//   - PartialUpdate: Updates only the specified services.
 type ServiceUpdateAction string
 
 const (
@@ -5372,9 +5375,10 @@ func PossibleTransportProtocolValues() []TransportProtocol {
 }
 
 // UpdateAction - Specifies the type of update operation to perform on address locations within the service gateway.
-// - FullUpdate: Replaces all existing address location data with the new list provided in the request. Any previously defined
-// locations not included will be removed.
-// - PartialUpdate: Updates only the specified address locations.
+//
+//   - FullUpdate: Replaces all existing address location data with the new list provided in the request. Any previously defined
+//     locations not included will be removed.
+//   - PartialUpdate: Updates only the specified address locations.
 type UpdateAction string
 
 const (

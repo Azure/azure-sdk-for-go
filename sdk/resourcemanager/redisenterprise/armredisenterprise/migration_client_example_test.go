@@ -57,8 +57,8 @@ func ExampleMigrationClient_Get() {
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/migrations"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/migrations/default"),
 	// 		Properties: &armredisenterprise.AzureCacheForRedisMigrationProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-01T12:00:00Z"); return t}()),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-01T12:00:00Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2024, time.October, 1, 12, 0, 0, 0, time.UTC)),
+	// 			LastModifiedTime: to.Ptr(time.Date(2024, time.October, 1, 12, 0, 0, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armredisenterprise.MigrationProvisioningStateInProgress),
 	// 			SkipDataMigration: to.Ptr(true),
 	// 			SourceResourceID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),
@@ -101,8 +101,8 @@ func ExampleMigrationClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.Cache/redisEnterprise/migrations"),
 		// 				ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/migrations/default"),
 		// 				Properties: &armredisenterprise.AzureCacheForRedisMigrationProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-01T12:00:00Z"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-01T12:00:00Z"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2024, time.October, 1, 12, 0, 0, 0, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2024, time.October, 1, 12, 0, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armredisenterprise.MigrationProvisioningStateInProgress),
 		// 					SkipDataMigration: to.Ptr(true),
 		// 					SourceResourceID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),
@@ -154,8 +154,8 @@ func ExampleMigrationClient_BeginStart() {
 	// 		Type: to.Ptr("Microsoft.Cache/redisEnterprise/migrations"),
 	// 		ID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redisEnterprise/cache1/migrations/default"),
 	// 		Properties: &armredisenterprise.AzureCacheForRedisMigrationProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-01T12:00:00Z"); return t}()),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-01T12:00:00Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2024, time.October, 1, 12, 0, 0, 0, time.UTC)),
+	// 			LastModifiedTime: to.Ptr(time.Date(2024, time.October, 1, 12, 0, 0, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armredisenterprise.MigrationProvisioningState("Completed")),
 	// 			SkipDataMigration: to.Ptr(true),
 	// 			SourceResourceID: to.Ptr("/subscriptions/e7b5a9d2-6b6a-4d2f-9143-20d9a10f5b8f/resourceGroups/rg1/providers/Microsoft.Cache/redis/cache1"),

@@ -63,12 +63,7 @@ func (client *ManagerDeploymentStatusClient) List(ctx context.Context, resourceG
 	if err != nil {
 		return ManagerDeploymentStatusClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagerDeploymentStatusClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -105,8 +100,11 @@ func (client *ManagerDeploymentStatusClient) listCreateRequest(ctx context.Conte
 }
 
 // listHandleResponse handles the List response.
-func (client *ManagerDeploymentStatusClient) listHandleResponse(resp *http.Response) (ManagerDeploymentStatusClientListResponse, error) {
+func (client *ManagerDeploymentStatusClient) listHandleResponse(resp *http.Response, successCodes ...int) (ManagerDeploymentStatusClientListResponse, error) {
 	result := ManagerDeploymentStatusClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagerDeploymentStatusListResult); err != nil {
 		return ManagerDeploymentStatusClientListResponse{}, err
 	}

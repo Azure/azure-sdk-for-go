@@ -25,9 +25,9 @@ func ExampleEntitiesClient_Expand() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewEntitiesClient().Expand(ctx, "myRg", "myWorkspace", "e1d3d618-e11f-478b-98e3-bb381539a8e1", armsecurityinsights.EntityExpandParameters{
-		EndTime:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-26T00:00:00.000Z"); return t }()),
+		EndTime:     to.Ptr(time.Date(2019, time.May, 26, 0, 0, 0, 0, time.UTC)),
 		ExpansionID: to.Ptr("a77992f3-25e9-4d01-99a4-5ff606cc410a"),
-		StartTime:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-25T00:00:00.000Z"); return t }()),
+		StartTime:   to.Ptr(time.Date(2019, time.April, 25, 0, 0, 0, 0, time.UTC)),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -450,7 +450,7 @@ func ExampleEntitiesClient_Get_getAMailClusterEntity() {
 	// 				to.Ptr("ccfce855-e02f-491b-a1cc-5bafb371ad0c"),
 	// 			},
 	// 			Query: to.Ptr("kqlFilter"),
-	// 			QueryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T01:42:01.6026755Z"); return t}()),
+	// 			QueryTime: to.Ptr(time.Date(2021, time.September, 1, 1, 42, 1, 602675500, time.UTC)),
 	// 			Source: to.Ptr("ClusterSourceIdentifier"),
 	// 			Threats: []*string{
 	// 				to.Ptr("thrreat1"),
@@ -726,22 +726,22 @@ func ExampleEntitiesClient_Get_getASecurityAlertEntity() {
 	// 			AlertLink: to.Ptr("https://portal.azure.com/#blade/Microsoft_Azure_Security/AlertBlade/alertId/2518119885989999999_4aa486e0-6f85-41af-99ea-7acdce7be6c8/subscriptionId/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/myRg/myWorkspace/referencedFrom/alertDeepLink/location/centralus"),
 	// 			AlertType: to.Ptr("c8c99641-985d-4e4e-8e91-fb3466cd0e5b_46c7b6c0-ff43-44dd-8b4d-ceffff7aa7df"),
 	// 			ConfidenceLevel: to.Ptr(armsecurityinsights.ConfidenceLevelUnknown),
-	// 			EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:21:45.926185Z"); return t}()),
+	// 			EndTimeUTC: to.Ptr(time.Date(2021, time.September, 1, 13, 21, 45, 926185000, time.UTC)),
 	// 			FriendlyName: to.Ptr("Suspicious account detected"),
 	// 			Intent: to.Ptr(armsecurityinsights.KillChainIntentUnknown),
-	// 			ProcessingEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-06T13:56:53.5392366Z"); return t}()),
+	// 			ProcessingEndTime: to.Ptr(time.Date(2019, time.July, 6, 13, 56, 53, 539236600, time.UTC)),
 	// 			ProductComponentName: to.Ptr("Scheduled Alerts"),
 	// 			ProductName: to.Ptr("Azure Sentinel"),
 	// 			ProviderAlertID: to.Ptr("c2bafff9-fb31-41d0-a177-ecbff7a02ffe"),
 	// 			Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
-	// 			StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T08:21:45.926185Z"); return t}()),
+	// 			StartTimeUTC: to.Ptr(time.Date(2021, time.September, 1, 8, 21, 45, 926185000, time.UTC)),
 	// 			Status: to.Ptr(armsecurityinsights.AlertStatusNew),
 	// 			SystemAlertID: to.Ptr("4aa486e0-6f85-41af-99ea-7acdce7be6c8"),
 	// 			Tactics: []*armsecurityinsights.AttackTactic{
 	// 				to.Ptr(armsecurityinsights.AttackTacticPersistence),
 	// 				to.Ptr(armsecurityinsights.AttackTacticLateralMovement),
 	// 			},
-	// 			TimeGenerated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T13:56:53.5392366Z"); return t}()),
+	// 			TimeGenerated: to.Ptr(time.Date(2021, time.September, 1, 13, 56, 53, 539236600, time.UTC)),
 	// 			VendorName: to.Ptr("Microsoft"),
 	// 		},
 	// 	},
@@ -865,11 +865,11 @@ func ExampleEntitiesClient_GetInsights() {
 	}
 	res, err := clientFactory.NewEntitiesClient().GetInsights(ctx, "myRg", "myWorkspace", "e1d3d618-e11f-478b-98e3-bb381539a8e1", armsecurityinsights.EntityGetInsightsParameters{
 		AddDefaultExtendedTimeRange: to.Ptr(false),
-		EndTime:                     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-01T00:00:00.000Z"); return t }()),
+		EndTime:                     to.Ptr(time.Date(2021, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		InsightQueryIDs: []*string{
 			to.Ptr("cae8d0aa-aa45-4d53-8d88-17dd64ffd4e4"),
 		},
-		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T00:00:00.000Z"); return t }()),
+		StartTime: to.Ptr(time.Date(2021, time.September, 1, 0, 0, 0, 0, time.UTC)),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -918,8 +918,8 @@ func ExampleEntitiesClient_GetInsights() {
 	// 				},
 	// 				QueryID: to.Ptr("e29ee1ef-7445-455e-85f1-269f2d536d61"),
 	// 				QueryTimeInterval: &armsecurityinsights.EntityInsightItemQueryTimeInterval{
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T23:35:20Z"); return t}()),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T23:35:20Z"); return t}()),
+	// 					EndTime: to.Ptr(time.Date(2021, time.September, 1, 23, 35, 20, 0, time.UTC)),
+	// 					StartTime: to.Ptr(time.Date(2021, time.September, 1, 23, 35, 20, 0, time.UTC)),
 	// 				},
 	// 				TableQueryResults: &armsecurityinsights.InsightsTableResult{
 	// 					Columns: []*armsecurityinsights.InsightsTableResultColumnsItem{

@@ -205,7 +205,7 @@ func ExampleRestorePointsClient_Get_getARestorePoint() {
 	// 			InstantAccessDurationMinutes: to.Ptr[int32](120),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ConsistencyMode: to.Ptr(armcompute.ConsistencyModeTypesApplicationConsistent),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-27T20:35:05.8401519+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2021, time.January, 27, 20, 35, 5, 840151900, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -295,7 +295,7 @@ func ExampleRestorePointsClient_Get_getRestorePointWithInstanceView() {
 	// 			InstantAccessDurationMinutes: to.Ptr[int32](120),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ConsistencyMode: to.Ptr(armcompute.ConsistencyModeTypesApplicationConsistent),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-27T20:35:05.8401519+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2021, time.January, 27, 20, 35, 5, 840151900, time.UTC)),
 	// 			InstanceView: &armcompute.RestorePointInstanceView{
 	// 				DiskRestorePoints: []*armcompute.DiskRestorePointInstanceView{
 	// 					{

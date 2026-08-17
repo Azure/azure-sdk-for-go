@@ -38,12 +38,12 @@ func ExamplePercentileClient_NewListMetricsPager() {
 		// 		Value: []*armcosmos.PercentileMetric{
 		// 			{
 		// 				TimeGrain: to.Ptr("PT5M"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:13:55.2780000Z"); return t}()),
+		// 				StartTime: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
+		// 				EndTime: to.Ptr(time.Date(2017, time.November, 20, 0, 13, 55, 278000000, time.UTC)),
 		// 				Unit: to.Ptr(armcosmos.UnitTypeMilliseconds),
 		// 				MetricValues: []*armcosmos.PercentileMetricValue{
 		// 					{
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
 		// 						P10: to.Ptr[float64](1.11),
 		// 						P25: to.Ptr[float64](2.5),
 		// 						P50: to.Ptr[float64](4.34),
@@ -60,12 +60,12 @@ func ExamplePercentileClient_NewListMetricsPager() {
 		// 			},
 		// 			{
 		// 				TimeGrain: to.Ptr("PT5M"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T00:13:55.2780000Z"); return t}()),
+		// 				StartTime: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
+		// 				EndTime: to.Ptr(time.Date(2017, time.November, 20, 0, 13, 55, 278000000, time.UTC)),
 		// 				Unit: to.Ptr(armcosmos.UnitTypeMilliseconds),
 		// 				MetricValues: []*armcosmos.PercentileMetricValue{
 		// 					{
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
 		// 						P10: to.Ptr[float64](1.11),
 		// 						P25: to.Ptr[float64](2.5),
 		// 						P50: to.Ptr[float64](4.34),

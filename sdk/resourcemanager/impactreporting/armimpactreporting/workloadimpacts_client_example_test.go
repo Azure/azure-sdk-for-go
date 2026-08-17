@@ -27,7 +27,7 @@ func ExampleWorkloadImpactsClient_BeginCreate_reportingArmOperationFailure() {
 	poller, err := clientFactory.NewWorkloadImpactsClient().BeginCreate(ctx, "impact-002", armimpactreporting.WorkloadImpact{
 		Properties: &armimpactreporting.WorkloadImpactProperties{
 			ImpactedResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-rg/providers/Microsoft.Sql/sqlserver/dbservercontext"),
-			StartDateTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-15T05:59:46.6517821Z"); return t }()),
+			StartDateTime:      to.Ptr(time.Date(2022, time.June, 15, 5, 59, 46, 651782100, time.UTC)),
 			ImpactDescription:  to.Ptr("deletion of resource failed"),
 			ImpactCategory:     to.Ptr("ArmOperation"),
 			ArmCorrelationIDs: []*string{
@@ -60,7 +60,7 @@ func ExampleWorkloadImpactsClient_BeginCreate_reportingArmOperationFailure() {
 	// 		Type: to.Ptr("Microsoft.Impact/workloadImpacts"),
 	// 		Properties: &armimpactreporting.WorkloadImpactProperties{
 	// 			ImpactedResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-rg/providers/Microsoft.Sql/sqlserver/dbservername"),
-	// 			StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-15T05:59:46.6517821Z"); return t}()),
+	// 			StartDateTime: to.Ptr(time.Date(2022, time.June, 15, 5, 59, 46, 651782100, time.UTC)),
 	// 			ImpactDescription: to.Ptr("deletion of resource failed"),
 	// 			ImpactCategory: to.Ptr("ArmOperation"),
 	// 			ArmCorrelationIDs: []*string{
@@ -75,7 +75,7 @@ func ExampleWorkloadImpactsClient_BeginCreate_reportingArmOperationFailure() {
 	// 				ClientIncidentSource: to.Ptr(armimpactreporting.IncidentSourceJira),
 	// 			},
 	// 			ImpactUniqueID: to.Ptr("d7f24d04-e7f0-48bf-b09c-9d36ca9e1777"),
-	// 			ReportedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-15T06:01:46.6517821Z"); return t}()),
+	// 			ReportedTimeUTC: to.Ptr(time.Date(2022, time.June, 15, 6, 1, 46, 651782100, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -95,7 +95,7 @@ func ExampleWorkloadImpactsClient_BeginCreate_reportingAvailabilityRelatedImpact
 	poller, err := clientFactory.NewWorkloadImpactsClient().BeginCreate(ctx, "impact-002", armimpactreporting.WorkloadImpact{
 		Properties: &armimpactreporting.WorkloadImpactProperties{
 			ImpactedResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-rg/providers/Microsoft.Sql/sqlserver/dbservercontext"),
-			StartDateTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-15T05:59:46.6517821Z"); return t }()),
+			StartDateTime:      to.Ptr(time.Date(2022, time.June, 15, 5, 59, 46, 651782100, time.UTC)),
 			ImpactDescription:  to.Ptr("read calls failed"),
 			ImpactCategory:     to.Ptr("Availability"),
 			Workload: &armimpactreporting.Workload{
@@ -125,7 +125,7 @@ func ExampleWorkloadImpactsClient_BeginCreate_reportingAvailabilityRelatedImpact
 	// 		Type: to.Ptr("Microsoft.Impact/workloadImpacts"),
 	// 		Properties: &armimpactreporting.WorkloadImpactProperties{
 	// 			ImpactedResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-rg/providers/Microsoft.Sql/sqlserver/dbservername"),
-	// 			StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-15T05:59:46.6517821Z"); return t}()),
+	// 			StartDateTime: to.Ptr(time.Date(2022, time.June, 15, 5, 59, 46, 651782100, time.UTC)),
 	// 			ImpactDescription: to.Ptr("read calls failed"),
 	// 			ImpactCategory: to.Ptr("Availability"),
 	// 			Workload: &armimpactreporting.Workload{
@@ -137,7 +137,7 @@ func ExampleWorkloadImpactsClient_BeginCreate_reportingAvailabilityRelatedImpact
 	// 				ClientIncidentSource: to.Ptr(armimpactreporting.IncidentSourceJira),
 	// 			},
 	// 			ImpactUniqueID: to.Ptr("d7f24d04-e7f0-48bf-b09c-9d36ca9e1777"),
-	// 			ReportedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-15T06:01:46.6517821Z"); return t}()),
+	// 			ReportedTimeUTC: to.Ptr(time.Date(2022, time.June, 15, 6, 1, 46, 651782100, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -157,7 +157,7 @@ func ExampleWorkloadImpactsClient_BeginCreate_reportingAConnectivityImpact() {
 	poller, err := clientFactory.NewWorkloadImpactsClient().BeginCreate(ctx, "impact-001", armimpactreporting.WorkloadImpact{
 		Properties: &armimpactreporting.WorkloadImpactProperties{
 			ImpactedResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-rg/providers/Microsoft.Sql/sqlserver/dbservercontext"),
-			StartDateTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-15T05:59:46.6517821Z"); return t }()),
+			StartDateTime:      to.Ptr(time.Date(2022, time.June, 15, 5, 59, 46, 651782100, time.UTC)),
 			ImpactDescription:  to.Ptr("conection failure"),
 			ImpactCategory:     to.Ptr("Resource.Connectivity"),
 			Connectivity: &armimpactreporting.Connectivity{
@@ -198,8 +198,8 @@ func ExampleWorkloadImpactsClient_BeginCreate_reportingAConnectivityImpact() {
 	// 		Properties: &armimpactreporting.WorkloadImpactProperties{
 	// 			ImpactedResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-rg/providers/Microsoft.Sql/sqlserver/dbservercontext"),
 	// 			ImpactUniqueID: to.Ptr("d7f24d04-e7f0-48bf-b09c-9d36ca9e1777"),
-	// 			ReportedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-15T06:01:46.6517821Z"); return t}()),
-	// 			StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-15T05:59:46.6517821Z"); return t}()),
+	// 			ReportedTimeUTC: to.Ptr(time.Date(2022, time.June, 15, 6, 1, 46, 651782100, time.UTC)),
+	// 			StartDateTime: to.Ptr(time.Date(2022, time.June, 15, 5, 59, 46, 651782100, time.UTC)),
 	// 			ImpactDescription: to.Ptr("conection failure"),
 	// 			ImpactCategory: to.Ptr("Resource.Connectivity"),
 	// 			Connectivity: &armimpactreporting.Connectivity{
@@ -239,7 +239,7 @@ func ExampleWorkloadImpactsClient_BeginCreate_reportingPerformanceRelatedImpact(
 	poller, err := clientFactory.NewWorkloadImpactsClient().BeginCreate(ctx, "impact-002", armimpactreporting.WorkloadImpact{
 		Properties: &armimpactreporting.WorkloadImpactProperties{
 			ImpactedResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-rg/providers/Microsoft.Sql/sqlserver/dbservercontext"),
-			StartDateTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-15T05:59:46.6517821Z"); return t }()),
+			StartDateTime:      to.Ptr(time.Date(2022, time.June, 15, 5, 59, 46, 651782100, time.UTC)),
 			ImpactDescription:  to.Ptr("high cpu utilization"),
 			ImpactCategory:     to.Ptr("Resource.Performance"),
 			Workload: &armimpactreporting.Workload{
@@ -277,7 +277,7 @@ func ExampleWorkloadImpactsClient_BeginCreate_reportingPerformanceRelatedImpact(
 	// 		Type: to.Ptr("Microsoft.Impact/PerformanceImpacts"),
 	// 		Properties: &armimpactreporting.WorkloadImpactProperties{
 	// 			ImpactedResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-rg/providers/Microsoft.Sql/sqlserver/dbservername"),
-	// 			StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-15T05:59:46.6517821Z"); return t}()),
+	// 			StartDateTime: to.Ptr(time.Date(2022, time.June, 15, 5, 59, 46, 651782100, time.UTC)),
 	// 			ImpactDescription: to.Ptr("high cup utilization"),
 	// 			ImpactCategory: to.Ptr("Resource.Performance"),
 	// 			Workload: &armimpactreporting.Workload{
@@ -297,7 +297,7 @@ func ExampleWorkloadImpactsClient_BeginCreate_reportingPerformanceRelatedImpact(
 	// 				ClientIncidentSource: to.Ptr(armimpactreporting.IncidentSourceJira),
 	// 			},
 	// 			ImpactUniqueID: to.Ptr("d7f24d04-e7f0-48bf-b09c-9d36ca9e1777"),
-	// 			ReportedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-15T06:01:46.6517821Z"); return t}()),
+	// 			ReportedTimeUTC: to.Ptr(time.Date(2022, time.June, 15, 6, 1, 46, 651782100, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -350,7 +350,7 @@ func ExampleWorkloadImpactsClient_Get() {
 	// 		Type: to.Ptr("Microsoft.Impact/workloadImpacts"),
 	// 		Properties: &armimpactreporting.WorkloadImpactProperties{
 	// 			ImpactedResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-rg/providers/Microsoft.Sql/sqlserver/dbservername"),
-	// 			StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-15T05:59:46.6517821Z"); return t}()),
+	// 			StartDateTime: to.Ptr(time.Date(2022, time.June, 15, 5, 59, 46, 651782100, time.UTC)),
 	// 			ImpactDescription: to.Ptr("high cup utilization"),
 	// 			ImpactCategory: to.Ptr("Performance"),
 	// 			Workload: &armimpactreporting.Workload{
@@ -362,7 +362,7 @@ func ExampleWorkloadImpactsClient_Get() {
 	// 				ClientIncidentSource: to.Ptr(armimpactreporting.IncidentSourceJira),
 	// 			},
 	// 			ImpactUniqueID: to.Ptr("d7f24d04-e7f0-48bf-b09c-9d36ca9e1777"),
-	// 			ReportedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-15T06:01:46.6517821Z"); return t}()),
+	// 			ReportedTimeUTC: to.Ptr(time.Date(2022, time.June, 15, 6, 1, 46, 651782100, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -400,8 +400,8 @@ func ExampleWorkloadImpactsClient_NewListBySubscriptionPager() {
 		// 				Properties: &armimpactreporting.WorkloadImpactProperties{
 		// 					ImpactedResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-rg/providers/Microsoft.compute/virtualmachines/vm1"),
 		// 					ImpactUniqueID: to.Ptr("d7f24d04-e7f0-48bf-b09c-9d36ca9e1777"),
-		// 					ReportedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-15T06:01:46.6517821Z"); return t}()),
-		// 					StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-15T05:59:46.6517821Z"); return t}()),
+		// 					ReportedTimeUTC: to.Ptr(time.Date(2022, time.June, 15, 6, 1, 46, 651782100, time.UTC)),
+		// 					StartDateTime: to.Ptr(time.Date(2022, time.June, 15, 5, 59, 46, 651782100, time.UTC)),
 		// 					ImpactDescription: to.Ptr(""),
 		// 					ImpactCategory: to.Ptr("Resource.Other"),
 		// 					AdditionalProperties: map[string]any{

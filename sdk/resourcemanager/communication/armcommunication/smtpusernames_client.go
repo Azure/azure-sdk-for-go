@@ -65,12 +65,7 @@ func (client *SMTPUsernamesClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return SMTPUsernamesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SMTPUsernamesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -108,8 +103,11 @@ func (client *SMTPUsernamesClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SMTPUsernamesClient) createOrUpdateHandleResponse(resp *http.Response) (SMTPUsernamesClientCreateOrUpdateResponse, error) {
+func (client *SMTPUsernamesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SMTPUsernamesClientCreateOrUpdateResponse, error) {
 	result := SMTPUsernamesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SMTPUsernameResource); err != nil {
 		return SMTPUsernamesClientCreateOrUpdateResponse{}, err
 	}
@@ -139,8 +137,7 @@ func (client *SMTPUsernamesClient) Delete(ctx context.Context, resourceGroupName
 		return SMTPUsernamesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SMTPUsernamesClientDeleteResponse{}, err
+		return SMTPUsernamesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SMTPUsernamesClientDeleteResponse{}, nil
 }
@@ -196,12 +193,7 @@ func (client *SMTPUsernamesClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return SMTPUsernamesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SMTPUsernamesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -235,8 +227,11 @@ func (client *SMTPUsernamesClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *SMTPUsernamesClient) getHandleResponse(resp *http.Response) (SMTPUsernamesClientGetResponse, error) {
+func (client *SMTPUsernamesClient) getHandleResponse(resp *http.Response, successCodes ...int) (SMTPUsernamesClientGetResponse, error) {
 	result := SMTPUsernamesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SMTPUsernameResource); err != nil {
 		return SMTPUsernamesClientGetResponse{}, err
 	}
@@ -260,47 +255,61 @@ func (client *SMTPUsernamesClient) NewListPager(resourceGroupName string, commun
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, communicationServiceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, communicationServiceName, nextLink, options)
 			if err != nil {
 				return SMTPUsernamesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SMTPUsernamesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *SMTPUsernamesClient) listCreateRequest(ctx context.Context, resourceGroupName string, communicationServiceName string, _ *SMTPUsernamesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}/smtpUsernames"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SMTPUsernamesClient) listCreateRequest(ctx context.Context, resourceGroupName string, communicationServiceName string, nextLink string, _ *SMTPUsernamesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/communicationServices/{communicationServiceName}/smtpUsernames"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if communicationServiceName == "" {
+			return nil, errors.New("parameter communicationServiceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{communicationServiceName}", url.PathEscape(communicationServiceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if communicationServiceName == "" {
-		return nil, errors.New("parameter communicationServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{communicationServiceName}", url.PathEscape(communicationServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SMTPUsernamesClient) listHandleResponse(resp *http.Response) (SMTPUsernamesClientListResponse, error) {
+func (client *SMTPUsernamesClient) listHandleResponse(resp *http.Response, successCodes ...int) (SMTPUsernamesClientListResponse, error) {
 	result := SMTPUsernamesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SMTPUsernameResourceCollection); err != nil {
 		return SMTPUsernamesClientListResponse{}, err
 	}

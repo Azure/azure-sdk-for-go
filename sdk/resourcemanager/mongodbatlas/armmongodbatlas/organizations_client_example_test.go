@@ -115,10 +115,10 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armmongodbatlas.SystemData{
 	// 			CreatedBy: to.Ptr("rwy"),
 	// 			CreatedByType: to.Ptr(armmongodbatlas.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-04T04:51:37.109Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.December, 4, 4, 51, 37, 109000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("ceflhxjkjslg"),
 	// 			LastModifiedByType: to.Ptr(armmongodbatlas.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-04T04:51:37.109Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.December, 4, 4, 51, 37, 109000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -209,10 +209,10 @@ func ExampleOrganizationsClient_Get() {
 	// 		SystemData: &armmongodbatlas.SystemData{
 	// 			CreatedBy: to.Ptr("hetkdvvtqdzyaxbgvpgvthdhw"),
 	// 			CreatedByType: to.Ptr(armmongodbatlas.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-19T10:17:41.372Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.November, 19, 10, 17, 41, 372000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("aghbfhfodcoagjdcmutdqwh"),
 	// 			LastModifiedByType: to.Ptr(armmongodbatlas.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-19T10:17:41.372Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 19, 10, 17, 41, 372000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -281,10 +281,10 @@ func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByR
 		// 				SystemData: &armmongodbatlas.SystemData{
 		// 					CreatedBy: to.Ptr("hetkdvvtqdzyaxbgvpgvthdhw"),
 		// 					CreatedByType: to.Ptr(armmongodbatlas.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-19T10:17:41.372Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.November, 19, 10, 17, 41, 372000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("aghbfhfodcoagjdcmutdqwh"),
 		// 					LastModifiedByType: to.Ptr(armmongodbatlas.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-19T10:17:41.372Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.November, 19, 10, 17, 41, 372000000, time.UTC)),
 		// 				},
 		// 				Identity: &armmongodbatlas.ManagedServiceIdentity{
 		// 					PrincipalID: to.Ptr("123e4567-e89b-12d3-a456-426614174000"),
@@ -399,10 +399,10 @@ func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySu
 		// 				SystemData: &armmongodbatlas.SystemData{
 		// 					CreatedBy: to.Ptr("hetkdvvtqdzyaxbgvpgvthdhw"),
 		// 					CreatedByType: to.Ptr(armmongodbatlas.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-19T10:17:41.372Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.November, 19, 10, 17, 41, 372000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("aghbfhfodcoagjdcmutdqwh"),
 		// 					LastModifiedByType: to.Ptr(armmongodbatlas.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-19T10:17:41.372Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.November, 19, 10, 17, 41, 372000000, time.UTC)),
 		// 				},
 		// 				Identity: &armmongodbatlas.ManagedServiceIdentity{
 		// 					PrincipalID: to.Ptr("123e4567-e89b-12d3-a456-426614174000"),
@@ -543,10 +543,10 @@ func ExampleOrganizationsClient_BeginUpdate() {
 	// 		SystemData: &armmongodbatlas.SystemData{
 	// 			CreatedBy: to.Ptr("hetkdvvtqdzyaxbgvpgvthdhw"),
 	// 			CreatedByType: to.Ptr(armmongodbatlas.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-19T10:17:41.372Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.November, 19, 10, 17, 41, 372000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("aghbfhfodcoagjdcmutdqwh"),
 	// 			LastModifiedByType: to.Ptr(armmongodbatlas.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-19T10:17:41.372Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 19, 10, 17, 41, 372000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

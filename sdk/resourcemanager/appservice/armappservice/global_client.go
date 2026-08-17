@@ -61,12 +61,7 @@ func (client *GlobalClient) GetDeletedWebApp(ctx context.Context, deletedSiteID 
 	if err != nil {
 		return GlobalClientGetDeletedWebAppResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GlobalClientGetDeletedWebAppResponse{}, err
-	}
-	resp, err := client.getDeletedWebAppHandleResponse(httpResp)
-	return resp, err
+	return client.getDeletedWebAppHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDeletedWebAppCreateRequest creates the GetDeletedWebApp request.
@@ -92,8 +87,11 @@ func (client *GlobalClient) getDeletedWebAppCreateRequest(ctx context.Context, d
 }
 
 // getDeletedWebAppHandleResponse handles the GetDeletedWebApp response.
-func (client *GlobalClient) getDeletedWebAppHandleResponse(resp *http.Response) (GlobalClientGetDeletedWebAppResponse, error) {
+func (client *GlobalClient) getDeletedWebAppHandleResponse(resp *http.Response, successCodes ...int) (GlobalClientGetDeletedWebAppResponse, error) {
 	result := GlobalClientGetDeletedWebAppResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedSite); err != nil {
 		return GlobalClientGetDeletedWebAppResponse{}, err
 	}
@@ -121,12 +119,7 @@ func (client *GlobalClient) GetDeletedWebAppSnapshots(ctx context.Context, delet
 	if err != nil {
 		return GlobalClientGetDeletedWebAppSnapshotsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GlobalClientGetDeletedWebAppSnapshotsResponse{}, err
-	}
-	resp, err := client.getDeletedWebAppSnapshotsHandleResponse(httpResp)
-	return resp, err
+	return client.getDeletedWebAppSnapshotsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDeletedWebAppSnapshotsCreateRequest creates the GetDeletedWebAppSnapshots request.
@@ -152,8 +145,11 @@ func (client *GlobalClient) getDeletedWebAppSnapshotsCreateRequest(ctx context.C
 }
 
 // getDeletedWebAppSnapshotsHandleResponse handles the GetDeletedWebAppSnapshots response.
-func (client *GlobalClient) getDeletedWebAppSnapshotsHandleResponse(resp *http.Response) (GlobalClientGetDeletedWebAppSnapshotsResponse, error) {
+func (client *GlobalClient) getDeletedWebAppSnapshotsHandleResponse(resp *http.Response, successCodes ...int) (GlobalClientGetDeletedWebAppSnapshotsResponse, error) {
 	result := GlobalClientGetDeletedWebAppSnapshotsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotArray); err != nil {
 		return GlobalClientGetDeletedWebAppSnapshotsResponse{}, err
 	}
@@ -183,8 +179,7 @@ func (client *GlobalClient) GetSubscriptionOperationWithAsyncResponse(ctx contex
 		return GlobalClientGetSubscriptionOperationWithAsyncResponseResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return GlobalClientGetSubscriptionOperationWithAsyncResponseResponse{}, err
+		return GlobalClientGetSubscriptionOperationWithAsyncResponseResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return GlobalClientGetSubscriptionOperationWithAsyncResponseResponse{}, nil
 }

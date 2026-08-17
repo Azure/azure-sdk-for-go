@@ -63,12 +63,7 @@ func (client *RestorableTimeRangesClient) Find(ctx context.Context, resourceGrou
 	if err != nil {
 		return RestorableTimeRangesClientFindResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RestorableTimeRangesClientFindResponse{}, err
-	}
-	resp, err := client.findHandleResponse(httpResp)
-	return resp, err
+	return client.findHandleResponse(httpResp, http.StatusOK)
 }
 
 // findCreateRequest creates the Find request.
@@ -106,8 +101,11 @@ func (client *RestorableTimeRangesClient) findCreateRequest(ctx context.Context,
 }
 
 // findHandleResponse handles the Find response.
-func (client *RestorableTimeRangesClient) findHandleResponse(resp *http.Response) (RestorableTimeRangesClientFindResponse, error) {
+func (client *RestorableTimeRangesClient) findHandleResponse(resp *http.Response, successCodes ...int) (RestorableTimeRangesClientFindResponse, error) {
 	result := RestorableTimeRangesClientFindResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureBackupFindRestorableTimeRangesResponseResource); err != nil {
 		return RestorableTimeRangesClientFindResponse{}, err
 	}

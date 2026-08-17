@@ -62,12 +62,7 @@ func (client *ResourceNavigationLinksClient) List(ctx context.Context, resourceG
 	if err != nil {
 		return ResourceNavigationLinksClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceNavigationLinksClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -101,8 +96,11 @@ func (client *ResourceNavigationLinksClient) listCreateRequest(ctx context.Conte
 }
 
 // listHandleResponse handles the List response.
-func (client *ResourceNavigationLinksClient) listHandleResponse(resp *http.Response) (ResourceNavigationLinksClientListResponse, error) {
+func (client *ResourceNavigationLinksClient) listHandleResponse(resp *http.Response, successCodes ...int) (ResourceNavigationLinksClientListResponse, error) {
 	result := ResourceNavigationLinksClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceNavigationLinksListResult); err != nil {
 		return ResourceNavigationLinksClientListResponse{}, err
 	}

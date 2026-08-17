@@ -82,8 +82,7 @@ func (client *BulkActionsClient) cancel(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -159,8 +158,7 @@ func (client *BulkActionsClient) createOrUpdate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -239,8 +237,7 @@ func (client *BulkActionsClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -297,12 +294,7 @@ func (client *BulkActionsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return BulkActionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BulkActionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -336,8 +328,11 @@ func (client *BulkActionsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *BulkActionsClient) getHandleResponse(resp *http.Response) (BulkActionsClientGetResponse, error) {
+func (client *BulkActionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (BulkActionsClientGetResponse, error) {
 	result := BulkActionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocationBasedLaunchBulkInstancesOperation); err != nil {
 		return BulkActionsClientGetResponse{}, err
 	}
@@ -364,12 +359,7 @@ func (client *BulkActionsClient) GetOperationStatus(ctx context.Context, locatio
 	if err != nil {
 		return BulkActionsClientGetOperationStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BulkActionsClientGetOperationStatusResponse{}, err
-	}
-	resp, err := client.getOperationStatusHandleResponse(httpResp)
-	return resp, err
+	return client.getOperationStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // getOperationStatusCreateRequest creates the GetOperationStatus request.
@@ -399,8 +389,11 @@ func (client *BulkActionsClient) getOperationStatusCreateRequest(ctx context.Con
 }
 
 // getOperationStatusHandleResponse handles the GetOperationStatus response.
-func (client *BulkActionsClient) getOperationStatusHandleResponse(resp *http.Response) (BulkActionsClientGetOperationStatusResponse, error) {
+func (client *BulkActionsClient) getOperationStatusHandleResponse(resp *http.Response, successCodes ...int) (BulkActionsClientGetOperationStatusResponse, error) {
 	result := BulkActionsClientGetOperationStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatusResult); err != nil {
 		return BulkActionsClientGetOperationStatusResponse{}, err
 	}
@@ -423,47 +416,61 @@ func (client *BulkActionsClient) NewListByResourceGroupPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, location, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, location, nextLink, options)
 			if err != nil {
 				return BulkActionsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BulkActionsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *BulkActionsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, location string, _ *BulkActionsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *BulkActionsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, location string, nextLink string, _ *BulkActionsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *BulkActionsClient) listByResourceGroupHandleResponse(resp *http.Response) (BulkActionsClientListByResourceGroupResponse, error) {
+func (client *BulkActionsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (BulkActionsClientListByResourceGroupResponse, error) {
 	result := BulkActionsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LaunchBulkInstancesOperationListResult); err != nil {
 		return BulkActionsClientListByResourceGroupResponse{}, err
 	}
@@ -485,43 +492,57 @@ func (client *BulkActionsClient) NewListBySubscriptionPager(location string, opt
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return BulkActionsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BulkActionsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *BulkActionsClient) listBySubscriptionCreateRequest(ctx context.Context, location string, _ *BulkActionsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *BulkActionsClient) listBySubscriptionCreateRequest(ctx context.Context, location string, nextLink string, _ *BulkActionsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *BulkActionsClient) listBySubscriptionHandleResponse(resp *http.Response) (BulkActionsClientListBySubscriptionResponse, error) {
+func (client *BulkActionsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (BulkActionsClientListBySubscriptionResponse, error) {
 	result := BulkActionsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LaunchBulkInstancesOperationListResult); err != nil {
 		return BulkActionsClientListBySubscriptionResponse{}, err
 	}
@@ -545,57 +566,71 @@ func (client *BulkActionsClient) NewListVirtualMachinesPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listVirtualMachinesCreateRequest(ctx, resourceGroupName, location, name, options)
-			}, nil)
+			req, err := client.listVirtualMachinesCreateRequest(ctx, resourceGroupName, location, name, nextLink, options)
 			if err != nil {
 				return BulkActionsClientListVirtualMachinesResponse{}, err
 			}
-			return client.listVirtualMachinesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BulkActionsClientListVirtualMachinesResponse{}, err
+			}
+			return client.listVirtualMachinesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listVirtualMachinesCreateRequest creates the ListVirtualMachines request.
-func (client *BulkActionsClient) listVirtualMachinesCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, options *BulkActionsClientListVirtualMachinesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}/virtualMachines"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *BulkActionsClient) listVirtualMachinesCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, nextLink string, options *BulkActionsClientListVirtualMachinesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}/virtualMachines"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Skiptoken != nil {
+			reqQP.Set("$skiptoken", *options.Skiptoken)
+		}
+		reqQP.Set("api-version", version20260201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skiptoken != nil {
-		reqQP.Set("$skiptoken", *options.Skiptoken)
-	}
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listVirtualMachinesHandleResponse handles the ListVirtualMachines response.
-func (client *BulkActionsClient) listVirtualMachinesHandleResponse(resp *http.Response) (BulkActionsClientListVirtualMachinesResponse, error) {
+func (client *BulkActionsClient) listVirtualMachinesHandleResponse(resp *http.Response, successCodes ...int) (BulkActionsClientListVirtualMachinesResponse, error) {
 	result := BulkActionsClientListVirtualMachinesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineListResult); err != nil {
 		return BulkActionsClientListVirtualMachinesResponse{}, err
 	}
@@ -623,12 +658,7 @@ func (client *BulkActionsClient) VirtualMachinesCancelOperations(ctx context.Con
 	if err != nil {
 		return BulkActionsClientVirtualMachinesCancelOperationsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BulkActionsClientVirtualMachinesCancelOperationsResponse{}, err
-	}
-	resp, err := client.virtualMachinesCancelOperationsHandleResponse(httpResp)
-	return resp, err
+	return client.virtualMachinesCancelOperationsHandleResponse(httpResp, http.StatusOK)
 }
 
 // virtualMachinesCancelOperationsCreateRequest creates the VirtualMachinesCancelOperations request.
@@ -658,8 +688,11 @@ func (client *BulkActionsClient) virtualMachinesCancelOperationsCreateRequest(ct
 }
 
 // virtualMachinesCancelOperationsHandleResponse handles the VirtualMachinesCancelOperations response.
-func (client *BulkActionsClient) virtualMachinesCancelOperationsHandleResponse(resp *http.Response) (BulkActionsClientVirtualMachinesCancelOperationsResponse, error) {
+func (client *BulkActionsClient) virtualMachinesCancelOperationsHandleResponse(resp *http.Response, successCodes ...int) (BulkActionsClientVirtualMachinesCancelOperationsResponse, error) {
 	result := BulkActionsClientVirtualMachinesCancelOperationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CancelOperationsResponse); err != nil {
 		return BulkActionsClientVirtualMachinesCancelOperationsResponse{}, err
 	}
@@ -687,12 +720,7 @@ func (client *BulkActionsClient) VirtualMachinesExecuteCreate(ctx context.Contex
 	if err != nil {
 		return BulkActionsClientVirtualMachinesExecuteCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BulkActionsClientVirtualMachinesExecuteCreateResponse{}, err
-	}
-	resp, err := client.virtualMachinesExecuteCreateHandleResponse(httpResp)
-	return resp, err
+	return client.virtualMachinesExecuteCreateHandleResponse(httpResp, http.StatusOK)
 }
 
 // virtualMachinesExecuteCreateCreateRequest creates the VirtualMachinesExecuteCreate request.
@@ -722,8 +750,11 @@ func (client *BulkActionsClient) virtualMachinesExecuteCreateCreateRequest(ctx c
 }
 
 // virtualMachinesExecuteCreateHandleResponse handles the VirtualMachinesExecuteCreate response.
-func (client *BulkActionsClient) virtualMachinesExecuteCreateHandleResponse(resp *http.Response) (BulkActionsClientVirtualMachinesExecuteCreateResponse, error) {
+func (client *BulkActionsClient) virtualMachinesExecuteCreateHandleResponse(resp *http.Response, successCodes ...int) (BulkActionsClientVirtualMachinesExecuteCreateResponse, error) {
 	result := BulkActionsClientVirtualMachinesExecuteCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreateResourceOperationResponse); err != nil {
 		return BulkActionsClientVirtualMachinesExecuteCreateResponse{}, err
 	}
@@ -751,12 +782,7 @@ func (client *BulkActionsClient) VirtualMachinesExecuteDeallocate(ctx context.Co
 	if err != nil {
 		return BulkActionsClientVirtualMachinesExecuteDeallocateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BulkActionsClientVirtualMachinesExecuteDeallocateResponse{}, err
-	}
-	resp, err := client.virtualMachinesExecuteDeallocateHandleResponse(httpResp)
-	return resp, err
+	return client.virtualMachinesExecuteDeallocateHandleResponse(httpResp, http.StatusOK)
 }
 
 // virtualMachinesExecuteDeallocateCreateRequest creates the VirtualMachinesExecuteDeallocate request.
@@ -786,8 +812,11 @@ func (client *BulkActionsClient) virtualMachinesExecuteDeallocateCreateRequest(c
 }
 
 // virtualMachinesExecuteDeallocateHandleResponse handles the VirtualMachinesExecuteDeallocate response.
-func (client *BulkActionsClient) virtualMachinesExecuteDeallocateHandleResponse(resp *http.Response) (BulkActionsClientVirtualMachinesExecuteDeallocateResponse, error) {
+func (client *BulkActionsClient) virtualMachinesExecuteDeallocateHandleResponse(resp *http.Response, successCodes ...int) (BulkActionsClientVirtualMachinesExecuteDeallocateResponse, error) {
 	result := BulkActionsClientVirtualMachinesExecuteDeallocateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeallocateResourceOperationResponse); err != nil {
 		return BulkActionsClientVirtualMachinesExecuteDeallocateResponse{}, err
 	}
@@ -815,12 +844,7 @@ func (client *BulkActionsClient) VirtualMachinesExecuteDelete(ctx context.Contex
 	if err != nil {
 		return BulkActionsClientVirtualMachinesExecuteDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BulkActionsClientVirtualMachinesExecuteDeleteResponse{}, err
-	}
-	resp, err := client.virtualMachinesExecuteDeleteHandleResponse(httpResp)
-	return resp, err
+	return client.virtualMachinesExecuteDeleteHandleResponse(httpResp, http.StatusOK)
 }
 
 // virtualMachinesExecuteDeleteCreateRequest creates the VirtualMachinesExecuteDelete request.
@@ -850,8 +874,11 @@ func (client *BulkActionsClient) virtualMachinesExecuteDeleteCreateRequest(ctx c
 }
 
 // virtualMachinesExecuteDeleteHandleResponse handles the VirtualMachinesExecuteDelete response.
-func (client *BulkActionsClient) virtualMachinesExecuteDeleteHandleResponse(resp *http.Response) (BulkActionsClientVirtualMachinesExecuteDeleteResponse, error) {
+func (client *BulkActionsClient) virtualMachinesExecuteDeleteHandleResponse(resp *http.Response, successCodes ...int) (BulkActionsClientVirtualMachinesExecuteDeleteResponse, error) {
 	result := BulkActionsClientVirtualMachinesExecuteDeleteResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeleteResourceOperationResponse); err != nil {
 		return BulkActionsClientVirtualMachinesExecuteDeleteResponse{}, err
 	}
@@ -879,12 +906,7 @@ func (client *BulkActionsClient) VirtualMachinesExecuteHibernate(ctx context.Con
 	if err != nil {
 		return BulkActionsClientVirtualMachinesExecuteHibernateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BulkActionsClientVirtualMachinesExecuteHibernateResponse{}, err
-	}
-	resp, err := client.virtualMachinesExecuteHibernateHandleResponse(httpResp)
-	return resp, err
+	return client.virtualMachinesExecuteHibernateHandleResponse(httpResp, http.StatusOK)
 }
 
 // virtualMachinesExecuteHibernateCreateRequest creates the VirtualMachinesExecuteHibernate request.
@@ -914,8 +936,11 @@ func (client *BulkActionsClient) virtualMachinesExecuteHibernateCreateRequest(ct
 }
 
 // virtualMachinesExecuteHibernateHandleResponse handles the VirtualMachinesExecuteHibernate response.
-func (client *BulkActionsClient) virtualMachinesExecuteHibernateHandleResponse(resp *http.Response) (BulkActionsClientVirtualMachinesExecuteHibernateResponse, error) {
+func (client *BulkActionsClient) virtualMachinesExecuteHibernateHandleResponse(resp *http.Response, successCodes ...int) (BulkActionsClientVirtualMachinesExecuteHibernateResponse, error) {
 	result := BulkActionsClientVirtualMachinesExecuteHibernateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HibernateResourceOperationResponse); err != nil {
 		return BulkActionsClientVirtualMachinesExecuteHibernateResponse{}, err
 	}
@@ -943,12 +968,7 @@ func (client *BulkActionsClient) VirtualMachinesExecuteStart(ctx context.Context
 	if err != nil {
 		return BulkActionsClientVirtualMachinesExecuteStartResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BulkActionsClientVirtualMachinesExecuteStartResponse{}, err
-	}
-	resp, err := client.virtualMachinesExecuteStartHandleResponse(httpResp)
-	return resp, err
+	return client.virtualMachinesExecuteStartHandleResponse(httpResp, http.StatusOK)
 }
 
 // virtualMachinesExecuteStartCreateRequest creates the VirtualMachinesExecuteStart request.
@@ -978,8 +998,11 @@ func (client *BulkActionsClient) virtualMachinesExecuteStartCreateRequest(ctx co
 }
 
 // virtualMachinesExecuteStartHandleResponse handles the VirtualMachinesExecuteStart response.
-func (client *BulkActionsClient) virtualMachinesExecuteStartHandleResponse(resp *http.Response) (BulkActionsClientVirtualMachinesExecuteStartResponse, error) {
+func (client *BulkActionsClient) virtualMachinesExecuteStartHandleResponse(resp *http.Response, successCodes ...int) (BulkActionsClientVirtualMachinesExecuteStartResponse, error) {
 	result := BulkActionsClientVirtualMachinesExecuteStartResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StartResourceOperationResponse); err != nil {
 		return BulkActionsClientVirtualMachinesExecuteStartResponse{}, err
 	}
@@ -1007,12 +1030,7 @@ func (client *BulkActionsClient) VirtualMachinesGetOperationStatus(ctx context.C
 	if err != nil {
 		return BulkActionsClientVirtualMachinesGetOperationStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BulkActionsClientVirtualMachinesGetOperationStatusResponse{}, err
-	}
-	resp, err := client.virtualMachinesGetOperationStatusHandleResponse(httpResp)
-	return resp, err
+	return client.virtualMachinesGetOperationStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // virtualMachinesGetOperationStatusCreateRequest creates the VirtualMachinesGetOperationStatus request.
@@ -1042,8 +1060,11 @@ func (client *BulkActionsClient) virtualMachinesGetOperationStatusCreateRequest(
 }
 
 // virtualMachinesGetOperationStatusHandleResponse handles the VirtualMachinesGetOperationStatus response.
-func (client *BulkActionsClient) virtualMachinesGetOperationStatusHandleResponse(resp *http.Response) (BulkActionsClientVirtualMachinesGetOperationStatusResponse, error) {
+func (client *BulkActionsClient) virtualMachinesGetOperationStatusHandleResponse(resp *http.Response, successCodes ...int) (BulkActionsClientVirtualMachinesGetOperationStatusResponse, error) {
 	result := BulkActionsClientVirtualMachinesGetOperationStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetOperationStatusResponse); err != nil {
 		return BulkActionsClientVirtualMachinesGetOperationStatusResponse{}, err
 	}

@@ -4,6 +4,10 @@
 
 package armcdn
 
+const (
+	version20250601 string = "2025-06-01"
+)
+
 // AFDEndpointProtocols - Supported protocols for the customer's endpoint.
 type AFDEndpointProtocols string
 

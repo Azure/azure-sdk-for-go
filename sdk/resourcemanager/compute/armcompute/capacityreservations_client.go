@@ -85,8 +85,7 @@ func (client *CapacityReservationsClient) createOrUpdate(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -170,8 +169,7 @@ func (client *CapacityReservationsClient) deleteOperation(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -226,12 +224,7 @@ func (client *CapacityReservationsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return CapacityReservationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CapacityReservationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -268,8 +261,11 @@ func (client *CapacityReservationsClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *CapacityReservationsClient) getHandleResponse(resp *http.Response) (CapacityReservationsClientGetResponse, error) {
+func (client *CapacityReservationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (CapacityReservationsClientGetResponse, error) {
 	result := CapacityReservationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapacityReservation); err != nil {
 		return CapacityReservationsClientGetResponse{}, err
 	}
@@ -293,50 +289,64 @@ func (client *CapacityReservationsClient) NewListByCapacityReservationGroupPager
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByCapacityReservationGroupCreateRequest(ctx, resourceGroupName, capacityReservationGroupName, options)
-			}, nil)
+			req, err := client.listByCapacityReservationGroupCreateRequest(ctx, resourceGroupName, capacityReservationGroupName, nextLink, options)
 			if err != nil {
 				return CapacityReservationsClientListByCapacityReservationGroupResponse{}, err
 			}
-			return client.listByCapacityReservationGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CapacityReservationsClientListByCapacityReservationGroupResponse{}, err
+			}
+			return client.listByCapacityReservationGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByCapacityReservationGroupCreateRequest creates the ListByCapacityReservationGroup request.
-func (client *CapacityReservationsClient) listByCapacityReservationGroupCreateRequest(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, options *CapacityReservationsClientListByCapacityReservationGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CapacityReservationsClient) listByCapacityReservationGroupCreateRequest(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, nextLink string, options *CapacityReservationsClientListByCapacityReservationGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/capacityReservationGroups/{capacityReservationGroupName}/capacityReservations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if capacityReservationGroupName == "" {
+			return nil, errors.New("parameter capacityReservationGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{capacityReservationGroupName}", url.PathEscape(capacityReservationGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if capacityReservationGroupName == "" {
-		return nil, errors.New("parameter capacityReservationGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{capacityReservationGroupName}", url.PathEscape(capacityReservationGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", string(*options.Expand))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", string(*options.Expand))
+		}
+		reqQP.Set("api-version", version20260301)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByCapacityReservationGroupHandleResponse handles the ListByCapacityReservationGroup response.
-func (client *CapacityReservationsClient) listByCapacityReservationGroupHandleResponse(resp *http.Response) (CapacityReservationsClientListByCapacityReservationGroupResponse, error) {
+func (client *CapacityReservationsClient) listByCapacityReservationGroupHandleResponse(resp *http.Response, successCodes ...int) (CapacityReservationsClientListByCapacityReservationGroupResponse, error) {
 	result := CapacityReservationsClientListByCapacityReservationGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapacityReservationListResult); err != nil {
 		return CapacityReservationsClientListByCapacityReservationGroupResponse{}, err
 	}
@@ -385,8 +395,7 @@ func (client *CapacityReservationsClient) update(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

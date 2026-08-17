@@ -53,7 +53,7 @@ func ExampleRegisteredServersClient_BeginCreate() {
 	// 		Properties: &armstoragesync.RegisteredServerProperties{
 	// 			ActiveAuthType: to.Ptr(armstoragesync.ServerAuthTypeCertificate),
 	// 			AgentVersion: to.Ptr("3.1.5.0"),
-	// 			AgentVersionExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T21:50:40.5840543Z"); return t}()),
+	// 			AgentVersionExpirationDate: to.Ptr(time.Date(2018, time.June, 11, 21, 50, 40, 584054300, time.UTC)),
 	// 			AgentVersionStatus: to.Ptr(armstoragesync.RegisteredServerAgentVersionStatusOk),
 	// 			ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 			ClusterID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -135,7 +135,7 @@ func ExampleRegisteredServersClient_Get() {
 	// 		Properties: &armstoragesync.RegisteredServerProperties{
 	// 			ActiveAuthType: to.Ptr(armstoragesync.ServerAuthTypeCertificate),
 	// 			AgentVersion: to.Ptr("3.1.5.0"),
-	// 			AgentVersionExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T21:50:40.5840543Z"); return t}()),
+	// 			AgentVersionExpirationDate: to.Ptr(time.Date(2018, time.June, 11, 21, 50, 40, 584054300, time.UTC)),
 	// 			AgentVersionStatus: to.Ptr(armstoragesync.RegisteredServerAgentVersionStatusOk),
 	// 			ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 			ClusterID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -197,7 +197,7 @@ func ExampleRegisteredServersClient_NewListByStorageSyncServicePager() {
 		// 				Properties: &armstoragesync.RegisteredServerProperties{
 		// 					ActiveAuthType: to.Ptr(armstoragesync.ServerAuthTypeCertificate),
 		// 					AgentVersion: to.Ptr("3.1.5.0"),
-		// 					AgentVersionExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T21:50:40.5840543Z"); return t}()),
+		// 					AgentVersionExpirationDate: to.Ptr(time.Date(2018, time.June, 11, 21, 50, 40, 584054300, time.UTC)),
 		// 					AgentVersionStatus: to.Ptr(armstoragesync.RegisteredServerAgentVersionStatusOk),
 		// 					ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 		// 					ClusterID: to.Ptr("00000000-0000-0000-0000-000000000000"),
@@ -291,7 +291,7 @@ func ExampleRegisteredServersClient_BeginUpdate() {
 	// 		Properties: &armstoragesync.RegisteredServerProperties{
 	// 			ActiveAuthType: to.Ptr(armstoragesync.ServerAuthTypeCertificate),
 	// 			AgentVersion: to.Ptr("3.1.5.0"),
-	// 			AgentVersionExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T21:50:40.5840543Z"); return t}()),
+	// 			AgentVersionExpirationDate: to.Ptr(time.Date(2018, time.June, 11, 21, 50, 40, 584054300, time.UTC)),
 	// 			AgentVersionStatus: to.Ptr(armstoragesync.RegisteredServerAgentVersionStatusOk),
 	// 			ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
 	// 			ClusterID: to.Ptr("00000000-0000-0000-0000-000000000000"),

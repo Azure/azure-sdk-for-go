@@ -74,8 +74,8 @@ func ExampleScenarioRunsClient_Get() {
 	// 				{
 	// 					ActionUrn: to.Ptr("urn:csci:provider:microsoft:VirtualMachine_Shutdown/1.0"),
 	// 					State: to.Ptr(armchaos.ScenarioSummaryStateSucceeded),
-	// 					StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-20T14:30:00.000Z"); return t}()),
-	// 					CompletedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-20T14:40:00.000Z"); return t}()),
+	// 					StartedAt: to.Ptr(time.Date(2025, time.January, 20, 14, 30, 0, 0, time.UTC)),
+	// 					CompletedAt: to.Ptr(time.Date(2025, time.January, 20, 14, 40, 0, 0, time.UTC)),
 	// 					Resources: []*armchaos.ScenarioRunResource{
 	// 						{
 	// 							ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM1"),
@@ -86,8 +86,8 @@ func ExampleScenarioRunsClient_Get() {
 	// 					},
 	// 				},
 	// 			},
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-20T14:30:00.000Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-20T14:40:00.000Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2025, time.January, 20, 14, 30, 0, 0, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2025, time.January, 20, 14, 40, 0, 0, time.UTC)),
 	// 			ZoneResolution: &armchaos.ZoneResolutionInfo{
 	// 				Mode: to.Ptr(armchaos.ZoneResolutionModePhysical),
 	// 				RequestedPhysicalZones: []*string{
@@ -116,10 +116,10 @@ func ExampleScenarioRunsClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-20T14:30:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 20, 14, 30, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armchaos.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-20T14:40:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 20, 14, 40, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("system"),
 	// 			LastModifiedByType: to.Ptr(armchaos.CreatedByTypeApplication),
 	// 		},
@@ -167,14 +167,14 @@ func ExampleScenarioRunsClient_NewListAllPager() {
 		// 							ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM1"),
 		// 						},
 		// 					},
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-20T14:30:00.000Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-20T14:40:00.000Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2025, time.January, 20, 14, 30, 0, 0, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2025, time.January, 20, 14, 40, 0, 0, time.UTC)),
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-20T14:30:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.January, 20, 14, 30, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armchaos.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-20T14:40:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.January, 20, 14, 40, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("system"),
 		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByTypeApplication),
 		// 				},
@@ -217,14 +217,14 @@ func ExampleScenarioRunsClient_NewListAllPager() {
 		// 						Resource: []*armchaos.ResourceStateError{
 		// 						},
 		// 					},
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-19T10:15:00.000Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-19T10:18:00.000Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2025, time.January, 19, 10, 15, 0, 0, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2025, time.January, 19, 10, 18, 0, 0, time.UTC)),
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-19T10:15:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.January, 19, 10, 15, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armchaos.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-19T10:18:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.January, 19, 10, 18, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("system"),
 		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByTypeApplication),
 		// 				},

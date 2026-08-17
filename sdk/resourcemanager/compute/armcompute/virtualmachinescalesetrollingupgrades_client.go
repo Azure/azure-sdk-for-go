@@ -81,8 +81,7 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) cancel(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -132,12 +131,7 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) GetLatest(ctx context
 	if err != nil {
 		return VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse{}, err
-	}
-	resp, err := client.getLatestHandleResponse(httpResp)
-	return resp, err
+	return client.getLatestHandleResponse(httpResp, http.StatusOK)
 }
 
 // getLatestCreateRequest creates the GetLatest request.
@@ -167,8 +161,11 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) getLatestCreateReques
 }
 
 // getLatestHandleResponse handles the GetLatest response.
-func (client *VirtualMachineScaleSetRollingUpgradesClient) getLatestHandleResponse(resp *http.Response) (VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse, error) {
+func (client *VirtualMachineScaleSetRollingUpgradesClient) getLatestHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse, error) {
 	result := VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RollingUpgradeStatusInfo); err != nil {
 		return VirtualMachineScaleSetRollingUpgradesClientGetLatestResponse{}, err
 	}
@@ -217,8 +214,7 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) startExtensionUpgrade
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -290,8 +286,7 @@ func (client *VirtualMachineScaleSetRollingUpgradesClient) startOSUpgrade(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

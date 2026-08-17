@@ -12996,7 +12996,8 @@ type ServiceGateway struct {
 	Tags map[string]*string
 
 	// A list of availability zones denoting the zone in which service gateway should be deployed.
-	// - The zone values must be provided as strings representing numeric identifiers like "1", "2", "3" etc.
+	//
+	//   - The zone values must be provided as strings representing numeric identifiers like "1", "2", "3" etc.
 	Zones []*string
 
 	// READ-ONLY; A unique read-only string that changes whenever the resource is updated.
@@ -13030,9 +13031,10 @@ type ServiceGatewayAddressLocation struct {
 	AddressLocation *string
 
 	// Specifies the type of update operation to perform on addresses within the address location of service gateway.
-	// - FullUpdate: Replaces all existing address data with the new list provided in the request. Any previously defined addresses
-	// not included will be removed.
-	// - PartialUpdate: Updates only the specified addresses.
+	//
+	//   - FullUpdate: Replaces all existing address data with the new list provided in the request. Any previously defined addresses
+	//     not included will be removed.
+	//   - PartialUpdate: Updates only the specified addresses.
 	AddressUpdateAction *AddressUpdateAction
 
 	// An array of addresses to create or update in locations.
@@ -13120,9 +13122,10 @@ type ServiceGatewayServiceRequest struct {
 // ServiceGatewayUpdateAddressLocationsRequest - Properties of the service gateway update address locations request.
 type ServiceGatewayUpdateAddressLocationsRequest struct {
 	// Specifies the type of update operation to perform on address locations within the service gateway.
-	// - FullUpdate: Replaces all existing address location data with the new list provided in the request. Any previously defined
-	// locations not included will be removed.
-	// - PartialUpdate: Updates only the specified address locations.
+	//
+	//   - FullUpdate: Replaces all existing address location data with the new list provided in the request. Any previously defined
+	//     locations not included will be removed.
+	//   - PartialUpdate: Updates only the specified address locations.
 	Action *UpdateAction
 
 	// An array of address locations to create or update.
@@ -13132,9 +13135,10 @@ type ServiceGatewayUpdateAddressLocationsRequest struct {
 // ServiceGatewayUpdateServicesRequest - Properties of the service gateway update services request.
 type ServiceGatewayUpdateServicesRequest struct {
 	// Specifies the type of update operation to perform on services within the service gateway.
-	// - FullUpdate: Replaces all existing services with the new list provided in the request. Any previously defined services
-	// not included will be removed.
-	// - PartialUpdate: Updates only the specified services.
+	//
+	//   - FullUpdate: Replaces all existing services with the new list provided in the request. Any previously defined services not
+	//     included will be removed.
+	//   - PartialUpdate: Updates only the specified services.
 	Action *ServiceUpdateAction
 
 	// Collection of service updates.

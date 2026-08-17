@@ -53,7 +53,7 @@ func ExamplePeerAsnsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpeering.PeerAsnsClientCreateOrUpdateResponse{
-	// 	PeerAsn: &armpeering.PeerAsn{
+	// 	PeerAsn: armpeering.PeerAsn{
 	// 		Name: to.Ptr("peerAsnName"),
 	// 		Type: to.Ptr("Microsoft.Peering/peerAsns"),
 	// 		ID: to.Ptr("/subscriptions/subId/providers/Microsoft.Peering/peerAsns/peerAsnName"),
@@ -124,7 +124,7 @@ func ExamplePeerAsnsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armpeering.PeerAsnsClientGetResponse{
-	// 	PeerAsn: &armpeering.PeerAsn{
+	// 	PeerAsn: armpeering.PeerAsn{
 	// 		Name: to.Ptr("peerAsnName"),
 	// 		Type: to.Ptr("Microsoft.Peering/peerAsns"),
 	// 		ID: to.Ptr("/subscriptions/subId/providers/Microsoft.Peering/peerAsns/peerAsnName"),

@@ -62,12 +62,7 @@ func (client *ConditionalCreditContributorsClient) GetFromPrimary(ctx context.Co
 	if err != nil {
 		return ConditionalCreditContributorsClientGetFromPrimaryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConditionalCreditContributorsClientGetFromPrimaryResponse{}, err
-	}
-	resp, err := client.getFromPrimaryHandleResponse(httpResp)
-	return resp, err
+	return client.getFromPrimaryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getFromPrimaryCreateRequest creates the GetFromPrimary request.
@@ -101,8 +96,11 @@ func (client *ConditionalCreditContributorsClient) getFromPrimaryCreateRequest(c
 }
 
 // getFromPrimaryHandleResponse handles the GetFromPrimary response.
-func (client *ConditionalCreditContributorsClient) getFromPrimaryHandleResponse(resp *http.Response) (ConditionalCreditContributorsClientGetFromPrimaryResponse, error) {
+func (client *ConditionalCreditContributorsClient) getFromPrimaryHandleResponse(resp *http.Response, successCodes ...int) (ConditionalCreditContributorsClientGetFromPrimaryResponse, error) {
 	result := ConditionalCreditContributorsClientGetFromPrimaryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConditionalCreditContributor); err != nil {
 		return ConditionalCreditContributorsClientGetFromPrimaryResponse{}, err
 	}
@@ -126,43 +124,57 @@ func (client *ConditionalCreditContributorsClient) NewListFromApplicableConditio
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listFromApplicableConditionalCreditCreateRequest(ctx, billingAccountID, systemID, options)
-			}, nil)
+			req, err := client.listFromApplicableConditionalCreditCreateRequest(ctx, billingAccountID, systemID, nextLink, options)
 			if err != nil {
 				return ConditionalCreditContributorsClientListFromApplicableConditionalCreditResponse{}, err
 			}
-			return client.listFromApplicableConditionalCreditHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConditionalCreditContributorsClientListFromApplicableConditionalCreditResponse{}, err
+			}
+			return client.listFromApplicableConditionalCreditHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listFromApplicableConditionalCreditCreateRequest creates the ListFromApplicableConditionalCredit request.
-func (client *ConditionalCreditContributorsClient) listFromApplicableConditionalCreditCreateRequest(ctx context.Context, billingAccountID string, systemID string, _ *ConditionalCreditContributorsClientListFromApplicableConditionalCreditOptions) (*policy.Request, error) {
-	urlPath := "/providers/microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.BillingBenefits/applicableConditionalCredits/{systemId}/providers/microsoft.BillingBenefits/applicableContributors"
-	if billingAccountID == "" {
-		return nil, errors.New("parameter billingAccountID cannot be empty")
+func (client *ConditionalCreditContributorsClient) listFromApplicableConditionalCreditCreateRequest(ctx context.Context, billingAccountID string, systemID string, nextLink string, _ *ConditionalCreditContributorsClientListFromApplicableConditionalCreditOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.BillingBenefits/applicableConditionalCredits/{systemId}/providers/microsoft.BillingBenefits/applicableContributors"
+		if billingAccountID == "" {
+			return nil, errors.New("parameter billingAccountID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
+		if systemID == "" {
+			return nil, errors.New("parameter systemID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{systemId}", url.PathEscape(systemID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
-	if systemID == "" {
-		return nil, errors.New("parameter systemID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{systemId}", url.PathEscape(systemID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listFromApplicableConditionalCreditHandleResponse handles the ListFromApplicableConditionalCredit response.
-func (client *ConditionalCreditContributorsClient) listFromApplicableConditionalCreditHandleResponse(resp *http.Response) (ConditionalCreditContributorsClientListFromApplicableConditionalCreditResponse, error) {
+func (client *ConditionalCreditContributorsClient) listFromApplicableConditionalCreditHandleResponse(resp *http.Response, successCodes ...int) (ConditionalCreditContributorsClientListFromApplicableConditionalCreditResponse, error) {
 	result := ConditionalCreditContributorsClientListFromApplicableConditionalCreditResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConditionalCreditContributorList); err != nil {
 		return ConditionalCreditContributorsClientListFromApplicableConditionalCreditResponse{}, err
 	}
@@ -185,47 +197,61 @@ func (client *ConditionalCreditContributorsClient) NewListFromPrimaryPager(resou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listFromPrimaryCreateRequest(ctx, resourceGroupName, conditionalCreditName, options)
-			}, nil)
+			req, err := client.listFromPrimaryCreateRequest(ctx, resourceGroupName, conditionalCreditName, nextLink, options)
 			if err != nil {
 				return ConditionalCreditContributorsClientListFromPrimaryResponse{}, err
 			}
-			return client.listFromPrimaryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConditionalCreditContributorsClientListFromPrimaryResponse{}, err
+			}
+			return client.listFromPrimaryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listFromPrimaryCreateRequest creates the ListFromPrimary request.
-func (client *ConditionalCreditContributorsClient) listFromPrimaryCreateRequest(ctx context.Context, resourceGroupName string, conditionalCreditName string, _ *ConditionalCreditContributorsClientListFromPrimaryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/conditionalCredits/{conditionalCreditName}/contributors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConditionalCreditContributorsClient) listFromPrimaryCreateRequest(ctx context.Context, resourceGroupName string, conditionalCreditName string, nextLink string, _ *ConditionalCreditContributorsClientListFromPrimaryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/conditionalCredits/{conditionalCreditName}/contributors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if conditionalCreditName == "" {
+			return nil, errors.New("parameter conditionalCreditName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{conditionalCreditName}", url.PathEscape(conditionalCreditName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if conditionalCreditName == "" {
-		return nil, errors.New("parameter conditionalCreditName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{conditionalCreditName}", url.PathEscape(conditionalCreditName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listFromPrimaryHandleResponse handles the ListFromPrimary response.
-func (client *ConditionalCreditContributorsClient) listFromPrimaryHandleResponse(resp *http.Response) (ConditionalCreditContributorsClientListFromPrimaryResponse, error) {
+func (client *ConditionalCreditContributorsClient) listFromPrimaryHandleResponse(resp *http.Response, successCodes ...int) (ConditionalCreditContributorsClientListFromPrimaryResponse, error) {
 	result := ConditionalCreditContributorsClientListFromPrimaryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConditionalCreditContributorList); err != nil {
 		return ConditionalCreditContributorsClientListFromPrimaryResponse{}, err
 	}

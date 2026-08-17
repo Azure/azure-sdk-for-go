@@ -51,7 +51,7 @@ func ExampleEdgeActionVersionsClient_BeginCreate() {
 	// 			DeploymentType: to.Ptr(armedgeactions.EdgeActionVersionDeploymentTypeZip),
 	// 			ValidationStatus: to.Ptr(armedgeactions.EdgeActionVersionValidationStatusSucceeded),
 	// 			IsDefaultVersion: to.Ptr(armedgeactions.EdgeActionIsDefaultVersionTrue),
-	// 			LastPackageUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-05-25T16:19:23Z"); return t}()),
+	// 			LastPackageUpdateTime: to.Ptr(time.Date(2024, time.May, 25, 16, 19, 23, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -114,7 +114,7 @@ func ExampleEdgeActionVersionsClient_BeginDeployVersionCode() {
 	// 		DeploymentType: to.Ptr(armedgeactions.EdgeActionVersionDeploymentTypeZip),
 	// 		ValidationStatus: to.Ptr(armedgeactions.EdgeActionVersionValidationStatusSucceeded),
 	// 		IsDefaultVersion: to.Ptr(armedgeactions.EdgeActionIsDefaultVersionTrue),
-	// 		LastPackageUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-05-25T16:19:23Z"); return t}()),
+	// 		LastPackageUpdateTime: to.Ptr(time.Date(2024, time.May, 25, 16, 19, 23, 0, time.UTC)),
 	// 	},
 	// }
 }
@@ -148,7 +148,7 @@ func ExampleEdgeActionVersionsClient_Get() {
 	// 			DeploymentType: to.Ptr(armedgeactions.EdgeActionVersionDeploymentTypeZip),
 	// 			ValidationStatus: to.Ptr(armedgeactions.EdgeActionVersionValidationStatusSucceeded),
 	// 			IsDefaultVersion: to.Ptr(armedgeactions.EdgeActionIsDefaultVersionTrue),
-	// 			LastPackageUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-05-25T16:19:23Z"); return t}()),
+	// 			LastPackageUpdateTime: to.Ptr(time.Date(2024, time.May, 25, 16, 19, 23, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -219,7 +219,7 @@ func ExampleEdgeActionVersionsClient_NewListByEdgeActionPager() {
 		// 					DeploymentType: to.Ptr(armedgeactions.EdgeActionVersionDeploymentTypeZip),
 		// 					ValidationStatus: to.Ptr(armedgeactions.EdgeActionVersionValidationStatusSucceeded),
 		// 					IsDefaultVersion: to.Ptr(armedgeactions.EdgeActionIsDefaultVersionTrue),
-		// 					LastPackageUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-05-25T16:19:23Z"); return t}()),
+		// 					LastPackageUpdateTime: to.Ptr(time.Date(2024, time.May, 25, 16, 19, 23, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -232,7 +232,7 @@ func ExampleEdgeActionVersionsClient_NewListByEdgeActionPager() {
 		// 					DeploymentType: to.Ptr(armedgeactions.EdgeActionVersionDeploymentTypeZip),
 		// 					ValidationStatus: to.Ptr(armedgeactions.EdgeActionVersionValidationStatusSucceeded),
 		// 					IsDefaultVersion: to.Ptr(armedgeactions.EdgeActionIsDefaultVersionFalse),
-		// 					LastPackageUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-05-25T11:19:23Z"); return t}()),
+		// 					LastPackageUpdateTime: to.Ptr(time.Date(2024, time.May, 25, 11, 19, 23, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -299,7 +299,7 @@ func ExampleEdgeActionVersionsClient_BeginUpdate() {
 	// 			DeploymentType: to.Ptr(armedgeactions.EdgeActionVersionDeploymentTypeOthers),
 	// 			ValidationStatus: to.Ptr(armedgeactions.EdgeActionVersionValidationStatusSucceeded),
 	// 			IsDefaultVersion: to.Ptr(armedgeactions.EdgeActionIsDefaultVersionTrue),
-	// 			LastPackageUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-05-25T16:19:23Z"); return t}()),
+	// 			LastPackageUpdateTime: to.Ptr(time.Date(2024, time.May, 25, 16, 19, 23, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }

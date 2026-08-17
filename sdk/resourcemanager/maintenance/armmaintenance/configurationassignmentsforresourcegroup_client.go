@@ -62,12 +62,7 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) CreateOrUpdate(ctx
 	if err != nil {
 		return ConfigurationAssignmentsForResourceGroupClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationAssignmentsForResourceGroupClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -101,8 +96,11 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) createOrUpdateCrea
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ConfigurationAssignmentsForResourceGroupClient) createOrUpdateHandleResponse(resp *http.Response) (ConfigurationAssignmentsForResourceGroupClientCreateOrUpdateResponse, error) {
+func (client *ConfigurationAssignmentsForResourceGroupClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationAssignmentsForResourceGroupClientCreateOrUpdateResponse, error) {
 	result := ConfigurationAssignmentsForResourceGroupClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationAssignment); err != nil {
 		return ConfigurationAssignmentsForResourceGroupClientCreateOrUpdateResponse{}, err
 	}
@@ -129,12 +127,7 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) Delete(ctx context
 	if err != nil {
 		return ConfigurationAssignmentsForResourceGroupClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationAssignmentsForResourceGroupClientDeleteResponse{}, err
-	}
-	resp, err := client.deleteHandleResponse(httpResp)
-	return resp, err
+	return client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -164,8 +157,11 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) deleteCreateReques
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *ConfigurationAssignmentsForResourceGroupClient) deleteHandleResponse(resp *http.Response) (ConfigurationAssignmentsForResourceGroupClientDeleteResponse, error) {
+func (client *ConfigurationAssignmentsForResourceGroupClient) deleteHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationAssignmentsForResourceGroupClientDeleteResponse, error) {
 	result := ConfigurationAssignmentsForResourceGroupClientDeleteResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationAssignment); err != nil {
 		return ConfigurationAssignmentsForResourceGroupClientDeleteResponse{}, err
 	}
@@ -192,12 +188,7 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) Get(ctx context.Co
 	if err != nil {
 		return ConfigurationAssignmentsForResourceGroupClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationAssignmentsForResourceGroupClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -227,8 +218,11 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) getCreateRequest(c
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConfigurationAssignmentsForResourceGroupClient) getHandleResponse(resp *http.Response) (ConfigurationAssignmentsForResourceGroupClientGetResponse, error) {
+func (client *ConfigurationAssignmentsForResourceGroupClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationAssignmentsForResourceGroupClientGetResponse, error) {
 	result := ConfigurationAssignmentsForResourceGroupClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationAssignment); err != nil {
 		return ConfigurationAssignmentsForResourceGroupClientGetResponse{}, err
 	}
@@ -256,12 +250,7 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) Update(ctx context
 	if err != nil {
 		return ConfigurationAssignmentsForResourceGroupClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationAssignmentsForResourceGroupClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -295,8 +284,11 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) updateCreateReques
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ConfigurationAssignmentsForResourceGroupClient) updateHandleResponse(resp *http.Response) (ConfigurationAssignmentsForResourceGroupClientUpdateResponse, error) {
+func (client *ConfigurationAssignmentsForResourceGroupClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationAssignmentsForResourceGroupClientUpdateResponse, error) {
 	result := ConfigurationAssignmentsForResourceGroupClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationAssignment); err != nil {
 		return ConfigurationAssignmentsForResourceGroupClientUpdateResponse{}, err
 	}

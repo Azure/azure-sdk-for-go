@@ -90,7 +90,8 @@ func (client *ModelDeploymentsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -181,7 +182,8 @@ func (client *ModelDeploymentsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -243,7 +245,12 @@ func (client *ModelDeploymentsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ModelDeploymentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ModelDeploymentsClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -281,11 +288,8 @@ func (client *ModelDeploymentsClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *ModelDeploymentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ModelDeploymentsClientGetResponse, error) {
+func (client *ModelDeploymentsClient) getHandleResponse(resp *http.Response) (ModelDeploymentsClientGetResponse, error) {
 	result := ModelDeploymentsClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ModelDeployment); err != nil {
 		return ModelDeploymentsClientGetResponse{}, err
 	}
@@ -309,65 +313,51 @@ func (client *ModelDeploymentsClient) NewListByAIManagerNamespacePager(resourceG
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listByAIManagerNamespaceCreateRequest(ctx, resourceGroupName, aiManagerName, namespaceName, nextLink, options)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByAIManagerNamespaceCreateRequest(ctx, resourceGroupName, aiManagerName, namespaceName, options)
+			}, nil)
 			if err != nil {
 				return ModelDeploymentsClientListByAIManagerNamespaceResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ModelDeploymentsClientListByAIManagerNamespaceResponse{}, err
-			}
-			return client.listByAIManagerNamespaceHandleResponse(resp, http.StatusOK)
+			return client.listByAIManagerNamespaceHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAIManagerNamespaceCreateRequest creates the ListByAIManagerNamespace request.
-func (client *ModelDeploymentsClient) listByAIManagerNamespaceCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, namespaceName string, nextLink string, _ *ModelDeploymentsClientListByAIManagerNamespaceOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}/modelDeployments"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if aiManagerName == "" {
-			return nil, errors.New("parameter aiManagerName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{aiManagerName}", url.PathEscape(aiManagerName))
-		if namespaceName == "" {
-			return nil, errors.New("parameter namespaceName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+func (client *ModelDeploymentsClient) listByAIManagerNamespaceCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, namespaceName string, _ *ModelDeploymentsClientListByAIManagerNamespaceOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces/{namespaceName}/modelDeployments"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if aiManagerName == "" {
+		return nil, errors.New("parameter aiManagerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{aiManagerName}", url.PathEscape(aiManagerName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260502Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260502Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByAIManagerNamespaceHandleResponse handles the ListByAIManagerNamespace response.
-func (client *ModelDeploymentsClient) listByAIManagerNamespaceHandleResponse(resp *http.Response, successCodes ...int) (ModelDeploymentsClientListByAIManagerNamespaceResponse, error) {
+func (client *ModelDeploymentsClient) listByAIManagerNamespaceHandleResponse(resp *http.Response) (ModelDeploymentsClientListByAIManagerNamespaceResponse, error) {
 	result := ModelDeploymentsClientListByAIManagerNamespaceResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ModelDeploymentListResult); err != nil {
 		return ModelDeploymentsClientListByAIManagerNamespaceResponse{}, err
 	}

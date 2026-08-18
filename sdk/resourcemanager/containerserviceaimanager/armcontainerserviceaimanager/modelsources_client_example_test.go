@@ -60,10 +60,10 @@ func ExampleModelSourcesClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armcontainerserviceaimanager.SystemData{
 	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
 	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
 	// 		},
 	// 	},
 	// }
@@ -123,10 +123,10 @@ func ExampleModelSourcesClient_Get() {
 	// 		SystemData: &armcontainerserviceaimanager.SystemData{
 	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
 	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
 	// 		},
 	// 	},
 	// }
@@ -170,10 +170,10 @@ func ExampleModelSourcesClient_NewListPager() {
 		// 				SystemData: &armcontainerserviceaimanager.SystemData{
 		// 					CreatedBy: to.Ptr("user@example.com"),
 		// 					CreatedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
 		// 					LastModifiedBy: to.Ptr("user@example.com"),
 		// 					LastModifiedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
 		// 				},
 		// 			},
 		// 		},

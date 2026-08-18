@@ -83,7 +83,8 @@ func (client *AIManagerNamespacesClient) createOrUpdate(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -169,7 +170,8 @@ func (client *AIManagerNamespacesClient) deleteOperation(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -226,7 +228,12 @@ func (client *AIManagerNamespacesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return AIManagerNamespacesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AIManagerNamespacesClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -260,11 +267,8 @@ func (client *AIManagerNamespacesClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *AIManagerNamespacesClient) getHandleResponse(resp *http.Response, successCodes ...int) (AIManagerNamespacesClientGetResponse, error) {
+func (client *AIManagerNamespacesClient) getHandleResponse(resp *http.Response) (AIManagerNamespacesClientGetResponse, error) {
 	result := AIManagerNamespacesClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AIManagerNamespace); err != nil {
 		return AIManagerNamespacesClientGetResponse{}, err
 	}
@@ -292,7 +296,12 @@ func (client *AIManagerNamespacesClient) ListAccessKeys(ctx context.Context, res
 	if err != nil {
 		return AIManagerNamespacesClientListAccessKeysResponse{}, err
 	}
-	return client.listAccessKeysHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AIManagerNamespacesClientListAccessKeysResponse{}, err
+	}
+	resp, err := client.listAccessKeysHandleResponse(httpResp)
+	return resp, err
 }
 
 // listAccessKeysCreateRequest creates the ListAccessKeys request.
@@ -326,11 +335,8 @@ func (client *AIManagerNamespacesClient) listAccessKeysCreateRequest(ctx context
 }
 
 // listAccessKeysHandleResponse handles the ListAccessKeys response.
-func (client *AIManagerNamespacesClient) listAccessKeysHandleResponse(resp *http.Response, successCodes ...int) (AIManagerNamespacesClientListAccessKeysResponse, error) {
+func (client *AIManagerNamespacesClient) listAccessKeysHandleResponse(resp *http.Response) (AIManagerNamespacesClientListAccessKeysResponse, error) {
 	result := AIManagerNamespacesClientListAccessKeysResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceAccessInfo); err != nil {
 		return AIManagerNamespacesClientListAccessKeysResponse{}, err
 	}
@@ -353,61 +359,47 @@ func (client *AIManagerNamespacesClient) NewListByAIManagerPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listByAIManagerCreateRequest(ctx, resourceGroupName, aiManagerName, nextLink, options)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByAIManagerCreateRequest(ctx, resourceGroupName, aiManagerName, options)
+			}, nil)
 			if err != nil {
 				return AIManagerNamespacesClientListByAIManagerResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AIManagerNamespacesClientListByAIManagerResponse{}, err
-			}
-			return client.listByAIManagerHandleResponse(resp, http.StatusOK)
+			return client.listByAIManagerHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAIManagerCreateRequest creates the ListByAIManager request.
-func (client *AIManagerNamespacesClient) listByAIManagerCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, nextLink string, _ *AIManagerNamespacesClientListByAIManagerOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if aiManagerName == "" {
-			return nil, errors.New("parameter aiManagerName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{aiManagerName}", url.PathEscape(aiManagerName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+func (client *AIManagerNamespacesClient) listByAIManagerCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, _ *AIManagerNamespacesClientListByAIManagerOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/namespaces"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if aiManagerName == "" {
+		return nil, errors.New("parameter aiManagerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{aiManagerName}", url.PathEscape(aiManagerName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260502Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260502Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByAIManagerHandleResponse handles the ListByAIManager response.
-func (client *AIManagerNamespacesClient) listByAIManagerHandleResponse(resp *http.Response, successCodes ...int) (AIManagerNamespacesClientListByAIManagerResponse, error) {
+func (client *AIManagerNamespacesClient) listByAIManagerHandleResponse(resp *http.Response) (AIManagerNamespacesClientListByAIManagerResponse, error) {
 	result := AIManagerNamespacesClientListByAIManagerResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AIManagerNamespaceListResult); err != nil {
 		return AIManagerNamespacesClientListByAIManagerResponse{}, err
 	}
@@ -435,7 +427,12 @@ func (client *AIManagerNamespacesClient) ListCredential(ctx context.Context, res
 	if err != nil {
 		return AIManagerNamespacesClientListCredentialResponse{}, err
 	}
-	return client.listCredentialHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AIManagerNamespacesClientListCredentialResponse{}, err
+	}
+	resp, err := client.listCredentialHandleResponse(httpResp)
+	return resp, err
 }
 
 // listCredentialCreateRequest creates the ListCredential request.
@@ -469,11 +466,8 @@ func (client *AIManagerNamespacesClient) listCredentialCreateRequest(ctx context
 }
 
 // listCredentialHandleResponse handles the ListCredential response.
-func (client *AIManagerNamespacesClient) listCredentialHandleResponse(resp *http.Response, successCodes ...int) (AIManagerNamespacesClientListCredentialResponse, error) {
+func (client *AIManagerNamespacesClient) listCredentialHandleResponse(resp *http.Response) (AIManagerNamespacesClientListCredentialResponse, error) {
 	result := AIManagerNamespacesClientListCredentialResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialResults); err != nil {
 		return AIManagerNamespacesClientListCredentialResponse{}, err
 	}
@@ -503,7 +497,12 @@ func (client *AIManagerNamespacesClient) RotateKeys(ctx context.Context, resourc
 	if err != nil {
 		return AIManagerNamespacesClientRotateKeysResponse{}, err
 	}
-	return client.rotateKeysHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AIManagerNamespacesClientRotateKeysResponse{}, err
+	}
+	resp, err := client.rotateKeysHandleResponse(httpResp)
+	return resp, err
 }
 
 // rotateKeysCreateRequest creates the RotateKeys request.
@@ -537,11 +536,8 @@ func (client *AIManagerNamespacesClient) rotateKeysCreateRequest(ctx context.Con
 }
 
 // rotateKeysHandleResponse handles the RotateKeys response.
-func (client *AIManagerNamespacesClient) rotateKeysHandleResponse(resp *http.Response, successCodes ...int) (AIManagerNamespacesClientRotateKeysResponse, error) {
+func (client *AIManagerNamespacesClient) rotateKeysHandleResponse(resp *http.Response) (AIManagerNamespacesClientRotateKeysResponse, error) {
 	result := AIManagerNamespacesClientRotateKeysResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceAccessInfo); err != nil {
 		return AIManagerNamespacesClientRotateKeysResponse{}, err
 	}

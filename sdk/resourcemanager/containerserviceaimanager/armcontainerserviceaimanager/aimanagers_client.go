@@ -82,7 +82,8 @@ func (client *AIManagersClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -162,7 +163,8 @@ func (client *AIManagersClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -214,7 +216,12 @@ func (client *AIManagersClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return AIManagersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AIManagersClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -244,11 +251,8 @@ func (client *AIManagersClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *AIManagersClient) getHandleResponse(resp *http.Response, successCodes ...int) (AIManagersClientGetResponse, error) {
+func (client *AIManagersClient) getHandleResponse(resp *http.Response) (AIManagersClientGetResponse, error) {
 	result := AIManagersClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AIManager); err != nil {
 		return AIManagersClientGetResponse{}, err
 	}
@@ -270,57 +274,43 @@ func (client *AIManagersClient) NewListByResourceGroupPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
+			}, nil)
 			if err != nil {
 				return AIManagersClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AIManagersClientListByResourceGroupResponse{}, err
-			}
-			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
+			return client.listByResourceGroupHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AIManagersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *AIManagersClientListByResourceGroupOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+func (client *AIManagersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *AIManagersClientListByResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260502Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260502Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AIManagersClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (AIManagersClientListByResourceGroupResponse, error) {
+func (client *AIManagersClient) listByResourceGroupHandleResponse(resp *http.Response) (AIManagersClientListByResourceGroupResponse, error) {
 	result := AIManagersClientListByResourceGroupResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AIManagerListResult); err != nil {
 		return AIManagersClientListByResourceGroupResponse{}, err
 	}
@@ -341,53 +331,39 @@ func (client *AIManagersClient) NewListBySubscriptionPager(options *AIManagersCl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listBySubscriptionCreateRequest(ctx, options)
+			}, nil)
 			if err != nil {
 				return AIManagersClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AIManagersClientListBySubscriptionResponse{}, err
-			}
-			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
+			return client.listBySubscriptionHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AIManagersClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *AIManagersClientListBySubscriptionOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/aiManagers"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+func (client *AIManagersClient) listBySubscriptionCreateRequest(ctx context.Context, _ *AIManagersClientListBySubscriptionOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/aiManagers"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260502Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260502Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *AIManagersClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (AIManagersClientListBySubscriptionResponse, error) {
+func (client *AIManagersClient) listBySubscriptionHandleResponse(resp *http.Response) (AIManagersClientListBySubscriptionResponse, error) {
 	result := AIManagersClientListBySubscriptionResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AIManagerListResult); err != nil {
 		return AIManagersClientListBySubscriptionResponse{}, err
 	}
@@ -414,7 +390,12 @@ func (client *AIManagersClient) ListCredential(ctx context.Context, resourceGrou
 	if err != nil {
 		return AIManagersClientListCredentialResponse{}, err
 	}
-	return client.listCredentialHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AIManagersClientListCredentialResponse{}, err
+	}
+	resp, err := client.listCredentialHandleResponse(httpResp)
+	return resp, err
 }
 
 // listCredentialCreateRequest creates the ListCredential request.
@@ -444,11 +425,8 @@ func (client *AIManagersClient) listCredentialCreateRequest(ctx context.Context,
 }
 
 // listCredentialHandleResponse handles the ListCredential response.
-func (client *AIManagersClient) listCredentialHandleResponse(resp *http.Response, successCodes ...int) (AIManagersClientListCredentialResponse, error) {
+func (client *AIManagersClient) listCredentialHandleResponse(resp *http.Response) (AIManagersClientListCredentialResponse, error) {
 	result := AIManagersClientListCredentialResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialResults); err != nil {
 		return AIManagersClientListCredentialResponse{}, err
 	}
@@ -475,7 +453,12 @@ func (client *AIManagersClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return AIManagersClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return AIManagersClientUpdateResponse{}, err
+	}
+	resp, err := client.updateHandleResponse(httpResp)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -512,11 +495,8 @@ func (client *AIManagersClient) updateCreateRequest(ctx context.Context, resourc
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AIManagersClient) updateHandleResponse(resp *http.Response, successCodes ...int) (AIManagersClientUpdateResponse, error) {
+func (client *AIManagersClient) updateHandleResponse(resp *http.Response) (AIManagersClientUpdateResponse, error) {
 	result := AIManagersClientUpdateResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AIManager); err != nil {
 		return AIManagersClientUpdateResponse{}, err
 	}

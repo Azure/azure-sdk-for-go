@@ -19,7 +19,7 @@ import (
 // StorageMoversClient contains the methods for the StorageMovers group.
 // Don't use this type directly, use NewStorageMoversClient() instead.
 //
-// Generated from API version 2025-12-01
+// Generated from API version 2026-05-01
 type StorageMoversClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -89,7 +89,7 @@ func (client *StorageMoversClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -174,7 +174,7 @@ func (client *StorageMoversClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -226,7 +226,7 @@ func (client *StorageMoversClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -283,7 +283,7 @@ func (client *StorageMoversClient) listCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -336,7 +336,7 @@ func (client *StorageMoversClient) listBySubscriptionCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -398,7 +398,7 @@ func (client *StorageMoversClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

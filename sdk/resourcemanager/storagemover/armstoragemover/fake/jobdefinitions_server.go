@@ -37,6 +37,10 @@ type JobDefinitionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, storageMoverName string, projectName string, options *armstoragemover.JobDefinitionsClientListOptions) (resp azfake.PagerResponder[armstoragemover.JobDefinitionsClientListResponse])
 
+	// ReconcileJob is the fake for method JobDefinitionsClient.ReconcileJob
+	// HTTP status codes to indicate success: http.StatusOK
+	ReconcileJob func(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, jobDefinitionName string, options *armstoragemover.JobDefinitionsClientReconcileJobOptions) (resp azfake.Responder[armstoragemover.JobDefinitionsClientReconcileJobResponse], errResp azfake.ErrorResponder)
+
 	// StartJob is the fake for method JobDefinitionsClient.StartJob
 	// HTTP status codes to indicate success: http.StatusOK
 	StartJob func(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, jobDefinitionName string, options *armstoragemover.JobDefinitionsClientStartJobOptions) (resp azfake.Responder[armstoragemover.JobDefinitionsClientStartJobResponse], errResp azfake.ErrorResponder)
@@ -98,6 +102,8 @@ func (j *JobDefinitionsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = j.dispatchGet(req)
 			case "JobDefinitionsClient.NewListPager":
 				res.resp, res.err = j.dispatchNewListPager(req)
+			case "JobDefinitionsClient.ReconcileJob":
+				res.resp, res.err = j.dispatchReconcileJob(req)
 			case "JobDefinitionsClient.StartJob":
 				res.resp, res.err = j.dispatchStartJob(req)
 			case "JobDefinitionsClient.StopJob":
@@ -299,6 +305,47 @@ func (j *JobDefinitionsServerTransport) dispatchNewListPager(req *http.Request) 
 	}
 	if !server.PagerResponderMore(newListPager) {
 		j.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (j *JobDefinitionsServerTransport) dispatchReconcileJob(req *http.Request) (*http.Response, error) {
+	if j.srv.ReconcileJob == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ReconcileJob not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageMover/storageMovers/(?P<storageMoverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/projects/(?P<projectName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jobDefinitions/(?P<jobDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reconcileJob`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	storageMoverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageMoverName")])
+	if err != nil {
+		return nil, err
+	}
+	projectNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("projectName")])
+	if err != nil {
+		return nil, err
+	}
+	jobDefinitionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("jobDefinitionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := j.srv.ReconcileJob(req.Context(), resourceGroupNameParam, storageMoverNameParam, projectNameParam, jobDefinitionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).JobRunResourceID, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

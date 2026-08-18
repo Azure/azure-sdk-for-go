@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Registries/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Registries/createOrUpdate.json
 func ExampleRegistriesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleRegistriesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registries/delete.json
+// Generated from example definition: 2026-05-15-preview/Registries/delete.json
 func ExampleRegistriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleRegistriesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registries/get.json
+// Generated from example definition: 2026-05-15-preview/Registries/get.json
 func ExampleRegistriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -349,7 +349,7 @@ func ExampleRegistriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registries/list.json
+// Generated from example definition: 2026-05-15-preview/Registries/list.json
 func ExampleRegistriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -475,7 +475,7 @@ func ExampleRegistriesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Registries/listBySubscription.json
+// Generated from example definition: 2026-05-15-preview/Registries/listBySubscription.json
 func ExampleRegistriesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -601,7 +601,7 @@ func ExampleRegistriesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Registries/removeRegions.json
+// Generated from example definition: 2026-05-15-preview/Registries/removeRegions.json
 func ExampleRegistriesClient_BeginRemoveRegions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -796,7 +796,7 @@ func ExampleRegistriesClient_BeginRemoveRegions() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registries/update.json
+// Generated from example definition: 2026-05-15-preview/Registries/update.json
 func ExampleRegistriesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

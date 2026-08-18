@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/MarketplaceSubscription/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Workspace/MarketplaceSubscription/createOrUpdate.json
 func ExampleMarketplaceSubscriptionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleMarketplaceSubscriptionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/MarketplaceSubscription/delete.json
+// Generated from example definition: 2026-05-15-preview/Workspace/MarketplaceSubscription/delete.json
 func ExampleMarketplaceSubscriptionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleMarketplaceSubscriptionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/MarketplaceSubscription/get.json
+// Generated from example definition: 2026-05-15-preview/Workspace/MarketplaceSubscription/get.json
 func ExampleMarketplaceSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleMarketplaceSubscriptionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/MarketplaceSubscription/list.json
+// Generated from example definition: 2026-05-15-preview/Workspace/MarketplaceSubscription/list.json
 func ExampleMarketplaceSubscriptionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

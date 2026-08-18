@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/DataContainer/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Workspace/DataContainer/createOrUpdate.json
 func ExampleDataContainersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleDataContainersClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/DataContainer/delete.json
+// Generated from example definition: 2026-05-15-preview/Workspace/DataContainer/delete.json
 func ExampleDataContainersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleDataContainersClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/DataContainer/get.json
+// Generated from example definition: 2026-05-15-preview/Workspace/DataContainer/get.json
 func ExampleDataContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExampleDataContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/DataContainer/list.json
+// Generated from example definition: 2026-05-15-preview/Workspace/DataContainer/list.json
 func ExampleDataContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

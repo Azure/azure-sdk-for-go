@@ -19,7 +19,7 @@ import (
 // ConnectionClient contains the methods for the Connection group.
 // Don't use this type directly, use NewConnectionClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-05-15-preview
 type ConnectionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -122,7 +122,7 @@ func (client *ConnectionClient) createOrUpdateDeploymentCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	if options != nil && options.ProxyAPIVersion != nil {
 		reqQP.Set("proxy-api-version", *options.ProxyAPIVersion)
 	}
@@ -215,7 +215,7 @@ func (client *ConnectionClient) deleteDeploymentCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	if options != nil && options.ProxyAPIVersion != nil {
 		reqQP.Set("proxy-api-version", *options.ProxyAPIVersion)
 	}
@@ -272,7 +272,7 @@ func (client *ConnectionClient) getAllModelsCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -347,7 +347,7 @@ func (client *ConnectionClient) getDeploymentCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -417,7 +417,7 @@ func (client *ConnectionClient) getModelsCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	if options != nil && options.ProxyAPIVersion != nil {
 		reqQP.Set("proxy-api-version", *options.ProxyAPIVersion)
 	}
@@ -490,7 +490,7 @@ func (client *ConnectionClient) listDeploymentsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260515Preview)
 	if options != nil && options.ProxyAPIVersion != nil {
 		reqQP.Set("proxy-api-version", *options.ProxyAPIVersion)
 	}

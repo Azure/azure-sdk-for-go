@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/NspLinkPut.json
+// Generated from example definition: 2025-09-01/NspLinkPut.json
 func ExampleSecurityPerimeterLinksClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,10 +66,10 @@ func ExampleSecurityPerimeterLinksClient_CreateOrUpdate() {
 	// 			Status: to.Ptr(armnetwork.NspLinkStatusApproved),
 	// 		},
 	// 		SystemData: &armnetwork.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 	// 			CreatedBy: to.Ptr("user"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 	// 		},
@@ -77,7 +77,7 @@ func ExampleSecurityPerimeterLinksClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NspLinkDelete.json
+// Generated from example definition: 2025-09-01/NspLinkDelete.json
 func ExampleSecurityPerimeterLinksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleSecurityPerimeterLinksClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NspLinkGet.json
+// Generated from example definition: 2025-09-01/NspLinkGet.json
 func ExampleSecurityPerimeterLinksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,10 +147,10 @@ func ExampleSecurityPerimeterLinksClient_Get() {
 	// 			Status: to.Ptr(armnetwork.NspLinkStatusApproved),
 	// 		},
 	// 		SystemData: &armnetwork.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 	// 			CreatedBy: to.Ptr("user"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 	// 		},
@@ -158,7 +158,7 @@ func ExampleSecurityPerimeterLinksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NspLinkList.json
+// Generated from example definition: 2025-09-01/NspLinkList.json
 func ExampleSecurityPerimeterLinksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -209,10 +209,10 @@ func ExampleSecurityPerimeterLinksClient_NewListPager() {
 		// 					Status: to.Ptr(armnetwork.NspLinkStatusApproved),
 		// 				},
 		// 				SystemData: &armnetwork.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 		// 					CreatedBy: to.Ptr("user"),
 		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user"),
 		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 		// 				},

@@ -484,7 +484,7 @@ func (f *Client) UploadBuffer(ctx context.Context, buffer []byte, options *Uploa
 	}
 
 	if uploadOptions.TransactionalValidation != nil &&
-		exported.GetStructuredBodyType(uploadOptions.TransactionalValidation) == "" {
+		!exported.SupportsMultiBlock(uploadOptions.TransactionalValidation) {
 		return fileerror.UnsupportedChecksum
 	}
 
@@ -503,7 +503,7 @@ func (f *Client) UploadFile(ctx context.Context, file *os.File, options *UploadF
 	}
 
 	if uploadOptions.TransactionalValidation != nil &&
-		exported.GetStructuredBodyType(uploadOptions.TransactionalValidation) == "" {
+		!exported.SupportsMultiBlock(uploadOptions.TransactionalValidation) {
 		return fileerror.UnsupportedChecksum
 	}
 
@@ -518,7 +518,7 @@ func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *Uplo
 	}
 
 	if options.TransactionalValidation != nil &&
-		exported.GetStructuredBodyType(options.TransactionalValidation) == "" {
+		!exported.SupportsMultiBlock(options.TransactionalValidation) {
 		return fileerror.UnsupportedChecksum
 	}
 

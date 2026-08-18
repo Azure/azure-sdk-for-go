@@ -18,6 +18,8 @@ import (
 
 // FeatureSupportClient contains the methods for the FeatureSupport group.
 // Don't use this type directly, use NewFeatureSupportClient() instead.
+//
+// Generated from API version 2026-07-01
 type FeatureSupportClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewFeatureSupportClient(subscriptionID string, credential azcore.TokenCrede
 //
 // It will validate if given feature with resource properties is supported in service
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - azureRegion - Azure region to hit Api
 //   - parameters - Feature support request object
 //   - options - FeatureSupportClientValidateOptions contains the optional parameters for the FeatureSupportClient.Validate method.
@@ -62,12 +62,7 @@ func (client *FeatureSupportClient) Validate(ctx context.Context, azureRegion st
 	if err != nil {
 		return FeatureSupportClientValidateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FeatureSupportClientValidateResponse{}, err
-	}
-	resp, err := client.validateHandleResponse(httpResp)
-	return resp, err
+	return client.validateHandleResponse(httpResp, http.StatusOK)
 }
 
 // validateCreateRequest creates the Validate request.
@@ -86,8 +81,8 @@ func (client *FeatureSupportClient) validateCreateRequest(ctx context.Context, a
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -97,8 +92,11 @@ func (client *FeatureSupportClient) validateCreateRequest(ctx context.Context, a
 }
 
 // validateHandleResponse handles the Validate response.
-func (client *FeatureSupportClient) validateHandleResponse(resp *http.Response) (FeatureSupportClientValidateResponse, error) {
+func (client *FeatureSupportClient) validateHandleResponse(resp *http.Response, successCodes ...int) (FeatureSupportClientValidateResponse, error) {
 	result := FeatureSupportClientValidateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureVMResourceFeatureSupportResponse); err != nil {
 		return FeatureSupportClientValidateResponse{}, err
 	}

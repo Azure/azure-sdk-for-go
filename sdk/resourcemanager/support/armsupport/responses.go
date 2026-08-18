@@ -28,6 +28,30 @@ type ChatTranscriptsNoSubscriptionClientListResponse struct {
 	ChatTranscriptsListResult
 }
 
+// ClassifyProblemsClientClassifyProblemsResponse contains the response from method ClassifyProblemsClient.ClassifyProblems.
+type ClassifyProblemsClientClassifyProblemsResponse struct {
+	// Output of the problem classification Classification API.
+	ProblemClassificationsClassificationOutput
+}
+
+// ClassifyProblemsNoSubscriptionClientClassifyProblemsResponse contains the response from method ClassifyProblemsNoSubscriptionClient.ClassifyProblems.
+type ClassifyProblemsNoSubscriptionClientClassifyProblemsResponse struct {
+	// Output of the problem classification Classification API.
+	ProblemClassificationsClassificationOutput
+}
+
+// ClassifyServicesClientClassifyServicesResponse contains the response from method ClassifyServicesClient.ClassifyServices.
+type ClassifyServicesClientClassifyServicesResponse struct {
+	// Output of the service classification API.
+	ServiceClassificationOutput
+}
+
+// ClassifyServicesNoSubscriptionClientClassifyServicesResponse contains the response from method ClassifyServicesNoSubscriptionClient.ClassifyServices.
+type ClassifyServicesNoSubscriptionClientClassifyServicesResponse struct {
+	// Output of the service classification API.
+	ServiceClassificationOutput
+}
+
 // CommunicationsClientCheckNameAvailabilityResponse contains the response from method CommunicationsClient.CheckNameAvailability.
 type CommunicationsClientCheckNameAvailabilityResponse struct {
 	// Output of check name availability API.
@@ -198,6 +222,12 @@ type TicketsClientGetResponse struct {
 type TicketsClientListResponse struct {
 	// [Placeholder] Description for page model
 	TicketsListResult
+}
+
+// TicketsClientLookUpResourceIDResponse contains the response from method TicketsClient.LookUpResourceID.
+type TicketsClientLookUpResourceIDResponse struct {
+	// The look up resource id response
+	LookUpResourceIDResponse
 }
 
 // TicketsClientUpdateResponse contains the response from method TicketsClient.Update.

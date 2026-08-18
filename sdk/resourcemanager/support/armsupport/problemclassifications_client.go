@@ -19,7 +19,7 @@ import (
 // ProblemClassificationsClient contains the methods for the ProblemClassifications group.
 // Don't use this type directly, use NewProblemClassificationsClient() instead.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2026-07-01
 type ProblemClassificationsClient struct {
 	internal *arm.Client
 }
@@ -82,7 +82,7 @@ func (client *ProblemClassificationsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -138,7 +138,7 @@ func (client *ProblemClassificationsClient) listCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

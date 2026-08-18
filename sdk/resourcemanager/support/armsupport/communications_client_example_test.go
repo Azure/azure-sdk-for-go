@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-04-01/CheckNameAvailabilityForSupportTicketCommunication.json
+// Generated from example definition: 2026-07-01/CheckNameAvailabilityForSupportTicketCommunication.json
 func ExampleCommunicationsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleCommunicationsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01/CreateSupportTicketCommunication.json
+// Generated from example definition: 2026-07-01/CreateSupportTicketCommunication.json
 func ExampleCommunicationsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleCommunicationsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01/GetCommunicationDetailsForSubscriptionSupportTicket.json
+// Generated from example definition: 2026-07-01/GetCommunicationDetailsForSubscriptionSupportTicket.json
 func ExampleCommunicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleCommunicationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01/ListCommunicationsForSubscriptionSupportTicket.json
+// Generated from example definition: 2026-07-01/ListCommunicationsForSubscriptionSupportTicket.json
 func ExampleCommunicationsClient_NewListPager_listCommunicationsForASubscriptionSupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +179,7 @@ func ExampleCommunicationsClient_NewListPager_listCommunicationsForASubscription
 	}
 }
 
-// Generated from example definition: 2024-04-01/ListWebCommunicationsForSubscriptionSupportTicket.json
+// Generated from example definition: 2026-07-01/ListWebCommunicationsForSubscriptionSupportTicket.json
 func ExampleCommunicationsClient_NewListPager_listWebCommunicationsForASubscriptionSupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExampleCommunicationsClient_NewListPager_listWebCommunicationsForASubscript
 	}
 }
 
-// Generated from example definition: 2024-04-01/ListWebCommunicationsForSubscriptionSupportTicketCreatedOnOrAfter.json
+// Generated from example definition: 2026-07-01/ListWebCommunicationsForSubscriptionSupportTicketCreatedOnOrAfter.json
 func ExampleCommunicationsClient_NewListPager_listWebCommunicationCreatedOnOrAfterASpecificDateForASubscriptionSupportTicket() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

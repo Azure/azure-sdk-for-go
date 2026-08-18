@@ -19,7 +19,7 @@ import (
 // ServicesClient contains the methods for the Services group.
 // Don't use this type directly, use NewServicesClient() instead.
 //
-// Generated from API version 2024-04-01
+// Generated from API version 2026-07-01
 type ServicesClient struct {
 	internal *arm.Client
 }
@@ -76,7 +76,7 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, serviceName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -128,7 +128,7 @@ func (client *ServicesClient) listCreateRequest(ctx context.Context, _ *Services
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

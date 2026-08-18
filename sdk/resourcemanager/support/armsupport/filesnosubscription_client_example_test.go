@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-04-01/CreateFile.json
+// Generated from example definition: 2026-07-01/CreateFile.json
 func ExampleFilesNoSubscriptionClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleFilesNoSubscriptionClient_Create() {
 	}
 }
 
-// Generated from example definition: 2024-04-01/GetFileDetails.json
+// Generated from example definition: 2026-07-01/GetFileDetails.json
 func ExampleFilesNoSubscriptionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleFilesNoSubscriptionClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-04-01/ListFilesUnderFileWorkspace.json
+// Generated from example definition: 2026-07-01/ListFilesUnderFileWorkspace.json
 func ExampleFilesNoSubscriptionClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleFilesNoSubscriptionClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-04-01/UploadFile.json
+// Generated from example definition: 2026-07-01/UploadFile.json
 func ExampleFilesNoSubscriptionClient_Upload() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

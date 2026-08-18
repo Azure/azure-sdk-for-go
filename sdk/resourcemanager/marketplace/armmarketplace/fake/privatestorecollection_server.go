@@ -342,8 +342,9 @@ func (p *PrivateStoreCollectionServerTransport) dispatchPost(req *http.Request) 
 	}
 	var options *armmarketplace.PrivateStoreCollectionClientPostOptions
 	if !reflect.ValueOf(body).IsZero() {
+		op := armmarketplace.Operation(body)
 		options = &armmarketplace.PrivateStoreCollectionClientPostOptions{
-			Payload: &body,
+			Payload: &op,
 		}
 	}
 	respr, errRespr := p.srv.Post(req.Context(), privateStoreIDParam, collectionIDParam, options)

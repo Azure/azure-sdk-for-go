@@ -61,7 +61,12 @@ func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) List(ctx context.C
 	if err != nil {
 		return FirewallPolicyIdpsSignaturesFilterValuesClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return FirewallPolicyIdpsSignaturesFilterValuesClientListResponse{}, err
+	}
+	resp, err := client.listHandleResponse(httpResp)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -95,11 +100,8 @@ func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listCreateRequest(
 }
 
 // listHandleResponse handles the List response.
-func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listHandleResponse(resp *http.Response, successCodes ...int) (FirewallPolicyIdpsSignaturesFilterValuesClientListResponse, error) {
+func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesFilterValuesClientListResponse, error) {
 	result := FirewallPolicyIdpsSignaturesFilterValuesClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SignatureOverridesFilterValuesResponse); err != nil {
 		return FirewallPolicyIdpsSignaturesFilterValuesClientListResponse{}, err
 	}

@@ -704,7 +704,7 @@ func ExampleConnectionMonitorsClient_UpdateTags() {
 	// 				Port: to.Ptr[int32](0),
 	// 				ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Compute/virtualMachines/vm1"),
 	// 			},
-	// 			StartTime: to.Ptr(time.Date(2019, time.September, 4, 2, 48, 10, 679739300, time.UTC)),
+	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T02:48:10.6797393Z"); return t}()),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"tag1": to.Ptr("value1"),

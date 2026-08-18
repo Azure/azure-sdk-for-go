@@ -62,7 +62,12 @@ func (client *FirewallPolicyIdpsSignaturesClient) List(ctx context.Context, reso
 	if err != nil {
 		return FirewallPolicyIdpsSignaturesClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return FirewallPolicyIdpsSignaturesClientListResponse{}, err
+	}
+	resp, err := client.listHandleResponse(httpResp)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -96,11 +101,8 @@ func (client *FirewallPolicyIdpsSignaturesClient) listCreateRequest(ctx context.
 }
 
 // listHandleResponse handles the List response.
-func (client *FirewallPolicyIdpsSignaturesClient) listHandleResponse(resp *http.Response, successCodes ...int) (FirewallPolicyIdpsSignaturesClientListResponse, error) {
+func (client *FirewallPolicyIdpsSignaturesClient) listHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesClientListResponse, error) {
 	result := FirewallPolicyIdpsSignaturesClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryResults); err != nil {
 		return FirewallPolicyIdpsSignaturesClientListResponse{}, err
 	}

@@ -63,7 +63,12 @@ func (client *SecurityPerimeterLoggingConfigurationsClient) CreateOrUpdate(ctx c
 	if err != nil {
 		return SecurityPerimeterLoggingConfigurationsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return SecurityPerimeterLoggingConfigurationsClientCreateOrUpdateResponse{}, err
+	}
+	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -101,11 +106,8 @@ func (client *SecurityPerimeterLoggingConfigurationsClient) createOrUpdateCreate
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SecurityPerimeterLoggingConfigurationsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SecurityPerimeterLoggingConfigurationsClientCreateOrUpdateResponse, error) {
+func (client *SecurityPerimeterLoggingConfigurationsClient) createOrUpdateHandleResponse(resp *http.Response) (SecurityPerimeterLoggingConfigurationsClientCreateOrUpdateResponse, error) {
 	result := SecurityPerimeterLoggingConfigurationsClientCreateOrUpdateResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NspLoggingConfiguration); err != nil {
 		return SecurityPerimeterLoggingConfigurationsClientCreateOrUpdateResponse{}, err
 	}
@@ -134,7 +136,8 @@ func (client *SecurityPerimeterLoggingConfigurationsClient) Delete(ctx context.C
 		return SecurityPerimeterLoggingConfigurationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SecurityPerimeterLoggingConfigurationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SecurityPerimeterLoggingConfigurationsClientDeleteResponse{}, err
 	}
 	return SecurityPerimeterLoggingConfigurationsClientDeleteResponse{}, nil
 }
@@ -189,7 +192,12 @@ func (client *SecurityPerimeterLoggingConfigurationsClient) Get(ctx context.Cont
 	if err != nil {
 		return SecurityPerimeterLoggingConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SecurityPerimeterLoggingConfigurationsClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -223,11 +231,8 @@ func (client *SecurityPerimeterLoggingConfigurationsClient) getCreateRequest(ctx
 }
 
 // getHandleResponse handles the Get response.
-func (client *SecurityPerimeterLoggingConfigurationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SecurityPerimeterLoggingConfigurationsClientGetResponse, error) {
+func (client *SecurityPerimeterLoggingConfigurationsClient) getHandleResponse(resp *http.Response) (SecurityPerimeterLoggingConfigurationsClientGetResponse, error) {
 	result := SecurityPerimeterLoggingConfigurationsClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NspLoggingConfiguration); err != nil {
 		return SecurityPerimeterLoggingConfigurationsClientGetResponse{}, err
 	}
@@ -250,61 +255,47 @@ func (client *SecurityPerimeterLoggingConfigurationsClient) NewListPager(resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listCreateRequest(ctx, resourceGroupName, networkSecurityPerimeterName, nextLink, options)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, networkSecurityPerimeterName, options)
+			}, nil)
 			if err != nil {
 				return SecurityPerimeterLoggingConfigurationsClientListResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SecurityPerimeterLoggingConfigurationsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
+			return client.listHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *SecurityPerimeterLoggingConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, nextLink string, _ *SecurityPerimeterLoggingConfigurationsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/loggingConfigurations"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if networkSecurityPerimeterName == "" {
-			return nil, errors.New("parameter networkSecurityPerimeterName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterName}", url.PathEscape(networkSecurityPerimeterName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+func (client *SecurityPerimeterLoggingConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, _ *SecurityPerimeterLoggingConfigurationsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/loggingConfigurations"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkSecurityPerimeterName == "" {
+		return nil, errors.New("parameter networkSecurityPerimeterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterName}", url.PathEscape(networkSecurityPerimeterName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250701)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SecurityPerimeterLoggingConfigurationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SecurityPerimeterLoggingConfigurationsClientListResponse, error) {
+func (client *SecurityPerimeterLoggingConfigurationsClient) listHandleResponse(resp *http.Response) (SecurityPerimeterLoggingConfigurationsClientListResponse, error) {
 	result := SecurityPerimeterLoggingConfigurationsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NspLoggingConfigurationListResult); err != nil {
 		return SecurityPerimeterLoggingConfigurationsClientListResponse{}, err
 	}

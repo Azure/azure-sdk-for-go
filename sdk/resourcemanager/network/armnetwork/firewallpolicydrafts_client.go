@@ -62,7 +62,12 @@ func (client *FirewallPolicyDraftsClient) CreateOrUpdate(ctx context.Context, re
 	if err != nil {
 		return FirewallPolicyDraftsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return FirewallPolicyDraftsClientCreateOrUpdateResponse{}, err
+	}
+	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -96,11 +101,8 @@ func (client *FirewallPolicyDraftsClient) createOrUpdateCreateRequest(ctx contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *FirewallPolicyDraftsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (FirewallPolicyDraftsClientCreateOrUpdateResponse, error) {
+func (client *FirewallPolicyDraftsClient) createOrUpdateHandleResponse(resp *http.Response) (FirewallPolicyDraftsClientCreateOrUpdateResponse, error) {
 	result := FirewallPolicyDraftsClientCreateOrUpdateResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallPolicyDraft); err != nil {
 		return FirewallPolicyDraftsClientCreateOrUpdateResponse{}, err
 	}
@@ -128,7 +130,8 @@ func (client *FirewallPolicyDraftsClient) Delete(ctx context.Context, resourceGr
 		return FirewallPolicyDraftsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return FirewallPolicyDraftsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return FirewallPolicyDraftsClientDeleteResponse{}, err
 	}
 	return FirewallPolicyDraftsClientDeleteResponse{}, nil
 }
@@ -178,7 +181,12 @@ func (client *FirewallPolicyDraftsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return FirewallPolicyDraftsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return FirewallPolicyDraftsClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -208,11 +216,8 @@ func (client *FirewallPolicyDraftsClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *FirewallPolicyDraftsClient) getHandleResponse(resp *http.Response, successCodes ...int) (FirewallPolicyDraftsClientGetResponse, error) {
+func (client *FirewallPolicyDraftsClient) getHandleResponse(resp *http.Response) (FirewallPolicyDraftsClientGetResponse, error) {
 	result := FirewallPolicyDraftsClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallPolicyDraft); err != nil {
 		return FirewallPolicyDraftsClientGetResponse{}, err
 	}

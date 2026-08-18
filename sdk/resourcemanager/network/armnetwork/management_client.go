@@ -62,7 +62,12 @@ func (client *ManagementClient) CheckDNSNameAvailability(ctx context.Context, lo
 	if err != nil {
 		return ManagementClientCheckDNSNameAvailabilityResponse{}, err
 	}
-	return client.checkDNSNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ManagementClientCheckDNSNameAvailabilityResponse{}, err
+	}
+	resp, err := client.checkDNSNameAvailabilityHandleResponse(httpResp)
+	return resp, err
 }
 
 // checkDNSNameAvailabilityCreateRequest creates the CheckDNSNameAvailability request.
@@ -89,11 +94,8 @@ func (client *ManagementClient) checkDNSNameAvailabilityCreateRequest(ctx contex
 }
 
 // checkDNSNameAvailabilityHandleResponse handles the CheckDNSNameAvailability response.
-func (client *ManagementClient) checkDNSNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientCheckDNSNameAvailabilityResponse, error) {
+func (client *ManagementClient) checkDNSNameAvailabilityHandleResponse(resp *http.Response) (ManagementClientCheckDNSNameAvailabilityResponse, error) {
 	result := ManagementClientCheckDNSNameAvailabilityResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DNSNameAvailabilityResult); err != nil {
 		return ManagementClientCheckDNSNameAvailabilityResponse{}, err
 	}
@@ -141,7 +143,8 @@ func (client *ManagementClient) deleteBastionShareableLink(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -216,7 +219,8 @@ func (client *ManagementClient) deleteBastionShareableLinkByToken(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -267,65 +271,51 @@ func (client *ManagementClient) NewDisconnectActiveSessionsPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.disconnectActiveSessionsCreateRequest(ctx, resourceGroupName, bastionHostName, sessionIDs, nextLink, options)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.disconnectActiveSessionsCreateRequest(ctx, resourceGroupName, bastionHostName, sessionIDs, options)
+			}, nil)
 			if err != nil {
 				return ManagementClientDisconnectActiveSessionsResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagementClientDisconnectActiveSessionsResponse{}, err
-			}
-			return client.disconnectActiveSessionsHandleResponse(resp, http.StatusOK)
+			return client.disconnectActiveSessionsHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // disconnectActiveSessionsCreateRequest creates the DisconnectActiveSessions request.
-func (client *ManagementClient) disconnectActiveSessionsCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, sessionIDs SessionIDs, nextLink string, _ *ManagementClientDisconnectActiveSessionsOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/disconnectActiveSessions"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if bastionHostName == "" {
-			return nil, errors.New("parameter bastionHostName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{bastionHostName}", url.PathEscape(bastionHostName))
-		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+func (client *ManagementClient) disconnectActiveSessionsCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, sessionIDs SessionIDs, _ *ManagementClientDisconnectActiveSessionsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/disconnectActiveSessions"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if bastionHostName == "" {
+		return nil, errors.New("parameter bastionHostName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bastionHostName}", url.PathEscape(bastionHostName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250701)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, sessionIDs); err != nil {
-			return nil, err
-		}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, sessionIDs); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
 
 // disconnectActiveSessionsHandleResponse handles the DisconnectActiveSessions response.
-func (client *ManagementClient) disconnectActiveSessionsHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientDisconnectActiveSessionsResponse, error) {
+func (client *ManagementClient) disconnectActiveSessionsHandleResponse(resp *http.Response) (ManagementClientDisconnectActiveSessionsResponse, error) {
 	result := ManagementClientDisconnectActiveSessionsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BastionSessionDeleteResult); err != nil {
 		return ManagementClientDisconnectActiveSessionsResponse{}, err
 	}
@@ -351,7 +341,12 @@ func (client *ManagementClient) ExpressRouteProviderPort(ctx context.Context, pr
 	if err != nil {
 		return ManagementClientExpressRouteProviderPortResponse{}, err
 	}
-	return client.expressRouteProviderPortHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ManagementClientExpressRouteProviderPortResponse{}, err
+	}
+	resp, err := client.expressRouteProviderPortHandleResponse(httpResp)
+	return resp, err
 }
 
 // expressRouteProviderPortCreateRequest creates the ExpressRouteProviderPort request.
@@ -377,11 +372,8 @@ func (client *ManagementClient) expressRouteProviderPortCreateRequest(ctx contex
 }
 
 // expressRouteProviderPortHandleResponse handles the ExpressRouteProviderPort response.
-func (client *ManagementClient) expressRouteProviderPortHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientExpressRouteProviderPortResponse, error) {
+func (client *ManagementClient) expressRouteProviderPortHandleResponse(resp *http.Response) (ManagementClientExpressRouteProviderPortResponse, error) {
 	result := ManagementClientExpressRouteProviderPortResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteProviderPort); err != nil {
 		return ManagementClientExpressRouteProviderPortResponse{}, err
 	}
@@ -431,7 +423,8 @@ func (client *ManagementClient) generatevirtualwanvpnserverconfigurationvpnprofi
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -478,15 +471,13 @@ func (client *ManagementClient) BeginGetActiveSessions(ctx context.Context, reso
 		},
 		Fetcher: func(ctx context.Context, page *ManagementClientGetActiveSessionsResponse) (ManagementClientGetActiveSessionsResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagementClient.BeginGetActiveSessions")
-			req, err := client.getActiveSessionsCreateRequest(ctx, resourceGroupName, bastionHostName, *page.NextLink, options)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), *page.NextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getActiveSessionsCreateRequest(ctx, resourceGroupName, bastionHostName, options)
+			}, nil)
 			if err != nil {
 				return ManagementClientGetActiveSessionsResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagementClientGetActiveSessionsResponse{}, err
-			}
-			return client.getActiveSessionsHandleResponse(resp, http.StatusOK, http.StatusAccepted)
+			return client.getActiveSessionsHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
@@ -515,7 +506,7 @@ func (client *ManagementClient) getActiveSessions(ctx context.Context, resourceG
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getActiveSessionsCreateRequest(ctx, resourceGroupName, bastionHostName, "", options)
+	req, err := client.getActiveSessionsCreateRequest(ctx, resourceGroupName, bastionHostName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -524,52 +515,41 @@ func (client *ManagementClient) getActiveSessions(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
 // getActiveSessionsCreateRequest creates the GetActiveSessions request.
-func (client *ManagementClient) getActiveSessionsCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, nextLink string, _ *ManagementClientBeginGetActiveSessionsOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/getActiveSessions"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if bastionHostName == "" {
-			return nil, errors.New("parameter bastionHostName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{bastionHostName}", url.PathEscape(bastionHostName))
-		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+func (client *ManagementClient) getActiveSessionsCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, _ *ManagementClientBeginGetActiveSessionsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/getActiveSessions"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if bastionHostName == "" {
+		return nil, errors.New("parameter bastionHostName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bastionHostName}", url.PathEscape(bastionHostName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250701)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getActiveSessionsHandleResponse handles the GetActiveSessions response.
-func (client *ManagementClient) getActiveSessionsHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientGetActiveSessionsResponse, error) {
+func (client *ManagementClient) getActiveSessionsHandleResponse(resp *http.Response) (ManagementClientGetActiveSessionsResponse, error) {
 	result := ManagementClientGetActiveSessionsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BastionActiveSessionListResult); err != nil {
 		return ManagementClientGetActiveSessionsResponse{}, err
 	}
@@ -593,65 +573,51 @@ func (client *ManagementClient) NewGetBastionShareableLinkPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.getBastionShareableLinkCreateRequest(ctx, resourceGroupName, bastionHostName, bslRequest, nextLink, options)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getBastionShareableLinkCreateRequest(ctx, resourceGroupName, bastionHostName, bslRequest, options)
+			}, nil)
 			if err != nil {
 				return ManagementClientGetBastionShareableLinkResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagementClientGetBastionShareableLinkResponse{}, err
-			}
-			return client.getBastionShareableLinkHandleResponse(resp, http.StatusOK)
+			return client.getBastionShareableLinkHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getBastionShareableLinkCreateRequest creates the GetBastionShareableLink request.
-func (client *ManagementClient) getBastionShareableLinkCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, nextLink string, _ *ManagementClientGetBastionShareableLinkOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/getShareableLinks"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if bastionHostName == "" {
-			return nil, errors.New("parameter bastionHostName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{bastionHostName}", url.PathEscape(bastionHostName))
-		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+func (client *ManagementClient) getBastionShareableLinkCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, _ *ManagementClientGetBastionShareableLinkOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/getShareableLinks"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if bastionHostName == "" {
+		return nil, errors.New("parameter bastionHostName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bastionHostName}", url.PathEscape(bastionHostName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250701)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, bslRequest); err != nil {
-			return nil, err
-		}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, bslRequest); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
 
 // getBastionShareableLinkHandleResponse handles the GetBastionShareableLink response.
-func (client *ManagementClient) getBastionShareableLinkHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientGetBastionShareableLinkResponse, error) {
+func (client *ManagementClient) getBastionShareableLinkHandleResponse(resp *http.Response) (ManagementClientGetBastionShareableLinkResponse, error) {
 	result := ManagementClientGetBastionShareableLinkResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BastionShareableLinkListResult); err != nil {
 		return ManagementClientGetBastionShareableLinkResponse{}, err
 	}
@@ -679,7 +645,12 @@ func (client *ManagementClient) ListActiveConnectivityConfigurations(ctx context
 	if err != nil {
 		return ManagementClientListActiveConnectivityConfigurationsResponse{}, err
 	}
-	return client.listActiveConnectivityConfigurationsHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ManagementClientListActiveConnectivityConfigurationsResponse{}, err
+	}
+	resp, err := client.listActiveConnectivityConfigurationsHandleResponse(httpResp)
+	return resp, err
 }
 
 // listActiveConnectivityConfigurationsCreateRequest creates the ListActiveConnectivityConfigurations request.
@@ -716,11 +687,8 @@ func (client *ManagementClient) listActiveConnectivityConfigurationsCreateReques
 }
 
 // listActiveConnectivityConfigurationsHandleResponse handles the ListActiveConnectivityConfigurations response.
-func (client *ManagementClient) listActiveConnectivityConfigurationsHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientListActiveConnectivityConfigurationsResponse, error) {
+func (client *ManagementClient) listActiveConnectivityConfigurationsHandleResponse(resp *http.Response) (ManagementClientListActiveConnectivityConfigurationsResponse, error) {
 	result := ManagementClientListActiveConnectivityConfigurationsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActiveConnectivityConfigurationsListResult); err != nil {
 		return ManagementClientListActiveConnectivityConfigurationsResponse{}, err
 	}
@@ -748,7 +716,12 @@ func (client *ManagementClient) ListActiveSecurityAdminRules(ctx context.Context
 	if err != nil {
 		return ManagementClientListActiveSecurityAdminRulesResponse{}, err
 	}
-	return client.listActiveSecurityAdminRulesHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ManagementClientListActiveSecurityAdminRulesResponse{}, err
+	}
+	resp, err := client.listActiveSecurityAdminRulesHandleResponse(httpResp)
+	return resp, err
 }
 
 // listActiveSecurityAdminRulesCreateRequest creates the ListActiveSecurityAdminRules request.
@@ -785,11 +758,8 @@ func (client *ManagementClient) listActiveSecurityAdminRulesCreateRequest(ctx co
 }
 
 // listActiveSecurityAdminRulesHandleResponse handles the ListActiveSecurityAdminRules response.
-func (client *ManagementClient) listActiveSecurityAdminRulesHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientListActiveSecurityAdminRulesResponse, error) {
+func (client *ManagementClient) listActiveSecurityAdminRulesHandleResponse(resp *http.Response) (ManagementClientListActiveSecurityAdminRulesResponse, error) {
 	result := ManagementClientListActiveSecurityAdminRulesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActiveSecurityAdminRulesListResult); err != nil {
 		return ManagementClientListActiveSecurityAdminRulesResponse{}, err
 	}
@@ -818,7 +788,12 @@ func (client *ManagementClient) ListNetworkManagerEffectiveConnectivityConfigura
 	if err != nil {
 		return ManagementClientListNetworkManagerEffectiveConnectivityConfigurationsResponse{}, err
 	}
-	return client.listNetworkManagerEffectiveConnectivityConfigurationsHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ManagementClientListNetworkManagerEffectiveConnectivityConfigurationsResponse{}, err
+	}
+	resp, err := client.listNetworkManagerEffectiveConnectivityConfigurationsHandleResponse(httpResp)
+	return resp, err
 }
 
 // listNetworkManagerEffectiveConnectivityConfigurationsCreateRequest creates the ListNetworkManagerEffectiveConnectivityConfigurations request.
@@ -855,11 +830,8 @@ func (client *ManagementClient) listNetworkManagerEffectiveConnectivityConfigura
 }
 
 // listNetworkManagerEffectiveConnectivityConfigurationsHandleResponse handles the ListNetworkManagerEffectiveConnectivityConfigurations response.
-func (client *ManagementClient) listNetworkManagerEffectiveConnectivityConfigurationsHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientListNetworkManagerEffectiveConnectivityConfigurationsResponse, error) {
+func (client *ManagementClient) listNetworkManagerEffectiveConnectivityConfigurationsHandleResponse(resp *http.Response) (ManagementClientListNetworkManagerEffectiveConnectivityConfigurationsResponse, error) {
 	result := ManagementClientListNetworkManagerEffectiveConnectivityConfigurationsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagerEffectiveConnectivityConfigurationListResult); err != nil {
 		return ManagementClientListNetworkManagerEffectiveConnectivityConfigurationsResponse{}, err
 	}
@@ -887,7 +859,12 @@ func (client *ManagementClient) ListNetworkManagerEffectiveSecurityAdminRules(ct
 	if err != nil {
 		return ManagementClientListNetworkManagerEffectiveSecurityAdminRulesResponse{}, err
 	}
-	return client.listNetworkManagerEffectiveSecurityAdminRulesHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ManagementClientListNetworkManagerEffectiveSecurityAdminRulesResponse{}, err
+	}
+	resp, err := client.listNetworkManagerEffectiveSecurityAdminRulesHandleResponse(httpResp)
+	return resp, err
 }
 
 // listNetworkManagerEffectiveSecurityAdminRulesCreateRequest creates the ListNetworkManagerEffectiveSecurityAdminRules request.
@@ -924,11 +901,8 @@ func (client *ManagementClient) listNetworkManagerEffectiveSecurityAdminRulesCre
 }
 
 // listNetworkManagerEffectiveSecurityAdminRulesHandleResponse handles the ListNetworkManagerEffectiveSecurityAdminRules response.
-func (client *ManagementClient) listNetworkManagerEffectiveSecurityAdminRulesHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientListNetworkManagerEffectiveSecurityAdminRulesResponse, error) {
+func (client *ManagementClient) listNetworkManagerEffectiveSecurityAdminRulesHandleResponse(resp *http.Response) (ManagementClientListNetworkManagerEffectiveSecurityAdminRulesResponse, error) {
 	result := ManagementClientListNetworkManagerEffectiveSecurityAdminRulesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagerEffectiveSecurityAdminRulesListResult); err != nil {
 		return ManagementClientListNetworkManagerEffectiveSecurityAdminRulesResponse{}, err
 	}
@@ -948,15 +922,13 @@ func (client *ManagementClient) BeginPutBastionShareableLink(ctx context.Context
 		},
 		Fetcher: func(ctx context.Context, page *ManagementClientPutBastionShareableLinkResponse) (ManagementClientPutBastionShareableLinkResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagementClient.BeginPutBastionShareableLink")
-			req, err := client.putBastionShareableLinkCreateRequest(ctx, resourceGroupName, bastionHostName, bslRequest, *page.NextLink, options)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), *page.NextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.putBastionShareableLinkCreateRequest(ctx, resourceGroupName, bastionHostName, bslRequest, options)
+			}, nil)
 			if err != nil {
 				return ManagementClientPutBastionShareableLinkResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ManagementClientPutBastionShareableLinkResponse{}, err
-			}
-			return client.putBastionShareableLinkHandleResponse(resp, http.StatusOK, http.StatusAccepted)
+			return client.putBastionShareableLinkHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
@@ -985,7 +957,7 @@ func (client *ManagementClient) putBastionShareableLink(ctx context.Context, res
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.putBastionShareableLinkCreateRequest(ctx, resourceGroupName, bastionHostName, bslRequest, "", options)
+	req, err := client.putBastionShareableLinkCreateRequest(ctx, resourceGroupName, bastionHostName, bslRequest, options)
 	if err != nil {
 		return nil, err
 	}
@@ -994,56 +966,45 @@ func (client *ManagementClient) putBastionShareableLink(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
 // putBastionShareableLinkCreateRequest creates the PutBastionShareableLink request.
-func (client *ManagementClient) putBastionShareableLinkCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, nextLink string, _ *ManagementClientBeginPutBastionShareableLinkOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/createShareableLinks"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if bastionHostName == "" {
-			return nil, errors.New("parameter bastionHostName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{bastionHostName}", url.PathEscape(bastionHostName))
-		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+func (client *ManagementClient) putBastionShareableLinkCreateRequest(ctx context.Context, resourceGroupName string, bastionHostName string, bslRequest BastionShareableLinkListRequest, _ *ManagementClientBeginPutBastionShareableLinkOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/bastionHosts/{bastionHostName}/createShareableLinks"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if bastionHostName == "" {
+		return nil, errors.New("parameter bastionHostName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{bastionHostName}", url.PathEscape(bastionHostName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250701)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, bslRequest); err != nil {
-			return nil, err
-		}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, bslRequest); err != nil {
+		return nil, err
 	}
 	return req, nil
 }
 
 // putBastionShareableLinkHandleResponse handles the PutBastionShareableLink response.
-func (client *ManagementClient) putBastionShareableLinkHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientPutBastionShareableLinkResponse, error) {
+func (client *ManagementClient) putBastionShareableLinkHandleResponse(resp *http.Response) (ManagementClientPutBastionShareableLinkResponse, error) {
 	result := ManagementClientPutBastionShareableLinkResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BastionShareableLinkListResult); err != nil {
 		return ManagementClientPutBastionShareableLinkResponse{}, err
 	}
@@ -1070,7 +1031,12 @@ func (client *ManagementClient) SupportedSecurityProviders(ctx context.Context, 
 	if err != nil {
 		return ManagementClientSupportedSecurityProvidersResponse{}, err
 	}
-	return client.supportedSecurityProvidersHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ManagementClientSupportedSecurityProvidersResponse{}, err
+	}
+	resp, err := client.supportedSecurityProvidersHandleResponse(httpResp)
+	return resp, err
 }
 
 // supportedSecurityProvidersCreateRequest creates the SupportedSecurityProviders request.
@@ -1100,11 +1066,8 @@ func (client *ManagementClient) supportedSecurityProvidersCreateRequest(ctx cont
 }
 
 // supportedSecurityProvidersHandleResponse handles the SupportedSecurityProviders response.
-func (client *ManagementClient) supportedSecurityProvidersHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientSupportedSecurityProvidersResponse, error) {
+func (client *ManagementClient) supportedSecurityProvidersHandleResponse(resp *http.Response) (ManagementClientSupportedSecurityProvidersResponse, error) {
 	result := ManagementClientSupportedSecurityProvidersResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualWanSecurityProviders); err != nil {
 		return ManagementClientSupportedSecurityProvidersResponse{}, err
 	}

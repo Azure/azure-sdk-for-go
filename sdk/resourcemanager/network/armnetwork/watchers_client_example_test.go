@@ -186,7 +186,7 @@ func ExampleWatchersClient_BeginGetAzureReachabilityReport() {
 		AzureLocations: []*string{
 			to.Ptr("West US"),
 		},
-		EndTime: to.Ptr(time.Date(2017, time.September, 10, 0, 0, 0, 0, time.UTC)),
+		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-10T00:00:00Z"); return t }()),
 		ProviderLocation: &armnetwork.AzureReachabilityReportLocation{
 			Country: to.Ptr("United States"),
 			State:   to.Ptr("washington"),
@@ -194,7 +194,7 @@ func ExampleWatchersClient_BeginGetAzureReachabilityReport() {
 		Providers: []*string{
 			to.Ptr("Frontier Communications of America, Inc. - ASN 5650"),
 		},
-		StartTime: to.Ptr(time.Date(2017, time.September, 7, 0, 0, 0, 0, time.UTC)),
+		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-07T00:00:00Z"); return t }()),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -219,15 +219,15 @@ func ExampleWatchersClient_BeginGetAzureReachabilityReport() {
 	// 				Latencies: []*armnetwork.AzureReachabilityReportLatencyInfo{
 	// 					{
 	// 						Score: to.Ptr[int32](94),
-	// 						TimeStamp: to.Ptr(time.Date(2017, time.September, 7, 0, 0, 0, 0, time.UTC)),
+	// 						TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-07T00:00:00Z"); return t}()),
 	// 					},
 	// 					{
 	// 						Score: to.Ptr[int32](94),
-	// 						TimeStamp: to.Ptr(time.Date(2017, time.September, 8, 0, 0, 0, 0, time.UTC)),
+	// 						TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-08T00:00:00Z"); return t}()),
 	// 					},
 	// 					{
 	// 						Score: to.Ptr[int32](94),
-	// 						TimeStamp: to.Ptr(time.Date(2017, time.September, 9, 0, 0, 0, 0, time.UTC)),
+	// 						TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-09T00:00:00Z"); return t}()),
 	// 					},
 	// 				},
 	// 				Provider: to.Ptr("Frontier Communications of America, Inc. - ASN 5650"),
@@ -462,9 +462,9 @@ func ExampleWatchersClient_GetTopology() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetwork.WatchersClientGetTopologyResponse{
 	// 	Topology: armnetwork.Topology{
-	// 		CreatedDateTime: to.Ptr(time.Date(2017, time.August, 2, 19, 31, 55, 946178100, time.UTC)),
+	// 		CreatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-02T19:31:55.9461781Z"); return t}()),
 	// 		ID: to.Ptr("ce592f46-8164-4bf2-ad36-b8e4acf6fb68"),
-	// 		LastModified: to.Ptr(time.Date(2017, time.May, 27, 0, 0, 13, 200533700, time.UTC)),
+	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-27T00:00:13.2005337Z"); return t}()),
 	// 		Resources: []*armnetwork.TopologyResource{
 	// 			{
 	// 				Name: to.Ptr("MultiTierApp0"),
@@ -519,7 +519,7 @@ func ExampleWatchersClient_BeginGetTroubleshooting() {
 	// res = armnetwork.WatchersClientGetTroubleshootingResponse{
 	// 	TroubleshootingResult: armnetwork.TroubleshootingResult{
 	// 		Code: to.Ptr("UnHealthy"),
-	// 		EndTime: to.Ptr(time.Date(2017, time.January, 12, 0, 20, 9, 914000000, time.UTC)),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-12T00:20:09.914Z"); return t}()),
 	// 		Results: []*armnetwork.TroubleshootingDetails{
 	// 			{
 	// 				Detail: to.Ptr("During this time S2S VPN tunnels to on premises sites or other Azure virtual networks will be disconnected"),
@@ -540,7 +540,7 @@ func ExampleWatchersClient_BeginGetTroubleshooting() {
 	// 				Summary: to.Ptr("We are sorry, your VPN gateway is unreachable from the Internet"),
 	// 			},
 	// 		},
-	// 		StartTime: to.Ptr(time.Date(2017, time.January, 12, 0, 19, 47, 44283400, time.UTC)),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-12T00:19:47.0442834Z"); return t}()),
 	// 	},
 	// }
 }
@@ -572,7 +572,7 @@ func ExampleWatchersClient_BeginGetTroubleshootingResult() {
 	// res = armnetwork.WatchersClientGetTroubleshootingResultResponse{
 	// 	TroubleshootingResult: armnetwork.TroubleshootingResult{
 	// 		Code: to.Ptr("UnHealthy"),
-	// 		EndTime: to.Ptr(time.Date(2017, time.January, 12, 0, 20, 9, 914000000, time.UTC)),
+	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-12T00:20:09.914Z"); return t}()),
 	// 		Results: []*armnetwork.TroubleshootingDetails{
 	// 			{
 	// 				Detail: to.Ptr("During this time S2S VPN tunnels to on premises sites or other Azure virtual networks will be disconnected"),
@@ -593,7 +593,7 @@ func ExampleWatchersClient_BeginGetTroubleshootingResult() {
 	// 				Summary: to.Ptr("We are sorry, your VPN gateway is unreachable from the Internet"),
 	// 			},
 	// 		},
-	// 		StartTime: to.Ptr(time.Date(2017, time.January, 12, 0, 19, 47, 44283400, time.UTC)),
+	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-12T00:19:47.0442834Z"); return t}()),
 	// 	},
 	// }
 }

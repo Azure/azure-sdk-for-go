@@ -83,7 +83,8 @@ func (client *ExpressRouteGatewaysClient) createOrUpdate(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -160,7 +161,8 @@ func (client *ExpressRouteGatewaysClient) deleteOperation(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -210,7 +212,12 @@ func (client *ExpressRouteGatewaysClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return ExpressRouteGatewaysClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ExpressRouteGatewaysClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -240,11 +247,8 @@ func (client *ExpressRouteGatewaysClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExpressRouteGatewaysClient) getHandleResponse(resp *http.Response, successCodes ...int) (ExpressRouteGatewaysClientGetResponse, error) {
+func (client *ExpressRouteGatewaysClient) getHandleResponse(resp *http.Response) (ExpressRouteGatewaysClientGetResponse, error) {
 	result := ExpressRouteGatewaysClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteGateway); err != nil {
 		return ExpressRouteGatewaysClientGetResponse{}, err
 	}
@@ -293,7 +297,8 @@ func (client *ExpressRouteGatewaysClient) getFailoverAllTestsDetails(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -374,7 +379,8 @@ func (client *ExpressRouteGatewaysClient) getFailoverSingleTestDetails(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -447,7 +453,8 @@ func (client *ExpressRouteGatewaysClient) getResiliencyInformation(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -521,7 +528,8 @@ func (client *ExpressRouteGatewaysClient) getRoutesInformation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -574,7 +582,12 @@ func (client *ExpressRouteGatewaysClient) ListByResourceGroup(ctx context.Contex
 	if err != nil {
 		return ExpressRouteGatewaysClientListByResourceGroupResponse{}, err
 	}
-	return client.listByResourceGroupHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ExpressRouteGatewaysClientListByResourceGroupResponse{}, err
+	}
+	resp, err := client.listByResourceGroupHandleResponse(httpResp)
+	return resp, err
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -600,11 +613,8 @@ func (client *ExpressRouteGatewaysClient) listByResourceGroupCreateRequest(ctx c
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ExpressRouteGatewaysClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ExpressRouteGatewaysClientListByResourceGroupResponse, error) {
+func (client *ExpressRouteGatewaysClient) listByResourceGroupHandleResponse(resp *http.Response) (ExpressRouteGatewaysClientListByResourceGroupResponse, error) {
 	result := ExpressRouteGatewaysClientListByResourceGroupResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteGatewayList); err != nil {
 		return ExpressRouteGatewaysClientListByResourceGroupResponse{}, err
 	}
@@ -629,7 +639,12 @@ func (client *ExpressRouteGatewaysClient) ListBySubscription(ctx context.Context
 	if err != nil {
 		return ExpressRouteGatewaysClientListBySubscriptionResponse{}, err
 	}
-	return client.listBySubscriptionHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ExpressRouteGatewaysClientListBySubscriptionResponse{}, err
+	}
+	resp, err := client.listBySubscriptionHandleResponse(httpResp)
+	return resp, err
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -651,11 +666,8 @@ func (client *ExpressRouteGatewaysClient) listBySubscriptionCreateRequest(ctx co
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ExpressRouteGatewaysClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (ExpressRouteGatewaysClientListBySubscriptionResponse, error) {
+func (client *ExpressRouteGatewaysClient) listBySubscriptionHandleResponse(resp *http.Response) (ExpressRouteGatewaysClientListBySubscriptionResponse, error) {
 	result := ExpressRouteGatewaysClientListBySubscriptionResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteGatewayList); err != nil {
 		return ExpressRouteGatewaysClientListBySubscriptionResponse{}, err
 	}
@@ -703,7 +715,8 @@ func (client *ExpressRouteGatewaysClient) startSiteFailoverTest(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -776,7 +789,8 @@ func (client *ExpressRouteGatewaysClient) stopSiteFailoverTest(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -852,7 +866,8 @@ func (client *ExpressRouteGatewaysClient) updateTags(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }

@@ -59,7 +59,12 @@ func (client *ExpressRouteProviderPortsLocationClient) List(ctx context.Context,
 	if err != nil {
 		return ExpressRouteProviderPortsLocationClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ExpressRouteProviderPortsLocationClientListResponse{}, err
+	}
+	resp, err := client.listHandleResponse(httpResp)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -84,11 +89,8 @@ func (client *ExpressRouteProviderPortsLocationClient) listCreateRequest(ctx con
 }
 
 // listHandleResponse handles the List response.
-func (client *ExpressRouteProviderPortsLocationClient) listHandleResponse(resp *http.Response, successCodes ...int) (ExpressRouteProviderPortsLocationClientListResponse, error) {
+func (client *ExpressRouteProviderPortsLocationClient) listHandleResponse(resp *http.Response) (ExpressRouteProviderPortsLocationClientListResponse, error) {
 	result := ExpressRouteProviderPortsLocationClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteProviderPortListResult); err != nil {
 		return ExpressRouteProviderPortsLocationClientListResponse{}, err
 	}

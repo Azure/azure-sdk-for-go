@@ -65,7 +65,12 @@ func (client *SecurityPerimeterAccessRulesClient) CreateOrUpdate(ctx context.Con
 	if err != nil {
 		return SecurityPerimeterAccessRulesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return SecurityPerimeterAccessRulesClientCreateOrUpdateResponse{}, err
+	}
+	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -107,11 +112,8 @@ func (client *SecurityPerimeterAccessRulesClient) createOrUpdateCreateRequest(ct
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SecurityPerimeterAccessRulesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SecurityPerimeterAccessRulesClientCreateOrUpdateResponse, error) {
+func (client *SecurityPerimeterAccessRulesClient) createOrUpdateHandleResponse(resp *http.Response) (SecurityPerimeterAccessRulesClientCreateOrUpdateResponse, error) {
 	result := SecurityPerimeterAccessRulesClientCreateOrUpdateResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NspAccessRule); err != nil {
 		return SecurityPerimeterAccessRulesClientCreateOrUpdateResponse{}, err
 	}
@@ -141,7 +143,8 @@ func (client *SecurityPerimeterAccessRulesClient) Delete(ctx context.Context, re
 		return SecurityPerimeterAccessRulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SecurityPerimeterAccessRulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SecurityPerimeterAccessRulesClientDeleteResponse{}, err
 	}
 	return SecurityPerimeterAccessRulesClientDeleteResponse{}, nil
 }
@@ -201,7 +204,12 @@ func (client *SecurityPerimeterAccessRulesClient) Get(ctx context.Context, resou
 	if err != nil {
 		return SecurityPerimeterAccessRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SecurityPerimeterAccessRulesClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -239,11 +247,8 @@ func (client *SecurityPerimeterAccessRulesClient) getCreateRequest(ctx context.C
 }
 
 // getHandleResponse handles the Get response.
-func (client *SecurityPerimeterAccessRulesClient) getHandleResponse(resp *http.Response, successCodes ...int) (SecurityPerimeterAccessRulesClientGetResponse, error) {
+func (client *SecurityPerimeterAccessRulesClient) getHandleResponse(resp *http.Response) (SecurityPerimeterAccessRulesClientGetResponse, error) {
 	result := SecurityPerimeterAccessRulesClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NspAccessRule); err != nil {
 		return SecurityPerimeterAccessRulesClientGetResponse{}, err
 	}
@@ -267,71 +272,57 @@ func (client *SecurityPerimeterAccessRulesClient) NewListPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listCreateRequest(ctx, resourceGroupName, networkSecurityPerimeterName, profileName, nextLink, options)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listCreateRequest(ctx, resourceGroupName, networkSecurityPerimeterName, profileName, options)
+			}, nil)
 			if err != nil {
 				return SecurityPerimeterAccessRulesClientListResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SecurityPerimeterAccessRulesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
+			return client.listHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *SecurityPerimeterAccessRulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, profileName string, nextLink string, options *SecurityPerimeterAccessRulesClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/profiles/{profileName}/accessRules"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if networkSecurityPerimeterName == "" {
-			return nil, errors.New("parameter networkSecurityPerimeterName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterName}", url.PathEscape(networkSecurityPerimeterName))
-		if profileName == "" {
-			return nil, errors.New("parameter profileName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+func (client *SecurityPerimeterAccessRulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, profileName string, options *SecurityPerimeterAccessRulesClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkSecurityPerimeters/{networkSecurityPerimeterName}/profiles/{profileName}/accessRules"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkSecurityPerimeterName == "" {
+		return nil, errors.New("parameter networkSecurityPerimeterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterName}", url.PathEscape(networkSecurityPerimeterName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.SkipToken != nil {
-			reqQP.Set("$skipToken", *options.SkipToken)
-		}
-		if options != nil && options.Top != nil {
-			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-		}
-		reqQP.Set("api-version", version20250701)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.SkipToken != nil {
+		reqQP.Set("$skipToken", *options.SkipToken)
 	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("api-version", version20250701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SecurityPerimeterAccessRulesClient) listHandleResponse(resp *http.Response, successCodes ...int) (SecurityPerimeterAccessRulesClientListResponse, error) {
+func (client *SecurityPerimeterAccessRulesClient) listHandleResponse(resp *http.Response) (SecurityPerimeterAccessRulesClientListResponse, error) {
 	result := SecurityPerimeterAccessRulesClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NspAccessRuleListResult); err != nil {
 		return SecurityPerimeterAccessRulesClientListResponse{}, err
 	}
@@ -361,7 +352,12 @@ func (client *SecurityPerimeterAccessRulesClient) Reconcile(ctx context.Context,
 	if err != nil {
 		return SecurityPerimeterAccessRulesClientReconcileResponse{}, err
 	}
-	return client.reconcileHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return SecurityPerimeterAccessRulesClientReconcileResponse{}, err
+	}
+	resp, err := client.reconcileHandleResponse(httpResp)
+	return resp, err
 }
 
 // reconcileCreateRequest creates the Reconcile request.
@@ -403,11 +399,8 @@ func (client *SecurityPerimeterAccessRulesClient) reconcileCreateRequest(ctx con
 }
 
 // reconcileHandleResponse handles the Reconcile response.
-func (client *SecurityPerimeterAccessRulesClient) reconcileHandleResponse(resp *http.Response, successCodes ...int) (SecurityPerimeterAccessRulesClientReconcileResponse, error) {
+func (client *SecurityPerimeterAccessRulesClient) reconcileHandleResponse(resp *http.Response) (SecurityPerimeterAccessRulesClientReconcileResponse, error) {
 	result := SecurityPerimeterAccessRulesClientReconcileResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return SecurityPerimeterAccessRulesClientReconcileResponse{}, err
 	}

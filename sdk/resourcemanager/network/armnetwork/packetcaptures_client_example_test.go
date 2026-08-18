@@ -144,7 +144,7 @@ func ExamplePacketCapturesClient_BeginGetStatus() {
 	// res = armnetwork.PacketCapturesClientGetStatusResponse{
 	// 	PacketCaptureQueryStatusResult: armnetwork.PacketCaptureQueryStatusResult{
 	// 		Name: to.Ptr("pc1"),
-	// 		CaptureStartTime: to.Ptr(time.Date(2016, time.September, 7, 12, 35, 24, 0, time.UTC)),
+	// 		CaptureStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-07T12:35:24Z"); return t}()),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkWatchers/nw1/packetCaptures/pc1"),
 	// 		PacketCaptureError: []*armnetwork.PcError{
 	// 		},

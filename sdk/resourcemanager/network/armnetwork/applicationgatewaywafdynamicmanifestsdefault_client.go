@@ -61,7 +61,12 @@ func (client *ApplicationGatewayWafDynamicManifestsDefaultClient) Get(ctx contex
 	if err != nil {
 		return ApplicationGatewayWafDynamicManifestsDefaultClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ApplicationGatewayWafDynamicManifestsDefaultClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -87,11 +92,8 @@ func (client *ApplicationGatewayWafDynamicManifestsDefaultClient) getCreateReque
 }
 
 // getHandleResponse handles the Get response.
-func (client *ApplicationGatewayWafDynamicManifestsDefaultClient) getHandleResponse(resp *http.Response, successCodes ...int) (ApplicationGatewayWafDynamicManifestsDefaultClientGetResponse, error) {
+func (client *ApplicationGatewayWafDynamicManifestsDefaultClient) getHandleResponse(resp *http.Response) (ApplicationGatewayWafDynamicManifestsDefaultClientGetResponse, error) {
 	result := ApplicationGatewayWafDynamicManifestsDefaultClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGatewayWafDynamicManifestResult); err != nil {
 		return ApplicationGatewayWafDynamicManifestsDefaultClientGetResponse{}, err
 	}

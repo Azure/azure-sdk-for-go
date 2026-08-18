@@ -54,10 +54,10 @@ func ExampleCommitsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armnetwork.SystemData{
 	// 			CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 11, 18, 52, 27, 0, time.UTC)),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-11T18:52:27Z"); return t}()),
 	// 			LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 11, 18, 52, 27, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-11T18:52:27Z"); return t}()),
 	// 		},
 	// 		Properties: &armnetwork.CommitProperties{
 	// 			Description: to.Ptr("Sample Commit"),
@@ -126,10 +126,10 @@ func ExampleCommitsClient_Get() {
 	// 		SystemData: &armnetwork.SystemData{
 	// 			CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 11, 18, 52, 27, 0, time.UTC)),
+	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-11T18:52:27Z"); return t}()),
 	// 			LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 11, 18, 52, 27, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-11T18:52:27Z"); return t}()),
 	// 		},
 	// 		Properties: &armnetwork.CommitProperties{
 	// 			Description: to.Ptr("Sample Commit"),
@@ -183,10 +183,10 @@ func ExampleCommitsClient_NewListPager() {
 		// 				SystemData: &armnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.January, 11, 18, 52, 27, 0, time.UTC)),
+		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-11T18:52:27Z"); return t}()),
 		// 					LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.January, 11, 18, 52, 27, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-11T18:52:27Z"); return t}()),
 		// 				},
 		// 				Properties: &armnetwork.CommitProperties{
 		// 					Description: to.Ptr("Sample Commit"),

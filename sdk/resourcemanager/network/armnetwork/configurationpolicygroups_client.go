@@ -85,7 +85,8 @@ func (client *ConfigurationPolicyGroupsClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -167,7 +168,8 @@ func (client *ConfigurationPolicyGroupsClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -224,7 +226,12 @@ func (client *ConfigurationPolicyGroupsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return ConfigurationPolicyGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return ConfigurationPolicyGroupsClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -258,11 +265,8 @@ func (client *ConfigurationPolicyGroupsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConfigurationPolicyGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationPolicyGroupsClientGetResponse, error) {
+func (client *ConfigurationPolicyGroupsClient) getHandleResponse(resp *http.Response) (ConfigurationPolicyGroupsClientGetResponse, error) {
 	result := ConfigurationPolicyGroupsClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VPNServerConfigurationPolicyGroup); err != nil {
 		return ConfigurationPolicyGroupsClientGetResponse{}, err
 	}
@@ -286,61 +290,47 @@ func (client *ConfigurationPolicyGroupsClient) NewListByVPNServerConfigurationPa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listByVPNServerConfigurationCreateRequest(ctx, resourceGroupName, vpnServerConfigurationName, nextLink, options)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByVPNServerConfigurationCreateRequest(ctx, resourceGroupName, vpnServerConfigurationName, options)
+			}, nil)
 			if err != nil {
 				return ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse{}, err
-			}
-			return client.listByVPNServerConfigurationHandleResponse(resp, http.StatusOK)
+			return client.listByVPNServerConfigurationHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByVPNServerConfigurationCreateRequest creates the ListByVPNServerConfiguration request.
-func (client *ConfigurationPolicyGroupsClient) listByVPNServerConfigurationCreateRequest(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, nextLink string, _ *ConfigurationPolicyGroupsClientListByVPNServerConfigurationOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}/configurationPolicyGroups"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if vpnServerConfigurationName == "" {
-			return nil, errors.New("parameter vpnServerConfigurationName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{vpnServerConfigurationName}", url.PathEscape(vpnServerConfigurationName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+func (client *ConfigurationPolicyGroupsClient) listByVPNServerConfigurationCreateRequest(ctx context.Context, resourceGroupName string, vpnServerConfigurationName string, _ *ConfigurationPolicyGroupsClientListByVPNServerConfigurationOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnServerConfigurations/{vpnServerConfigurationName}/configurationPolicyGroups"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vpnServerConfigurationName == "" {
+		return nil, errors.New("parameter vpnServerConfigurationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vpnServerConfigurationName}", url.PathEscape(vpnServerConfigurationName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250701)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByVPNServerConfigurationHandleResponse handles the ListByVPNServerConfiguration response.
-func (client *ConfigurationPolicyGroupsClient) listByVPNServerConfigurationHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse, error) {
+func (client *ConfigurationPolicyGroupsClient) listByVPNServerConfigurationHandleResponse(resp *http.Response) (ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse, error) {
 	result := ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListVPNServerConfigurationPolicyGroupsResult); err != nil {
 		return ConfigurationPolicyGroupsClientListByVPNServerConfigurationResponse{}, err
 	}

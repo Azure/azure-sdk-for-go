@@ -297,8 +297,8 @@ func ExampleExpressRouteGatewaysClient_BeginGetResiliencyInformation() {
 	// 		ScoreChange: to.Ptr("5"),
 	// 		MinScoreFromRecommendations: to.Ptr("2"),
 	// 		MaxScoreFromRecommendations: to.Ptr("10"),
-	// 		LastComputedTime: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
-	// 		NextEligibleComputeTime: to.Ptr(time.Date(2025, time.January, 1, 1, 0, 0, 0, time.UTC)),
+	// 		LastComputedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00Z"); return t}()),
+	// 		NextEligibleComputeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T01:00:00Z"); return t}()),
 	// 		Components: []*armnetwork.ResiliencyRecommendationComponents{
 	// 			{
 	// 				Name: to.Ptr("Disaster Recovery"),
@@ -345,8 +345,8 @@ func ExampleExpressRouteGatewaysClient_BeginGetRoutesInformation() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetwork.ExpressRouteGatewaysClientGetRoutesInformationResponse{
 	// 	GatewayRouteSetsInformation: armnetwork.GatewayRouteSetsInformation{
-	// 		LastComputedTime: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
-	// 		NextEligibleComputeTime: to.Ptr(time.Date(2025, time.January, 1, 1, 0, 0, 0, time.UTC)),
+	// 		LastComputedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00Z"); return t}()),
+	// 		NextEligibleComputeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T01:00:00Z"); return t}()),
 	// 		RouteSetVersion: to.Ptr("1"),
 	// 		RouteSets: []*armnetwork.GatewayRouteSet{
 	// 			{

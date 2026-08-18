@@ -1,5 +1,46 @@
 # Release History
 
+## 3.0.0-beta.1 (2026-07-24)
+### Breaking Changes
+
+- Type of `WorkspaceEvaluationProperties.Results` has been changed from `[]*ScenarioEvaluationResultItem` to `[]*TemplateEvaluationResultItem`
+- Function `*WorkspacesClient.BeginRefreshRecommendations` has been removed
+- Operation `*ScenarioConfigurationsClient.Execute` has been changed to LRO, use `*ScenarioConfigurationsClient.BeginExecute` instead.
+- Operation `*ScenarioRunsClient.Cancel` has been changed to LRO, use `*ScenarioRunsClient.BeginCancel` instead.
+- Struct `ConfigurationExclusions` has been removed
+- Struct `ConfigurationFilters` has been removed
+- Struct `ScenarioEvaluationResultItem` has been removed
+- Field `Exclusions`, `Filters` of struct `ScenarioConfigurationProperties` has been removed
+- Field `NumScenariosEvaluatedCancelled`, `NumScenariosEvaluatedFailed`, `NumScenariosEvaluatedSucceeded`, `NumScenariosToEvaluate` of struct `WorkspaceEvaluationProperties` has been removed
+
+### Features Added
+
+- New enum type `ConnectionKind` with values `ConnectionKindAksExtension`, `ConnectionKindChaosAgent`, `ConnectionKindCsfi`
+- New enum type `ConnectionStatus` with values `ConnectionStatusConnected`, `ConnectionStatusDisconnected`, `ConnectionStatusPending`, `ConnectionStatusRevoked`
+- New enum type `WorkspaceDiscoveryStatus` with values `WorkspaceDiscoveryStatusCanceled`, `WorkspaceDiscoveryStatusFailed`, `WorkspaceDiscoveryStatusInProgress`, `WorkspaceDiscoveryStatusPending`, `WorkspaceDiscoveryStatusQueued`, `WorkspaceDiscoveryStatusSucceeded`
+- New function `*ClientFactory.NewConnectionsClient() *ConnectionsClient`
+- New function `NewConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectionsClient, error)`
+- New function `*ConnectionsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, resource Connection, options *ConnectionsClientCreateOrUpdateOptions) (ConnectionsClientCreateOrUpdateResponse, error)`
+- New function `*ConnectionsClient.Delete(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, options *ConnectionsClientDeleteOptions) (ConnectionsClientDeleteResponse, error)`
+- New function `*ConnectionsClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, options *ConnectionsClientGetOptions) (ConnectionsClientGetResponse, error)`
+- New function `*ConnectionsClient.NewListAllPager(resourceGroupName string, workspaceName string, options *ConnectionsClientListAllOptions) *runtime.Pager[ConnectionsClientListAllResponse]`
+- New function `*WorkspacesClient.BeginDiscover(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDiscoverOptions) (*runtime.Poller[WorkspacesClientDiscoverResponse], error)`
+- New function `*WorkspacesClient.BeginEvaluate(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginEvaluateOptions) (*runtime.Poller[WorkspacesClientEvaluateResponse], error)`
+- New struct `Connection`
+- New struct `ConnectionListResult`
+- New struct `ConnectionProperties`
+- New struct `ResourceTargeting`
+- New struct `ResourceTargetingCriteria`
+- New struct `TemplateEvaluationResultItem`
+- New struct `WorkspaceDiscovery`
+- New struct `WorkspaceDiscoveryProperties`
+- New field `ErrorMessage` in struct `PermissionError`
+- New field `ResourceTargeting` in struct `ScenarioConfigurationProperties`
+- New field `ExcludedResources`, `ResourceSnapshotID` in struct `ScenarioRunProperties`
+- New field `ExcludedResources`, `Resources` in struct `ValidationProperties`
+- New field `NumTemplatesEvaluatedCancelled`, `NumTemplatesEvaluatedFailed`, `NumTemplatesEvaluatedSucceeded`, `NumTemplatesToEvaluate`, `ResourceSnapshotID` in struct `WorkspaceEvaluationProperties`
+
+
 ## 2.1.0-beta.1 (2026-05-06)
 ### Features Added
 

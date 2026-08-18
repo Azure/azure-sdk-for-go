@@ -19,7 +19,7 @@ import (
 // ScheduledActionOperationStatusClient contains the methods for the ScheduledActionOperationStatus group.
 // Don't use this type directly, use NewScheduledActionOperationStatusClient() instead.
 //
-// Generated from API version 2026-07-06-preview
+// Generated from API version 2026-08-06-preview
 type ScheduledActionOperationStatusClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -62,12 +62,7 @@ func (client *ScheduledActionOperationStatusClient) Get(ctx context.Context, loc
 	if err != nil {
 		return ScheduledActionOperationStatusClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ScheduledActionOperationStatusClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -90,15 +85,18 @@ func (client *ScheduledActionOperationStatusClient) getCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ScheduledActionOperationStatusClient) getHandleResponse(resp *http.Response) (ScheduledActionOperationStatusClientGetResponse, error) {
+func (client *ScheduledActionOperationStatusClient) getHandleResponse(resp *http.Response, successCodes ...int) (ScheduledActionOperationStatusClientGetResponse, error) {
 	result := ScheduledActionOperationStatusClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatusResult); err != nil {
 		return ScheduledActionOperationStatusClientGetResponse{}, err
 	}

@@ -158,7 +158,7 @@ type NetworkSecurityPerimeterClientGetConfigurationResponse struct {
 
 // NetworkSecurityPerimeterClientListConfigurationsResponse contains the response from method NetworkSecurityPerimeterClient.NewListConfigurationsPager.
 type NetworkSecurityPerimeterClientListConfigurationsResponse struct {
-	// Result of a list NSP (network security perimeter) configurations request.
+	// The response of a NetworkSecurityPerimeterConfiguration list operation.
 	NetworkSecurityPerimeterConfigurationListResult
 }
 
@@ -183,7 +183,7 @@ type PoolClientCreateResponse struct {
 
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Match or If-None-Match headers.
-	ETag *string
+	Etag *string
 }
 
 // PoolClientDeleteResponse contains the response from method PoolClient.BeginDelete.
@@ -198,7 +198,7 @@ type PoolClientDisableAutoScaleResponse struct {
 
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Match or If-None-Match headers.
-	ETag *string
+	Etag *string
 }
 
 // PoolClientGetResponse contains the response from method PoolClient.Get.
@@ -208,7 +208,7 @@ type PoolClientGetResponse struct {
 
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Match or If-None-Match headers.
-	ETag *string
+	Etag *string
 }
 
 // PoolClientListByBatchAccountResponse contains the response from method PoolClient.NewListByBatchAccountPager.
@@ -224,7 +224,7 @@ type PoolClientStopResizeResponse struct {
 
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Match or If-None-Match headers.
-	ETag *string
+	Etag *string
 }
 
 // PoolClientUpdateResponse contains the response from method PoolClient.Update.
@@ -234,7 +234,7 @@ type PoolClientUpdateResponse struct {
 
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Match or If-None-Match headers.
-	ETag *string
+	Etag *string
 }
 
 // PrivateEndpointConnectionClientDeleteResponse contains the response from method PrivateEndpointConnectionClient.BeginDelete.

@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v5"
 	"log"
 )
 
@@ -41,13 +41,13 @@ func ExampleAccountClient_BeginCreate_batchAccountCreateByos() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.AccountClientCreateResponse{
-	// 	Account: &armbatch.Account{
+	// 	Account: armbatch.Account{
 	// 		Name: to.Ptr("sampleacct"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct"),
@@ -59,7 +59,7 @@ func ExampleAccountClient_BeginCreate_batchAccountCreateByos() {
 	// 			AccountEndpoint: to.Ptr("sampleacct.japaneast.batch.azure.com"),
 	// 			ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 	// 			AutoStorage: &armbatch.AutoStorageProperties{
-	// 				LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+	// 				LastKeySync: to.Ptr(time.Date(2016, time.March, 10, 23, 48, 38, 987847900, time.UTC)),
 	// 				StorageAccountID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
 	// 			},
 	// 			DedicatedCoreQuota: to.Ptr[int32](20),
@@ -101,13 +101,13 @@ func ExampleAccountClient_BeginCreate_batchAccountCreateDefault() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.AccountClientCreateResponse{
-	// 	Account: &armbatch.Account{
+	// 	Account: armbatch.Account{
 	// 		Name: to.Ptr("sampleacct"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct"),
@@ -119,7 +119,7 @@ func ExampleAccountClient_BeginCreate_batchAccountCreateDefault() {
 	// 			AccountEndpoint: to.Ptr("sampleacct.japaneast.batch.azure.com"),
 	// 			ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 	// 			AutoStorage: &armbatch.AutoStorageProperties{
-	// 				LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+	// 				LastKeySync: to.Ptr(time.Date(2016, time.March, 10, 23, 48, 38, 987847900, time.UTC)),
 	// 				StorageAccountID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
 	// 			},
 	// 			DedicatedCoreQuota: to.Ptr[int32](20),
@@ -160,13 +160,13 @@ func ExampleAccountClient_BeginCreate_batchAccountCreateSystemAssignedIdentity()
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.AccountClientCreateResponse{
-	// 	Account: &armbatch.Account{
+	// 	Account: armbatch.Account{
 	// 		Name: to.Ptr("sampleacct"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct"),
@@ -180,7 +180,7 @@ func ExampleAccountClient_BeginCreate_batchAccountCreateSystemAssignedIdentity()
 	// 			AccountEndpoint: to.Ptr("sampleacct.japaneast.batch.azure.com"),
 	// 			ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 	// 			AutoStorage: &armbatch.AutoStorageProperties{
-	// 				LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+	// 				LastKeySync: to.Ptr(time.Date(2016, time.March, 10, 23, 48, 38, 987847900, time.UTC)),
 	// 				StorageAccountID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
 	// 			},
 	// 			DedicatedCoreQuota: to.Ptr[int32](20),
@@ -224,13 +224,13 @@ func ExampleAccountClient_BeginCreate_batchAccountCreateUserAssignedIdentity() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.AccountClientCreateResponse{
-	// 	Account: &armbatch.Account{
+	// 	Account: armbatch.Account{
 	// 		Name: to.Ptr("sampleacct"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct"),
@@ -248,7 +248,7 @@ func ExampleAccountClient_BeginCreate_batchAccountCreateUserAssignedIdentity() {
 	// 			AccountEndpoint: to.Ptr("sampleacct.japaneast.batch.azure.com"),
 	// 			ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 	// 			AutoStorage: &armbatch.AutoStorageProperties{
-	// 				LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+	// 				LastKeySync: to.Ptr(time.Date(2016, time.March, 10, 23, 48, 38, 987847900, time.UTC)),
 	// 				StorageAccountID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
 	// 			},
 	// 			DedicatedCoreQuota: to.Ptr[int32](20),
@@ -291,13 +291,13 @@ func ExampleAccountClient_BeginCreate_privateBatchAccountCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.AccountClientCreateResponse{
-	// 	Account: &armbatch.Account{
+	// 	Account: armbatch.Account{
 	// 		Name: to.Ptr("sampleacct"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct"),
@@ -309,7 +309,7 @@ func ExampleAccountClient_BeginCreate_privateBatchAccountCreate() {
 	// 			AccountEndpoint: to.Ptr("sampleacct.japaneast.batch.azure.com"),
 	// 			ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 	// 			AutoStorage: &armbatch.AutoStorageProperties{
-	// 				LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+	// 				LastKeySync: to.Ptr(time.Date(2016, time.March, 10, 23, 48, 38, 987847900, time.UTC)),
 	// 				StorageAccountID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
 	// 			},
 	// 			DedicatedCoreQuota: to.Ptr[int32](20),
@@ -344,7 +344,7 @@ func ExampleAccountClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -372,7 +372,7 @@ func ExampleAccountClient_Get_batchAccountGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.AccountClientGetResponse{
-	// 	Account: &armbatch.Account{
+	// 	Account: armbatch.Account{
 	// 		Name: to.Ptr("sampleacct"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct"),
@@ -384,7 +384,7 @@ func ExampleAccountClient_Get_batchAccountGet() {
 	// 			AccountEndpoint: to.Ptr("sampleacct.japaneast.batch.azure.com"),
 	// 			ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 	// 			AutoStorage: &armbatch.AutoStorageProperties{
-	// 				LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+	// 				LastKeySync: to.Ptr(time.Date(2016, time.March, 10, 23, 48, 38, 987847900, time.UTC)),
 	// 				StorageAccountID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
 	// 			},
 	// 			DedicatedCoreQuota: to.Ptr[int32](20),
@@ -417,7 +417,7 @@ func ExampleAccountClient_Get_privateBatchAccountGet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.AccountClientGetResponse{
-	// 	Account: &armbatch.Account{
+	// 	Account: armbatch.Account{
 	// 		Name: to.Ptr("sampleacct"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct"),
@@ -426,7 +426,7 @@ func ExampleAccountClient_Get_privateBatchAccountGet() {
 	// 			AccountEndpoint: to.Ptr("sampleacct.japaneast.batch.azure.com"),
 	// 			ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 	// 			AutoStorage: &armbatch.AutoStorageProperties{
-	// 				LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+	// 				LastKeySync: to.Ptr(time.Date(2016, time.March, 10, 23, 48, 38, 987847900, time.UTC)),
 	// 				StorageAccountID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
 	// 			},
 	// 			DedicatedCoreQuota: to.Ptr[int32](20),
@@ -475,7 +475,7 @@ func ExampleAccountClient_GetDetector() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.AccountClientGetDetectorResponse{
-	// 	DetectorResponse: &armbatch.DetectorResponse{
+	// 	DetectorResponse: armbatch.DetectorResponse{
 	// 		Name: to.Ptr("poolsAndNodes"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts/detectors"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct/detectors/poolsAndNodes"),
@@ -505,7 +505,7 @@ func ExampleAccountClient_GetKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.AccountClientGetKeysResponse{
-	// 	AccountKeys: &armbatch.AccountKeys{
+	// 	AccountKeys: armbatch.AccountKeys{
 	// 		AccountName: to.Ptr("sampleacct"),
 	// 		Primary: to.Ptr("AAAA=="),
 	// 		Secondary: to.Ptr("BBBB=="),
@@ -550,7 +550,7 @@ func ExampleAccountClient_NewListPager() {
 		// 					AccountEndpoint: to.Ptr("sampleacct.japaneast.batch.azure.com"),
 		// 					ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 		// 					AutoStorage: &armbatch.AutoStorageProperties{
-		// 						LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+		// 						LastKeySync: to.Ptr(time.Date(2016, time.March, 10, 23, 48, 38, 987847900, time.UTC)),
 		// 						StorageAccountID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
 		// 					},
 		// 					DedicatedCoreQuota: to.Ptr[int32](20),
@@ -604,7 +604,7 @@ func ExampleAccountClient_NewListByResourceGroupPager() {
 		// 					AccountEndpoint: to.Ptr("sampleacct.japaneast.batch.azure.com"),
 		// 					ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 		// 					AutoStorage: &armbatch.AutoStorageProperties{
-		// 						LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+		// 						LastKeySync: to.Ptr(time.Date(2016, time.March, 10, 23, 48, 38, 987847900, time.UTC)),
 		// 						StorageAccountID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
 		// 					},
 		// 					DedicatedCoreQuota: to.Ptr[int32](20),
@@ -804,7 +804,7 @@ func ExampleAccountClient_RegenerateKey() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.AccountClientRegenerateKeyResponse{
-	// 	AccountKeys: &armbatch.AccountKeys{
+	// 	AccountKeys: armbatch.AccountKeys{
 	// 		AccountName: to.Ptr("sampleacct"),
 	// 		Primary: to.Ptr("AAAA=="),
 	// 		Secondary: to.Ptr("BBBB=="),
@@ -854,7 +854,7 @@ func ExampleAccountClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armbatch.AccountClientUpdateResponse{
-	// 	Account: &armbatch.Account{
+	// 	Account: armbatch.Account{
 	// 		Name: to.Ptr("sampleacct"),
 	// 		Type: to.Ptr("Microsoft.Batch/batchAccounts"),
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Batch/batchAccounts/sampleacct"),
@@ -866,7 +866,7 @@ func ExampleAccountClient_Update() {
 	// 			AccountEndpoint: to.Ptr("sampleacct.japaneast.batch.azure.com"),
 	// 			ActiveJobAndJobScheduleQuota: to.Ptr[int32](20),
 	// 			AutoStorage: &armbatch.AutoStorageProperties{
-	// 				LastKeySync: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-03-10T23:48:38.9878479Z"); return t}()),
+	// 				LastKeySync: to.Ptr(time.Date(2016, time.March, 10, 23, 48, 38, 987847900, time.UTC)),
 	// 				StorageAccountID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/default-azurebatch-japaneast/providers/Microsoft.Storage/storageAccounts/samplestorage"),
 	// 			},
 	// 			DedicatedCoreQuota: to.Ptr[int32](20),

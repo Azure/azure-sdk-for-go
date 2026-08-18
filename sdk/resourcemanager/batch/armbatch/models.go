@@ -9,7 +9,9 @@ import "time"
 // AccessRule - Access rule in a network security perimeter configuration profile
 type AccessRule struct {
 	// Name of the access rule
-	Name       *string
+	Name *string
+
+	// Properties of the access rule
 	Properties *AccessRuleProperties
 }
 
@@ -17,7 +19,9 @@ type AccessRule struct {
 type AccessRuleProperties struct {
 	// Address prefixes in the CIDR format for inbound rules
 	AddressPrefixes []*string
-	Direction       *AccessRuleDirection
+
+	// Direction of the access rule
+	Direction *AccessRuleDirection
 
 	// Email addresses for outbound rules
 	EmailAddresses []*string
@@ -1306,6 +1310,7 @@ type NetworkSecurityPerimeter struct {
 
 // NetworkSecurityPerimeterConfiguration - Network security perimeter (NSP) configuration resource
 type NetworkSecurityPerimeterConfiguration struct {
+	// Network security configuration properties.
 	Properties *NetworkSecurityPerimeterConfigurationProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -1321,25 +1326,30 @@ type NetworkSecurityPerimeterConfiguration struct {
 	Type *string
 }
 
-// NetworkSecurityPerimeterConfigurationListResult - Result of a list NSP (network security perimeter) configurations request.
+// NetworkSecurityPerimeterConfigurationListResult - The response of a NetworkSecurityPerimeterConfiguration list operation.
 type NetworkSecurityPerimeterConfigurationListResult struct {
-	// The link used to get the next page of results.
-	NextLink *string
-
-	// Array of network security perimeter results.
+	// REQUIRED; The NetworkSecurityPerimeterConfiguration items on this page
 	Value []*NetworkSecurityPerimeterConfiguration
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // NetworkSecurityPerimeterConfigurationProperties - Network security configuration properties.
 type NetworkSecurityPerimeterConfigurationProperties struct {
+	// Information about the network security perimeter (NSP)
 	NetworkSecurityPerimeter *NetworkSecurityPerimeter
-	Profile                  *NetworkSecurityProfile
-	ResourceAssociation      *ResourceAssociation
+
+	// Network security perimeter configuration profile
+	Profile *NetworkSecurityProfile
+
+	// Information about the resource association
+	ResourceAssociation *ResourceAssociation
 
 	// READ-ONLY; List of provisioning issues, if any
 	ProvisioningIssues []*ProvisioningIssue
 
-	// READ-ONLY
+	// READ-ONLY; Provisioning state of the network security perimeter configuration
 	ProvisioningState *NetworkSecurityPerimeterConfigurationProvisioningState
 }
 
@@ -1787,7 +1797,7 @@ type ProvisioningIssue struct {
 	// READ-ONLY; Name of the issue
 	Name *string
 
-	// READ-ONLY
+	// READ-ONLY; Details of the provisioning issue
 	Properties *ProvisioningIssueProperties
 }
 
@@ -1906,6 +1916,7 @@ type ResizeOperationStatus struct {
 
 // ResourceAssociation - Information about resource association
 type ResourceAssociation struct {
+	// Access mode of the resource association
 	AccessMode *ResourceAssociationAccessMode
 
 	// Name of the resource association

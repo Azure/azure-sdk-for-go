@@ -6,5 +6,5 @@ package armbatch
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch"
-	moduleVersion = "v4.0.0"
+	moduleVersion = "v5.0.0"
 )

@@ -11,7 +11,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
-	storageinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
 )
 
 // TransferValidationType abstracts the various mechanisms used to verify a transfer.
@@ -47,7 +47,7 @@ func TransferValidationTypeComputeCRC64() TransferValidationType {
 			return nil, err
 		}
 
-		crc := crc64.Checksum(buf, storageinternal.CRC64Table)
+		crc := crc64.Checksum(buf, internal.CRC64Table)
 		return TransferValidationTypeCRC64(crc).Apply(streaming.NopCloser(bytes.NewReader(buf)), cfg)
 	})
 }
@@ -65,13 +65,13 @@ type transferValidationTypeSMCRC64 struct {
 }
 
 func (t *transferValidationTypeSMCRC64) Apply(rsc io.ReadSeekCloser, cfg generated.TransactionalContentSetter) (io.ReadSeekCloser, error) {
-	contentLen, err := storageinternal.ValidateSeekableStreamAt0AndGetCount(rsc)
+	contentLen, err := internal.ValidateSeekableStreamAt0AndGetCount(rsc)
 	if err != nil {
 		return nil, err
 	}
 
-	encoder := storageinternal.NewSMEncoder(rsc, contentLen, t.segmentSize)
-	cfg.SetStructuredBody(storageinternal.SMHeaderValue, encoder.OriginalContentLength())
+	encoder := internal.NewSMEncoder(rsc, contentLen, t.segmentSize)
+	cfg.SetStructuredBody(internal.SMHeaderValue, encoder.OriginalContentLength())
 	return encoder, nil
 }
 
@@ -79,7 +79,7 @@ func (*transferValidationTypeSMCRC64) notPubliclyImplementable() {}
 func (*transferValidationTypeSMCRC64) supportsMultiBlock() bool  { return true }
 
 func (t *transferValidationTypeSMCRC64) StructuredBodyHeaderValue() string {
-	return storageinternal.SMHeaderValue
+	return internal.SMHeaderValue
 }
 
 // GetStructuredBodyType returns the structured body header value if the given TransferValidationType

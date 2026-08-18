@@ -36,7 +36,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/sas"
-	storageinternal "github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
@@ -4134,7 +4134,7 @@ func (s *UnrecordedTestSuite) TestFileAppendAndFlushDataWithValidation() {
 	content := make([]byte, contentSize)
 	body := bytes.NewReader(content)
 	rsc := streaming.NopCloser(body)
-	contentCRC64 := crc64.Checksum(content, storageinternal.CRC64Table)
+	contentCRC64 := crc64.Checksum(content, internal.CRC64Table)
 
 	opts := &file.AppendDataOptions{
 		TransactionalValidation: file.TransferValidationTypeComputeCRC64(),

@@ -318,12 +318,13 @@ func (o *uploadFromReaderOptions) getUploadBlockBlobOptions() *UploadOptions {
 
 func (o *uploadFromReaderOptions) getCommitBlockListOptions() *CommitBlockListOptions {
 	return &CommitBlockListOptions{
-		Tags:         o.Tags,
-		Metadata:     o.Metadata,
-		Tier:         o.AccessTier,
-		HTTPHeaders:  o.HTTPHeaders,
-		CPKInfo:      o.CPKInfo,
-		CPKScopeInfo: o.CPKScopeInfo,
+		Tags:             o.Tags,
+		Metadata:         o.Metadata,
+		Tier:             o.AccessTier,
+		HTTPHeaders:      o.HTTPHeaders,
+		CPKInfo:          o.CPKInfo,
+		CPKScopeInfo:     o.CPKScopeInfo,
+		AccessConditions: o.AccessConditions,
 	}
 }
 

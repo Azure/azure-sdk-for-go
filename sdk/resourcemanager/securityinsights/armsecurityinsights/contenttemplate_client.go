@@ -16,12 +16,10 @@ import (
 	"strings"
 )
 
-const defaultContentTemplateClientVersion string = "2025-07-01-preview"
-
 // ContentTemplateClient contains the methods for the ContentTemplate group.
 // Don't use this type directly, use NewContentTemplateClient() instead.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-10-01-preview
 type ContentTemplateClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,8 +62,7 @@ func (client *ContentTemplateClient) Delete(ctx context.Context, resourceGroupNa
 		return ContentTemplateClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ContentTemplateClientDeleteResponse{}, err
+		return ContentTemplateClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ContentTemplateClientDeleteResponse{}, nil
 }
@@ -94,15 +91,17 @@ func (client *ContentTemplateClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultContentTemplateClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a template byt its identifier.
 // Expandable properties:
-// - properties/mainTemplate
-// - properties/dependantTemplates
+//
+//   - properties/mainTemplate
+//   - properties/dependantTemplates
+//
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the monitor workspace.
@@ -122,12 +121,7 @@ func (client *ContentTemplateClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ContentTemplateClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContentTemplateClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -154,15 +148,18 @@ func (client *ContentTemplateClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultContentTemplateClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ContentTemplateClient) getHandleResponse(resp *http.Response) (ContentTemplateClientGetResponse, error) {
+func (client *ContentTemplateClient) getHandleResponse(resp *http.Response, successCodes ...int) (ContentTemplateClientGetResponse, error) {
 	result := ContentTemplateClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TemplateModel); err != nil {
 		return ContentTemplateClientGetResponse{}, err
 	}
@@ -190,12 +187,7 @@ func (client *ContentTemplateClient) Install(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ContentTemplateClientInstallResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ContentTemplateClientInstallResponse{}, err
-	}
-	resp, err := client.installHandleResponse(httpResp)
-	return resp, err
+	return client.installHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // installCreateRequest creates the Install request.
@@ -222,7 +214,7 @@ func (client *ContentTemplateClient) installCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultContentTemplateClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -233,8 +225,11 @@ func (client *ContentTemplateClient) installCreateRequest(ctx context.Context, r
 }
 
 // installHandleResponse handles the Install response.
-func (client *ContentTemplateClient) installHandleResponse(resp *http.Response) (ContentTemplateClientInstallResponse, error) {
+func (client *ContentTemplateClient) installHandleResponse(resp *http.Response, successCodes ...int) (ContentTemplateClientInstallResponse, error) {
 	result := ContentTemplateClientInstallResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TemplateModel); err != nil {
 		return ContentTemplateClientInstallResponse{}, err
 	}

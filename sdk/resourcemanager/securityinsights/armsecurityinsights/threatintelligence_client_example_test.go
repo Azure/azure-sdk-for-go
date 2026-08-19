@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/threatintelligence/PostThreatIntelligenceCount.json
+// Generated from example definition: 2025-10-01-preview/threatintelligence/PostThreatIntelligenceCount.json
 func ExampleThreatIntelligenceClient_Count() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExampleThreatIntelligenceClient_Count() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/threatintelligence/PostThreatIntelligenceQuery.json
+// Generated from example definition: 2025-10-01-preview/threatintelligence/PostThreatIntelligenceQuery.json
 func ExampleThreatIntelligenceClient_NewQueryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,16 +131,16 @@ func ExampleThreatIntelligenceClient_NewQueryPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					FirstIngestedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-05T22:47:29.4948816"); return t}()),
+		// 					FirstIngestedTimeUTC: to.Ptr(time.Time{}),
 		// 					IngestionRulesVersion: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					LastIngestedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-05T22:47:29.4948816"); return t}()),
+		// 					LastIngestedTimeUTC: to.Ptr(time.Time{}),
 		// 					LastModifiedBy: &armsecurityinsights.UserInfo{
 		// 						Name: to.Ptr(""),
 		// 						Email: to.Ptr(""),
 		// 						ObjectID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					},
 		// 					LastUpdateMethod: to.Ptr("File Import"),
-		// 					LastUpdatedDateTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-05T22:47:29.4948816"); return t}()),
+		// 					LastUpdatedDateTimeUTC: to.Ptr(time.Time{}),
 		// 					Source: to.Ptr("mySource"),
 		// 				},
 		// 			},

@@ -16,12 +16,10 @@ import (
 	"strings"
 )
 
-const defaultSecurityMLAnalyticsSettingsClientVersion string = "2025-07-01-preview"
-
 // SecurityMLAnalyticsSettingsClient contains the methods for the SecurityMLAnalyticsSettings group.
 // Don't use this type directly, use NewSecurityMLAnalyticsSettingsClient() instead.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-10-01-preview
 type SecurityMLAnalyticsSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -65,12 +63,7 @@ func (client *SecurityMLAnalyticsSettingsClient) CreateOrUpdate(ctx context.Cont
 	if err != nil {
 		return SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -97,7 +90,7 @@ func (client *SecurityMLAnalyticsSettingsClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSecurityMLAnalyticsSettingsClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -108,8 +101,11 @@ func (client *SecurityMLAnalyticsSettingsClient) createOrUpdateCreateRequest(ctx
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SecurityMLAnalyticsSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse, error) {
+func (client *SecurityMLAnalyticsSettingsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse, error) {
 	result := SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse{}, err
 	}
@@ -138,8 +134,7 @@ func (client *SecurityMLAnalyticsSettingsClient) Delete(ctx context.Context, res
 		return SecurityMLAnalyticsSettingsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SecurityMLAnalyticsSettingsClientDeleteResponse{}, err
+		return SecurityMLAnalyticsSettingsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SecurityMLAnalyticsSettingsClientDeleteResponse{}, nil
 }
@@ -168,7 +163,7 @@ func (client *SecurityMLAnalyticsSettingsClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSecurityMLAnalyticsSettingsClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -194,12 +189,7 @@ func (client *SecurityMLAnalyticsSettingsClient) Get(ctx context.Context, resour
 	if err != nil {
 		return SecurityMLAnalyticsSettingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SecurityMLAnalyticsSettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -226,15 +216,18 @@ func (client *SecurityMLAnalyticsSettingsClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSecurityMLAnalyticsSettingsClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SecurityMLAnalyticsSettingsClient) getHandleResponse(resp *http.Response) (SecurityMLAnalyticsSettingsClientGetResponse, error) {
+func (client *SecurityMLAnalyticsSettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SecurityMLAnalyticsSettingsClientGetResponse, error) {
 	result := SecurityMLAnalyticsSettingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return SecurityMLAnalyticsSettingsClientGetResponse{}, err
 	}
@@ -257,47 +250,61 @@ func (client *SecurityMLAnalyticsSettingsClient) NewListPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, nextLink, options)
 			if err != nil {
 				return SecurityMLAnalyticsSettingsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SecurityMLAnalyticsSettingsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *SecurityMLAnalyticsSettingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *SecurityMLAnalyticsSettingsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/securityMLAnalyticsSettings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SecurityMLAnalyticsSettingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, nextLink string, _ *SecurityMLAnalyticsSettingsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/securityMLAnalyticsSettings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSecurityMLAnalyticsSettingsClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251001Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SecurityMLAnalyticsSettingsClient) listHandleResponse(resp *http.Response) (SecurityMLAnalyticsSettingsClientListResponse, error) {
+func (client *SecurityMLAnalyticsSettingsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SecurityMLAnalyticsSettingsClientListResponse, error) {
 	result := SecurityMLAnalyticsSettingsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityMLAnalyticsSettingsList); err != nil {
 		return SecurityMLAnalyticsSettingsClientListResponse{}, err
 	}

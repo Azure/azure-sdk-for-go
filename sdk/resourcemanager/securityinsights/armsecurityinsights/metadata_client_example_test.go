@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-07-01-preview/metadata/PutMetadata.json
+// Generated from example definition: 2025-10-01-preview/metadata/PutMetadata.json
 func ExampleMetadataClient_Create_createUpdateFullMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleMetadataClient_Create_createUpdateFullMetadata() {
 								Version:   to.Ptr("2.0"),
 							},
 						},
-						Operator: to.Ptr(armsecurityinsights.Operator("OR")),
+						Operator: to.Ptr(armsecurityinsights.MetadataDependencyOperatorOR),
 					},
 					{
 						ContentID: to.Ptr("31ee11cc-9989-4de8-b176-5e0ef5c4dbab"),
@@ -73,11 +73,11 @@ func ExampleMetadataClient_Create_createUpdateFullMetadata() {
 						Kind:      to.Ptr(armsecurityinsights.KindParser),
 					},
 				},
-				Operator: to.Ptr(armsecurityinsights.Operator("AND")),
+				Operator: to.Ptr(armsecurityinsights.MetadataDependencyOperatorAND),
 			},
-			FirstPublishDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2021-05-18"); return t }()),
+			FirstPublishDate: to.Ptr(time.Date(2021, time.May, 18, 0, 0, 0, 0, time.UTC)),
 			Kind:             to.Ptr("AnalyticsRule"),
-			LastPublishDate:  to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2021-05-18"); return t }()),
+			LastPublishDate:  to.Ptr(time.Date(2021, time.May, 18, 0, 0, 0, 0, time.UTC)),
 			ParentID:         to.Ptr("/subscriptions/2e1dc338-d04d-4443-b721-037eff4fdcac/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/ruleName"),
 			PreviewImages: []*string{
 				to.Ptr("firstImage.png"),
@@ -159,7 +159,7 @@ func ExampleMetadataClient_Create_createUpdateFullMetadata() {
 	// 								Version: to.Ptr("2.0"),
 	// 							},
 	// 						},
-	// 						Operator: to.Ptr(armsecurityinsights.Operator("OR")),
+	// 						Operator: to.Ptr(armsecurityinsights.MetadataDependencyOperatorOR),
 	// 					},
 	// 					{
 	// 						ContentID: to.Ptr("31ee11cc-9989-4de8-b176-5e0ef5c4dbab"),
@@ -171,11 +171,11 @@ func ExampleMetadataClient_Create_createUpdateFullMetadata() {
 	// 						Kind: to.Ptr(armsecurityinsights.KindParser),
 	// 					},
 	// 				},
-	// 				Operator: to.Ptr(armsecurityinsights.Operator("AND")),
+	// 				Operator: to.Ptr(armsecurityinsights.MetadataDependencyOperatorAND),
 	// 			},
-	// 			FirstPublishDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2021-05-18"); return t}()),
+	// 			FirstPublishDate: to.Ptr(time.Date(2021, time.May, 18, 0, 0, 0, 0, time.UTC)),
 	// 			Kind: to.Ptr("AnalyticsRule"),
-	// 			LastPublishDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2021-05-18"); return t}()),
+	// 			LastPublishDate: to.Ptr(time.Date(2021, time.May, 18, 0, 0, 0, 0, time.UTC)),
 	// 			ParentID: to.Ptr("/subscriptions/2e1dc338-d04d-4443-b721-037eff4fdcac/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/ruleName"),
 	// 			PreviewImages: []*string{
 	// 				to.Ptr("firstImage.png"),
@@ -214,7 +214,7 @@ func ExampleMetadataClient_Create_createUpdateFullMetadata() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/metadata/PutMetadataMinimal.json
+// Generated from example definition: 2025-10-01-preview/metadata/PutMetadataMinimal.json
 func ExampleMetadataClient_Create_createUpdateMinimalMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,7 +251,7 @@ func ExampleMetadataClient_Create_createUpdateMinimalMetadata() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/metadata/DeleteMetadata.json
+// Generated from example definition: 2025-10-01-preview/metadata/DeleteMetadata.json
 func ExampleMetadataClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExampleMetadataClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/metadata/GetMetadata.json
+// Generated from example definition: 2025-10-01-preview/metadata/GetMetadata.json
 func ExampleMetadataClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -331,7 +331,7 @@ func ExampleMetadataClient_Get() {
 	// 								Version: to.Ptr("2.0"),
 	// 							},
 	// 						},
-	// 						Operator: to.Ptr(armsecurityinsights.Operator("OR")),
+	// 						Operator: to.Ptr(armsecurityinsights.MetadataDependencyOperatorOR),
 	// 					},
 	// 					{
 	// 						ContentID: to.Ptr("31ee11cc-9989-4de8-b176-5e0ef5c4dbab"),
@@ -343,11 +343,11 @@ func ExampleMetadataClient_Get() {
 	// 						Kind: to.Ptr(armsecurityinsights.KindParser),
 	// 					},
 	// 				},
-	// 				Operator: to.Ptr(armsecurityinsights.Operator("AND")),
+	// 				Operator: to.Ptr(armsecurityinsights.MetadataDependencyOperatorAND),
 	// 			},
-	// 			FirstPublishDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2021-05-18"); return t}()),
+	// 			FirstPublishDate: to.Ptr(time.Date(2021, time.May, 18, 0, 0, 0, 0, time.UTC)),
 	// 			Kind: to.Ptr("AnalyticsRule"),
-	// 			LastPublishDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2021-05-18"); return t}()),
+	// 			LastPublishDate: to.Ptr(time.Date(2021, time.May, 18, 0, 0, 0, 0, time.UTC)),
 	// 			ParentID: to.Ptr("/subscriptions/2e1dc338-d04d-4443-b721-037eff4fdcac/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/ruleName"),
 	// 			PreviewImages: []*string{
 	// 				to.Ptr("firstImage.png"),
@@ -386,7 +386,7 @@ func ExampleMetadataClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/metadata/GetAllMetadata.json
+// Generated from example definition: 2025-10-01-preview/metadata/GetAllMetadata.json
 func ExampleMetadataClient_NewListPager_getAllMetadata() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -465,7 +465,7 @@ func ExampleMetadataClient_NewListPager_getAllMetadata() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/metadata/GetAllMetadataOData.json
+// Generated from example definition: 2025-10-01-preview/metadata/GetAllMetadataOData.json
 func ExampleMetadataClient_NewListPager_getAllMetadataWithODataFilterOrderbySkipTop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -528,7 +528,7 @@ func ExampleMetadataClient_NewListPager_getAllMetadataWithODataFilterOrderbySkip
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/metadata/PatchMetadata.json
+// Generated from example definition: 2025-10-01-preview/metadata/PatchMetadata.json
 func ExampleMetadataClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

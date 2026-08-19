@@ -16,12 +16,10 @@ import (
 	"strings"
 )
 
-const defaultEntitiesClientVersion string = "2025-07-01-preview"
-
 // EntitiesClient contains the methods for the Entities group.
 // Don't use this type directly, use NewEntitiesClient() instead.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-10-01-preview
 type EntitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,12 +62,7 @@ func (client *EntitiesClient) Expand(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return EntitiesClientExpandResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EntitiesClientExpandResponse{}, err
-	}
-	resp, err := client.expandHandleResponse(httpResp)
-	return resp, err
+	return client.expandHandleResponse(httpResp, http.StatusOK)
 }
 
 // expandCreateRequest creates the Expand request.
@@ -96,7 +89,7 @@ func (client *EntitiesClient) expandCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultEntitiesClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -107,8 +100,11 @@ func (client *EntitiesClient) expandCreateRequest(ctx context.Context, resourceG
 }
 
 // expandHandleResponse handles the Expand response.
-func (client *EntitiesClient) expandHandleResponse(resp *http.Response) (EntitiesClientExpandResponse, error) {
+func (client *EntitiesClient) expandHandleResponse(resp *http.Response, successCodes ...int) (EntitiesClientExpandResponse, error) {
 	result := EntitiesClientExpandResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EntityExpandResponse); err != nil {
 		return EntitiesClientExpandResponse{}, err
 	}
@@ -135,12 +131,7 @@ func (client *EntitiesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return EntitiesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EntitiesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -167,15 +158,18 @@ func (client *EntitiesClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultEntitiesClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *EntitiesClient) getHandleResponse(resp *http.Response) (EntitiesClientGetResponse, error) {
+func (client *EntitiesClient) getHandleResponse(resp *http.Response, successCodes ...int) (EntitiesClientGetResponse, error) {
 	result := EntitiesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return EntitiesClientGetResponse{}, err
 	}
@@ -203,12 +197,7 @@ func (client *EntitiesClient) GetInsights(ctx context.Context, resourceGroupName
 	if err != nil {
 		return EntitiesClientGetInsightsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EntitiesClientGetInsightsResponse{}, err
-	}
-	resp, err := client.getInsightsHandleResponse(httpResp)
-	return resp, err
+	return client.getInsightsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getInsightsCreateRequest creates the GetInsights request.
@@ -235,7 +224,7 @@ func (client *EntitiesClient) getInsightsCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultEntitiesClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -246,8 +235,11 @@ func (client *EntitiesClient) getInsightsCreateRequest(ctx context.Context, reso
 }
 
 // getInsightsHandleResponse handles the GetInsights response.
-func (client *EntitiesClient) getInsightsHandleResponse(resp *http.Response) (EntitiesClientGetInsightsResponse, error) {
+func (client *EntitiesClient) getInsightsHandleResponse(resp *http.Response, successCodes ...int) (EntitiesClientGetInsightsResponse, error) {
 	result := EntitiesClientGetInsightsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EntityGetInsightsResponse); err != nil {
 		return EntitiesClientGetInsightsResponse{}, err
 	}
@@ -269,47 +261,61 @@ func (client *EntitiesClient) NewListPager(resourceGroupName string, workspaceNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, nextLink, options)
 			if err != nil {
 				return EntitiesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EntitiesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *EntitiesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *EntitiesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/entities"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EntitiesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, nextLink string, _ *EntitiesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/entities"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultEntitiesClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251001Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *EntitiesClient) listHandleResponse(resp *http.Response) (EntitiesClientListResponse, error) {
+func (client *EntitiesClient) listHandleResponse(resp *http.Response, successCodes ...int) (EntitiesClientListResponse, error) {
 	result := EntitiesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EntityList); err != nil {
 		return EntitiesClientListResponse{}, err
 	}
@@ -333,52 +339,66 @@ func (client *EntitiesClient) NewQueriesPager(resourceGroupName string, workspac
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.queriesCreateRequest(ctx, resourceGroupName, workspaceName, entityID, kind, options)
-			}, nil)
+			req, err := client.queriesCreateRequest(ctx, resourceGroupName, workspaceName, entityID, kind, nextLink, options)
 			if err != nil {
 				return EntitiesClientQueriesResponse{}, err
 			}
-			return client.queriesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EntitiesClientQueriesResponse{}, err
+			}
+			return client.queriesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // queriesCreateRequest creates the Queries request.
-func (client *EntitiesClient) queriesCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, entityID string, kind EntityItemQueryKind, _ *EntitiesClientQueriesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/entities/{entityId}/queries"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EntitiesClient) queriesCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, entityID string, kind EntityItemQueryKind, nextLink string, _ *EntitiesClientQueriesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/entities/{entityId}/queries"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		if entityID == "" {
+			return nil, errors.New("parameter entityID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{entityId}", url.PathEscape(entityID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if entityID == "" {
-		return nil, errors.New("parameter entityID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{entityId}", url.PathEscape(entityID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultEntitiesClientVersion)
-	reqQP.Set("kind", string(kind))
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251001Preview)
+		reqQP.Set("kind", string(kind))
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // queriesHandleResponse handles the Queries response.
-func (client *EntitiesClient) queriesHandleResponse(resp *http.Response) (EntitiesClientQueriesResponse, error) {
+func (client *EntitiesClient) queriesHandleResponse(resp *http.Response, successCodes ...int) (EntitiesClientQueriesResponse, error) {
 	result := EntitiesClientQueriesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetQueriesResponse); err != nil {
 		return EntitiesClientQueriesResponse{}, err
 	}
@@ -406,8 +426,7 @@ func (client *EntitiesClient) RunPlaybook(ctx context.Context, resourceGroupName
 		return EntitiesClientRunPlaybookResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return EntitiesClientRunPlaybookResponse{}, err
+		return EntitiesClientRunPlaybookResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return EntitiesClientRunPlaybookResponse{}, nil
 }
@@ -436,7 +455,7 @@ func (client *EntitiesClient) runPlaybookCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultEntitiesClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.RequestBody != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

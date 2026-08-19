@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/alertRuleTemplates/GetAlertRuleTemplateById.json
+// Generated from example definition: 2025-10-01-preview/alertRuleTemplates/GetAlertRuleTemplateById.json
 func ExampleAlertRuleTemplatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,12 +38,12 @@ func ExampleAlertRuleTemplatesClient_Get() {
 	// 		Properties: &armsecurityinsights.ScheduledAlertRuleTemplateProperties{
 	// 			Description: to.Ptr("This alert monitors changes to Amazon VPC (Virtual Private Cloud) settings such as new ACL entries and routes in route tables.\nMore information: https://medium.com/@GorillaStack/the-most-important-aws-cloudtrail-security-events-to-track-a5b9873f8255 \nand https://aws.amazon.com/vpc/"),
 	// 			AlertRulesCreatedByTemplateCount: to.Ptr[int32](0),
-	// 			CreatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-02-27T00:00:00Z"); return t}()),
+	// 			CreatedDateUTC: to.Ptr(time.Date(2019, time.February, 27, 0, 0, 0, 0, time.UTC)),
 	// 			DisplayName: to.Ptr("Changes to Amazon VPC settings"),
 	// 			EventGroupingSettings: &armsecurityinsights.EventGroupingSettings{
 	// 				AggregationKind: to.Ptr(armsecurityinsights.EventGroupingAggregationKindAlertPerResult),
 	// 			},
-	// 			LastUpdatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-27T00:00:00Z"); return t}()),
+	// 			LastUpdatedDateUTC: to.Ptr(time.Date(2020, time.February, 27, 0, 0, 0, 0, time.UTC)),
 	// 			Query: to.Ptr("let timeframe = 1d;\nAWSCloudTrail\n| where TimeGenerated >= ago(timeframe)\n| where EventName == \"CreateNetworkAclEntry\"\n    or EventName == \"CreateRoute\"\n| project TimeGenerated, EventName, EventTypeName, UserIdentityAccountId, UserIdentityPrincipalid, UserAgent, UserIdentityUserName, SessionMfaAuthenticated, SourceIpAddress, AWSRegion, EventSource, AdditionalEventData, ResponseElements\n| extend AccountCustomEntity = UserIdentityUserName, IPCustomEntity = SourceIpAddress"),
 	// 			QueryFrequency: to.Ptr("P1D"),
 	// 			QueryPeriod: to.Ptr("P1D"),
@@ -73,7 +73,7 @@ func ExampleAlertRuleTemplatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/alertRuleTemplates/GetAlertRuleTemplates.json
+// Generated from example definition: 2025-10-01-preview/alertRuleTemplates/GetAlertRuleTemplates.json
 func ExampleAlertRuleTemplatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,9 +106,9 @@ func ExampleAlertRuleTemplatesClient_NewListPager() {
 		// 				Properties: &armsecurityinsights.ScheduledAlertRuleTemplateProperties{
 		// 					Description: to.Ptr("This alert monitors changes to Amazon VPC (Virtual Private Cloud) settings such as new ACL entries and routes in route tables.\nMore information: https://medium.com/@GorillaStack/the-most-important-aws-cloudtrail-security-events-to-track-a5b9873f8255 \nand https://aws.amazon.com/vpc/"),
 		// 					AlertRulesCreatedByTemplateCount: to.Ptr[int32](0),
-		// 					CreatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-02-27T00:00:00Z"); return t}()),
+		// 					CreatedDateUTC: to.Ptr(time.Date(2019, time.February, 27, 0, 0, 0, 0, time.UTC)),
 		// 					DisplayName: to.Ptr("Changes to Amazon VPC settings"),
-		// 					LastUpdatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-27T00:00:00Z"); return t}()),
+		// 					LastUpdatedDateUTC: to.Ptr(time.Date(2020, time.February, 27, 0, 0, 0, 0, time.UTC)),
 		// 					Query: to.Ptr("let timeframe = 1d;\nAWSCloudTrail\n| where TimeGenerated >= ago(timeframe)\n| where EventName == \"CreateNetworkAclEntry\"\n    or EventName == \"CreateRoute\"\n| project TimeGenerated, EventName, EventTypeName, UserIdentityAccountId, UserIdentityPrincipalid, UserAgent, UserIdentityUserName, SessionMfaAuthenticated, SourceIpAddress, AWSRegion, EventSource, AdditionalEventData, ResponseElements\n| extend AccountCustomEntity = UserIdentityUserName, IPCustomEntity = SourceIpAddress"),
 		// 					QueryFrequency: to.Ptr("P1D"),
 		// 					QueryPeriod: to.Ptr("P1D"),
@@ -143,9 +143,9 @@ func ExampleAlertRuleTemplatesClient_NewListPager() {
 		// 				Properties: &armsecurityinsights.FusionAlertRuleTemplateProperties{
 		// 					Description: to.Ptr("Microsoft Sentinel uses Fusion, a correlation engine based on scalable machine learning algorithms, to automatically detect multistage attacks by identifying combinations of anomalous behaviors and suspicious activities that are observed at various stages of the kill chain. On the basis of these discoveries, Azure Sentinel generates incidents that would otherwise be very difficult to catch. By design, these incidents are low-volume, high-fidelity, and high-severity, which is why this detection is turned ON by default.\n\nSince Fusion correlates multiple signals from various products to detect advanced multistage attacks, successful Fusion detections are presented as Fusion incidents on the Microsoft Sentinel Incidents page. This rule covers the following detections:\n- Fusion for emerging threats\n- Fusion for ransomware\n- Scenario-based Fusion detections (122 scenarios)\n\nTo enable these detections, we recommend you configure the following data connectors for best results:\n- Out-of-the-box anomaly detections\n- Azure Active Directory Identity Protection\n- Azure Defender\n- Azure Defender for IoT\n- Microsoft 365 Defender\n- Microsoft Cloud App Security    \n- Microsoft Defender for Endpoint\n- Microsoft Defender for Identity\n- Microsoft Defender for Office 365\n- Palo Alto Networks\n- Scheduled analytics rules, both built-in and those created by your security analysts. Analytics rules must contain kill-chain (tactics) and entity mapping information in order to be used by Fusion.\n\nFor the full description of each detection that is supported by Fusion, go to https://aka.ms/SentinelFusion."),
 		// 					AlertRulesCreatedByTemplateCount: to.Ptr[int32](0),
-		// 					CreatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-25T00:00:00Z"); return t}()),
+		// 					CreatedDateUTC: to.Ptr(time.Date(2019, time.July, 25, 0, 0, 0, 0, time.UTC)),
 		// 					DisplayName: to.Ptr("Advanced Multi-Stage Attack Detection"),
-		// 					LastUpdatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-09T00:00:00Z"); return t}()),
+		// 					LastUpdatedDateUTC: to.Ptr(time.Date(2021, time.June, 9, 0, 0, 0, 0, time.UTC)),
 		// 					Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
 		// 					SourceSettings: []*armsecurityinsights.FusionTemplateSourceSetting{
 		// 						{
@@ -301,9 +301,9 @@ func ExampleAlertRuleTemplatesClient_NewListPager() {
 		// 				Properties: &armsecurityinsights.MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties{
 		// 					Description: to.Ptr("Create incidents based on all alerts generated in Microsoft Cloud App Security"),
 		// 					AlertRulesCreatedByTemplateCount: to.Ptr[int32](0),
-		// 					CreatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-07-16T00:00:00Z"); return t}()),
+		// 					CreatedDateUTC: to.Ptr(time.Date(2019, time.July, 16, 0, 0, 0, 0, time.UTC)),
 		// 					DisplayName: to.Ptr("Create incidents based on Microsoft Cloud App Security alerts"),
-		// 					LastUpdatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-27T00:00:00Z"); return t}()),
+		// 					LastUpdatedDateUTC: to.Ptr(time.Date(2020, time.February, 27, 0, 0, 0, 0, time.UTC)),
 		// 					ProductFilter: to.Ptr(armsecurityinsights.MicrosoftSecurityProductNameMicrosoftCloudAppSecurity),
 		// 					Status: to.Ptr(armsecurityinsights.TemplateStatusAvailable),
 		// 				},

@@ -4,6 +4,10 @@
 
 package armsecurityinsights
 
+const (
+	version20251001Preview string = "2025-10-01-preview"
+)
+
 // ActionType - The type of the automation rule action.
 type ActionType string
 
@@ -1930,6 +1934,30 @@ func PossibleIngestionModeValues() []IngestionMode {
 	}
 }
 
+// JobProvisioningState - The provisioning state of the workspace manager job
+type JobProvisioningState string
+
+const (
+	// JobProvisioningStateCanceled - Canceled
+	JobProvisioningStateCanceled JobProvisioningState = "Canceled"
+	// JobProvisioningStateFailed - Failed
+	JobProvisioningStateFailed JobProvisioningState = "Failed"
+	// JobProvisioningStateInProgress - InProgress
+	JobProvisioningStateInProgress JobProvisioningState = "InProgress"
+	// JobProvisioningStateSucceeded - Succeeded
+	JobProvisioningStateSucceeded JobProvisioningState = "Succeeded"
+)
+
+// PossibleJobProvisioningStateValues returns the possible values for the JobProvisioningState const type.
+func PossibleJobProvisioningStateValues() []JobProvisioningState {
+	return []JobProvisioningState{
+		JobProvisioningStateCanceled,
+		JobProvisioningStateFailed,
+		JobProvisioningStateInProgress,
+		JobProvisioningStateSucceeded,
+	}
+}
+
 // KillChainIntent - The intent of the alert.
 type KillChainIntent string
 
@@ -2117,6 +2145,24 @@ func PossibleMatchingMethodValues() []MatchingMethod {
 		MatchingMethodAllEntities,
 		MatchingMethodAnyAlert,
 		MatchingMethodSelected,
+	}
+}
+
+// MetadataDependencyOperator - Operator used for list of dependencies in criteria array.
+type MetadataDependencyOperator string
+
+const (
+	// MetadataDependencyOperatorAND - AND
+	MetadataDependencyOperatorAND MetadataDependencyOperator = "AND"
+	// MetadataDependencyOperatorOR - OR
+	MetadataDependencyOperatorOR MetadataDependencyOperator = "OR"
+)
+
+// PossibleMetadataDependencyOperatorValues returns the possible values for the MetadataDependencyOperator const type.
+func PossibleMetadataDependencyOperatorValues() []MetadataDependencyOperator {
+	return []MetadataDependencyOperator{
+		MetadataDependencyOperatorAND,
+		MetadataDependencyOperatorOR,
 	}
 }
 
@@ -2486,6 +2532,24 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateFailed,
 		ProvisioningStateInProgress,
 		ProvisioningStateSucceeded,
+	}
+}
+
+// PullRequestState - Status of the pull request.
+type PullRequestState string
+
+const (
+	// PullRequestStateClosed - Closed
+	PullRequestStateClosed PullRequestState = "Closed"
+	// PullRequestStateOpen - Open
+	PullRequestStateOpen PullRequestState = "Open"
+)
+
+// PossiblePullRequestStateValues returns the possible values for the PullRequestState const type.
+func PossiblePullRequestStateValues() []PullRequestState {
+	return []PullRequestState{
+		PullRequestStateClosed,
+		PullRequestStateOpen,
 	}
 }
 
@@ -3084,5 +3148,38 @@ func PossibleWarningCodeValues() []WarningCode {
 		WarningCodeSourceControlWarningDeleteRoleAssignment,
 		WarningCodeSourceControlWarningDeleteServicePrincipal,
 		WarningCodeSourceControlWarningDeleteWorkflowAndSecretFromGitHub,
+	}
+}
+
+// WatchlistProvisioningState - The provisioning state of the watchlist
+type WatchlistProvisioningState string
+
+const (
+	// WatchlistProvisioningStateCanceled - Canceled
+	WatchlistProvisioningStateCanceled WatchlistProvisioningState = "Canceled"
+	// WatchlistProvisioningStateDeleting - Deleting
+	WatchlistProvisioningStateDeleting WatchlistProvisioningState = "Deleting"
+	// WatchlistProvisioningStateFailed - Failed
+	WatchlistProvisioningStateFailed WatchlistProvisioningState = "Failed"
+	// WatchlistProvisioningStateInProgress - InProgress
+	WatchlistProvisioningStateInProgress WatchlistProvisioningState = "InProgress"
+	// WatchlistProvisioningStateNew - New
+	WatchlistProvisioningStateNew WatchlistProvisioningState = "New"
+	// WatchlistProvisioningStateSucceeded - Succeeded
+	WatchlistProvisioningStateSucceeded WatchlistProvisioningState = "Succeeded"
+	// WatchlistProvisioningStateUploading - Uploading
+	WatchlistProvisioningStateUploading WatchlistProvisioningState = "Uploading"
+)
+
+// PossibleWatchlistProvisioningStateValues returns the possible values for the WatchlistProvisioningState const type.
+func PossibleWatchlistProvisioningStateValues() []WatchlistProvisioningState {
+	return []WatchlistProvisioningState{
+		WatchlistProvisioningStateCanceled,
+		WatchlistProvisioningStateDeleting,
+		WatchlistProvisioningStateFailed,
+		WatchlistProvisioningStateInProgress,
+		WatchlistProvisioningStateNew,
+		WatchlistProvisioningStateSucceeded,
+		WatchlistProvisioningStateUploading,
 	}
 }

@@ -16,12 +16,10 @@ import (
 	"strings"
 )
 
-const defaultEntityRelationsClientVersion string = "2025-07-01-preview"
-
 // EntityRelationsClient contains the methods for the EntityRelations group.
 // Don't use this type directly, use NewEntityRelationsClient() instead.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-10-01-preview
 type EntityRelationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -65,12 +63,7 @@ func (client *EntityRelationsClient) GetRelation(ctx context.Context, resourceGr
 	if err != nil {
 		return EntityRelationsClientGetRelationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EntityRelationsClientGetRelationResponse{}, err
-	}
-	resp, err := client.getRelationHandleResponse(httpResp)
-	return resp, err
+	return client.getRelationHandleResponse(httpResp, http.StatusOK)
 }
 
 // getRelationCreateRequest creates the GetRelation request.
@@ -101,15 +94,18 @@ func (client *EntityRelationsClient) getRelationCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultEntityRelationsClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getRelationHandleResponse handles the GetRelation response.
-func (client *EntityRelationsClient) getRelationHandleResponse(resp *http.Response) (EntityRelationsClientGetRelationResponse, error) {
+func (client *EntityRelationsClient) getRelationHandleResponse(resp *http.Response, successCodes ...int) (EntityRelationsClientGetRelationResponse, error) {
 	result := EntityRelationsClientGetRelationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Relation); err != nil {
 		return EntityRelationsClientGetRelationResponse{}, err
 	}

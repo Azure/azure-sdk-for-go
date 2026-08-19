@@ -16,12 +16,10 @@ import (
 	"strings"
 )
 
-const defaultGetClientVersion string = "2025-07-01-preview"
-
 // GetClient contains the methods for the Get group.
 // Don't use this type directly, use NewGetClient() instead.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-10-01-preview
 type GetClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,12 +62,7 @@ func (client *GetClient) SingleRecommendation(ctx context.Context, resourceGroup
 	if err != nil {
 		return GetClientSingleRecommendationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetClientSingleRecommendationResponse{}, err
-	}
-	resp, err := client.singleRecommendationHandleResponse(httpResp)
-	return resp, err
+	return client.singleRecommendationHandleResponse(httpResp, http.StatusOK)
 }
 
 // singleRecommendationCreateRequest creates the SingleRecommendation request.
@@ -96,15 +89,18 @@ func (client *GetClient) singleRecommendationCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultGetClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // singleRecommendationHandleResponse handles the SingleRecommendation response.
-func (client *GetClient) singleRecommendationHandleResponse(resp *http.Response) (GetClientSingleRecommendationResponse, error) {
+func (client *GetClient) singleRecommendationHandleResponse(resp *http.Response, successCodes ...int) (GetClientSingleRecommendationResponse, error) {
 	result := GetClientSingleRecommendationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Recommendation); err != nil {
 		return GetClientSingleRecommendationResponse{}, err
 	}

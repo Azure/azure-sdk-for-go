@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentComments/IncidentComments_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentComments/IncidentComments_CreateOrUpdate.json
 func ExampleIncidentCommentsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -47,15 +47,15 @@ func ExampleIncidentCommentsClient_CreateOrUpdate() {
 	// 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 	// 				UserPrincipalName: to.Ptr("john@contoso.com"),
 	// 			},
-	// 			CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-03T13:15:30Z"); return t}()),
+	// 			CreatedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2019, time.January, 3, 13, 15, 30, 0, time.UTC)),
 	// 			Message: to.Ptr("Some message"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentComments/IncidentComments_Delete.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentComments/IncidentComments_Delete.json
 func ExampleIncidentCommentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleIncidentCommentsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentComments/IncidentComments_Get.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentComments/IncidentComments_Get.json
 func ExampleIncidentCommentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,15 +108,15 @@ func ExampleIncidentCommentsClient_Get() {
 	// 				ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 	// 				UserPrincipalName: to.Ptr("john@contoso.com"),
 	// 			},
-	// 			CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-03T11:10:30Z"); return t}()),
+	// 			CreatedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2019, time.January, 3, 11, 10, 30, 0, time.UTC)),
 	// 			Message: to.Ptr("Some message"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/IncidentComments/IncidentComments_List.json
+// Generated from example definition: 2025-10-01-preview/incidents/IncidentComments/IncidentComments_List.json
 func ExampleIncidentCommentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,8 +153,8 @@ func ExampleIncidentCommentsClient_NewListPager() {
 		// 						ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
 		// 						UserPrincipalName: to.Ptr("john@contoso.com"),
 		// 					},
-		// 					CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
-		// 					LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-03T11:10:30Z"); return t}()),
+		// 					CreatedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
+		// 					LastModifiedTimeUTC: to.Ptr(time.Date(2019, time.January, 3, 11, 10, 30, 0, time.UTC)),
 		// 					Message: to.Ptr("Some message"),
 		// 				},
 		// 			},

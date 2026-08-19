@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/incidents/relations/CreateIncidentRelation.json
+// Generated from example definition: 2025-10-01-preview/incidents/relations/CreateIncidentRelation.json
 func ExampleIncidentRelationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleIncidentRelationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/relations/DeleteIncidentRelation.json
+// Generated from example definition: 2025-10-01-preview/incidents/relations/DeleteIncidentRelation.json
 func ExampleIncidentRelationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleIncidentRelationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/relations/GetIncidentRelationByName.json
+// Generated from example definition: 2025-10-01-preview/incidents/relations/GetIncidentRelationByName.json
 func ExampleIncidentRelationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleIncidentRelationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/incidents/relations/GetAllIncidentRelations.json
+// Generated from example definition: 2025-10-01-preview/incidents/relations/GetAllIncidentRelations.json
 func ExampleIncidentRelationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

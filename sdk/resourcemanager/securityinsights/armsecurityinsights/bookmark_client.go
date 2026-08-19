@@ -16,12 +16,10 @@ import (
 	"strings"
 )
 
-const defaultBookmarkClientVersion string = "2025-07-01-preview"
-
 // BookmarkClient contains the methods for the Bookmark group.
 // Don't use this type directly, use NewBookmarkClient() instead.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-10-01-preview
 type BookmarkClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,12 +62,7 @@ func (client *BookmarkClient) Expand(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return BookmarkClientExpandResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BookmarkClientExpandResponse{}, err
-	}
-	resp, err := client.expandHandleResponse(httpResp)
-	return resp, err
+	return client.expandHandleResponse(httpResp, http.StatusOK)
 }
 
 // expandCreateRequest creates the Expand request.
@@ -96,7 +89,7 @@ func (client *BookmarkClient) expandCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultBookmarkClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -107,8 +100,11 @@ func (client *BookmarkClient) expandCreateRequest(ctx context.Context, resourceG
 }
 
 // expandHandleResponse handles the Expand response.
-func (client *BookmarkClient) expandHandleResponse(resp *http.Response) (BookmarkClientExpandResponse, error) {
+func (client *BookmarkClient) expandHandleResponse(resp *http.Response, successCodes ...int) (BookmarkClientExpandResponse, error) {
 	result := BookmarkClientExpandResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BookmarkExpandResponse); err != nil {
 		return BookmarkClientExpandResponse{}, err
 	}

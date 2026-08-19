@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/workspaceManagerAssignments/CreateJob.json
+// Generated from example definition: 2025-10-01-preview/workspaceManagerAssignments/CreateJob.json
 func ExampleWorkspaceManagerAssignmentJobsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,14 +36,14 @@ func ExampleWorkspaceManagerAssignmentJobsClient_Create() {
 	// 		Etag: to.Ptr("\"f20a2523-7817-47b5-a3b2-21539c00c788\""),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/workspaceManagerAssignments/47cdc5f5-37c4-47b5-bd5f-83c84b8bdd58/jobs/cfbe1338-8276-4d5d-8b96-931117f9fa0e"),
 	// 		Properties: &armsecurityinsights.JobProperties{
-	// 			ProvisioningState: to.Ptr(armsecurityinsights.ProvisioningStateInProgress),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-14T04:47:52.9614956Z"); return t}()),
+	// 			ProvisioningState: to.Ptr(armsecurityinsights.JobProvisioningStateInProgress),
+	// 			StartTime: to.Ptr(time.Date(2022, time.June, 14, 4, 47, 52, 961495600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/workspaceManagerAssignments/DeleteJob.json
+// Generated from example definition: 2025-10-01-preview/workspaceManagerAssignments/DeleteJob.json
 func ExampleWorkspaceManagerAssignmentJobsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleWorkspaceManagerAssignmentJobsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/workspaceManagerAssignments/GetJob.json
+// Generated from example definition: 2025-10-01-preview/workspaceManagerAssignments/GetJob.json
 func ExampleWorkspaceManagerAssignmentJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,10 +90,10 @@ func ExampleWorkspaceManagerAssignmentJobsClient_Get() {
 	// 		Etag: to.Ptr("\"f20a2523-7817-47b5-a3b2-21539c00c788\""),
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/workspaceManagerAssignments/47cdc5f5-37c4-47b5-bd5f-83c84b8bdd58/jobs/cfbe1338-8276-4d5d-8b96-931117f9fa0e"),
 	// 		Properties: &armsecurityinsights.JobProperties{
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-14T04:52:52.9614956Z"); return t}()),
+	// 			EndTime: to.Ptr(time.Date(2022, time.June, 14, 4, 52, 52, 961495600, time.UTC)),
 	// 			Items: []*armsecurityinsights.JobItem{
 	// 				{
-	// 					ExecutionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-14T04:49:52.9614956Z"); return t}()),
+	// 					ExecutionTime: to.Ptr(time.Date(2022, time.June, 14, 4, 49, 52, 961495600, time.UTC)),
 	// 					ResourceID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/microsoftSecurityIncidentCreationRuleExampleOne"),
 	// 					Status: to.Ptr(armsecurityinsights.StatusSucceeded),
 	// 				},
@@ -104,19 +104,19 @@ func ExampleWorkspaceManagerAssignmentJobsClient_Get() {
 	// 							MemberResourceName: to.Ptr("f5fa104e-c0e3-4747-9182-d342dc048a9e"),
 	// 						},
 	// 					},
-	// 					ExecutionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-14T04:50:52.9614956Z"); return t}()),
+	// 					ExecutionTime: to.Ptr(time.Date(2022, time.June, 14, 4, 50, 52, 961495600, time.UTC)),
 	// 					ResourceID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/microsoftSecurityIncidentCreationRuleExampleTwo"),
 	// 					Status: to.Ptr(armsecurityinsights.StatusFailed),
 	// 				},
 	// 			},
-	// 			ProvisioningState: to.Ptr(armsecurityinsights.ProvisioningStateFailed),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-14T04:47:52.9614956Z"); return t}()),
+	// 			ProvisioningState: to.Ptr(armsecurityinsights.JobProvisioningStateFailed),
+	// 			StartTime: to.Ptr(time.Date(2022, time.June, 14, 4, 47, 52, 961495600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/workspaceManagerAssignments/GetAllJobs.json
+// Generated from example definition: 2025-10-01-preview/workspaceManagerAssignments/GetAllJobs.json
 func ExampleWorkspaceManagerAssignmentJobsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,10 +147,10 @@ func ExampleWorkspaceManagerAssignmentJobsClient_NewListPager() {
 		// 				Etag: to.Ptr("\"f20a2523-7817-47b5-a3b2-21539c00c788\""),
 		// 				ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/workspaceManagerAssignments/47cdc5f5-37c4-47b5-bd5f-83c84b8bdd58/jobs/cfbe1338-8276-4d5d-8b96-931117f9fa0e"),
 		// 				Properties: &armsecurityinsights.JobProperties{
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-14T04:52:52.9614956Z"); return t}()),
+		// 					EndTime: to.Ptr(time.Date(2022, time.June, 14, 4, 52, 52, 961495600, time.UTC)),
 		// 					Items: []*armsecurityinsights.JobItem{
 		// 						{
-		// 							ExecutionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-14T04:49:52.9614956Z"); return t}()),
+		// 							ExecutionTime: to.Ptr(time.Date(2022, time.June, 14, 4, 49, 52, 961495600, time.UTC)),
 		// 							ResourceID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/microsoftSecurityIncidentCreationRuleExampleOne"),
 		// 							Status: to.Ptr(armsecurityinsights.StatusSucceeded),
 		// 						},
@@ -161,13 +161,13 @@ func ExampleWorkspaceManagerAssignmentJobsClient_NewListPager() {
 		// 									MemberResourceName: to.Ptr("f5fa104e-c0e3-4747-9182-d342dc048a9e"),
 		// 								},
 		// 							},
-		// 							ExecutionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-14T04:50:52.9614956Z"); return t}()),
+		// 							ExecutionTime: to.Ptr(time.Date(2022, time.June, 14, 4, 50, 52, 961495600, time.UTC)),
 		// 							ResourceID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalInsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/microsoftSecurityIncidentCreationRuleExampleTwo"),
 		// 							Status: to.Ptr(armsecurityinsights.StatusFailed),
 		// 						},
 		// 					},
-		// 					ProvisioningState: to.Ptr(armsecurityinsights.ProvisioningStateFailed),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-06-14T04:47:52.9614956Z"); return t}()),
+		// 					ProvisioningState: to.Ptr(armsecurityinsights.JobProvisioningStateFailed),
+		// 					StartTime: to.Ptr(time.Date(2022, time.June, 14, 4, 47, 52, 961495600, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

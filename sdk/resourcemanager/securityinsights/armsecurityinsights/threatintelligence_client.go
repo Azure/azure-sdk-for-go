@@ -16,12 +16,10 @@ import (
 	"strings"
 )
 
-const defaultThreatIntelligenceClientVersion string = "2025-07-01-preview"
-
 // ThreatIntelligenceClient contains the methods for the ThreatIntelligence group.
 // Don't use this type directly, use NewThreatIntelligenceClient() instead.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-10-01-preview
 type ThreatIntelligenceClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,12 +62,7 @@ func (client *ThreatIntelligenceClient) Count(ctx context.Context, resourceGroup
 	if err != nil {
 		return ThreatIntelligenceClientCountResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ThreatIntelligenceClientCountResponse{}, err
-	}
-	resp, err := client.countHandleResponse(httpResp)
-	return resp, err
+	return client.countHandleResponse(httpResp, http.StatusOK)
 }
 
 // countCreateRequest creates the Count request.
@@ -96,7 +89,7 @@ func (client *ThreatIntelligenceClient) countCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultThreatIntelligenceClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Query != nil {
@@ -110,8 +103,11 @@ func (client *ThreatIntelligenceClient) countCreateRequest(ctx context.Context, 
 }
 
 // countHandleResponse handles the Count response.
-func (client *ThreatIntelligenceClient) countHandleResponse(resp *http.Response) (ThreatIntelligenceClientCountResponse, error) {
+func (client *ThreatIntelligenceClient) countHandleResponse(resp *http.Response, successCodes ...int) (ThreatIntelligenceClientCountResponse, error) {
 	result := ThreatIntelligenceClientCountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThreatIntelligenceCount); err != nil {
 		return ThreatIntelligenceClientCountResponse{}, err
 	}
@@ -135,58 +131,72 @@ func (client *ThreatIntelligenceClient) NewQueryPager(resourceGroupName string, 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.queryCreateRequest(ctx, resourceGroupName, workspaceName, tiType, options)
-			}, nil)
+			req, err := client.queryCreateRequest(ctx, resourceGroupName, workspaceName, tiType, nextLink, options)
 			if err != nil {
 				return ThreatIntelligenceClientQueryResponse{}, err
 			}
-			return client.queryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ThreatIntelligenceClientQueryResponse{}, err
+			}
+			return client.queryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // queryCreateRequest creates the Query request.
-func (client *ThreatIntelligenceClient) queryCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, tiType TiType, options *ThreatIntelligenceClientQueryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/{tiType}/query"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ThreatIntelligenceClient) queryCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, tiType TiType, nextLink string, options *ThreatIntelligenceClientQueryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/{tiType}/query"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		if tiType == "" {
+			return nil, errors.New("parameter tiType cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{tiType}", url.PathEscape(string(tiType)))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if tiType == "" {
-		return nil, errors.New("parameter tiType cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{tiType}", url.PathEscape(string(tiType)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultThreatIntelligenceClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.Query != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.Query); err != nil {
-			return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251001Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.Query != nil {
+			req.Raw().Header["Content-Type"] = []string{"application/json"}
+			if err := runtime.MarshalAsJSON(req, *options.Query); err != nil {
+				return nil, err
+			}
+			return req, nil
 		}
-		return req, nil
 	}
 	return req, nil
 }
 
 // queryHandleResponse handles the Query response.
-func (client *ThreatIntelligenceClient) queryHandleResponse(resp *http.Response) (ThreatIntelligenceClientQueryResponse, error) {
+func (client *ThreatIntelligenceClient) queryHandleResponse(resp *http.Response, successCodes ...int) (ThreatIntelligenceClientQueryResponse, error) {
 	result := ThreatIntelligenceClientQueryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThreatIntelligenceList); err != nil {
 		return ThreatIntelligenceClientQueryResponse{}, err
 	}

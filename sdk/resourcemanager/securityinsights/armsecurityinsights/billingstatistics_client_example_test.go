@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/billingStatistics/GetBillingStatistic.json
+// Generated from example definition: 2025-10-01-preview/billingStatistics/GetBillingStatistic.json
 func ExampleBillingStatisticsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleBillingStatisticsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/billingStatistics/GetAllBillingStatistics.json
+// Generated from example definition: 2025-10-01-preview/billingStatistics/GetAllBillingStatistics.json
 func ExampleBillingStatisticsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/fileImports/CreateFileImport.json
+// Generated from example definition: 2025-10-01-preview/fileImports/CreateFileImport.json
 func ExampleFileImportsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,8 +48,8 @@ func ExampleFileImportsClient_Create() {
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/FileImports/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Properties: &armsecurityinsights.FileImportProperties{
 	// 			ContentType: to.Ptr(armsecurityinsights.FileImportContentTypeStixIndicator),
-	// 			CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-04T20:05:59.847136Z"); return t}()),
-	// 			FilesValidUntilTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-05T20:05:59.8471361Z"); return t}()),
+	// 			CreatedTimeUTC: to.Ptr(time.Date(2022, time.April, 4, 20, 5, 59, 847136000, time.UTC)),
+	// 			FilesValidUntilTimeUTC: to.Ptr(time.Date(2022, time.April, 5, 20, 5, 59, 847136100, time.UTC)),
 	// 			ImportFile: &armsecurityinsights.FileMetadata{
 	// 				DeleteStatus: to.Ptr(armsecurityinsights.DeleteStatusNotDeleted),
 	// 				FileContentURI: to.Ptr("https://sentinelimportswus2.blob.core.windows.net/78c2e51a-3cd3-4ca0-a2d4-e7effb9a05fe/43967a5e-47a7-474e-afb8-2081e9b99ca1/fileName.json?skoid=<skoid>&sktid=<sktid>&skt=2022-03-25T21%3A12%3A51Z&ske=2022-03-25T22%3A12%3A51Z&sks=b&skv=2020-10-02&sv=2020-08-04&st=2022-03-25T21%3A12%3A51Z&se=2022-03-25T22%3A12%3A51Z&sr=b&sp=c&sig=<signature>"),
@@ -57,7 +57,7 @@ func ExampleFileImportsClient_Create() {
 	// 				FileName: to.Ptr("myFile.json"),
 	// 				FileSize: to.Ptr[int32](4653),
 	// 			},
-	// 			ImportValidUntilTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-04T20:05:59.8471366Z"); return t}()),
+	// 			ImportValidUntilTimeUTC: to.Ptr(time.Date(2022, time.May, 4, 20, 5, 59, 847136600, time.UTC)),
 	// 			IngestionMode: to.Ptr(armsecurityinsights.IngestionModeIngestAnyValidRecords),
 	// 			Source: to.Ptr("mySource"),
 	// 			State: to.Ptr(armsecurityinsights.FileImportStateWaitingForUpload),
@@ -66,7 +66,7 @@ func ExampleFileImportsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/fileImports/DeleteFileImport.json
+// Generated from example definition: 2025-10-01-preview/fileImports/DeleteFileImport.json
 func ExampleFileImportsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleFileImportsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/fileImports/GetFileImportById.json
+// Generated from example definition: 2025-10-01-preview/fileImports/GetFileImportById.json
 func ExampleFileImportsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,8 +112,8 @@ func ExampleFileImportsClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/FileImports/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 	// 		Properties: &armsecurityinsights.FileImportProperties{
 	// 			ContentType: to.Ptr(armsecurityinsights.FileImportContentTypeStixIndicator),
-	// 			CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-25T21:02:38.8350631Z"); return t}()),
-	// 			FilesValidUntilTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-26T21:02:38.8350632Z"); return t}()),
+	// 			CreatedTimeUTC: to.Ptr(time.Date(2022, time.March, 25, 21, 2, 38, 835063100, time.UTC)),
+	// 			FilesValidUntilTimeUTC: to.Ptr(time.Date(2022, time.March, 26, 21, 2, 38, 835063200, time.UTC)),
 	// 			ImportFile: &armsecurityinsights.FileMetadata{
 	// 				DeleteStatus: to.Ptr(armsecurityinsights.DeleteStatusNotDeleted),
 	// 				FileContentURI: to.Ptr("https://sentinelimportswus2.blob.core.windows.net/78c2e51a-3cd3-4ca0-a2d4-e7effb9a05fe/43967a5e-47a7-474e-afb8-2081e9b99ca1/myFile.json?skoid=<skoid>&sktid=<sktid>&skt=2022-03-25T21%3A12%3A51Z&ske=2022-03-25T22%3A12%3A51Z&sks=b&skv=2020-10-02&sv=2020-08-04&st=2022-03-25T21%3A12%3A51Z&se=2022-03-25T22%3A12%3A51Z&sr=b&sp=c&sig=<signature>"),
@@ -121,7 +121,7 @@ func ExampleFileImportsClient_Get() {
 	// 				FileName: to.Ptr("myFile.json"),
 	// 				FileSize: to.Ptr[int32](5146),
 	// 			},
-	// 			ImportValidUntilTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-24T21:02:38.8350636Z"); return t}()),
+	// 			ImportValidUntilTimeUTC: to.Ptr(time.Date(2022, time.April, 24, 21, 2, 38, 835063600, time.UTC)),
 	// 			IngestedRecordCount: to.Ptr[int32](5),
 	// 			IngestionMode: to.Ptr(armsecurityinsights.IngestionModeIngestAnyValidRecords),
 	// 			Source: to.Ptr("mySource"),
@@ -133,7 +133,7 @@ func ExampleFileImportsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/fileImports/GetFileImports.json
+// Generated from example definition: 2025-10-01-preview/fileImports/GetFileImports.json
 func ExampleFileImportsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,15 +166,15 @@ func ExampleFileImportsClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/FileImports/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
 		// 				Properties: &armsecurityinsights.FileImportProperties{
 		// 					ContentType: to.Ptr(armsecurityinsights.FileImportContentTypeStixIndicator),
-		// 					CreatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-25T21:02:38.8350631Z"); return t}()),
-		// 					FilesValidUntilTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-26T21:02:38.8350632Z"); return t}()),
+		// 					CreatedTimeUTC: to.Ptr(time.Date(2022, time.March, 25, 21, 2, 38, 835063100, time.UTC)),
+		// 					FilesValidUntilTimeUTC: to.Ptr(time.Date(2022, time.March, 26, 21, 2, 38, 835063200, time.UTC)),
 		// 					ImportFile: &armsecurityinsights.FileMetadata{
 		// 						DeleteStatus: to.Ptr(armsecurityinsights.DeleteStatusNotDeleted),
 		// 						FileFormat: to.Ptr(armsecurityinsights.FileFormatJSON),
 		// 						FileName: to.Ptr("fileName.json"),
 		// 						FileSize: to.Ptr[int32](5146),
 		// 					},
-		// 					ImportValidUntilTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-24T21:02:38.8350636Z"); return t}()),
+		// 					ImportValidUntilTimeUTC: to.Ptr(time.Date(2022, time.April, 24, 21, 2, 38, 835063600, time.UTC)),
 		// 					IngestedRecordCount: to.Ptr[int32](5),
 		// 					IngestionMode: to.Ptr(armsecurityinsights.IngestionModeIngestAnyValidRecords),
 		// 					Source: to.Ptr("mySource"),

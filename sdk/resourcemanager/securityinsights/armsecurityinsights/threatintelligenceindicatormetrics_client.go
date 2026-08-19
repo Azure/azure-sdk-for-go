@@ -16,12 +16,10 @@ import (
 	"strings"
 )
 
-const defaultThreatIntelligenceIndicatorMetricsClientVersion string = "2025-07-01-preview"
-
 // ThreatIntelligenceIndicatorMetricsClient contains the methods for the ThreatIntelligenceIndicatorMetrics group.
 // Don't use this type directly, use NewThreatIntelligenceIndicatorMetricsClient() instead.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-10-01-preview
 type ThreatIntelligenceIndicatorMetricsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,12 +61,7 @@ func (client *ThreatIntelligenceIndicatorMetricsClient) List(ctx context.Context
 	if err != nil {
 		return ThreatIntelligenceIndicatorMetricsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ThreatIntelligenceIndicatorMetricsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -91,15 +84,18 @@ func (client *ThreatIntelligenceIndicatorMetricsClient) listCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultThreatIntelligenceIndicatorMetricsClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ThreatIntelligenceIndicatorMetricsClient) listHandleResponse(resp *http.Response) (ThreatIntelligenceIndicatorMetricsClientListResponse, error) {
+func (client *ThreatIntelligenceIndicatorMetricsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ThreatIntelligenceIndicatorMetricsClientListResponse, error) {
 	result := ThreatIntelligenceIndicatorMetricsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThreatIntelligenceMetricsList); err != nil {
 		return ThreatIntelligenceIndicatorMetricsClientListResponse{}, err
 	}

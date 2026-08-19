@@ -16,12 +16,10 @@ import (
 	"strings"
 )
 
-const defaultTriggeredAnalyticsRuleRunClientVersion string = "2025-07-01-preview"
-
 // TriggeredAnalyticsRuleRunClient contains the methods for the TriggeredAnalyticsRuleRun group.
 // Don't use this type directly, use NewTriggeredAnalyticsRuleRunClient() instead.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-10-01-preview
 type TriggeredAnalyticsRuleRunClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,12 +62,7 @@ func (client *TriggeredAnalyticsRuleRunClient) Get(ctx context.Context, resource
 	if err != nil {
 		return TriggeredAnalyticsRuleRunClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TriggeredAnalyticsRuleRunClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -96,15 +89,18 @@ func (client *TriggeredAnalyticsRuleRunClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultTriggeredAnalyticsRuleRunClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *TriggeredAnalyticsRuleRunClient) getHandleResponse(resp *http.Response) (TriggeredAnalyticsRuleRunClientGetResponse, error) {
+func (client *TriggeredAnalyticsRuleRunClient) getHandleResponse(resp *http.Response, successCodes ...int) (TriggeredAnalyticsRuleRunClientGetResponse, error) {
 	result := TriggeredAnalyticsRuleRunClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggeredAnalyticsRuleRun); err != nil {
 		return TriggeredAnalyticsRuleRunClientGetResponse{}, err
 	}

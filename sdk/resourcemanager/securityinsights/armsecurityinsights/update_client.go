@@ -16,12 +16,10 @@ import (
 	"strings"
 )
 
-const defaultUpdateClientVersion string = "2025-07-01-preview"
-
 // UpdateClient contains the methods for the Update group.
 // Don't use this type directly, use NewUpdateClient() instead.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-10-01-preview
 type UpdateClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,12 +62,7 @@ func (client *UpdateClient) Recommendation(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return UpdateClientRecommendationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpdateClientRecommendationResponse{}, err
-	}
-	resp, err := client.recommendationHandleResponse(httpResp)
-	return resp, err
+	return client.recommendationHandleResponse(httpResp, http.StatusOK)
 }
 
 // recommendationCreateRequest creates the Recommendation request.
@@ -96,7 +89,7 @@ func (client *UpdateClient) recommendationCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultUpdateClientVersion)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -107,8 +100,11 @@ func (client *UpdateClient) recommendationCreateRequest(ctx context.Context, res
 }
 
 // recommendationHandleResponse handles the Recommendation response.
-func (client *UpdateClient) recommendationHandleResponse(resp *http.Response) (UpdateClientRecommendationResponse, error) {
+func (client *UpdateClient) recommendationHandleResponse(resp *http.Response, successCodes ...int) (UpdateClientRecommendationResponse, error) {
 	result := UpdateClientRecommendationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Recommendation); err != nil {
 		return UpdateClientRecommendationResponse{}, err
 	}

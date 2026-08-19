@@ -133,6 +133,12 @@ type AkriConnectorTemplateDiagnostics struct {
 	Logs *AkriConnectorsDiagnosticsLogs
 }
 
+// AkriConnectorTemplateExecAction properties. Describes a command to execute in a container.
+type AkriConnectorTemplateExecAction struct {
+	// REQUIRED; The command to execute inside the container. Exit status of 0 is treated as healthy, non-zero is unhealthy.
+	Command []*string
+}
+
 // AkriConnectorTemplateManagedConfiguration properties.
 type AkriConnectorTemplateManagedConfiguration struct {
 	// REQUIRED; The managed configuration settings.
@@ -216,6 +222,27 @@ type AkriConnectorTemplateProperties struct {
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *ProvisioningState
+}
+
+// AkriConnectorTemplateReadinessProbe properties. Defines a readiness probe for the connector container.
+type AkriConnectorTemplateReadinessProbe struct {
+	// Exec specifies a command to execute in the container.
+	Exec *AkriConnectorTemplateExecAction
+
+	// Minimum consecutive failures for the probe to be considered failed after having succeeded.
+	FailureThreshold *int32
+
+	// Number of seconds after the container has started before the probe is initiated.
+	InitialDelaySeconds *int32
+
+	// How often (in seconds) to perform the probe.
+	PeriodSeconds *int32
+
+	// Minimum consecutive successes for the probe to be considered successful after having failed.
+	SuccessThreshold *int32
+
+	// Number of seconds after which the probe times out.
+	TimeoutSeconds *int32
 }
 
 // AkriConnectorTemplateResource - AkriConnectorTemplate resource.
@@ -310,6 +337,10 @@ type AkriConnectorTemplateRuntimeImageConfigurationSettings struct {
 
 	// The pull policy of the image.
 	ImagePullPolicy *AkriConnectorsImagePullPolicy
+
+	// Optional readiness probe for the connector container. When set, the operator injects this into the pod spec and uses the
+	// pod's `Ready` condition for health reporting instead of crash-based detection.
+	ReadinessProbe *AkriConnectorTemplateReadinessProbe
 
 	// The registry settings for the image. You can omit this field if using the default docker hub repository or using a local
 	// image.
@@ -920,6 +951,13 @@ type BrokerProperties struct {
 	// proportionally increases the amount of CPU resources requested. If this setting is enabled and there are insufficient CPU
 	// resources, an error will be emitted.
 	GenerateResourceLimits *GenerateResourceLimits
+
+	// Handling of high-priority messages in the event that regular-priority messages are being backpressured.
+	// When set to "Accept", the broker continues to accept high-priority messages even while regular-priority messages are rejected
+	// due to backpressure.
+	// When set to "Reject", backpressure also affects high-priority messages.
+	// Defaults to "Accept".
+	HighPriorityMessagesBackpressureHandling *HighPriorityMessagesBackpressureHandling
 
 	// Memory profile of Broker.
 	MemoryProfile *BrokerMemoryProfile

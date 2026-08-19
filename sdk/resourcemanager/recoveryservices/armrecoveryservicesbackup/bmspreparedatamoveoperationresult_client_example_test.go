@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/BackupDataMove/PrepareDataMoveOperationResult_Get.json
+// Generated from example definition: 2026-07-01/BackupDataMove/PrepareDataMoveOperationResult_Get.json
 func ExampleBMSPrepareDataMoveOperationResultClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,7 +30,7 @@ func ExampleBMSPrepareDataMoveOperationResultClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecoveryservicesbackup.BMSPrepareDataMoveOperationResultClientGetResponse{
-	// 	PrepareDataMoveResponse: &armrecoveryservicesbackup.PrepareDataMoveResponse{
+	// 	VaultStorageConfigOperationResultResponseClassification: &armrecoveryservicesbackup.PrepareDataMoveResponse{
 	// 		ObjectType: to.Ptr("PrepareDataMoveResponse"),
 	// 	},
 	// }

@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/NetworkInterfaceIPConfigurationGet.json
+// Generated from example definition: 2025-09-01/NetworkInterfaceIPConfigurationGet.json
 func ExampleInterfaceIPConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleInterfaceIPConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkInterfaceIPConfigurationList.json
+// Generated from example definition: 2025-09-01/NetworkInterfaceIPConfigurationList.json
 func ExampleInterfaceIPConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

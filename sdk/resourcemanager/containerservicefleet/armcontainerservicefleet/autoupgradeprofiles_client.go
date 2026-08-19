@@ -20,7 +20,7 @@ import (
 // AutoUpgradeProfilesClient contains the methods for the AutoUpgradeProfiles group.
 // Don't use this type directly, use NewAutoUpgradeProfilesClient() instead.
 //
-// Generated from API version 2026-03-02-preview
+// Generated from API version 2026-06-01
 type AutoUpgradeProfilesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -114,7 +114,7 @@ func (client *AutoUpgradeProfilesClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -201,7 +201,7 @@ func (client *AutoUpgradeProfilesClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -261,7 +261,7 @@ func (client *AutoUpgradeProfilesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -330,7 +330,7 @@ func (client *AutoUpgradeProfilesClient) listByFleetCreateRequest(ctx context.Co
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}
-	reqQP.Set("api-version", version20260302Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

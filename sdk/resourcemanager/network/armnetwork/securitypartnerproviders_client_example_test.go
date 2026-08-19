@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/SecurityPartnerProviderPut.json
+// Generated from example definition: 2025-09-01/SecurityPartnerProviderPut.json
 func ExampleSecurityPartnerProvidersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleSecurityPartnerProvidersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SecurityPartnerProviderDelete.json
+// Generated from example definition: 2025-09-01/SecurityPartnerProviderDelete.json
 func ExampleSecurityPartnerProvidersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleSecurityPartnerProvidersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SecurityPartnerProviderGet.json
+// Generated from example definition: 2025-09-01/SecurityPartnerProviderGet.json
 func ExampleSecurityPartnerProvidersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleSecurityPartnerProvidersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/SecurityPartnerProviderListBySubscription.json
+// Generated from example definition: 2025-09-01/SecurityPartnerProviderListBySubscription.json
 func ExampleSecurityPartnerProvidersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleSecurityPartnerProvidersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/SecurityPartnerProviderListByResourceGroup.json
+// Generated from example definition: 2025-09-01/SecurityPartnerProviderListByResourceGroup.json
 func ExampleSecurityPartnerProvidersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleSecurityPartnerProvidersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/SecurityPartnerProviderUpdateTags.json
+// Generated from example definition: 2025-09-01/SecurityPartnerProviderUpdateTags.json
 func ExampleSecurityPartnerProvidersClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-31/CloudHsmCluster_Restore_Pending_MaximumSet_Gen.json
+// Generated from example definition: 2025-12-01-preview/CloudHsmCluster_Restore_Pending_MaximumSet_Gen.json
 func ExampleCloudHsmClusterRestoreStatusClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

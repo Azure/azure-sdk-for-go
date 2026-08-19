@@ -1,0 +1,6 @@
+{
+  "apiVersions": {
+    "Microsoft.PlatformValidation": "2026-07-01-preview"
+  },
+  "emitterVersion": "0.16.0"
+}

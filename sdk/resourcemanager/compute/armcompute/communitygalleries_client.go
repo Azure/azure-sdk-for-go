@@ -60,7 +60,12 @@ func (client *CommunityGalleriesClient) Get(ctx context.Context, location string
 	if err != nil {
 		return CommunityGalleriesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return CommunityGalleriesClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -90,11 +95,8 @@ func (client *CommunityGalleriesClient) getCreateRequest(ctx context.Context, lo
 }
 
 // getHandleResponse handles the Get response.
-func (client *CommunityGalleriesClient) getHandleResponse(resp *http.Response, successCodes ...int) (CommunityGalleriesClientGetResponse, error) {
+func (client *CommunityGalleriesClient) getHandleResponse(resp *http.Response) (CommunityGalleriesClientGetResponse, error) {
 	result := CommunityGalleriesClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CommunityGallery); err != nil {
 		return CommunityGalleriesClientGetResponse{}, err
 	}

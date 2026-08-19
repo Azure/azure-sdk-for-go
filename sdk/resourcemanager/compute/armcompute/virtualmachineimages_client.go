@@ -65,7 +65,12 @@ func (client *VirtualMachineImagesClient) Get(ctx context.Context, location stri
 	if err != nil {
 		return VirtualMachineImagesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineImagesClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -107,11 +112,8 @@ func (client *VirtualMachineImagesClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualMachineImagesClient) getHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImagesClientGetResponse, error) {
+func (client *VirtualMachineImagesClient) getHandleResponse(resp *http.Response) (VirtualMachineImagesClientGetResponse, error) {
 	result := VirtualMachineImagesClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImage); err != nil {
 		return VirtualMachineImagesClientGetResponse{}, err
 	}
@@ -140,7 +142,12 @@ func (client *VirtualMachineImagesClient) List(ctx context.Context, location str
 	if err != nil {
 		return VirtualMachineImagesClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineImagesClientListResponse{}, err
+	}
+	resp, err := client.listHandleResponse(httpResp)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -187,11 +194,8 @@ func (client *VirtualMachineImagesClient) listCreateRequest(ctx context.Context,
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualMachineImagesClient) listHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImagesClientListResponse, error) {
+func (client *VirtualMachineImagesClient) listHandleResponse(resp *http.Response) (VirtualMachineImagesClientListResponse, error) {
 	result := VirtualMachineImagesClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageResourceArray); err != nil {
 		return VirtualMachineImagesClientListResponse{}, err
 	}
@@ -218,7 +222,12 @@ func (client *VirtualMachineImagesClient) ListByEdgeZone(ctx context.Context, lo
 	if err != nil {
 		return VirtualMachineImagesClientListByEdgeZoneResponse{}, err
 	}
-	return client.listByEdgeZoneHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineImagesClientListByEdgeZoneResponse{}, err
+	}
+	resp, err := client.listByEdgeZoneHandleResponse(httpResp)
+	return resp, err
 }
 
 // listByEdgeZoneCreateRequest creates the ListByEdgeZone request.
@@ -248,11 +257,8 @@ func (client *VirtualMachineImagesClient) listByEdgeZoneCreateRequest(ctx contex
 }
 
 // listByEdgeZoneHandleResponse handles the ListByEdgeZone response.
-func (client *VirtualMachineImagesClient) listByEdgeZoneHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImagesClientListByEdgeZoneResponse, error) {
+func (client *VirtualMachineImagesClient) listByEdgeZoneHandleResponse(resp *http.Response) (VirtualMachineImagesClientListByEdgeZoneResponse, error) {
 	result := VirtualMachineImagesClientListByEdgeZoneResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMImagesInEdgeZoneListResult); err != nil {
 		return VirtualMachineImagesClientListByEdgeZoneResponse{}, err
 	}
@@ -279,7 +285,12 @@ func (client *VirtualMachineImagesClient) ListOffers(ctx context.Context, locati
 	if err != nil {
 		return VirtualMachineImagesClientListOffersResponse{}, err
 	}
-	return client.listOffersHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineImagesClientListOffersResponse{}, err
+	}
+	resp, err := client.listOffersHandleResponse(httpResp)
+	return resp, err
 }
 
 // listOffersCreateRequest creates the ListOffers request.
@@ -309,11 +320,8 @@ func (client *VirtualMachineImagesClient) listOffersCreateRequest(ctx context.Co
 }
 
 // listOffersHandleResponse handles the ListOffers response.
-func (client *VirtualMachineImagesClient) listOffersHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImagesClientListOffersResponse, error) {
+func (client *VirtualMachineImagesClient) listOffersHandleResponse(resp *http.Response) (VirtualMachineImagesClientListOffersResponse, error) {
 	result := VirtualMachineImagesClientListOffersResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageResourceArray); err != nil {
 		return VirtualMachineImagesClientListOffersResponse{}, err
 	}
@@ -339,7 +347,12 @@ func (client *VirtualMachineImagesClient) ListPublishers(ctx context.Context, lo
 	if err != nil {
 		return VirtualMachineImagesClientListPublishersResponse{}, err
 	}
-	return client.listPublishersHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineImagesClientListPublishersResponse{}, err
+	}
+	resp, err := client.listPublishersHandleResponse(httpResp)
+	return resp, err
 }
 
 // listPublishersCreateRequest creates the ListPublishers request.
@@ -365,11 +378,8 @@ func (client *VirtualMachineImagesClient) listPublishersCreateRequest(ctx contex
 }
 
 // listPublishersHandleResponse handles the ListPublishers response.
-func (client *VirtualMachineImagesClient) listPublishersHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImagesClientListPublishersResponse, error) {
+func (client *VirtualMachineImagesClient) listPublishersHandleResponse(resp *http.Response) (VirtualMachineImagesClientListPublishersResponse, error) {
 	result := VirtualMachineImagesClientListPublishersResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageResourceArray); err != nil {
 		return VirtualMachineImagesClientListPublishersResponse{}, err
 	}
@@ -397,7 +407,12 @@ func (client *VirtualMachineImagesClient) ListSKUs(ctx context.Context, location
 	if err != nil {
 		return VirtualMachineImagesClientListSKUsResponse{}, err
 	}
-	return client.listSKUsHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineImagesClientListSKUsResponse{}, err
+	}
+	resp, err := client.listSKUsHandleResponse(httpResp)
+	return resp, err
 }
 
 // listSKUsCreateRequest creates the ListSKUs request.
@@ -431,11 +446,8 @@ func (client *VirtualMachineImagesClient) listSKUsCreateRequest(ctx context.Cont
 }
 
 // listSKUsHandleResponse handles the ListSKUs response.
-func (client *VirtualMachineImagesClient) listSKUsHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImagesClientListSKUsResponse, error) {
+func (client *VirtualMachineImagesClient) listSKUsHandleResponse(resp *http.Response) (VirtualMachineImagesClientListSKUsResponse, error) {
 	result := VirtualMachineImagesClientListSKUsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageResourceArray); err != nil {
 		return VirtualMachineImagesClientListSKUsResponse{}, err
 	}
@@ -465,7 +477,12 @@ func (client *VirtualMachineImagesClient) ListWithProperties(ctx context.Context
 	if err != nil {
 		return VirtualMachineImagesClientListWithPropertiesResponse{}, err
 	}
-	return client.listWithPropertiesHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineImagesClientListWithPropertiesResponse{}, err
+	}
+	resp, err := client.listWithPropertiesHandleResponse(httpResp)
+	return resp, err
 }
 
 // listWithPropertiesCreateRequest creates the ListWithProperties request.
@@ -510,11 +527,8 @@ func (client *VirtualMachineImagesClient) listWithPropertiesCreateRequest(ctx co
 }
 
 // listWithPropertiesHandleResponse handles the ListWithProperties response.
-func (client *VirtualMachineImagesClient) listWithPropertiesHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImagesClientListWithPropertiesResponse, error) {
+func (client *VirtualMachineImagesClient) listWithPropertiesHandleResponse(resp *http.Response) (VirtualMachineImagesClientListWithPropertiesResponse, error) {
 	result := VirtualMachineImagesClientListWithPropertiesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageArray); err != nil {
 		return VirtualMachineImagesClientListWithPropertiesResponse{}, err
 	}

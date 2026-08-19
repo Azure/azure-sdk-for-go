@@ -142,7 +142,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -321,7 +321,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -488,7 +488,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -656,7 +656,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -753,7 +753,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 				ReplicationMode: to.Ptr(armcompute.ReplicationModeShallow),
 	// 			},
@@ -918,7 +918,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -1028,7 +1028,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountStrategy: to.Ptr(armcompute.StorageAccountStrategyPreferStandardZRS),
 	// 				ExcludeFromLatest: to.Ptr(false),
 	// 			},
@@ -1221,7 +1221,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -1365,7 +1365,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -1545,7 +1545,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -1749,7 +1749,7 @@ func ExampleGalleryImageVersionsClient_BeginCreateOrUpdate_createOrUpdateASimple
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -1866,7 +1866,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersion() {
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -1958,7 +1958,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithReplicatio
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -2062,7 +2062,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithSnapshotsA
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -2157,7 +2157,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithValidation
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -2192,13 +2192,13 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithValidation
 	// 						Type: to.Ptr("LinuxSecurityBaseline"),
 	// 						Status: to.Ptr(armcompute.ValidationStatusFailed),
 	// 						Version: to.Ptr("beta"),
-	// 						ExecutionTime: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 						ExecutionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 					},
 	// 					{
 	// 						Type: to.Ptr("AzCertify"),
 	// 						Status: to.Ptr(armcompute.ValidationStatusSucceeded),
 	// 						Version: to.Ptr("10.0.4"),
-	// 						ExecutionTime: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 						ExecutionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 					},
 	// 				},
 	// 				PlatformAttributes: []*armcompute.PlatformAttribute{
@@ -2283,7 +2283,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithValidation
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -2335,13 +2335,13 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithValidation
 	// 						Type: to.Ptr("LinuxSecurityBaseline"),
 	// 						Status: to.Ptr(armcompute.ValidationStatusFailed),
 	// 						Version: to.Ptr("beta"),
-	// 						ExecutionTime: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 						ExecutionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 					},
 	// 					{
 	// 						Type: to.Ptr("AzCertify"),
 	// 						Status: to.Ptr(armcompute.ValidationStatusSucceeded),
 	// 						Version: to.Ptr("10.0.4"),
-	// 						ExecutionTime: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 						ExecutionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 					},
 	// 				},
 	// 				PlatformAttributes: []*armcompute.PlatformAttribute{
@@ -2421,7 +2421,7 @@ func ExampleGalleryImageVersionsClient_Get_getAGalleryImageVersionWithVhdAsASour
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -2521,7 +2521,7 @@ func ExampleGalleryImageVersionsClient_NewListByGalleryImagePager() {
 		// 							},
 		// 						},
 		// 						ReplicaCount: to.Ptr[int32](1),
-		// 						PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 						PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 		// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 		// 					},
 		// 					StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -2636,7 +2636,7 @@ func ExampleGalleryImageVersionsClient_BeginUpdate_updateASimpleGalleryImageVers
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -2709,7 +2709,7 @@ func ExampleGalleryImageVersionsClient_BeginUpdate_restoreASoftDeletedGalleryIma
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{
@@ -2805,7 +2805,7 @@ func ExampleGalleryImageVersionsClient_BeginUpdate_updateASimpleGalleryImageVers
 	// 					},
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](1),
-	// 				PublishedDate: to.Ptr(time.Date(2018, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-01T00:00:00Z"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			StorageProfile: &armcompute.GalleryImageVersionStorageProfile{

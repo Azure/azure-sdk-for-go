@@ -76,7 +76,7 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateABlockC
 	// 				Start: to.Ptr("2025-08-01"),
 	// 				End: to.Ptr("2025-08-02"),
 	// 			},
-	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 	// 		},
 	// 	},
 	// }
@@ -135,7 +135,7 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateACapaci
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
 	// 			ReservationID: to.Ptr("{GUID}"),
 	// 			ProvisioningState: to.Ptr("Creating"),
-	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 	// 		},
 	// 	},
 	// }
@@ -194,7 +194,7 @@ func ExampleCapacityReservationsClient_BeginCreateOrUpdate_createOrUpdateATarget
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
 	// 			ReservationID: to.Ptr("{GUID}"),
 	// 			ProvisioningState: to.Ptr("Creating"),
-	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 	// 		},
 	// 	},
 	// }
@@ -277,7 +277,7 @@ func ExampleCapacityReservationsClient_Get_getABlockCapacityReservation() {
 	// 		Properties: &armcompute.CapacityReservationProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
 	// 			ReservationID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 	// 			VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -314,7 +314,7 @@ func ExampleCapacityReservationsClient_Get_getABlockCapacityReservation() {
 	// 				Start: to.Ptr("2025-08-01T12:00:00Z"),
 	// 				End: to.Ptr("2025-08-02T11:30:00Z"),
 	// 			},
-	// 			TimeCreated: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 	// 		},
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
@@ -357,7 +357,7 @@ func ExampleCapacityReservationsClient_Get_getACapacityReservation() {
 	// 		Properties: &armcompute.CapacityReservationProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
 	// 			ReservationID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 	// 			VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -390,7 +390,7 @@ func ExampleCapacityReservationsClient_Get_getACapacityReservation() {
 	// 					},
 	// 				},
 	// 			},
-	// 			TimeCreated: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 	// 		},
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
@@ -433,7 +433,7 @@ func ExampleCapacityReservationsClient_Get_getATargetedCapacityReservation() {
 	// 		Properties: &armcompute.CapacityReservationProperties{
 	// 			PlatformFaultDomainCount: to.Ptr[int32](3),
 	// 			ReservationID: to.Ptr("{GUID}"),
-	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 	// 			VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -466,7 +466,7 @@ func ExampleCapacityReservationsClient_Get_getATargetedCapacityReservation() {
 	// 					},
 	// 				},
 	// 			},
-	// 			TimeCreated: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 	// 		},
 	// 		Location: to.Ptr("westus"),
 	// 		Tags: map[string]*string{
@@ -518,7 +518,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 		// 				Properties: &armcompute.CapacityReservationProperties{
 		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
 		// 					ReservationID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -555,7 +555,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 		// 				Properties: &armcompute.CapacityReservationProperties{
 		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
 		// 					ReservationID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM4"),
@@ -618,7 +618,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 		// 				Properties: &armcompute.CapacityReservationProperties{
 		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
 		// 					ReservationID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -651,7 +651,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 		// 				Properties: &armcompute.CapacityReservationProperties{
 		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
 		// 					ReservationID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM4"),
@@ -710,7 +710,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 		// 				Properties: &armcompute.CapacityReservationProperties{
 		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
 		// 					ReservationID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM1"),
@@ -743,7 +743,7 @@ func ExampleCapacityReservationsClient_NewListByCapacityReservationGroupPager_li
 		// 				Properties: &armcompute.CapacityReservationProperties{
 		// 					PlatformFaultDomainCount: to.Ptr[int32](3),
 		// 					ReservationID: to.Ptr("{GUID}"),
-		// 					ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+		// 					ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 		// 					VirtualMachinesAssociated: []*armcompute.SubResourceReadOnly{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM4"),
@@ -789,7 +789,7 @@ func ExampleCapacityReservationsClient_BeginUpdate_capacityReservationUpdateMaxi
 						Level:         to.Ptr(armcompute.StatusLevelTypesInfo),
 						DisplayStatus: to.Ptr("aaaaaa"),
 						Message:       to.Ptr("a"),
-						Time:          to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 522000000, time.UTC)),
+						Time:          to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t }()),
 					},
 				},
 			},
@@ -834,7 +834,7 @@ func ExampleCapacityReservationsClient_BeginUpdate_capacityReservationUpdateMaxi
 	// 					ID: to.Ptr("aaaa"),
 	// 				},
 	// 			},
-	// 			ProvisioningTime: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 			ProvisioningTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 			InstanceView: &armcompute.CapacityReservationInstanceView{
 	// 				UtilizationInfo: &armcompute.CapacityReservationUtilization{
@@ -850,7 +850,7 @@ func ExampleCapacityReservationsClient_BeginUpdate_capacityReservationUpdateMaxi
 	// 						Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 						DisplayStatus: to.Ptr("aaaaaa"),
 	// 						Message: to.Ptr("a"),
-	// 						Time: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 522000000, time.UTC)),
+	// 						Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t}()),
 	// 					},
 	// 				},
 	// 			},

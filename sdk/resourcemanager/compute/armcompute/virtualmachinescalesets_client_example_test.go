@@ -11154,7 +11154,7 @@ func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSet() {
 	// 				SecurityProfile: &armcompute.SecurityProfile{
 	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
 	// 				},
-	// 				TimeCreated: to.Ptr(time.Date(2023, time.September, 27, 1, 3, 40, 313846900, time.UTC)),
+	// 				TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-27T01:03:40.3138469+00:00"); return t}()),
 	// 			},
 	// 			ProvisioningState: to.Ptr("succeeded"),
 	// 			Overprovision: to.Ptr(false),
@@ -11163,7 +11163,7 @@ func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSet() {
 	// 			HostGroup: &armcompute.SubResource{
 	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/hostGroups/myHostGroup"),
 	// 			},
-	// 			TimeCreated: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
 	// 		},
 	// 	},
 	// }
@@ -11563,7 +11563,7 @@ func ExampleVirtualMachineScaleSetsClient_GetInstanceView_virtualMachineScaleSet
 	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 				DisplayStatus: to.Ptr("Provisioning succeeded"),
 	// 				Message: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-	// 				Time: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 526000000, time.UTC)),
+	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.526Z"); return t}()),
 	// 			},
 	// 		},
 	// 		OrchestrationServices: []*armcompute.OrchestrationServiceSummary{
@@ -11575,7 +11575,7 @@ func ExampleVirtualMachineScaleSetsClient_GetInstanceView_virtualMachineScaleSet
 	// 				ServiceName: to.Ptr(armcompute.OrchestrationServiceNamesAutomaticZoneRebalancing),
 	// 				ServiceState: to.Ptr(armcompute.OrchestrationServiceStateRunning),
 	// 				LatestOperationStatus: to.Ptr(armcompute.OrchestrationServiceOperationStatusInProgress),
-	// 				LastStatusChangeTime: to.Ptr(time.Date(2025, time.July, 9, 13, 26, 28, 360000000, time.UTC)),
+	// 				LastStatusChangeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-09T13:26:28.360Z"); return t}()),
 	// 			},
 	// 		},
 	// 	},
@@ -11635,8 +11635,8 @@ func ExampleVirtualMachineScaleSetsClient_NewGetOSUpgradeHistoryPager_virtualMac
 		// 				Properties: &armcompute.UpgradeOperationHistoricalStatusInfoProperties{
 		// 					RunningStatus: &armcompute.UpgradeOperationHistoryStatus{
 		// 						Code: to.Ptr(armcompute.UpgradeStateRollingForward),
-		// 						StartTime: to.Ptr(time.Date(2021, time.November, 30, 13, 5, 40, 442000000, time.UTC)),
-		// 						EndTime: to.Ptr(time.Date(2021, time.November, 30, 13, 5, 40, 443000000, time.UTC)),
+		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T13:05:40.442Z"); return t}()),
+		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T13:05:40.443Z"); return t}()),
 		// 					},
 		// 					Progress: &armcompute.RollingUpgradeProgressInfo{
 		// 						SuccessfulInstanceCount: to.Ptr[int32](6),

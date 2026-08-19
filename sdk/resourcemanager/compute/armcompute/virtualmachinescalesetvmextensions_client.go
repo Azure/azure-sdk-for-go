@@ -84,7 +84,8 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) createOrUpdate(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -169,7 +170,8 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) deleteOperation(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -229,7 +231,12 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) Get(ctx context.Context,
 	if err != nil {
 		return VirtualMachineScaleSetVMExtensionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineScaleSetVMExtensionsClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -270,11 +277,8 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) getCreateRequest(ctx con
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualMachineScaleSetVMExtensionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineScaleSetVMExtensionsClientGetResponse, error) {
+func (client *VirtualMachineScaleSetVMExtensionsClient) getHandleResponse(resp *http.Response) (VirtualMachineScaleSetVMExtensionsClientGetResponse, error) {
 	result := VirtualMachineScaleSetVMExtensionsClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineScaleSetVMExtension); err != nil {
 		return VirtualMachineScaleSetVMExtensionsClientGetResponse{}, err
 	}
@@ -302,7 +306,12 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) List(ctx context.Context
 	if err != nil {
 		return VirtualMachineScaleSetVMExtensionsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineScaleSetVMExtensionsClientListResponse{}, err
+	}
+	resp, err := client.listHandleResponse(httpResp)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -339,11 +348,8 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) listCreateRequest(ctx co
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualMachineScaleSetVMExtensionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineScaleSetVMExtensionsClientListResponse, error) {
+func (client *VirtualMachineScaleSetVMExtensionsClient) listHandleResponse(resp *http.Response) (VirtualMachineScaleSetVMExtensionsClientListResponse, error) {
 	result := VirtualMachineScaleSetVMExtensionsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineScaleSetVMExtensionsListResult); err != nil {
 		return VirtualMachineScaleSetVMExtensionsClientListResponse{}, err
 	}
@@ -393,7 +399,8 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) update(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }

@@ -562,7 +562,7 @@ func ExampleDiskEncryptionSetsClient_BeginUpdate_updateADiskEncryptionSet() {
 	// 			EncryptionType: to.Ptr(armcompute.DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey),
 	// 			PreviousKeys: []*armcompute.KeyForDiskEncryptionSet{
 	// 			},
-	// 			LastKeyRotationTimestamp: to.Ptr(time.Date(2021, time.April, 1, 4, 41, 35, 79872000, time.UTC)),
+	// 			LastKeyRotationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T04:41:35.079872+00:00"); return t}()),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"department": to.Ptr("Development"),
@@ -621,7 +621,7 @@ func ExampleDiskEncryptionSetsClient_BeginUpdate_updateADiskEncryptionSetWithRot
 	// 			EncryptionType: to.Ptr(armcompute.DiskEncryptionSetTypeEncryptionAtRestWithCustomerKey),
 	// 			RotationToLatestKeyVersionEnabled: to.Ptr(true),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			LastKeyRotationTimestamp: to.Ptr(time.Date(2021, time.April, 1, 4, 41, 35, 79872000, time.UTC)),
+	// 			LastKeyRotationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T04:41:35.079872+00:00"); return t}()),
 	// 		},
 	// 	},
 	// }
@@ -681,7 +681,7 @@ func ExampleDiskEncryptionSetsClient_BeginUpdate_updateADiskEncryptionSetWithRot
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr("Updating"),
-	// 			LastKeyRotationTimestamp: to.Ptr(time.Date(2021, time.April, 1, 4, 41, 35, 79872000, time.UTC)),
+	// 			LastKeyRotationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T04:41:35.079872+00:00"); return t}()),
 	// 		},
 	// 	},
 	// }

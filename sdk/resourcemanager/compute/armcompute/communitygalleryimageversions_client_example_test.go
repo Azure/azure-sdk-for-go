@@ -32,8 +32,8 @@ func ExampleCommunityGalleryImageVersionsClient_Get() {
 	// res = armcompute.CommunityGalleryImageVersionsClientGetResponse{
 	// 	CommunityGalleryImageVersion: armcompute.CommunityGalleryImageVersion{
 	// 		Properties: &armcompute.CommunityGalleryImageVersionProperties{
-	// 			PublishedDate: to.Ptr(time.Date(2018, time.March, 20, 9, 12, 28, 0, time.UTC)),
-	// 			EndOfLifeDate: to.Ptr(time.Date(2022, time.March, 20, 9, 12, 28, 0, time.UTC)),
+	// 			PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-20T09:12:28Z"); return t}()),
+	// 			EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T09:12:28Z"); return t}()),
 	// 			ExcludeFromLatest: to.Ptr(false),
 	// 			StorageProfile: &armcompute.SharedGalleryImageVersionStorageProfile{
 	// 				OSDiskImage: &armcompute.SharedGalleryOSDiskImage{
@@ -83,8 +83,8 @@ func ExampleCommunityGalleryImageVersionsClient_NewListPager() {
 		// 		Value: []*armcompute.CommunityGalleryImageVersion{
 		// 			{
 		// 				Properties: &armcompute.CommunityGalleryImageVersionProperties{
-		// 					PublishedDate: to.Ptr(time.Date(2018, time.March, 20, 9, 12, 28, 0, time.UTC)),
-		// 					EndOfLifeDate: to.Ptr(time.Date(2022, time.March, 20, 9, 12, 28, 0, time.UTC)),
+		// 					PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-20T09:12:28Z"); return t}()),
+		// 					EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-20T09:12:28Z"); return t}()),
 		// 					ExcludeFromLatest: to.Ptr(false),
 		// 					StorageProfile: &armcompute.SharedGalleryImageVersionStorageProfile{
 		// 						OSDiskImage: &armcompute.SharedGalleryOSDiskImage{

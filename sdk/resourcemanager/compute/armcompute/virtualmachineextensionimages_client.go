@@ -61,7 +61,12 @@ func (client *VirtualMachineExtensionImagesClient) Get(ctx context.Context, loca
 	if err != nil {
 		return VirtualMachineExtensionImagesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineExtensionImagesClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -99,11 +104,8 @@ func (client *VirtualMachineExtensionImagesClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualMachineExtensionImagesClient) getHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineExtensionImagesClientGetResponse, error) {
+func (client *VirtualMachineExtensionImagesClient) getHandleResponse(resp *http.Response) (VirtualMachineExtensionImagesClientGetResponse, error) {
 	result := VirtualMachineExtensionImagesClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineExtensionImage); err != nil {
 		return VirtualMachineExtensionImagesClientGetResponse{}, err
 	}
@@ -129,7 +131,12 @@ func (client *VirtualMachineExtensionImagesClient) ListTypes(ctx context.Context
 	if err != nil {
 		return VirtualMachineExtensionImagesClientListTypesResponse{}, err
 	}
-	return client.listTypesHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineExtensionImagesClientListTypesResponse{}, err
+	}
+	resp, err := client.listTypesHandleResponse(httpResp)
+	return resp, err
 }
 
 // listTypesCreateRequest creates the ListTypes request.
@@ -159,11 +166,8 @@ func (client *VirtualMachineExtensionImagesClient) listTypesCreateRequest(ctx co
 }
 
 // listTypesHandleResponse handles the ListTypes response.
-func (client *VirtualMachineExtensionImagesClient) listTypesHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineExtensionImagesClientListTypesResponse, error) {
+func (client *VirtualMachineExtensionImagesClient) listTypesHandleResponse(resp *http.Response) (VirtualMachineExtensionImagesClientListTypesResponse, error) {
 	result := VirtualMachineExtensionImagesClientListTypesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineExtensionImageArray); err != nil {
 		return VirtualMachineExtensionImagesClientListTypesResponse{}, err
 	}
@@ -189,7 +193,12 @@ func (client *VirtualMachineExtensionImagesClient) ListVersions(ctx context.Cont
 	if err != nil {
 		return VirtualMachineExtensionImagesClientListVersionsResponse{}, err
 	}
-	return client.listVersionsHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineExtensionImagesClientListVersionsResponse{}, err
+	}
+	resp, err := client.listVersionsHandleResponse(httpResp)
+	return resp, err
 }
 
 // listVersionsCreateRequest creates the ListVersions request.
@@ -232,11 +241,8 @@ func (client *VirtualMachineExtensionImagesClient) listVersionsCreateRequest(ctx
 }
 
 // listVersionsHandleResponse handles the ListVersions response.
-func (client *VirtualMachineExtensionImagesClient) listVersionsHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineExtensionImagesClientListVersionsResponse, error) {
+func (client *VirtualMachineExtensionImagesClient) listVersionsHandleResponse(resp *http.Response) (VirtualMachineExtensionImagesClientListVersionsResponse, error) {
 	result := VirtualMachineExtensionImagesClientListVersionsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineExtensionImageArray); err != nil {
 		return VirtualMachineExtensionImagesClientListVersionsResponse{}, err
 	}

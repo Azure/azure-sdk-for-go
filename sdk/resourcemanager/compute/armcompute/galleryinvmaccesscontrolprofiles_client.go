@@ -83,7 +83,8 @@ func (client *GalleryInVMAccessControlProfilesClient) createOrUpdate(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -163,7 +164,8 @@ func (client *GalleryInVMAccessControlProfilesClient) deleteOperation(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -218,7 +220,12 @@ func (client *GalleryInVMAccessControlProfilesClient) Get(ctx context.Context, r
 	if err != nil {
 		return GalleryInVMAccessControlProfilesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return GalleryInVMAccessControlProfilesClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -252,11 +259,8 @@ func (client *GalleryInVMAccessControlProfilesClient) getCreateRequest(ctx conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *GalleryInVMAccessControlProfilesClient) getHandleResponse(resp *http.Response, successCodes ...int) (GalleryInVMAccessControlProfilesClientGetResponse, error) {
+func (client *GalleryInVMAccessControlProfilesClient) getHandleResponse(resp *http.Response) (GalleryInVMAccessControlProfilesClientGetResponse, error) {
 	result := GalleryInVMAccessControlProfilesClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryInVMAccessControlProfile); err != nil {
 		return GalleryInVMAccessControlProfilesClientGetResponse{}, err
 	}
@@ -279,61 +283,47 @@ func (client *GalleryInVMAccessControlProfilesClient) NewListByGalleryPager(reso
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listByGalleryCreateRequest(ctx, resourceGroupName, galleryName, nextLink, options)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByGalleryCreateRequest(ctx, resourceGroupName, galleryName, options)
+			}, nil)
 			if err != nil {
 				return GalleryInVMAccessControlProfilesClientListByGalleryResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return GalleryInVMAccessControlProfilesClientListByGalleryResponse{}, err
-			}
-			return client.listByGalleryHandleResponse(resp, http.StatusOK)
+			return client.listByGalleryHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByGalleryCreateRequest creates the ListByGallery request.
-func (client *GalleryInVMAccessControlProfilesClient) listByGalleryCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, nextLink string, _ *GalleryInVMAccessControlProfilesClientListByGalleryOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/inVMAccessControlProfiles"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if galleryName == "" {
-			return nil, errors.New("parameter galleryName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{galleryName}", url.PathEscape(galleryName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+func (client *GalleryInVMAccessControlProfilesClient) listByGalleryCreateRequest(ctx context.Context, resourceGroupName string, galleryName string, _ *GalleryInVMAccessControlProfilesClientListByGalleryOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/inVMAccessControlProfiles"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if galleryName == "" {
+		return nil, errors.New("parameter galleryName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{galleryName}", url.PathEscape(galleryName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251203)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251203)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByGalleryHandleResponse handles the ListByGallery response.
-func (client *GalleryInVMAccessControlProfilesClient) listByGalleryHandleResponse(resp *http.Response, successCodes ...int) (GalleryInVMAccessControlProfilesClientListByGalleryResponse, error) {
+func (client *GalleryInVMAccessControlProfilesClient) listByGalleryHandleResponse(resp *http.Response) (GalleryInVMAccessControlProfilesClientListByGalleryResponse, error) {
 	result := GalleryInVMAccessControlProfilesClientListByGalleryResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GalleryInVMAccessControlProfileList); err != nil {
 		return GalleryInVMAccessControlProfilesClientListByGalleryResponse{}, err
 	}
@@ -382,7 +372,8 @@ func (client *GalleryInVMAccessControlProfilesClient) update(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }

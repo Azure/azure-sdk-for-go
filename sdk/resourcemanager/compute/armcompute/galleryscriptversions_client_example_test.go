@@ -93,7 +93,7 @@ func ExampleGalleryScriptVersionsClient_BeginCreateOrUpdate() {
 					},
 				},
 				ReplicaCount:       to.Ptr[int32](2),
-				EndOfLifeDate:      to.Ptr(time.Date(2027, time.July, 1, 7, 0, 0, 0, time.UTC)),
+				EndOfLifeDate:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-07-01T07:00:00Z"); return t }()),
 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 			},
 			SafetyProfile: &armcompute.GalleryScriptVersionSafetyProfile{
@@ -185,8 +185,8 @@ func ExampleGalleryScriptVersionsClient_BeginCreateOrUpdate() {
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](2),
 	// 				ExcludeFromLatest: to.Ptr(false),
-	// 				PublishedDate: to.Ptr(time.Date(2025, time.June, 21, 17, 13, 57, 597256800, time.UTC)),
-	// 				EndOfLifeDate: to.Ptr(time.Date(2027, time.July, 1, 7, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-21T17:13:57.5972568+00:00"); return t}()),
+	// 				EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-07-01T07:00:00+00:00"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			SafetyProfile: &armcompute.GalleryScriptVersionSafetyProfile{
@@ -311,8 +311,8 @@ func ExampleGalleryScriptVersionsClient_Get_getAGalleryScriptVersion() {
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](2),
 	// 				ExcludeFromLatest: to.Ptr(false),
-	// 				PublishedDate: to.Ptr(time.Date(2025, time.June, 21, 17, 13, 57, 597256800, time.UTC)),
-	// 				EndOfLifeDate: to.Ptr(time.Date(2027, time.July, 1, 7, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-21T17:13:57.5972568+00:00"); return t}()),
+	// 				EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-07-01T07:00:00+00:00"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			SafetyProfile: &armcompute.GalleryScriptVersionSafetyProfile{
@@ -413,8 +413,8 @@ func ExampleGalleryScriptVersionsClient_Get_getAGalleryScriptVersionWithReplicat
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](2),
 	// 				ExcludeFromLatest: to.Ptr(false),
-	// 				PublishedDate: to.Ptr(time.Date(2025, time.June, 21, 17, 13, 57, 597256800, time.UTC)),
-	// 				EndOfLifeDate: to.Ptr(time.Date(2027, time.July, 1, 7, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-21T17:13:57.5972568+00:00"); return t}()),
+	// 				EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-07-01T07:00:00+00:00"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			SafetyProfile: &armcompute.GalleryScriptVersionSafetyProfile{
@@ -537,8 +537,8 @@ func ExampleGalleryScriptVersionsClient_NewListByGalleryScriptPager() {
 		// 						},
 		// 						ReplicaCount: to.Ptr[int32](2),
 		// 						ExcludeFromLatest: to.Ptr(false),
-		// 						PublishedDate: to.Ptr(time.Date(2025, time.June, 21, 17, 13, 57, 597256800, time.UTC)),
-		// 						EndOfLifeDate: to.Ptr(time.Date(2027, time.July, 1, 7, 0, 0, 0, time.UTC)),
+		// 						PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-21T17:13:57.5972568+00:00"); return t}()),
+		// 						EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-07-01T07:00:00+00:00"); return t}()),
 		// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 		// 					},
 		// 					SafetyProfile: &armcompute.GalleryScriptVersionSafetyProfile{
@@ -583,8 +583,8 @@ func ExampleGalleryScriptVersionsClient_NewListByGalleryScriptPager() {
 		// 						},
 		// 						ReplicaCount: to.Ptr[int32](2),
 		// 						ExcludeFromLatest: to.Ptr(false),
-		// 						PublishedDate: to.Ptr(time.Date(2025, time.June, 21, 17, 13, 57, 597256800, time.UTC)),
-		// 						EndOfLifeDate: to.Ptr(time.Date(2027, time.July, 1, 7, 0, 0, 0, time.UTC)),
+		// 						PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-21T17:13:57.5972568+00:00"); return t}()),
+		// 						EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-07-01T07:00:00+00:00"); return t}()),
 		// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 		// 					},
 		// 					SafetyProfile: &armcompute.GalleryScriptVersionSafetyProfile{
@@ -679,7 +679,7 @@ func ExampleGalleryScriptVersionsClient_BeginUpdate() {
 					},
 				},
 				ReplicaCount:       to.Ptr[int32](2),
-				EndOfLifeDate:      to.Ptr(time.Date(2027, time.July, 1, 7, 0, 0, 0, time.UTC)),
+				EndOfLifeDate:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-07-01T07:00:00Z"); return t }()),
 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 			},
 			SafetyProfile: &armcompute.GalleryScriptVersionSafetyProfile{
@@ -771,8 +771,8 @@ func ExampleGalleryScriptVersionsClient_BeginUpdate() {
 	// 				},
 	// 				ReplicaCount: to.Ptr[int32](2),
 	// 				ExcludeFromLatest: to.Ptr(false),
-	// 				PublishedDate: to.Ptr(time.Date(2025, time.June, 21, 17, 13, 57, 597256800, time.UTC)),
-	// 				EndOfLifeDate: to.Ptr(time.Date(2027, time.July, 1, 7, 0, 0, 0, time.UTC)),
+	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-21T17:13:57.5972568+00:00"); return t}()),
+	// 				EndOfLifeDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-07-01T07:00:00+00:00"); return t}()),
 	// 				StorageAccountType: to.Ptr(armcompute.StorageAccountTypeStandardLRS),
 	// 			},
 	// 			SafetyProfile: &armcompute.GalleryScriptVersionSafetyProfile{

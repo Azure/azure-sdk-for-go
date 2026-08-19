@@ -426,7 +426,7 @@ func ExampleSnapshotsClient_Get_getInformationAboutASnapshot() {
 	// 			Encryption: &armcompute.Encryption{
 	// 				Type: to.Ptr(armcompute.EncryptionTypeEncryptionAtRestWithPlatformKey),
 	// 			},
-	// 			TimeCreated: to.Ptr(time.Date(2016, time.December, 28, 4, 41, 35, 79872000, time.UTC)),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:35.079872+00:00"); return t}()),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 		},
 	// 		Type: to.Ptr("Microsoft.Compute/snapshots"),
@@ -509,7 +509,7 @@ func ExampleSnapshotsClient_Get_getInformationAboutAnIncrementalSnapshot() {
 	// 			UniqueID: to.Ptr("a395e9c1-fb9e-446e-a9ba-7b2fa0bcd305"),
 	// 			IncrementalSnapshotFamilyID: to.Ptr("d1a341d5-1ea7-4a85-b304-944ad8021639"),
 	// 			SnapshotAccessState: to.Ptr(armcompute.SnapshotAccessStateAvailable),
-	// 			TimeCreated: to.Ptr(time.Date(2016, time.December, 28, 4, 41, 35, 79872000, time.UTC)),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:35.079872+00:00"); return t}()),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 		},
 	// 		Type: to.Ptr("Microsoft.Compute/snapshots"),
@@ -569,7 +569,7 @@ func ExampleSnapshotsClient_Get_getInformationAboutAConfidentialVMSnapshotWithCo
 	// 			Encryption: &armcompute.Encryption{
 	// 				Type: to.Ptr(armcompute.EncryptionTypeEncryptionAtRestWithPlatformKey),
 	// 			},
-	// 			TimeCreated: to.Ptr(time.Date(2026, time.April, 20, 4, 41, 35, 79872000, time.UTC)),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-20T04:41:35.079872+00:00"); return t}()),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 		},
 	// 		Type: to.Ptr("Microsoft.Compute/snapshots"),
@@ -672,7 +672,7 @@ func ExampleSnapshotsClient_NewListPager() {
 		// 					Encryption: &armcompute.Encryption{
 		// 						Type: to.Ptr(armcompute.EncryptionTypeEncryptionAtRestWithPlatformKey),
 		// 					},
-		// 					TimeCreated: to.Ptr(time.Date(2016, time.December, 28, 4, 47, 30, 663056900, time.UTC)),
+		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:47:30.6630569+00:00"); return t}()),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.Compute/snapshots"),
@@ -715,7 +715,7 @@ func ExampleSnapshotsClient_NewListPager() {
 		// 					Encryption: &armcompute.Encryption{
 		// 						Type: to.Ptr(armcompute.EncryptionTypeEncryptionAtRestWithPlatformKey),
 		// 					},
-		// 					TimeCreated: to.Ptr(time.Date(2016, time.December, 28, 4, 47, 30, 324719800, time.UTC)),
+		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:47:30.3247198+00:00"); return t}()),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.Compute/snapshots"),
@@ -788,7 +788,7 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 		// 					Encryption: &armcompute.Encryption{
 		// 						Type: to.Ptr(armcompute.EncryptionTypeEncryptionAtRestWithPlatformKey),
 		// 					},
-		// 					TimeCreated: to.Ptr(time.Date(2016, time.December, 28, 4, 41, 35, 927872100, time.UTC)),
+		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:35.9278721+00:00"); return t}()),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.Compute/snapshots"),
@@ -975,8 +975,8 @@ func ExampleSnapshotsClient_BeginUpdateImmutabilityPolicy() {
 	// 			ImmutabilityPolicy: &armcompute.ImmutabilityPolicy{
 	// 				ImmutabilityDurationDays: to.Ptr[int32](30),
 	// 				Type: to.Ptr(armcompute.ImmutabilityPolicyTypeUnlocked),
-	// 				PolicyStartTime: to.Ptr(time.Date(2026, time.May, 21, 12, 0, 0, 0, time.UTC)),
-	// 				PolicyExpirationTime: to.Ptr(time.Date(2026, time.June, 20, 12, 0, 0, 0, time.UTC)),
+	// 				PolicyStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-21T12:00:00.0000000+00:00"); return t}()),
+	// 				PolicyExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-20T12:00:00.0000000+00:00"); return t}()),
 	// 				IsPolicyExpired: to.Ptr(false),
 	// 			},
 	// 		},
@@ -1023,8 +1023,8 @@ func ExampleSnapshotsClient_BeginUpdateImmutabilityPolicyLock() {
 	// 			ImmutabilityPolicy: &armcompute.ImmutabilityPolicy{
 	// 				ImmutabilityDurationDays: to.Ptr[int32](30),
 	// 				Type: to.Ptr(armcompute.ImmutabilityPolicyTypeLocked),
-	// 				PolicyStartTime: to.Ptr(time.Date(2026, time.May, 21, 12, 0, 0, 0, time.UTC)),
-	// 				PolicyExpirationTime: to.Ptr(time.Date(2026, time.June, 20, 12, 0, 0, 0, time.UTC)),
+	// 				PolicyStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-21T12:00:00.0000000+00:00"); return t}()),
+	// 				PolicyExpirationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-20T12:00:00.0000000+00:00"); return t}()),
 	// 				IsPolicyExpired: to.Ptr(false),
 	// 			},
 	// 		},

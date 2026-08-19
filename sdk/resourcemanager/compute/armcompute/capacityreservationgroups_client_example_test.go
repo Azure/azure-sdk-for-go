@@ -901,7 +901,7 @@ func ExampleCapacityReservationGroupsClient_Update_capacityReservationGroupUpdat
 	// 								Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 								DisplayStatus: to.Ptr("aaaaaa"),
 	// 								Message: to.Ptr("a"),
-	// 								Time: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 522000000, time.UTC)),
+	// 								Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t}()),
 	// 							},
 	// 						},
 	// 					},

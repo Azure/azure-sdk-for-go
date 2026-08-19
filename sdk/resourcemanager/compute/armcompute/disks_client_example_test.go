@@ -1526,8 +1526,8 @@ func ExampleDisksClient_Get_getInformationAboutAManagedDisk() {
 	// 			Encryption: &armcompute.Encryption{
 	// 				Type: to.Ptr(armcompute.EncryptionTypeEncryptionAtRestWithPlatformKey),
 	// 			},
-	// 			LastOwnershipUpdateTime: to.Ptr(time.Date(2016, time.December, 28, 4, 41, 35, 79872000, time.UTC)),
-	// 			TimeCreated: to.Ptr(time.Date(2016, time.December, 28, 4, 41, 35, 79872000, time.UTC)),
+	// 			LastOwnershipUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:35.079872+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:35.079872+00:00"); return t}()),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 		},
 	// 		Type: to.Ptr("Microsoft.Compute/disks"),
@@ -1592,8 +1592,8 @@ func ExampleDisksClient_Get_getInformationAboutAConfidentialVMDiskWithConfidenti
 	// 			Encryption: &armcompute.Encryption{
 	// 				Type: to.Ptr(armcompute.EncryptionTypeEncryptionAtRestWithPlatformKey),
 	// 			},
-	// 			LastOwnershipUpdateTime: to.Ptr(time.Date(2026, time.April, 21, 4, 41, 35, 79872000, time.UTC)),
-	// 			TimeCreated: to.Ptr(time.Date(2026, time.April, 20, 4, 41, 35, 79872000, time.UTC)),
+	// 			LastOwnershipUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-21T04:41:35.079872+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-20T04:41:35.079872+00:00"); return t}()),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 		},
 	// 		Type: to.Ptr("Microsoft.Compute/disks"),
@@ -1765,7 +1765,7 @@ func ExampleDisksClient_NewListPager() {
 		// 					Encryption: &armcompute.Encryption{
 		// 						Type: to.Ptr(armcompute.EncryptionTypeEncryptionAtRestWithPlatformKey),
 		// 					},
-		// 					TimeCreated: to.Ptr(time.Date(2016, time.December, 28, 4, 41, 35, 927872100, time.UTC)),
+		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:35.9278721+00:00"); return t}()),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.Compute/disks"),
@@ -1787,7 +1787,7 @@ func ExampleDisksClient_NewListPager() {
 		// 					Encryption: &armcompute.Encryption{
 		// 						Type: to.Ptr(armcompute.EncryptionTypeEncryptionAtRestWithPlatformKey),
 		// 					},
-		// 					TimeCreated: to.Ptr(time.Date(2016, time.December, 28, 4, 41, 36, 872242000, time.UTC)),
+		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:36.872242+00:00"); return t}()),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.Compute/disks"),
@@ -1827,7 +1827,7 @@ func ExampleDisksClient_NewListPager() {
 		// 					Encryption: &armcompute.Encryption{
 		// 						Type: to.Ptr(armcompute.EncryptionTypeEncryptionAtRestWithPlatformKey),
 		// 					},
-		// 					TimeCreated: to.Ptr(time.Date(2016, time.December, 28, 4, 41, 36, 397393400, time.UTC)),
+		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:36.3973934+00:00"); return t}()),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.Compute/disks"),
@@ -1901,7 +1901,7 @@ func ExampleDisksClient_NewListByResourceGroupPager() {
 		// 					Encryption: &armcompute.Encryption{
 		// 						Type: to.Ptr(armcompute.EncryptionTypeEncryptionAtRestWithPlatformKey),
 		// 					},
-		// 					TimeCreated: to.Ptr(time.Date(2016, time.December, 28, 4, 41, 35, 927872100, time.UTC)),
+		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:35.9278721+00:00"); return t}()),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.Compute/disks"),
@@ -1923,7 +1923,7 @@ func ExampleDisksClient_NewListByResourceGroupPager() {
 		// 					Encryption: &armcompute.Encryption{
 		// 						Type: to.Ptr(armcompute.EncryptionTypeEncryptionAtRestWithPlatformKey),
 		// 					},
-		// 					TimeCreated: to.Ptr(time.Date(2016, time.December, 28, 4, 41, 36, 872242000, time.UTC)),
+		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:36.872242+00:00"); return t}()),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.Compute/disks"),
@@ -1963,7 +1963,7 @@ func ExampleDisksClient_NewListByResourceGroupPager() {
 		// 					Encryption: &armcompute.Encryption{
 		// 						Type: to.Ptr(armcompute.EncryptionTypeEncryptionAtRestWithPlatformKey),
 		// 					},
-		// 					TimeCreated: to.Ptr(time.Date(2016, time.December, 28, 4, 41, 36, 397393400, time.UTC)),
+		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-12-28T04:41:36.3973934+00:00"); return t}()),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.Compute/disks"),

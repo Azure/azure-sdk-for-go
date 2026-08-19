@@ -66,7 +66,12 @@ func (client *VirtualMachineImagesEdgeZoneClient) Get(ctx context.Context, locat
 	if err != nil {
 		return VirtualMachineImagesEdgeZoneClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineImagesEdgeZoneClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -112,11 +117,8 @@ func (client *VirtualMachineImagesEdgeZoneClient) getCreateRequest(ctx context.C
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualMachineImagesEdgeZoneClient) getHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImagesEdgeZoneClientGetResponse, error) {
+func (client *VirtualMachineImagesEdgeZoneClient) getHandleResponse(resp *http.Response) (VirtualMachineImagesEdgeZoneClientGetResponse, error) {
 	result := VirtualMachineImagesEdgeZoneClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImage); err != nil {
 		return VirtualMachineImagesEdgeZoneClientGetResponse{}, err
 	}
@@ -146,7 +148,12 @@ func (client *VirtualMachineImagesEdgeZoneClient) List(ctx context.Context, loca
 	if err != nil {
 		return VirtualMachineImagesEdgeZoneClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineImagesEdgeZoneClientListResponse{}, err
+	}
+	resp, err := client.listHandleResponse(httpResp)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -197,11 +204,8 @@ func (client *VirtualMachineImagesEdgeZoneClient) listCreateRequest(ctx context.
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualMachineImagesEdgeZoneClient) listHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImagesEdgeZoneClientListResponse, error) {
+func (client *VirtualMachineImagesEdgeZoneClient) listHandleResponse(resp *http.Response) (VirtualMachineImagesEdgeZoneClientListResponse, error) {
 	result := VirtualMachineImagesEdgeZoneClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageResourceArray); err != nil {
 		return VirtualMachineImagesEdgeZoneClientListResponse{}, err
 	}
@@ -229,7 +233,12 @@ func (client *VirtualMachineImagesEdgeZoneClient) ListOffers(ctx context.Context
 	if err != nil {
 		return VirtualMachineImagesEdgeZoneClientListOffersResponse{}, err
 	}
-	return client.listOffersHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineImagesEdgeZoneClientListOffersResponse{}, err
+	}
+	resp, err := client.listOffersHandleResponse(httpResp)
+	return resp, err
 }
 
 // listOffersCreateRequest creates the ListOffers request.
@@ -263,11 +272,8 @@ func (client *VirtualMachineImagesEdgeZoneClient) listOffersCreateRequest(ctx co
 }
 
 // listOffersHandleResponse handles the ListOffers response.
-func (client *VirtualMachineImagesEdgeZoneClient) listOffersHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImagesEdgeZoneClientListOffersResponse, error) {
+func (client *VirtualMachineImagesEdgeZoneClient) listOffersHandleResponse(resp *http.Response) (VirtualMachineImagesEdgeZoneClientListOffersResponse, error) {
 	result := VirtualMachineImagesEdgeZoneClientListOffersResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageResourceArray); err != nil {
 		return VirtualMachineImagesEdgeZoneClientListOffersResponse{}, err
 	}
@@ -294,7 +300,12 @@ func (client *VirtualMachineImagesEdgeZoneClient) ListPublishers(ctx context.Con
 	if err != nil {
 		return VirtualMachineImagesEdgeZoneClientListPublishersResponse{}, err
 	}
-	return client.listPublishersHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineImagesEdgeZoneClientListPublishersResponse{}, err
+	}
+	resp, err := client.listPublishersHandleResponse(httpResp)
+	return resp, err
 }
 
 // listPublishersCreateRequest creates the ListPublishers request.
@@ -324,11 +335,8 @@ func (client *VirtualMachineImagesEdgeZoneClient) listPublishersCreateRequest(ct
 }
 
 // listPublishersHandleResponse handles the ListPublishers response.
-func (client *VirtualMachineImagesEdgeZoneClient) listPublishersHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImagesEdgeZoneClientListPublishersResponse, error) {
+func (client *VirtualMachineImagesEdgeZoneClient) listPublishersHandleResponse(resp *http.Response) (VirtualMachineImagesEdgeZoneClientListPublishersResponse, error) {
 	result := VirtualMachineImagesEdgeZoneClientListPublishersResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageResourceArray); err != nil {
 		return VirtualMachineImagesEdgeZoneClientListPublishersResponse{}, err
 	}
@@ -357,7 +365,12 @@ func (client *VirtualMachineImagesEdgeZoneClient) ListSKUs(ctx context.Context, 
 	if err != nil {
 		return VirtualMachineImagesEdgeZoneClientListSKUsResponse{}, err
 	}
-	return client.listSKUsHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineImagesEdgeZoneClientListSKUsResponse{}, err
+	}
+	resp, err := client.listSKUsHandleResponse(httpResp)
+	return resp, err
 }
 
 // listSKUsCreateRequest creates the ListSKUs request.
@@ -395,11 +408,8 @@ func (client *VirtualMachineImagesEdgeZoneClient) listSKUsCreateRequest(ctx cont
 }
 
 // listSKUsHandleResponse handles the ListSKUs response.
-func (client *VirtualMachineImagesEdgeZoneClient) listSKUsHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineImagesEdgeZoneClientListSKUsResponse, error) {
+func (client *VirtualMachineImagesEdgeZoneClient) listSKUsHandleResponse(resp *http.Response) (VirtualMachineImagesEdgeZoneClientListSKUsResponse, error) {
 	result := VirtualMachineImagesEdgeZoneClientListSKUsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineImageResourceArray); err != nil {
 		return VirtualMachineImagesEdgeZoneClientListSKUsResponse{}, err
 	}

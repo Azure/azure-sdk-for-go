@@ -27,8 +27,8 @@ func ExampleLogAnalyticsClient_BeginExportRequestRateByInterval() {
 	poller, err := clientFactory.NewLogAnalyticsClient().BeginExportRequestRateByInterval(ctx, "westus", armcompute.RequestRateByIntervalInput{
 		IntervalLength:      to.Ptr(armcompute.IntervalInMinsFiveMins),
 		BlobContainerSasURI: to.Ptr("https://somesasuri"),
-		FromTime:            to.Ptr(time.Date(2018, time.January, 21, 1, 54, 6, 862601000, time.UTC)),
-		ToTime:              to.Ptr(time.Date(2018, time.January, 23, 1, 54, 6, 862601000, time.UTC)),
+		FromTime:            to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-21T01:54:06.862601Z"); return t }()),
+		ToTime:              to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-23T01:54:06.862601Z"); return t }()),
 		GroupByResourceName: to.Ptr(true),
 	}, nil)
 	if err != nil {
@@ -63,8 +63,8 @@ func ExampleLogAnalyticsClient_BeginExportThrottledRequests() {
 	}
 	poller, err := clientFactory.NewLogAnalyticsClient().BeginExportThrottledRequests(ctx, "westus", armcompute.ThrottledRequestsInput{
 		BlobContainerSasURI:        to.Ptr("https://somesasuri"),
-		FromTime:                   to.Ptr(time.Date(2018, time.January, 21, 1, 54, 6, 862601000, time.UTC)),
-		ToTime:                     to.Ptr(time.Date(2018, time.January, 23, 1, 54, 6, 862601000, time.UTC)),
+		FromTime:                   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-21T01:54:06.862601Z"); return t }()),
+		ToTime:                     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-23T01:54:06.862601Z"); return t }()),
 		GroupByOperationName:       to.Ptr(true),
 		GroupByResourceName:        to.Ptr(false),
 		GroupByClientApplicationID: to.Ptr(false),

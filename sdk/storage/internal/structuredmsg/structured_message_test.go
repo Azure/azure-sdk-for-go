@@ -4,7 +4,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See License.txt in the project root for license information.
 
-package internal
+package structuredmsg
 
 import (
 	"bytes"
@@ -16,6 +16,7 @@ import (
 	"net"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -546,8 +547,8 @@ func TestStreamingEncoderWorksWithValidateSeekableStream(t *testing.T) {
 	data := []byte("validate seekable test data")
 	enc := NewSMEncoder(bytes.NewReader(data), int64(len(data)), 0)
 
-	// ValidateSeekableStreamAt0AndGetCount uses Seek(0, SeekCurrent), Seek(0, SeekEnd), Seek(0, SeekStart)
-	count, err := ValidateSeekableStreamAt0AndGetCount(enc)
+	// internal.ValidateSeekableStreamAt0AndGetCount uses Seek(0, SeekCurrent), Seek(0, SeekEnd), Seek(0, SeekStart)
+	count, err := internal.ValidateSeekableStreamAt0AndGetCount(enc)
 	require.NoError(t, err)
 	require.Equal(t, enc.EncodedLength(), count)
 

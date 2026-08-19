@@ -27,7 +27,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/structuredmsg"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -622,7 +622,7 @@ func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOpti
 	}
 
 	if resp.StructuredBodyType != nil && *resp.StructuredBodyType != "" {
-		resp.Body = internal.NewSMDecoder(resp.Body)
+		resp.Body = structuredmsg.NewSMDecoder(resp.Body)
 	}
 
 	return DownloadStreamResponse{

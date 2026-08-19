@@ -36,7 +36,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/structuredmsg"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 )
@@ -5232,7 +5232,7 @@ func TestFileUploadRangeStructuredMessageBody(t *testing.T) {
 	_require.NoError(err)
 
 	// Independently compute what the framed structured-message body should look like.
-	encoder := internal.NewSMEncoder(streaming.NopCloser(bytes.NewReader(content)), int64(contentSize), segmentSize)
+	encoder := structuredmsg.NewSMEncoder(streaming.NopCloser(bytes.NewReader(content)), int64(contentSize), segmentSize)
 	expectedBody, err := io.ReadAll(encoder)
 	_require.NoError(err)
 	_require.Greater(len(expectedBody), contentSize) // framing adds headers and CRC64 values
@@ -5256,7 +5256,7 @@ func TestFileUploadRangeStructuredMessageBody(t *testing.T) {
 	// The structured-message framing metadata must accompany the request.
 	sbHeader := foldedHeaderValues(transport.capturedHeaders, "x-ms-structured-body")
 	_require.Len(sbHeader, 1)
-	_require.Equal(internal.SMHeaderValue, sbHeader[0])
+	_require.Equal(structuredmsg.SMHeaderValue, sbHeader[0])
 	sclHeader := foldedHeaderValues(transport.capturedHeaders, "x-ms-structured-content-length")
 	_require.Len(sclHeader, 1)
 	_require.Equal(strconv.Itoa(contentSize), sclHeader[0])

@@ -101,7 +101,11 @@ func (b *BearerTokenPolicy) authenticateAndAuthorize(req *policy.Request) func(p
 			// retrying authentication, the credential would have done so already
 			return errorinfo.NonRetriableError(err)
 		}
-		req.Raw().Header.Set(shared.HeaderAuthorization, shared.BearerTokenPrefix+tk.Token)
+		tokenType := tk.TokenType
+		if tokenType == "" {
+			tokenType = strings.TrimSpace(shared.BearerTokenPrefix)
+		}
+		req.Raw().Header.Set(shared.HeaderAuthorization, tokenType+" "+tk.Token)
 		return nil
 	}
 }

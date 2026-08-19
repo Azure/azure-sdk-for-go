@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Schedule/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Schedule/createOrUpdate.json
 func ExampleSchedulesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,10 +90,10 @@ func ExampleSchedulesClient_BeginCreateOrUpdate() {
 	// 			},
 	// 		},
 	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeKey),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeApplication),
 	// 		},
@@ -101,7 +101,7 @@ func ExampleSchedulesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Schedule/delete.json
+// Generated from example definition: 2026-07-01/Schedule/delete.json
 func ExampleSchedulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +127,7 @@ func ExampleSchedulesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Schedule/get.json
+// Generated from example definition: 2026-07-01/Schedule/get.json
 func ExampleSchedulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,10 +176,10 @@ func ExampleSchedulesClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeKey),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeKey),
 	// 		},
@@ -187,7 +187,7 @@ func ExampleSchedulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Schedule/list.json
+// Generated from example definition: 2026-07-01/Schedule/list.json
 func ExampleSchedulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExampleSchedulesClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.SchedulesClientListResponse{
 		// 	ScheduleResourceArmPaginatedResult: armmachinelearning.ScheduleResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/schedules?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/schedules?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.Schedule{
 		// 			{
 		// 				Name: to.Ptr("string"),
@@ -243,10 +243,10 @@ func ExampleSchedulesClient_NewListPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armmachinelearning.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeKey),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeApplication),
 		// 				},

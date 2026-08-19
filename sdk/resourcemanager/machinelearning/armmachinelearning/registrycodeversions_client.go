@@ -20,7 +20,7 @@ import (
 // RegistryCodeVersionsClient contains the methods for the RegistryCodeVersions group.
 // Don't use this type directly, use NewRegistryCodeVersionsClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-07-01
 type RegistryCodeVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -67,12 +67,7 @@ func (client *RegistryCodeVersionsClient) CreateOrGetStartPendingUpload(ctx cont
 	if err != nil {
 		return RegistryCodeVersionsClientCreateOrGetStartPendingUploadResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegistryCodeVersionsClientCreateOrGetStartPendingUploadResponse{}, err
-	}
-	resp, err := client.createOrGetStartPendingUploadHandleResponse(httpResp)
-	return resp, err
+	return client.createOrGetStartPendingUploadHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrGetStartPendingUploadCreateRequest creates the CreateOrGetStartPendingUpload request.
@@ -103,7 +98,7 @@ func (client *RegistryCodeVersionsClient) createOrGetStartPendingUploadCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -114,8 +109,11 @@ func (client *RegistryCodeVersionsClient) createOrGetStartPendingUploadCreateReq
 }
 
 // createOrGetStartPendingUploadHandleResponse handles the CreateOrGetStartPendingUpload response.
-func (client *RegistryCodeVersionsClient) createOrGetStartPendingUploadHandleResponse(resp *http.Response) (RegistryCodeVersionsClientCreateOrGetStartPendingUploadResponse, error) {
+func (client *RegistryCodeVersionsClient) createOrGetStartPendingUploadHandleResponse(resp *http.Response, successCodes ...int) (RegistryCodeVersionsClientCreateOrGetStartPendingUploadResponse, error) {
 	result := RegistryCodeVersionsClientCreateOrGetStartPendingUploadResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PendingUploadResponseDto); err != nil {
 		return RegistryCodeVersionsClientCreateOrGetStartPendingUploadResponse{}, err
 	}
@@ -170,8 +168,7 @@ func (client *RegistryCodeVersionsClient) createOrUpdate(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -204,7 +201,7 @@ func (client *RegistryCodeVersionsClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -260,8 +257,7 @@ func (client *RegistryCodeVersionsClient) deleteOperation(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -294,7 +290,7 @@ func (client *RegistryCodeVersionsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -323,12 +319,7 @@ func (client *RegistryCodeVersionsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return RegistryCodeVersionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegistryCodeVersionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -359,15 +350,18 @@ func (client *RegistryCodeVersionsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RegistryCodeVersionsClient) getHandleResponse(resp *http.Response) (RegistryCodeVersionsClientGetResponse, error) {
+func (client *RegistryCodeVersionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (RegistryCodeVersionsClientGetResponse, error) {
 	result := RegistryCodeVersionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CodeVersion); err != nil {
 		return RegistryCodeVersionsClientGetResponse{}, err
 	}
@@ -393,60 +387,74 @@ func (client *RegistryCodeVersionsClient) NewListPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, registryName, codeName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, registryName, codeName, nextLink, options)
 			if err != nil {
 				return RegistryCodeVersionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RegistryCodeVersionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RegistryCodeVersionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, codeName string, options *RegistryCodeVersionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/codes/{codeName}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RegistryCodeVersionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, codeName string, nextLink string, options *RegistryCodeVersionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/codes/{codeName}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if registryName == "" {
+			return nil, errors.New("parameter registryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
+		if codeName == "" {
+			return nil, errors.New("parameter codeName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{codeName}", url.PathEscape(codeName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if registryName == "" {
-		return nil, errors.New("parameter registryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	if codeName == "" {
-		return nil, errors.New("parameter codeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{codeName}", url.PathEscape(codeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("$orderBy", *options.OrderBy)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.OrderBy != nil {
+			reqQP.Set("$orderBy", *options.OrderBy)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", *options.Skip)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", *options.Skip)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RegistryCodeVersionsClient) listHandleResponse(resp *http.Response) (RegistryCodeVersionsClientListResponse, error) {
+func (client *RegistryCodeVersionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (RegistryCodeVersionsClientListResponse, error) {
 	result := RegistryCodeVersionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CodeVersionResourceArmPaginatedResult); err != nil {
 		return RegistryCodeVersionsClientListResponse{}, err
 	}

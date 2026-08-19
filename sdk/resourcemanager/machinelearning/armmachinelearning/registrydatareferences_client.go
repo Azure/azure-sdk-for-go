@@ -19,7 +19,7 @@ import (
 // RegistryDataReferencesClient contains the methods for the RegistryDataReferences group.
 // Don't use this type directly, use NewRegistryDataReferencesClient() instead.
 //
-// Generated from API version 2026-03-15-preview
+// Generated from API version 2026-07-01
 type RegistryDataReferencesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -66,12 +66,7 @@ func (client *RegistryDataReferencesClient) GetBlobReferenceSAS(ctx context.Cont
 	if err != nil {
 		return RegistryDataReferencesClientGetBlobReferenceSASResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegistryDataReferencesClientGetBlobReferenceSASResponse{}, err
-	}
-	resp, err := client.getBlobReferenceSASHandleResponse(httpResp)
-	return resp, err
+	return client.getBlobReferenceSASHandleResponse(httpResp, http.StatusOK)
 }
 
 // getBlobReferenceSASCreateRequest creates the GetBlobReferenceSAS request.
@@ -102,7 +97,7 @@ func (client *RegistryDataReferencesClient) getBlobReferenceSASCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -113,8 +108,11 @@ func (client *RegistryDataReferencesClient) getBlobReferenceSASCreateRequest(ctx
 }
 
 // getBlobReferenceSASHandleResponse handles the GetBlobReferenceSAS response.
-func (client *RegistryDataReferencesClient) getBlobReferenceSASHandleResponse(resp *http.Response) (RegistryDataReferencesClientGetBlobReferenceSASResponse, error) {
+func (client *RegistryDataReferencesClient) getBlobReferenceSASHandleResponse(resp *http.Response, successCodes ...int) (RegistryDataReferencesClientGetBlobReferenceSASResponse, error) {
 	result := RegistryDataReferencesClientGetBlobReferenceSASResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetBlobReferenceSASResponseDto); err != nil {
 		return RegistryDataReferencesClientGetBlobReferenceSASResponse{}, err
 	}

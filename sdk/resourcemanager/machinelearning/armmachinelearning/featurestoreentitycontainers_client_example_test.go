@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturestoreEntityContainer/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Workspace/FeaturestoreEntityContainer/createOrUpdate.json
 func ExampleFeaturestoreEntityContainersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,10 +64,10 @@ func ExampleFeaturestoreEntityContainersClient_BeginCreateOrUpdate() {
 	// 			},
 	// 		},
 	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999+00:38"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 11, 56, 56, 999000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeManagedIdentity),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999+00:38"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 11, 56, 56, 999000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeManagedIdentity),
 	// 		},
@@ -75,7 +75,7 @@ func ExampleFeaturestoreEntityContainersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturestoreEntityContainer/delete.json
+// Generated from example definition: 2026-07-01/Workspace/FeaturestoreEntityContainer/delete.json
 func ExampleFeaturestoreEntityContainersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleFeaturestoreEntityContainersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturestoreEntityContainer/getEntity.json
+// Generated from example definition: 2026-07-01/Workspace/FeaturestoreEntityContainer/getEntity.json
 func ExampleFeaturestoreEntityContainersClient_GetEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,10 +138,10 @@ func ExampleFeaturestoreEntityContainersClient_GetEntity() {
 	// 			},
 	// 		},
 	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999+00:43"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 11, 51, 56, 999000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeManagedIdentity),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999+00:43"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 11, 51, 56, 999000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
 	// 		},
@@ -149,7 +149,7 @@ func ExampleFeaturestoreEntityContainersClient_GetEntity() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturestoreEntityContainer/list.json
+// Generated from example definition: 2026-07-01/Workspace/FeaturestoreEntityContainer/list.json
 func ExampleFeaturestoreEntityContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +175,7 @@ func ExampleFeaturestoreEntityContainersClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.FeaturestoreEntityContainersClientListResponse{
 		// 	FeaturestoreEntityContainerResourceArmPaginatedResult: armmachinelearning.FeaturestoreEntityContainerResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/featurestoreEntities?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/featurestoreEntities?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.FeaturestoreEntityContainer{
 		// 			{
 		// 				Name: to.Ptr("string"),
@@ -195,10 +195,10 @@ func ExampleFeaturestoreEntityContainersClient_NewListPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armmachinelearning.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999+00:43"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 11, 51, 56, 999000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeManagedIdentity),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999+00:43"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 11, 51, 56, 999000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeApplication),
 		// 				},

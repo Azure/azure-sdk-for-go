@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/create.json
+// Generated from example definition: 2026-07-01/WorkspaceConnection/create.json
 func ExampleWorkspaceConnectionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,7 +28,7 @@ func ExampleWorkspaceConnectionsClient_Create() {
 		Properties: &armmachinelearning.NoneAuthTypeWorkspaceConnectionProperties{
 			AuthType:   to.Ptr(armmachinelearning.ConnectionAuthTypeNone),
 			Category:   to.Ptr(armmachinelearning.ConnectionCategoryContainerRegistry),
-			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-15T14:30:00Z"); return t }()),
+			ExpiryTime: to.Ptr(time.Date(2024, time.March, 15, 14, 30, 0, 0, time.UTC)),
 			Target:     to.Ptr("www.facebook.com"),
 		},
 	}, nil)
@@ -46,14 +46,14 @@ func ExampleWorkspaceConnectionsClient_Create() {
 	// 		Properties: &armmachinelearning.NoneAuthTypeWorkspaceConnectionProperties{
 	// 			AuthType: to.Ptr(armmachinelearning.ConnectionAuthTypeNone),
 	// 			Category: to.Ptr(armmachinelearning.ConnectionCategoryContainerRegistry),
-	// 			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-15T14:30:00Z"); return t}()),
+	// 			ExpiryTime: to.Ptr(time.Date(2024, time.March, 15, 14, 30, 0, 0, time.UTC)),
 	// 			Target: to.Ptr("www.facebook.com"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/delete.json
+// Generated from example definition: 2026-07-01/WorkspaceConnection/delete.json
 func ExampleWorkspaceConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleWorkspaceConnectionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/get.json
+// Generated from example definition: 2026-07-01/WorkspaceConnection/get.json
 func ExampleWorkspaceConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,14 +101,14 @@ func ExampleWorkspaceConnectionsClient_Get() {
 	// 		Properties: &armmachinelearning.NoneAuthTypeWorkspaceConnectionProperties{
 	// 			AuthType: to.Ptr(armmachinelearning.ConnectionAuthTypeNone),
 	// 			Category: to.Ptr(armmachinelearning.ConnectionCategoryContainerRegistry),
-	// 			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-15T14:30:00Z"); return t}()),
+	// 			ExpiryTime: to.Ptr(time.Date(2024, time.March, 15, 14, 30, 0, 0, time.UTC)),
 	// 			Target: to.Ptr("www.facebook.com"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/list.json
+// Generated from example definition: 2026-07-01/WorkspaceConnection/list.json
 func ExampleWorkspaceConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleWorkspaceConnectionsClient_NewListPager() {
 		// 				Properties: &armmachinelearning.PATAuthTypeWorkspaceConnectionProperties{
 		// 					AuthType: to.Ptr(armmachinelearning.ConnectionAuthTypePAT),
 		// 					Category: to.Ptr(armmachinelearning.ConnectionCategoryContainerRegistry),
-		// 					ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-15T14:30:00Z"); return t}()),
+		// 					ExpiryTime: to.Ptr(time.Date(2024, time.March, 15, 14, 30, 0, 0, time.UTC)),
 		// 					Target: to.Ptr("www.facebook.com"),
 		// 				},
 		// 			},
@@ -162,7 +162,7 @@ func ExampleWorkspaceConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/listSecrets.json
+// Generated from example definition: 2026-07-01/WorkspaceConnection/listSecrets.json
 func ExampleWorkspaceConnectionsClient_ListSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,16 +192,16 @@ func ExampleWorkspaceConnectionsClient_ListSecrets() {
 	// 				AccessKeyID: to.Ptr("some_string"),
 	// 				SecretAccessKey: to.Ptr("some_string"),
 	// 			},
-	// 			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00Z"); return t}()),
+	// 			ExpiryTime: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			Metadata: map[string]*string{
 	// 			},
 	// 			Target: to.Ptr("some_string"),
 	// 		},
 	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("some_string"),
 	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeManagedIdentity),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("some_string"),
 	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
 	// 		},
@@ -209,36 +209,7 @@ func ExampleWorkspaceConnectionsClient_ListSecrets() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/testConnection.json
-func ExampleWorkspaceConnectionsClient_BeginTestConnection() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkspaceConnectionsClient().BeginTestConnection(ctx, "resourceGroup-1", "workspace-1", "connection-1", &armmachinelearning.WorkspaceConnectionsClientBeginTestConnectionOptions{
-		Body: &armmachinelearning.WorkspaceConnectionPropertiesV2BasicResource{
-			Properties: &armmachinelearning.NoneAuthTypeWorkspaceConnectionProperties{
-				AuthType:   to.Ptr(armmachinelearning.ConnectionAuthTypeNone),
-				Category:   to.Ptr(armmachinelearning.ConnectionCategoryContainerRegistry),
-				ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-15T14:30:00Z"); return t }()),
-				Target:     to.Ptr("target_url"),
-			},
-		}})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-03-15-preview/WorkspaceConnection/update.json
+// Generated from example definition: 2026-07-01/WorkspaceConnection/update.json
 func ExampleWorkspaceConnectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +228,7 @@ func ExampleWorkspaceConnectionsClient_Update() {
 				AccessKeyID:     to.Ptr("some_string"),
 				SecretAccessKey: to.Ptr("some_string"),
 			},
-			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00Z"); return t }()),
+			ExpiryTime: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
 			Metadata:   map[string]*string{},
 			Target:     to.Ptr("some_string"),
 		},
@@ -276,16 +247,16 @@ func ExampleWorkspaceConnectionsClient_Update() {
 	// 		Properties: &armmachinelearning.AccessKeyAuthTypeWorkspaceConnectionProperties{
 	// 			AuthType: to.Ptr(armmachinelearning.ConnectionAuthTypeAccessKey),
 	// 			Category: to.Ptr(armmachinelearning.ConnectionCategoryADLSGen2),
-	// 			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00Z"); return t}()),
+	// 			ExpiryTime: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			Metadata: map[string]*string{
 	// 			},
 	// 			Target: to.Ptr("some_string"),
 	// 		},
 	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("some_string"),
 	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeManagedIdentity),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T00:00:00Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("some_string"),
 	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeApplication),
 	// 		},

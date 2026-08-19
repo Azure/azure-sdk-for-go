@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/BatchDeployment/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Workspace/BatchDeployment/createOrUpdate.json
 func ExampleBatchDeploymentsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,10 +154,10 @@ func ExampleBatchDeploymentsClient_BeginCreateOrUpdate() {
 	// 			Tier: to.Ptr(armmachinelearning.SKUTierFree),
 	// 		},
 	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
 	// 		},
@@ -167,7 +167,7 @@ func ExampleBatchDeploymentsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/BatchDeployment/delete.json
+// Generated from example definition: 2026-07-01/Workspace/BatchDeployment/delete.json
 func ExampleBatchDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExampleBatchDeploymentsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/BatchDeployment/get.json
+// Generated from example definition: 2026-07-01/Workspace/BatchDeployment/get.json
 func ExampleBatchDeploymentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,10 +276,10 @@ func ExampleBatchDeploymentsClient_Get() {
 	// 			Tier: to.Ptr(armmachinelearning.SKUTierFree),
 	// 		},
 	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
 	// 		},
@@ -289,7 +289,7 @@ func ExampleBatchDeploymentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/BatchDeployment/list.json
+// Generated from example definition: 2026-07-01/Workspace/BatchDeployment/list.json
 func ExampleBatchDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,7 +315,7 @@ func ExampleBatchDeploymentsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.BatchDeploymentsClientListResponse{
 		// 	BatchDeploymentTrackedResourceArmPaginatedResult: armmachinelearning.BatchDeploymentTrackedResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/batchEndpoints/testEndpointName/deployments?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/batchEndpoints/testEndpointName/deployments?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.BatchDeployment{
 		// 			{
 		// 				Name: to.Ptr("string"),
@@ -381,10 +381,10 @@ func ExampleBatchDeploymentsClient_NewListPager() {
 		// 					Tier: to.Ptr(armmachinelearning.SKUTierFree),
 		// 				},
 		// 				SystemData: &armmachinelearning.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
 		// 				},
@@ -397,7 +397,7 @@ func ExampleBatchDeploymentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/BatchDeployment/update.json
+// Generated from example definition: 2026-07-01/Workspace/BatchDeployment/update.json
 func ExampleBatchDeploymentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -489,10 +489,10 @@ func ExampleBatchDeploymentsClient_BeginUpdate() {
 	// 			Tier: to.Ptr(armmachinelearning.SKUTierFree),
 	// 		},
 	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:34:56.999Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 34, 56, 999000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
 	// 		},

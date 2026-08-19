@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Registry/ModelContainer/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Registry/ModelContainer/createOrUpdate.json
 func ExampleRegistryModelContainersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,10 +55,10 @@ func ExampleRegistryModelContainersClient_BeginCreateOrUpdate() {
 	// 			},
 	// 		},
 	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T12:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.December, 1, 12, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("John Smith"),
 	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T12:00:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.December, 1, 12, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("John Smith"),
 	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
 	// 		},
@@ -66,7 +66,7 @@ func ExampleRegistryModelContainersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ModelContainer/delete.json
+// Generated from example definition: 2026-07-01/Registry/ModelContainer/delete.json
 func ExampleRegistryModelContainersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleRegistryModelContainersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ModelContainer/get.json
+// Generated from example definition: 2026-07-01/Registry/ModelContainer/get.json
 func ExampleRegistryModelContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,10 +123,10 @@ func ExampleRegistryModelContainersClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T12:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.December, 1, 12, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("John Smith"),
 	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T12:00:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.December, 1, 12, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("John Smith"),
 	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
 	// 		},
@@ -134,7 +134,7 @@ func ExampleRegistryModelContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ModelContainer/list.json
+// Generated from example definition: 2026-07-01/Registry/ModelContainer/list.json
 func ExampleRegistryModelContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleRegistryModelContainersClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.RegistryModelContainersClientListResponse{
 		// 	ModelContainerResourceArmPaginatedResult: armmachinelearning.ModelContainerResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries/registries123/models?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries/registries123/models?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.ModelContainer{
 		// 			{
 		// 				Name: to.Ptr("testContainer"),
@@ -172,10 +172,10 @@ func ExampleRegistryModelContainersClient_NewListPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armmachinelearning.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T12:00:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.December, 1, 12, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("John Smith"),
 		// 					CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-12-01T12:00:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.December, 1, 12, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("John Smith"),
 		// 					LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
 		// 				},

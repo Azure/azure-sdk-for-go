@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Compute/createOrUpdate/AKSCompute.json
+// Generated from example definition: 2026-07-01/Compute/createOrUpdate/AKSCompute.json
 func ExampleComputeClient_BeginCreateOrUpdate_updateAnAksCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_updateAnAksCompute() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/createOrUpdate/AmlCompute.json
+// Generated from example definition: 2026-07-01/Compute/createOrUpdate/AmlCompute.json
 func ExampleComputeClient_BeginCreateOrUpdate_updateAAmlCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,11 +107,11 @@ func ExampleComputeClient_BeginCreateOrUpdate_updateAAmlCompute() {
 	// 		Properties: &armmachinelearning.AmlCompute{
 	// 			Description: to.Ptr("some compute"),
 	// 			ComputeType: to.Ptr(armmachinelearning.ComputeTypeAmlCompute),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
-	// 			ModifiedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
+	// 			ModifiedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
 	// 			Properties: &armmachinelearning.AmlComputeProperties{
 	// 				AllocationState: to.Ptr(armmachinelearning.AllocationStateResizing),
-	// 				AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-27T22:28:08.998Z"); return t}()),
+	// 				AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.September, 27, 22, 28, 8, 998000000, time.UTC)),
 	// 				CurrentNodeCount: to.Ptr[int32](0),
 	// 				EnableNodePublicIP: to.Ptr(true),
 	// 				Errors: nil,
@@ -145,7 +145,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_updateAAmlCompute() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/createOrUpdate/BasicAKSCompute.json
+// Generated from example definition: 2026-07-01/Compute/createOrUpdate/BasicAKSCompute.json
 func ExampleComputeClient_BeginCreateOrUpdate_createAnAksCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +186,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_createAnAksCompute() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/createOrUpdate/BasicAmlCompute.json
+// Generated from example definition: 2026-07-01/Compute/createOrUpdate/BasicAmlCompute.json
 func ExampleComputeClient_BeginCreateOrUpdate_createAAmlCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +243,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_createAAmlCompute() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/createOrUpdate/BasicDataFactoryCompute.json
+// Generated from example definition: 2026-07-01/Compute/createOrUpdate/BasicDataFactoryCompute.json
 func ExampleComputeClient_BeginCreateOrUpdate_createADataFactoryCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -284,7 +284,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_createADataFactoryCompute() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/createOrUpdate/ComputeInstance.json
+// Generated from example definition: 2026-07-01/Compute/createOrUpdate/ComputeInstance.json
 func ExampleComputeClient_BeginCreateOrUpdate_createAnComputeInstanceCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,10 +300,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_createAnComputeInstanceCompute() {
 		Properties: &armmachinelearning.ComputeInstance{
 			ComputeType: to.Ptr(armmachinelearning.ComputeTypeComputeInstance),
 			Properties: &armmachinelearning.ComputeInstanceProperties{
-				ApplicationSharingPolicy: to.Ptr(armmachinelearning.ApplicationSharingPolicyPersonal),
-				AutologgerSettings: &armmachinelearning.ComputeInstanceAutologgerSettings{
-					MlflowAutologger: to.Ptr(armmachinelearning.MlflowAutologgerEnabled),
-				},
+				ApplicationSharingPolicy:         to.Ptr(armmachinelearning.ApplicationSharingPolicyPersonal),
 				ComputeInstanceAuthorizationType: to.Ptr(armmachinelearning.ComputeInstanceAuthorizationTypePersonal),
 				CustomServices: []*armmachinelearning.CustomService{
 					{
@@ -349,16 +346,13 @@ func ExampleComputeClient_BeginCreateOrUpdate_createAnComputeInstanceCompute() {
 						},
 					},
 				},
-				EnableOSPatching: to.Ptr(true),
-				EnableRootAccess: to.Ptr(true),
-				EnableSSO:        to.Ptr(true),
+				EnableSSO: to.Ptr(true),
 				PersonalComputeInstanceSettings: &armmachinelearning.PersonalComputeInstanceSettings{
 					AssignedUser: &armmachinelearning.AssignedUser{
 						ObjectID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 						TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 					},
 				},
-				ReleaseQuotaOnStop: to.Ptr(true),
 				SSHSettings: &armmachinelearning.ComputeInstanceSSHSettings{
 					SSHPublicAccess: to.Ptr(armmachinelearning.SSHPublicAccessDisabled),
 				},
@@ -393,7 +387,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_createAnComputeInstanceCompute() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/createOrUpdate/ComputeInstanceMinimal.json
+// Generated from example definition: 2026-07-01/Compute/createOrUpdate/ComputeInstanceMinimal.json
 func ExampleComputeClient_BeginCreateOrUpdate_createAnComputeInstanceComputeWithMinimalInputs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -437,7 +431,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_createAnComputeInstanceComputeWith
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/createOrUpdate/ComputeInstanceWithSchedules.json
+// Generated from example definition: 2026-07-01/Compute/createOrUpdate/ComputeInstanceWithSchedules.json
 func ExampleComputeClient_BeginCreateOrUpdate_createAnComputeInstanceComputeWithSchedules() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -506,7 +500,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_createAnComputeInstanceComputeWith
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/createOrUpdate/KubernetesCompute.json
+// Generated from example definition: 2026-07-01/Compute/createOrUpdate/KubernetesCompute.json
 func ExampleComputeClient_BeginCreateOrUpdate_attachAKubernetesCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -593,7 +587,7 @@ func ExampleComputeClient_BeginCreateOrUpdate_attachAKubernetesCompute() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/delete.json
+// Generated from example definition: 2026-07-01/Compute/delete.json
 func ExampleComputeClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -619,7 +613,7 @@ func ExampleComputeClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/get/AKSCompute.json
+// Generated from example definition: 2026-07-01/Compute/get/AKSCompute.json
 func ExampleComputeClient_Get_getAAksCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -646,8 +640,8 @@ func ExampleComputeClient_Get_getAAksCompute() {
 	// 		Properties: &armmachinelearning.AKS{
 	// 			Description: to.Ptr("some compute"),
 	// 			ComputeType: to.Ptr(armmachinelearning.ComputeTypeAKS),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
-	// 			ModifiedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
+	// 			ModifiedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armmachinelearning.ProvisioningStateSucceeded),
 	// 			ResourceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute123-56826-c9b00420020b2"),
 	// 		},
@@ -655,7 +649,7 @@ func ExampleComputeClient_Get_getAAksCompute() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/get/AmlCompute.json
+// Generated from example definition: 2026-07-01/Compute/get/AmlCompute.json
 func ExampleComputeClient_Get_getAAmlCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -682,11 +676,11 @@ func ExampleComputeClient_Get_getAAmlCompute() {
 	// 		Properties: &armmachinelearning.AmlCompute{
 	// 			Description: to.Ptr("some compute"),
 	// 			ComputeType: to.Ptr(armmachinelearning.ComputeTypeAmlCompute),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
-	// 			ModifiedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
+	// 			ModifiedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
 	// 			Properties: &armmachinelearning.AmlComputeProperties{
 	// 				AllocationState: to.Ptr(armmachinelearning.AllocationStateResizing),
-	// 				AllocationStateTransitionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-27T22:28:08.998Z"); return t}()),
+	// 				AllocationStateTransitionTime: to.Ptr(time.Date(2017, time.September, 27, 22, 28, 8, 998000000, time.UTC)),
 	// 				CurrentNodeCount: to.Ptr[int32](0),
 	// 				EnableNodePublicIP: to.Ptr(true),
 	// 				Errors: nil,
@@ -720,7 +714,7 @@ func ExampleComputeClient_Get_getAAmlCompute() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/get/ComputeInstance.json
+// Generated from example definition: 2026-07-01/Compute/get/ComputeInstance.json
 func ExampleComputeClient_Get_getAnComputeInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -747,8 +741,8 @@ func ExampleComputeClient_Get_getAnComputeInstance() {
 	// 		Properties: &armmachinelearning.ComputeInstance{
 	// 			Description: to.Ptr("some compute"),
 	// 			ComputeType: to.Ptr(armmachinelearning.ComputeTypeComputeInstance),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
-	// 			ModifiedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
+	// 			ModifiedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
 	// 			Properties: &armmachinelearning.ComputeInstanceProperties{
 	// 				ApplicationSharingPolicy: to.Ptr(armmachinelearning.ApplicationSharingPolicyShared),
 	// 				Applications: []*armmachinelearning.ComputeInstanceApplication{
@@ -814,8 +808,6 @@ func ExampleComputeClient_Get_getAnComputeInstance() {
 	// 						},
 	// 					},
 	// 				},
-	// 				EnableOSPatching: to.Ptr(true),
-	// 				EnableRootAccess: to.Ptr(true),
 	// 				EnableSSO: to.Ptr(true),
 	// 				OSImageMetadata: &armmachinelearning.ImageMetadata{
 	// 					CurrentImageVersion: to.Ptr("22.06.14"),
@@ -828,7 +820,6 @@ func ExampleComputeClient_Get_getAnComputeInstance() {
 	// 						TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 					},
 	// 				},
-	// 				ReleaseQuotaOnStop: to.Ptr(true),
 	// 				SSHSettings: &armmachinelearning.ComputeInstanceSSHSettings{
 	// 					AdminUserName: to.Ptr("azureuser"),
 	// 					SSHPort: to.Ptr[int32](22),
@@ -846,7 +837,7 @@ func ExampleComputeClient_Get_getAnComputeInstance() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/get/KubernetesCompute.json
+// Generated from example definition: 2026-07-01/Compute/get/KubernetesCompute.json
 func ExampleComputeClient_Get_getAKubernetesCompute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -873,9 +864,9 @@ func ExampleComputeClient_Get_getAKubernetesCompute() {
 	// 		Properties: &armmachinelearning.Kubernetes{
 	// 			Description: to.Ptr("some compute"),
 	// 			ComputeType: to.Ptr(armmachinelearning.ComputeTypeKubernetes),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
 	// 			IsAttachedCompute: to.Ptr(true),
-	// 			ModifiedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
+	// 			ModifiedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
 	// 			Properties: &armmachinelearning.KubernetesProperties{
 	// 				DefaultInstanceType: to.Ptr("defaultInstanceType"),
 	// 				ExtensionInstanceReleaseTrain: to.Ptr("stable"),
@@ -906,271 +897,7 @@ func ExampleComputeClient_Get_getAKubernetesCompute() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/getAllowedVMSizesForResize.json
-func ExampleComputeClient_GetAllowedResizeSizes() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewComputeClient().GetAllowedResizeSizes(ctx, "testrg123", "workspaces123", "compute123", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmachinelearning.ComputeClientGetAllowedResizeSizesResponse{
-	// 	VirtualMachineSizeListResult: armmachinelearning.VirtualMachineSizeListResult{
-	// 		Value: []*armmachinelearning.VirtualMachineSize{
-	// 			{
-	// 				Name: to.Ptr("Standard_DS1_v2"),
-	// 				EstimatedVMPrices: &armmachinelearning.EstimatedVMPrices{
-	// 					BillingCurrency: to.Ptr(armmachinelearning.BillingCurrencyUSD),
-	// 					UnitOfMeasure: to.Ptr(armmachinelearning.UnitOfMeasureOneHour),
-	// 					Values: []*armmachinelearning.EstimatedVMPrice{
-	// 						{
-	// 							OSType: to.Ptr(armmachinelearning.VMPriceOSTypeLinux),
-	// 							RetailPrice: to.Ptr[float64](0.07),
-	// 							VMTier: to.Ptr(armmachinelearning.VMTierStandard),
-	// 						},
-	// 					},
-	// 				},
-	// 				Family: to.Ptr("standardDSv2Family"),
-	// 				Gpus: to.Ptr[int32](0),
-	// 				LowPriorityCapable: to.Ptr(true),
-	// 				MaxResourceVolumeMB: to.Ptr[int32](7168),
-	// 				MemoryGB: to.Ptr[float64](3.5),
-	// 				OSVhdSizeMB: to.Ptr[int32](1047552),
-	// 				PremiumIO: to.Ptr(true),
-	// 				SupportedComputeTypes: []*string{
-	// 					to.Ptr("AmlCompute"),
-	// 					to.Ptr("ComputeInstance"),
-	// 				},
-	// 				VCPUs: to.Ptr[int32](1),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("Standard_DS2_v2"),
-	// 				EstimatedVMPrices: &armmachinelearning.EstimatedVMPrices{
-	// 					BillingCurrency: to.Ptr(armmachinelearning.BillingCurrencyUSD),
-	// 					UnitOfMeasure: to.Ptr(armmachinelearning.UnitOfMeasureOneHour),
-	// 					Values: []*armmachinelearning.EstimatedVMPrice{
-	// 						{
-	// 							OSType: to.Ptr(armmachinelearning.VMPriceOSTypeLinux),
-	// 							RetailPrice: to.Ptr[float64](0.15),
-	// 							VMTier: to.Ptr(armmachinelearning.VMTierStandard),
-	// 						},
-	// 					},
-	// 				},
-	// 				Family: to.Ptr("standardDSv2Family"),
-	// 				Gpus: to.Ptr[int32](0),
-	// 				LowPriorityCapable: to.Ptr(true),
-	// 				MaxResourceVolumeMB: to.Ptr[int32](14336),
-	// 				MemoryGB: to.Ptr[float64](7),
-	// 				OSVhdSizeMB: to.Ptr[int32](1047552),
-	// 				PremiumIO: to.Ptr(true),
-	// 				SupportedComputeTypes: []*string{
-	// 					to.Ptr("AmlCompute"),
-	// 					to.Ptr("ComputeInstance"),
-	// 					to.Ptr("MIR"),
-	// 				},
-	// 				VCPUs: to.Ptr[int32](2),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("Standard_DS3_v2"),
-	// 				EstimatedVMPrices: &armmachinelearning.EstimatedVMPrices{
-	// 					BillingCurrency: to.Ptr(armmachinelearning.BillingCurrencyUSD),
-	// 					UnitOfMeasure: to.Ptr(armmachinelearning.UnitOfMeasureOneHour),
-	// 					Values: []*armmachinelearning.EstimatedVMPrice{
-	// 						{
-	// 							OSType: to.Ptr(armmachinelearning.VMPriceOSTypeLinux),
-	// 							RetailPrice: to.Ptr[float64](0.29),
-	// 							VMTier: to.Ptr(armmachinelearning.VMTierStandard),
-	// 						},
-	// 					},
-	// 				},
-	// 				Family: to.Ptr("standardDSv2Family"),
-	// 				Gpus: to.Ptr[int32](0),
-	// 				LowPriorityCapable: to.Ptr(true),
-	// 				MaxResourceVolumeMB: to.Ptr[int32](28672),
-	// 				MemoryGB: to.Ptr[float64](14),
-	// 				OSVhdSizeMB: to.Ptr[int32](1047552),
-	// 				PremiumIO: to.Ptr(true),
-	// 				SupportedComputeTypes: []*string{
-	// 					to.Ptr("AmlCompute"),
-	// 					to.Ptr("ComputeInstance"),
-	// 					to.Ptr("MIR"),
-	// 				},
-	// 				VCPUs: to.Ptr[int32](4),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("Standard_DS4_v2"),
-	// 				EstimatedVMPrices: &armmachinelearning.EstimatedVMPrices{
-	// 					BillingCurrency: to.Ptr(armmachinelearning.BillingCurrencyUSD),
-	// 					UnitOfMeasure: to.Ptr(armmachinelearning.UnitOfMeasureOneHour),
-	// 					Values: []*armmachinelearning.EstimatedVMPrice{
-	// 						{
-	// 							OSType: to.Ptr(armmachinelearning.VMPriceOSTypeLinux),
-	// 							RetailPrice: to.Ptr[float64](0.58),
-	// 							VMTier: to.Ptr(armmachinelearning.VMTierStandard),
-	// 						},
-	// 					},
-	// 				},
-	// 				Family: to.Ptr("standardDSv2Family"),
-	// 				Gpus: to.Ptr[int32](0),
-	// 				LowPriorityCapable: to.Ptr(true),
-	// 				MaxResourceVolumeMB: to.Ptr[int32](57344),
-	// 				MemoryGB: to.Ptr[float64](28),
-	// 				OSVhdSizeMB: to.Ptr[int32](1047552),
-	// 				PremiumIO: to.Ptr(true),
-	// 				SupportedComputeTypes: []*string{
-	// 					to.Ptr("AmlCompute"),
-	// 					to.Ptr("ComputeInstance"),
-	// 					to.Ptr("MIR"),
-	// 				},
-	// 				VCPUs: to.Ptr[int32](8),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("Standard_DS5_v2"),
-	// 				EstimatedVMPrices: &armmachinelearning.EstimatedVMPrices{
-	// 					BillingCurrency: to.Ptr(armmachinelearning.BillingCurrencyUSD),
-	// 					UnitOfMeasure: to.Ptr(armmachinelearning.UnitOfMeasureOneHour),
-	// 					Values: []*armmachinelearning.EstimatedVMPrice{
-	// 						{
-	// 							OSType: to.Ptr(armmachinelearning.VMPriceOSTypeLinux),
-	// 							RetailPrice: to.Ptr[float64](1.17),
-	// 							VMTier: to.Ptr(armmachinelearning.VMTierStandard),
-	// 						},
-	// 					},
-	// 				},
-	// 				Family: to.Ptr("standardDSv2Family"),
-	// 				Gpus: to.Ptr[int32](0),
-	// 				LowPriorityCapable: to.Ptr(true),
-	// 				MaxResourceVolumeMB: to.Ptr[int32](114688),
-	// 				MemoryGB: to.Ptr[float64](56),
-	// 				OSVhdSizeMB: to.Ptr[int32](1047552),
-	// 				PremiumIO: to.Ptr(true),
-	// 				SupportedComputeTypes: []*string{
-	// 					to.Ptr("AmlCompute"),
-	// 					to.Ptr("ComputeInstance"),
-	// 					to.Ptr("MIR"),
-	// 				},
-	// 				VCPUs: to.Ptr[int32](16),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("Standard_DS11_v2"),
-	// 				EstimatedVMPrices: &armmachinelearning.EstimatedVMPrices{
-	// 					BillingCurrency: to.Ptr(armmachinelearning.BillingCurrencyUSD),
-	// 					UnitOfMeasure: to.Ptr(armmachinelearning.UnitOfMeasureOneHour),
-	// 					Values: []*armmachinelearning.EstimatedVMPrice{
-	// 						{
-	// 							OSType: to.Ptr(armmachinelearning.VMPriceOSTypeLinux),
-	// 							RetailPrice: to.Ptr[float64](0.18),
-	// 							VMTier: to.Ptr(armmachinelearning.VMTierStandard),
-	// 						},
-	// 					},
-	// 				},
-	// 				Family: to.Ptr("standardDSv2Family"),
-	// 				Gpus: to.Ptr[int32](0),
-	// 				LowPriorityCapable: to.Ptr(true),
-	// 				MaxResourceVolumeMB: to.Ptr[int32](28672),
-	// 				MemoryGB: to.Ptr[float64](14),
-	// 				OSVhdSizeMB: to.Ptr[int32](1047552),
-	// 				PremiumIO: to.Ptr(true),
-	// 				SupportedComputeTypes: []*string{
-	// 					to.Ptr("AmlCompute"),
-	// 					to.Ptr("ComputeInstance"),
-	// 				},
-	// 				VCPUs: to.Ptr[int32](2),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("Standard_DS12_v2"),
-	// 				EstimatedVMPrices: &armmachinelearning.EstimatedVMPrices{
-	// 					BillingCurrency: to.Ptr(armmachinelearning.BillingCurrencyUSD),
-	// 					UnitOfMeasure: to.Ptr(armmachinelearning.UnitOfMeasureOneHour),
-	// 					Values: []*armmachinelearning.EstimatedVMPrice{
-	// 						{
-	// 							OSType: to.Ptr(armmachinelearning.VMPriceOSTypeLinux),
-	// 							RetailPrice: to.Ptr[float64](0.37),
-	// 							VMTier: to.Ptr(armmachinelearning.VMTierStandard),
-	// 						},
-	// 					},
-	// 				},
-	// 				Family: to.Ptr("standardDSv2Family"),
-	// 				Gpus: to.Ptr[int32](0),
-	// 				LowPriorityCapable: to.Ptr(true),
-	// 				MaxResourceVolumeMB: to.Ptr[int32](57344),
-	// 				MemoryGB: to.Ptr[float64](28),
-	// 				OSVhdSizeMB: to.Ptr[int32](1047552),
-	// 				PremiumIO: to.Ptr(true),
-	// 				SupportedComputeTypes: []*string{
-	// 					to.Ptr("AmlCompute"),
-	// 					to.Ptr("ComputeInstance"),
-	// 				},
-	// 				VCPUs: to.Ptr[int32](4),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("Standard_DS13_v2"),
-	// 				EstimatedVMPrices: &armmachinelearning.EstimatedVMPrices{
-	// 					BillingCurrency: to.Ptr(armmachinelearning.BillingCurrencyUSD),
-	// 					UnitOfMeasure: to.Ptr(armmachinelearning.UnitOfMeasureOneHour),
-	// 					Values: []*armmachinelearning.EstimatedVMPrice{
-	// 						{
-	// 							OSType: to.Ptr(armmachinelearning.VMPriceOSTypeLinux),
-	// 							RetailPrice: to.Ptr[float64](0.74),
-	// 							VMTier: to.Ptr(armmachinelearning.VMTierStandard),
-	// 						},
-	// 					},
-	// 				},
-	// 				Family: to.Ptr("standardDSv2Family"),
-	// 				Gpus: to.Ptr[int32](0),
-	// 				LowPriorityCapable: to.Ptr(true),
-	// 				MaxResourceVolumeMB: to.Ptr[int32](114688),
-	// 				MemoryGB: to.Ptr[float64](56),
-	// 				OSVhdSizeMB: to.Ptr[int32](1047552),
-	// 				PremiumIO: to.Ptr(true),
-	// 				SupportedComputeTypes: []*string{
-	// 					to.Ptr("AmlCompute"),
-	// 					to.Ptr("ComputeInstance"),
-	// 				},
-	// 				VCPUs: to.Ptr[int32](8),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("Standard_DS14_v2"),
-	// 				EstimatedVMPrices: &armmachinelearning.EstimatedVMPrices{
-	// 					BillingCurrency: to.Ptr(armmachinelearning.BillingCurrencyUSD),
-	// 					UnitOfMeasure: to.Ptr(armmachinelearning.UnitOfMeasureOneHour),
-	// 					Values: []*armmachinelearning.EstimatedVMPrice{
-	// 						{
-	// 							OSType: to.Ptr(armmachinelearning.VMPriceOSTypeLinux),
-	// 							RetailPrice: to.Ptr[float64](1.48),
-	// 							VMTier: to.Ptr(armmachinelearning.VMTierStandard),
-	// 						},
-	// 					},
-	// 				},
-	// 				Family: to.Ptr("standardDSv2Family"),
-	// 				Gpus: to.Ptr[int32](0),
-	// 				LowPriorityCapable: to.Ptr(true),
-	// 				MaxResourceVolumeMB: to.Ptr[int32](229376),
-	// 				MemoryGB: to.Ptr[float64](112),
-	// 				OSVhdSizeMB: to.Ptr[int32](1047552),
-	// 				PremiumIO: to.Ptr(true),
-	// 				SupportedComputeTypes: []*string{
-	// 					to.Ptr("AmlCompute"),
-	// 					to.Ptr("ComputeInstance"),
-	// 				},
-	// 				VCPUs: to.Ptr[int32](16),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-15-preview/Compute/list.json
+// Generated from example definition: 2026-07-01/Compute/list.json
 func ExampleComputeClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1194,7 +921,7 @@ func ExampleComputeClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.ComputeClientListResponse{
 		// 	PaginatedComputeResourcesList: armmachinelearning.PaginatedComputeResourcesList{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/workspaces123/computes?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/workspaces123/computes?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.ComputeResource{
 		// 			{
 		// 				Name: to.Ptr("compute123"),
@@ -1204,8 +931,8 @@ func ExampleComputeClient_NewListPager() {
 		// 				Properties: &armmachinelearning.AKS{
 		// 					Description: to.Ptr("some compute"),
 		// 					ComputeType: to.Ptr(armmachinelearning.ComputeTypeAKS),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
-		// 					ModifiedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
+		// 					ModifiedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armmachinelearning.ProvisioningStateSucceeded),
 		// 					ResourceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute123-56826-c9b00420020b2"),
 		// 				},
@@ -1218,8 +945,8 @@ func ExampleComputeClient_NewListPager() {
 		// 				Properties: &armmachinelearning.AKS{
 		// 					Description: to.Ptr("some compute"),
 		// 					ComputeType: to.Ptr(armmachinelearning.ComputeTypeAKS),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
-		// 					ModifiedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-04-01T22:00:00.0000000+00:00"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
+		// 					ModifiedOn: to.Ptr(time.Date(2021, time.April, 1, 22, 0, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armmachinelearning.ProvisioningStateSucceeded),
 		// 					ResourceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute1234-56826-c9b00420020b2"),
 		// 				},
@@ -1230,7 +957,7 @@ func ExampleComputeClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/listKeys.json
+// Generated from example definition: 2026-07-01/Compute/listKeys.json
 func ExampleComputeClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1258,7 +985,7 @@ func ExampleComputeClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/listNodes.json
+// Generated from example definition: 2026-07-01/Compute/listNodes.json
 func ExampleComputeClient_NewListNodesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1282,7 +1009,7 @@ func ExampleComputeClient_NewListNodesPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.ComputeClientListNodesResponse{
 		// 	AmlComputeNodesInformation: armmachinelearning.AmlComputeNodesInformation{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/workspaces123/computes/compute123/listNodes?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/workspaces123/computes/compute123/listNodes?api-version=2026-07-01&$skip=2"),
 		// 		Nodes: []*armmachinelearning.AmlComputeNodeInformation{
 		// 			{
 		// 				NodeID: to.Ptr("tvm-3601533753_1-20170719t162906z"),
@@ -1305,30 +1032,7 @@ func ExampleComputeClient_NewListNodesPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/resize.json
-func ExampleComputeClient_BeginResize() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewComputeClient().BeginResize(ctx, "testrg123", "workspaces123", "compute123", armmachinelearning.ResizeSchema{
-		TargetVMSize: to.Ptr("Standard_DS11_v2"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-03-15-preview/Compute/restart.json
+// Generated from example definition: 2026-07-01/Compute/restart.json
 func ExampleComputeClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1349,7 +1053,7 @@ func ExampleComputeClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/start.json
+// Generated from example definition: 2026-07-01/Compute/start.json
 func ExampleComputeClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1370,7 +1074,7 @@ func ExampleComputeClient_BeginStart() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/stop.json
+// Generated from example definition: 2026-07-01/Compute/stop.json
 func ExampleComputeClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1391,7 +1095,7 @@ func ExampleComputeClient_BeginStop() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Compute/patch.json
+// Generated from example definition: 2026-07-01/Compute/patch.json
 func ExampleComputeClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1435,116 +1139,5 @@ func ExampleComputeClient_BeginUpdate() {
 	// 			ProvisioningState: to.Ptr(armmachinelearning.ProvisioningStateUpdating),
 	// 		},
 	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-15-preview/Compute/updateCustomServices.json
-func ExampleComputeClient_UpdateCustomServices() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewComputeClient().UpdateCustomServices(ctx, "testrg123", "workspaces123", "compute123", []*armmachinelearning.CustomService{
-		{
-			Name: to.Ptr("rstudio-workbench"),
-			Docker: &armmachinelearning.Docker{
-				Privileged: to.Ptr(true),
-			},
-			Endpoints: []*armmachinelearning.Endpoint{
-				{
-					Name:      to.Ptr("connect"),
-					HostIP:    nil,
-					Published: to.Ptr[int32](4444),
-					Target:    to.Ptr[int32](8787),
-					Protocol:  to.Ptr(armmachinelearning.ProtocolHTTP),
-				},
-			},
-			EnvironmentVariables: map[string]*armmachinelearning.EnvironmentVariable{
-				"RSP_LICENSE": {
-					Type:  to.Ptr(armmachinelearning.EnvironmentVariableTypeLocal),
-					Value: to.Ptr("XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX"),
-				},
-			},
-			Image: &armmachinelearning.Image{
-				Type:      to.Ptr(armmachinelearning.ImageTypeDocker),
-				Reference: to.Ptr("ghcr.io/azure/rstudio-workbench:latest"),
-			},
-			Volumes: []*armmachinelearning.VolumeDefinition{
-				{
-					Type:     to.Ptr(armmachinelearning.VolumeDefinitionTypeBind),
-					ReadOnly: to.Ptr(true),
-					Source:   to.Ptr("/mnt/azureuser/"),
-					Target:   to.Ptr("/home/testuser/"),
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmachinelearning.ComputeClientUpdateCustomServicesResponse{
-	// }
-}
-
-// Generated from example definition: 2026-03-15-preview/Compute/updateDataMounts.json
-func ExampleComputeClient_UpdateDataMounts() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewComputeClient().UpdateDataMounts(ctx, "testrg123", "workspaces123", "compute123", []*armmachinelearning.ComputeInstanceDataMount{
-		{
-			MountAction: to.Ptr(armmachinelearning.MountActionMount),
-			MountMode:   to.Ptr(armmachinelearning.MountModeReadOnly),
-			MountName:   to.Ptr("hello"),
-			MountPath:   to.Ptr("/some/random/path/on/host"),
-			Source:      to.Ptr("azureml://subscriptions/some-sub/resourcegroups/some-rg/workspaces/some-ws/data/some-data-asset-name/versions/some-data-asset-version"),
-			SourceType:  to.Ptr(armmachinelearning.SourceTypeURI),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmachinelearning.ComputeClientUpdateDataMountsResponse{
-	// }
-}
-
-// Generated from example definition: 2026-03-15-preview/Compute/updateIdleShutdownSetting.json
-func ExampleComputeClient_UpdateIdleShutdownSetting() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewComputeClient().UpdateIdleShutdownSetting(ctx, "testrg123", "workspaces123", "compute123", armmachinelearning.IdleShutdownSetting{
-		IdleTimeBeforeShutdown: to.Ptr("PT120M"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmachinelearning.ComputeClientUpdateIdleShutdownSettingResponse{
 	// }
 }

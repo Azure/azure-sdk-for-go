@@ -39,6 +39,14 @@ if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simpl
     }
     Move-Item -Force ./coveragefunc.txt $repoRoot
 
+    if ($env:PUBLISHCODECOVERAGE -eq 'true') {
+        Write-Host "##[command] Converting coverage.txt to Cobertura XML"
+        gocover-cobertura < coverage.txt > coverage.xml
+        if ($LASTEXITCODE -gt 0) {
+            Write-Host "##[warning] Failed to convert coverage to Cobertura format"
+        }
+    }
+
     # use internal tool to fail if coverage is too low
     Pop-Location
     go run $repoRoot/eng/tools/internal/coverage/coverage.go `

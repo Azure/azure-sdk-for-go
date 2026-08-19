@@ -24,6 +24,9 @@ parameters:
   - name: EnableRaceDetector
     type: boolean
     default: false
+  - name: PublishCodeCoverage
+    type: boolean
+    default: false
 
 jobs:
 - job:
@@ -89,5 +92,6 @@ jobs:
       TestProxy: ${{ parameters.UsePipelineProxy }}
       TestRunTime: ${{ parameters.TestRunTime }}
       EnableRaceDetector: ${{ parameters.EnableRaceDetector }}
+      PublishCodeCoverage: ${{ parameters.PublishCodeCoverage }}
       EnvVars:
         AZURE_RECORD_MODE: 'playback'

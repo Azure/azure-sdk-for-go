@@ -27,6 +27,7 @@ extends:
       ServiceDirectory: 'storage/azfile'
       RunLiveTests: true
       UsePipelineProxy: false
+      EnableCiCodeCoverage: true
       EnvVars:
         AZURE_CLIENT_ID: $(AZFILE_CLIENT_ID)
         AZURE_TENANT_ID: $(AZFILE_TENANT_ID)

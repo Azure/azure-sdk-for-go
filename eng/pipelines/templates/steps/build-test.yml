@@ -26,6 +26,9 @@ parameters:
   - name: ServiceConnection
     type: string
     default: ''
+  - name: PublishCodeCoverage
+    type: boolean
+    default: false
 
 steps:
   - template: /eng/common/pipelines/templates/steps/save-package-properties.yml
@@ -76,6 +79,13 @@ steps:
     displayName: "Install Junit Dependency"
     retryCountOnTaskFailure: 3
 
+  - ${{ if eq(parameters.PublishCodeCoverage, true) }}:
+    - pwsh: |
+        go install github.com/boumenot/gocover-cobertura@latest
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      displayName: "Install gocover-cobertura"
+      retryCountOnTaskFailure: 3
+
   - ${{ if eq(parameters.TestProxy, true) }}:
     - template: /eng/common/testproxy/test-proxy-tool.yml
 
@@ -104,6 +114,8 @@ steps:
         GOTRACEBACK: all
         AZURE_SDK_GO_LOGGING: all
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+        ${{ if eq(parameters.PublishCodeCoverage, true) }}:
+          PUBLISHCODECOVERAGE: 'true'
 
     - task: AzurePowerShell@5
       displayName: Build Performance Tests (Federated Auth)
@@ -136,6 +148,8 @@ steps:
         ${{ insert }}: ${{ parameters.EnvVars }}
         GOTRACEBACK: all
         AZURE_SDK_GO_LOGGING: all
+        ${{ if eq(parameters.PublishCodeCoverage, true) }}:
+          PUBLISHCODECOVERAGE: 'true'
 
     - task: PowerShell@2
       displayName: 'Build Performance Tests'
@@ -163,6 +177,15 @@ steps:
       mergeTestResults: true
       testRunTitle: 'Go ${{ parameters.GoVersion }} on ${{ parameters.Image }}'
       failTaskOnFailedTests: true
+
+  - ${{ if eq(parameters.PublishCodeCoverage, true) }}:
+    - task: PublishCodeCoverageResults@2
+      condition: succeededOrFailed()
+      displayName: 'Publish Code Coverage'
+      inputs:
+        summaryFileFormat: 'Cobertura'
+        pathToSources: '$(Build.SourcesDirectory)/sdk'
+        summaryFile: '$(Build.SourcesDirectory)/**/coverage.xml'
 
   - template: /eng/common/pipelines/templates/steps/upload-llm-artifacts.yml
     parameters:

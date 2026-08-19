@@ -19,7 +19,7 @@ import (
 // HcpOperatorIdentityRoleSetsClient contains the methods for the HcpOperatorIdentityRoleSets group.
 // Don't use this type directly, use NewHcpOperatorIdentityRoleSetsClient() instead.
 //
-// Generated from API version 2026-06-30-preview
+// Generated from API version 2026-09-01-preview
 type HcpOperatorIdentityRoleSetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -84,7 +84,7 @@ func (client *HcpOperatorIdentityRoleSetsClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260630Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -155,7 +155,7 @@ func (client *HcpOperatorIdentityRoleSetsClient) listCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260630Preview)
+		reqQP.Set("api-version", version20260901Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

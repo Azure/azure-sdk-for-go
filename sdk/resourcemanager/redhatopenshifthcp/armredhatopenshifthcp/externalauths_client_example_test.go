@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-30-preview/ExternalAuths_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/ExternalAuths_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleExternalAuthsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleExternalAuthsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-30-preview/ExternalAuths_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/ExternalAuths_Delete_MaximumSet_Gen.json
 func ExampleExternalAuthsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleExternalAuthsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-30-preview/ExternalAuths_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/ExternalAuths_Get_MaximumSet_Gen.json
 func ExampleExternalAuthsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleExternalAuthsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-30-preview/ExternalAuths_ListByParent_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/ExternalAuths_ListByParent_MaximumSet_Gen.json
 func ExampleExternalAuthsClient_NewListByParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,7 +348,7 @@ func ExampleExternalAuthsClient_NewListByParentPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-30-preview/ExternalAuths_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/ExternalAuths_Update_MaximumSet_Gen.json
 func ExampleExternalAuthsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

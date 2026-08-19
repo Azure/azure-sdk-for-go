@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-30-preview/HcpOpenShiftClusters_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/HcpOpenShiftClusters_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleHcpOpenShiftClustersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +247,7 @@ func ExampleHcpOpenShiftClustersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-30-preview/HcpOpenShiftClusters_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/HcpOpenShiftClusters_Delete_MaximumSet_Gen.json
 func ExampleHcpOpenShiftClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +268,7 @@ func ExampleHcpOpenShiftClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-30-preview/HcpOpenShiftClusters_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/HcpOpenShiftClusters_Get_MaximumSet_Gen.json
 func ExampleHcpOpenShiftClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -409,7 +409,7 @@ func ExampleHcpOpenShiftClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-30-preview/HcpOpenShiftClusters_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/HcpOpenShiftClusters_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleHcpOpenShiftClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -556,7 +556,7 @@ func ExampleHcpOpenShiftClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-30-preview/HcpOpenShiftClusters_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/HcpOpenShiftClusters_ListBySubscription_MaximumSet_Gen.json
 func ExampleHcpOpenShiftClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -703,7 +703,7 @@ func ExampleHcpOpenShiftClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-30-preview/HcpOpenShiftClusters_RequestAdminCredential_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/HcpOpenShiftClusters_RequestAdminCredential_MaximumSet_Gen.json
 func ExampleHcpOpenShiftClustersClient_BeginRequestAdminCredential() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -714,7 +714,9 @@ func ExampleHcpOpenShiftClustersClient_BeginRequestAdminCredential() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewHcpOpenShiftClustersClient().BeginRequestAdminCredential(ctx, "rgopenapi", "hcpCluster-name", nil)
+	poller, err := clientFactory.NewHcpOpenShiftClustersClient().BeginRequestAdminCredential(ctx, "rgopenapi", "hcpCluster-name", armredhatopenshifthcp.HcpOpenShiftClusterAdminCredentialRequest{
+		CertificateSigningRequest: to.Ptr("-----BEGIN CERTIFICATE REQUEST-----\nMIIBhTCB7wIBADBFMQswCQYDVQQGEwJVUzELMAkGA1UECAwCQ0ExDjAMBgNVBAoM\nBVRlc3QxGTAXBgNVBAMMEHRlc3QuZXhhbXBsZS5jb20wdjAQBgcqhkjOPQIBBgUr\ngQQAIgNiAARIm+7hphQ7m8kzCB5keJ3lPVQvsEH6ABXz0kIvxkNF7+OBFCdPJIBT\nksaGJnJFfPUROYGJIo7FMOO/vEqE9gHqRCVao0RPDaZLtceCYqbeI0vFhW7qTmYL\nNp/RTer7C0+gITAfBgkqhkiG9w0BCQ4xEjAQMA4GA1UdEQQHMAWCA2FiYzAKBggq\nhkjOPQQDAgNoADBlAjBLQDR3K8k1XPFH3Y0oEFYrBi3L4FOX0kz0aK/JuFJN/kBP\nA2ViVNHl+5iVxvpJE5sCMQCF+nPr18qRaib09BHSBKl+ZVpXC1K3PN/VGjYv+Zjl\nK8eCiPwwRBpRMbqMSXxlS3Q=\n-----END CERTIFICATE REQUEST-----\n"),
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -727,12 +729,13 @@ func ExampleHcpOpenShiftClustersClient_BeginRequestAdminCredential() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armredhatopenshifthcp.HcpOpenShiftClustersClientRequestAdminCredentialResponse{
 	// 	HcpOpenShiftClusterAdminCredential: armredhatopenshifthcp.HcpOpenShiftClusterAdminCredential{
+	// 		Kubeconfig: to.Ptr("apiVersion: v1\nclusters:\n- cluster:\n    server: https://api.example.com:6443\n  name: cluster\ncontexts:\n- context:\n    cluster: cluster\n    user: admin\n  name: admin\ncurrent-context: admin\nkind: Config\nusers:\n- name: admin\n  user:\n    client-certificate-data: LS0tLS1C...\n"),
 	// 		ExpirationTimestamp: to.Ptr(time.Date(2025, time.April, 23, 5, 55, 13, 791000000, time.UTC)),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-06-30-preview/HcpOpenShiftClusters_RevokeCredentials_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/HcpOpenShiftClusters_RevokeCredentials_MaximumSet_Gen.json
 func ExampleHcpOpenShiftClustersClient_BeginRevokeCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -753,7 +756,7 @@ func ExampleHcpOpenShiftClustersClient_BeginRevokeCredentials() {
 	}
 }
 
-// Generated from example definition: 2026-06-30-preview/HcpOpenShiftClusters_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/HcpOpenShiftClusters_Update_MaximumSet_Gen.json
 func ExampleHcpOpenShiftClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -876,7 +879,6 @@ func ExampleHcpOpenShiftClustersClient_BeginUpdate() {
 	// 			ClusterImageRegistry: &armredhatopenshifthcp.ClusterImageRegistryProfile{
 	// 				State: to.Ptr(armredhatopenshifthcp.ClusterImageRegistryStateEnabled),
 	// 			},
-	// 			CryptoRestrictions: to.Ptr(armredhatopenshifthcp.CryptoRestrictionsNone),
 	// 		},
 	// 		Identity: &armredhatopenshifthcp.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("e5867472-f0ed-4fc1-80e1-59b4c0256adb"),

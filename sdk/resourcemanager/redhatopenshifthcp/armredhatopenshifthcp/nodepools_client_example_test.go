@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-30-preview/NodePools_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/NodePools_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleNodePoolsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleNodePoolsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-30-preview/NodePools_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/NodePools_Delete_MaximumSet_Gen.json
 func ExampleNodePoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExampleNodePoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-30-preview/NodePools_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/NodePools_Get_MaximumSet_Gen.json
 func ExampleNodePoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleNodePoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-30-preview/NodePools_ListByParent_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/NodePools_ListByParent_MaximumSet_Gen.json
 func ExampleNodePoolsClient_NewListByParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -280,7 +280,7 @@ func ExampleNodePoolsClient_NewListByParentPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-30-preview/NodePools_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/NodePools_Update_MaximumSet_Gen.json
 func ExampleNodePoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -258,6 +258,12 @@ type HcpOpenShiftClusterAdminCredential struct {
 	Kubeconfig *string
 }
 
+// HcpOpenShiftClusterAdminCredentialRequest - HCP cluster admin credential request body
+type HcpOpenShiftClusterAdminCredentialRequest struct {
+	// PEM encoded certificate request
+	CertificateSigningRequest *string
+}
+
 // HcpOpenShiftClusterListResult - The response of a HcpOpenShiftCluster list operation.
 type HcpOpenShiftClusterListResult struct {
 	// REQUIRED; The HcpOpenShiftCluster items on this page

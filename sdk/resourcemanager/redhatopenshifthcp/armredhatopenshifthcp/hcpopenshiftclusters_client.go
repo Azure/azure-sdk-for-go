@@ -19,7 +19,7 @@ import (
 // HcpOpenShiftClustersClient - HCP cluster operations
 // Don't use this type directly, use NewHcpOpenShiftClustersClient() instead.
 //
-// Generated from API version 2026-06-30-preview
+// Generated from API version 2026-09-01-preview
 type HcpOpenShiftClustersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -107,7 +107,7 @@ func (client *HcpOpenShiftClustersClient) createOrUpdateCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260630Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -182,7 +182,7 @@ func (client *HcpOpenShiftClustersClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260630Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -230,7 +230,7 @@ func (client *HcpOpenShiftClustersClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260630Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -301,7 +301,7 @@ func (client *HcpOpenShiftClustersClient) listByResourceGroupCreateRequest(ctx c
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260630Preview)
+		reqQP.Set("api-version", version20260901Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -368,7 +368,7 @@ func (client *HcpOpenShiftClustersClient) listBySubscriptionCreateRequest(ctx co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260630Preview)
+		reqQP.Set("api-version", version20260901Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -391,11 +391,12 @@ func (client *HcpOpenShiftClustersClient) listBySubscriptionHandleResponse(resp 
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - hcpOpenShiftClusterName - The name of the HcpOpenShiftCluster
+//   - body - The content of the action request
 //   - options - HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions contains the optional parameters for the HcpOpenShiftClustersClient.BeginRequestAdminCredential
 //     method.
-func (client *HcpOpenShiftClustersClient) BeginRequestAdminCredential(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, options *HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions) (*runtime.Poller[HcpOpenShiftClustersClientRequestAdminCredentialResponse], error) {
+func (client *HcpOpenShiftClustersClient) BeginRequestAdminCredential(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, body HcpOpenShiftClusterAdminCredentialRequest, options *HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions) (*runtime.Poller[HcpOpenShiftClustersClientRequestAdminCredentialResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.requestAdminCredential(ctx, resourceGroupName, hcpOpenShiftClusterName, options)
+		resp, err := client.requestAdminCredential(ctx, resourceGroupName, hcpOpenShiftClusterName, body, options)
 		if err != nil {
 			return nil, err
 		}
@@ -412,13 +413,13 @@ func (client *HcpOpenShiftClustersClient) BeginRequestAdminCredential(ctx contex
 
 // RequestAdminCredential - Request a temporary admin kubeconfig for the cluster
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *HcpOpenShiftClustersClient) requestAdminCredential(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, options *HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions) (*http.Response, error) {
+func (client *HcpOpenShiftClustersClient) requestAdminCredential(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, body HcpOpenShiftClusterAdminCredentialRequest, options *HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions) (*http.Response, error) {
 	var err error
 	const operationName = "HcpOpenShiftClustersClient.BeginRequestAdminCredential"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.requestAdminCredentialCreateRequest(ctx, resourceGroupName, hcpOpenShiftClusterName, options)
+	req, err := client.requestAdminCredentialCreateRequest(ctx, resourceGroupName, hcpOpenShiftClusterName, body, options)
 	if err != nil {
 		return nil, err
 	}
@@ -433,7 +434,7 @@ func (client *HcpOpenShiftClustersClient) requestAdminCredential(ctx context.Con
 }
 
 // requestAdminCredentialCreateRequest creates the RequestAdminCredential request.
-func (client *HcpOpenShiftClustersClient) requestAdminCredentialCreateRequest(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, _ *HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions) (*policy.Request, error) {
+func (client *HcpOpenShiftClustersClient) requestAdminCredentialCreateRequest(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, body HcpOpenShiftClusterAdminCredentialRequest, _ *HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/hcpOpenShiftClusters/{hcpOpenShiftClusterName}/requestAdminCredential"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -452,9 +453,13 @@ func (client *HcpOpenShiftClustersClient) requestAdminCredentialCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260630Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -523,7 +528,7 @@ func (client *HcpOpenShiftClustersClient) revokeCredentialsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260630Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -594,7 +599,7 @@ func (client *HcpOpenShiftClustersClient) updateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260630Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

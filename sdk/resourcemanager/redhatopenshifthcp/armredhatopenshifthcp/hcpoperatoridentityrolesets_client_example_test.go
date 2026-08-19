@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-30-preview/HcpOperatorIdentityRoleSets_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/HcpOperatorIdentityRoleSets_Get_MaximumSet_Gen.json
 func ExampleHcpOperatorIdentityRoleSetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleHcpOperatorIdentityRoleSetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-30-preview/HcpOperatorIdentityRoleSets_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01-preview/HcpOperatorIdentityRoleSets_List_MaximumSet_Gen.json
 func ExampleHcpOperatorIdentityRoleSetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

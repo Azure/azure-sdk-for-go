@@ -5,7 +5,7 @@
 package armredhatopenshifthcp
 
 const (
-	version20260630Preview string = "2026-06-30-preview"
+	version20260901Preview string = "2026-09-01-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

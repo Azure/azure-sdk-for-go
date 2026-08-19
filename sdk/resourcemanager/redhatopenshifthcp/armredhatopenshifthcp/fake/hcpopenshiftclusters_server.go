@@ -43,7 +43,7 @@ type HcpOpenShiftClustersServer struct {
 
 	// BeginRequestAdminCredential is the fake for method HcpOpenShiftClustersClient.BeginRequestAdminCredential
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginRequestAdminCredential func(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, options *armredhatopenshifthcp.HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions) (resp azfake.PollerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientRequestAdminCredentialResponse], errResp azfake.ErrorResponder)
+	BeginRequestAdminCredential func(ctx context.Context, resourceGroupName string, hcpOpenShiftClusterName string, body armredhatopenshifthcp.HcpOpenShiftClusterAdminCredentialRequest, options *armredhatopenshifthcp.HcpOpenShiftClustersClientBeginRequestAdminCredentialOptions) (resp azfake.PollerResponder[armredhatopenshifthcp.HcpOpenShiftClustersClientRequestAdminCredentialResponse], errResp azfake.ErrorResponder)
 
 	// BeginRevokeCredentials is the fake for method HcpOpenShiftClustersClient.BeginRevokeCredentials
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -343,6 +343,10 @@ func (h *HcpOpenShiftClustersServerTransport) dispatchBeginRequestAdminCredentia
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		body, err := server.UnmarshalRequestAsJSON[armredhatopenshifthcp.HcpOpenShiftClusterAdminCredentialRequest](req)
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -351,7 +355,7 @@ func (h *HcpOpenShiftClustersServerTransport) dispatchBeginRequestAdminCredentia
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := h.srv.BeginRequestAdminCredential(req.Context(), resourceGroupNameParam, hcpOpenShiftClusterNameParam, nil)
+		respr, errRespr := h.srv.BeginRequestAdminCredential(req.Context(), resourceGroupNameParam, hcpOpenShiftClusterNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

@@ -20,7 +20,7 @@ import (
 // ReachabilityAnalysisIntentsClient contains the methods for the ReachabilityAnalysisIntents group.
 // Don't use this type directly, use NewReachabilityAnalysisIntentsClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type ReachabilityAnalysisIntentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -67,12 +67,7 @@ func (client *ReachabilityAnalysisIntentsClient) Create(ctx context.Context, res
 	if err != nil {
 		return ReachabilityAnalysisIntentsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ReachabilityAnalysisIntentsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -103,7 +98,7 @@ func (client *ReachabilityAnalysisIntentsClient) createCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -114,8 +109,11 @@ func (client *ReachabilityAnalysisIntentsClient) createCreateRequest(ctx context
 }
 
 // createHandleResponse handles the Create response.
-func (client *ReachabilityAnalysisIntentsClient) createHandleResponse(resp *http.Response) (ReachabilityAnalysisIntentsClientCreateResponse, error) {
+func (client *ReachabilityAnalysisIntentsClient) createHandleResponse(resp *http.Response, successCodes ...int) (ReachabilityAnalysisIntentsClientCreateResponse, error) {
 	result := ReachabilityAnalysisIntentsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReachabilityAnalysisIntent); err != nil {
 		return ReachabilityAnalysisIntentsClientCreateResponse{}, err
 	}
@@ -147,8 +145,7 @@ func (client *ReachabilityAnalysisIntentsClient) Delete(ctx context.Context, res
 		return ReachabilityAnalysisIntentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ReachabilityAnalysisIntentsClientDeleteResponse{}, err
+		return ReachabilityAnalysisIntentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ReachabilityAnalysisIntentsClientDeleteResponse{}, nil
 }
@@ -181,7 +178,7 @@ func (client *ReachabilityAnalysisIntentsClient) deleteCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -210,12 +207,7 @@ func (client *ReachabilityAnalysisIntentsClient) Get(ctx context.Context, resour
 	if err != nil {
 		return ReachabilityAnalysisIntentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReachabilityAnalysisIntentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -246,15 +238,18 @@ func (client *ReachabilityAnalysisIntentsClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReachabilityAnalysisIntentsClient) getHandleResponse(resp *http.Response) (ReachabilityAnalysisIntentsClientGetResponse, error) {
+func (client *ReachabilityAnalysisIntentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ReachabilityAnalysisIntentsClientGetResponse, error) {
 	result := ReachabilityAnalysisIntentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReachabilityAnalysisIntent); err != nil {
 		return ReachabilityAnalysisIntentsClientGetResponse{}, err
 	}
@@ -280,66 +275,80 @@ func (client *ReachabilityAnalysisIntentsClient) NewListPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, networkManagerName, workspaceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, networkManagerName, workspaceName, nextLink, options)
 			if err != nil {
 				return ReachabilityAnalysisIntentsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReachabilityAnalysisIntentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ReachabilityAnalysisIntentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, options *ReachabilityAnalysisIntentsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/verifierWorkspaces/{workspaceName}/reachabilityAnalysisIntents"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ReachabilityAnalysisIntentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, nextLink string, options *ReachabilityAnalysisIntentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/verifierWorkspaces/{workspaceName}/reachabilityAnalysisIntents"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if networkManagerName == "" {
+			return nil, errors.New("parameter networkManagerName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{networkManagerName}", url.PathEscape(networkManagerName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkManagerName == "" {
-		return nil, errors.New("parameter networkManagerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkManagerName}", url.PathEscape(networkManagerName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", strconv.FormatInt(int64(*options.Skip), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("skipToken", *options.SkipToken)
+		}
+		if options != nil && options.SortKey != nil {
+			reqQP.Set("sortKey", *options.SortKey)
+		}
+		if options != nil && options.SortValue != nil {
+			reqQP.Set("sortValue", *options.SortValue)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("skipToken", *options.SkipToken)
-	}
-	if options != nil && options.SortKey != nil {
-		reqQP.Set("sortKey", *options.SortKey)
-	}
-	if options != nil && options.SortValue != nil {
-		reqQP.Set("sortValue", *options.SortValue)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ReachabilityAnalysisIntentsClient) listHandleResponse(resp *http.Response) (ReachabilityAnalysisIntentsClientListResponse, error) {
+func (client *ReachabilityAnalysisIntentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ReachabilityAnalysisIntentsClientListResponse, error) {
 	result := ReachabilityAnalysisIntentsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReachabilityAnalysisIntentListResult); err != nil {
 		return ReachabilityAnalysisIntentsClientListResponse{}, err
 	}

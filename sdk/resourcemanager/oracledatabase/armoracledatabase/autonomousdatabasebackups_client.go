@@ -83,8 +83,7 @@ func (client *AutonomousDatabaseBackupsClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -164,8 +163,7 @@ func (client *AutonomousDatabaseBackupsClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -220,12 +218,7 @@ func (client *AutonomousDatabaseBackupsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return AutonomousDatabaseBackupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AutonomousDatabaseBackupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -259,8 +252,11 @@ func (client *AutonomousDatabaseBackupsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *AutonomousDatabaseBackupsClient) getHandleResponse(resp *http.Response) (AutonomousDatabaseBackupsClientGetResponse, error) {
+func (client *AutonomousDatabaseBackupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AutonomousDatabaseBackupsClientGetResponse, error) {
 	result := AutonomousDatabaseBackupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutonomousDatabaseBackup); err != nil {
 		return AutonomousDatabaseBackupsClientGetResponse{}, err
 	}
@@ -283,47 +279,61 @@ func (client *AutonomousDatabaseBackupsClient) NewListByAutonomousDatabasePager(
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAutonomousDatabaseCreateRequest(ctx, resourceGroupName, autonomousdatabasename, options)
-			}, nil)
+			req, err := client.listByAutonomousDatabaseCreateRequest(ctx, resourceGroupName, autonomousdatabasename, nextLink, options)
 			if err != nil {
 				return AutonomousDatabaseBackupsClientListByAutonomousDatabaseResponse{}, err
 			}
-			return client.listByAutonomousDatabaseHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AutonomousDatabaseBackupsClientListByAutonomousDatabaseResponse{}, err
+			}
+			return client.listByAutonomousDatabaseHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAutonomousDatabaseCreateRequest creates the ListByAutonomousDatabase request.
-func (client *AutonomousDatabaseBackupsClient) listByAutonomousDatabaseCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, _ *AutonomousDatabaseBackupsClientListByAutonomousDatabaseOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AutonomousDatabaseBackupsClient) listByAutonomousDatabaseCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, nextLink string, _ *AutonomousDatabaseBackupsClientListByAutonomousDatabaseOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/autonomousDatabaseBackups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if autonomousdatabasename == "" {
+			return nil, errors.New("parameter autonomousdatabasename cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{autonomousdatabasename}", url.PathEscape(autonomousdatabasename))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if autonomousdatabasename == "" {
-		return nil, errors.New("parameter autonomousdatabasename cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{autonomousdatabasename}", url.PathEscape(autonomousdatabasename))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByAutonomousDatabaseHandleResponse handles the ListByAutonomousDatabase response.
-func (client *AutonomousDatabaseBackupsClient) listByAutonomousDatabaseHandleResponse(resp *http.Response) (AutonomousDatabaseBackupsClientListByAutonomousDatabaseResponse, error) {
+func (client *AutonomousDatabaseBackupsClient) listByAutonomousDatabaseHandleResponse(resp *http.Response, successCodes ...int) (AutonomousDatabaseBackupsClientListByAutonomousDatabaseResponse, error) {
 	result := AutonomousDatabaseBackupsClientListByAutonomousDatabaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutonomousDatabaseBackupListResult); err != nil {
 		return AutonomousDatabaseBackupsClientListByAutonomousDatabaseResponse{}, err
 	}
@@ -372,8 +382,7 @@ func (client *AutonomousDatabaseBackupsClient) update(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

@@ -19,6 +19,8 @@ import (
 // ManagedInstanceAdvancedThreatProtectionSettingsClient contains the methods for the ManagedInstanceAdvancedThreatProtectionSettings
 // group.
 // Don't use this type directly, use NewManagedInstanceAdvancedThreatProtectionSettingsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ManagedInstanceAdvancedThreatProtectionSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewManagedInstanceAdvancedThreatProtectionSettingsClient(subscriptionID str
 
 // BeginCreateOrUpdate - Creates or updates Advanced Threat Protection settings.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - advancedThreatProtectionName - The name of the Advanced Threat Protection state.
@@ -69,8 +69,6 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) BeginCreate
 
 // CreateOrUpdate - Creates or updates Advanced Threat Protection settings.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters ManagedInstanceAdvancedThreatProtection, options *ManagedInstanceAdvancedThreatProtectionSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstanceAdvancedThreatProtectionSettingsClient.BeginCreateOrUpdate"
@@ -86,8 +84,7 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) createOrUpd
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -116,8 +113,8 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) createOrUpd
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -128,8 +125,6 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) createOrUpd
 
 // Get - Get a managed instance's Advanced Threat Protection state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - advancedThreatProtectionName - The name of the Advanced Threat Protection state.
@@ -149,12 +144,7 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) Get(ctx con
 	if err != nil {
 		return ManagedInstanceAdvancedThreatProtectionSettingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedInstanceAdvancedThreatProtectionSettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -181,15 +171,18 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) getCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) getHandleResponse(resp *http.Response) (ManagedInstanceAdvancedThreatProtectionSettingsClientGetResponse, error) {
+func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedInstanceAdvancedThreatProtectionSettingsClientGetResponse, error) {
 	result := ManagedInstanceAdvancedThreatProtectionSettingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceAdvancedThreatProtection); err != nil {
 		return ManagedInstanceAdvancedThreatProtectionSettingsClientGetResponse{}, err
 	}
@@ -197,8 +190,6 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) getHandleRe
 }
 
 // NewListByInstancePager - Get the managed instance's Advanced Threat Protection settings.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceOptions contains the optional parameters for
@@ -214,47 +205,61 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) NewListByIn
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
-			}, nil)
+			req, err := client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, nextLink, options)
 			if err != nil {
 				return ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceResponse{}, err
 			}
-			return client.listByInstanceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceResponse{}, err
+			}
+			return client.listByInstanceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByInstanceCreateRequest creates the ListByInstance request.
-func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, _ *ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/advancedThreatProtectionSettings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, nextLink string, _ *ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/advancedThreatProtectionSettings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByInstanceHandleResponse handles the ListByInstance response.
-func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) listByInstanceHandleResponse(resp *http.Response) (ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceResponse, error) {
+func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) listByInstanceHandleResponse(resp *http.Response, successCodes ...int) (ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceResponse, error) {
 	result := ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceAdvancedThreatProtectionListResult); err != nil {
 		return ManagedInstanceAdvancedThreatProtectionSettingsClientListByInstanceResponse{}, err
 	}

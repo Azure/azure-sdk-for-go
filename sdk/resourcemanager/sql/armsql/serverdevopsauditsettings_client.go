@@ -18,6 +18,8 @@ import (
 
 // ServerDevOpsAuditSettingsClient contains the methods for the ServerDevOpsAuditSettings group.
 // Don't use this type directly, use NewServerDevOpsAuditSettingsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ServerDevOpsAuditSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewServerDevOpsAuditSettingsClient(subscriptionID string, credential azcore
 
 // BeginCreateOrUpdate - Creates or updates a server's DevOps audit settings.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - parameters - Properties of DevOps audit settings
@@ -68,8 +68,6 @@ func (client *ServerDevOpsAuditSettingsClient) BeginCreateOrUpdate(ctx context.C
 
 // CreateOrUpdate - Creates or updates a server's DevOps audit settings.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ServerDevOpsAuditSettingsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, devOpsAuditingSettingsName DevOpsAuditingSettingsName, parameters ServerDevOpsAuditingSettings, options *ServerDevOpsAuditSettingsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerDevOpsAuditSettingsClient.BeginCreateOrUpdate"
@@ -85,8 +83,7 @@ func (client *ServerDevOpsAuditSettingsClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -115,8 +112,8 @@ func (client *ServerDevOpsAuditSettingsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -127,8 +124,6 @@ func (client *ServerDevOpsAuditSettingsClient) createOrUpdateCreateRequest(ctx c
 
 // Get - Gets a server's DevOps audit settings.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ServerDevOpsAuditSettingsClientGetOptions contains the optional parameters for the ServerDevOpsAuditSettingsClient.Get
@@ -147,12 +142,7 @@ func (client *ServerDevOpsAuditSettingsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return ServerDevOpsAuditSettingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServerDevOpsAuditSettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -179,15 +169,18 @@ func (client *ServerDevOpsAuditSettingsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServerDevOpsAuditSettingsClient) getHandleResponse(resp *http.Response) (ServerDevOpsAuditSettingsClientGetResponse, error) {
+func (client *ServerDevOpsAuditSettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ServerDevOpsAuditSettingsClientGetResponse, error) {
 	result := ServerDevOpsAuditSettingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerDevOpsAuditingSettings); err != nil {
 		return ServerDevOpsAuditSettingsClientGetResponse{}, err
 	}
@@ -195,8 +188,6 @@ func (client *ServerDevOpsAuditSettingsClient) getHandleResponse(resp *http.Resp
 }
 
 // NewListByServerPager - Lists DevOps audit settings of a server.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ServerDevOpsAuditSettingsClientListByServerOptions contains the optional parameters for the ServerDevOpsAuditSettingsClient.NewListByServerPager
@@ -212,47 +203,61 @@ func (client *ServerDevOpsAuditSettingsClient) NewListByServerPager(resourceGrou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			}, nil)
+			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, nextLink, options)
 			if err != nil {
 				return ServerDevOpsAuditSettingsClientListByServerResponse{}, err
 			}
-			return client.listByServerHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServerDevOpsAuditSettingsClientListByServerResponse{}, err
+			}
+			return client.listByServerHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ServerDevOpsAuditSettingsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, _ *ServerDevOpsAuditSettingsClientListByServerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/devOpsAuditingSettings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ServerDevOpsAuditSettingsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, nextLink string, _ *ServerDevOpsAuditSettingsClientListByServerOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/devOpsAuditingSettings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serverName == "" {
+			return nil, errors.New("parameter serverName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ServerDevOpsAuditSettingsClient) listByServerHandleResponse(resp *http.Response) (ServerDevOpsAuditSettingsClientListByServerResponse, error) {
+func (client *ServerDevOpsAuditSettingsClient) listByServerHandleResponse(resp *http.Response, successCodes ...int) (ServerDevOpsAuditSettingsClientListByServerResponse, error) {
 	result := ServerDevOpsAuditSettingsClientListByServerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerDevOpsAuditSettingsListResult); err != nil {
 		return ServerDevOpsAuditSettingsClientListByServerResponse{}, err
 	}

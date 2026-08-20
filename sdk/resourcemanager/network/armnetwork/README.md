@@ -18,7 +18,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Network module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11
 ```
 
 ## Authorization
@@ -55,7 +55,7 @@ clientFactory, err := armnetwork.NewClientFactory(<subscription ID>, cred, &opti
 A client groups a set of related APIs, providing access to its functionality. Create one or more clients to access the APIs you require using client factory.
 
 ```go
-client := clientFactory.NewAdminRuleCollectionsClient()
+client := clientFactory.NewAddressPrefixSetsClient()
 ```
 
 ## Fakes

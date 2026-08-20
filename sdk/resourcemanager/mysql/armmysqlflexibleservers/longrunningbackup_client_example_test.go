@@ -40,7 +40,7 @@ func ExampleLongRunningBackupClient_BeginCreate() {
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backupsV2/customer_20220507t073755_bb392c3b-17c6-4d3f-9742-8479ca87b3ac_mybackup"),
 	// 		Properties: &armmysqlflexibleservers.ServerBackupPropertiesV2{
 	// 			BackupType: to.Ptr(armmysqlflexibleservers.BackupTypeFULL),
-	// 			CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-07T07:38:01.1498043+00:00"); return t}()),
+	// 			CompletedTime: to.Ptr(time.Date(2022, time.May, 7, 7, 38, 1, 149804300, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armmysqlflexibleservers.ProvisioningState("Ready")),
 	// 			Source: to.Ptr("Automatic"),
 	// 		},

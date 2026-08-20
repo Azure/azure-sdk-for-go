@@ -18,6 +18,8 @@ import (
 
 // ServerSecurityAlertPoliciesClient contains the methods for the ServerSecurityAlertPolicies group.
 // Don't use this type directly, use NewServerSecurityAlertPoliciesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ServerSecurityAlertPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewServerSecurityAlertPoliciesClient(subscriptionID string, credential azco
 
 // BeginCreateOrUpdate - Creates or updates a threat detection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - securityAlertPolicyName - The name of the security alert policy.
@@ -68,8 +68,6 @@ func (client *ServerSecurityAlertPoliciesClient) BeginCreateOrUpdate(ctx context
 
 // CreateOrUpdate - Creates or updates a threat detection policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ServerSecurityAlertPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, securityAlertPolicyName SecurityAlertPolicyName, parameters ServerSecurityAlertPolicy, options *ServerSecurityAlertPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerSecurityAlertPoliciesClient.BeginCreateOrUpdate"
@@ -85,8 +83,7 @@ func (client *ServerSecurityAlertPoliciesClient) createOrUpdate(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -115,8 +112,8 @@ func (client *ServerSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -127,8 +124,6 @@ func (client *ServerSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ctx
 
 // Get - Get a server's security alert policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - securityAlertPolicyName - The name of the security alert policy.
@@ -148,12 +143,7 @@ func (client *ServerSecurityAlertPoliciesClient) Get(ctx context.Context, resour
 	if err != nil {
 		return ServerSecurityAlertPoliciesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServerSecurityAlertPoliciesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -180,15 +170,18 @@ func (client *ServerSecurityAlertPoliciesClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServerSecurityAlertPoliciesClient) getHandleResponse(resp *http.Response) (ServerSecurityAlertPoliciesClientGetResponse, error) {
+func (client *ServerSecurityAlertPoliciesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ServerSecurityAlertPoliciesClientGetResponse, error) {
 	result := ServerSecurityAlertPoliciesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerSecurityAlertPolicy); err != nil {
 		return ServerSecurityAlertPoliciesClientGetResponse{}, err
 	}
@@ -196,8 +189,6 @@ func (client *ServerSecurityAlertPoliciesClient) getHandleResponse(resp *http.Re
 }
 
 // NewListByServerPager - Get the server's threat detection policies.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ServerSecurityAlertPoliciesClientListByServerOptions contains the optional parameters for the ServerSecurityAlertPoliciesClient.NewListByServerPager
@@ -213,47 +204,61 @@ func (client *ServerSecurityAlertPoliciesClient) NewListByServerPager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			}, nil)
+			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, nextLink, options)
 			if err != nil {
 				return ServerSecurityAlertPoliciesClientListByServerResponse{}, err
 			}
-			return client.listByServerHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServerSecurityAlertPoliciesClientListByServerResponse{}, err
+			}
+			return client.listByServerHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *ServerSecurityAlertPoliciesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, _ *ServerSecurityAlertPoliciesClientListByServerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/securityAlertPolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ServerSecurityAlertPoliciesClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, nextLink string, _ *ServerSecurityAlertPoliciesClientListByServerOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/securityAlertPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serverName == "" {
+			return nil, errors.New("parameter serverName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ServerSecurityAlertPoliciesClient) listByServerHandleResponse(resp *http.Response) (ServerSecurityAlertPoliciesClientListByServerResponse, error) {
+func (client *ServerSecurityAlertPoliciesClient) listByServerHandleResponse(resp *http.Response, successCodes ...int) (ServerSecurityAlertPoliciesClientListByServerResponse, error) {
 	result := ServerSecurityAlertPoliciesClientListByServerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogicalServerSecurityAlertPolicyListResult); err != nil {
 		return ServerSecurityAlertPoliciesClientListByServerResponse{}, err
 	}

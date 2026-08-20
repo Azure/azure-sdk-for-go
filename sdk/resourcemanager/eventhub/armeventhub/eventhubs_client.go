@@ -64,12 +64,7 @@ func (client *EventHubsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return EventHubsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EventHubsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -107,8 +102,11 @@ func (client *EventHubsClient) createOrUpdateCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *EventHubsClient) createOrUpdateHandleResponse(resp *http.Response) (EventHubsClientCreateOrUpdateResponse, error) {
+func (client *EventHubsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (EventHubsClientCreateOrUpdateResponse, error) {
 	result := EventHubsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Eventhub); err != nil {
 		return EventHubsClientCreateOrUpdateResponse{}, err
 	}
@@ -139,12 +137,7 @@ func (client *EventHubsClient) CreateOrUpdateAuthorizationRule(ctx context.Conte
 	if err != nil {
 		return EventHubsClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EventHubsClientCreateOrUpdateAuthorizationRuleResponse{}, err
-	}
-	resp, err := client.createOrUpdateAuthorizationRuleHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateAuthorizationRuleCreateRequest creates the CreateOrUpdateAuthorizationRule request.
@@ -186,8 +179,11 @@ func (client *EventHubsClient) createOrUpdateAuthorizationRuleCreateRequest(ctx 
 }
 
 // createOrUpdateAuthorizationRuleHandleResponse handles the CreateOrUpdateAuthorizationRule response.
-func (client *EventHubsClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (EventHubsClientCreateOrUpdateAuthorizationRuleResponse, error) {
+func (client *EventHubsClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response, successCodes ...int) (EventHubsClientCreateOrUpdateAuthorizationRuleResponse, error) {
 	result := EventHubsClientCreateOrUpdateAuthorizationRuleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
 		return EventHubsClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
@@ -215,8 +211,7 @@ func (client *EventHubsClient) Delete(ctx context.Context, resourceGroupName str
 		return EventHubsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return EventHubsClientDeleteResponse{}, err
+		return EventHubsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return EventHubsClientDeleteResponse{}, nil
 }
@@ -273,8 +268,7 @@ func (client *EventHubsClient) DeleteAuthorizationRule(ctx context.Context, reso
 		return EventHubsClientDeleteAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return EventHubsClientDeleteAuthorizationRuleResponse{}, err
+		return EventHubsClientDeleteAuthorizationRuleResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return EventHubsClientDeleteAuthorizationRuleResponse{}, nil
 }
@@ -332,12 +326,7 @@ func (client *EventHubsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return EventHubsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EventHubsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -371,8 +360,11 @@ func (client *EventHubsClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *EventHubsClient) getHandleResponse(resp *http.Response) (EventHubsClientGetResponse, error) {
+func (client *EventHubsClient) getHandleResponse(resp *http.Response, successCodes ...int) (EventHubsClientGetResponse, error) {
 	result := EventHubsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Eventhub); err != nil {
 		return EventHubsClientGetResponse{}, err
 	}
@@ -401,12 +393,7 @@ func (client *EventHubsClient) GetAuthorizationRule(ctx context.Context, resourc
 	if err != nil {
 		return EventHubsClientGetAuthorizationRuleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EventHubsClientGetAuthorizationRuleResponse{}, err
-	}
-	resp, err := client.getAuthorizationRuleHandleResponse(httpResp)
-	return resp, err
+	return client.getAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
@@ -444,8 +431,11 @@ func (client *EventHubsClient) getAuthorizationRuleCreateRequest(ctx context.Con
 }
 
 // getAuthorizationRuleHandleResponse handles the GetAuthorizationRule response.
-func (client *EventHubsClient) getAuthorizationRuleHandleResponse(resp *http.Response) (EventHubsClientGetAuthorizationRuleResponse, error) {
+func (client *EventHubsClient) getAuthorizationRuleHandleResponse(resp *http.Response, successCodes ...int) (EventHubsClientGetAuthorizationRuleResponse, error) {
 	result := EventHubsClientGetAuthorizationRuleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
 		return EventHubsClientGetAuthorizationRuleResponse{}, err
 	}
@@ -469,51 +459,65 @@ func (client *EventHubsClient) NewListAuthorizationRulesPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, options)
-			}, nil)
+			req, err := client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, nextLink, options)
 			if err != nil {
 				return EventHubsClientListAuthorizationRulesResponse{}, err
 			}
-			return client.listAuthorizationRulesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EventHubsClientListAuthorizationRulesResponse{}, err
+			}
+			return client.listAuthorizationRulesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
-func (client *EventHubsClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, _ *EventHubsClientListAuthorizationRulesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EventHubsClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, nextLink string, _ *EventHubsClientListAuthorizationRulesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/authorizationRules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		if eventHubName == "" {
+			return nil, errors.New("parameter eventHubName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{eventHubName}", url.PathEscape(eventHubName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if eventHubName == "" {
-		return nil, errors.New("parameter eventHubName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{eventHubName}", url.PathEscape(eventHubName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAuthorizationRulesHandleResponse handles the ListAuthorizationRules response.
-func (client *EventHubsClient) listAuthorizationRulesHandleResponse(resp *http.Response) (EventHubsClientListAuthorizationRulesResponse, error) {
+func (client *EventHubsClient) listAuthorizationRulesHandleResponse(resp *http.Response, successCodes ...int) (EventHubsClientListAuthorizationRulesResponse, error) {
 	result := EventHubsClientListAuthorizationRulesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRuleListResult); err != nil {
 		return EventHubsClientListAuthorizationRulesResponse{}, err
 	}
@@ -536,53 +540,67 @@ func (client *EventHubsClient) NewListByNamespacePager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
-			}, nil)
+			req, err := client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
 			if err != nil {
 				return EventHubsClientListByNamespaceResponse{}, err
 			}
-			return client.listByNamespaceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EventHubsClientListByNamespaceResponse{}, err
+			}
+			return client.listByNamespaceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByNamespaceCreateRequest creates the ListByNamespace request.
-func (client *EventHubsClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *EventHubsClientListByNamespaceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EventHubsClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, options *EventHubsClientListByNamespaceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByNamespaceHandleResponse handles the ListByNamespace response.
-func (client *EventHubsClient) listByNamespaceHandleResponse(resp *http.Response) (EventHubsClientListByNamespaceResponse, error) {
+func (client *EventHubsClient) listByNamespaceHandleResponse(resp *http.Response, successCodes ...int) (EventHubsClientListByNamespaceResponse, error) {
 	result := EventHubsClientListByNamespaceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return EventHubsClientListByNamespaceResponse{}, err
 	}
@@ -610,12 +628,7 @@ func (client *EventHubsClient) ListKeys(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return EventHubsClientListKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EventHubsClientListKeysResponse{}, err
-	}
-	resp, err := client.listKeysHandleResponse(httpResp)
-	return resp, err
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
@@ -653,8 +666,11 @@ func (client *EventHubsClient) listKeysCreateRequest(ctx context.Context, resour
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *EventHubsClient) listKeysHandleResponse(resp *http.Response) (EventHubsClientListKeysResponse, error) {
+func (client *EventHubsClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (EventHubsClientListKeysResponse, error) {
 	result := EventHubsClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return EventHubsClientListKeysResponse{}, err
 	}
@@ -684,12 +700,7 @@ func (client *EventHubsClient) RegenerateKeys(ctx context.Context, resourceGroup
 	if err != nil {
 		return EventHubsClientRegenerateKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EventHubsClientRegenerateKeysResponse{}, err
-	}
-	resp, err := client.regenerateKeysHandleResponse(httpResp)
-	return resp, err
+	return client.regenerateKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.
@@ -731,8 +742,11 @@ func (client *EventHubsClient) regenerateKeysCreateRequest(ctx context.Context, 
 }
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
-func (client *EventHubsClient) regenerateKeysHandleResponse(resp *http.Response) (EventHubsClientRegenerateKeysResponse, error) {
+func (client *EventHubsClient) regenerateKeysHandleResponse(resp *http.Response, successCodes ...int) (EventHubsClientRegenerateKeysResponse, error) {
 	result := EventHubsClientRegenerateKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return EventHubsClientRegenerateKeysResponse{}, err
 	}

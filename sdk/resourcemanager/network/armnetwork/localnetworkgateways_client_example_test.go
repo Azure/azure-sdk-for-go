@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/LocalNetworkGatewayCreate.json
+// Generated from example definition: 2025-09-01/LocalNetworkGatewayCreate.json
 func ExampleLocalNetworkGatewaysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleLocalNetworkGatewaysClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/LocalNetworkGatewayDelete.json
+// Generated from example definition: 2025-09-01/LocalNetworkGatewayDelete.json
 func ExampleLocalNetworkGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleLocalNetworkGatewaysClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/LocalNetworkGatewayGet.json
+// Generated from example definition: 2025-09-01/LocalNetworkGatewayGet.json
 func ExampleLocalNetworkGatewaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleLocalNetworkGatewaysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/LocalNetworkGatewayList.json
+// Generated from example definition: 2025-09-01/LocalNetworkGatewayList.json
 func ExampleLocalNetworkGatewaysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleLocalNetworkGatewaysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/LocalNetworkGatewayUpdateTags.json
+// Generated from example definition: 2025-09-01/LocalNetworkGatewayUpdateTags.json
 func ExampleLocalNetworkGatewaysClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

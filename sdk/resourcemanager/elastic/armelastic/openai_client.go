@@ -60,12 +60,7 @@ func (client *OpenAIClient) CreateOrUpdate(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return OpenAIClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return OpenAIClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -103,8 +98,11 @@ func (client *OpenAIClient) createOrUpdateCreateRequest(ctx context.Context, res
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *OpenAIClient) createOrUpdateHandleResponse(resp *http.Response) (OpenAIClientCreateOrUpdateResponse, error) {
+func (client *OpenAIClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (OpenAIClientCreateOrUpdateResponse, error) {
 	result := OpenAIClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenAIIntegrationRPModel); err != nil {
 		return OpenAIClientCreateOrUpdateResponse{}, err
 	}
@@ -133,8 +131,7 @@ func (client *OpenAIClient) Delete(ctx context.Context, resourceGroupName string
 		return OpenAIClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return OpenAIClientDeleteResponse{}, err
+		return OpenAIClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return OpenAIClientDeleteResponse{}, nil
 }
@@ -188,12 +185,7 @@ func (client *OpenAIClient) Get(ctx context.Context, resourceGroupName string, m
 	if err != nil {
 		return OpenAIClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OpenAIClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -227,8 +219,11 @@ func (client *OpenAIClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *OpenAIClient) getHandleResponse(resp *http.Response) (OpenAIClientGetResponse, error) {
+func (client *OpenAIClient) getHandleResponse(resp *http.Response, successCodes ...int) (OpenAIClientGetResponse, error) {
 	result := OpenAIClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenAIIntegrationRPModel); err != nil {
 		return OpenAIClientGetResponse{}, err
 	}
@@ -256,12 +251,7 @@ func (client *OpenAIClient) GetStatus(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return OpenAIClientGetStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OpenAIClientGetStatusResponse{}, err
-	}
-	resp, err := client.getStatusHandleResponse(httpResp)
-	return resp, err
+	return client.getStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // getStatusCreateRequest creates the GetStatus request.
@@ -295,8 +285,11 @@ func (client *OpenAIClient) getStatusCreateRequest(ctx context.Context, resource
 }
 
 // getStatusHandleResponse handles the GetStatus response.
-func (client *OpenAIClient) getStatusHandleResponse(resp *http.Response) (OpenAIClientGetStatusResponse, error) {
+func (client *OpenAIClient) getStatusHandleResponse(resp *http.Response, successCodes ...int) (OpenAIClientGetStatusResponse, error) {
 	result := OpenAIClientGetStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenAIIntegrationStatusResponse); err != nil {
 		return OpenAIClientGetStatusResponse{}, err
 	}
@@ -319,47 +312,61 @@ func (client *OpenAIClient) NewListPager(resourceGroupName string, monitorName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, monitorName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, monitorName, nextLink, options)
 			if err != nil {
 				return OpenAIClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OpenAIClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *OpenAIClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *OpenAIClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/openAIIntegrations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *OpenAIClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, nextLink string, _ *OpenAIClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/openAIIntegrations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if monitorName == "" {
+			return nil, errors.New("parameter monitorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *OpenAIClient) listHandleResponse(resp *http.Response) (OpenAIClientListResponse, error) {
+func (client *OpenAIClient) listHandleResponse(resp *http.Response, successCodes ...int) (OpenAIClientListResponse, error) {
 	result := OpenAIClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenAIIntegrationRPModelListResponse); err != nil {
 		return OpenAIClientListResponse{}, err
 	}

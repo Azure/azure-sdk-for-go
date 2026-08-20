@@ -85,8 +85,7 @@ func (client *SimplifiedSolutionsClient) create(ctx context.Context, scope strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -136,12 +135,7 @@ func (client *SimplifiedSolutionsClient) Get(ctx context.Context, scope string, 
 	if err != nil {
 		return SimplifiedSolutionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SimplifiedSolutionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -167,8 +161,11 @@ func (client *SimplifiedSolutionsClient) getCreateRequest(ctx context.Context, s
 }
 
 // getHandleResponse handles the Get response.
-func (client *SimplifiedSolutionsClient) getHandleResponse(resp *http.Response) (SimplifiedSolutionsClientGetResponse, error) {
+func (client *SimplifiedSolutionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SimplifiedSolutionsClientGetResponse, error) {
 	result := SimplifiedSolutionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SimplifiedSolutionsResource); err != nil {
 		return SimplifiedSolutionsClientGetResponse{}, err
 	}

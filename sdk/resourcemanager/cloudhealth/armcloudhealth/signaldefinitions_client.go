@@ -84,8 +84,7 @@ func (client *SignalDefinitionsClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -165,8 +164,7 @@ func (client *SignalDefinitionsClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -220,12 +218,7 @@ func (client *SignalDefinitionsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return SignalDefinitionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SignalDefinitionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -259,8 +252,11 @@ func (client *SignalDefinitionsClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *SignalDefinitionsClient) getHandleResponse(resp *http.Response) (SignalDefinitionsClientGetResponse, error) {
+func (client *SignalDefinitionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SignalDefinitionsClientGetResponse, error) {
 	result := SignalDefinitionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SignalDefinition); err != nil {
 		return SignalDefinitionsClientGetResponse{}, err
 	}
@@ -283,50 +279,64 @@ func (client *SignalDefinitionsClient) NewListByHealthModelPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByHealthModelCreateRequest(ctx, resourceGroupName, healthModelName, options)
-			}, nil)
+			req, err := client.listByHealthModelCreateRequest(ctx, resourceGroupName, healthModelName, nextLink, options)
 			if err != nil {
 				return SignalDefinitionsClientListByHealthModelResponse{}, err
 			}
-			return client.listByHealthModelHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SignalDefinitionsClientListByHealthModelResponse{}, err
+			}
+			return client.listByHealthModelHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByHealthModelCreateRequest creates the ListByHealthModel request.
-func (client *SignalDefinitionsClient) listByHealthModelCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, options *SignalDefinitionsClientListByHealthModelOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SignalDefinitionsClient) listByHealthModelCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, nextLink string, options *SignalDefinitionsClientListByHealthModelOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/signaldefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if healthModelName == "" {
+			return nil, errors.New("parameter healthModelName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{healthModelName}", url.PathEscape(healthModelName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if healthModelName == "" {
-		return nil, errors.New("parameter healthModelName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{healthModelName}", url.PathEscape(healthModelName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	if options != nil && options.Timestamp != nil {
-		reqQP.Set("timestamp", datetime.RFC3339(*options.Timestamp).String())
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		if options != nil && options.Timestamp != nil {
+			reqQP.Set("timestamp", datetime.RFC3339((*options.Timestamp).UTC()).String())
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByHealthModelHandleResponse handles the ListByHealthModel response.
-func (client *SignalDefinitionsClient) listByHealthModelHandleResponse(resp *http.Response) (SignalDefinitionsClientListByHealthModelResponse, error) {
+func (client *SignalDefinitionsClient) listByHealthModelHandleResponse(resp *http.Response, successCodes ...int) (SignalDefinitionsClientListByHealthModelResponse, error) {
 	result := SignalDefinitionsClientListByHealthModelResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SignalDefinitionListResult); err != nil {
 		return SignalDefinitionsClientListByHealthModelResponse{}, err
 	}

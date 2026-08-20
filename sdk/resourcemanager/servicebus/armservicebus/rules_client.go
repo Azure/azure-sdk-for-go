@@ -65,12 +65,7 @@ func (client *RulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 	if err != nil {
 		return RulesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RulesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -116,8 +111,11 @@ func (client *RulesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RulesClient) createOrUpdateHandleResponse(resp *http.Response) (RulesClientCreateOrUpdateResponse, error) {
+func (client *RulesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (RulesClientCreateOrUpdateResponse, error) {
 	result := RulesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Rule); err != nil {
 		return RulesClientCreateOrUpdateResponse{}, err
 	}
@@ -147,8 +145,7 @@ func (client *RulesClient) Delete(ctx context.Context, resourceGroupName string,
 		return RulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return RulesClientDeleteResponse{}, err
+		return RulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return RulesClientDeleteResponse{}, nil
 }
@@ -212,12 +209,7 @@ func (client *RulesClient) Get(ctx context.Context, resourceGroupName string, na
 	if err != nil {
 		return RulesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RulesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -259,8 +251,11 @@ func (client *RulesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 }
 
 // getHandleResponse handles the Get response.
-func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesClientGetResponse, error) {
+func (client *RulesClient) getHandleResponse(resp *http.Response, successCodes ...int) (RulesClientGetResponse, error) {
 	result := RulesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Rule); err != nil {
 		return RulesClientGetResponse{}, err
 	}
@@ -285,61 +280,75 @@ func (client *RulesClient) NewListBySubscriptionsPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionsCreateRequest(ctx, resourceGroupName, namespaceName, topicName, subscriptionName, options)
-			}, nil)
+			req, err := client.listBySubscriptionsCreateRequest(ctx, resourceGroupName, namespaceName, topicName, subscriptionName, nextLink, options)
 			if err != nil {
 				return RulesClientListBySubscriptionsResponse{}, err
 			}
-			return client.listBySubscriptionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RulesClientListBySubscriptionsResponse{}, err
+			}
+			return client.listBySubscriptionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionsCreateRequest creates the ListBySubscriptions request.
-func (client *RulesClient) listBySubscriptionsCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, options *RulesClientListBySubscriptionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/subscriptions/{subscriptionName}/rules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RulesClient) listBySubscriptionsCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, subscriptionName string, nextLink string, options *RulesClientListBySubscriptionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/subscriptions/{subscriptionName}/rules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		if topicName == "" {
+			return nil, errors.New("parameter topicName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
+		if subscriptionName == "" {
+			return nil, errors.New("parameter subscriptionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionName}", url.PathEscape(subscriptionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if topicName == "" {
-		return nil, errors.New("parameter topicName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
-	if subscriptionName == "" {
-		return nil, errors.New("parameter subscriptionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionName}", url.PathEscape(subscriptionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionsHandleResponse handles the ListBySubscriptions response.
-func (client *RulesClient) listBySubscriptionsHandleResponse(resp *http.Response) (RulesClientListBySubscriptionsResponse, error) {
+func (client *RulesClient) listBySubscriptionsHandleResponse(resp *http.Response, successCodes ...int) (RulesClientListBySubscriptionsResponse, error) {
 	result := RulesClientListBySubscriptionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuleListResult); err != nil {
 		return RulesClientListBySubscriptionsResponse{}, err
 	}

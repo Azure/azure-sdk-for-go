@@ -61,12 +61,7 @@ func (client *InsightsClient) Create(ctx context.Context, workloadImpactName str
 	if err != nil {
 		return InsightsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return InsightsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -100,8 +95,11 @@ func (client *InsightsClient) createCreateRequest(ctx context.Context, workloadI
 }
 
 // createHandleResponse handles the Create response.
-func (client *InsightsClient) createHandleResponse(resp *http.Response) (InsightsClientCreateResponse, error) {
+func (client *InsightsClient) createHandleResponse(resp *http.Response, successCodes ...int) (InsightsClientCreateResponse, error) {
 	result := InsightsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Insight); err != nil {
 		return InsightsClientCreateResponse{}, err
 	}
@@ -128,8 +126,7 @@ func (client *InsightsClient) Delete(ctx context.Context, workloadImpactName str
 		return InsightsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return InsightsClientDeleteResponse{}, err
+		return InsightsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return InsightsClientDeleteResponse{}, nil
 }
@@ -178,12 +175,7 @@ func (client *InsightsClient) Get(ctx context.Context, workloadImpactName string
 	if err != nil {
 		return InsightsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InsightsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -213,8 +205,11 @@ func (client *InsightsClient) getCreateRequest(ctx context.Context, workloadImpa
 }
 
 // getHandleResponse handles the Get response.
-func (client *InsightsClient) getHandleResponse(resp *http.Response) (InsightsClientGetResponse, error) {
+func (client *InsightsClient) getHandleResponse(resp *http.Response, successCodes ...int) (InsightsClientGetResponse, error) {
 	result := InsightsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Insight); err != nil {
 		return InsightsClientGetResponse{}, err
 	}
@@ -236,43 +231,57 @@ func (client *InsightsClient) NewListBySubscriptionPager(workloadImpactName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, workloadImpactName, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, workloadImpactName, nextLink, options)
 			if err != nil {
 				return InsightsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InsightsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *InsightsClient) listBySubscriptionCreateRequest(ctx context.Context, workloadImpactName string, _ *InsightsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *InsightsClient) listBySubscriptionCreateRequest(ctx context.Context, workloadImpactName string, nextLink string, _ *InsightsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if workloadImpactName == "" {
+			return nil, errors.New("parameter workloadImpactName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workloadImpactName}", url.PathEscape(workloadImpactName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if workloadImpactName == "" {
-		return nil, errors.New("parameter workloadImpactName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workloadImpactName}", url.PathEscape(workloadImpactName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *InsightsClient) listBySubscriptionHandleResponse(resp *http.Response) (InsightsClientListBySubscriptionResponse, error) {
+func (client *InsightsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (InsightsClientListBySubscriptionResponse, error) {
 	result := InsightsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InsightListResult); err != nil {
 		return InsightsClientListBySubscriptionResponse{}, err
 	}

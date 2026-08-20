@@ -44,7 +44,7 @@ func ExampleDeviceCapacityInfoClient_GetDeviceCapacityInfo() {
 	// 					GpuType: to.Ptr("NvidiaTeslaT4"),
 	// 					GpuUsedUnitsCount: to.Ptr[int32](0),
 	// 				},
-	// 				LastRefreshedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-28T19:35:23.82Z"); return t}()),
+	// 				LastRefreshedTime: to.Ptr(time.Date(2022, time.February, 28, 19, 35, 23, 820000000, time.UTC)),
 	// 				MemoryCapacity: &armdataboxedge.ClusterMemoryCapacity{
 	// 					ClusterFailoverMemoryMb: to.Ptr[float64](0),
 	// 					ClusterFragmentationMemoryMb: to.Ptr[float64](0),
@@ -170,7 +170,7 @@ func ExampleDeviceCapacityInfoClient_GetDeviceCapacityInfo() {
 	// 					},
 	// 				},
 	// 			},
-	// 			TimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-02-28T19:35:34.5585067Z"); return t}()),
+	// 			TimeStamp: to.Ptr(time.Date(2022, time.February, 28, 19, 35, 34, 558506700, time.UTC)),
 	// 		},
 	// 	},
 	// }

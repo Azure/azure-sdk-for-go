@@ -65,12 +65,7 @@ func (client *VariableValuesClient) CreateOrUpdate(ctx context.Context, variable
 	if err != nil {
 		return VariableValuesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return VariableValuesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -104,8 +99,11 @@ func (client *VariableValuesClient) createOrUpdateCreateRequest(ctx context.Cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *VariableValuesClient) createOrUpdateHandleResponse(resp *http.Response) (VariableValuesClientCreateOrUpdateResponse, error) {
+func (client *VariableValuesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (VariableValuesClientCreateOrUpdateResponse, error) {
 	result := VariableValuesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VariableValue); err != nil {
 		return VariableValuesClientCreateOrUpdateResponse{}, err
 	}
@@ -137,12 +135,7 @@ func (client *VariableValuesClient) CreateOrUpdateAtManagementGroup(ctx context.
 	if err != nil {
 		return VariableValuesClientCreateOrUpdateAtManagementGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return VariableValuesClientCreateOrUpdateAtManagementGroupResponse{}, err
-	}
-	resp, err := client.createOrUpdateAtManagementGroupHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateAtManagementGroupHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateAtManagementGroupCreateRequest creates the CreateOrUpdateAtManagementGroup request.
@@ -176,8 +169,11 @@ func (client *VariableValuesClient) createOrUpdateAtManagementGroupCreateRequest
 }
 
 // createOrUpdateAtManagementGroupHandleResponse handles the CreateOrUpdateAtManagementGroup response.
-func (client *VariableValuesClient) createOrUpdateAtManagementGroupHandleResponse(resp *http.Response) (VariableValuesClientCreateOrUpdateAtManagementGroupResponse, error) {
+func (client *VariableValuesClient) createOrUpdateAtManagementGroupHandleResponse(resp *http.Response, successCodes ...int) (VariableValuesClientCreateOrUpdateAtManagementGroupResponse, error) {
 	result := VariableValuesClientCreateOrUpdateAtManagementGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VariableValue); err != nil {
 		return VariableValuesClientCreateOrUpdateAtManagementGroupResponse{}, err
 	}
@@ -207,8 +203,7 @@ func (client *VariableValuesClient) Delete(ctx context.Context, variableName str
 		return VariableValuesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return VariableValuesClientDeleteResponse{}, err
+		return VariableValuesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return VariableValuesClientDeleteResponse{}, nil
 }
@@ -263,8 +258,7 @@ func (client *VariableValuesClient) DeleteAtManagementGroup(ctx context.Context,
 		return VariableValuesClientDeleteAtManagementGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return VariableValuesClientDeleteAtManagementGroupResponse{}, err
+		return VariableValuesClientDeleteAtManagementGroupResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return VariableValuesClientDeleteAtManagementGroupResponse{}, nil
 }
@@ -316,12 +310,7 @@ func (client *VariableValuesClient) Get(ctx context.Context, variableName string
 	if err != nil {
 		return VariableValuesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VariableValuesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -351,8 +340,11 @@ func (client *VariableValuesClient) getCreateRequest(ctx context.Context, variab
 }
 
 // getHandleResponse handles the Get response.
-func (client *VariableValuesClient) getHandleResponse(resp *http.Response) (VariableValuesClientGetResponse, error) {
+func (client *VariableValuesClient) getHandleResponse(resp *http.Response, successCodes ...int) (VariableValuesClientGetResponse, error) {
 	result := VariableValuesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VariableValue); err != nil {
 		return VariableValuesClientGetResponse{}, err
 	}
@@ -383,12 +375,7 @@ func (client *VariableValuesClient) GetAtManagementGroup(ctx context.Context, ma
 	if err != nil {
 		return VariableValuesClientGetAtManagementGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VariableValuesClientGetAtManagementGroupResponse{}, err
-	}
-	resp, err := client.getAtManagementGroupHandleResponse(httpResp)
-	return resp, err
+	return client.getAtManagementGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAtManagementGroupCreateRequest creates the GetAtManagementGroup request.
@@ -418,8 +405,11 @@ func (client *VariableValuesClient) getAtManagementGroupCreateRequest(ctx contex
 }
 
 // getAtManagementGroupHandleResponse handles the GetAtManagementGroup response.
-func (client *VariableValuesClient) getAtManagementGroupHandleResponse(resp *http.Response) (VariableValuesClientGetAtManagementGroupResponse, error) {
+func (client *VariableValuesClient) getAtManagementGroupHandleResponse(resp *http.Response, successCodes ...int) (VariableValuesClientGetAtManagementGroupResponse, error) {
 	result := VariableValuesClientGetAtManagementGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VariableValue); err != nil {
 		return VariableValuesClientGetAtManagementGroupResponse{}, err
 	}
@@ -442,43 +432,57 @@ func (client *VariableValuesClient) NewListPager(variableName string, options *V
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, variableName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, variableName, nextLink, options)
 			if err != nil {
 				return VariableValuesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VariableValuesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *VariableValuesClient) listCreateRequest(ctx context.Context, variableName string, _ *VariableValuesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/variables/{variableName}/values"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *VariableValuesClient) listCreateRequest(ctx context.Context, variableName string, nextLink string, _ *VariableValuesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/variables/{variableName}/values"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if variableName == "" {
+			return nil, errors.New("parameter variableName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{variableName}", url.PathEscape(variableName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if variableName == "" {
-		return nil, errors.New("parameter variableName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{variableName}", url.PathEscape(variableName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *VariableValuesClient) listHandleResponse(resp *http.Response) (VariableValuesClientListResponse, error) {
+func (client *VariableValuesClient) listHandleResponse(resp *http.Response, successCodes ...int) (VariableValuesClientListResponse, error) {
 	result := VariableValuesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VariableValueListResult); err != nil {
 		return VariableValuesClientListResponse{}, err
 	}
@@ -503,43 +507,57 @@ func (client *VariableValuesClient) NewListForManagementGroupPager(managementGro
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listForManagementGroupCreateRequest(ctx, managementGroupID, variableName, options)
-			}, nil)
+			req, err := client.listForManagementGroupCreateRequest(ctx, managementGroupID, variableName, nextLink, options)
 			if err != nil {
 				return VariableValuesClientListForManagementGroupResponse{}, err
 			}
-			return client.listForManagementGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VariableValuesClientListForManagementGroupResponse{}, err
+			}
+			return client.listForManagementGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listForManagementGroupCreateRequest creates the ListForManagementGroup request.
-func (client *VariableValuesClient) listForManagementGroupCreateRequest(ctx context.Context, managementGroupID string, variableName string, _ *VariableValuesClientListForManagementGroupOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization/variables/{variableName}/values"
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
+func (client *VariableValuesClient) listForManagementGroupCreateRequest(ctx context.Context, managementGroupID string, variableName string, nextLink string, _ *VariableValuesClientListForManagementGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization/variables/{variableName}/values"
+		if managementGroupID == "" {
+			return nil, errors.New("parameter managementGroupID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+		if variableName == "" {
+			return nil, errors.New("parameter variableName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{variableName}", url.PathEscape(variableName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	if variableName == "" {
-		return nil, errors.New("parameter variableName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{variableName}", url.PathEscape(variableName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listForManagementGroupHandleResponse handles the ListForManagementGroup response.
-func (client *VariableValuesClient) listForManagementGroupHandleResponse(resp *http.Response) (VariableValuesClientListForManagementGroupResponse, error) {
+func (client *VariableValuesClient) listForManagementGroupHandleResponse(resp *http.Response, successCodes ...int) (VariableValuesClientListForManagementGroupResponse, error) {
 	result := VariableValuesClientListForManagementGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VariableValueListResult); err != nil {
 		return VariableValuesClientListForManagementGroupResponse{}, err
 	}

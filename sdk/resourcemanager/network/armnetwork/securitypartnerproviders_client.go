@@ -19,7 +19,7 @@ import (
 // SecurityPartnerProvidersClient contains the methods for the SecurityPartnerProviders group.
 // Don't use this type directly, use NewSecurityPartnerProvidersClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type SecurityPartnerProvidersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -82,8 +82,7 @@ func (client *SecurityPartnerProvidersClient) createOrUpdate(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -108,7 +107,7 @@ func (client *SecurityPartnerProvidersClient) createOrUpdateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -158,8 +157,7 @@ func (client *SecurityPartnerProvidersClient) deleteOperation(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -184,7 +182,7 @@ func (client *SecurityPartnerProvidersClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -209,12 +207,7 @@ func (client *SecurityPartnerProvidersClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return SecurityPartnerProvidersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SecurityPartnerProvidersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -237,15 +230,18 @@ func (client *SecurityPartnerProvidersClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SecurityPartnerProvidersClient) getHandleResponse(resp *http.Response) (SecurityPartnerProvidersClientGetResponse, error) {
+func (client *SecurityPartnerProvidersClient) getHandleResponse(resp *http.Response, successCodes ...int) (SecurityPartnerProvidersClientGetResponse, error) {
 	result := SecurityPartnerProvidersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPartnerProvider); err != nil {
 		return SecurityPartnerProvidersClientGetResponse{}, err
 	}
@@ -266,39 +262,53 @@ func (client *SecurityPartnerProvidersClient) NewListPager(options *SecurityPart
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return SecurityPartnerProvidersClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SecurityPartnerProvidersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *SecurityPartnerProvidersClient) listCreateRequest(ctx context.Context, _ *SecurityPartnerProvidersClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/securityPartnerProviders"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SecurityPartnerProvidersClient) listCreateRequest(ctx context.Context, nextLink string, _ *SecurityPartnerProvidersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/securityPartnerProviders"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SecurityPartnerProvidersClient) listHandleResponse(resp *http.Response) (SecurityPartnerProvidersClientListResponse, error) {
+func (client *SecurityPartnerProvidersClient) listHandleResponse(resp *http.Response, successCodes ...int) (SecurityPartnerProvidersClientListResponse, error) {
 	result := SecurityPartnerProvidersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPartnerProviderListResult); err != nil {
 		return SecurityPartnerProvidersClientListResponse{}, err
 	}
@@ -320,43 +330,57 @@ func (client *SecurityPartnerProvidersClient) NewListByResourceGroupPager(resour
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return SecurityPartnerProvidersClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SecurityPartnerProvidersClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *SecurityPartnerProvidersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *SecurityPartnerProvidersClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/securityPartnerProviders"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SecurityPartnerProvidersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *SecurityPartnerProvidersClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/securityPartnerProviders"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *SecurityPartnerProvidersClient) listByResourceGroupHandleResponse(resp *http.Response) (SecurityPartnerProvidersClientListByResourceGroupResponse, error) {
+func (client *SecurityPartnerProvidersClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (SecurityPartnerProvidersClientListByResourceGroupResponse, error) {
 	result := SecurityPartnerProvidersClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPartnerProviderListResult); err != nil {
 		return SecurityPartnerProvidersClientListByResourceGroupResponse{}, err
 	}
@@ -384,12 +408,7 @@ func (client *SecurityPartnerProvidersClient) UpdateTags(ctx context.Context, re
 	if err != nil {
 		return SecurityPartnerProvidersClientUpdateTagsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SecurityPartnerProvidersClientUpdateTagsResponse{}, err
-	}
-	resp, err := client.updateTagsHandleResponse(httpResp)
-	return resp, err
+	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -412,7 +431,7 @@ func (client *SecurityPartnerProvidersClient) updateTagsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -423,8 +442,11 @@ func (client *SecurityPartnerProvidersClient) updateTagsCreateRequest(ctx contex
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *SecurityPartnerProvidersClient) updateTagsHandleResponse(resp *http.Response) (SecurityPartnerProvidersClientUpdateTagsResponse, error) {
+func (client *SecurityPartnerProvidersClient) updateTagsHandleResponse(resp *http.Response, successCodes ...int) (SecurityPartnerProvidersClientUpdateTagsResponse, error) {
 	result := SecurityPartnerProvidersClientUpdateTagsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityPartnerProvider); err != nil {
 		return SecurityPartnerProvidersClientUpdateTagsResponse{}, err
 	}

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/PrivateEndpointDnsZoneGroupCreate.json
+// Generated from example definition: 2025-09-01/PrivateEndpointDnsZoneGroupCreate.json
 func ExamplePrivateDNSZoneGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExamplePrivateDNSZoneGroupsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/PrivateEndpointDnsZoneGroupDelete.json
+// Generated from example definition: 2025-09-01/PrivateEndpointDnsZoneGroupDelete.json
 func ExamplePrivateDNSZoneGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExamplePrivateDNSZoneGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/PrivateEndpointDnsZoneGroupGet.json
+// Generated from example definition: 2025-09-01/PrivateEndpointDnsZoneGroupGet.json
 func ExamplePrivateDNSZoneGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExamplePrivateDNSZoneGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/PrivateEndpointDnsZoneGroupList.json
+// Generated from example definition: 2025-09-01/PrivateEndpointDnsZoneGroupList.json
 func ExamplePrivateDNSZoneGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

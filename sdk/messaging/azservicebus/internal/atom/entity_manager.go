@@ -26,6 +26,15 @@ const (
 	serviceBusSchema = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
 	atomSchema       = "http://www.w3.org/2005/Atom"
 	applicationXML   = "application/xml"
+
+	// apiVersionQueryParam is the query parameter that carries the Service Bus
+	// management API version.
+	apiVersionQueryParam = "api-version"
+
+	// defaultAPIVersion is the management API version sent when the caller has not
+	// set azcore.ClientOptions.APIVersion. The admin.ClientOptions doc comment names
+	// this version, so the two move together.
+	defaultAPIVersion = "2024-05"
 )
 
 type (
@@ -172,7 +181,9 @@ func (em *entityManager) execute(ctx context.Context, method string, entityPath 
 	}
 
 	q := req.Raw().URL.Query()
-	q.Add("api-version", "2021-05")
+	// Set rather than Add, so an entityPath that already carries an api-version - an ATOM
+	// feed href, for example - yields one value rather than two.
+	q.Set(apiVersionQueryParam, defaultAPIVersion)
 	req.Raw().URL.RawQuery = q.Encode()
 
 	if body != nil {
@@ -244,6 +255,12 @@ func deserializeBody(resp *http.Response, respObj any) (*http.Response, error) {
 
 func newEntityManagerImpl(provider *sbauth.TokenProvider, version string, options *policy.ClientOptions, ns string) (EntityManager, error) {
 	popts := runtime.PipelineOptions{
+		// Declaring where the version lives lets azcore replace the default set in
+		// execute() with policy.ClientOptions.APIVersion, when the caller sets one.
+		APIVersion: runtime.APIVersionOptions{
+			Location: runtime.APIVersionLocationQueryParam,
+			Name:     apiVersionQueryParam,
+		},
 		PerRetry: []policy.Policy{
 			&perRetryAuthPolicy{tp: provider},
 		},

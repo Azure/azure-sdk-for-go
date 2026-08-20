@@ -65,8 +65,7 @@ func (client *TriageRecommendationsClient) ApproveTriageRecommendation(ctx conte
 		return TriageRecommendationsClientApproveTriageRecommendationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TriageRecommendationsClientApproveTriageRecommendationResponse{}, err
+		return TriageRecommendationsClientApproveTriageRecommendationResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TriageRecommendationsClientApproveTriageRecommendationResponse{}, nil
 }
@@ -118,12 +117,7 @@ func (client *TriageRecommendationsClient) Get(ctx context.Context, reviewID str
 	if err != nil {
 		return TriageRecommendationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TriageRecommendationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -153,8 +147,11 @@ func (client *TriageRecommendationsClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *TriageRecommendationsClient) getHandleResponse(resp *http.Response) (TriageRecommendationsClientGetResponse, error) {
+func (client *TriageRecommendationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (TriageRecommendationsClientGetResponse, error) {
 	result := TriageRecommendationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriageRecommendation); err != nil {
 		return TriageRecommendationsClientGetResponse{}, err
 	}
@@ -178,49 +175,63 @@ func (client *TriageRecommendationsClient) NewListPager(reviewID string, options
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, reviewID, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, reviewID, nextLink, options)
 			if err != nil {
 				return TriageRecommendationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TriageRecommendationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *TriageRecommendationsClient) listCreateRequest(ctx context.Context, reviewID string, options *TriageRecommendationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/resiliencyReviews/{reviewId}/providers/Microsoft.Advisor/triageRecommendations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TriageRecommendationsClient) listCreateRequest(ctx context.Context, reviewID string, nextLink string, options *TriageRecommendationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/resiliencyReviews/{reviewId}/providers/Microsoft.Advisor/triageRecommendations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if reviewID == "" {
+			return nil, errors.New("parameter reviewID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{reviewId}", url.PathEscape(reviewID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if reviewID == "" {
-		return nil, errors.New("parameter reviewID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{reviewId}", url.PathEscape(reviewID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *TriageRecommendationsClient) listHandleResponse(resp *http.Response) (TriageRecommendationsClientListResponse, error) {
+func (client *TriageRecommendationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (TriageRecommendationsClientListResponse, error) {
 	result := TriageRecommendationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriageRecommendationCollection); err != nil {
 		return TriageRecommendationsClientListResponse{}, err
 	}
@@ -251,8 +262,7 @@ func (client *TriageRecommendationsClient) RejectTriageRecommendation(ctx contex
 		return TriageRecommendationsClientRejectTriageRecommendationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TriageRecommendationsClientRejectTriageRecommendationResponse{}, err
+		return TriageRecommendationsClientRejectTriageRecommendationResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TriageRecommendationsClientRejectTriageRecommendationResponse{}, nil
 }
@@ -309,8 +319,7 @@ func (client *TriageRecommendationsClient) ResetTriageRecommendation(ctx context
 		return TriageRecommendationsClientResetTriageRecommendationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TriageRecommendationsClientResetTriageRecommendationResponse{}, err
+		return TriageRecommendationsClientResetTriageRecommendationResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TriageRecommendationsClientResetTriageRecommendationResponse{}, nil
 }

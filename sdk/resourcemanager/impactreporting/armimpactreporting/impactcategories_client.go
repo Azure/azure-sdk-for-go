@@ -59,12 +59,7 @@ func (client *ImpactCategoriesClient) Get(ctx context.Context, impactCategoryNam
 	if err != nil {
 		return ImpactCategoriesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ImpactCategoriesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -90,8 +85,11 @@ func (client *ImpactCategoriesClient) getCreateRequest(ctx context.Context, impa
 }
 
 // getHandleResponse handles the Get response.
-func (client *ImpactCategoriesClient) getHandleResponse(resp *http.Response) (ImpactCategoriesClientGetResponse, error) {
+func (client *ImpactCategoriesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ImpactCategoriesClientGetResponse, error) {
 	result := ImpactCategoriesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImpactCategory); err != nil {
 		return ImpactCategoriesClientGetResponse{}, err
 	}
@@ -113,43 +111,57 @@ func (client *ImpactCategoriesClient) NewListBySubscriptionPager(resourceType st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, resourceType, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, resourceType, nextLink, options)
 			if err != nil {
 				return ImpactCategoriesClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ImpactCategoriesClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ImpactCategoriesClient) listBySubscriptionCreateRequest(ctx context.Context, resourceType string, options *ImpactCategoriesClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/impactCategories"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ImpactCategoriesClient) listBySubscriptionCreateRequest(ctx context.Context, resourceType string, nextLink string, options *ImpactCategoriesClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/impactCategories"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240501Preview)
-	if options != nil && options.CategoryName != nil {
-		reqQP.Set("categoryName", *options.CategoryName)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240501Preview)
+		if options != nil && options.CategoryName != nil {
+			reqQP.Set("categoryName", *options.CategoryName)
+		}
+		reqQP.Set("resourceType", resourceType)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("resourceType", resourceType)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ImpactCategoriesClient) listBySubscriptionHandleResponse(resp *http.Response) (ImpactCategoriesClientListBySubscriptionResponse, error) {
+func (client *ImpactCategoriesClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (ImpactCategoriesClientListBySubscriptionResponse, error) {
 	result := ImpactCategoriesClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImpactCategoryListResult); err != nil {
 		return ImpactCategoriesClientListBySubscriptionResponse{}, err
 	}

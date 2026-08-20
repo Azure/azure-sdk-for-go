@@ -60,12 +60,7 @@ func (client *GiVersionsClient) Get(ctx context.Context, location string, givers
 	if err != nil {
 		return GiVersionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GiVersionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -95,8 +90,11 @@ func (client *GiVersionsClient) getCreateRequest(ctx context.Context, location s
 }
 
 // getHandleResponse handles the Get response.
-func (client *GiVersionsClient) getHandleResponse(resp *http.Response) (GiVersionsClientGetResponse, error) {
+func (client *GiVersionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (GiVersionsClientGetResponse, error) {
 	result := GiVersionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GiVersion); err != nil {
 		return GiVersionsClientGetResponse{}, err
 	}
@@ -118,52 +116,66 @@ func (client *GiVersionsClient) NewListByLocationPager(location string, options 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByLocationCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listByLocationCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return GiVersionsClientListByLocationResponse{}, err
 			}
-			return client.listByLocationHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GiVersionsClientListByLocationResponse{}, err
+			}
+			return client.listByLocationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *GiVersionsClient) listByLocationCreateRequest(ctx context.Context, location string, options *GiVersionsClientListByLocationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/giVersions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *GiVersionsClient) listByLocationCreateRequest(ctx context.Context, location string, nextLink string, options *GiVersionsClientListByLocationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/giVersions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	if options != nil && options.Shape != nil {
-		reqQP.Set("shape", string(*options.Shape))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		if options != nil && options.Shape != nil {
+			reqQP.Set("shape", string(*options.Shape))
+		}
+		if options != nil && options.ShapeAttribute != nil {
+			reqQP.Set("shapeAttribute", *options.ShapeAttribute)
+		}
+		if options != nil && options.Zone != nil {
+			reqQP.Set("zone", *options.Zone)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.ShapeAttribute != nil {
-		reqQP.Set("shapeAttribute", *options.ShapeAttribute)
-	}
-	if options != nil && options.Zone != nil {
-		reqQP.Set("zone", *options.Zone)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *GiVersionsClient) listByLocationHandleResponse(resp *http.Response) (GiVersionsClientListByLocationResponse, error) {
+func (client *GiVersionsClient) listByLocationHandleResponse(resp *http.Response, successCodes ...int) (GiVersionsClientListByLocationResponse, error) {
 	result := GiVersionsClientListByLocationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GiVersionListResult); err != nil {
 		return GiVersionsClientListByLocationResponse{}, err
 	}

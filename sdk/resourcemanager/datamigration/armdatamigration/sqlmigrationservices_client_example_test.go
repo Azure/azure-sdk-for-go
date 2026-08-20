@@ -365,7 +365,7 @@ func ExampleSQLMigrationServicesClient_NewListMigrationsPager() {
 		// 				Type: to.Ptr("Microsoft.DataMigration/dataMigrations"),
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/miname/providers/Microsoft.DataMigration/databaseMigrations/targetdb"),
 		// 				Properties: &armdatamigration.DatabaseMigrationPropertiesSQLMi{
-		// 					EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+		// 					EndedOn: to.Ptr(time.Date(1, time.January, 1, 8, 0, 0, 0, time.UTC)),
 		// 					Kind: to.Ptr(armdatamigration.ResourceTypeSQLMi),
 		// 					MigrationOperationID: to.Ptr("858ba109-5ab7-4fa1-8aea-bea487cacdcd"),
 		// 					MigrationStatus: to.Ptr("InProgress"),
@@ -378,7 +378,7 @@ func ExampleSQLMigrationServicesClient_NewListMigrationsPager() {
 		// 					Scope: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/miname"),
 		// 					SourceDatabaseName: to.Ptr("sourcename"),
 		// 					SQLServerInstanceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.AzureArcData/SqlServerInstances/instanceName"),
-		// 					StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+		// 					StartedOn: to.Ptr(time.Date(1, time.January, 1, 8, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -386,7 +386,7 @@ func ExampleSQLMigrationServicesClient_NewListMigrationsPager() {
 		// 				Type: to.Ptr("Microsoft.DataMigration/dataMigrations"),
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/miname/providers/Microsoft.DataMigration/databaseMigrations/targetdb"),
 		// 				Properties: &armdatamigration.DatabaseMigrationPropertiesSQLMi{
-		// 					EndedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+		// 					EndedOn: to.Ptr(time.Date(1, time.January, 1, 8, 0, 0, 0, time.UTC)),
 		// 					Kind: to.Ptr(armdatamigration.ResourceTypeSQLMi),
 		// 					MigrationOperationID: to.Ptr("858ba109-5ab7-4fa1-8aea-bea487cacdcd"),
 		// 					MigrationStatus: to.Ptr("InProgress"),
@@ -399,7 +399,7 @@ func ExampleSQLMigrationServicesClient_NewListMigrationsPager() {
 		// 					Scope: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Sql/managedInstances/miname"),
 		// 					SourceDatabaseName: to.Ptr("sourcename"),
 		// 					SQLServerInstanceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.AzureArcData/SqlServerInstances/instanceName"),
-		// 					StartedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T08:00:00Z"); return t}()),
+		// 					StartedOn: to.Ptr(time.Date(1, time.January, 1, 8, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

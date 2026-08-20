@@ -84,8 +84,7 @@ func (client *CertificateProfilesClient) create(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -165,8 +164,7 @@ func (client *CertificateProfilesClient) deleteOperation(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -220,12 +218,7 @@ func (client *CertificateProfilesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return CertificateProfilesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CertificateProfilesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -259,8 +252,11 @@ func (client *CertificateProfilesClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *CertificateProfilesClient) getHandleResponse(resp *http.Response) (CertificateProfilesClientGetResponse, error) {
+func (client *CertificateProfilesClient) getHandleResponse(resp *http.Response, successCodes ...int) (CertificateProfilesClientGetResponse, error) {
 	result := CertificateProfilesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateProfile); err != nil {
 		return CertificateProfilesClientGetResponse{}, err
 	}
@@ -283,47 +279,61 @@ func (client *CertificateProfilesClient) NewListByCodeSigningAccountPager(resour
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByCodeSigningAccountCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listByCodeSigningAccountCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return CertificateProfilesClientListByCodeSigningAccountResponse{}, err
 			}
-			return client.listByCodeSigningAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CertificateProfilesClientListByCodeSigningAccountResponse{}, err
+			}
+			return client.listByCodeSigningAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByCodeSigningAccountCreateRequest creates the ListByCodeSigningAccount request.
-func (client *CertificateProfilesClient) listByCodeSigningAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *CertificateProfilesClientListByCodeSigningAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CertificateProfilesClient) listByCodeSigningAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *CertificateProfilesClientListByCodeSigningAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CodeSigning/codeSigningAccounts/{accountName}/certificateProfiles"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251013)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251013)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByCodeSigningAccountHandleResponse handles the ListByCodeSigningAccount response.
-func (client *CertificateProfilesClient) listByCodeSigningAccountHandleResponse(resp *http.Response) (CertificateProfilesClientListByCodeSigningAccountResponse, error) {
+func (client *CertificateProfilesClient) listByCodeSigningAccountHandleResponse(resp *http.Response, successCodes ...int) (CertificateProfilesClientListByCodeSigningAccountResponse, error) {
 	result := CertificateProfilesClientListByCodeSigningAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateProfileListResult); err != nil {
 		return CertificateProfilesClientListByCodeSigningAccountResponse{}, err
 	}
@@ -353,8 +363,7 @@ func (client *CertificateProfilesClient) RevokeCertificate(ctx context.Context, 
 		return CertificateProfilesClientRevokeCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return CertificateProfilesClientRevokeCertificateResponse{}, err
+		return CertificateProfilesClientRevokeCertificateResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return CertificateProfilesClientRevokeCertificateResponse{}, nil
 }

@@ -33,8 +33,8 @@ func ExampleJobsClient_Get() {
 	// 	Job: armworkloadorchestration.Job{
 	// 		Properties: &armworkloadorchestration.JobProperties{
 	// 			JobType: to.Ptr(armworkloadorchestration.JobTypeDeploy),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-28T15:10:05.470Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-28T15:10:05.470Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2025, time.May, 28, 15, 10, 5, 470000000, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2025, time.May, 28, 15, 10, 5, 470000000, time.UTC)),
 	// 			Status: to.Ptr(armworkloadorchestration.JobStatusInProgress),
 	// 			JobParameter: &armworkloadorchestration.JobParameterBase{
 	// 				JobType: to.Ptr(armworkloadorchestration.JobType("JobParameterBase")),
@@ -44,8 +44,8 @@ func ExampleJobsClient_Get() {
 	// 				{
 	// 					Name: to.Ptr("duezohitlpz"),
 	// 					Status: to.Ptr(armworkloadorchestration.JobStatusInProgress),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-28T15:10:05.470Z"); return t}()),
-	// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-28T15:10:05.470Z"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2025, time.May, 28, 15, 10, 5, 470000000, time.UTC)),
+	// 					EndTime: to.Ptr(time.Date(2025, time.May, 28, 15, 10, 5, 470000000, time.UTC)),
 	// 					Message: to.Ptr("lkodiekkbtqwuixxryezipwvvavfu"),
 	// 					Statistics: &armworkloadorchestration.DeployJobStepStatistics{
 	// 						TotalCount: to.Ptr[int32](18),
@@ -123,10 +123,10 @@ func ExampleJobsClient_Get() {
 	// 		SystemData: &armworkloadorchestration.SystemData{
 	// 			CreatedBy: to.Ptr("favedmahrbemfqzeuggazxzrvwugxw"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-24T11:04:49.597Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 24, 11, 4, 49, 597000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("lywqfnyqrutroctdfbxzytel"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-24T11:04:49.597Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 24, 11, 4, 49, 597000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -160,8 +160,8 @@ func ExampleJobsClient_NewListByTargetPager() {
 		// 			{
 		// 				Properties: &armworkloadorchestration.JobProperties{
 		// 					JobType: to.Ptr(armworkloadorchestration.JobTypeDeploy),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-28T15:10:05.470Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-28T15:10:05.470Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2025, time.May, 28, 15, 10, 5, 470000000, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2025, time.May, 28, 15, 10, 5, 470000000, time.UTC)),
 		// 					Status: to.Ptr(armworkloadorchestration.JobStatusInProgress),
 		// 					JobParameter: &armworkloadorchestration.JobParameterBase{
 		// 						JobType: to.Ptr(armworkloadorchestration.JobType("JobParameterBase")),
@@ -171,8 +171,8 @@ func ExampleJobsClient_NewListByTargetPager() {
 		// 						{
 		// 							Name: to.Ptr("duezohitlpz"),
 		// 							Status: to.Ptr(armworkloadorchestration.JobStatusInProgress),
-		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-28T15:10:05.470Z"); return t}()),
-		// 							EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-28T15:10:05.470Z"); return t}()),
+		// 							StartTime: to.Ptr(time.Date(2025, time.May, 28, 15, 10, 5, 470000000, time.UTC)),
+		// 							EndTime: to.Ptr(time.Date(2025, time.May, 28, 15, 10, 5, 470000000, time.UTC)),
 		// 							Message: to.Ptr("lkodiekkbtqwuixxryezipwvvavfu"),
 		// 							Statistics: &armworkloadorchestration.DeployJobStepStatistics{
 		// 								TotalCount: to.Ptr[int32](18),
@@ -250,10 +250,10 @@ func ExampleJobsClient_NewListByTargetPager() {
 		// 				SystemData: &armworkloadorchestration.SystemData{
 		// 					CreatedBy: to.Ptr("favedmahrbemfqzeuggazxzrvwugxw"),
 		// 					CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-24T11:04:49.597Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.January, 24, 11, 4, 49, 597000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("lywqfnyqrutroctdfbxzytel"),
 		// 					LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-24T11:04:49.597Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.January, 24, 11, 4, 49, 597000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

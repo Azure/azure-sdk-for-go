@@ -38,34 +38,34 @@ func ExamplePartitionKeyRangeIDClient_NewListMetricsPager() {
 		// 		Value: []*armcosmos.PartitionMetric{
 		// 			{
 		// 				TimeGrain: to.Ptr("PT1M"),
-		// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
-		// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-20T23:58:55.2780000Z"); return t}()),
+		// 				StartTime: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
+		// 				EndTime: to.Ptr(time.Date(2017, time.November, 20, 23, 58, 55, 278000000, time.UTC)),
 		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
 		// 				PartitionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				PartitionKeyRangeID: to.Ptr("0"),
 		// 				MetricValues: []*armcosmos.MetricValue{
 		// 					{
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:53:55.2780000Z"); return t}()),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
 		// 						Maximum: to.Ptr[float64](5),
 		// 					},
 		// 					{
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:54:55.2780000Z"); return t}()),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 54, 55, 278000000, time.UTC)),
 		// 						Maximum: to.Ptr[float64](5),
 		// 					},
 		// 					{
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:55:55.2780000Z"); return t}()),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 55, 55, 278000000, time.UTC)),
 		// 						Maximum: to.Ptr[float64](5),
 		// 					},
 		// 					{
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:56:55.2780000Z"); return t}()),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 56, 55, 278000000, time.UTC)),
 		// 						Maximum: to.Ptr[float64](5),
 		// 					},
 		// 					{
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:57:55.2780000Z"); return t}()),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 57, 55, 278000000, time.UTC)),
 		// 						Maximum: to.Ptr[float64](5),
 		// 					},
 		// 					{
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-19T23:58:55.2780000Z"); return t}()),
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 58, 55, 278000000, time.UTC)),
 		// 						Maximum: to.Ptr[float64](5),
 		// 					},
 		// 				},

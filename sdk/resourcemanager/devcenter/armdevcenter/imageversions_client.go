@@ -63,12 +63,7 @@ func (client *ImageVersionsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ImageVersionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ImageVersionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -110,8 +105,11 @@ func (client *ImageVersionsClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *ImageVersionsClient) getHandleResponse(resp *http.Response) (ImageVersionsClientGetResponse, error) {
+func (client *ImageVersionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ImageVersionsClientGetResponse, error) {
 	result := ImageVersionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageVersion); err != nil {
 		return ImageVersionsClientGetResponse{}, err
 	}
@@ -140,12 +138,7 @@ func (client *ImageVersionsClient) GetByProject(ctx context.Context, resourceGro
 	if err != nil {
 		return ImageVersionsClientGetByProjectResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ImageVersionsClientGetByProjectResponse{}, err
-	}
-	resp, err := client.getByProjectHandleResponse(httpResp)
-	return resp, err
+	return client.getByProjectHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByProjectCreateRequest creates the GetByProject request.
@@ -183,8 +176,11 @@ func (client *ImageVersionsClient) getByProjectCreateRequest(ctx context.Context
 }
 
 // getByProjectHandleResponse handles the GetByProject response.
-func (client *ImageVersionsClient) getByProjectHandleResponse(resp *http.Response) (ImageVersionsClientGetByProjectResponse, error) {
+func (client *ImageVersionsClient) getByProjectHandleResponse(resp *http.Response, successCodes ...int) (ImageVersionsClientGetByProjectResponse, error) {
 	result := ImageVersionsClientGetByProjectResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageVersion); err != nil {
 		return ImageVersionsClientGetByProjectResponse{}, err
 	}
@@ -209,55 +205,69 @@ func (client *ImageVersionsClient) NewListByImagePager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByImageCreateRequest(ctx, resourceGroupName, devCenterName, galleryName, imageName, options)
-			}, nil)
+			req, err := client.listByImageCreateRequest(ctx, resourceGroupName, devCenterName, galleryName, imageName, nextLink, options)
 			if err != nil {
 				return ImageVersionsClientListByImageResponse{}, err
 			}
-			return client.listByImageHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ImageVersionsClientListByImageResponse{}, err
+			}
+			return client.listByImageHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByImageCreateRequest creates the ListByImage request.
-func (client *ImageVersionsClient) listByImageCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, imageName string, _ *ImageVersionsClientListByImageOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}/images/{imageName}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ImageVersionsClient) listByImageCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, imageName string, nextLink string, _ *ImageVersionsClientListByImageOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}/images/{imageName}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if devCenterName == "" {
+			return nil, errors.New("parameter devCenterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
+		if galleryName == "" {
+			return nil, errors.New("parameter galleryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{galleryName}", url.PathEscape(galleryName))
+		if imageName == "" {
+			return nil, errors.New("parameter imageName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if devCenterName == "" {
-		return nil, errors.New("parameter devCenterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
-	if galleryName == "" {
-		return nil, errors.New("parameter galleryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{galleryName}", url.PathEscape(galleryName))
-	if imageName == "" {
-		return nil, errors.New("parameter imageName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByImageHandleResponse handles the ListByImage response.
-func (client *ImageVersionsClient) listByImageHandleResponse(resp *http.Response) (ImageVersionsClientListByImageResponse, error) {
+func (client *ImageVersionsClient) listByImageHandleResponse(resp *http.Response, successCodes ...int) (ImageVersionsClientListByImageResponse, error) {
 	result := ImageVersionsClientListByImageResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageVersionListResult); err != nil {
 		return ImageVersionsClientListByImageResponse{}, err
 	}
@@ -281,51 +291,65 @@ func (client *ImageVersionsClient) NewListByProjectPager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByProjectCreateRequest(ctx, resourceGroupName, projectName, imageName, options)
-			}, nil)
+			req, err := client.listByProjectCreateRequest(ctx, resourceGroupName, projectName, imageName, nextLink, options)
 			if err != nil {
 				return ImageVersionsClientListByProjectResponse{}, err
 			}
-			return client.listByProjectHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ImageVersionsClientListByProjectResponse{}, err
+			}
+			return client.listByProjectHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByProjectCreateRequest creates the ListByProject request.
-func (client *ImageVersionsClient) listByProjectCreateRequest(ctx context.Context, resourceGroupName string, projectName string, imageName string, _ *ImageVersionsClientListByProjectOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/images/{imageName}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ImageVersionsClient) listByProjectCreateRequest(ctx context.Context, resourceGroupName string, projectName string, imageName string, nextLink string, _ *ImageVersionsClientListByProjectOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/images/{imageName}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if projectName == "" {
+			return nil, errors.New("parameter projectName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+		if imageName == "" {
+			return nil, errors.New("parameter imageName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	if imageName == "" {
-		return nil, errors.New("parameter imageName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{imageName}", url.PathEscape(imageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByProjectHandleResponse handles the ListByProject response.
-func (client *ImageVersionsClient) listByProjectHandleResponse(resp *http.Response) (ImageVersionsClientListByProjectResponse, error) {
+func (client *ImageVersionsClient) listByProjectHandleResponse(resp *http.Response, successCodes ...int) (ImageVersionsClientListByProjectResponse, error) {
 	result := ImageVersionsClientListByProjectResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageVersionListResult); err != nil {
 		return ImageVersionsClientListByProjectResponse{}, err
 	}

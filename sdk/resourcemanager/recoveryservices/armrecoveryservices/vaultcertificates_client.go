@@ -19,7 +19,7 @@ import (
 // VaultCertificatesClient contains the methods for the VaultCertificates group.
 // Don't use this type directly, use NewVaultCertificatesClient() instead.
 //
-// Generated from API version 2026-05-01
+// Generated from API version 2026-07-01
 type VaultCertificatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,12 +63,7 @@ func (client *VaultCertificatesClient) Create(ctx context.Context, resourceGroup
 	if err != nil {
 		return VaultCertificatesClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VaultCertificatesClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK)
 }
 
 // createCreateRequest creates the Create request.
@@ -95,7 +90,7 @@ func (client *VaultCertificatesClient) createCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -106,8 +101,11 @@ func (client *VaultCertificatesClient) createCreateRequest(ctx context.Context, 
 }
 
 // createHandleResponse handles the Create response.
-func (client *VaultCertificatesClient) createHandleResponse(resp *http.Response) (VaultCertificatesClientCreateResponse, error) {
+func (client *VaultCertificatesClient) createHandleResponse(resp *http.Response, successCodes ...int) (VaultCertificatesClientCreateResponse, error) {
 	result := VaultCertificatesClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VaultCertificateResponse); err != nil {
 		return VaultCertificatesClientCreateResponse{}, err
 	}

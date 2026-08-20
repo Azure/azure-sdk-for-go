@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultDataConnectorDefinitionsClientVersion string = "2025-07-01-preview"
-
 // DataConnectorDefinitionsClient contains the methods for the DataConnectorDefinitions group.
 // Don't use this type directly, use NewDataConnectorDefinitionsClient() instead.
 //
@@ -65,12 +63,7 @@ func (client *DataConnectorDefinitionsClient) CreateOrUpdate(ctx context.Context
 	if err != nil {
 		return DataConnectorDefinitionsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return DataConnectorDefinitionsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -97,7 +90,7 @@ func (client *DataConnectorDefinitionsClient) createOrUpdateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDataConnectorDefinitionsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -108,8 +101,11 @@ func (client *DataConnectorDefinitionsClient) createOrUpdateCreateRequest(ctx co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DataConnectorDefinitionsClient) createOrUpdateHandleResponse(resp *http.Response) (DataConnectorDefinitionsClientCreateOrUpdateResponse, error) {
+func (client *DataConnectorDefinitionsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DataConnectorDefinitionsClientCreateOrUpdateResponse, error) {
 	result := DataConnectorDefinitionsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return DataConnectorDefinitionsClientCreateOrUpdateResponse{}, err
 	}
@@ -138,8 +134,7 @@ func (client *DataConnectorDefinitionsClient) Delete(ctx context.Context, resour
 		return DataConnectorDefinitionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DataConnectorDefinitionsClientDeleteResponse{}, err
+		return DataConnectorDefinitionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DataConnectorDefinitionsClientDeleteResponse{}, nil
 }
@@ -168,7 +163,7 @@ func (client *DataConnectorDefinitionsClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDataConnectorDefinitionsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -194,12 +189,7 @@ func (client *DataConnectorDefinitionsClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return DataConnectorDefinitionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DataConnectorDefinitionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -226,15 +216,18 @@ func (client *DataConnectorDefinitionsClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDataConnectorDefinitionsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataConnectorDefinitionsClient) getHandleResponse(resp *http.Response) (DataConnectorDefinitionsClientGetResponse, error) {
+func (client *DataConnectorDefinitionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DataConnectorDefinitionsClientGetResponse, error) {
 	result := DataConnectorDefinitionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return DataConnectorDefinitionsClientGetResponse{}, err
 	}
@@ -257,47 +250,61 @@ func (client *DataConnectorDefinitionsClient) NewListPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, nextLink, options)
 			if err != nil {
 				return DataConnectorDefinitionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DataConnectorDefinitionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DataConnectorDefinitionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *DataConnectorDefinitionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectorDefinitions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DataConnectorDefinitionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, nextLink string, _ *DataConnectorDefinitionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/dataConnectorDefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultDataConnectorDefinitionsClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DataConnectorDefinitionsClient) listHandleResponse(resp *http.Response) (DataConnectorDefinitionsClientListResponse, error) {
+func (client *DataConnectorDefinitionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DataConnectorDefinitionsClientListResponse, error) {
 	result := DataConnectorDefinitionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataConnectorDefinitionArmCollectionWrapper); err != nil {
 		return DataConnectorDefinitionsClientListResponse{}, err
 	}

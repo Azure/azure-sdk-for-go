@@ -55,12 +55,7 @@ func (client *ChargesClient) List(ctx context.Context, scope string, options *Ch
 	if err != nil {
 		return ChargesClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ChargesClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -94,8 +89,11 @@ func (client *ChargesClient) listCreateRequest(ctx context.Context, scope string
 }
 
 // listHandleResponse handles the List response.
-func (client *ChargesClient) listHandleResponse(resp *http.Response) (ChargesClientListResponse, error) {
+func (client *ChargesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ChargesClientListResponse, error) {
 	result := ChargesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChargesListResult); err != nil {
 		return ChargesClientListResponse{}, err
 	}

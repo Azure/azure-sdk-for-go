@@ -84,8 +84,7 @@ func (client *AutoImportJobsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -165,8 +164,7 @@ func (client *AutoImportJobsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -220,12 +218,7 @@ func (client *AutoImportJobsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return AutoImportJobsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AutoImportJobsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -259,8 +252,11 @@ func (client *AutoImportJobsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *AutoImportJobsClient) getHandleResponse(resp *http.Response) (AutoImportJobsClientGetResponse, error) {
+func (client *AutoImportJobsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AutoImportJobsClientGetResponse, error) {
 	result := AutoImportJobsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoImportJob); err != nil {
 		return AutoImportJobsClientGetResponse{}, err
 	}
@@ -283,47 +279,61 @@ func (client *AutoImportJobsClient) NewListByAmlFilesystemPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAmlFilesystemCreateRequest(ctx, resourceGroupName, amlFilesystemName, options)
-			}, nil)
+			req, err := client.listByAmlFilesystemCreateRequest(ctx, resourceGroupName, amlFilesystemName, nextLink, options)
 			if err != nil {
 				return AutoImportJobsClientListByAmlFilesystemResponse{}, err
 			}
-			return client.listByAmlFilesystemHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AutoImportJobsClientListByAmlFilesystemResponse{}, err
+			}
+			return client.listByAmlFilesystemHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAmlFilesystemCreateRequest creates the ListByAmlFilesystem request.
-func (client *AutoImportJobsClient) listByAmlFilesystemCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, _ *AutoImportJobsClientListByAmlFilesystemOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoImportJobs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AutoImportJobsClient) listByAmlFilesystemCreateRequest(ctx context.Context, resourceGroupName string, amlFilesystemName string, nextLink string, _ *AutoImportJobsClientListByAmlFilesystemOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/amlFilesystems/{amlFilesystemName}/autoImportJobs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if amlFilesystemName == "" {
+			return nil, errors.New("parameter amlFilesystemName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{amlFilesystemName}", url.PathEscape(amlFilesystemName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if amlFilesystemName == "" {
-		return nil, errors.New("parameter amlFilesystemName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{amlFilesystemName}", url.PathEscape(amlFilesystemName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByAmlFilesystemHandleResponse handles the ListByAmlFilesystem response.
-func (client *AutoImportJobsClient) listByAmlFilesystemHandleResponse(resp *http.Response) (AutoImportJobsClientListByAmlFilesystemResponse, error) {
+func (client *AutoImportJobsClient) listByAmlFilesystemHandleResponse(resp *http.Response, successCodes ...int) (AutoImportJobsClientListByAmlFilesystemResponse, error) {
 	result := AutoImportJobsClientListByAmlFilesystemResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoImportJobsListResult); err != nil {
 		return AutoImportJobsClientListByAmlFilesystemResponse{}, err
 	}
@@ -374,8 +384,7 @@ func (client *AutoImportJobsClient) update(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

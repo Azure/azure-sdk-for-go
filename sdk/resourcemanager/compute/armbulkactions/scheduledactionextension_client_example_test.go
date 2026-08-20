@@ -40,10 +40,10 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 		// 				Properties: &armbulkactions.ScheduledActionsExtensionProperties{
 		// 					ResourceType: to.Ptr(armbulkactions.ResourceTypeVirtualMachine),
 		// 					ActionType: to.Ptr(armbulkactions.ScheduledActionTypeStart),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.281Z"); return t}()),
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.286Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 281000000, time.UTC)),
+		// 					EndTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 286000000, time.UTC)),
 		// 					Schedule: &armbulkactions.ScheduledActionsSchedule{
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.TimeOnly, "19:00:00"); return t}()),
+		// 						ScheduledTime: to.Ptr(time.Date(0, time.January, 1, 19, 0, 0, 0, time.UTC)),
 		// 						TimeZone: to.Ptr("America/Los_Angeles"),
 		// 						RequestedWeekDays: []*armbulkactions.WeekDay{
 		// 							to.Ptr(armbulkactions.WeekDayMonday),
@@ -88,10 +88,10 @@ func ExampleScheduledActionExtensionClient_NewListByVMsPager() {
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

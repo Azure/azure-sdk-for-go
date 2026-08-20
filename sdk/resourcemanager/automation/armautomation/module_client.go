@@ -62,12 +62,7 @@ func (client *ModuleClient) CreateOrUpdate(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ModuleClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ModuleClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -105,8 +100,11 @@ func (client *ModuleClient) createOrUpdateCreateRequest(ctx context.Context, res
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ModuleClient) createOrUpdateHandleResponse(resp *http.Response) (ModuleClientCreateOrUpdateResponse, error) {
+func (client *ModuleClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ModuleClientCreateOrUpdateResponse, error) {
 	result := ModuleClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Module); err != nil {
 		return ModuleClientCreateOrUpdateResponse{}, err
 	}
@@ -134,8 +132,7 @@ func (client *ModuleClient) Delete(ctx context.Context, resourceGroupName string
 		return ModuleClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ModuleClientDeleteResponse{}, err
+		return ModuleClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ModuleClientDeleteResponse{}, nil
 }
@@ -189,12 +186,7 @@ func (client *ModuleClient) Get(ctx context.Context, resourceGroupName string, a
 	if err != nil {
 		return ModuleClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ModuleClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -228,8 +220,11 @@ func (client *ModuleClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *ModuleClient) getHandleResponse(resp *http.Response) (ModuleClientGetResponse, error) {
+func (client *ModuleClient) getHandleResponse(resp *http.Response, successCodes ...int) (ModuleClientGetResponse, error) {
 	result := ModuleClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Module); err != nil {
 		return ModuleClientGetResponse{}, err
 	}
@@ -252,47 +247,61 @@ func (client *ModuleClient) NewListByAutomationAccountPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
-			}, nil)
+			req, err := client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, nextLink, options)
 			if err != nil {
 				return ModuleClientListByAutomationAccountResponse{}, err
 			}
-			return client.listByAutomationAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ModuleClientListByAutomationAccountResponse{}, err
+			}
+			return client.listByAutomationAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *ModuleClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, _ *ModuleClientListByAutomationAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ModuleClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nextLink string, _ *ModuleClientListByAutomationAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if automationAccountName == "" {
+			return nil, errors.New("parameter automationAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if automationAccountName == "" {
-		return nil, errors.New("parameter automationAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241023)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241023)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *ModuleClient) listByAutomationAccountHandleResponse(resp *http.Response) (ModuleClientListByAutomationAccountResponse, error) {
+func (client *ModuleClient) listByAutomationAccountHandleResponse(resp *http.Response, successCodes ...int) (ModuleClientListByAutomationAccountResponse, error) {
 	result := ModuleClientListByAutomationAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ModuleListResult); err != nil {
 		return ModuleClientListByAutomationAccountResponse{}, err
 	}
@@ -320,12 +329,7 @@ func (client *ModuleClient) Update(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return ModuleClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ModuleClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -363,8 +367,11 @@ func (client *ModuleClient) updateCreateRequest(ctx context.Context, resourceGro
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ModuleClient) updateHandleResponse(resp *http.Response) (ModuleClientUpdateResponse, error) {
+func (client *ModuleClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ModuleClientUpdateResponse, error) {
 	result := ModuleClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Module); err != nil {
 		return ModuleClientUpdateResponse{}, err
 	}

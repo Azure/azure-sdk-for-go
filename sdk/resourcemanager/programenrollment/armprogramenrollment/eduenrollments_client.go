@@ -82,8 +82,7 @@ func (client *EduEnrollmentsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -158,8 +157,7 @@ func (client *EduEnrollmentsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -208,12 +206,7 @@ func (client *EduEnrollmentsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return EduEnrollmentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EduEnrollmentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -243,8 +236,11 @@ func (client *EduEnrollmentsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *EduEnrollmentsClient) getHandleResponse(resp *http.Response) (EduEnrollmentsClientGetResponse, error) {
+func (client *EduEnrollmentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (EduEnrollmentsClientGetResponse, error) {
 	result := EduEnrollmentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EduEnrollment); err != nil {
 		return EduEnrollmentsClientGetResponse{}, err
 	}
@@ -266,43 +262,57 @@ func (client *EduEnrollmentsClient) NewListByResourceGroupPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return EduEnrollmentsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EduEnrollmentsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *EduEnrollmentsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *EduEnrollmentsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgramEnrollment/eduEnrollments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EduEnrollmentsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *EduEnrollmentsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgramEnrollment/eduEnrollments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *EduEnrollmentsClient) listByResourceGroupHandleResponse(resp *http.Response) (EduEnrollmentsClientListByResourceGroupResponse, error) {
+func (client *EduEnrollmentsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (EduEnrollmentsClientListByResourceGroupResponse, error) {
 	result := EduEnrollmentsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EduEnrollmentListResult); err != nil {
 		return EduEnrollmentsClientListByResourceGroupResponse{}, err
 	}
@@ -323,39 +333,53 @@ func (client *EduEnrollmentsClient) NewListBySubscriptionPager(options *EduEnrol
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return EduEnrollmentsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EduEnrollmentsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *EduEnrollmentsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *EduEnrollmentsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProgramEnrollment/eduEnrollments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EduEnrollmentsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *EduEnrollmentsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProgramEnrollment/eduEnrollments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *EduEnrollmentsClient) listBySubscriptionHandleResponse(resp *http.Response) (EduEnrollmentsClientListBySubscriptionResponse, error) {
+func (client *EduEnrollmentsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (EduEnrollmentsClientListBySubscriptionResponse, error) {
 	result := EduEnrollmentsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EduEnrollmentListResult); err != nil {
 		return EduEnrollmentsClientListBySubscriptionResponse{}, err
 	}
@@ -382,12 +406,7 @@ func (client *EduEnrollmentsClient) Update(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return EduEnrollmentsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EduEnrollmentsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -421,8 +440,11 @@ func (client *EduEnrollmentsClient) updateCreateRequest(ctx context.Context, res
 }
 
 // updateHandleResponse handles the Update response.
-func (client *EduEnrollmentsClient) updateHandleResponse(resp *http.Response) (EduEnrollmentsClientUpdateResponse, error) {
+func (client *EduEnrollmentsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (EduEnrollmentsClientUpdateResponse, error) {
 	result := EduEnrollmentsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EduEnrollment); err != nil {
 		return EduEnrollmentsClientUpdateResponse{}, err
 	}

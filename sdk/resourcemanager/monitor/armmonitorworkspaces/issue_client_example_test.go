@@ -41,8 +41,8 @@ func ExampleIssueClient_AddInvestigationResult() {
 	// 			AddedBy: to.Ptr("171a811c-2a3a-4e6c-b742-f78f5f6ca51c"),
 	// 			AddedByType: to.Ptr(armmonitorworkspaces.AddedByTypeManual),
 	// 		},
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:11:07"); return t}()),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:51:45"); return t}()),
+	// 		CreatedAt: to.Ptr(time.Time{}),
+	// 		LastModifiedAt: to.Ptr(time.Time{}),
 	// 		Result: to.Ptr(""),
 	// 	},
 	// }
@@ -87,8 +87,8 @@ func ExampleIssueClient_AddOrUpdateAlerts() {
 	// 					AddedBy: to.Ptr("171a811c-2a3a-4e6c-b742-f78f5f6ca51c"),
 	// 					AddedByType: to.Ptr(armmonitorworkspaces.AddedByTypeManual),
 	// 				},
-	// 				AddedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:11:07"); return t}()),
-	// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:51:45"); return t}()),
+	// 				AddedAt: to.Ptr(time.Time{}),
+	// 				LastModifiedAt: to.Ptr(time.Time{}),
 	// 			},
 	// 		},
 	// 	},
@@ -134,8 +134,8 @@ func ExampleIssueClient_AddOrUpdateResources() {
 	// 					AddedBy: to.Ptr("171a811c-2a3a-4e6c-b742-f78f5f6ca51c"),
 	// 					AddedByType: to.Ptr(armmonitorworkspaces.AddedByTypeManual),
 	// 				},
-	// 				AddedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:11:07"); return t}()),
-	// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:51:45"); return t}()),
+	// 				AddedAt: to.Ptr(time.Time{}),
+	// 				LastModifiedAt: to.Ptr(time.Time{}),
 	// 			},
 	// 		},
 	// 	},
@@ -158,7 +158,7 @@ func ExampleIssueClient_Create() {
 			Title:      to.Ptr("Alert fired on VM CPU"),
 			Status:     to.Ptr(armmonitorworkspaces.StatusNew),
 			Severity:   to.Ptr("Sev2"),
-			ImpactTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T02:45:33"); return t }()),
+			ImpactTime: to.Ptr(time.Time{}),
 			Notifications: &armmonitorworkspaces.Notifications{
 				UpdateTypes: []armmonitorworkspaces.IssueNotificationTypeClassification{
 					&armmonitorworkspaces.IssueCreationNotificationType{
@@ -193,7 +193,7 @@ func ExampleIssueClient_Create() {
 	// 			Severity: to.Ptr("Sev2"),
 	// 			Investigations: []*armmonitorworkspaces.InvestigationMetadata{
 	// 			},
-	// 			ImpactTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T02:45:33"); return t}()),
+	// 			ImpactTime: to.Ptr(time.Time{}),
 	// 			InvestigationsCount: to.Ptr[int32](0),
 	// 			Notifications: &armmonitorworkspaces.Notifications{
 	// 				UpdateTypes: []armmonitorworkspaces.IssueNotificationTypeClassification{
@@ -220,10 +220,10 @@ func ExampleIssueClient_Create() {
 	// 		SystemData: &armmonitorworkspaces.SystemData{
 	// 			CreatedBy: to.Ptr("171a811c-2a3a-4e6c-b742-f78f5f6ca51c"),
 	// 			CreatedByType: to.Ptr(armmonitorworkspaces.CreatedByType("Manual")),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:11:07"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Time{}),
 	// 			LastModifiedBy: to.Ptr("171a811c-2a3a-4e6c-b742-f78f5f6ca51c"),
 	// 			LastModifiedByType: to.Ptr(armmonitorworkspaces.CreatedByType("Manual")),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:51:45"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Time{}),
 	// 		},
 	// 	},
 	// }
@@ -307,8 +307,8 @@ func ExampleIssueClient_FetchInvestigationResult() {
 	// 			AddedBy: to.Ptr("171a811c-2a3a-4e6c-b742-f78f5f6ca51c"),
 	// 			AddedByType: to.Ptr(armmonitorworkspaces.AddedByTypeManual),
 	// 		},
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:11:07"); return t}()),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:51:45"); return t}()),
+	// 		CreatedAt: to.Ptr(time.Time{}),
+	// 		LastModifiedAt: to.Ptr(time.Time{}),
 	// 		Result: to.Ptr(""),
 	// 	},
 	// }
@@ -340,7 +340,7 @@ func ExampleIssueClient_Get() {
 	// 			Severity: to.Ptr("Sev2"),
 	// 			Investigations: []*armmonitorworkspaces.InvestigationMetadata{
 	// 			},
-	// 			ImpactTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T02:45:33"); return t}()),
+	// 			ImpactTime: to.Ptr(time.Time{}),
 	// 			InvestigationsCount: to.Ptr[int32](0),
 	// 			Notifications: &armmonitorworkspaces.Notifications{
 	// 				UpdateTypes: []armmonitorworkspaces.IssueNotificationTypeClassification{
@@ -367,10 +367,10 @@ func ExampleIssueClient_Get() {
 	// 		SystemData: &armmonitorworkspaces.SystemData{
 	// 			CreatedBy: to.Ptr("171a811c-2a3a-4e6c-b742-f78f5f6ca51c"),
 	// 			CreatedByType: to.Ptr(armmonitorworkspaces.CreatedByType("Manual")),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:11:07"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Time{}),
 	// 			LastModifiedBy: to.Ptr("171a811c-2a3a-4e6c-b742-f78f5f6ca51c"),
 	// 			LastModifiedByType: to.Ptr(armmonitorworkspaces.CreatedByType("Manual")),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:51:45"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Time{}),
 	// 		},
 	// 	},
 	// }
@@ -408,7 +408,7 @@ func ExampleIssueClient_NewListPager() {
 		// 					Severity: to.Ptr("Sev2"),
 		// 					Investigations: []*armmonitorworkspaces.InvestigationMetadata{
 		// 					},
-		// 					ImpactTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T02:45:33"); return t}()),
+		// 					ImpactTime: to.Ptr(time.Time{}),
 		// 					InvestigationsCount: to.Ptr[int32](0),
 		// 					Notifications: &armmonitorworkspaces.Notifications{
 		// 						UpdateTypes: []armmonitorworkspaces.IssueNotificationTypeClassification{
@@ -435,10 +435,10 @@ func ExampleIssueClient_NewListPager() {
 		// 				SystemData: &armmonitorworkspaces.SystemData{
 		// 					CreatedBy: to.Ptr("171a811c-2a3a-4e6c-b742-f78f5f6ca51c"),
 		// 					CreatedByType: to.Ptr(armmonitorworkspaces.CreatedByType("Manual")),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:11:07"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Time{}),
 		// 					LastModifiedBy: to.Ptr("171a811c-2a3a-4e6c-b742-f78f5f6ca51c"),
 		// 					LastModifiedByType: to.Ptr(armmonitorworkspaces.CreatedByType("Manual")),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:51:45"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Time{}),
 		// 				},
 		// 			},
 		// 		},
@@ -478,8 +478,8 @@ func ExampleIssueClient_ListAlerts() {
 	// 					AddedBy: to.Ptr("171a811c-2a3a-4e6c-b742-f78f5f6ca51c"),
 	// 					AddedByType: to.Ptr(armmonitorworkspaces.AddedByTypeManual),
 	// 				},
-	// 				AddedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:11:07"); return t}()),
-	// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:51:45"); return t}()),
+	// 				AddedAt: to.Ptr(time.Time{}),
+	// 				LastModifiedAt: to.Ptr(time.Time{}),
 	// 			},
 	// 		},
 	// 		NextLink: to.Ptr("https://microsoft.com/a"),
@@ -517,8 +517,8 @@ func ExampleIssueClient_ListResources() {
 	// 					AddedBy: to.Ptr("171a811c-2a3a-4e6c-b742-f78f5f6ca51c"),
 	// 					AddedByType: to.Ptr(armmonitorworkspaces.AddedByTypeManual),
 	// 				},
-	// 				AddedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:11:07"); return t}()),
-	// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:51:45"); return t}()),
+	// 				AddedAt: to.Ptr(time.Time{}),
+	// 				LastModifiedAt: to.Ptr(time.Time{}),
 	// 			},
 	// 		},
 	// 		NextLink: to.Ptr("https://microsoft.com/a"),
@@ -561,7 +561,7 @@ func ExampleIssueClient_Update() {
 			Title:      to.Ptr("Alert fired on VM CPU"),
 			Status:     to.Ptr(armmonitorworkspaces.StatusNew),
 			Severity:   to.Ptr("Sev2"),
-			ImpactTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T02:45:33"); return t }()),
+			ImpactTime: to.Ptr(time.Time{}),
 			Notifications: &armmonitorworkspaces.Notifications{
 				UpdateTypes: []armmonitorworkspaces.IssueNotificationTypeClassification{
 					&armmonitorworkspaces.IssueCreationNotificationType{
@@ -596,7 +596,7 @@ func ExampleIssueClient_Update() {
 	// 			Severity: to.Ptr("Sev2"),
 	// 			Investigations: []*armmonitorworkspaces.InvestigationMetadata{
 	// 			},
-	// 			ImpactTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T02:45:33"); return t}()),
+	// 			ImpactTime: to.Ptr(time.Time{}),
 	// 			InvestigationsCount: to.Ptr[int32](0),
 	// 			Notifications: &armmonitorworkspaces.Notifications{
 	// 				UpdateTypes: []armmonitorworkspaces.IssueNotificationTypeClassification{
@@ -623,10 +623,10 @@ func ExampleIssueClient_Update() {
 	// 		SystemData: &armmonitorworkspaces.SystemData{
 	// 			CreatedBy: to.Ptr("171a811c-2a3a-4e6c-b742-f78f5f6ca51c"),
 	// 			CreatedByType: to.Ptr(armmonitorworkspaces.CreatedByType("Manual")),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:11:07"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Time{}),
 	// 			LastModifiedBy: to.Ptr("171a811c-2a3a-4e6c-b742-f78f5f6ca51c"),
 	// 			LastModifiedByType: to.Ptr(armmonitorworkspaces.CreatedByType("Manual")),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-13T03:51:45"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Time{}),
 	// 		},
 	// 	},
 	// }

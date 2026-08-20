@@ -18,6 +18,8 @@ import (
 
 // CdnPeeringPrefixesClient contains the methods for the CdnPeeringPrefixes group.
 // Don't use this type directly, use NewCdnPeeringPrefixesClient() instead.
+//
+// Generated from API version 2025-05-01
 type CdnPeeringPrefixesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewCdnPeeringPrefixesClient(subscriptionID string, credential azcore.TokenC
 }
 
 // NewListPager - Lists all of the advertised prefixes for the specified peering location
-//
-// Generated from API version 2025-05-01
 //   - peeringLocation - The peering location.
 //   - options - CdnPeeringPrefixesClientListOptions contains the optional parameters for the CdnPeeringPrefixesClient.NewListPager
 //     method.
@@ -56,40 +56,54 @@ func (client *CdnPeeringPrefixesClient) NewListPager(peeringLocation string, opt
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, peeringLocation, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, peeringLocation, nextLink, options)
 			if err != nil {
 				return CdnPeeringPrefixesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CdnPeeringPrefixesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *CdnPeeringPrefixesClient) listCreateRequest(ctx context.Context, peeringLocation string, _ *CdnPeeringPrefixesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/cdnPeeringPrefixes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CdnPeeringPrefixesClient) listCreateRequest(ctx context.Context, peeringLocation string, nextLink string, _ *CdnPeeringPrefixesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/cdnPeeringPrefixes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	reqQP.Set("peeringLocation", peeringLocation)
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		reqQP.Set("peeringLocation", peeringLocation)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *CdnPeeringPrefixesClient) listHandleResponse(resp *http.Response) (CdnPeeringPrefixesClientListResponse, error) {
+func (client *CdnPeeringPrefixesClient) listHandleResponse(resp *http.Response, successCodes ...int) (CdnPeeringPrefixesClientListResponse, error) {
 	result := CdnPeeringPrefixesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CdnPeeringPrefixListResult); err != nil {
 		return CdnPeeringPrefixesClientListResponse{}, err
 	}

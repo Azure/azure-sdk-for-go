@@ -65,12 +65,7 @@ func (client *DaprSubscriptionsClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return DaprSubscriptionsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return DaprSubscriptionsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -108,8 +103,11 @@ func (client *DaprSubscriptionsClient) createOrUpdateCreateRequest(ctx context.C
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DaprSubscriptionsClient) createOrUpdateHandleResponse(resp *http.Response) (DaprSubscriptionsClientCreateOrUpdateResponse, error) {
+func (client *DaprSubscriptionsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DaprSubscriptionsClientCreateOrUpdateResponse, error) {
 	result := DaprSubscriptionsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DaprSubscription); err != nil {
 		return DaprSubscriptionsClientCreateOrUpdateResponse{}, err
 	}
@@ -140,8 +138,7 @@ func (client *DaprSubscriptionsClient) Delete(ctx context.Context, resourceGroup
 		return DaprSubscriptionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DaprSubscriptionsClientDeleteResponse{}, err
+		return DaprSubscriptionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DaprSubscriptionsClientDeleteResponse{}, nil
 }
@@ -197,12 +194,7 @@ func (client *DaprSubscriptionsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return DaprSubscriptionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DaprSubscriptionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -236,8 +228,11 @@ func (client *DaprSubscriptionsClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *DaprSubscriptionsClient) getHandleResponse(resp *http.Response) (DaprSubscriptionsClientGetResponse, error) {
+func (client *DaprSubscriptionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DaprSubscriptionsClientGetResponse, error) {
 	result := DaprSubscriptionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DaprSubscription); err != nil {
 		return DaprSubscriptionsClientGetResponse{}, err
 	}
@@ -262,47 +257,61 @@ func (client *DaprSubscriptionsClient) NewListPager(resourceGroupName string, en
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, environmentName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, environmentName, nextLink, options)
 			if err != nil {
 				return DaprSubscriptionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DaprSubscriptionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DaprSubscriptionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, _ *DaprSubscriptionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprSubscriptions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DaprSubscriptionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, nextLink string, _ *DaprSubscriptionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprSubscriptions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if environmentName == "" {
+			return nil, errors.New("parameter environmentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if environmentName == "" {
-		return nil, errors.New("parameter environmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251002Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DaprSubscriptionsClient) listHandleResponse(resp *http.Response) (DaprSubscriptionsClientListResponse, error) {
+func (client *DaprSubscriptionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DaprSubscriptionsClientListResponse, error) {
 	result := DaprSubscriptionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DaprSubscriptionsCollection); err != nil {
 		return DaprSubscriptionsClientListResponse{}, err
 	}

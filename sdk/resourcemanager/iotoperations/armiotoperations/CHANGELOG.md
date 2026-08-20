@@ -1,5 +1,15 @@
 # Release History
 
+## 1.2.0 (2026-07-28)
+### Features Added
+
+- New enum type `HighPriorityMessagesBackpressureHandling` with values `HighPriorityMessagesBackpressureHandlingAccept`, `HighPriorityMessagesBackpressureHandlingReject`
+- New struct `AkriConnectorTemplateExecAction`
+- New struct `AkriConnectorTemplateReadinessProbe`
+- New field `ReadinessProbe` in struct `AkriConnectorTemplateRuntimeImageConfigurationSettings`
+- New field `HighPriorityMessagesBackpressureHandling` in struct `BrokerProperties`
+
+
 ## 1.1.0 (2026-04-09)
 ### Features Added
 

@@ -61,12 +61,7 @@ func (client *UpgradableVersionsClient) Details(ctx context.Context, resourceGro
 	if err != nil {
 		return UpgradableVersionsClientDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpgradableVersionsClientDetailsResponse{}, err
-	}
-	resp, err := client.detailsHandleResponse(httpResp)
-	return resp, err
+	return client.detailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // detailsCreateRequest creates the Details request.
@@ -96,8 +91,11 @@ func (client *UpgradableVersionsClient) detailsCreateRequest(ctx context.Context
 }
 
 // detailsHandleResponse handles the Details response.
-func (client *UpgradableVersionsClient) detailsHandleResponse(resp *http.Response) (UpgradableVersionsClientDetailsResponse, error) {
+func (client *UpgradableVersionsClient) detailsHandleResponse(resp *http.Response, successCodes ...int) (UpgradableVersionsClientDetailsResponse, error) {
 	result := UpgradableVersionsClientDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UpgradableVersionsList); err != nil {
 		return UpgradableVersionsClientDetailsResponse{}, err
 	}

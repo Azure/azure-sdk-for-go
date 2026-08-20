@@ -62,12 +62,7 @@ func (client *Client) CheckFeatureSupport(ctx context.Context, location string, 
 	if err != nil {
 		return ClientCheckFeatureSupportResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientCheckFeatureSupportResponse{}, err
-	}
-	resp, err := client.checkFeatureSupportHandleResponse(httpResp)
-	return resp, err
+	return client.checkFeatureSupportHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkFeatureSupportCreateRequest creates the CheckFeatureSupport request.
@@ -97,8 +92,11 @@ func (client *Client) checkFeatureSupportCreateRequest(ctx context.Context, loca
 }
 
 // checkFeatureSupportHandleResponse handles the CheckFeatureSupport response.
-func (client *Client) checkFeatureSupportHandleResponse(resp *http.Response) (ClientCheckFeatureSupportResponse, error) {
+func (client *Client) checkFeatureSupportHandleResponse(resp *http.Response, successCodes ...int) (ClientCheckFeatureSupportResponse, error) {
 	result := ClientCheckFeatureSupportResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return ClientCheckFeatureSupportResponse{}, err
 	}

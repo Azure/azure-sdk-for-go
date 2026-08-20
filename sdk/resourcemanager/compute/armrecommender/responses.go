@@ -10,6 +10,18 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// SKUMixPlacementScoresClientGetResponse contains the response from method SKUMixPlacementScoresClient.Get.
+type SKUMixPlacementScoresClientGetResponse struct {
+	// Contains metadata of the SkuMixPlacement scoring resource
+	SKUMixPlacementBase
+}
+
+// SKUMixPlacementScoresClientPostResponse contains the response from method SKUMixPlacementScoresClient.Post.
+type SKUMixPlacementScoresClientPostResponse struct {
+	// Sku Mix Placement API response.
+	SKUMixPlacementResponse
+}
+
 // SpotPlacementScoresClientGetResponse contains the response from method SpotPlacementScoresClient.Get.
 type SpotPlacementScoresClientGetResponse struct {
 	// Contains metadata of a diagnostic type

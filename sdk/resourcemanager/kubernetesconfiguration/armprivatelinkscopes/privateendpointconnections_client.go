@@ -83,8 +83,7 @@ func (client *PrivateEndpointConnectionsClient) createOrUpdate(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -145,8 +144,7 @@ func (client *PrivateEndpointConnectionsClient) Delete(ctx context.Context, reso
 		return PrivateEndpointConnectionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateEndpointConnectionsClientDeleteResponse{}, err
+		return PrivateEndpointConnectionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return PrivateEndpointConnectionsClientDeleteResponse{}, nil
 }
@@ -201,12 +199,7 @@ func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return PrivateEndpointConnectionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateEndpointConnectionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -240,8 +233,11 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientGetResponse, error) {
+func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionsClientGetResponse, error) {
 	result := PrivateEndpointConnectionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
 		return PrivateEndpointConnectionsClientGetResponse{}, err
 	}
@@ -268,12 +264,7 @@ func (client *PrivateEndpointConnectionsClient) ListByPrivateLinkScope(ctx conte
 	if err != nil {
 		return PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse{}, err
-	}
-	resp, err := client.listByPrivateLinkScopeHandleResponse(httpResp)
-	return resp, err
+	return client.listByPrivateLinkScopeHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByPrivateLinkScopeCreateRequest creates the ListByPrivateLinkScope request.
@@ -303,8 +294,11 @@ func (client *PrivateEndpointConnectionsClient) listByPrivateLinkScopeCreateRequ
 }
 
 // listByPrivateLinkScopeHandleResponse handles the ListByPrivateLinkScope response.
-func (client *PrivateEndpointConnectionsClient) listByPrivateLinkScopeHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse, error) {
+func (client *PrivateEndpointConnectionsClient) listByPrivateLinkScopeHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse, error) {
 	result := PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResult); err != nil {
 		return PrivateEndpointConnectionsClientListByPrivateLinkScopeResponse{}, err
 	}

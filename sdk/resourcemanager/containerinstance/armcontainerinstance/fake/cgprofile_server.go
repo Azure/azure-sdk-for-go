@@ -147,7 +147,7 @@ func (c *CGProfileServerTransport) dispatchCreateOrUpdate(req *http.Request) (*h
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSCorrelationRequestID; val != nil {
-		resp.Header.Set("x-ms-correlation-request-id", *val)
+		resp.Header.Set("X-Ms-Correlation-Request-Id", *val)
 	}
 	return resp, nil
 }
@@ -331,7 +331,7 @@ func (c *CGProfileServerTransport) dispatchUpdate(req *http.Request) (*http.Resp
 		return nil, err
 	}
 	if val := server.GetResponse(respr).XMSCorrelationRequestID; val != nil {
-		resp.Header.Set("x-ms-correlation-request-id", *val)
+		resp.Header.Set("X-Ms-Correlation-Request-Id", *val)
 	}
 	return resp, nil
 }

@@ -61,12 +61,7 @@ func (client *GrafanaClient) CheckEnterpriseDetails(ctx context.Context, resourc
 	if err != nil {
 		return GrafanaClientCheckEnterpriseDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GrafanaClientCheckEnterpriseDetailsResponse{}, err
-	}
-	resp, err := client.checkEnterpriseDetailsHandleResponse(httpResp)
-	return resp, err
+	return client.checkEnterpriseDetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkEnterpriseDetailsCreateRequest creates the CheckEnterpriseDetails request.
@@ -96,8 +91,11 @@ func (client *GrafanaClient) checkEnterpriseDetailsCreateRequest(ctx context.Con
 }
 
 // checkEnterpriseDetailsHandleResponse handles the CheckEnterpriseDetails response.
-func (client *GrafanaClient) checkEnterpriseDetailsHandleResponse(resp *http.Response) (GrafanaClientCheckEnterpriseDetailsResponse, error) {
+func (client *GrafanaClient) checkEnterpriseDetailsHandleResponse(resp *http.Response, successCodes ...int) (GrafanaClientCheckEnterpriseDetailsResponse, error) {
 	result := GrafanaClientCheckEnterpriseDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnterpriseDetails); err != nil {
 		return GrafanaClientCheckEnterpriseDetailsResponse{}, err
 	}
@@ -145,8 +143,7 @@ func (client *GrafanaClient) create(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -220,8 +217,7 @@ func (client *GrafanaClient) deleteOperation(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -271,12 +267,7 @@ func (client *GrafanaClient) FetchAvailablePlugins(ctx context.Context, resource
 	if err != nil {
 		return GrafanaClientFetchAvailablePluginsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GrafanaClientFetchAvailablePluginsResponse{}, err
-	}
-	resp, err := client.fetchAvailablePluginsHandleResponse(httpResp)
-	return resp, err
+	return client.fetchAvailablePluginsHandleResponse(httpResp, http.StatusOK)
 }
 
 // fetchAvailablePluginsCreateRequest creates the FetchAvailablePlugins request.
@@ -306,8 +297,11 @@ func (client *GrafanaClient) fetchAvailablePluginsCreateRequest(ctx context.Cont
 }
 
 // fetchAvailablePluginsHandleResponse handles the FetchAvailablePlugins response.
-func (client *GrafanaClient) fetchAvailablePluginsHandleResponse(resp *http.Response) (GrafanaClientFetchAvailablePluginsResponse, error) {
+func (client *GrafanaClient) fetchAvailablePluginsHandleResponse(resp *http.Response, successCodes ...int) (GrafanaClientFetchAvailablePluginsResponse, error) {
 	result := GrafanaClientFetchAvailablePluginsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GrafanaAvailablePluginListResponse); err != nil {
 		return GrafanaClientFetchAvailablePluginsResponse{}, err
 	}
@@ -333,12 +327,7 @@ func (client *GrafanaClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return GrafanaClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GrafanaClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -368,8 +357,11 @@ func (client *GrafanaClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *GrafanaClient) getHandleResponse(resp *http.Response) (GrafanaClientGetResponse, error) {
+func (client *GrafanaClient) getHandleResponse(resp *http.Response, successCodes ...int) (GrafanaClientGetResponse, error) {
 	result := GrafanaClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedGrafana); err != nil {
 		return GrafanaClientGetResponse{}, err
 	}
@@ -389,39 +381,53 @@ func (client *GrafanaClient) NewListPager(options *GrafanaClientListOptions) *ru
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return GrafanaClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GrafanaClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *GrafanaClient) listCreateRequest(ctx context.Context, _ *GrafanaClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Dashboard/grafana"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *GrafanaClient) listCreateRequest(ctx context.Context, nextLink string, _ *GrafanaClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Dashboard/grafana"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *GrafanaClient) listHandleResponse(resp *http.Response) (GrafanaClientListResponse, error) {
+func (client *GrafanaClient) listHandleResponse(resp *http.Response, successCodes ...int) (GrafanaClientListResponse, error) {
 	result := GrafanaClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedGrafanaListResponse); err != nil {
 		return GrafanaClientListResponse{}, err
 	}
@@ -443,43 +449,57 @@ func (client *GrafanaClient) NewListByResourceGroupPager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return GrafanaClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GrafanaClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *GrafanaClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *GrafanaClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *GrafanaClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *GrafanaClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Dashboard/grafana"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *GrafanaClient) listByResourceGroupHandleResponse(resp *http.Response) (GrafanaClientListByResourceGroupResponse, error) {
+func (client *GrafanaClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (GrafanaClientListByResourceGroupResponse, error) {
 	result := GrafanaClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedGrafanaListResponse); err != nil {
 		return GrafanaClientListByResourceGroupResponse{}, err
 	}
@@ -525,8 +545,7 @@ func (client *GrafanaClient) update(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

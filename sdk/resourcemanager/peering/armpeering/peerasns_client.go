@@ -18,6 +18,8 @@ import (
 
 // PeerAsnsClient contains the methods for the PeerAsns group.
 // Don't use this type directly, use NewPeerAsnsClient() instead.
+//
+// Generated from API version 2025-05-01
 type PeerAsnsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPeerAsnsClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CreateOrUpdate - Creates a new peer ASN or updates an existing peer ASN with the specified name under the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - peerAsnName - The peer ASN name.
 //   - peerAsn - The peer ASN.
 //   - options - PeerAsnsClientCreateOrUpdateOptions contains the optional parameters for the PeerAsnsClient.CreateOrUpdate method.
@@ -60,12 +60,7 @@ func (client *PeerAsnsClient) CreateOrUpdate(ctx context.Context, peerAsnName st
 	if err != nil {
 		return PeerAsnsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return PeerAsnsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -84,8 +79,8 @@ func (client *PeerAsnsClient) createOrUpdateCreateRequest(ctx context.Context, p
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, peerAsn); err != nil {
@@ -95,8 +90,11 @@ func (client *PeerAsnsClient) createOrUpdateCreateRequest(ctx context.Context, p
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *PeerAsnsClient) createOrUpdateHandleResponse(resp *http.Response) (PeerAsnsClientCreateOrUpdateResponse, error) {
+func (client *PeerAsnsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (PeerAsnsClientCreateOrUpdateResponse, error) {
 	result := PeerAsnsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PeerAsn); err != nil {
 		return PeerAsnsClientCreateOrUpdateResponse{}, err
 	}
@@ -105,8 +103,6 @@ func (client *PeerAsnsClient) createOrUpdateHandleResponse(resp *http.Response) 
 
 // Delete - Deletes an existing peer ASN with the specified name under the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - peerAsnName - The peer ASN name.
 //   - options - PeerAsnsClientDeleteOptions contains the optional parameters for the PeerAsnsClient.Delete method.
 func (client *PeerAsnsClient) Delete(ctx context.Context, peerAsnName string, options *PeerAsnsClientDeleteOptions) (PeerAsnsClientDeleteResponse, error) {
@@ -124,8 +120,7 @@ func (client *PeerAsnsClient) Delete(ctx context.Context, peerAsnName string, op
 		return PeerAsnsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return PeerAsnsClientDeleteResponse{}, err
+		return PeerAsnsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return PeerAsnsClientDeleteResponse{}, nil
 }
@@ -146,15 +141,13 @@ func (client *PeerAsnsClient) deleteCreateRequest(ctx context.Context, peerAsnNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the peer ASN with the specified name under the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - peerAsnName - The peer ASN name.
 //   - options - PeerAsnsClientGetOptions contains the optional parameters for the PeerAsnsClient.Get method.
 func (client *PeerAsnsClient) Get(ctx context.Context, peerAsnName string, options *PeerAsnsClientGetOptions) (PeerAsnsClientGetResponse, error) {
@@ -171,12 +164,7 @@ func (client *PeerAsnsClient) Get(ctx context.Context, peerAsnName string, optio
 	if err != nil {
 		return PeerAsnsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PeerAsnsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -195,15 +183,18 @@ func (client *PeerAsnsClient) getCreateRequest(ctx context.Context, peerAsnName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PeerAsnsClient) getHandleResponse(resp *http.Response) (PeerAsnsClientGetResponse, error) {
+func (client *PeerAsnsClient) getHandleResponse(resp *http.Response, successCodes ...int) (PeerAsnsClientGetResponse, error) {
 	result := PeerAsnsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PeerAsn); err != nil {
 		return PeerAsnsClientGetResponse{}, err
 	}
@@ -211,8 +202,6 @@ func (client *PeerAsnsClient) getHandleResponse(resp *http.Response) (PeerAsnsCl
 }
 
 // NewListBySubscriptionPager - Lists all of the peer ASNs under the given subscription.
-//
-// Generated from API version 2025-05-01
 //   - options - PeerAsnsClientListBySubscriptionOptions contains the optional parameters for the PeerAsnsClient.NewListBySubscriptionPager
 //     method.
 func (client *PeerAsnsClient) NewListBySubscriptionPager(options *PeerAsnsClientListBySubscriptionOptions) *runtime.Pager[PeerAsnsClientListBySubscriptionResponse] {
@@ -226,39 +215,53 @@ func (client *PeerAsnsClient) NewListBySubscriptionPager(options *PeerAsnsClient
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return PeerAsnsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PeerAsnsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *PeerAsnsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *PeerAsnsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PeerAsnsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *PeerAsnsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peerAsns"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *PeerAsnsClient) listBySubscriptionHandleResponse(resp *http.Response) (PeerAsnsClientListBySubscriptionResponse, error) {
+func (client *PeerAsnsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (PeerAsnsClientListBySubscriptionResponse, error) {
 	result := PeerAsnsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PeerAsnListResult); err != nil {
 		return PeerAsnsClientListBySubscriptionResponse{}, err
 	}

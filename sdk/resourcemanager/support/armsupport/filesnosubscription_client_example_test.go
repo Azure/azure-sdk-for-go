@@ -60,7 +60,7 @@ func ExampleFilesNoSubscriptionClient_Get() {
 	// 		ID: to.Ptr("/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test.txt"),
 	// 		Properties: &armsupport.FileDetailsProperties{
 	// 			ChunkSize: to.Ptr[int32](41423),
-	// 			CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19Z"); return t}()),
+	// 			CreatedOn: to.Ptr(time.Date(2022, time.August, 24, 20, 18, 19, 0, time.UTC)),
 	// 			FileSize: to.Ptr[int32](41423),
 	// 			NumberOfChunks: to.Ptr[int32](1),
 	// 		},
@@ -99,7 +99,7 @@ func ExampleFilesNoSubscriptionClient_NewListPager() {
 		// 				ID: to.Ptr("/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test1.txt"),
 		// 				Properties: &armsupport.FileDetailsProperties{
 		// 					ChunkSize: to.Ptr[int32](41423),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2022, time.August, 24, 20, 18, 19, 0, time.UTC)),
 		// 					FileSize: to.Ptr[int32](41423),
 		// 					NumberOfChunks: to.Ptr[int32](1),
 		// 				},
@@ -110,7 +110,7 @@ func ExampleFilesNoSubscriptionClient_NewListPager() {
 		// 				ID: to.Ptr("/providers/Microsoft.Support/fileWorkspaces/testworkspace/files/test1.txt"),
 		// 				Properties: &armsupport.FileDetailsProperties{
 		// 					ChunkSize: to.Ptr[int32](41423),
-		// 					CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-24T20:18:19Z"); return t}()),
+		// 					CreatedOn: to.Ptr(time.Date(2022, time.August, 24, 20, 18, 19, 0, time.UTC)),
 		// 					FileSize: to.Ptr[int32](41423),
 		// 					NumberOfChunks: to.Ptr[int32](1),
 		// 				},

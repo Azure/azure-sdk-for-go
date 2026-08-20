@@ -85,8 +85,7 @@ func (client *ElasticSnapshotsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -176,8 +175,7 @@ func (client *ElasticSnapshotsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -241,12 +239,7 @@ func (client *ElasticSnapshotsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ElasticSnapshotsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ElasticSnapshotsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -288,8 +281,11 @@ func (client *ElasticSnapshotsClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *ElasticSnapshotsClient) getHandleResponse(resp *http.Response) (ElasticSnapshotsClientGetResponse, error) {
+func (client *ElasticSnapshotsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ElasticSnapshotsClientGetResponse, error) {
 	result := ElasticSnapshotsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ElasticSnapshot); err != nil {
 		return ElasticSnapshotsClientGetResponse{}, err
 	}
@@ -314,55 +310,69 @@ func (client *ElasticSnapshotsClient) NewListByElasticVolumePager(resourceGroupN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByElasticVolumeCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, options)
-			}, nil)
+			req, err := client.listByElasticVolumeCreateRequest(ctx, resourceGroupName, accountName, poolName, volumeName, nextLink, options)
 			if err != nil {
 				return ElasticSnapshotsClientListByElasticVolumeResponse{}, err
 			}
-			return client.listByElasticVolumeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ElasticSnapshotsClientListByElasticVolumeResponse{}, err
+			}
+			return client.listByElasticVolumeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByElasticVolumeCreateRequest creates the ListByElasticVolume request.
-func (client *ElasticSnapshotsClient) listByElasticVolumeCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, _ *ElasticSnapshotsClientListByElasticVolumeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticCapacityPools/{poolName}/elasticVolumes/{volumeName}/elasticSnapshots"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ElasticSnapshotsClient) listByElasticVolumeCreateRequest(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, nextLink string, _ *ElasticSnapshotsClientListByElasticVolumeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/elasticAccounts/{accountName}/elasticCapacityPools/{poolName}/elasticVolumes/{volumeName}/elasticSnapshots"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		if poolName == "" {
+			return nil, errors.New("parameter poolName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+		if volumeName == "" {
+			return nil, errors.New("parameter volumeName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if volumeName == "" {
-		return nil, errors.New("parameter volumeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260515Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByElasticVolumeHandleResponse handles the ListByElasticVolume response.
-func (client *ElasticSnapshotsClient) listByElasticVolumeHandleResponse(resp *http.Response) (ElasticSnapshotsClientListByElasticVolumeResponse, error) {
+func (client *ElasticSnapshotsClient) listByElasticVolumeHandleResponse(resp *http.Response, successCodes ...int) (ElasticSnapshotsClientListByElasticVolumeResponse, error) {
 	result := ElasticSnapshotsClientListByElasticVolumeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ElasticSnapshotListResult); err != nil {
 		return ElasticSnapshotsClientListByElasticVolumeResponse{}, err
 	}

@@ -596,7 +596,7 @@ func ExampleLaunchBulkInstancesOperationClient_BeginCreateOrUpdate() {
 	// res = armbulkactions.LaunchBulkInstancesOperationClientCreateOrUpdateResponse{
 	// 	LocationBasedLaunchBulkInstancesOperation: armbulkactions.LocationBasedLaunchBulkInstancesOperation{
 	// 		Properties: &armbulkactions.LaunchBulkInstancesOperationProperties{
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:42.832Z"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2026, time.June, 11, 19, 35, 42, 832000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateCreating),
 	// 			Capacity: to.Ptr[int32](21),
 	// 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
@@ -1144,10 +1144,10 @@ func ExampleLaunchBulkInstancesOperationClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armbulkactions.SystemData{
 	// 			CreatedBy: to.Ptr("hyr"),
 	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:42.837Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.June, 11, 19, 35, 42, 837000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("gcxscdei"),
 	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:42.837Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.June, 11, 19, 35, 42, 837000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -1196,7 +1196,7 @@ func ExampleLaunchBulkInstancesOperationClient_Get() {
 	// res = armbulkactions.LaunchBulkInstancesOperationClientGetResponse{
 	// 	LocationBasedLaunchBulkInstancesOperation: armbulkactions.LocationBasedLaunchBulkInstancesOperation{
 	// 		Properties: &armbulkactions.LaunchBulkInstancesOperationProperties{
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:42.832Z"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2026, time.June, 11, 19, 35, 42, 832000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateCreating),
 	// 			Capacity: to.Ptr[int32](21),
 	// 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
@@ -1744,10 +1744,10 @@ func ExampleLaunchBulkInstancesOperationClient_Get() {
 	// 		SystemData: &armbulkactions.SystemData{
 	// 			CreatedBy: to.Ptr("hyr"),
 	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:42.837Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.June, 11, 19, 35, 42, 837000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("gcxscdei"),
 	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:42.837Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.June, 11, 19, 35, 42, 837000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -1774,8 +1774,8 @@ func ExampleLaunchBulkInstancesOperationClient_GetOperationStatus() {
 	// res = armbulkactions.LaunchBulkInstancesOperationClientGetOperationStatusResponse{
 	// 	OperationStatusResult: armbulkactions.OperationStatusResult{
 	// 		Status: to.Ptr("Succeeded"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-11-25T22:19:26.906Z"); return t}()),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-11-25T22:19:26.906Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2025, time.November, 25, 22, 19, 26, 906000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.November, 25, 22, 19, 26, 906000000, time.UTC)),
 	// 		Name: to.Ptr("2a3fce8e-874c-45f4-9d27-1a804f3b7a0f"),
 	// 	},
 	// }
@@ -1808,7 +1808,7 @@ func ExampleLaunchBulkInstancesOperationClient_NewListByResourceGroupPager_launc
 		// 		Value: []*armbulkactions.LocationBasedLaunchBulkInstancesOperation{
 		// 			{
 		// 				Properties: &armbulkactions.LaunchBulkInstancesOperationProperties{
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:42.832Z"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(2026, time.June, 11, 19, 35, 42, 832000000, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateCreating),
 		// 					Capacity: to.Ptr[int32](21),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
@@ -2356,10 +2356,10 @@ func ExampleLaunchBulkInstancesOperationClient_NewListByResourceGroupPager_launc
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("hyr"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:42.837Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.June, 11, 19, 35, 42, 837000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("gcxscdei"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:42.837Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.June, 11, 19, 35, 42, 837000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -2432,7 +2432,7 @@ func ExampleLaunchBulkInstancesOperationClient_NewListBySubscriptionPager_launch
 		// 		Value: []*armbulkactions.LocationBasedLaunchBulkInstancesOperation{
 		// 			{
 		// 				Properties: &armbulkactions.LaunchBulkInstancesOperationProperties{
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:42.832Z"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(2026, time.June, 11, 19, 35, 42, 832000000, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateCreating),
 		// 					Capacity: to.Ptr[int32](21),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
@@ -2980,10 +2980,10 @@ func ExampleLaunchBulkInstancesOperationClient_NewListBySubscriptionPager_launch
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("hyr"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:42.837Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.June, 11, 19, 35, 42, 837000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("gcxscdei"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-11T19:35:42.837Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.June, 11, 19, 35, 42, 837000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

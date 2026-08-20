@@ -84,8 +84,7 @@ func (client *DevBoxDefinitionsClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -165,8 +164,7 @@ func (client *DevBoxDefinitionsClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -220,12 +218,7 @@ func (client *DevBoxDefinitionsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return DevBoxDefinitionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DevBoxDefinitionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -259,8 +252,11 @@ func (client *DevBoxDefinitionsClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *DevBoxDefinitionsClient) getHandleResponse(resp *http.Response) (DevBoxDefinitionsClientGetResponse, error) {
+func (client *DevBoxDefinitionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DevBoxDefinitionsClientGetResponse, error) {
 	result := DevBoxDefinitionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DevBoxDefinition); err != nil {
 		return DevBoxDefinitionsClientGetResponse{}, err
 	}
@@ -288,12 +284,7 @@ func (client *DevBoxDefinitionsClient) GetByProject(ctx context.Context, resourc
 	if err != nil {
 		return DevBoxDefinitionsClientGetByProjectResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DevBoxDefinitionsClientGetByProjectResponse{}, err
-	}
-	resp, err := client.getByProjectHandleResponse(httpResp)
-	return resp, err
+	return client.getByProjectHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByProjectCreateRequest creates the GetByProject request.
@@ -327,8 +318,11 @@ func (client *DevBoxDefinitionsClient) getByProjectCreateRequest(ctx context.Con
 }
 
 // getByProjectHandleResponse handles the GetByProject response.
-func (client *DevBoxDefinitionsClient) getByProjectHandleResponse(resp *http.Response) (DevBoxDefinitionsClientGetByProjectResponse, error) {
+func (client *DevBoxDefinitionsClient) getByProjectHandleResponse(resp *http.Response, successCodes ...int) (DevBoxDefinitionsClientGetByProjectResponse, error) {
 	result := DevBoxDefinitionsClientGetByProjectResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DevBoxDefinition); err != nil {
 		return DevBoxDefinitionsClientGetByProjectResponse{}, err
 	}
@@ -351,50 +345,64 @@ func (client *DevBoxDefinitionsClient) NewListByDevCenterPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, options)
-			}, nil)
+			req, err := client.listByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, nextLink, options)
 			if err != nil {
 				return DevBoxDefinitionsClientListByDevCenterResponse{}, err
 			}
-			return client.listByDevCenterHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DevBoxDefinitionsClientListByDevCenterResponse{}, err
+			}
+			return client.listByDevCenterHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDevCenterCreateRequest creates the ListByDevCenter request.
-func (client *DevBoxDefinitionsClient) listByDevCenterCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, options *DevBoxDefinitionsClientListByDevCenterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/devboxdefinitions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DevBoxDefinitionsClient) listByDevCenterCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, nextLink string, options *DevBoxDefinitionsClientListByDevCenterOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/devboxdefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if devCenterName == "" {
+			return nil, errors.New("parameter devCenterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if devCenterName == "" {
-		return nil, errors.New("parameter devCenterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByDevCenterHandleResponse handles the ListByDevCenter response.
-func (client *DevBoxDefinitionsClient) listByDevCenterHandleResponse(resp *http.Response) (DevBoxDefinitionsClientListByDevCenterResponse, error) {
+func (client *DevBoxDefinitionsClient) listByDevCenterHandleResponse(resp *http.Response, successCodes ...int) (DevBoxDefinitionsClientListByDevCenterResponse, error) {
 	result := DevBoxDefinitionsClientListByDevCenterResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DevBoxDefinitionListResult); err != nil {
 		return DevBoxDefinitionsClientListByDevCenterResponse{}, err
 	}
@@ -417,50 +425,64 @@ func (client *DevBoxDefinitionsClient) NewListByProjectPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByProjectCreateRequest(ctx, resourceGroupName, projectName, options)
-			}, nil)
+			req, err := client.listByProjectCreateRequest(ctx, resourceGroupName, projectName, nextLink, options)
 			if err != nil {
 				return DevBoxDefinitionsClientListByProjectResponse{}, err
 			}
-			return client.listByProjectHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DevBoxDefinitionsClientListByProjectResponse{}, err
+			}
+			return client.listByProjectHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByProjectCreateRequest creates the ListByProject request.
-func (client *DevBoxDefinitionsClient) listByProjectCreateRequest(ctx context.Context, resourceGroupName string, projectName string, options *DevBoxDefinitionsClientListByProjectOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/devboxdefinitions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DevBoxDefinitionsClient) listByProjectCreateRequest(ctx context.Context, resourceGroupName string, projectName string, nextLink string, options *DevBoxDefinitionsClientListByProjectOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/devboxdefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if projectName == "" {
+			return nil, errors.New("parameter projectName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByProjectHandleResponse handles the ListByProject response.
-func (client *DevBoxDefinitionsClient) listByProjectHandleResponse(resp *http.Response) (DevBoxDefinitionsClientListByProjectResponse, error) {
+func (client *DevBoxDefinitionsClient) listByProjectHandleResponse(resp *http.Response, successCodes ...int) (DevBoxDefinitionsClientListByProjectResponse, error) {
 	result := DevBoxDefinitionsClientListByProjectResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DevBoxDefinitionListResult); err != nil {
 		return DevBoxDefinitionsClientListByProjectResponse{}, err
 	}
@@ -509,8 +531,7 @@ func (client *DevBoxDefinitionsClient) update(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

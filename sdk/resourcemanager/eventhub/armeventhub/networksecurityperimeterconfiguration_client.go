@@ -61,12 +61,7 @@ func (client *NetworkSecurityPerimeterConfigurationClient) List(ctx context.Cont
 	if err != nil {
 		return NetworkSecurityPerimeterConfigurationClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkSecurityPerimeterConfigurationClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -96,8 +91,11 @@ func (client *NetworkSecurityPerimeterConfigurationClient) listCreateRequest(ctx
 }
 
 // listHandleResponse handles the List response.
-func (client *NetworkSecurityPerimeterConfigurationClient) listHandleResponse(resp *http.Response) (NetworkSecurityPerimeterConfigurationClientListResponse, error) {
+func (client *NetworkSecurityPerimeterConfigurationClient) listHandleResponse(resp *http.Response, successCodes ...int) (NetworkSecurityPerimeterConfigurationClientListResponse, error) {
 	result := NetworkSecurityPerimeterConfigurationClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfigurationList); err != nil {
 		return NetworkSecurityPerimeterConfigurationClientListResponse{}, err
 	}

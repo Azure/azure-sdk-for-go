@@ -62,12 +62,7 @@ func (client *TestJobClient) Create(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return TestJobClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return TestJobClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -105,8 +100,11 @@ func (client *TestJobClient) createCreateRequest(ctx context.Context, resourceGr
 }
 
 // createHandleResponse handles the Create response.
-func (client *TestJobClient) createHandleResponse(resp *http.Response) (TestJobClientCreateResponse, error) {
+func (client *TestJobClient) createHandleResponse(resp *http.Response, successCodes ...int) (TestJobClientCreateResponse, error) {
 	result := TestJobClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestJob); err != nil {
 		return TestJobClientCreateResponse{}, err
 	}
@@ -133,12 +131,7 @@ func (client *TestJobClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return TestJobClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TestJobClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -172,8 +165,11 @@ func (client *TestJobClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *TestJobClient) getHandleResponse(resp *http.Response) (TestJobClientGetResponse, error) {
+func (client *TestJobClient) getHandleResponse(resp *http.Response, successCodes ...int) (TestJobClientGetResponse, error) {
 	result := TestJobClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestJob); err != nil {
 		return TestJobClientGetResponse{}, err
 	}
@@ -201,8 +197,7 @@ func (client *TestJobClient) Resume(ctx context.Context, resourceGroupName strin
 		return TestJobClientResumeResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TestJobClientResumeResponse{}, err
+		return TestJobClientResumeResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TestJobClientResumeResponse{}, nil
 }
@@ -257,8 +252,7 @@ func (client *TestJobClient) Stop(ctx context.Context, resourceGroupName string,
 		return TestJobClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TestJobClientStopResponse{}, err
+		return TestJobClientStopResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TestJobClientStopResponse{}, nil
 }
@@ -313,8 +307,7 @@ func (client *TestJobClient) Suspend(ctx context.Context, resourceGroupName stri
 		return TestJobClientSuspendResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TestJobClientSuspendResponse{}, err
+		return TestJobClientSuspendResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TestJobClientSuspendResponse{}, nil
 }

@@ -18,6 +18,8 @@ import (
 
 // QueryKeysClient contains the methods for the QueryKeys group.
 // Don't use this type directly, use NewQueryKeysClient() instead.
+//
+// Generated from API version 2026-03-01-preview
 type QueryKeysClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewQueryKeysClient(subscriptionID string, credential azcore.TokenCredential
 
 // Create - Generates a new query key for the specified search service. You can create up to 50 query keys per service.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
 //   - name - The name of the new query API key.
@@ -61,12 +61,7 @@ func (client *QueryKeysClient) Create(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return QueryKeysClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return QueryKeysClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK)
 }
 
 // createCreateRequest creates the Create request.
@@ -93,8 +88,8 @@ func (client *QueryKeysClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -103,8 +98,11 @@ func (client *QueryKeysClient) createCreateRequest(ctx context.Context, resource
 }
 
 // createHandleResponse handles the Create response.
-func (client *QueryKeysClient) createHandleResponse(resp *http.Response) (QueryKeysClientCreateResponse, error) {
+func (client *QueryKeysClient) createHandleResponse(resp *http.Response, successCodes ...int) (QueryKeysClientCreateResponse, error) {
 	result := QueryKeysClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QueryKey); err != nil {
 		return QueryKeysClientCreateResponse{}, err
 	}
@@ -118,8 +116,6 @@ func (client *QueryKeysClient) createHandleResponse(resp *http.Response) (QueryK
 // NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in future
 // versions and avoid new dependencies on the 404 response.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
 //   - key - The query key to be deleted. Query keys are identified by value, not by name.
@@ -139,8 +135,7 @@ func (client *QueryKeysClient) Delete(ctx context.Context, resourceGroupName str
 		return QueryKeysClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent, http.StatusNotFound) {
-		err = runtime.NewResponseError(httpResp)
-		return QueryKeysClientDeleteResponse{}, err
+		return QueryKeysClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return QueryKeysClientDeleteResponse{}, nil
 }
@@ -169,8 +164,8 @@ func (client *QueryKeysClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
@@ -178,8 +173,6 @@ func (client *QueryKeysClient) deleteCreateRequest(ctx context.Context, resource
 }
 
 // NewListBySearchServicePager - Returns the list of query API keys for the given Azure AI Search service.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
 //   - options - QueryKeysClientListBySearchServiceOptions contains the optional parameters for the QueryKeysClient.NewListBySearchServicePager
@@ -195,50 +188,64 @@ func (client *QueryKeysClient) NewListBySearchServicePager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySearchServiceCreateRequest(ctx, resourceGroupName, searchServiceName, options)
-			}, nil)
+			req, err := client.listBySearchServiceCreateRequest(ctx, resourceGroupName, searchServiceName, nextLink, options)
 			if err != nil {
 				return QueryKeysClientListBySearchServiceResponse{}, err
 			}
-			return client.listBySearchServiceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return QueryKeysClientListBySearchServiceResponse{}, err
+			}
+			return client.listBySearchServiceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySearchServiceCreateRequest creates the ListBySearchService request.
-func (client *QueryKeysClient) listBySearchServiceCreateRequest(ctx context.Context, resourceGroupName string, searchServiceName string, options *QueryKeysClientListBySearchServiceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/listQueryKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *QueryKeysClient) listBySearchServiceCreateRequest(ctx context.Context, resourceGroupName string, searchServiceName string, nextLink string, options *QueryKeysClientListBySearchServiceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/listQueryKeys"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if searchServiceName == "" {
+			return nil, errors.New("parameter searchServiceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{searchServiceName}", url.PathEscape(searchServiceName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if searchServiceName == "" {
-		return nil, errors.New("parameter searchServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{searchServiceName}", url.PathEscape(searchServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		}
 	}
 	return req, nil
 }
 
 // listBySearchServiceHandleResponse handles the ListBySearchService response.
-func (client *QueryKeysClient) listBySearchServiceHandleResponse(resp *http.Response) (QueryKeysClientListBySearchServiceResponse, error) {
+func (client *QueryKeysClient) listBySearchServiceHandleResponse(resp *http.Response, successCodes ...int) (QueryKeysClientListBySearchServiceResponse, error) {
 	result := QueryKeysClientListBySearchServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListQueryKeysResult); err != nil {
 		return QueryKeysClientListBySearchServiceResponse{}, err
 	}

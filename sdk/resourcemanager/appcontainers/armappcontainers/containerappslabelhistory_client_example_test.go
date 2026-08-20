@@ -60,14 +60,14 @@ func ExampleContainerAppsLabelHistoryClient_GetLabelHistory() {
 	// 			Records: []*armappcontainers.LabelHistoryRecordItem{
 	// 				{
 	// 					Revision: to.Ptr("testContainerApp--2"),
-	// 					Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-15T05:49:47+00:00"); return t}()),
+	// 					Start: to.Ptr(time.Date(2024, time.October, 15, 5, 49, 47, 0, time.UTC)),
 	// 					Status: to.Ptr(armappcontainers.StatusSucceeded),
 	// 				},
 	// 				{
 	// 					Revision: to.Ptr("testContainerApp--1"),
-	// 					Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-15T01:12:56+00:00"); return t}()),
+	// 					Start: to.Ptr(time.Date(2024, time.October, 15, 1, 12, 56, 0, time.UTC)),
 	// 					Status: to.Ptr(armappcontainers.StatusSucceeded),
-	// 					Stop: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-15T05:45:08+00:00"); return t}()),
+	// 					Stop: to.Ptr(time.Date(2024, time.October, 15, 5, 45, 8, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 		},
@@ -108,14 +108,14 @@ func ExampleContainerAppsLabelHistoryClient_NewListLabelHistoryPager() {
 		// 					Records: []*armappcontainers.LabelHistoryRecordItem{
 		// 						{
 		// 							Revision: to.Ptr("testContainerApp--2"),
-		// 							Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-15T05:49:47+00:00"); return t}()),
+		// 							Start: to.Ptr(time.Date(2024, time.October, 15, 5, 49, 47, 0, time.UTC)),
 		// 							Status: to.Ptr(armappcontainers.StatusStarting),
 		// 						},
 		// 						{
 		// 							Revision: to.Ptr("testContainerApp--1"),
-		// 							Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-15T01:12:56+00:00"); return t}()),
+		// 							Start: to.Ptr(time.Date(2024, time.October, 15, 1, 12, 56, 0, time.UTC)),
 		// 							Status: to.Ptr(armappcontainers.StatusFailed),
-		// 							Stop: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-15T05:45:08+00:00"); return t}()),
+		// 							Stop: to.Ptr(time.Date(2024, time.October, 15, 5, 45, 8, 0, time.UTC)),
 		// 						},
 		// 					},
 		// 				},
@@ -128,9 +128,9 @@ func ExampleContainerAppsLabelHistoryClient_NewListLabelHistoryPager() {
 		// 					Records: []*armappcontainers.LabelHistoryRecordItem{
 		// 						{
 		// 							Revision: to.Ptr("testContainerApp--1"),
-		// 							Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-15T05:45:08+00:00"); return t}()),
+		// 							Start: to.Ptr(time.Date(2024, time.October, 15, 5, 45, 8, 0, time.UTC)),
 		// 							Status: to.Ptr(armappcontainers.StatusSucceeded),
-		// 							Stop: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-15T05:49:47+00:00"); return t}()),
+		// 							Stop: to.Ptr(time.Date(2024, time.October, 15, 5, 49, 47, 0, time.UTC)),
 		// 						},
 		// 					},
 		// 				},

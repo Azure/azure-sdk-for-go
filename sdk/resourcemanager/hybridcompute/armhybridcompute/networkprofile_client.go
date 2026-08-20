@@ -60,12 +60,7 @@ func (client *NetworkProfileClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return NetworkProfileClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkProfileClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -95,8 +90,11 @@ func (client *NetworkProfileClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *NetworkProfileClient) getHandleResponse(resp *http.Response) (NetworkProfileClientGetResponse, error) {
+func (client *NetworkProfileClient) getHandleResponse(resp *http.Response, successCodes ...int) (NetworkProfileClientGetResponse, error) {
 	result := NetworkProfileClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkProfile); err != nil {
 		return NetworkProfileClientGetResponse{}, err
 	}

@@ -63,12 +63,7 @@ func (client *RunbookClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return RunbookClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return RunbookClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -106,8 +101,11 @@ func (client *RunbookClient) createOrUpdateCreateRequest(ctx context.Context, re
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RunbookClient) createOrUpdateHandleResponse(resp *http.Response) (RunbookClientCreateOrUpdateResponse, error) {
+func (client *RunbookClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (RunbookClientCreateOrUpdateResponse, error) {
 	result := RunbookClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Runbook); err != nil {
 		return RunbookClientCreateOrUpdateResponse{}, err
 	}
@@ -135,8 +133,7 @@ func (client *RunbookClient) Delete(ctx context.Context, resourceGroupName strin
 		return RunbookClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return RunbookClientDeleteResponse{}, err
+		return RunbookClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return RunbookClientDeleteResponse{}, nil
 }
@@ -190,12 +187,7 @@ func (client *RunbookClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return RunbookClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RunbookClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -229,8 +221,11 @@ func (client *RunbookClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *RunbookClient) getHandleResponse(resp *http.Response) (RunbookClientGetResponse, error) {
+func (client *RunbookClient) getHandleResponse(resp *http.Response, successCodes ...int) (RunbookClientGetResponse, error) {
 	result := RunbookClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Runbook); err != nil {
 		return RunbookClientGetResponse{}, err
 	}
@@ -257,12 +252,7 @@ func (client *RunbookClient) GetContent(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return RunbookClientGetContentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RunbookClientGetContentResponse{}, err
-	}
-	resp, err := client.getContentHandleResponse(httpResp)
-	return resp, err
+	return client.getContentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getContentCreateRequest creates the GetContent request.
@@ -296,8 +286,11 @@ func (client *RunbookClient) getContentCreateRequest(ctx context.Context, resour
 }
 
 // getContentHandleResponse handles the GetContent response.
-func (client *RunbookClient) getContentHandleResponse(resp *http.Response) (RunbookClientGetContentResponse, error) {
+func (client *RunbookClient) getContentHandleResponse(resp *http.Response, successCodes ...int) (RunbookClientGetContentResponse, error) {
 	result := RunbookClientGetContentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return RunbookClientGetContentResponse{}, err
@@ -323,47 +316,61 @@ func (client *RunbookClient) NewListByAutomationAccountPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
-			}, nil)
+			req, err := client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, nextLink, options)
 			if err != nil {
 				return RunbookClientListByAutomationAccountResponse{}, err
 			}
-			return client.listByAutomationAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RunbookClientListByAutomationAccountResponse{}, err
+			}
+			return client.listByAutomationAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *RunbookClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, _ *RunbookClientListByAutomationAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RunbookClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nextLink string, _ *RunbookClientListByAutomationAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if automationAccountName == "" {
+			return nil, errors.New("parameter automationAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if automationAccountName == "" {
-		return nil, errors.New("parameter automationAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241023)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241023)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *RunbookClient) listByAutomationAccountHandleResponse(resp *http.Response) (RunbookClientListByAutomationAccountResponse, error) {
+func (client *RunbookClient) listByAutomationAccountHandleResponse(resp *http.Response, successCodes ...int) (RunbookClientListByAutomationAccountResponse, error) {
 	result := RunbookClientListByAutomationAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunbookListResult); err != nil {
 		return RunbookClientListByAutomationAccountResponse{}, err
 	}
@@ -410,8 +417,7 @@ func (client *RunbookClient) publish(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -466,12 +472,7 @@ func (client *RunbookClient) Update(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return RunbookClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RunbookClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -509,8 +510,11 @@ func (client *RunbookClient) updateCreateRequest(ctx context.Context, resourceGr
 }
 
 // updateHandleResponse handles the Update response.
-func (client *RunbookClient) updateHandleResponse(resp *http.Response) (RunbookClientUpdateResponse, error) {
+func (client *RunbookClient) updateHandleResponse(resp *http.Response, successCodes ...int) (RunbookClientUpdateResponse, error) {
 	result := RunbookClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Runbook); err != nil {
 		return RunbookClientUpdateResponse{}, err
 	}

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/ConnectionPolicyPut.json
+// Generated from example definition: 2025-09-01/ConnectionPolicyPut.json
 func ExampleConnectionPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleConnectionPoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ConnectionPolicyDelete.json
+// Generated from example definition: 2025-09-01/ConnectionPolicyDelete.json
 func ExampleConnectionPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleConnectionPoliciesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/ConnectionPolicyGet.json
+// Generated from example definition: 2025-09-01/ConnectionPolicyGet.json
 func ExampleConnectionPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,7 +155,7 @@ func ExampleConnectionPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ConnectionPolicyList.json
+// Generated from example definition: 2025-09-01/ConnectionPolicyList.json
 func ExampleConnectionPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,7 +19,7 @@ import (
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
 //
-// Generated from API version 2026-05-01
+// Generated from API version 2026-07-01
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -62,12 +62,7 @@ func (client *Client) Capabilities(ctx context.Context, location string, input R
 	if err != nil {
 		return ClientCapabilitiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientCapabilitiesResponse{}, err
-	}
-	resp, err := client.capabilitiesHandleResponse(httpResp)
-	return resp, err
+	return client.capabilitiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // capabilitiesCreateRequest creates the Capabilities request.
@@ -86,7 +81,7 @@ func (client *Client) capabilitiesCreateRequest(ctx context.Context, location st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -97,8 +92,11 @@ func (client *Client) capabilitiesCreateRequest(ctx context.Context, location st
 }
 
 // capabilitiesHandleResponse handles the Capabilities response.
-func (client *Client) capabilitiesHandleResponse(resp *http.Response) (ClientCapabilitiesResponse, error) {
+func (client *Client) capabilitiesHandleResponse(resp *http.Response, successCodes ...int) (ClientCapabilitiesResponse, error) {
 	result := ClientCapabilitiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapabilitiesResponse); err != nil {
 		return ClientCapabilitiesResponse{}, err
 	}
@@ -131,12 +129,7 @@ func (client *Client) CheckNameAvailability(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -159,7 +152,7 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -170,8 +163,11 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, re
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *Client) checkNameAvailabilityHandleResponse(resp *http.Response) (ClientCheckNameAvailabilityResponse, error) {
+func (client *Client) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (ClientCheckNameAvailabilityResponse, error) {
 	result := ClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
 		return ClientCheckNameAvailabilityResponse{}, err
 	}

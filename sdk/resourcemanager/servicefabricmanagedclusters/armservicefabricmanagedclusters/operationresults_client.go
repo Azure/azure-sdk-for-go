@@ -62,12 +62,7 @@ func (client *OperationResultsClient) Get(ctx context.Context, location string, 
 	if err != nil {
 		return OperationResultsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationResultsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent)
 }
 
 // getCreateRequest creates the Get request.
@@ -96,9 +91,12 @@ func (client *OperationResultsClient) getCreateRequest(ctx context.Context, loca
 }
 
 // getHandleResponse handles the Get response.
-func (client *OperationResultsClient) getHandleResponse(resp *http.Response) (OperationResultsClientGetResponse, error) {
+func (client *OperationResultsClient) getHandleResponse(resp *http.Response, successCodes ...int) (OperationResultsClientGetResponse, error) {
 	result := OperationResultsClientGetResponse{}
-	if val := resp.Header.Get("location"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
 	return result, nil

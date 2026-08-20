@@ -79,6 +79,10 @@ type VirtualMachineScaleSetsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSKUsPager func(resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetsClientListSKUsOptions) (resp azfake.PagerResponder[armcompute.VirtualMachineScaleSetsClientListSKUsResponse])
 
+	// BeginMigrateVMAvailabilityZone is the fake for method VirtualMachineScaleSetsClient.BeginMigrateVMAvailabilityZone
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginMigrateVMAvailabilityZone func(ctx context.Context, resourceGroupName string, vmScaleSetName string, body armcompute.MigrateVMAvailabilityZoneInput, options *armcompute.VirtualMachineScaleSetsClientBeginMigrateVMAvailabilityZoneOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientMigrateVMAvailabilityZoneResponse], errResp azfake.ErrorResponder)
+
 	// BeginPerformMaintenance is the fake for method VirtualMachineScaleSetsClient.BeginPerformMaintenance
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginPerformMaintenance func(ctx context.Context, resourceGroupName string, vmScaleSetName string, options *armcompute.VirtualMachineScaleSetsClientBeginPerformMaintenanceOptions) (resp azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientPerformMaintenanceResponse], errResp azfake.ErrorResponder)
@@ -144,6 +148,7 @@ func NewVirtualMachineScaleSetsServerTransport(srv *VirtualMachineScaleSetsServe
 		newListAllPager:                   newTracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetsClientListAllResponse]](),
 		newListByLocationPager:            newTracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetsClientListByLocationResponse]](),
 		newListSKUsPager:                  newTracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetsClientListSKUsResponse]](),
+		beginMigrateVMAvailabilityZone:    newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientMigrateVMAvailabilityZoneResponse]](),
 		beginPerformMaintenance:           newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientPerformMaintenanceResponse]](),
 		beginPowerOff:                     newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientPowerOffResponse]](),
 		beginReapply:                      newTracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientReapplyResponse]](),
@@ -173,6 +178,7 @@ type VirtualMachineScaleSetsServerTransport struct {
 	newListAllPager                   *tracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetsClientListAllResponse]]
 	newListByLocationPager            *tracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetsClientListByLocationResponse]]
 	newListSKUsPager                  *tracker[azfake.PagerResponder[armcompute.VirtualMachineScaleSetsClientListSKUsResponse]]
+	beginMigrateVMAvailabilityZone    *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientMigrateVMAvailabilityZoneResponse]]
 	beginPerformMaintenance           *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientPerformMaintenanceResponse]]
 	beginPowerOff                     *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientPowerOffResponse]]
 	beginReapply                      *tracker[azfake.PollerResponder[armcompute.VirtualMachineScaleSetsClientReapplyResponse]]
@@ -236,6 +242,8 @@ func (v *VirtualMachineScaleSetsServerTransport) dispatchToMethodFake(req *http.
 				res.resp, res.err = v.dispatchNewListByLocationPager(req)
 			case "VirtualMachineScaleSetsClient.NewListSKUsPager":
 				res.resp, res.err = v.dispatchNewListSKUsPager(req)
+			case "VirtualMachineScaleSetsClient.BeginMigrateVMAvailabilityZone":
+				res.resp, res.err = v.dispatchBeginMigrateVMAvailabilityZone(req)
 			case "VirtualMachineScaleSetsClient.BeginPerformMaintenance":
 				res.resp, res.err = v.dispatchBeginPerformMaintenance(req)
 			case "VirtualMachineScaleSetsClient.BeginPowerOff":
@@ -911,6 +919,54 @@ func (v *VirtualMachineScaleSetsServerTransport) dispatchNewListSKUsPager(req *h
 	if !server.PagerResponderMore(newListSKUsPager) {
 		v.newListSKUsPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (v *VirtualMachineScaleSetsServerTransport) dispatchBeginMigrateVMAvailabilityZone(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginMigrateVMAvailabilityZone == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginMigrateVMAvailabilityZone not implemented")}
+	}
+	beginMigrateVMAvailabilityZone := v.beginMigrateVMAvailabilityZone.get(req)
+	if beginMigrateVMAvailabilityZone == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Compute/virtualMachineScaleSets/(?P<vmScaleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/migrateVMAvailabilityZone`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcompute.MigrateVMAvailabilityZoneInput](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vmScaleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vmScaleSetName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginMigrateVMAvailabilityZone(req.Context(), resourceGroupNameParam, vmScaleSetNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginMigrateVMAvailabilityZone = &respr
+		v.beginMigrateVMAvailabilityZone.add(req, beginMigrateVMAvailabilityZone)
+	}
+
+	resp, err := server.PollerResponderNext(beginMigrateVMAvailabilityZone, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginMigrateVMAvailabilityZone.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginMigrateVMAvailabilityZone) {
+		v.beginMigrateVMAvailabilityZone.remove(req)
+	}
+
 	return resp, nil
 }
 

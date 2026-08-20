@@ -18,6 +18,8 @@ import (
 
 // GetTieringCostOperationResultClient contains the methods for the GetTieringCostOperationResult group.
 // Don't use this type directly, use NewGetTieringCostOperationResultClient() instead.
+//
+// Generated from API version 2026-07-01
 type GetTieringCostOperationResultClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewGetTieringCostOperationResultClient(subscriptionID string, credential az
 
 // Get - Gets the result of async operation for tiering cost
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the recovery services vault.
 //   - options - GetTieringCostOperationResultClientGetOptions contains the optional parameters for the GetTieringCostOperationResultClient.Get
@@ -61,12 +61,7 @@ func (client *GetTieringCostOperationResultClient) Get(ctx context.Context, reso
 	if err != nil {
 		return GetTieringCostOperationResultClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GetTieringCostOperationResultClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -93,15 +88,18 @@ func (client *GetTieringCostOperationResultClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *GetTieringCostOperationResultClient) getHandleResponse(resp *http.Response) (GetTieringCostOperationResultClientGetResponse, error) {
+func (client *GetTieringCostOperationResultClient) getHandleResponse(resp *http.Response, successCodes ...int) (GetTieringCostOperationResultClientGetResponse, error) {
 	result := GetTieringCostOperationResultClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return GetTieringCostOperationResultClientGetResponse{}, err
 	}

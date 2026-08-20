@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/HubRouteTablePut.json
+// Generated from example definition: 2025-09-01/HubRouteTablePut.json
 func ExampleHubRouteTablesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleHubRouteTablesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/HubRouteTableDelete.json
+// Generated from example definition: 2025-09-01/HubRouteTableDelete.json
 func ExampleHubRouteTablesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +118,7 @@ func ExampleHubRouteTablesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/HubRouteTableGet.json
+// Generated from example definition: 2025-09-01/HubRouteTableGet.json
 func ExampleHubRouteTablesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -174,7 +174,7 @@ func ExampleHubRouteTablesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/HubRouteTableList.json
+// Generated from example definition: 2025-09-01/HubRouteTableList.json
 func ExampleHubRouteTablesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

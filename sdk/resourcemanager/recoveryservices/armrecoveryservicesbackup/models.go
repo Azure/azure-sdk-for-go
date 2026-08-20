@@ -68,6 +68,9 @@ type AzureBackupServerContainer struct {
 
 	// To check if upgrade available
 	UpgradeAvailable *bool
+
+	// READ-ONLY; Source location of the container
+	SourceLocation *string
 }
 
 // GetDpmContainer implements the DpmContainerClassification interface for type AzureBackupServerContainer.
@@ -86,6 +89,7 @@ func (a *AzureBackupServerContainer) GetDpmContainer() *DpmContainer {
 		ProtectedItemCount:    a.ProtectedItemCount,
 		ProtectionStatus:      a.ProtectionStatus,
 		RegistrationStatus:    a.RegistrationStatus,
+		SourceLocation:        a.SourceLocation,
 		UpgradeAvailable:      a.UpgradeAvailable,
 	}
 }
@@ -99,6 +103,7 @@ func (a *AzureBackupServerContainer) GetProtectionContainer() *ProtectionContain
 		HealthStatus:          a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
 		RegistrationStatus:    a.RegistrationStatus,
+		SourceLocation:        a.SourceLocation,
 	}
 }
 
@@ -323,6 +328,9 @@ type AzureFileShareRestoreRequest struct {
 	// Options to resolve copy conflicts.
 	CopyOptions *CopyOptions
 
+	// Managed identity information required to access the storage account.
+	IdentityInfo *IdentityInfo
+
 	// Type of this recovery.
 	RecoveryType *RecoveryType
 
@@ -428,6 +436,9 @@ type AzureFileshareProtectedItem struct {
 	// READ-ONLY; Type of backup management for the backed up item.
 	BackupManagementType *BackupManagementType
 
+	// READ-ONLY; Source location of the protected item datasource.
+	SourceLocation *string
+
 	// READ-ONLY; ID of the vault which protects this item
 	VaultID *string
 
@@ -454,6 +465,7 @@ func (a *AzureFileshareProtectedItem) GetProtectedItem() *ProtectedItem {
 		ProtectedItemType:                a.ProtectedItemType,
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
 		SourceResourceID:                 a.SourceResourceID,
 		SourceSideScanInfo:               a.SourceSideScanInfo,
 		VaultID:                          a.VaultID,
@@ -513,6 +525,9 @@ type AzureIaaSClassicComputeVMContainer struct {
 
 	// Specifies whether the container represents a Classic or an Azure Resource Manager VM.
 	VirtualMachineVersion *string
+
+	// READ-ONLY; Source location of the container
+	SourceLocation *string
 }
 
 // GetIaaSVMContainer implements the IaaSVMContainerClassification interface for type AzureIaaSClassicComputeVMContainer.
@@ -525,6 +540,7 @@ func (a *AzureIaaSClassicComputeVMContainer) GetIaaSVMContainer() *IaaSVMContain
 		ProtectableObjectType: a.ProtectableObjectType,
 		RegistrationStatus:    a.RegistrationStatus,
 		ResourceGroup:         a.ResourceGroup,
+		SourceLocation:        a.SourceLocation,
 		VirtualMachineID:      a.VirtualMachineID,
 		VirtualMachineVersion: a.VirtualMachineVersion,
 	}
@@ -539,6 +555,7 @@ func (a *AzureIaaSClassicComputeVMContainer) GetProtectionContainer() *Protectio
 		HealthStatus:          a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
 		RegistrationStatus:    a.RegistrationStatus,
+		SourceLocation:        a.SourceLocation,
 	}
 }
 
@@ -687,6 +704,9 @@ type AzureIaaSClassicComputeVMProtectedItem struct {
 	// READ-ONLY; Data ID of the protected item.
 	ProtectedItemDataID *string
 
+	// READ-ONLY; Source location of the protected item datasource.
+	SourceLocation *string
+
 	// READ-ONLY; ID of the vault which protects this item
 	VaultID *string
 
@@ -728,6 +748,7 @@ func (a *AzureIaaSClassicComputeVMProtectedItem) GetAzureIaaSVMProtectedItem() *
 		ProtectionStatus:                 a.ProtectionStatus,
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
 		SourceResourceID:                 a.SourceResourceID,
 		SourceSideScanInfo:               a.SourceSideScanInfo,
 		VaultID:                          a.VaultID,
@@ -755,6 +776,7 @@ func (a *AzureIaaSClassicComputeVMProtectedItem) GetProtectedItem() *ProtectedIt
 		ProtectedItemType:                a.ProtectedItemType,
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
 		SourceResourceID:                 a.SourceResourceID,
 		SourceSideScanInfo:               a.SourceSideScanInfo,
 		VaultID:                          a.VaultID,
@@ -795,6 +817,9 @@ type AzureIaaSComputeVMContainer struct {
 
 	// Specifies whether the container represents a Classic or an Azure Resource Manager VM.
 	VirtualMachineVersion *string
+
+	// READ-ONLY; Source location of the container
+	SourceLocation *string
 }
 
 // GetIaaSVMContainer implements the IaaSVMContainerClassification interface for type AzureIaaSComputeVMContainer.
@@ -807,6 +832,7 @@ func (a *AzureIaaSComputeVMContainer) GetIaaSVMContainer() *IaaSVMContainer {
 		ProtectableObjectType: a.ProtectableObjectType,
 		RegistrationStatus:    a.RegistrationStatus,
 		ResourceGroup:         a.ResourceGroup,
+		SourceLocation:        a.SourceLocation,
 		VirtualMachineID:      a.VirtualMachineID,
 		VirtualMachineVersion: a.VirtualMachineVersion,
 	}
@@ -821,6 +847,7 @@ func (a *AzureIaaSComputeVMContainer) GetProtectionContainer() *ProtectionContai
 		HealthStatus:          a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
 		RegistrationStatus:    a.RegistrationStatus,
+		SourceLocation:        a.SourceLocation,
 	}
 }
 
@@ -969,6 +996,9 @@ type AzureIaaSComputeVMProtectedItem struct {
 	// READ-ONLY; Data ID of the protected item.
 	ProtectedItemDataID *string
 
+	// READ-ONLY; Source location of the protected item datasource.
+	SourceLocation *string
+
 	// READ-ONLY; ID of the vault which protects this item
 	VaultID *string
 
@@ -1010,6 +1040,7 @@ func (a *AzureIaaSComputeVMProtectedItem) GetAzureIaaSVMProtectedItem() *AzureIa
 		ProtectionStatus:                 a.ProtectionStatus,
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
 		SourceResourceID:                 a.SourceResourceID,
 		SourceSideScanInfo:               a.SourceSideScanInfo,
 		VaultID:                          a.VaultID,
@@ -1037,6 +1068,7 @@ func (a *AzureIaaSComputeVMProtectedItem) GetProtectedItem() *ProtectedItem {
 		ProtectedItemType:                a.ProtectedItemType,
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
 		SourceResourceID:                 a.SourceResourceID,
 		SourceSideScanInfo:               a.SourceSideScanInfo,
 		VaultID:                          a.VaultID,
@@ -1337,6 +1369,9 @@ type AzureIaaSVMProtectedItem struct {
 	// READ-ONLY; Data ID of the protected item.
 	ProtectedItemDataID *string
 
+	// READ-ONLY; Source location of the protected item datasource.
+	SourceLocation *string
+
 	// READ-ONLY; ID of the vault which protects this item
 	VaultID *string
 
@@ -1369,6 +1404,7 @@ func (a *AzureIaaSVMProtectedItem) GetProtectedItem() *ProtectedItem {
 		ProtectedItemType:                a.ProtectedItemType,
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
 		SourceResourceID:                 a.SourceResourceID,
 		SourceSideScanInfo:               a.SourceSideScanInfo,
 		VaultID:                          a.VaultID,
@@ -1555,6 +1591,9 @@ type AzureSQLAGWorkloadContainerProtectionContainer struct {
 
 	// Workload type for which registration was sent.
 	WorkloadType *WorkloadType
+
+	// READ-ONLY; Source location of the container
+	SourceLocation *string
 }
 
 // GetAzureWorkloadContainer implements the AzureWorkloadContainerClassification interface for type AzureSQLAGWorkloadContainerProtectionContainer.
@@ -1569,6 +1608,7 @@ func (a *AzureSQLAGWorkloadContainerProtectionContainer) GetAzureWorkloadContain
 		OperationType:         a.OperationType,
 		ProtectableObjectType: a.ProtectableObjectType,
 		RegistrationStatus:    a.RegistrationStatus,
+		SourceLocation:        a.SourceLocation,
 		SourceResourceID:      a.SourceResourceID,
 		WorkloadType:          a.WorkloadType,
 	}
@@ -1583,6 +1623,7 @@ func (a *AzureSQLAGWorkloadContainerProtectionContainer) GetProtectionContainer(
 		HealthStatus:          a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
 		RegistrationStatus:    a.RegistrationStatus,
+		SourceLocation:        a.SourceLocation,
 	}
 }
 
@@ -1610,6 +1651,9 @@ type AzureSQLContainer struct {
 
 	// Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string
+
+	// READ-ONLY; Source location of the container
+	SourceLocation *string
 }
 
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureSQLContainer.
@@ -1621,6 +1665,7 @@ func (a *AzureSQLContainer) GetProtectionContainer() *ProtectionContainer {
 		HealthStatus:          a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
 		RegistrationStatus:    a.RegistrationStatus,
+		SourceLocation:        a.SourceLocation,
 	}
 }
 
@@ -1690,6 +1735,9 @@ type AzureSQLProtectedItem struct {
 	// READ-ONLY; Type of backup management for the backed up item.
 	BackupManagementType *BackupManagementType
 
+	// READ-ONLY; Source location of the protected item datasource.
+	SourceLocation *string
+
 	// READ-ONLY; ID of the vault which protects this item
 	VaultID *string
 
@@ -1716,6 +1764,7 @@ func (a *AzureSQLProtectedItem) GetProtectedItem() *ProtectedItem {
 		ProtectedItemType:                a.ProtectedItemType,
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
 		SourceResourceID:                 a.SourceResourceID,
 		SourceSideScanInfo:               a.SourceSideScanInfo,
 		VaultID:                          a.VaultID,
@@ -1770,6 +1819,11 @@ type AzureStorageContainer struct {
 	// Field has constant value ProtectableContainerTypeStorageContainer, any specified value is ignored.
 	ContainerType *ProtectableContainerType
 
+	// Whether access to the storage account is key-based or identity-based.
+	// When `IdentityBased`, `identityInfo` must be provided to identify the
+	// managed identity used to access the storage account.
+	AccessType *AccessType
+
 	// Whether storage account lock is to be acquired for this container or not.
 	AcquireStorageAccountLock *AcquireStorageAccountLock
 
@@ -1781,6 +1835,9 @@ type AzureStorageContainer struct {
 
 	// Status of health of the container.
 	HealthStatus *string
+
+	// Managed identity information required to access the storage account.
+	IdentityInfo *IdentityInfo
 
 	// Re-Do Operation
 	OperationType *OperationType
@@ -1802,6 +1859,9 @@ type AzureStorageContainer struct {
 
 	// Storage account version.
 	StorageAccountVersion *string
+
+	// READ-ONLY; Source location of the container
+	SourceLocation *string
 }
 
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type AzureStorageContainer.
@@ -1813,6 +1873,7 @@ func (a *AzureStorageContainer) GetProtectionContainer() *ProtectionContainer {
 		HealthStatus:          a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
 		RegistrationStatus:    a.RegistrationStatus,
+		SourceLocation:        a.SourceLocation,
 	}
 }
 
@@ -1914,8 +1975,9 @@ type AzureStorageJobTaskDetails struct {
 // AzureStorageProtectableContainer - Azure Storage-specific protectable containers
 type AzureStorageProtectableContainer struct {
 	// READ-ONLY; Type of the container. The value of this property for
-	// 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
+	//
+	//  1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	//  2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
 	ProtectableContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -1945,8 +2007,9 @@ func (a *AzureStorageProtectableContainer) GetProtectableContainer() *Protectabl
 // AzureVMAppContainerProtectableContainer - Azure workload-specific container
 type AzureVMAppContainerProtectableContainer struct {
 	// REQUIRED; Type of the container. The value of this property for
-	// 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
+	//
+	//  1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	//  2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
 	ProtectableContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -2012,6 +2075,9 @@ type AzureVMAppContainerProtectionContainer struct {
 
 	// Workload type for which registration was sent.
 	WorkloadType *WorkloadType
+
+	// READ-ONLY; Source location of the container
+	SourceLocation *string
 }
 
 // GetAzureWorkloadContainer implements the AzureWorkloadContainerClassification interface for type AzureVMAppContainerProtectionContainer.
@@ -2026,6 +2092,7 @@ func (a *AzureVMAppContainerProtectionContainer) GetAzureWorkloadContainer() *Az
 		OperationType:         a.OperationType,
 		ProtectableObjectType: a.ProtectableObjectType,
 		RegistrationStatus:    a.RegistrationStatus,
+		SourceLocation:        a.SourceLocation,
 		SourceResourceID:      a.SourceResourceID,
 		WorkloadType:          a.WorkloadType,
 	}
@@ -2040,6 +2107,7 @@ func (a *AzureVMAppContainerProtectionContainer) GetProtectionContainer() *Prote
 		HealthStatus:          a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
 		RegistrationStatus:    a.RegistrationStatus,
+		SourceLocation:        a.SourceLocation,
 	}
 }
 
@@ -2277,6 +2345,9 @@ type AzureVMWorkloadProtectedItem struct {
 	// READ-ONLY; Backup status of this backup item.
 	ProtectionStatus *string
 
+	// READ-ONLY; Source location of the protected item datasource.
+	SourceLocation *string
+
 	// READ-ONLY; ID of the vault which protects this item
 	VaultID *string
 
@@ -2308,6 +2379,7 @@ func (a *AzureVMWorkloadProtectedItem) GetProtectedItem() *ProtectedItem {
 		ProtectedItemType:                a.ProtectedItemType,
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
 		SourceResourceID:                 a.SourceResourceID,
 		SourceSideScanInfo:               a.SourceSideScanInfo,
 		VaultID:                          a.VaultID,
@@ -2359,9 +2431,6 @@ type AzureVMWorkloadProtectionPolicy struct {
 
 	// List of sub-protection policies which includes schedule and retention
 	SubProtectionPolicy []*SubProtectionPolicy
-
-	// Type of the protection policy
-	VMWorkloadPolicyType *VMWorkloadPolicyType
 
 	// Type of workload for the backup management
 	WorkLoadType *WorkloadType
@@ -2552,6 +2621,9 @@ type AzureVMWorkloadSAPAseDatabaseProtectedItem struct {
 	// READ-ONLY; Backup status of this backup item.
 	ProtectionStatus *string
 
+	// READ-ONLY; Source location of the protected item datasource.
+	SourceLocation *string
+
 	// READ-ONLY; ID of the vault which protects this item
 	VaultID *string
 
@@ -2592,6 +2664,7 @@ func (a *AzureVMWorkloadSAPAseDatabaseProtectedItem) GetAzureVMWorkloadProtected
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		ServerName:                       a.ServerName,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
 		SourceResourceID:                 a.SourceResourceID,
 		SourceSideScanInfo:               a.SourceSideScanInfo,
 		VaultID:                          a.VaultID,
@@ -2618,6 +2691,7 @@ func (a *AzureVMWorkloadSAPAseDatabaseProtectedItem) GetProtectedItem() *Protect
 		ProtectedItemType:                a.ProtectedItemType,
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
 		SourceResourceID:                 a.SourceResourceID,
 		SourceSideScanInfo:               a.SourceSideScanInfo,
 		VaultID:                          a.VaultID,
@@ -2998,6 +3072,9 @@ type AzureVMWorkloadSAPHanaDBInstanceProtectedItem struct {
 	// READ-ONLY; Backup status of this backup item.
 	ProtectionStatus *string
 
+	// READ-ONLY; Source location of the protected item datasource.
+	SourceLocation *string
+
 	// READ-ONLY; ID of the vault which protects this item
 	VaultID *string
 
@@ -3038,6 +3115,7 @@ func (a *AzureVMWorkloadSAPHanaDBInstanceProtectedItem) GetAzureVMWorkloadProtec
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		ServerName:                       a.ServerName,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
 		SourceResourceID:                 a.SourceResourceID,
 		SourceSideScanInfo:               a.SourceSideScanInfo,
 		VaultID:                          a.VaultID,
@@ -3064,6 +3142,7 @@ func (a *AzureVMWorkloadSAPHanaDBInstanceProtectedItem) GetProtectedItem() *Prot
 		ProtectedItemType:                a.ProtectedItemType,
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
 		SourceResourceID:                 a.SourceResourceID,
 		SourceSideScanInfo:               a.SourceSideScanInfo,
 		VaultID:                          a.VaultID,
@@ -3247,6 +3326,9 @@ type AzureVMWorkloadSAPHanaDatabaseProtectedItem struct {
 	// READ-ONLY; Backup status of this backup item.
 	ProtectionStatus *string
 
+	// READ-ONLY; Source location of the protected item datasource.
+	SourceLocation *string
+
 	// READ-ONLY; ID of the vault which protects this item
 	VaultID *string
 
@@ -3287,6 +3369,7 @@ func (a *AzureVMWorkloadSAPHanaDatabaseProtectedItem) GetAzureVMWorkloadProtecte
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		ServerName:                       a.ServerName,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
 		SourceResourceID:                 a.SourceResourceID,
 		SourceSideScanInfo:               a.SourceSideScanInfo,
 		VaultID:                          a.VaultID,
@@ -3313,6 +3396,7 @@ func (a *AzureVMWorkloadSAPHanaDatabaseProtectedItem) GetProtectedItem() *Protec
 		ProtectedItemType:                a.ProtectedItemType,
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
 		SourceResourceID:                 a.SourceResourceID,
 		SourceSideScanInfo:               a.SourceSideScanInfo,
 		VaultID:                          a.VaultID,
@@ -3448,83 +3532,6 @@ func (a *AzureVMWorkloadSAPHanaHSRProtectableItem) GetAzureVMWorkloadProtectable
 
 // GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaHSRProtectableItem.
 func (a *AzureVMWorkloadSAPHanaHSRProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
-	return &WorkloadProtectableItem{
-		BackupManagementType: a.BackupManagementType,
-		FriendlyName:         a.FriendlyName,
-		ProtectableItemType:  a.ProtectableItemType,
-		ProtectionState:      a.ProtectionState,
-		WorkloadType:         a.WorkloadType,
-	}
-}
-
-// AzureVMWorkloadSAPHanaScaleoutProtectableItem - Azure VM workload-specific protectable item representing HANA scale out.
-type AzureVMWorkloadSAPHanaScaleoutProtectableItem struct {
-	// REQUIRED; Type of the backup item.
-	ProtectableItemType *string
-
-	// Type of backup management to backup an item.
-	BackupManagementType *string
-
-	// Friendly name of the backup item.
-	FriendlyName *string
-
-	// Indicates if protectable item is auto-protectable
-	IsAutoProtectable *bool
-
-	// Indicates if protectable item is auto-protected
-	IsAutoProtected *bool
-
-	// Indicates if item is protectable
-	IsProtectable *bool
-
-	// Name for instance or AG
-	ParentName *string
-
-	// Parent Unique Name is added to provide the service formatted URI Name of the Parent
-	// Only Applicable for data bases where the parent would be either Instance or a SQL AG.
-	ParentUniqueName *string
-
-	// Pre-backup validation for protectable objects
-	Prebackupvalidation *PreBackupValidation
-
-	// State of the back up item.
-	ProtectionState *ProtectionStatus
-
-	// Host/Cluster Name for instance or AG
-	ServerName *string
-
-	// For instance or AG, indicates number of DB's present
-	Subinquireditemcount *int32
-
-	// For instance or AG, indicates number of DB's to be protected
-	Subprotectableitemcount *int32
-
-	// Type of workload for the backup management
-	WorkloadType *string
-}
-
-// GetAzureVMWorkloadProtectableItem implements the AzureVMWorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaScaleoutProtectableItem.
-func (a *AzureVMWorkloadSAPHanaScaleoutProtectableItem) GetAzureVMWorkloadProtectableItem() *AzureVMWorkloadProtectableItem {
-	return &AzureVMWorkloadProtectableItem{
-		BackupManagementType:    a.BackupManagementType,
-		FriendlyName:            a.FriendlyName,
-		IsAutoProtectable:       a.IsAutoProtectable,
-		IsAutoProtected:         a.IsAutoProtected,
-		IsProtectable:           a.IsProtectable,
-		ParentName:              a.ParentName,
-		ParentUniqueName:        a.ParentUniqueName,
-		Prebackupvalidation:     a.Prebackupvalidation,
-		ProtectableItemType:     a.ProtectableItemType,
-		ProtectionState:         a.ProtectionState,
-		ServerName:              a.ServerName,
-		Subinquireditemcount:    a.Subinquireditemcount,
-		Subprotectableitemcount: a.Subprotectableitemcount,
-		WorkloadType:            a.WorkloadType,
-	}
-}
-
-// GetWorkloadProtectableItem implements the WorkloadProtectableItemClassification interface for type AzureVMWorkloadSAPHanaScaleoutProtectableItem.
-func (a *AzureVMWorkloadSAPHanaScaleoutProtectableItem) GetWorkloadProtectableItem() *WorkloadProtectableItem {
 	return &WorkloadProtectableItem{
 		BackupManagementType: a.BackupManagementType,
 		FriendlyName:         a.FriendlyName,
@@ -3886,9 +3893,6 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 	// Parent name of the DB such as Instance or Availability Group.
 	ParentName *string
 
-	// Name of the parent protected item (e.g., SQL Instance name) when this database is protected as part of a parent.
-	ParentProtectedItem *string
-
 	// Parent type of protected item, example: for a DB, standalone server or distributed
 	ParentType *string
 
@@ -3903,9 +3907,6 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 
 	// Health status of the backup item, evaluated based on last heartbeat received
 	ProtectedItemHealthStatus *ProtectedItemHealthStatus
-
-	// Protection type in case protected as part of a parent.
-	ProtectionLevel *ProtectionLevel
 
 	// Backup state of this backup item.
 	ProtectionState *ProtectionState
@@ -3933,6 +3934,9 @@ type AzureVMWorkloadSQLDatabaseProtectedItem struct {
 
 	// READ-ONLY; Backup status of this backup item.
 	ProtectionStatus *string
+
+	// READ-ONLY; Source location of the protected item datasource.
+	SourceLocation *string
 
 	// READ-ONLY; ID of the vault which protects this item
 	VaultID *string
@@ -3974,6 +3978,7 @@ func (a *AzureVMWorkloadSQLDatabaseProtectedItem) GetAzureVMWorkloadProtectedIte
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		ServerName:                       a.ServerName,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
 		SourceResourceID:                 a.SourceResourceID,
 		SourceSideScanInfo:               a.SourceSideScanInfo,
 		VaultID:                          a.VaultID,
@@ -4000,6 +4005,7 @@ func (a *AzureVMWorkloadSQLDatabaseProtectedItem) GetProtectedItem() *ProtectedI
 		ProtectedItemType:                a.ProtectedItemType,
 		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   a.SourceLocation,
 		SourceResourceID:                 a.SourceResourceID,
 		SourceSideScanInfo:               a.SourceSideScanInfo,
 		VaultID:                          a.VaultID,
@@ -4141,184 +4147,6 @@ func (a *AzureVMWorkloadSQLInstanceProtectableItem) GetWorkloadProtectableItem()
 		ProtectableItemType:  a.ProtectableItemType,
 		ProtectionState:      a.ProtectionState,
 		WorkloadType:         a.WorkloadType,
-	}
-}
-
-// AzureVMWorkloadSQLInstanceProtectedItem - Azure VM workload-specific protected item representing SQL Instance.
-type AzureVMWorkloadSQLInstanceProtectedItem struct {
-	// CONSTANT; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	// Field has constant value "AzureVmWorkloadSQLInstance", any specified value is ignored.
-	ProtectedItemType *string
-
-	// Name of the backup set the backup item belongs to
-	BackupSetName *string
-
-	// Name of Child Dbs protected under this parent.
-	ChildDBNames []*string
-
-	// Unique name of container
-	ContainerName *string
-
-	// Create mode to indicate recovery of existing soft deleted data source or creation of new data source.
-	CreateMode *CreateMode
-
-	// Time for deferred deletion in UTC
-	DeferredDeleteTimeInUTC *time.Time
-
-	// Time remaining before the DS marked for deferred delete is permanently deleted
-	DeferredDeleteTimeRemaining *string
-
-	// Additional information for this backup item.
-	ExtendedInfo *AzureVMWorkloadProtectedItemExtendedInfo
-
-	// The state of instance protection.
-	InstanceProtectionReadiness *InstanceProtectionReadiness
-
-	// Flag to identify whether datasource is protected in archive
-	IsArchiveEnabled *bool
-
-	// Flag to identify whether the deferred deleted DS is to be purged soon
-	IsDeferredDeleteScheduleUpcoming *bool
-
-	// Flag to identify that deferred deleted DS is to be moved into Pause state
-	IsRehydrate *bool
-
-	// Flag to identify whether the DS is scheduled for deferred delete
-	IsScheduledForDeferredDelete *bool
-
-	// Health details of different KPIs
-	KpisHealths map[string]*KPIResourceHealthDetails
-
-	// Error details in last backup
-	LastBackupErrorDetail *ErrorDetail
-
-	// Last backup operation status. Possible values: Healthy, Unhealthy.
-	LastBackupStatus *LastBackupStatus
-
-	// Timestamp of the last backup operation on this backup item.
-	LastBackupTime *time.Time
-
-	// Timestamp when the last (latest) backup copy was created for this backup item.
-	LastRecoveryPoint *time.Time
-
-	// List of the nodes in case of distributed container.
-	NodesList []*DistributedNodesInfo
-
-	// Parent name of the DB such as Instance or Availability Group.
-	ParentName *string
-
-	// Parent type of protected item, example: for a DB, standalone server or distributed
-	ParentType *string
-
-	// ID of the backup policy with which this item is backed up.
-	PolicyID *string
-
-	// Name of the policy used for protection
-	PolicyName *string
-
-	// Data ID of the protected item.
-	ProtectedItemDataSourceID *string
-
-	// Health status of the backup item, evaluated based on last heartbeat received
-	ProtectedItemHealthStatus *ProtectedItemHealthStatus
-
-	// Backup state of this backup item.
-	ProtectionState *ProtectionState
-
-	// ResourceGuardOperationRequests on which LAC check will be performed
-	ResourceGuardOperationRequests []*string
-
-	// Host/Cluster Name for instance or AG
-	ServerName *string
-
-	// Soft delete retention period in days
-	SoftDeleteRetentionPeriodInDays *int32
-
-	// ARM ID of the resource to be backed up.
-	SourceResourceID *string
-
-	// Source side threat information
-	SourceSideScanInfo *SourceSideScanInfo
-
-	// READ-ONLY; Type of backup management for the backed up item.
-	BackupManagementType *BackupManagementType
-
-	// READ-ONLY; Friendly name of the DB represented by this backup item.
-	FriendlyName *string
-
-	// READ-ONLY; Backup status of this backup item.
-	ProtectionStatus *string
-
-	// READ-ONLY; ID of the vault which protects this item
-	VaultID *string
-
-	// READ-ONLY; Type of workload this item represents.
-	WorkloadType *DataSourceType
-}
-
-// GetAzureVMWorkloadProtectedItem implements the AzureVMWorkloadProtectedItemClassification interface for type AzureVMWorkloadSQLInstanceProtectedItem.
-func (a *AzureVMWorkloadSQLInstanceProtectedItem) GetAzureVMWorkloadProtectedItem() *AzureVMWorkloadProtectedItem {
-	return &AzureVMWorkloadProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		ExtendedInfo:                     a.ExtendedInfo,
-		FriendlyName:                     a.FriendlyName,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
-		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		KpisHealths:                      a.KpisHealths,
-		LastBackupErrorDetail:            a.LastBackupErrorDetail,
-		LastBackupStatus:                 a.LastBackupStatus,
-		LastBackupTime:                   a.LastBackupTime,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		NodesList:                        a.NodesList,
-		ParentName:                       a.ParentName,
-		ParentType:                       a.ParentType,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemDataSourceID:        a.ProtectedItemDataSourceID,
-		ProtectedItemHealthStatus:        a.ProtectedItemHealthStatus,
-		ProtectedItemType:                a.ProtectedItemType,
-		ProtectionState:                  a.ProtectionState,
-		ProtectionStatus:                 a.ProtectionStatus,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		ServerName:                       a.ServerName,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		SourceSideScanInfo:               a.SourceSideScanInfo,
-		VaultID:                          a.VaultID,
-		WorkloadType:                     a.WorkloadType,
-	}
-}
-
-// GetProtectedItem implements the ProtectedItemClassification interface for type AzureVMWorkloadSQLInstanceProtectedItem.
-func (a *AzureVMWorkloadSQLInstanceProtectedItem) GetProtectedItem() *ProtectedItem {
-	return &ProtectedItem{
-		BackupManagementType:             a.BackupManagementType,
-		BackupSetName:                    a.BackupSetName,
-		ContainerName:                    a.ContainerName,
-		CreateMode:                       a.CreateMode,
-		DeferredDeleteTimeInUTC:          a.DeferredDeleteTimeInUTC,
-		DeferredDeleteTimeRemaining:      a.DeferredDeleteTimeRemaining,
-		IsArchiveEnabled:                 a.IsArchiveEnabled,
-		IsDeferredDeleteScheduleUpcoming: a.IsDeferredDeleteScheduleUpcoming,
-		IsRehydrate:                      a.IsRehydrate,
-		IsScheduledForDeferredDelete:     a.IsScheduledForDeferredDelete,
-		LastRecoveryPoint:                a.LastRecoveryPoint,
-		PolicyID:                         a.PolicyID,
-		PolicyName:                       a.PolicyName,
-		ProtectedItemType:                a.ProtectedItemType,
-		ResourceGuardOperationRequests:   a.ResourceGuardOperationRequests,
-		SoftDeleteRetentionPeriodInDays:  a.SoftDeleteRetentionPeriodInDays,
-		SourceResourceID:                 a.SourceResourceID,
-		SourceSideScanInfo:               a.SourceSideScanInfo,
-		VaultID:                          a.VaultID,
-		WorkloadType:                     a.WorkloadType,
 	}
 }
 
@@ -4500,6 +4328,9 @@ type AzureWorkloadContainer struct {
 
 	// Workload type for which registration was sent.
 	WorkloadType *WorkloadType
+
+	// READ-ONLY; Source location of the container
+	SourceLocation *string
 }
 
 // GetAzureWorkloadContainer implements the AzureWorkloadContainerClassification interface for type AzureWorkloadContainer.
@@ -4514,6 +4345,7 @@ func (a *AzureWorkloadContainer) GetProtectionContainer() *ProtectionContainer {
 		HealthStatus:          a.HealthStatus,
 		ProtectableObjectType: a.ProtectableObjectType,
 		RegistrationStatus:    a.RegistrationStatus,
+		SourceLocation:        a.SourceLocation,
 	}
 }
 
@@ -6065,9 +5897,6 @@ type AzureWorkloadSQLRecoveryPointExtendedInfo struct {
 
 	// UTC time at which data directory info was captured
 	DataDirectoryTimeInUTC *time.Time
-
-	// List of databases included in recovery point.
-	IncludedDatabases []*DatabaseInRP
 }
 
 // AzureWorkloadSQLRestoreRequest - AzureWorkload SQL -specific restore. Specifically for full/diff restore
@@ -6841,6 +6670,9 @@ type DPMProtectedItem struct {
 	// READ-ONLY; Type of backup management for the backed up item.
 	BackupManagementType *BackupManagementType
 
+	// READ-ONLY; Source location of the protected item datasource.
+	SourceLocation *string
+
 	// READ-ONLY; ID of the vault which protects this item
 	VaultID *string
 
@@ -6867,6 +6699,7 @@ func (d *DPMProtectedItem) GetProtectedItem() *ProtectedItem {
 		ProtectedItemType:                d.ProtectedItemType,
 		ResourceGuardOperationRequests:   d.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  d.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   d.SourceLocation,
 		SourceResourceID:                 d.SourceResourceID,
 		SourceSideScanInfo:               d.SourceSideScanInfo,
 		VaultID:                          d.VaultID,
@@ -6939,13 +6772,26 @@ type DailySchedule struct {
 	ScheduleRunTimes []*time.Time
 }
 
-// DatabaseInRP - Database included in RP.
-type DatabaseInRP struct {
-	// Datasource Id for the database.
-	DatasourceID *string
+// DataDiskDetails - Data disk details
+type DataDiskDetails struct {
+	// List of data disks in the VM which are encrypted at the time of backup. This will be used to provide Disk Encryption Set
+	// Id for each data disk.
+	EncryptedDataDisks []*DiskDetails
+}
 
-	// Datasource name for the database.
-	DatasourceName *string
+// DataDiskEncryptionSettings - Data disk encryption settings for Secured VM. This will be used to provide Disk Encryption
+// Set Id for each data disk.
+type DataDiskEncryptionSettings struct {
+	// Managed Identity resource Id used to encrypt the data disk during restore.
+	DataDiskEncryptionIdentity *string
+
+	// Disk Encryption Set Id for Secured VM Data Disk. This will be used for all data disks if perDiskEncryptionSetIds is not
+	// provided. If perDiskEncryptionSetIds is provided, this will be ignored.
+	DataDiskEncryptionSetID *string
+
+	// Per Disk Encryption Set Ids for Secured VM Data Disks. This will be used to provide Disk Encryption Set Id for each data
+	// disk.
+	PerDiskEncryptionSetIDs []*PerDiskEncryptionSetID
 }
 
 // Day of the week.
@@ -6955,6 +6801,15 @@ type Day struct {
 
 	// Whether Date is last date of month
 	IsLast *bool
+}
+
+// DiskDetails - Disk details
+type DiskDetails struct {
+	// Disk name of the disk
+	DiskName *string
+
+	// LUN of the disk
+	Lun *int32
 }
 
 type DiskExclusionProperties struct {
@@ -7096,6 +6951,9 @@ type DpmContainer struct {
 
 	// To check if upgrade available
 	UpgradeAvailable *bool
+
+	// READ-ONLY; Source location of the container
+	SourceLocation *string
 }
 
 // GetDpmContainer implements the DpmContainerClassification interface for type DpmContainer.
@@ -7110,6 +6968,7 @@ func (d *DpmContainer) GetProtectionContainer() *ProtectionContainer {
 		HealthStatus:          d.HealthStatus,
 		ProtectableObjectType: d.ProtectableObjectType,
 		RegistrationStatus:    d.RegistrationStatus,
+		SourceLocation:        d.SourceLocation,
 	}
 }
 
@@ -7456,6 +7315,9 @@ type GenericContainer struct {
 
 	// Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string
+
+	// READ-ONLY; Source location of the container
+	SourceLocation *string
 }
 
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type GenericContainer.
@@ -7467,6 +7329,7 @@ func (g *GenericContainer) GetProtectionContainer() *ProtectionContainer {
 		HealthStatus:          g.HealthStatus,
 		ProtectableObjectType: g.ProtectableObjectType,
 		RegistrationStatus:    g.RegistrationStatus,
+		SourceLocation:        g.SourceLocation,
 	}
 }
 
@@ -7557,6 +7420,9 @@ type GenericProtectedItem struct {
 	// READ-ONLY; Type of backup management for the backed up item.
 	BackupManagementType *BackupManagementType
 
+	// READ-ONLY; Source location of the protected item datasource.
+	SourceLocation *string
+
 	// READ-ONLY; ID of the vault which protects this item
 	VaultID *string
 
@@ -7583,6 +7449,7 @@ func (g *GenericProtectedItem) GetProtectedItem() *ProtectedItem {
 		ProtectedItemType:                g.ProtectedItemType,
 		ResourceGuardOperationRequests:   g.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  g.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   g.SourceLocation,
 		SourceResourceID:                 g.SourceResourceID,
 		SourceSideScanInfo:               g.SourceSideScanInfo,
 		VaultID:                          g.VaultID,
@@ -7738,6 +7605,9 @@ type IaaSVMContainer struct {
 
 	// Specifies whether the container represents a Classic or an Azure Resource Manager VM.
 	VirtualMachineVersion *string
+
+	// READ-ONLY; Source location of the container
+	SourceLocation *string
 }
 
 // GetIaaSVMContainer implements the IaaSVMContainerClassification interface for type IaaSVMContainer.
@@ -7752,6 +7622,7 @@ func (i *IaaSVMContainer) GetProtectionContainer() *ProtectionContainer {
 		HealthStatus:          i.HealthStatus,
 		ProtectableObjectType: i.ProtectableObjectType,
 		RegistrationStatus:    i.RegistrationStatus,
+		SourceLocation:        i.SourceLocation,
 	}
 }
 
@@ -7843,6 +7714,9 @@ func (i *IaasVMILRRegistrationRequest) GetILRRequest() *ILRRequest {
 type IaasVMRecoveryPoint struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
 	ObjectType *string
+
+	// Data disk metadata for the VM recovery point
+	DataDiskMetadata *DataDiskDetails
 
 	// Extended location of the VM recovery point,
 	// should be null if VM is in public cloud
@@ -8295,9 +8169,11 @@ type KPIResourceHealthDetails struct {
 // KeyAndSecretDetails - BEK is bitlocker key.
 // KEK is encryption key for BEK
 // If the VM was encrypted then we will store following details :
-// 1. Secret(BEK) - Url + Backup Data + vaultId.
-// 2. Key(KEK) - Url + Backup Data + vaultId.
-// 3. EncryptionMechanism
+//
+//  1. Secret(BEK) - Url + Backup Data + vaultId.
+//  2. Key(KEK) - Url + Backup Data + vaultId.
+//  3. EncryptionMechanism
+//
 // BEK and KEK can potentially have different vault ids.
 type KeyAndSecretDetails struct {
 	// BEK is bitlocker encryption key.
@@ -8436,6 +8312,9 @@ type MabContainer struct {
 
 	// Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string
+
+	// READ-ONLY; Source location of the container
+	SourceLocation *string
 }
 
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type MabContainer.
@@ -8447,6 +8326,7 @@ func (m *MabContainer) GetProtectionContainer() *ProtectionContainer {
 		HealthStatus:          m.HealthStatus,
 		ProtectableObjectType: m.ProtectableObjectType,
 		RegistrationStatus:    m.RegistrationStatus,
+		SourceLocation:        m.SourceLocation,
 	}
 }
 
@@ -8555,6 +8435,9 @@ type MabFileFolderProtectedItem struct {
 	// READ-ONLY; Type of backup management for the backed up item.
 	BackupManagementType *BackupManagementType
 
+	// READ-ONLY; Source location of the protected item datasource.
+	SourceLocation *string
+
 	// READ-ONLY; ID of the vault which protects this item
 	VaultID *string
 
@@ -8581,6 +8464,7 @@ func (m *MabFileFolderProtectedItem) GetProtectedItem() *ProtectedItem {
 		ProtectedItemType:                m.ProtectedItemType,
 		ResourceGuardOperationRequests:   m.ResourceGuardOperationRequests,
 		SoftDeleteRetentionPeriodInDays:  m.SoftDeleteRetentionPeriodInDays,
+		SourceLocation:                   m.SourceLocation,
 		SourceResourceID:                 m.SourceResourceID,
 		SourceSideScanInfo:               m.SourceSideScanInfo,
 		VaultID:                          m.VaultID,
@@ -8906,16 +8790,14 @@ func (o *OperationStatusValidateOperationExtendedInfo) GetOperationStatusExtende
 	}
 }
 
-// PatchRecoveryPointInput - Recovery Point Contract for Update Recovery Point API.
-type PatchRecoveryPointInput struct {
-	// Properties of Recovery Point
-	RecoveryPointProperties *PatchRecoveryPointPropertiesInput
-}
+// PerDiskEncryptionSetID - Per Disk Encryption Set Ids for Secured VM Data Disks. This will be used to provide Disk Encryption
+// Set Id for each data disk.
+type PerDiskEncryptionSetID struct {
+	// Disk Encryption Set Id for Secured VM Data Disk
+	DiskEncryptionSetID *string
 
-// PatchRecoveryPointPropertiesInput - Recovery Point Properties Contract for Update Recovery Point API.
-type PatchRecoveryPointPropertiesInput struct {
-	// Expiry time of Recovery Point in UTC.
-	ExpiryTime *time.Time
+	// LUN for Secured VM Data Disk
+	Lun *int32
 }
 
 // PointInTimeRange - Provides details for log ranges
@@ -8942,9 +8824,10 @@ type PreBackupValidation struct {
 // PreValidateEnableBackupRequest - Contract to validate if backup can be enabled on the given resource in a given vault and
 // given configuration.
 // It will validate followings
-// 1. Vault capacity
-// 2. VM is already protected
-// 3. Any VM related configuration passed in properties.
+//
+//  1. Vault capacity
+//  2. VM is already protected
+//  3. Any VM related configuration passed in properties.
 type PreValidateEnableBackupRequest struct {
 	// Configuration of VM if any needs to be validated like OS type etc
 	Properties *string
@@ -9083,8 +8966,9 @@ type PrivateLinkServiceConnectionState struct {
 // ProtectableContainer - Protectable Container Class.
 type ProtectableContainer struct {
 	// REQUIRED; Type of the container. The value of this property for
-	// 1. Compute Azure VM is Microsoft.Compute/virtualMachines
-	// 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
+	//
+	//  1. Compute Azure VM is Microsoft.Compute/virtualMachines
+	//  2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
 	ProtectableContainerType *ProtectableContainerType
 
 	// Type of backup management for the container.
@@ -9196,6 +9080,9 @@ type ProtectedItem struct {
 	// READ-ONLY; Type of backup management for the backed up item.
 	BackupManagementType *BackupManagementType
 
+	// READ-ONLY; Source location of the protected item datasource.
+	SourceLocation *string
+
 	// READ-ONLY; ID of the vault which protects this item
 	VaultID *string
 
@@ -9205,6 +9092,12 @@ type ProtectedItem struct {
 
 // GetProtectedItem implements the ProtectedItemClassification interface for type ProtectedItem.
 func (p *ProtectedItem) GetProtectedItem() *ProtectedItem { return p }
+
+// ProtectedItemConfigureSourceScanRequest - Request to configure source scan for a protected item
+type ProtectedItemConfigureSourceScanRequest struct {
+	// Source scan action to perform
+	SourceScanAction *SourceScanAction
+}
 
 // ProtectedItemResource - Base class for backup items.
 type ProtectedItemResource struct {
@@ -9267,6 +9160,9 @@ type ProtectionContainer struct {
 
 	// Status of registration of the container with the Recovery Services Vault.
 	RegistrationStatus *string
+
+	// READ-ONLY; Source location of the container
+	SourceLocation *string
 }
 
 // GetProtectionContainer implements the ProtectionContainerClassification interface for type ProtectionContainer.
@@ -9453,6 +9349,15 @@ type RecoveryPointDiskConfiguration struct {
 	NumberOfDisksIncludedInBackup *int32
 }
 
+// RecoveryPointImmutabilityProperties - Immutability properties of a recovery point.
+type RecoveryPointImmutabilityProperties struct {
+	// REQUIRED; Whether the recovery point is immutable.
+	IsImmutable *bool
+
+	// Expiry time of immutability in UTC. Omitted when immutability is as per policy.
+	ExpiryTime *time.Time
+}
+
 type RecoveryPointMoveReadinessInfo struct {
 	AdditionalInfo *string
 	IsReadyForMove *bool
@@ -9462,6 +9367,9 @@ type RecoveryPointMoveReadinessInfo struct {
 type RecoveryPointProperties struct {
 	// Expiry time of Recovery Point in UTC.
 	ExpiryTime *string
+
+	// Immutability properties of the recovery point.
+	ImmutabilityProperties *RecoveryPointImmutabilityProperties
 
 	// Bool to indicate whether RP is in soft delete state or not
 	IsSoftDeleted *bool
@@ -9713,6 +9621,9 @@ func (s *SchedulePolicy) GetSchedulePolicy() *SchedulePolicy { return s }
 
 // SecuredVMDetails - Restore request parameters for Secured VMs
 type SecuredVMDetails struct {
+	// Data disk encryption settings for Secured VM. This will be used to provide Disk Encryption Set Id for each data disk.
+	DataDiskEncryptionSettings *DataDiskEncryptionSettings
+
 	// Gets or Sets Disk Encryption Set Id for Secured VM OS Disk
 	SecuredVMOsDiskEncryptionSetID *string
 }
@@ -9999,9 +9910,10 @@ type TieringPolicy struct {
 	DurationType *RetentionDurationType
 
 	// Tiering Mode to control automatic tiering of recovery points. Supported values are:
-	// 1. TierRecommended: Tier all recovery points recommended to be tiered
-	// 2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
-	// 3. DoNotTier: Do not tier any recovery points
+	//
+	//  1. TierRecommended: Tier all recovery points recommended to be tiered
+	//  2. TierAfter: Tier all recovery points after a fixed period, as specified in duration + durationType below.
+	//  3. DoNotTier: Do not tier any recovery points
 	TieringMode *TieringMode
 }
 
@@ -10048,12 +9960,6 @@ type UnlockDeleteRequest struct {
 type UnlockDeleteResponse struct {
 	// This is the time when unlock delete privileges will get expired.
 	UnlockDeleteExpiryTime *string
-}
-
-// UpdateRecoveryPointRequest - Patch Request content to update recovery point for given RecoveryPointId
-type UpdateRecoveryPointRequest struct {
-	// Resource properties.
-	Properties *PatchRecoveryPointInput
 }
 
 // UserAssignedIdentityProperties - User assigned managed identity properties

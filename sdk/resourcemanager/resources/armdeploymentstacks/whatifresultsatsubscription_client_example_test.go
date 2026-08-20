@@ -74,14 +74,14 @@ func ExampleWhatIfResultsAtSubscriptionClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armdeploymentstacks.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-02T02:03:01.1974346Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 	// 		},
 	// 		Properties: &armdeploymentstacks.WhatIfResultProperties{
 	// 			DeploymentStackResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack"),
-	// 			DeploymentStackLastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T01:01:01.1075056Z"); return t}()),
+	// 			DeploymentStackLastModified: to.Ptr(time.Date(2025, time.January, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			RetentionInterval: to.Ptr("P7D"),
 	// 			CorrelationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			TemplateLink: &armdeploymentstacks.TemplateLink{
@@ -153,14 +153,14 @@ func ExampleWhatIfResultsAtSubscriptionClient_Get() {
 	// 		SystemData: &armdeploymentstacks.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-02T02:03:01.1974346Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 	// 		},
 	// 		Properties: &armdeploymentstacks.WhatIfResultProperties{
 	// 			DeploymentStackResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack"),
-	// 			DeploymentStackLastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T01:01:01.1075056Z"); return t}()),
+	// 			DeploymentStackLastModified: to.Ptr(time.Date(2025, time.January, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			RetentionInterval: to.Ptr("P7D"),
 	// 			CorrelationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			TemplateLink: &armdeploymentstacks.TemplateLink{
@@ -251,14 +251,14 @@ func ExampleWhatIfResultsAtSubscriptionClient_NewListPager() {
 		// 				SystemData: &armdeploymentstacks.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-02T02:03:01.1974346Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 		// 				},
 		// 				Properties: &armdeploymentstacks.WhatIfResultProperties{
 		// 					DeploymentStackResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deploymentStacks/simpleDeploymentStack"),
-		// 					DeploymentStackLastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T01:01:01.1075056Z"); return t}()),
+		// 					DeploymentStackLastModified: to.Ptr(time.Date(2025, time.January, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					RetentionInterval: to.Ptr("P7D"),
 		// 					CorrelationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					TemplateLink: &armdeploymentstacks.TemplateLink{
@@ -321,14 +321,14 @@ func ExampleWhatIfResultsAtSubscriptionClient_NewListPager() {
 		// 				SystemData: &armdeploymentstacks.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-02T02:03:01.1974346Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 		// 				},
 		// 				Properties: &armdeploymentstacks.WhatIfResultProperties{
 		// 					DeploymentStackResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deploymentStacks/deploymentStack2"),
-		// 					DeploymentStackLastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-03T03:01:01.3141592Z"); return t}()),
+		// 					DeploymentStackLastModified: to.Ptr(time.Date(2025, time.January, 3, 3, 1, 1, 314159200, time.UTC)),
 		// 					RetentionInterval: to.Ptr("P7D"),
 		// 					CorrelationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					TemplateLink: &armdeploymentstacks.TemplateLink{
@@ -427,14 +427,14 @@ func ExampleWhatIfResultsAtSubscriptionClient_BeginWhatIf() {
 	// 		SystemData: &armdeploymentstacks.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armdeploymentstacks.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-02-02T02:03:01.1974346Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.February, 2, 2, 3, 1, 197434600, time.UTC)),
 	// 		},
 	// 		Properties: &armdeploymentstacks.WhatIfResultProperties{
 	// 			DeploymentStackResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Resources/deploymentStacks/deploymentStack2"),
-	// 			DeploymentStackLastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-03T03:01:01.3141592Z"); return t}()),
+	// 			DeploymentStackLastModified: to.Ptr(time.Date(2025, time.January, 3, 3, 1, 1, 314159200, time.UTC)),
 	// 			RetentionInterval: to.Ptr("P7D"),
 	// 			CorrelationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			TemplateLink: &armdeploymentstacks.TemplateLink{

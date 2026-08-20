@@ -47,7 +47,7 @@ func ExampleEntitiesClient_AddDataAnnotation() {
 	// 			"changedBy": to.Ptr("release-pipeline"),
 	// 		},
 	// 		Description: to.Ptr("Deployed release 2.4.1 to the web frontend."),
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T14:30:00Z"); return t}()),
+	// 		CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 14, 30, 0, 0, time.UTC)),
 	// 	},
 	// }
 }
@@ -266,7 +266,7 @@ func ExampleEntitiesClient_BeginCreateOrUpdate() {
 	// 							Status: &armcloudhealth.SignalStatus{
 	// 								HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 	// 								Value: to.Ptr[float64](41.2),
-	// 								ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 								ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 							},
 	// 							DisplayName: to.Ptr("Node CPU utilization"),
 	// 							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
@@ -292,7 +292,7 @@ func ExampleEntitiesClient_BeginCreateOrUpdate() {
 	// 						SignalName: to.Ptr("resourcehealth-availabilitystate"),
 	// 						Status: &armcloudhealth.AzureResourceHealthSignalStatus{
 	// 							HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
-	// 							ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 							ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 							AvailabilityState: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateAvailable),
 	// 							Summary: to.Ptr("The managed cluster is available."),
 	// 						},
@@ -308,7 +308,7 @@ func ExampleEntitiesClient_BeginCreateOrUpdate() {
 	// 							Status: &armcloudhealth.SignalStatus{
 	// 								HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 	// 								Value: to.Ptr[float64](0.4),
-	// 								ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 								ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 							},
 	// 							DisplayName: to.Ptr("HTTP 5xx error rate"),
 	// 							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
@@ -332,7 +332,7 @@ func ExampleEntitiesClient_BeginCreateOrUpdate() {
 	// 							Status: &armcloudhealth.SignalStatus{
 	// 								HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 	// 								Value: to.Ptr[float64](180),
-	// 								ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 								ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 							},
 	// 							DisplayName: to.Ptr("p95 request latency"),
 	// 							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
@@ -357,7 +357,7 @@ func ExampleEntitiesClient_BeginCreateOrUpdate() {
 	// 							Status: &armcloudhealth.SignalStatus{
 	// 								HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 	// 								Value: to.Ptr[float64](45.3),
-	// 								ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 								ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 							},
 	// 							DisplayName: to.Ptr("Pod CPU utilization"),
 	// 							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
@@ -387,7 +387,7 @@ func ExampleEntitiesClient_BeginCreateOrUpdate() {
 	// 							Status: &armcloudhealth.SignalStatus{
 	// 								HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 	// 								Value: to.Ptr[float64](0),
-	// 								ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 								ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 							},
 	// 							DisplayName: to.Ptr("Unhealthy pods"),
 	// 							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT5M),
@@ -441,10 +441,10 @@ func ExampleEntitiesClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armcloudhealth.SystemData{
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -518,7 +518,7 @@ func ExampleEntitiesClient_Get() {
 	// 							Status: &armcloudhealth.SignalStatus{
 	// 								HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 	// 								Value: to.Ptr[float64](38.5),
-	// 								ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 								ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 							},
 	// 							DisplayName: to.Ptr("CPU utilization"),
 	// 							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
@@ -544,7 +544,7 @@ func ExampleEntitiesClient_Get() {
 	// 							Status: &armcloudhealth.SignalStatus{
 	// 								HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 	// 								Value: to.Ptr[float64](52.1),
-	// 								ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 								ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 							},
 	// 							DisplayName: to.Ptr("DTU consumption"),
 	// 							RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
@@ -570,7 +570,7 @@ func ExampleEntitiesClient_Get() {
 	// 						SignalName: to.Ptr("resourcehealth-availabilitystate"),
 	// 						Status: &armcloudhealth.AzureResourceHealthSignalStatus{
 	// 							HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
-	// 							ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 							ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 							AvailabilityState: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateAvailable),
 	// 							Summary: to.Ptr("The database is available."),
 	// 						},
@@ -589,10 +589,10 @@ func ExampleEntitiesClient_Get() {
 	// 		SystemData: &armcloudhealth.SystemData{
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -610,8 +610,8 @@ func ExampleEntitiesClient_GetDataAnnotations() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewEntitiesClient().GetDataAnnotations(ctx, "online-store-rg", "online-store", "web-frontend", armcloudhealth.GetDataAnnotationsRequest{
-		StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T00:00:00Z"); return t }()),
-		EndAt:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T23:59:59Z"); return t }()),
+		StartAt: to.Ptr(time.Date(2026, time.May, 3, 0, 0, 0, 0, time.UTC)),
+		EndAt:   to.Ptr(time.Date(2026, time.May, 4, 23, 59, 59, 0, time.UTC)),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -625,7 +625,7 @@ func ExampleEntitiesClient_GetDataAnnotations() {
 	// 		Annotations: []*armcloudhealth.DataAnnotation{
 	// 			{
 	// 				AnnotationID: to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
-	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T14:30:00Z"); return t}()),
+	// 				CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 14, 30, 0, 0, time.UTC)),
 	// 				AnnotationDetails: map[string]*string{
 	// 					"environment": to.Ptr("production"),
 	// 					"deploymentId": to.Ptr("deploy-2026-05-04-001"),
@@ -635,7 +635,7 @@ func ExampleEntitiesClient_GetDataAnnotations() {
 	// 			},
 	// 			{
 	// 				AnnotationID: to.Ptr("b2c3d4e5-f6a7-8901-bcde-f21234567890"),
-	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T03:15:00Z"); return t}()),
+	// 				CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 3, 15, 0, 0, time.UTC)),
 	// 				AnnotationDetails: map[string]*string{
 	// 					"changeType": to.Ptr("ScaleOut"),
 	// 					"instanceCount": to.Ptr("6"),
@@ -659,8 +659,8 @@ func ExampleEntitiesClient_GetHistory() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewEntitiesClient().GetHistory(ctx, "online-store-rg", "online-store", "web-frontend", armcloudhealth.EntityHistoryRequest{
-		StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T09:30:00Z"); return t }()),
-		EndAt:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00Z"); return t }()),
+		StartAt: to.Ptr(time.Date(2026, time.May, 3, 9, 30, 0, 0, time.UTC)),
+		EndAt:   to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		Top:     to.Ptr[int32](100),
 	}, nil)
 	if err != nil {
@@ -676,25 +676,25 @@ func ExampleEntitiesClient_GetHistory() {
 	// 			{
 	// 				PreviousState: to.Ptr(armcloudhealth.HealthStateHealthy),
 	// 				NewState: to.Ptr(armcloudhealth.HealthStateDegraded),
-	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T14:30:00Z"); return t}()),
+	// 				OccurredAt: to.Ptr(time.Date(2026, time.May, 3, 14, 30, 0, 0, time.UTC)),
 	// 				Reason: to.Ptr("SignalTransition"),
 	// 			},
 	// 			{
 	// 				PreviousState: to.Ptr(armcloudhealth.HealthStateDegraded),
 	// 				NewState: to.Ptr(armcloudhealth.HealthStateUnhealthy),
-	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T18:45:00Z"); return t}()),
+	// 				OccurredAt: to.Ptr(time.Date(2026, time.May, 3, 18, 45, 0, 0, time.UTC)),
 	// 				Reason: to.Ptr("ChildEntityTransition"),
 	// 			},
 	// 			{
 	// 				PreviousState: to.Ptr(armcloudhealth.HealthStateUnhealthy),
 	// 				NewState: to.Ptr(armcloudhealth.HealthStateDegraded),
-	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T22:15:00Z"); return t}()),
+	// 				OccurredAt: to.Ptr(time.Date(2026, time.May, 3, 22, 15, 0, 0, time.UTC)),
 	// 				Reason: to.Ptr("ChildEntityTransition"),
 	// 			},
 	// 			{
 	// 				PreviousState: to.Ptr(armcloudhealth.HealthStateDegraded),
 	// 				NewState: to.Ptr(armcloudhealth.HealthStateHealthy),
-	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T02:30:00Z"); return t}()),
+	// 				OccurredAt: to.Ptr(time.Date(2026, time.May, 4, 2, 30, 0, 0, time.UTC)),
 	// 				Reason: to.Ptr("SignalTransition"),
 	// 			},
 	// 		},
@@ -716,8 +716,8 @@ func ExampleEntitiesClient_GetSignalHistory() {
 	}
 	res, err := clientFactory.NewEntitiesClient().GetSignalHistory(ctx, "online-store-rg", "online-store", "web-frontend", armcloudhealth.SignalHistoryRequest{
 		SignalName: to.Ptr("http-5xx"),
-		StartAt:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T09:30:00Z"); return t }()),
-		EndAt:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00Z"); return t }()),
+		StartAt:    to.Ptr(time.Date(2026, time.May, 3, 9, 30, 0, 0, time.UTC)),
+		EndAt:      to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		Top:        to.Ptr[int32](7),
 	}, nil)
 	if err != nil {
@@ -732,37 +732,37 @@ func ExampleEntitiesClient_GetSignalHistory() {
 	// 		SignalName: to.Ptr("http-5xx"),
 	// 		History: []*armcloudhealth.SignalHistoryDataPoint{
 	// 			{
-	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T10:00:00Z"); return t}()),
+	// 				OccurredAt: to.Ptr(time.Date(2026, time.May, 3, 10, 0, 0, 0, time.UTC)),
 	// 				Value: to.Ptr[float64](0),
 	// 				HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 	// 			},
 	// 			{
-	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T14:00:00Z"); return t}()),
+	// 				OccurredAt: to.Ptr(time.Date(2026, time.May, 3, 14, 0, 0, 0, time.UTC)),
 	// 				Value: to.Ptr[float64](3),
 	// 				HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 	// 			},
 	// 			{
-	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T18:00:00Z"); return t}()),
+	// 				OccurredAt: to.Ptr(time.Date(2026, time.May, 3, 18, 0, 0, 0, time.UTC)),
 	// 				Value: to.Ptr[float64](12),
 	// 				HealthState: to.Ptr(armcloudhealth.HealthStateDegraded),
 	// 			},
 	// 			{
-	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-03T22:00:00Z"); return t}()),
+	// 				OccurredAt: to.Ptr(time.Date(2026, time.May, 3, 22, 0, 0, 0, time.UTC)),
 	// 				Value: to.Ptr[float64](27),
 	// 				HealthState: to.Ptr(armcloudhealth.HealthStateUnhealthy),
 	// 			},
 	// 			{
-	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T02:00:00Z"); return t}()),
+	// 				OccurredAt: to.Ptr(time.Date(2026, time.May, 4, 2, 0, 0, 0, time.UTC)),
 	// 				Value: to.Ptr[float64](8),
 	// 				HealthState: to.Ptr(armcloudhealth.HealthStateDegraded),
 	// 			},
 	// 			{
-	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T06:00:00Z"); return t}()),
+	// 				OccurredAt: to.Ptr(time.Date(2026, time.May, 4, 6, 0, 0, 0, time.UTC)),
 	// 				Value: to.Ptr[float64](1),
 	// 				HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 	// 			},
 	// 			{
-	// 				OccurredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:00:00Z"); return t}()),
+	// 				OccurredAt: to.Ptr(time.Date(2026, time.May, 4, 9, 0, 0, 0, time.UTC)),
 	// 				Value: to.Ptr[float64](0),
 	// 				HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 	// 			},
@@ -956,10 +956,10 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 				SystemData: &armcloudhealth.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -990,7 +990,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 									Status: &armcloudhealth.SignalStatus{
 		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 		// 										Value: to.Ptr[float64](0),
-		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 										ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 									},
 		// 									DisplayName: to.Ptr("HTTP 5xx errors"),
 		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
@@ -1016,7 +1016,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 									Status: &armcloudhealth.SignalStatus{
 		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 		// 										Value: to.Ptr[float64](0.42),
-		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 										ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 									},
 		// 									DisplayName: to.Ptr("Average response time"),
 		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
@@ -1042,7 +1042,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 								SignalName: to.Ptr("resourcehealth-availabilitystate"),
 		// 								Status: &armcloudhealth.AzureResourceHealthSignalStatus{
 		// 									HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
-		// 									ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 									ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 									AvailabilityState: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateAvailable),
 		// 									Summary: to.Ptr("The App Service is available."),
 		// 								},
@@ -1058,7 +1058,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 									Status: &armcloudhealth.SignalStatus{
 		// 										HealthState: to.Ptr(armcloudhealth.HealthStateDegraded),
 		// 										Value: to.Ptr[float64](2.3),
-		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 										ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 									},
 		// 									DisplayName: to.Ptr("Failed request rate"),
 		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT5M),
@@ -1108,10 +1108,10 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 				SystemData: &armcloudhealth.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1142,7 +1142,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 									Status: &armcloudhealth.SignalStatus{
 		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 		// 										Value: to.Ptr[float64](41.2),
-		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 										ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 									},
 		// 									DisplayName: to.Ptr("Node CPU utilization"),
 		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
@@ -1168,7 +1168,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 								SignalName: to.Ptr("resourcehealth-availabilitystate"),
 		// 								Status: &armcloudhealth.AzureResourceHealthSignalStatus{
 		// 									HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
-		// 									ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 									ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 									AvailabilityState: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateAvailable),
 		// 									Summary: to.Ptr("The managed cluster is available."),
 		// 								},
@@ -1184,7 +1184,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 									Status: &armcloudhealth.SignalStatus{
 		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 		// 										Value: to.Ptr[float64](0.4),
-		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 										ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 									},
 		// 									DisplayName: to.Ptr("HTTP 5xx error rate"),
 		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
@@ -1208,7 +1208,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 									Status: &armcloudhealth.SignalStatus{
 		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 		// 										Value: to.Ptr[float64](180),
-		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 										ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 									},
 		// 									DisplayName: to.Ptr("p95 request latency"),
 		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
@@ -1233,7 +1233,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 									Status: &armcloudhealth.SignalStatus{
 		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 		// 										Value: to.Ptr[float64](45.3),
-		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 										ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 									},
 		// 									DisplayName: to.Ptr("Pod CPU utilization"),
 		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
@@ -1263,7 +1263,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 									Status: &armcloudhealth.SignalStatus{
 		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 		// 										Value: to.Ptr[float64](0),
-		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 										ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 									},
 		// 									DisplayName: to.Ptr("Unhealthy pods"),
 		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT5M),
@@ -1317,10 +1317,10 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 				SystemData: &armcloudhealth.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1351,7 +1351,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 									Status: &armcloudhealth.SignalStatus{
 		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 		// 										Value: to.Ptr[float64](38.5),
-		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 										ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 									},
 		// 									DisplayName: to.Ptr("CPU utilization"),
 		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
@@ -1377,7 +1377,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 									Status: &armcloudhealth.SignalStatus{
 		// 										HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
 		// 										Value: to.Ptr[float64](52.1),
-		// 										ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 										ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 									},
 		// 									DisplayName: to.Ptr("DTU consumption"),
 		// 									RefreshInterval: to.Ptr(armcloudhealth.RefreshIntervalPT1M),
@@ -1403,7 +1403,7 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 								SignalName: to.Ptr("resourcehealth-availabilitystate"),
 		// 								Status: &armcloudhealth.AzureResourceHealthSignalStatus{
 		// 									HealthState: to.Ptr(armcloudhealth.HealthStateHealthy),
-		// 									ReportedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 									ReportedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 									AvailabilityState: to.Ptr(armcloudhealth.ResourceHealthAvailabilityStateAvailable),
 		// 									Summary: to.Ptr("The database is available."),
 		// 								},
@@ -1422,10 +1422,10 @@ func ExampleEntitiesClient_NewListByHealthModelPager() {
 		// 				SystemData: &armcloudhealth.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

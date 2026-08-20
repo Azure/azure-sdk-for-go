@@ -19,7 +19,7 @@ import (
 // VPNSiteLinkConnectionsClient contains the methods for the VPNSiteLinkConnections group.
 // Don't use this type directly, use NewVPNSiteLinkConnectionsClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type VPNSiteLinkConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,12 +63,7 @@ func (client *VPNSiteLinkConnectionsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return VPNSiteLinkConnectionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VPNSiteLinkConnectionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -99,15 +94,18 @@ func (client *VPNSiteLinkConnectionsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *VPNSiteLinkConnectionsClient) getHandleResponse(resp *http.Response) (VPNSiteLinkConnectionsClientGetResponse, error) {
+func (client *VPNSiteLinkConnectionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (VPNSiteLinkConnectionsClientGetResponse, error) {
 	result := VPNSiteLinkConnectionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VPNSiteLinkConnection); err != nil {
 		return VPNSiteLinkConnectionsClientGetResponse{}, err
 	}

@@ -86,7 +86,7 @@ func ExampleSnapshotsClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/snapshots/snapshot1"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armnetapp.SnapshotProperties{
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
+	// 			Created: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			SnapshotID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca3333"),
 	// 		},
@@ -125,7 +125,7 @@ func ExampleSnapshotsClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/snapshots/snapshot1"),
 		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armnetapp.SnapshotProperties{
-		// 					Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
+		// 					Created: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					SnapshotID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca3333"),
 		// 				},
@@ -196,7 +196,7 @@ func ExampleSnapshotsClient_BeginUpdate() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/snapshots/snapshot1"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armnetapp.SnapshotProperties{
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
+	// 			Created: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			SnapshotID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca3333"),
 	// 		},

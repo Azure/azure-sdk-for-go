@@ -18,6 +18,8 @@ import (
 
 // DatabaseAutomaticTuningClient contains the methods for the DatabaseAutomaticTuning group.
 // Don't use this type directly, use NewDatabaseAutomaticTuningClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type DatabaseAutomaticTuningClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDatabaseAutomaticTuningClient(subscriptionID string, credential azcore.T
 
 // Get - Gets a database's automatic tuning.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -62,12 +62,7 @@ func (client *DatabaseAutomaticTuningClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return DatabaseAutomaticTuningClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabaseAutomaticTuningClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -94,15 +89,18 @@ func (client *DatabaseAutomaticTuningClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabaseAutomaticTuningClient) getHandleResponse(resp *http.Response) (DatabaseAutomaticTuningClientGetResponse, error) {
+func (client *DatabaseAutomaticTuningClient) getHandleResponse(resp *http.Response, successCodes ...int) (DatabaseAutomaticTuningClientGetResponse, error) {
 	result := DatabaseAutomaticTuningClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAutomaticTuning); err != nil {
 		return DatabaseAutomaticTuningClientGetResponse{}, err
 	}
@@ -111,8 +109,6 @@ func (client *DatabaseAutomaticTuningClient) getHandleResponse(resp *http.Respon
 
 // Update - Update automatic tuning properties for target database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -133,12 +129,7 @@ func (client *DatabaseAutomaticTuningClient) Update(ctx context.Context, resourc
 	if err != nil {
 		return DatabaseAutomaticTuningClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabaseAutomaticTuningClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -165,8 +156,8 @@ func (client *DatabaseAutomaticTuningClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -176,8 +167,11 @@ func (client *DatabaseAutomaticTuningClient) updateCreateRequest(ctx context.Con
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DatabaseAutomaticTuningClient) updateHandleResponse(resp *http.Response) (DatabaseAutomaticTuningClientUpdateResponse, error) {
+func (client *DatabaseAutomaticTuningClient) updateHandleResponse(resp *http.Response, successCodes ...int) (DatabaseAutomaticTuningClientUpdateResponse, error) {
 	result := DatabaseAutomaticTuningClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAutomaticTuning); err != nil {
 		return DatabaseAutomaticTuningClientUpdateResponse{}, err
 	}

@@ -18,6 +18,8 @@ import (
 
 // ServiceCountriesClient contains the methods for the ServiceCountries group.
 // Don't use this type directly, use NewServiceCountriesClient() instead.
+//
+// Generated from API version 2025-05-01
 type ServiceCountriesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewServiceCountriesClient(subscriptionID string, credential azcore.TokenCre
 }
 
 // NewListPager - Lists all of the available countries for peering service.
-//
-// Generated from API version 2025-05-01
 //   - options - ServiceCountriesClientListOptions contains the optional parameters for the ServiceCountriesClient.NewListPager
 //     method.
 func (client *ServiceCountriesClient) NewListPager(options *ServiceCountriesClientListOptions) *runtime.Pager[ServiceCountriesClientListResponse] {
@@ -55,39 +55,53 @@ func (client *ServiceCountriesClient) NewListPager(options *ServiceCountriesClie
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ServiceCountriesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServiceCountriesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ServiceCountriesClient) listCreateRequest(ctx context.Context, _ *ServiceCountriesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceCountries"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ServiceCountriesClient) listCreateRequest(ctx context.Context, nextLink string, _ *ServiceCountriesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceCountries"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ServiceCountriesClient) listHandleResponse(resp *http.Response) (ServiceCountriesClientListResponse, error) {
+func (client *ServiceCountriesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ServiceCountriesClientListResponse, error) {
 	result := ServiceCountriesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceCountryListResult); err != nil {
 		return ServiceCountriesClientListResponse{}, err
 	}

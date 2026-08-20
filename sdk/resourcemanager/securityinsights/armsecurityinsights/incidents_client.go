@@ -17,8 +17,6 @@ import (
 	"strings"
 )
 
-const defaultIncidentsClientVersion string = "2025-07-01-preview"
-
 // IncidentsClient contains the methods for the Incidents group.
 // Don't use this type directly, use NewIncidentsClient() instead.
 //
@@ -66,12 +64,7 @@ func (client *IncidentsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return IncidentsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return IncidentsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -98,7 +91,7 @@ func (client *IncidentsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultIncidentsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -109,8 +102,11 @@ func (client *IncidentsClient) createOrUpdateCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *IncidentsClient) createOrUpdateHandleResponse(resp *http.Response) (IncidentsClientCreateOrUpdateResponse, error) {
+func (client *IncidentsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (IncidentsClientCreateOrUpdateResponse, error) {
 	result := IncidentsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Incident); err != nil {
 		return IncidentsClientCreateOrUpdateResponse{}, err
 	}
@@ -138,8 +134,7 @@ func (client *IncidentsClient) Delete(ctx context.Context, resourceGroupName str
 		return IncidentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return IncidentsClientDeleteResponse{}, err
+		return IncidentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return IncidentsClientDeleteResponse{}, nil
 }
@@ -168,7 +163,7 @@ func (client *IncidentsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultIncidentsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -193,12 +188,7 @@ func (client *IncidentsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return IncidentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IncidentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -225,15 +215,18 @@ func (client *IncidentsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultIncidentsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *IncidentsClient) getHandleResponse(resp *http.Response) (IncidentsClientGetResponse, error) {
+func (client *IncidentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (IncidentsClientGetResponse, error) {
 	result := IncidentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Incident); err != nil {
 		return IncidentsClientGetResponse{}, err
 	}
@@ -255,59 +248,73 @@ func (client *IncidentsClient) NewListPager(resourceGroupName string, workspaceN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, nextLink, options)
 			if err != nil {
 				return IncidentsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return IncidentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *IncidentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *IncidentsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *IncidentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, nextLink string, options *IncidentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/incidents"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Orderby != nil {
+			reqQP.Set("$orderby", *options.Orderby)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Orderby != nil {
-		reqQP.Set("$orderby", *options.Orderby)
-	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", defaultIncidentsClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *IncidentsClient) listHandleResponse(resp *http.Response) (IncidentsClientListResponse, error) {
+func (client *IncidentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (IncidentsClientListResponse, error) {
 	result := IncidentsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IncidentList); err != nil {
 		return IncidentsClientListResponse{}, err
 	}
@@ -334,12 +341,7 @@ func (client *IncidentsClient) ListAlerts(ctx context.Context, resourceGroupName
 	if err != nil {
 		return IncidentsClientListAlertsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IncidentsClientListAlertsResponse{}, err
-	}
-	resp, err := client.listAlertsHandleResponse(httpResp)
-	return resp, err
+	return client.listAlertsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAlertsCreateRequest creates the ListAlerts request.
@@ -366,15 +368,18 @@ func (client *IncidentsClient) listAlertsCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultIncidentsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listAlertsHandleResponse handles the ListAlerts response.
-func (client *IncidentsClient) listAlertsHandleResponse(resp *http.Response) (IncidentsClientListAlertsResponse, error) {
+func (client *IncidentsClient) listAlertsHandleResponse(resp *http.Response, successCodes ...int) (IncidentsClientListAlertsResponse, error) {
 	result := IncidentsClientListAlertsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IncidentAlertList); err != nil {
 		return IncidentsClientListAlertsResponse{}, err
 	}
@@ -401,12 +406,7 @@ func (client *IncidentsClient) ListBookmarks(ctx context.Context, resourceGroupN
 	if err != nil {
 		return IncidentsClientListBookmarksResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IncidentsClientListBookmarksResponse{}, err
-	}
-	resp, err := client.listBookmarksHandleResponse(httpResp)
-	return resp, err
+	return client.listBookmarksHandleResponse(httpResp, http.StatusOK)
 }
 
 // listBookmarksCreateRequest creates the ListBookmarks request.
@@ -433,15 +433,18 @@ func (client *IncidentsClient) listBookmarksCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultIncidentsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBookmarksHandleResponse handles the ListBookmarks response.
-func (client *IncidentsClient) listBookmarksHandleResponse(resp *http.Response) (IncidentsClientListBookmarksResponse, error) {
+func (client *IncidentsClient) listBookmarksHandleResponse(resp *http.Response, successCodes ...int) (IncidentsClientListBookmarksResponse, error) {
 	result := IncidentsClientListBookmarksResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IncidentBookmarkList); err != nil {
 		return IncidentsClientListBookmarksResponse{}, err
 	}
@@ -468,12 +471,7 @@ func (client *IncidentsClient) ListEntities(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return IncidentsClientListEntitiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IncidentsClientListEntitiesResponse{}, err
-	}
-	resp, err := client.listEntitiesHandleResponse(httpResp)
-	return resp, err
+	return client.listEntitiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // listEntitiesCreateRequest creates the ListEntities request.
@@ -500,15 +498,18 @@ func (client *IncidentsClient) listEntitiesCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultIncidentsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listEntitiesHandleResponse handles the ListEntities response.
-func (client *IncidentsClient) listEntitiesHandleResponse(resp *http.Response) (IncidentsClientListEntitiesResponse, error) {
+func (client *IncidentsClient) listEntitiesHandleResponse(resp *http.Response, successCodes ...int) (IncidentsClientListEntitiesResponse, error) {
 	result := IncidentsClientListEntitiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IncidentEntitiesResponse); err != nil {
 		return IncidentsClientListEntitiesResponse{}, err
 	}
@@ -535,12 +536,7 @@ func (client *IncidentsClient) RunPlaybook(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return IncidentsClientRunPlaybookResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return IncidentsClientRunPlaybookResponse{}, err
-	}
-	resp, err := client.runPlaybookHandleResponse(httpResp)
-	return resp, err
+	return client.runPlaybookHandleResponse(httpResp, http.StatusNoContent)
 }
 
 // runPlaybookCreateRequest creates the RunPlaybook request.
@@ -567,7 +563,7 @@ func (client *IncidentsClient) runPlaybookCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultIncidentsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.RequestBody != nil {
@@ -581,8 +577,11 @@ func (client *IncidentsClient) runPlaybookCreateRequest(ctx context.Context, res
 }
 
 // runPlaybookHandleResponse handles the RunPlaybook response.
-func (client *IncidentsClient) runPlaybookHandleResponse(resp *http.Response) (IncidentsClientRunPlaybookResponse, error) {
+func (client *IncidentsClient) runPlaybookHandleResponse(resp *http.Response, successCodes ...int) (IncidentsClientRunPlaybookResponse, error) {
 	result := IncidentsClientRunPlaybookResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return IncidentsClientRunPlaybookResponse{}, err
 	}

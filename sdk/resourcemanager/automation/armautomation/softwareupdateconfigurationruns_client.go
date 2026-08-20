@@ -62,12 +62,7 @@ func (client *SoftwareUpdateConfigurationRunsClient) GetByID(ctx context.Context
 	if err != nil {
 		return SoftwareUpdateConfigurationRunsClientGetByIDResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SoftwareUpdateConfigurationRunsClientGetByIDResponse{}, err
-	}
-	resp, err := client.getByIDHandleResponse(httpResp)
-	return resp, err
+	return client.getByIDHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByIDCreateRequest creates the GetByID request.
@@ -104,8 +99,11 @@ func (client *SoftwareUpdateConfigurationRunsClient) getByIDCreateRequest(ctx co
 }
 
 // getByIDHandleResponse handles the GetByID response.
-func (client *SoftwareUpdateConfigurationRunsClient) getByIDHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationRunsClientGetByIDResponse, error) {
+func (client *SoftwareUpdateConfigurationRunsClient) getByIDHandleResponse(resp *http.Response, successCodes ...int) (SoftwareUpdateConfigurationRunsClientGetByIDResponse, error) {
 	result := SoftwareUpdateConfigurationRunsClientGetByIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfigurationRun); err != nil {
 		return SoftwareUpdateConfigurationRunsClientGetByIDResponse{}, err
 	}
@@ -132,12 +130,7 @@ func (client *SoftwareUpdateConfigurationRunsClient) List(ctx context.Context, r
 	if err != nil {
 		return SoftwareUpdateConfigurationRunsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SoftwareUpdateConfigurationRunsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -179,8 +172,11 @@ func (client *SoftwareUpdateConfigurationRunsClient) listCreateRequest(ctx conte
 }
 
 // listHandleResponse handles the List response.
-func (client *SoftwareUpdateConfigurationRunsClient) listHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationRunsClientListResponse, error) {
+func (client *SoftwareUpdateConfigurationRunsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SoftwareUpdateConfigurationRunsClientListResponse, error) {
 	result := SoftwareUpdateConfigurationRunsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfigurationRunListResult); err != nil {
 		return SoftwareUpdateConfigurationRunsClientListResponse{}, err
 	}

@@ -30,6 +30,9 @@ type DevicesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDevicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DevicesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,9 +68,6 @@ func (client *DevicesClient) CreateOrUpdate(ctx context.Context, deviceName stri
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *DevicesClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, dataBoxEdgeDevice Device, _ *DevicesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -151,9 +151,6 @@ func (client *DevicesClient) createOrUpdateSecuritySettings(ctx context.Context,
 // createOrUpdateSecuritySettingsCreateRequest creates the CreateOrUpdateSecuritySettings request.
 func (client *DevicesClient) createOrUpdateSecuritySettingsCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, securitySettings SecuritySettings, _ *DevicesClientBeginCreateOrUpdateSecuritySettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/securitySettings/default/update"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -223,9 +220,6 @@ func (client *DevicesClient) deleteOperation(ctx context.Context, deviceName str
 // deleteCreateRequest creates the Delete request.
 func (client *DevicesClient) deleteCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *DevicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -296,9 +290,6 @@ func (client *DevicesClient) downloadUpdates(ctx context.Context, deviceName str
 // downloadUpdatesCreateRequest creates the DownloadUpdates request.
 func (client *DevicesClient) downloadUpdatesCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *DevicesClientBeginDownloadUpdatesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/downloadUpdates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -343,9 +334,6 @@ func (client *DevicesClient) GenerateCertificate(ctx context.Context, deviceName
 // generateCertificateCreateRequest creates the GenerateCertificate request.
 func (client *DevicesClient) generateCertificateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *DevicesClientGenerateCertificateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/generateCertificate"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -402,9 +390,6 @@ func (client *DevicesClient) Get(ctx context.Context, deviceName string, resourc
 // getCreateRequest creates the Get request.
 func (client *DevicesClient) getCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *DevicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -462,9 +447,6 @@ func (client *DevicesClient) GetExtendedInformation(ctx context.Context, deviceN
 // getExtendedInformationCreateRequest creates the GetExtendedInformation request.
 func (client *DevicesClient) getExtendedInformationCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *DevicesClientGetExtendedInformationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/getExtendedInformation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -522,9 +504,6 @@ func (client *DevicesClient) GetNetworkSettings(ctx context.Context, deviceName 
 // getNetworkSettingsCreateRequest creates the GetNetworkSettings request.
 func (client *DevicesClient) getNetworkSettingsCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *DevicesClientGetNetworkSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/networkSettings/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -586,9 +565,6 @@ func (client *DevicesClient) GetUpdateSummary(ctx context.Context, deviceName st
 // getUpdateSummaryCreateRequest creates the GetUpdateSummary request.
 func (client *DevicesClient) getUpdateSummaryCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *DevicesClientGetUpdateSummaryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/updateSummary/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -672,9 +648,6 @@ func (client *DevicesClient) installUpdates(ctx context.Context, deviceName stri
 // installUpdatesCreateRequest creates the InstallUpdates request.
 func (client *DevicesClient) installUpdatesCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *DevicesClientBeginInstallUpdatesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/installUpdates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -730,9 +703,6 @@ func (client *DevicesClient) listByResourceGroupCreateRequest(ctx context.Contex
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -804,9 +774,6 @@ func (client *DevicesClient) listBySubscriptionCreateRequest(ctx context.Context
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -886,9 +853,6 @@ func (client *DevicesClient) scanForUpdates(ctx context.Context, deviceName stri
 // scanForUpdatesCreateRequest creates the ScanForUpdates request.
 func (client *DevicesClient) scanForUpdatesCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *DevicesClientBeginScanForUpdatesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/scanForUpdates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -932,9 +896,6 @@ func (client *DevicesClient) Update(ctx context.Context, deviceName string, reso
 // updateCreateRequest creates the Update request.
 func (client *DevicesClient) updateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, parameters DevicePatch, _ *DevicesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -996,9 +957,6 @@ func (client *DevicesClient) UpdateExtendedInformation(ctx context.Context, devi
 // updateExtendedInformationCreateRequest creates the UpdateExtendedInformation request.
 func (client *DevicesClient) updateExtendedInformationCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, parameters DeviceExtendedInfoPatch, _ *DevicesClientUpdateExtendedInformationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/updateExtendedInformation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")
@@ -1060,9 +1018,6 @@ func (client *DevicesClient) UploadCertificate(ctx context.Context, deviceName s
 // uploadCertificateCreateRequest creates the UploadCertificate request.
 func (client *DevicesClient) uploadCertificateCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, parameters UploadCertificateRequest, _ *DevicesClientUploadCertificateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/uploadCertificate"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deviceName == "" {
 		return nil, errors.New("parameter deviceName cannot be empty")

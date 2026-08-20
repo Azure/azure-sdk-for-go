@@ -30,6 +30,9 @@ type IntelligencePacksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIntelligencePacksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntelligencePacksClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -71,9 +74,6 @@ func (client *IntelligencePacksClient) Disable(ctx context.Context, resourceGrou
 // disableCreateRequest creates the Disable request.
 func (client *IntelligencePacksClient) disableCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string, _ *IntelligencePacksClientDisableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/intelligencePacks/{intelligencePackName}/Disable"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -127,9 +127,6 @@ func (client *IntelligencePacksClient) Enable(ctx context.Context, resourceGroup
 // enableCreateRequest creates the Enable request.
 func (client *IntelligencePacksClient) enableCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string, _ *IntelligencePacksClientEnableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/intelligencePacks/{intelligencePackName}/Enable"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -178,9 +175,6 @@ func (client *IntelligencePacksClient) List(ctx context.Context, resourceGroupNa
 // listCreateRequest creates the List request.
 func (client *IntelligencePacksClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *IntelligencePacksClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/intelligencePacks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

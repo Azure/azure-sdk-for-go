@@ -30,6 +30,9 @@ type NewRegionFrontloadReleaseClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNewRegionFrontloadReleaseClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NewRegionFrontloadReleaseClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,9 +70,6 @@ func (client *NewRegionFrontloadReleaseClient) CreateOrUpdate(ctx context.Contex
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *NewRegionFrontloadReleaseClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, releaseName string, properties FrontloadPayload, _ *NewRegionFrontloadReleaseClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/newRegionFrontloadRelease/{releaseName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
 		return nil, errors.New("parameter providerNamespace cannot be empty")
@@ -131,9 +131,6 @@ func (client *NewRegionFrontloadReleaseClient) GenerateManifest(ctx context.Cont
 // generateManifestCreateRequest creates the GenerateManifest request.
 func (client *NewRegionFrontloadReleaseClient) generateManifestCreateRequest(ctx context.Context, providerNamespace string, properties FrontloadPayload, _ *NewRegionFrontloadReleaseClientGenerateManifestOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/generateNewRegionFrontloadManifest"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
 		return nil, errors.New("parameter providerNamespace cannot be empty")
@@ -192,9 +189,6 @@ func (client *NewRegionFrontloadReleaseClient) Get(ctx context.Context, provider
 // getCreateRequest creates the Get request.
 func (client *NewRegionFrontloadReleaseClient) getCreateRequest(ctx context.Context, providerNamespace string, releaseName string, _ *NewRegionFrontloadReleaseClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/newRegionFrontloadRelease/{releaseName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
 		return nil, errors.New("parameter providerNamespace cannot be empty")
@@ -256,9 +250,6 @@ func (client *NewRegionFrontloadReleaseClient) Stop(ctx context.Context, provide
 // stopCreateRequest creates the Stop request.
 func (client *NewRegionFrontloadReleaseClient) stopCreateRequest(ctx context.Context, providerNamespace string, releaseName string, _ *NewRegionFrontloadReleaseClientStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/newRegionFrontloadRelease/{releaseName}/stop"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
 		return nil, errors.New("parameter providerNamespace cannot be empty")

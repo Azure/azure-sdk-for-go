@@ -30,6 +30,9 @@ type ManagementClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,9 +71,6 @@ func (client *ManagementClient) CheckEndpointNameAvailability(ctx context.Contex
 // checkEndpointNameAvailabilityCreateRequest creates the CheckEndpointNameAvailability request.
 func (client *ManagementClient) checkEndpointNameAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, checkEndpointNameAvailabilityInput CheckEndpointNameAvailabilityInput, _ *ManagementClientCheckEndpointNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/checkEndpointNameAvailability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -182,9 +182,6 @@ func (client *ManagementClient) CheckNameAvailabilityWithSubscription(ctx contex
 // checkNameAvailabilityWithSubscriptionCreateRequest creates the CheckNameAvailabilityWithSubscription request.
 func (client *ManagementClient) checkNameAvailabilityWithSubscriptionCreateRequest(ctx context.Context, checkNameAvailabilityInput CheckNameAvailabilityInput, _ *ManagementClientCheckNameAvailabilityWithSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/checkNameAvailability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -240,9 +237,6 @@ func (client *ManagementClient) ValidateProbe(ctx context.Context, validateProbe
 // validateProbeCreateRequest creates the ValidateProbe request.
 func (client *ManagementClient) validateProbeCreateRequest(ctx context.Context, validateProbeInput ValidateProbeInput, _ *ManagementClientValidateProbeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/validateProbe"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

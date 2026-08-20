@@ -30,6 +30,9 @@ type ConfigurationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,9 +73,6 @@ func (client *ConfigurationsClient) CreateInResourceGroup(ctx context.Context, c
 // createInResourceGroupCreateRequest creates the CreateInResourceGroup request.
 func (client *ConfigurationsClient) createInResourceGroupCreateRequest(ctx context.Context, configurationName ConfigurationName, resourceGroup string, configContract ConfigData, _ *ConfigurationsClientCreateInResourceGroupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Advisor/configurations/{configurationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if configurationName == "" {
 		return nil, errors.New("parameter configurationName cannot be empty")
@@ -137,9 +137,6 @@ func (client *ConfigurationsClient) CreateInSubscription(ctx context.Context, co
 // createInSubscriptionCreateRequest creates the CreateInSubscription request.
 func (client *ConfigurationsClient) createInSubscriptionCreateRequest(ctx context.Context, configurationName ConfigurationName, configContract ConfigData, _ *ConfigurationsClientCreateInSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/configurations/{configurationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if configurationName == "" {
 		return nil, errors.New("parameter configurationName cannot be empty")
@@ -210,9 +207,6 @@ func (client *ConfigurationsClient) listByResourceGroupCreateRequest(ctx context
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Advisor/configurations"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroup == "" {
 			return nil, errors.New("parameter resourceGroup cannot be empty")
@@ -283,9 +277,6 @@ func (client *ConfigurationsClient) listBySubscriptionCreateRequest(ctx context.
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/configurations"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {

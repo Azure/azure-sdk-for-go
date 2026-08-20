@@ -31,6 +31,9 @@ type WhatIfResultsAtResourceGroupClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWhatIfResultsAtResourceGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WhatIfResultsAtResourceGroupClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -91,9 +94,6 @@ func (client *WhatIfResultsAtResourceGroupClient) createOrUpdate(ctx context.Con
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *WhatIfResultsAtResourceGroupClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, deploymentStacksWhatIfResultName string, resource WhatIfResult, _ *WhatIfResultsAtResourceGroupClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -148,9 +148,6 @@ func (client *WhatIfResultsAtResourceGroupClient) Delete(ctx context.Context, re
 // deleteCreateRequest creates the Delete request.
 func (client *WhatIfResultsAtResourceGroupClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, deploymentStacksWhatIfResultName string, options *WhatIfResultsAtResourceGroupClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -211,9 +208,6 @@ func (client *WhatIfResultsAtResourceGroupClient) Get(ctx context.Context, resou
 // getCreateRequest creates the Get request.
 func (client *WhatIfResultsAtResourceGroupClient) getCreateRequest(ctx context.Context, resourceGroupName string, deploymentStacksWhatIfResultName string, _ *WhatIfResultsAtResourceGroupClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -282,9 +276,6 @@ func (client *WhatIfResultsAtResourceGroupClient) listCreateRequest(ctx context.
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -366,9 +357,6 @@ func (client *WhatIfResultsAtResourceGroupClient) whatIf(ctx context.Context, re
 // whatIfCreateRequest creates the WhatIf request.
 func (client *WhatIfResultsAtResourceGroupClient) whatIfCreateRequest(ctx context.Context, resourceGroupName string, deploymentStacksWhatIfResultName string, _ *WhatIfResultsAtResourceGroupClientBeginWhatIfOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}/whatIf"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

@@ -30,6 +30,9 @@ type DefaultRolloutsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDefaultRolloutsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DefaultRolloutsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -90,9 +93,6 @@ func (client *DefaultRolloutsClient) createOrUpdate(ctx context.Context, provide
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *DefaultRolloutsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, _ *DefaultRolloutsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
 		return nil, errors.New("parameter providerNamespace cannot be empty")
@@ -145,9 +145,6 @@ func (client *DefaultRolloutsClient) Delete(ctx context.Context, providerNamespa
 // deleteCreateRequest creates the Delete request.
 func (client *DefaultRolloutsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, _ *DefaultRolloutsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
 		return nil, errors.New("parameter providerNamespace cannot be empty")
@@ -192,9 +189,6 @@ func (client *DefaultRolloutsClient) Get(ctx context.Context, providerNamespace 
 // getCreateRequest creates the Get request.
 func (client *DefaultRolloutsClient) getCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, _ *DefaultRolloutsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
 		return nil, errors.New("parameter providerNamespace cannot be empty")
@@ -263,9 +257,6 @@ func (client *DefaultRolloutsClient) listByProviderRegistrationCreateRequest(ctx
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if providerNamespace == "" {
 			return nil, errors.New("parameter providerNamespace cannot be empty")
@@ -327,9 +318,6 @@ func (client *DefaultRolloutsClient) Stop(ctx context.Context, providerNamespace
 // stopCreateRequest creates the Stop request.
 func (client *DefaultRolloutsClient) stopCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, _ *DefaultRolloutsClientStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}/stop"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
 		return nil, errors.New("parameter providerNamespace cannot be empty")

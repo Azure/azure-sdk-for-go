@@ -30,6 +30,9 @@ type MonitorClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMonitorClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MonitorClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -88,9 +91,6 @@ func (client *MonitorClient) upgrade(ctx context.Context, resourceGroupName stri
 // upgradeCreateRequest creates the Upgrade request.
 func (client *MonitorClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorClientBeginUpgradeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/upgrade"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

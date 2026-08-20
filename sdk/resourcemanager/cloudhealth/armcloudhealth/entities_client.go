@@ -31,6 +31,9 @@ type EntitiesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEntitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EntitiesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,9 +73,6 @@ func (client *EntitiesClient) AddDataAnnotation(ctx context.Context, resourceGro
 // addDataAnnotationCreateRequest creates the AddDataAnnotation request.
 func (client *EntitiesClient) addDataAnnotationCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body AddDataAnnotationRequest, _ *EntitiesClientAddDataAnnotationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/addDataAnnotation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -163,9 +163,6 @@ func (client *EntitiesClient) createOrUpdate(ctx context.Context, resourceGroupN
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *EntitiesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, resource Entity, _ *EntitiesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -242,9 +239,6 @@ func (client *EntitiesClient) deleteOperation(ctx context.Context, resourceGroup
 // deleteCreateRequest creates the Delete request.
 func (client *EntitiesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, _ *EntitiesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -294,9 +288,6 @@ func (client *EntitiesClient) Get(ctx context.Context, resourceGroupName string,
 // getCreateRequest creates the Get request.
 func (client *EntitiesClient) getCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, _ *EntitiesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -361,9 +352,6 @@ func (client *EntitiesClient) GetDataAnnotations(ctx context.Context, resourceGr
 // getDataAnnotationsCreateRequest creates the GetDataAnnotations request.
 func (client *EntitiesClient) getDataAnnotationsCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body GetDataAnnotationsRequest, _ *EntitiesClientGetDataAnnotationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/getDataAnnotations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -431,9 +419,6 @@ func (client *EntitiesClient) GetHistory(ctx context.Context, resourceGroupName 
 // getHistoryCreateRequest creates the GetHistory request.
 func (client *EntitiesClient) getHistoryCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body EntityHistoryRequest, _ *EntitiesClientGetHistoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/getHistory"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -502,9 +487,6 @@ func (client *EntitiesClient) GetSignalHistory(ctx context.Context, resourceGrou
 // getSignalHistoryCreateRequest creates the GetSignalHistory request.
 func (client *EntitiesClient) getSignalHistoryCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body SignalHistoryRequest, _ *EntitiesClientGetSignalHistoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/getSignalHistory"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -573,9 +555,6 @@ func (client *EntitiesClient) GetSignalRecommendations(ctx context.Context, reso
 // getSignalRecommendationsCreateRequest creates the GetSignalRecommendations request.
 func (client *EntitiesClient) getSignalRecommendationsCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, _ *EntitiesClientGetSignalRecommendationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/getSignalRecommendations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -643,9 +622,6 @@ func (client *EntitiesClient) IngestHealthReport(ctx context.Context, resourceGr
 // ingestHealthReportCreateRequest creates the IngestHealthReport request.
 func (client *EntitiesClient) ingestHealthReportCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, entityName string, body HealthReportRequest, _ *EntitiesClientIngestHealthReportOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities/{entityName}/ingestHealthReport"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -710,9 +686,6 @@ func (client *EntitiesClient) listByHealthModelCreateRequest(ctx context.Context
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")

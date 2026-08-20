@@ -30,6 +30,9 @@ type StorageTargetClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewStorageTargetClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StorageTargetClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -93,9 +96,6 @@ func (client *StorageTargetClient) flush(ctx context.Context, resourceGroupName 
 // flushCreateRequest creates the Flush request.
 func (client *StorageTargetClient) flushCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, _ *StorageTargetClientBeginFlushOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/flush"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -171,9 +171,6 @@ func (client *StorageTargetClient) invalidate(ctx context.Context, resourceGroup
 // invalidateCreateRequest creates the Invalidate request.
 func (client *StorageTargetClient) invalidateCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, _ *StorageTargetClientBeginInvalidateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/invalidate"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -247,9 +244,6 @@ func (client *StorageTargetClient) resume(ctx context.Context, resourceGroupName
 // resumeCreateRequest creates the Resume request.
 func (client *StorageTargetClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, _ *StorageTargetClientBeginResumeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/resume"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -323,9 +317,6 @@ func (client *StorageTargetClient) suspend(ctx context.Context, resourceGroupNam
 // suspendCreateRequest creates the Suspend request.
 func (client *StorageTargetClient) suspendCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, _ *StorageTargetClientBeginSuspendOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/suspend"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

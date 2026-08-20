@@ -30,6 +30,9 @@ type ScheduledEventClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScheduledEventClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScheduledEventClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -71,9 +74,6 @@ func (client *ScheduledEventClient) Acknowledge(ctx context.Context, resourceGro
 // acknowledgeCreateRequest creates the Acknowledge request.
 func (client *ScheduledEventClient) acknowledgeCreateRequest(ctx context.Context, resourceGroupName string, resourceType string, resourceName string, scheduledEventID string, _ *ScheduledEventClientAcknowledgeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Compute/{resourceType}/{resourceName}/providers/Microsoft.Maintenance/scheduledevents/{scheduledEventId}/acknowledge"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

@@ -30,6 +30,9 @@ type ConnectorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectorsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -89,9 +92,6 @@ func (client *ConnectorsClient) createOrUpdate(ctx context.Context, connectorNam
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ConnectorsClient) createOrUpdateCreateRequest(ctx context.Context, connectorName string, resource Connector, _ *ConnectorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if connectorName == "" {
 		return nil, errors.New("parameter connectorName cannot be empty")
@@ -139,9 +139,6 @@ func (client *ConnectorsClient) Delete(ctx context.Context, connectorName string
 // deleteCreateRequest creates the Delete request.
 func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, connectorName string, _ *ConnectorsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if connectorName == "" {
 		return nil, errors.New("parameter connectorName cannot be empty")
@@ -181,9 +178,6 @@ func (client *ConnectorsClient) Get(ctx context.Context, connectorName string, o
 // getCreateRequest creates the Get request.
 func (client *ConnectorsClient) getCreateRequest(ctx context.Context, connectorName string, _ *ConnectorsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if connectorName == "" {
 		return nil, errors.New("parameter connectorName cannot be empty")
@@ -247,9 +241,6 @@ func (client *ConnectorsClient) listBySubscriptionCreateRequest(ctx context.Cont
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -304,9 +295,6 @@ func (client *ConnectorsClient) Update(ctx context.Context, connectorName string
 // updateCreateRequest creates the Update request.
 func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, connectorName string, properties ConnectorUpdate, _ *ConnectorsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/connectors/{connectorName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if connectorName == "" {
 		return nil, errors.New("parameter connectorName cannot be empty")

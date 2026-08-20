@@ -30,6 +30,9 @@ type ReplicationFabricsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReplicationFabricsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationFabricsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -94,9 +97,6 @@ func (client *ReplicationFabricsClient) checkConsistency(ctx context.Context, re
 // checkConsistencyCreateRequest creates the CheckConsistency request.
 func (client *ReplicationFabricsClient) checkConsistencyCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, _ *ReplicationFabricsClientBeginCheckConsistencyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/checkConsistency"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -175,9 +175,6 @@ func (client *ReplicationFabricsClient) create(ctx context.Context, resourceGrou
 // createCreateRequest creates the Create request.
 func (client *ReplicationFabricsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, input FabricCreationInput, _ *ReplicationFabricsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -259,9 +256,6 @@ func (client *ReplicationFabricsClient) deleteOperation(ctx context.Context, res
 // deleteCreateRequest creates the Delete request.
 func (client *ReplicationFabricsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, _ *ReplicationFabricsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/remove"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -313,9 +307,6 @@ func (client *ReplicationFabricsClient) Get(ctx context.Context, resourceGroupNa
 // getCreateRequest creates the Get request.
 func (client *ReplicationFabricsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, options *ReplicationFabricsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -394,9 +385,6 @@ func (client *ReplicationFabricsClient) listCreateRequest(ctx context.Context, r
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -487,9 +475,6 @@ func (client *ReplicationFabricsClient) migrateToAAD(ctx context.Context, resour
 // migrateToAADCreateRequest creates the MigrateToAAD request.
 func (client *ReplicationFabricsClient) migrateToAADCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, _ *ReplicationFabricsClientBeginMigrateToAADOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/migratetoaad"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -566,9 +551,6 @@ func (client *ReplicationFabricsClient) purge(ctx context.Context, resourceGroup
 // purgeCreateRequest creates the Purge request.
 func (client *ReplicationFabricsClient) purgeCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, _ *ReplicationFabricsClientBeginPurgeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -646,9 +628,6 @@ func (client *ReplicationFabricsClient) reassociateGateway(ctx context.Context, 
 // reassociateGatewayCreateRequest creates the ReassociateGateway request.
 func (client *ReplicationFabricsClient) reassociateGatewayCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, failoverProcessServerRequest FailoverProcessServerRequest, _ *ReplicationFabricsClientBeginReassociateGatewayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/reassociateGateway"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -730,9 +709,6 @@ func (client *ReplicationFabricsClient) removeInfra(ctx context.Context, resourc
 // removeInfraCreateRequest creates the RemoveInfra request.
 func (client *ReplicationFabricsClient) removeInfraCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, _ *ReplicationFabricsClientBeginRemoveInfraOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/removeInfra"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -810,9 +786,6 @@ func (client *ReplicationFabricsClient) renewCertificate(ctx context.Context, re
 // renewCertificateCreateRequest creates the RenewCertificate request.
 func (client *ReplicationFabricsClient) renewCertificateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, renewCertificate RenewCertificateInput, _ *ReplicationFabricsClientBeginRenewCertificateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/renewCertificate"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

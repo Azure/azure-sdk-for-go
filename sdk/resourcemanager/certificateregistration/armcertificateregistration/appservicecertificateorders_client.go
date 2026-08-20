@@ -30,6 +30,9 @@ type AppServiceCertificateOrdersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAppServiceCertificateOrdersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AppServiceCertificateOrdersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -94,9 +97,6 @@ func (client *AppServiceCertificateOrdersClient) createOrUpdate(ctx context.Cont
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *AppServiceCertificateOrdersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, certificateDistinguishedName AppServiceCertificateOrder, _ *AppServiceCertificateOrdersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -175,9 +175,6 @@ func (client *AppServiceCertificateOrdersClient) createOrUpdateCertificate(ctx c
 // createOrUpdateCertificateCreateRequest creates the CreateOrUpdateCertificate request.
 func (client *AppServiceCertificateOrdersClient) createOrUpdateCertificateCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate AppServiceCertificateResource, _ *AppServiceCertificateOrdersClientBeginCreateOrUpdateCertificateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -237,9 +234,6 @@ func (client *AppServiceCertificateOrdersClient) Delete(ctx context.Context, res
 // deleteCreateRequest creates the Delete request.
 func (client *AppServiceCertificateOrdersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, _ *AppServiceCertificateOrdersClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -291,9 +285,6 @@ func (client *AppServiceCertificateOrdersClient) DeleteCertificate(ctx context.C
 // deleteCertificateCreateRequest creates the DeleteCertificate request.
 func (client *AppServiceCertificateOrdersClient) deleteCertificateCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, _ *AppServiceCertificateOrdersClientDeleteCertificateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -345,9 +336,6 @@ func (client *AppServiceCertificateOrdersClient) Get(ctx context.Context, resour
 // getCreateRequest creates the Get request.
 func (client *AppServiceCertificateOrdersClient) getCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, _ *AppServiceCertificateOrdersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -409,9 +397,6 @@ func (client *AppServiceCertificateOrdersClient) GetCertificate(ctx context.Cont
 // getCertificateCreateRequest creates the GetCertificate request.
 func (client *AppServiceCertificateOrdersClient) getCertificateCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, _ *AppServiceCertificateOrdersClientGetCertificateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -485,9 +470,6 @@ func (client *AppServiceCertificateOrdersClient) listCreateRequest(ctx context.C
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -555,9 +537,6 @@ func (client *AppServiceCertificateOrdersClient) listByResourceGroupCreateReques
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -630,9 +609,6 @@ func (client *AppServiceCertificateOrdersClient) listCertificatesCreateRequest(c
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -702,9 +678,6 @@ func (client *AppServiceCertificateOrdersClient) Reissue(ctx context.Context, re
 // reissueCreateRequest creates the Reissue request.
 func (client *AppServiceCertificateOrdersClient) reissueCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, reissueCertificateOrderRequest ReissueCertificateOrderRequest, _ *AppServiceCertificateOrdersClientReissueOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/reissue"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -760,9 +733,6 @@ func (client *AppServiceCertificateOrdersClient) Renew(ctx context.Context, reso
 // renewCreateRequest creates the Renew request.
 func (client *AppServiceCertificateOrdersClient) renewCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, renewCertificateOrderRequest RenewCertificateOrderRequest, _ *AppServiceCertificateOrdersClientRenewOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/renew"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -817,9 +787,6 @@ func (client *AppServiceCertificateOrdersClient) ResendEmail(ctx context.Context
 // resendEmailCreateRequest creates the ResendEmail request.
 func (client *AppServiceCertificateOrdersClient) resendEmailCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, _ *AppServiceCertificateOrdersClientResendEmailOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/resendEmail"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -871,9 +838,6 @@ func (client *AppServiceCertificateOrdersClient) ResendRequestEmails(ctx context
 // resendRequestEmailsCreateRequest creates the ResendRequestEmails request.
 func (client *AppServiceCertificateOrdersClient) resendRequestEmailsCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, nameIdentifier NameIdentifier, _ *AppServiceCertificateOrdersClientResendRequestEmailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/resendRequestEmails"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -925,9 +889,6 @@ func (client *AppServiceCertificateOrdersClient) RetrieveCertificateActions(ctx 
 // retrieveCertificateActionsCreateRequest creates the RetrieveCertificateActions request.
 func (client *AppServiceCertificateOrdersClient) retrieveCertificateActionsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *AppServiceCertificateOrdersClientRetrieveCertificateActionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveCertificateActions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -988,9 +949,6 @@ func (client *AppServiceCertificateOrdersClient) RetrieveCertificateEmailHistory
 // retrieveCertificateEmailHistoryCreateRequest creates the RetrieveCertificateEmailHistory request.
 func (client *AppServiceCertificateOrdersClient) retrieveCertificateEmailHistoryCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *AppServiceCertificateOrdersClientRetrieveCertificateEmailHistoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveEmailHistory"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1057,9 +1015,6 @@ func (client *AppServiceCertificateOrdersClient) RetrieveSiteSeal(ctx context.Co
 // retrieveSiteSealCreateRequest creates the RetrieveSiteSeal request.
 func (client *AppServiceCertificateOrdersClient) retrieveSiteSealCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, siteSealRequest SiteSealRequest, _ *AppServiceCertificateOrdersClientRetrieveSiteSealOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/retrieveSiteSeal"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1125,9 +1080,6 @@ func (client *AppServiceCertificateOrdersClient) Update(ctx context.Context, res
 // updateCreateRequest creates the Update request.
 func (client *AppServiceCertificateOrdersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, certificateDistinguishedName AppServiceCertificateOrderPatchResource, _ *AppServiceCertificateOrdersClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1194,9 +1146,6 @@ func (client *AppServiceCertificateOrdersClient) UpdateCertificate(ctx context.C
 // updateCertificateCreateRequest creates the UpdateCertificate request.
 func (client *AppServiceCertificateOrdersClient) updateCertificateCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate AppServiceCertificatePatchResource, _ *AppServiceCertificateOrdersClientUpdateCertificateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1267,9 +1216,6 @@ func (client *AppServiceCertificateOrdersClient) ValidatePurchaseInformation(ctx
 // validatePurchaseInformationCreateRequest creates the ValidatePurchaseInformation request.
 func (client *AppServiceCertificateOrdersClient) validatePurchaseInformationCreateRequest(ctx context.Context, appServiceCertificateOrder AppServiceCertificateOrder, _ *AppServiceCertificateOrdersClientValidatePurchaseInformationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/validateCertificateRegistrationInformation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -1316,9 +1262,6 @@ func (client *AppServiceCertificateOrdersClient) VerifyDomainOwnership(ctx conte
 // verifyDomainOwnershipCreateRequest creates the VerifyDomainOwnership request.
 func (client *AppServiceCertificateOrdersClient) verifyDomainOwnershipCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, _ *AppServiceCertificateOrdersClientVerifyDomainOwnershipOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/verifyDomainOwnership"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

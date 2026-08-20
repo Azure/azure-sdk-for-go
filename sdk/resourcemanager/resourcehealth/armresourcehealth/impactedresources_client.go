@@ -30,6 +30,9 @@ type ImpactedResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewImpactedResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImpactedResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,9 +69,6 @@ func (client *ImpactedResourcesClient) Get(ctx context.Context, eventTrackingID 
 // getCreateRequest creates the Get request.
 func (client *ImpactedResourcesClient) getCreateRequest(ctx context.Context, eventTrackingID string, impactedResourceName string, _ *ImpactedResourcesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/impactedResources/{impactedResourceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if eventTrackingID == "" {
 		return nil, errors.New("parameter eventTrackingID cannot be empty")
@@ -194,9 +194,6 @@ func (client *ImpactedResourcesClient) listBySubscriptionIDAndEventIDCreateReque
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/impactedResources"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if eventTrackingID == "" {
 			return nil, errors.New("parameter eventTrackingID cannot be empty")

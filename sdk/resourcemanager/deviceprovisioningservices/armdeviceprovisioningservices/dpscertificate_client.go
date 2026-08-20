@@ -33,6 +33,9 @@ type DpsCertificateClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDpsCertificateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DpsCertificateClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -72,9 +75,6 @@ func (client *DpsCertificateClient) CreateOrUpdate(ctx context.Context, resource
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *DpsCertificateClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, certificateName string, certificateDescription CertificateResponse, options *DpsCertificateClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -145,9 +145,6 @@ func (client *DpsCertificateClient) Delete(ctx context.Context, resourceGroupNam
 // deleteCreateRequest creates the Delete request.
 func (client *DpsCertificateClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ifMatch string, provisioningServiceName string, certificateName string, options *DpsCertificateClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -221,9 +218,6 @@ func (client *DpsCertificateClient) GenerateVerificationCode(ctx context.Context
 // generateVerificationCodeCreateRequest creates the GenerateVerificationCode request.
 func (client *DpsCertificateClient) generateVerificationCodeCreateRequest(ctx context.Context, certificateName string, ifMatch string, resourceGroupName string, provisioningServiceName string, options *DpsCertificateClientGenerateVerificationCodeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}/generateVerificationCode"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if certificateName == "" {
 		return nil, errors.New("parameter certificateName cannot be empty")
@@ -309,9 +303,6 @@ func (client *DpsCertificateClient) Get(ctx context.Context, certificateName str
 // getCreateRequest creates the Get request.
 func (client *DpsCertificateClient) getCreateRequest(ctx context.Context, certificateName string, resourceGroupName string, provisioningServiceName string, options *DpsCertificateClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if certificateName == "" {
 		return nil, errors.New("parameter certificateName cannot be empty")
@@ -376,9 +367,6 @@ func (client *DpsCertificateClient) List(ctx context.Context, resourceGroupName 
 // listCreateRequest creates the List request.
 func (client *DpsCertificateClient) listCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, _ *DpsCertificateClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -437,9 +425,6 @@ func (client *DpsCertificateClient) VerifyCertificate(ctx context.Context, certi
 // verifyCertificateCreateRequest creates the VerifyCertificate request.
 func (client *DpsCertificateClient) verifyCertificateCreateRequest(ctx context.Context, certificateName string, ifMatch string, resourceGroupName string, provisioningServiceName string, request VerificationCodeRequest, options *DpsCertificateClientVerifyCertificateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/certificates/{certificateName}/verify"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if certificateName == "" {
 		return nil, errors.New("parameter certificateName cannot be empty")

@@ -30,6 +30,9 @@ type MapsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMapsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MapsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -90,9 +93,6 @@ func (client *MapsClient) createOrUpdate(ctx context.Context, resourceGroupName 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *MapsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, mapName string, resource MapsResource, _ *MapsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -164,9 +164,6 @@ func (client *MapsClient) deleteOperation(ctx context.Context, resourceGroupName
 // deleteCreateRequest creates the Delete request.
 func (client *MapsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, mapName string, _ *MapsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -235,9 +232,6 @@ func (client *MapsClient) exportDependencies(ctx context.Context, resourceGroupN
 // exportDependenciesCreateRequest creates the ExportDependencies request.
 func (client *MapsClient) exportDependenciesCreateRequest(ctx context.Context, resourceGroupName string, mapName string, body ExportDependenciesRequest, _ *MapsClientBeginExportDependenciesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/exportDependencies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -287,9 +281,6 @@ func (client *MapsClient) Get(ctx context.Context, resourceGroupName string, map
 // getCreateRequest creates the Get request.
 func (client *MapsClient) getCreateRequest(ctx context.Context, resourceGroupName string, mapName string, _ *MapsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -371,9 +362,6 @@ func (client *MapsClient) getConnectionsForProcessOnFocusedMachine(ctx context.C
 // getConnectionsForProcessOnFocusedMachineCreateRequest creates the GetConnectionsForProcessOnFocusedMachine request.
 func (client *MapsClient) getConnectionsForProcessOnFocusedMachineCreateRequest(ctx context.Context, resourceGroupName string, mapName string, body GetConnectionsForProcessOnFocusedMachineRequest, _ *MapsClientBeginGetConnectionsForProcessOnFocusedMachineOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/getConnectionsForProcessOnFocusedMachine"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -446,9 +434,6 @@ func (client *MapsClient) getConnectionsWithConnectedMachineForFocusedMachine(ct
 // getConnectionsWithConnectedMachineForFocusedMachineCreateRequest creates the GetConnectionsWithConnectedMachineForFocusedMachine request.
 func (client *MapsClient) getConnectionsWithConnectedMachineForFocusedMachineCreateRequest(ctx context.Context, resourceGroupName string, mapName string, body GetConnectionsWithConnectedMachineForFocusedMachineRequest, _ *MapsClientBeginGetConnectionsWithConnectedMachineForFocusedMachineOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/getConnectionsWithConnectedMachineForFocusedMachine"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -521,9 +506,6 @@ func (client *MapsClient) getDependencyViewForFocusedMachine(ctx context.Context
 // getDependencyViewForFocusedMachineCreateRequest creates the GetDependencyViewForFocusedMachine request.
 func (client *MapsClient) getDependencyViewForFocusedMachineCreateRequest(ctx context.Context, resourceGroupName string, mapName string, body GetDependencyViewForFocusedMachineRequest, _ *MapsClientBeginGetDependencyViewForFocusedMachineOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}/getDependencyViewForFocusedMachine"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -583,9 +565,6 @@ func (client *MapsClient) listByResourceGroupCreateRequest(ctx context.Context, 
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -654,9 +633,6 @@ func (client *MapsClient) listBySubscriptionCreateRequest(ctx context.Context, n
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DependencyMap/maps"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -734,9 +710,6 @@ func (client *MapsClient) update(ctx context.Context, resourceGroupName string, 
 // updateCreateRequest creates the Update request.
 func (client *MapsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, mapName string, properties MapsResourceTagsUpdate, _ *MapsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DependencyMap/maps/{mapName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

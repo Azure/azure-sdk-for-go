@@ -30,6 +30,9 @@ type SQLResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSQLResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -94,9 +97,6 @@ func (client *SQLResourcesClient) createUpdateClientEncryptionKey(ctx context.Co
 // createUpdateClientEncryptionKeyCreateRequest creates the CreateUpdateClientEncryptionKey request.
 func (client *SQLResourcesClient) createUpdateClientEncryptionKeyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, clientEncryptionKeyName string, createUpdateClientEncryptionKeyParameters ClientEncryptionKeyCreateUpdateParameters, _ *SQLResourcesClientBeginCreateUpdateClientEncryptionKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys/{clientEncryptionKeyName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -180,9 +180,6 @@ func (client *SQLResourcesClient) createUpdateSQLContainer(ctx context.Context, 
 // createUpdateSQLContainerCreateRequest creates the CreateUpdateSQLContainer request.
 func (client *SQLResourcesClient) createUpdateSQLContainerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, createUpdateSQLContainerParameters SQLContainerCreateUpdateParameters, _ *SQLResourcesClientBeginCreateUpdateSQLContainerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -265,9 +262,6 @@ func (client *SQLResourcesClient) createUpdateSQLDatabase(ctx context.Context, r
 // createUpdateSQLDatabaseCreateRequest creates the CreateUpdateSQLDatabase request.
 func (client *SQLResourcesClient) createUpdateSQLDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateSQLDatabaseParameters SQLDatabaseCreateUpdateParameters, _ *SQLResourcesClientBeginCreateUpdateSQLDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -343,9 +337,6 @@ func (client *SQLResourcesClient) createUpdateSQLRoleAssignment(ctx context.Cont
 // createUpdateSQLRoleAssignmentCreateRequest creates the CreateUpdateSQLRoleAssignment request.
 func (client *SQLResourcesClient) createUpdateSQLRoleAssignmentCreateRequest(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, createUpdateSQLRoleAssignmentParameters SQLRoleAssignmentCreateUpdateParameters, _ *SQLResourcesClientBeginCreateUpdateSQLRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if roleAssignmentID == "" {
 		return nil, errors.New("parameter roleAssignmentID cannot be empty")
@@ -421,9 +412,6 @@ func (client *SQLResourcesClient) createUpdateSQLRoleDefinition(ctx context.Cont
 // createUpdateSQLRoleDefinitionCreateRequest creates the CreateUpdateSQLRoleDefinition request.
 func (client *SQLResourcesClient) createUpdateSQLRoleDefinitionCreateRequest(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, createUpdateSQLRoleDefinitionParameters SQLRoleDefinitionCreateUpdateParameters, _ *SQLResourcesClientBeginCreateUpdateSQLRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if roleDefinitionID == "" {
 		return nil, errors.New("parameter roleDefinitionID cannot be empty")
@@ -504,9 +492,6 @@ func (client *SQLResourcesClient) createUpdateSQLStoredProcedure(ctx context.Con
 // createUpdateSQLStoredProcedureCreateRequest creates the CreateUpdateSQLStoredProcedure request.
 func (client *SQLResourcesClient) createUpdateSQLStoredProcedureCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, createUpdateSQLStoredProcedureParameters SQLStoredProcedureCreateUpdateParameters, _ *SQLResourcesClientBeginCreateUpdateSQLStoredProcedureOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures/{storedProcedureName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -595,9 +580,6 @@ func (client *SQLResourcesClient) createUpdateSQLTrigger(ctx context.Context, re
 // createUpdateSQLTriggerCreateRequest creates the CreateUpdateSQLTrigger request.
 func (client *SQLResourcesClient) createUpdateSQLTriggerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, createUpdateSQLTriggerParameters SQLTriggerCreateUpdateParameters, _ *SQLResourcesClientBeginCreateUpdateSQLTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers/{triggerName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -686,9 +668,6 @@ func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunction(ctx context
 // createUpdateSQLUserDefinedFunctionCreateRequest creates the CreateUpdateSQLUserDefinedFunction request.
 func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunctionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, createUpdateSQLUserDefinedFunctionParameters SQLUserDefinedFunctionCreateUpdateParameters, _ *SQLResourcesClientBeginCreateUpdateSQLUserDefinedFunctionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions/{userDefinedFunctionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -775,9 +754,6 @@ func (client *SQLResourcesClient) deleteSQLContainer(ctx context.Context, resour
 // deleteSQLContainerCreateRequest creates the DeleteSQLContainer request.
 func (client *SQLResourcesClient) deleteSQLContainerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, _ *SQLResourcesClientBeginDeleteSQLContainerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -854,9 +830,6 @@ func (client *SQLResourcesClient) deleteSQLDatabase(ctx context.Context, resourc
 // deleteSQLDatabaseCreateRequest creates the DeleteSQLDatabase request.
 func (client *SQLResourcesClient) deleteSQLDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *SQLResourcesClientBeginDeleteSQLDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -927,9 +900,6 @@ func (client *SQLResourcesClient) deleteSQLRoleAssignment(ctx context.Context, r
 // deleteSQLRoleAssignmentCreateRequest creates the DeleteSQLRoleAssignment request.
 func (client *SQLResourcesClient) deleteSQLRoleAssignmentCreateRequest(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, _ *SQLResourcesClientBeginDeleteSQLRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if roleAssignmentID == "" {
 		return nil, errors.New("parameter roleAssignmentID cannot be empty")
@@ -1000,9 +970,6 @@ func (client *SQLResourcesClient) deleteSQLRoleDefinition(ctx context.Context, r
 // deleteSQLRoleDefinitionCreateRequest creates the DeleteSQLRoleDefinition request.
 func (client *SQLResourcesClient) deleteSQLRoleDefinitionCreateRequest(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, _ *SQLResourcesClientBeginDeleteSQLRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if roleDefinitionID == "" {
 		return nil, errors.New("parameter roleDefinitionID cannot be empty")
@@ -1077,9 +1044,6 @@ func (client *SQLResourcesClient) deleteSQLStoredProcedure(ctx context.Context, 
 // deleteSQLStoredProcedureCreateRequest creates the DeleteSQLStoredProcedure request.
 func (client *SQLResourcesClient) deleteSQLStoredProcedureCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, _ *SQLResourcesClientBeginDeleteSQLStoredProcedureOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures/{storedProcedureName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1162,9 +1126,6 @@ func (client *SQLResourcesClient) deleteSQLTrigger(ctx context.Context, resource
 // deleteSQLTriggerCreateRequest creates the DeleteSQLTrigger request.
 func (client *SQLResourcesClient) deleteSQLTriggerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, _ *SQLResourcesClientBeginDeleteSQLTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers/{triggerName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1247,9 +1208,6 @@ func (client *SQLResourcesClient) deleteSQLUserDefinedFunction(ctx context.Conte
 // deleteSQLUserDefinedFunctionCreateRequest creates the DeleteSQLUserDefinedFunction request.
 func (client *SQLResourcesClient) deleteSQLUserDefinedFunctionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, _ *SQLResourcesClientBeginDeleteSQLUserDefinedFunctionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions/{userDefinedFunctionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1309,9 +1267,6 @@ func (client *SQLResourcesClient) GetClientEncryptionKey(ctx context.Context, re
 // getClientEncryptionKeyCreateRequest creates the GetClientEncryptionKey request.
 func (client *SQLResourcesClient) getClientEncryptionKeyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, clientEncryptionKeyName string, _ *SQLResourcesClientGetClientEncryptionKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys/{clientEncryptionKeyName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1380,9 +1335,6 @@ func (client *SQLResourcesClient) GetSQLContainer(ctx context.Context, resourceG
 // getSQLContainerCreateRequest creates the GetSQLContainer request.
 func (client *SQLResourcesClient) getSQLContainerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, _ *SQLResourcesClientGetSQLContainerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1451,9 +1403,6 @@ func (client *SQLResourcesClient) GetSQLContainerThroughput(ctx context.Context,
 // getSQLContainerThroughputCreateRequest creates the GetSQLContainerThroughput request.
 func (client *SQLResourcesClient) getSQLContainerThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, _ *SQLResourcesClientGetSQLContainerThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1521,9 +1470,6 @@ func (client *SQLResourcesClient) GetSQLDatabase(ctx context.Context, resourceGr
 // getSQLDatabaseCreateRequest creates the GetSQLDatabase request.
 func (client *SQLResourcesClient) getSQLDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *SQLResourcesClientGetSQLDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1588,9 +1534,6 @@ func (client *SQLResourcesClient) GetSQLDatabaseThroughput(ctx context.Context, 
 // getSQLDatabaseThroughputCreateRequest creates the GetSQLDatabaseThroughput request.
 func (client *SQLResourcesClient) getSQLDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *SQLResourcesClientGetSQLDatabaseThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1652,9 +1595,6 @@ func (client *SQLResourcesClient) GetSQLRoleAssignment(ctx context.Context, role
 // getSQLRoleAssignmentCreateRequest creates the GetSQLRoleAssignment request.
 func (client *SQLResourcesClient) getSQLRoleAssignmentCreateRequest(ctx context.Context, roleAssignmentID string, resourceGroupName string, accountName string, _ *SQLResourcesClientGetSQLRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments/{roleAssignmentId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if roleAssignmentID == "" {
 		return nil, errors.New("parameter roleAssignmentID cannot be empty")
@@ -1716,9 +1656,6 @@ func (client *SQLResourcesClient) GetSQLRoleDefinition(ctx context.Context, role
 // getSQLRoleDefinitionCreateRequest creates the GetSQLRoleDefinition request.
 func (client *SQLResourcesClient) getSQLRoleDefinitionCreateRequest(ctx context.Context, roleDefinitionID string, resourceGroupName string, accountName string, _ *SQLResourcesClientGetSQLRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions/{roleDefinitionId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if roleDefinitionID == "" {
 		return nil, errors.New("parameter roleDefinitionID cannot be empty")
@@ -1784,9 +1721,6 @@ func (client *SQLResourcesClient) GetSQLStoredProcedure(ctx context.Context, res
 // getSQLStoredProcedureCreateRequest creates the GetSQLStoredProcedure request.
 func (client *SQLResourcesClient) getSQLStoredProcedureCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, storedProcedureName string, _ *SQLResourcesClientGetSQLStoredProcedureOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures/{storedProcedureName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1860,9 +1794,6 @@ func (client *SQLResourcesClient) GetSQLTrigger(ctx context.Context, resourceGro
 // getSQLTriggerCreateRequest creates the GetSQLTrigger request.
 func (client *SQLResourcesClient) getSQLTriggerCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, triggerName string, _ *SQLResourcesClientGetSQLTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers/{triggerName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1936,9 +1867,6 @@ func (client *SQLResourcesClient) GetSQLUserDefinedFunction(ctx context.Context,
 // getSQLUserDefinedFunctionCreateRequest creates the GetSQLUserDefinedFunction request.
 func (client *SQLResourcesClient) getSQLUserDefinedFunctionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, userDefinedFunctionName string, _ *SQLResourcesClientGetSQLUserDefinedFunctionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions/{userDefinedFunctionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2021,9 +1949,6 @@ func (client *SQLResourcesClient) listClientEncryptionKeysCreateRequest(ctx cont
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/clientEncryptionKeys"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2103,9 +2028,6 @@ func (client *SQLResourcesClient) listSQLContainersCreateRequest(ctx context.Con
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2184,9 +2106,6 @@ func (client *SQLResourcesClient) listSQLDatabasesCreateRequest(ctx context.Cont
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2261,9 +2180,6 @@ func (client *SQLResourcesClient) listSQLRoleAssignmentsCreateRequest(ctx contex
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleAssignments"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2338,9 +2254,6 @@ func (client *SQLResourcesClient) listSQLRoleDefinitionsCreateRequest(ctx contex
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlRoleDefinitions"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2417,9 +2330,6 @@ func (client *SQLResourcesClient) listSQLStoredProceduresCreateRequest(ctx conte
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/storedProcedures"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2504,9 +2414,6 @@ func (client *SQLResourcesClient) listSQLTriggersCreateRequest(ctx context.Conte
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/triggers"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2591,9 +2498,6 @@ func (client *SQLResourcesClient) listSQLUserDefinedFunctionsCreateRequest(ctx c
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/userDefinedFunctions"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2689,9 +2593,6 @@ func (client *SQLResourcesClient) migrateSQLContainerToAutoscale(ctx context.Con
 // migrateSQLContainerToAutoscaleCreateRequest creates the MigrateSQLContainerToAutoscale request.
 func (client *SQLResourcesClient) migrateSQLContainerToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, _ *SQLResourcesClientBeginMigrateSQLContainerToAutoscaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default/migrateToAutoscale"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2770,9 +2671,6 @@ func (client *SQLResourcesClient) migrateSQLContainerToManualThroughput(ctx cont
 // migrateSQLContainerToManualThroughputCreateRequest creates the MigrateSQLContainerToManualThroughput request.
 func (client *SQLResourcesClient) migrateSQLContainerToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, _ *SQLResourcesClientBeginMigrateSQLContainerToManualThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default/migrateToManualThroughput"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2850,9 +2748,6 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscale(ctx context.Cont
 // migrateSQLDatabaseToAutoscaleCreateRequest creates the MigrateSQLDatabaseToAutoscale request.
 func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *SQLResourcesClientBeginMigrateSQLDatabaseToAutoscaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default/migrateToAutoscale"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2926,9 +2821,6 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughput(ctx conte
 // migrateSQLDatabaseToManualThroughputCreateRequest creates the MigrateSQLDatabaseToManualThroughput request.
 func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *SQLResourcesClientBeginMigrateSQLDatabaseToManualThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default/migrateToManualThroughput"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -3004,9 +2896,6 @@ func (client *SQLResourcesClient) retrieveContinuousBackupInformation(ctx contex
 // retrieveContinuousBackupInformationCreateRequest creates the RetrieveContinuousBackupInformation request.
 func (client *SQLResourcesClient) retrieveContinuousBackupInformationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, location ContinuousBackupRestoreLocation, _ *SQLResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/retrieveContinuousBackupInformation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -3090,9 +2979,6 @@ func (client *SQLResourcesClient) updateSQLContainerThroughput(ctx context.Conte
 // updateSQLContainerThroughputCreateRequest creates the UpdateSQLContainerThroughput request.
 func (client *SQLResourcesClient) updateSQLContainerThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, containerName string, updateThroughputParameters ThroughputSettingsUpdateParameters, _ *SQLResourcesClientBeginUpdateSQLContainerThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/containers/{containerName}/throughputSettings/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -3175,9 +3061,6 @@ func (client *SQLResourcesClient) updateSQLDatabaseThroughput(ctx context.Contex
 // updateSQLDatabaseThroughputCreateRequest creates the UpdateSQLDatabaseThroughput request.
 func (client *SQLResourcesClient) updateSQLDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, _ *SQLResourcesClientBeginUpdateSQLDatabaseThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/sqlDatabases/{databaseName}/throughputSettings/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

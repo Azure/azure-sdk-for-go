@@ -19,7 +19,7 @@ import (
 // OperationsClient contains the methods for the Operations group.
 // Don't use this type directly, use NewOperationsClient() instead.
 //
-// Generated from API version 2026-05-01
+// Generated from API version 2026-07-01
 type OperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -62,12 +62,7 @@ func (client *OperationsClient) GetOperationResult(ctx context.Context, resource
 	if err != nil {
 		return OperationsClientGetOperationResultResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationsClientGetOperationResultResponse{}, err
-	}
-	resp, err := client.getOperationResultHandleResponse(httpResp)
-	return resp, err
+	return client.getOperationResultHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getOperationResultCreateRequest creates the GetOperationResult request.
@@ -94,15 +89,18 @@ func (client *OperationsClient) getOperationResultCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getOperationResultHandleResponse handles the GetOperationResult response.
-func (client *OperationsClient) getOperationResultHandleResponse(resp *http.Response) (OperationsClientGetOperationResultResponse, error) {
+func (client *OperationsClient) getOperationResultHandleResponse(resp *http.Response, successCodes ...int) (OperationsClientGetOperationResultResponse, error) {
 	result := OperationsClientGetOperationResultResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Vault); err != nil {
 		return OperationsClientGetOperationResultResponse{}, err
 	}
@@ -122,35 +120,49 @@ func (client *OperationsClient) NewListPager(options *OperationsClientListOption
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return OperationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OperationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *OperationsClient) listCreateRequest(ctx context.Context, _ *OperationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.RecoveryServices/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *OperationsClient) listCreateRequest(ctx context.Context, nextLink string, _ *OperationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.RecoveryServices/operations"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsClientListResponse, error) {
+func (client *OperationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (OperationsClientListResponse, error) {
 	result := OperationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClientDiscoveryResponse); err != nil {
 		return OperationsClientListResponse{}, err
 	}
@@ -177,12 +189,7 @@ func (client *OperationsClient) OperationStatusGet(ctx context.Context, resource
 	if err != nil {
 		return OperationsClientOperationStatusGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationsClientOperationStatusGetResponse{}, err
-	}
-	resp, err := client.operationStatusGetHandleResponse(httpResp)
-	return resp, err
+	return client.operationStatusGetHandleResponse(httpResp, http.StatusOK)
 }
 
 // operationStatusGetCreateRequest creates the OperationStatusGet request.
@@ -209,15 +216,18 @@ func (client *OperationsClient) operationStatusGetCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // operationStatusGetHandleResponse handles the OperationStatusGet response.
-func (client *OperationsClient) operationStatusGetHandleResponse(resp *http.Response) (OperationsClientOperationStatusGetResponse, error) {
+func (client *OperationsClient) operationStatusGetHandleResponse(resp *http.Response, successCodes ...int) (OperationsClientOperationStatusGetResponse, error) {
 	result := OperationsClientOperationStatusGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationResource); err != nil {
 		return OperationsClientOperationStatusGetResponse{}, err
 	}

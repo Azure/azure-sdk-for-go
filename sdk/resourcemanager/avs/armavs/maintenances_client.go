@@ -62,12 +62,7 @@ func (client *MaintenancesClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return MaintenancesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MaintenancesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -101,8 +96,11 @@ func (client *MaintenancesClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *MaintenancesClient) getHandleResponse(resp *http.Response) (MaintenancesClientGetResponse, error) {
+func (client *MaintenancesClient) getHandleResponse(resp *http.Response, successCodes ...int) (MaintenancesClientGetResponse, error) {
 	result := MaintenancesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Maintenance); err != nil {
 		return MaintenancesClientGetResponse{}, err
 	}
@@ -130,12 +128,7 @@ func (client *MaintenancesClient) InitiateChecks(ctx context.Context, resourceGr
 	if err != nil {
 		return MaintenancesClientInitiateChecksResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MaintenancesClientInitiateChecksResponse{}, err
-	}
-	resp, err := client.initiateChecksHandleResponse(httpResp)
-	return resp, err
+	return client.initiateChecksHandleResponse(httpResp, http.StatusOK)
 }
 
 // initiateChecksCreateRequest creates the InitiateChecks request.
@@ -169,8 +162,11 @@ func (client *MaintenancesClient) initiateChecksCreateRequest(ctx context.Contex
 }
 
 // initiateChecksHandleResponse handles the InitiateChecks response.
-func (client *MaintenancesClient) initiateChecksHandleResponse(resp *http.Response) (MaintenancesClientInitiateChecksResponse, error) {
+func (client *MaintenancesClient) initiateChecksHandleResponse(resp *http.Response, successCodes ...int) (MaintenancesClientInitiateChecksResponse, error) {
 	result := MaintenancesClientInitiateChecksResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Maintenance); err != nil {
 		return MaintenancesClientInitiateChecksResponse{}, err
 	}
@@ -192,59 +188,73 @@ func (client *MaintenancesClient) NewListPager(resourceGroupName string, private
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, privateCloudName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, privateCloudName, nextLink, options)
 			if err != nil {
 				return MaintenancesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MaintenancesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *MaintenancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, options *MaintenancesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/maintenances"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MaintenancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, nextLink string, options *MaintenancesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/maintenances"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if privateCloudName == "" {
+			return nil, errors.New("parameter privateCloudName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateCloudName == "" {
-		return nil, errors.New("parameter privateCloudName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	if options != nil && options.From != nil {
-		reqQP.Set("from", datetime.RFC3339(*options.From).String())
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		if options != nil && options.From != nil {
+			reqQP.Set("from", datetime.RFC3339((*options.From).UTC()).String())
+		}
+		if options != nil && options.StateName != nil {
+			reqQP.Set("stateName", string(*options.StateName))
+		}
+		if options != nil && options.Status != nil {
+			reqQP.Set("status", string(*options.Status))
+		}
+		if options != nil && options.To != nil {
+			reqQP.Set("to", datetime.RFC3339((*options.To).UTC()).String())
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.StateName != nil {
-		reqQP.Set("stateName", string(*options.StateName))
-	}
-	if options != nil && options.Status != nil {
-		reqQP.Set("status", string(*options.Status))
-	}
-	if options != nil && options.To != nil {
-		reqQP.Set("to", datetime.RFC3339(*options.To).String())
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *MaintenancesClient) listHandleResponse(resp *http.Response) (MaintenancesClientListResponse, error) {
+func (client *MaintenancesClient) listHandleResponse(resp *http.Response, successCodes ...int) (MaintenancesClientListResponse, error) {
 	result := MaintenancesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceListResult); err != nil {
 		return MaintenancesClientListResponse{}, err
 	}
@@ -272,12 +282,7 @@ func (client *MaintenancesClient) Reschedule(ctx context.Context, resourceGroupN
 	if err != nil {
 		return MaintenancesClientRescheduleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MaintenancesClientRescheduleResponse{}, err
-	}
-	resp, err := client.rescheduleHandleResponse(httpResp)
-	return resp, err
+	return client.rescheduleHandleResponse(httpResp, http.StatusOK)
 }
 
 // rescheduleCreateRequest creates the Reschedule request.
@@ -315,8 +320,11 @@ func (client *MaintenancesClient) rescheduleCreateRequest(ctx context.Context, r
 }
 
 // rescheduleHandleResponse handles the Reschedule response.
-func (client *MaintenancesClient) rescheduleHandleResponse(resp *http.Response) (MaintenancesClientRescheduleResponse, error) {
+func (client *MaintenancesClient) rescheduleHandleResponse(resp *http.Response, successCodes ...int) (MaintenancesClientRescheduleResponse, error) {
 	result := MaintenancesClientRescheduleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Maintenance); err != nil {
 		return MaintenancesClientRescheduleResponse{}, err
 	}
@@ -344,12 +352,7 @@ func (client *MaintenancesClient) Schedule(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return MaintenancesClientScheduleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MaintenancesClientScheduleResponse{}, err
-	}
-	resp, err := client.scheduleHandleResponse(httpResp)
-	return resp, err
+	return client.scheduleHandleResponse(httpResp, http.StatusOK)
 }
 
 // scheduleCreateRequest creates the Schedule request.
@@ -387,8 +390,11 @@ func (client *MaintenancesClient) scheduleCreateRequest(ctx context.Context, res
 }
 
 // scheduleHandleResponse handles the Schedule response.
-func (client *MaintenancesClient) scheduleHandleResponse(resp *http.Response) (MaintenancesClientScheduleResponse, error) {
+func (client *MaintenancesClient) scheduleHandleResponse(resp *http.Response, successCodes ...int) (MaintenancesClientScheduleResponse, error) {
 	result := MaintenancesClientScheduleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Maintenance); err != nil {
 		return MaintenancesClientScheduleResponse{}, err
 	}

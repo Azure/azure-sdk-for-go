@@ -79,8 +79,7 @@ func (client *ServiceGroupMemberRelationshipsClient) createOrUpdate(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -151,8 +150,7 @@ func (client *ServiceGroupMemberRelationshipsClient) deleteOperation(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -198,12 +196,7 @@ func (client *ServiceGroupMemberRelationshipsClient) Get(ctx context.Context, re
 	if err != nil {
 		return ServiceGroupMemberRelationshipsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceGroupMemberRelationshipsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -229,8 +222,11 @@ func (client *ServiceGroupMemberRelationshipsClient) getCreateRequest(ctx contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServiceGroupMemberRelationshipsClient) getHandleResponse(resp *http.Response) (ServiceGroupMemberRelationshipsClientGetResponse, error) {
+func (client *ServiceGroupMemberRelationshipsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ServiceGroupMemberRelationshipsClientGetResponse, error) {
 	result := ServiceGroupMemberRelationshipsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGroupMemberRelationship); err != nil {
 		return ServiceGroupMemberRelationshipsClientGetResponse{}, err
 	}

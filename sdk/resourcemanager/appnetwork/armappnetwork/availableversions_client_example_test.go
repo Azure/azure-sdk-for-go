@@ -78,10 +78,10 @@ func ExampleAvailableVersionsClient_NewListByLocationPager_availableVersionsList
 		// 				SystemData: &armappnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("system"),
 		// 					CreatedByType: to.Ptr(armappnetwork.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("system"),
 		// 					LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -124,10 +124,10 @@ func ExampleAvailableVersionsClient_NewListByLocationPager_availableVersionsList
 		// 				SystemData: &armappnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("system"),
 		// 					CreatedByType: to.Ptr(armappnetwork.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("system"),
 		// 					LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -196,10 +196,10 @@ func ExampleAvailableVersionsClient_NewListByLocationPager_availableVersionsList
 		// 				SystemData: &armappnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("system"),
 		// 					CreatedByType: to.Ptr(armappnetwork.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("system"),
 		// 					LastModifiedByType: to.Ptr(armappnetwork.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-05-19T00:28:48.610Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.May, 19, 0, 28, 48, 610000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

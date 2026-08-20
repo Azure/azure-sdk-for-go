@@ -62,12 +62,7 @@ func (client *WebhookClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return WebhookClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return WebhookClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -105,8 +100,11 @@ func (client *WebhookClient) createOrUpdateCreateRequest(ctx context.Context, re
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *WebhookClient) createOrUpdateHandleResponse(resp *http.Response) (WebhookClientCreateOrUpdateResponse, error) {
+func (client *WebhookClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (WebhookClientCreateOrUpdateResponse, error) {
 	result := WebhookClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Webhook); err != nil {
 		return WebhookClientCreateOrUpdateResponse{}, err
 	}
@@ -134,8 +132,7 @@ func (client *WebhookClient) Delete(ctx context.Context, resourceGroupName strin
 		return WebhookClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebhookClientDeleteResponse{}, err
+		return WebhookClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebhookClientDeleteResponse{}, nil
 }
@@ -188,12 +185,7 @@ func (client *WebhookClient) GenerateURI(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return WebhookClientGenerateURIResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebhookClientGenerateURIResponse{}, err
-	}
-	resp, err := client.generateURIHandleResponse(httpResp)
-	return resp, err
+	return client.generateURIHandleResponse(httpResp, http.StatusOK)
 }
 
 // generateURICreateRequest creates the GenerateURI request.
@@ -223,8 +215,11 @@ func (client *WebhookClient) generateURICreateRequest(ctx context.Context, resou
 }
 
 // generateURIHandleResponse handles the GenerateURI response.
-func (client *WebhookClient) generateURIHandleResponse(resp *http.Response) (WebhookClientGenerateURIResponse, error) {
+func (client *WebhookClient) generateURIHandleResponse(resp *http.Response, successCodes ...int) (WebhookClientGenerateURIResponse, error) {
 	result := WebhookClientGenerateURIResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return WebhookClientGenerateURIResponse{}, err
@@ -254,12 +249,7 @@ func (client *WebhookClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return WebhookClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebhookClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -293,8 +283,11 @@ func (client *WebhookClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *WebhookClient) getHandleResponse(resp *http.Response) (WebhookClientGetResponse, error) {
+func (client *WebhookClient) getHandleResponse(resp *http.Response, successCodes ...int) (WebhookClientGetResponse, error) {
 	result := WebhookClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Webhook); err != nil {
 		return WebhookClientGetResponse{}, err
 	}
@@ -317,50 +310,64 @@ func (client *WebhookClient) NewListByAutomationAccountPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
-			}, nil)
+			req, err := client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, nextLink, options)
 			if err != nil {
 				return WebhookClientListByAutomationAccountResponse{}, err
 			}
-			return client.listByAutomationAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebhookClientListByAutomationAccountResponse{}, err
+			}
+			return client.listByAutomationAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *WebhookClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *WebhookClientListByAutomationAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/webhooks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebhookClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nextLink string, options *WebhookClientListByAutomationAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/webhooks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if automationAccountName == "" {
+			return nil, errors.New("parameter automationAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if automationAccountName == "" {
-		return nil, errors.New("parameter automationAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20241023)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20241023)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *WebhookClient) listByAutomationAccountHandleResponse(resp *http.Response) (WebhookClientListByAutomationAccountResponse, error) {
+func (client *WebhookClient) listByAutomationAccountHandleResponse(resp *http.Response, successCodes ...int) (WebhookClientListByAutomationAccountResponse, error) {
 	result := WebhookClientListByAutomationAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebhookListResult); err != nil {
 		return WebhookClientListByAutomationAccountResponse{}, err
 	}
@@ -388,12 +395,7 @@ func (client *WebhookClient) Update(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return WebhookClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebhookClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -431,8 +433,11 @@ func (client *WebhookClient) updateCreateRequest(ctx context.Context, resourceGr
 }
 
 // updateHandleResponse handles the Update response.
-func (client *WebhookClient) updateHandleResponse(resp *http.Response) (WebhookClientUpdateResponse, error) {
+func (client *WebhookClient) updateHandleResponse(resp *http.Response, successCodes ...int) (WebhookClientUpdateResponse, error) {
 	result := WebhookClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Webhook); err != nil {
 		return WebhookClientUpdateResponse{}, err
 	}

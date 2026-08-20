@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultProductPackageClientVersion string = "2025-07-01-preview"
-
 // ProductPackageClient contains the methods for the ProductPackage group.
 // Don't use this type directly, use NewProductPackageClient() instead.
 //
@@ -63,12 +61,7 @@ func (client *ProductPackageClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ProductPackageClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProductPackageClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -95,15 +88,18 @@ func (client *ProductPackageClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultProductPackageClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProductPackageClient) getHandleResponse(resp *http.Response) (ProductPackageClientGetResponse, error) {
+func (client *ProductPackageClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProductPackageClientGetResponse, error) {
 	result := ProductPackageClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductPackageModel); err != nil {
 		return ProductPackageClientGetResponse{}, err
 	}

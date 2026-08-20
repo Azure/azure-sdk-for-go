@@ -256,7 +256,10 @@ func (f *Client) Rename(ctx context.Context, destinationPath string, options *Re
 		return RenameResponse{}, err
 	}
 	srcParts := strings.Split(f.DFSURL(), "?")
-	newSrcPath := oldPath.Path
+	// Use the percent-encoded path for the x-ms-rename-source header. oldPath.Path is
+	// decoded, so source names containing spaces or non-ASCII characters would be sent
+	// unencoded and rejected by the service with 400 InvalidSourceUri. See #23831/#24369.
+	newSrcPath := oldPath.EscapedPath()
 	newSrcQuery := ""
 	if len(srcParts) == 2 {
 		newSrcQuery = srcParts[1]
@@ -454,9 +457,7 @@ func (f *Client) FlushData(ctx context.Context, offset int64, options *FlushData
 // multiple AppendData calls, so a single precomputed checksum for the whole payload cannot validate
 // every chunk. Computed CRC64 (a func type, hashed per chunk) and structured message CRC64 are allowed.
 func rejectPrecomputedValidation(tv TransferValidationType) error {
-	if tv != nil &&
-		reflect.TypeOf(tv).Kind() != reflect.Func &&
-		exported.GetStructuredBodyType(tv) == "" {
+	if tv != nil && !exported.SupportsMultiBlock(tv) {
 		return datalakeerror.UnsupportedChecksum
 	}
 	return nil

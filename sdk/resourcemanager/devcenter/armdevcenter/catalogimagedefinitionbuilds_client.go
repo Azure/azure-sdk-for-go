@@ -59,55 +59,69 @@ func (client *CatalogImageDefinitionBuildsClient) NewListByImageDefinitionPager(
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByImageDefinitionCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, imageDefinitionName, options)
-			}, nil)
+			req, err := client.listByImageDefinitionCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, imageDefinitionName, nextLink, options)
 			if err != nil {
 				return CatalogImageDefinitionBuildsClientListByImageDefinitionResponse{}, err
 			}
-			return client.listByImageDefinitionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CatalogImageDefinitionBuildsClientListByImageDefinitionResponse{}, err
+			}
+			return client.listByImageDefinitionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByImageDefinitionCreateRequest creates the ListByImageDefinition request.
-func (client *CatalogImageDefinitionBuildsClient) listByImageDefinitionCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, imageDefinitionName string, _ *CatalogImageDefinitionBuildsClientListByImageDefinitionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/imageDefinitions/{imageDefinitionName}/builds"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CatalogImageDefinitionBuildsClient) listByImageDefinitionCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, imageDefinitionName string, nextLink string, _ *CatalogImageDefinitionBuildsClientListByImageDefinitionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/imageDefinitions/{imageDefinitionName}/builds"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if devCenterName == "" {
+			return nil, errors.New("parameter devCenterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
+		if catalogName == "" {
+			return nil, errors.New("parameter catalogName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
+		if imageDefinitionName == "" {
+			return nil, errors.New("parameter imageDefinitionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{imageDefinitionName}", url.PathEscape(imageDefinitionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if devCenterName == "" {
-		return nil, errors.New("parameter devCenterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
-	if catalogName == "" {
-		return nil, errors.New("parameter catalogName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
-	if imageDefinitionName == "" {
-		return nil, errors.New("parameter imageDefinitionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{imageDefinitionName}", url.PathEscape(imageDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByImageDefinitionHandleResponse handles the ListByImageDefinition response.
-func (client *CatalogImageDefinitionBuildsClient) listByImageDefinitionHandleResponse(resp *http.Response) (CatalogImageDefinitionBuildsClientListByImageDefinitionResponse, error) {
+func (client *CatalogImageDefinitionBuildsClient) listByImageDefinitionHandleResponse(resp *http.Response, successCodes ...int) (CatalogImageDefinitionBuildsClientListByImageDefinitionResponse, error) {
 	result := CatalogImageDefinitionBuildsClientListByImageDefinitionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageDefinitionBuildListResult); err != nil {
 		return CatalogImageDefinitionBuildsClientListByImageDefinitionResponse{}, err
 	}

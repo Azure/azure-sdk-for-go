@@ -47,8 +47,8 @@ func ExampleCaCertificatesClient_BeginCreateOrUpdate() {
 	// 		Properties: &armeventgrid.CaCertificateProperties{
 	// 			Description: to.Ptr("This is a test Root certificate"),
 	// 			EncodedCertificate: to.Ptr("base64EncodePemFormattedCertificateString"),
-	// 			ExpiryTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-12T23:06:43+00:00"); return t}()),
-	// 			IssueTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T23:06:43+00:00"); return t}()),
+	// 			ExpiryTimeInUTC: to.Ptr(time.Date(2022, time.October, 12, 23, 6, 43, 0, time.UTC)),
+	// 			IssueTimeInUTC: to.Ptr(time.Date(2022, time.September, 12, 23, 6, 43, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armeventgrid.CaCertificateProvisioningStateSucceeded),
 	// 		},
 	// 	},
@@ -107,8 +107,8 @@ func ExampleCaCertificatesClient_Get() {
 	// 		Properties: &armeventgrid.CaCertificateProperties{
 	// 			Description: to.Ptr("This is a test Root certificate"),
 	// 			EncodedCertificate: to.Ptr("base64EncodePemFormattedCertificateString"),
-	// 			ExpiryTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-12T23:06:43+00:00"); return t}()),
-	// 			IssueTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T23:06:43+00:00"); return t}()),
+	// 			ExpiryTimeInUTC: to.Ptr(time.Date(2022, time.October, 12, 23, 6, 43, 0, time.UTC)),
+	// 			IssueTimeInUTC: to.Ptr(time.Date(2022, time.September, 12, 23, 6, 43, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armeventgrid.CaCertificateProvisioningStateSucceeded),
 	// 		},
 	// 	},
@@ -148,8 +148,8 @@ func ExampleCaCertificatesClient_NewListByNamespacePager() {
 		// 				Properties: &armeventgrid.CaCertificateProperties{
 		// 					Description: to.Ptr("This is a test Root certificate"),
 		// 					EncodedCertificate: to.Ptr("base64EncodePemFormattedCertificateString"),
-		// 					ExpiryTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-12T23:06:43+00:00"); return t}()),
-		// 					IssueTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-12T23:06:43+00:00"); return t}()),
+		// 					ExpiryTimeInUTC: to.Ptr(time.Date(2022, time.October, 12, 23, 6, 43, 0, time.UTC)),
+		// 					IssueTimeInUTC: to.Ptr(time.Date(2022, time.September, 12, 23, 6, 43, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armeventgrid.CaCertificateProvisioningStateSucceeded),
 		// 				},
 		// 			},

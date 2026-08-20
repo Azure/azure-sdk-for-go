@@ -26,7 +26,7 @@ func ExampleAlertRuleClient_BeginTriggerRuleRun() {
 	}
 	poller, err := clientFactory.NewAlertRuleClient().BeginTriggerRuleRun(ctx, "myRg", "myWorkspace", "65360bb0-8986-4ade-a89d-af3cf44d28aa", armsecurityinsights.AnalyticsRuleRunTrigger{
 		Properties: &armsecurityinsights.AnalyticsRuleRunTriggerProperties{
-			ExecutionTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-22T15:37:03.074Z"); return t }()),
+			ExecutionTimeUTC: to.Ptr(time.Date(2022, time.December, 22, 15, 37, 3, 74000000, time.UTC)),
 		},
 	}, nil)
 	if err != nil {

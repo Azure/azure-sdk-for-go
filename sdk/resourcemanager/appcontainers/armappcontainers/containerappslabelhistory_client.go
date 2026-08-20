@@ -65,8 +65,7 @@ func (client *ContainerAppsLabelHistoryClient) DeleteLabelHistory(ctx context.Co
 		return ContainerAppsLabelHistoryClientDeleteLabelHistoryResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerAppsLabelHistoryClientDeleteLabelHistoryResponse{}, err
+		return ContainerAppsLabelHistoryClientDeleteLabelHistoryResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ContainerAppsLabelHistoryClientDeleteLabelHistoryResponse{}, nil
 }
@@ -123,12 +122,7 @@ func (client *ContainerAppsLabelHistoryClient) GetLabelHistory(ctx context.Conte
 	if err != nil {
 		return ContainerAppsLabelHistoryClientGetLabelHistoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerAppsLabelHistoryClientGetLabelHistoryResponse{}, err
-	}
-	resp, err := client.getLabelHistoryHandleResponse(httpResp)
-	return resp, err
+	return client.getLabelHistoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getLabelHistoryCreateRequest creates the GetLabelHistory request.
@@ -162,8 +156,11 @@ func (client *ContainerAppsLabelHistoryClient) getLabelHistoryCreateRequest(ctx 
 }
 
 // getLabelHistoryHandleResponse handles the GetLabelHistory response.
-func (client *ContainerAppsLabelHistoryClient) getLabelHistoryHandleResponse(resp *http.Response) (ContainerAppsLabelHistoryClientGetLabelHistoryResponse, error) {
+func (client *ContainerAppsLabelHistoryClient) getLabelHistoryHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsLabelHistoryClientGetLabelHistoryResponse, error) {
 	result := ContainerAppsLabelHistoryClientGetLabelHistoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabelHistory); err != nil {
 		return ContainerAppsLabelHistoryClientGetLabelHistoryResponse{}, err
 	}
@@ -188,50 +185,64 @@ func (client *ContainerAppsLabelHistoryClient) NewListLabelHistoryPager(resource
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listLabelHistoryCreateRequest(ctx, resourceGroupName, containerAppName, options)
-			}, nil)
+			req, err := client.listLabelHistoryCreateRequest(ctx, resourceGroupName, containerAppName, nextLink, options)
 			if err != nil {
 				return ContainerAppsLabelHistoryClientListLabelHistoryResponse{}, err
 			}
-			return client.listLabelHistoryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ContainerAppsLabelHistoryClientListLabelHistoryResponse{}, err
+			}
+			return client.listLabelHistoryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listLabelHistoryCreateRequest creates the ListLabelHistory request.
-func (client *ContainerAppsLabelHistoryClient) listLabelHistoryCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsLabelHistoryClientListLabelHistoryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/labelHistory"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ContainerAppsLabelHistoryClient) listLabelHistoryCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, nextLink string, options *ContainerAppsLabelHistoryClientListLabelHistoryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/labelHistory"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if containerAppName == "" {
+			return nil, errors.New("parameter containerAppName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerAppName == "" {
-		return nil, errors.New("parameter containerAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20251002Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20251002Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listLabelHistoryHandleResponse handles the ListLabelHistory response.
-func (client *ContainerAppsLabelHistoryClient) listLabelHistoryHandleResponse(resp *http.Response) (ContainerAppsLabelHistoryClientListLabelHistoryResponse, error) {
+func (client *ContainerAppsLabelHistoryClient) listLabelHistoryHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsLabelHistoryClientListLabelHistoryResponse, error) {
 	result := ContainerAppsLabelHistoryClientListLabelHistoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LabelHistoryCollection); err != nil {
 		return ContainerAppsLabelHistoryClientListLabelHistoryResponse{}, err
 	}

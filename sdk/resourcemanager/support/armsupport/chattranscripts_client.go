@@ -60,12 +60,7 @@ func (client *ChatTranscriptsClient) Get(ctx context.Context, supportTicketName 
 	if err != nil {
 		return ChatTranscriptsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ChatTranscriptsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -95,8 +90,11 @@ func (client *ChatTranscriptsClient) getCreateRequest(ctx context.Context, suppo
 }
 
 // getHandleResponse handles the Get response.
-func (client *ChatTranscriptsClient) getHandleResponse(resp *http.Response) (ChatTranscriptsClientGetResponse, error) {
+func (client *ChatTranscriptsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ChatTranscriptsClientGetResponse, error) {
 	result := ChatTranscriptsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChatTranscriptDetails); err != nil {
 		return ChatTranscriptsClientGetResponse{}, err
 	}
@@ -118,43 +116,57 @@ func (client *ChatTranscriptsClient) NewListPager(supportTicketName string, opti
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, supportTicketName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, supportTicketName, nextLink, options)
 			if err != nil {
 				return ChatTranscriptsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ChatTranscriptsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ChatTranscriptsClient) listCreateRequest(ctx context.Context, supportTicketName string, _ *ChatTranscriptsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/chatTranscripts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ChatTranscriptsClient) listCreateRequest(ctx context.Context, supportTicketName string, nextLink string, _ *ChatTranscriptsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/chatTranscripts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if supportTicketName == "" {
+			return nil, errors.New("parameter supportTicketName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{supportTicketName}", url.PathEscape(supportTicketName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if supportTicketName == "" {
-		return nil, errors.New("parameter supportTicketName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{supportTicketName}", url.PathEscape(supportTicketName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ChatTranscriptsClient) listHandleResponse(resp *http.Response) (ChatTranscriptsClientListResponse, error) {
+func (client *ChatTranscriptsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ChatTranscriptsClientListResponse, error) {
 	result := ChatTranscriptsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChatTranscriptsListResult); err != nil {
 		return ChatTranscriptsClientListResponse{}, err
 	}

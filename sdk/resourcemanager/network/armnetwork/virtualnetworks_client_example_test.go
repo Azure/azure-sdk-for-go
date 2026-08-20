@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/VirtualNetworkCheckIPAddressAvailability.json
+// Generated from example definition: 2025-09-01/VirtualNetworkCheckIPAddressAvailability.json
 func ExampleVirtualNetworksClient_CheckIPAddressAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleVirtualNetworksClient_CheckIPAddressAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkCreate.json
+// Generated from example definition: 2025-09-01/VirtualNetworkCreate.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetwork() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkCreateServiceEndpointPolicy.json
+// Generated from example definition: 2025-09-01/VirtualNetworkCreateServiceEndpointPolicy.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithServiceEndpointsAndServiceEndpointPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +197,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSe
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkCreateServiceEndpoints.json
+// Generated from example definition: 2025-09-01/VirtualNetworkCreateServiceEndpoints.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithServiceEndpoints() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -285,7 +285,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSe
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkCreateSubnet.json
+// Generated from example definition: 2025-09-01/VirtualNetworkCreateSubnet.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,7 +354,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSu
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkCreateSubnetWithAddressPrefixes.json
+// Generated from example definition: 2025-09-01/VirtualNetworkCreateSubnetWithAddressPrefixes.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSubnetContainingAddressPrefixes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -429,7 +429,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSu
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkCreateSubnetWithDelegation.json
+// Generated from example definition: 2025-09-01/VirtualNetworkCreateSubnetWithDelegation.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithDelegatedSubnets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -519,7 +519,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithDe
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkCreateWithBgpCommunities.json
+// Generated from example definition: 2025-09-01/VirtualNetworkCreateWithBgpCommunities.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithBgpCommunities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -595,7 +595,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithBg
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkCreateWithEncryption.json
+// Generated from example definition: 2025-09-01/VirtualNetworkCreateWithEncryption.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -672,7 +672,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithEn
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkCreateWithIpamPool.json
+// Generated from example definition: 2025-09-01/VirtualNetworkCreateWithIpamPool.json
 func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithIpamPool() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -777,7 +777,7 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithIp
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkDelete.json
+// Generated from example definition: 2025-09-01/VirtualNetworkDelete.json
 func ExampleVirtualNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -803,7 +803,7 @@ func ExampleVirtualNetworksClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkGet.json
+// Generated from example definition: 2025-09-01/VirtualNetworkGet.json
 func ExampleVirtualNetworksClient_Get_getVirtualNetwork() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -859,7 +859,7 @@ func ExampleVirtualNetworksClient_Get_getVirtualNetwork() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkGetWithServiceAssociationLink.json
+// Generated from example definition: 2025-09-01/VirtualNetworkGetWithServiceAssociationLink.json
 func ExampleVirtualNetworksClient_Get_getVirtualNetworkWithServiceAssociationLinks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -940,7 +940,7 @@ func ExampleVirtualNetworksClient_Get_getVirtualNetworkWithServiceAssociationLin
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkGetWithSubnetDelegation.json
+// Generated from example definition: 2025-09-01/VirtualNetworkGetWithSubnetDelegation.json
 func ExampleVirtualNetworksClient_Get_getVirtualNetworkWithADelegatedSubnet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1006,7 +1006,7 @@ func ExampleVirtualNetworksClient_Get_getVirtualNetworkWithADelegatedSubnet() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkList.json
+// Generated from example definition: 2025-09-01/VirtualNetworkList.json
 func ExampleVirtualNetworksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1096,7 +1096,7 @@ func ExampleVirtualNetworksClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkListAll.json
+// Generated from example definition: 2025-09-01/VirtualNetworkListAll.json
 func ExampleVirtualNetworksClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1186,7 +1186,7 @@ func ExampleVirtualNetworksClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkGetDdosProtectionStatus.json
+// Generated from example definition: 2025-09-01/VirtualNetworkGetDdosProtectionStatus.json
 func ExampleVirtualNetworksClient_BeginListDdosProtectionStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1236,7 +1236,7 @@ func ExampleVirtualNetworksClient_BeginListDdosProtectionStatus() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkListUsage.json
+// Generated from example definition: 2025-09-01/VirtualNetworkListUsage.json
 func ExampleVirtualNetworksClient_NewListUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1287,7 +1287,52 @@ func ExampleVirtualNetworksClient_NewListUsagePager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkUpdateTags.json
+// Generated from example definition: 2025-09-01/VirtualNetworkMoveIpConfigurations.json
+func ExampleVirtualNetworksClient_BeginMoveIPConfigurations() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginMoveIPConfigurations(ctx, "rg1", "test-vnet", armnetwork.MoveIPConfigurationsRequest{
+		MoveIPConfigurationItems: []*armnetwork.MoveIPConfigurationItem{
+			{
+				SourceIPConfiguration: &armnetwork.MoveIPConfigurationResourceReference{
+					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic1/ipConfigurations/ipconfig1"),
+				},
+				TargetIPConfiguration: &armnetwork.MoveIPConfigurationResourceReference{
+					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic2/ipConfigurations/ipconfig2"),
+				},
+			},
+			{
+				SourceIPConfiguration: &armnetwork.MoveIPConfigurationResourceReference{
+					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic3/ipConfigurations/ipconfig3"),
+				},
+				TargetIPConfiguration: &armnetwork.MoveIPConfigurationResourceReference{
+					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic4/ipConfigurations/ipconfig4"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetwork.VirtualNetworksClientMoveIPConfigurationsResponse{
+	// }
+}
+
+// Generated from example definition: 2025-09-01/VirtualNetworkUpdateTags.json
 func ExampleVirtualNetworksClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

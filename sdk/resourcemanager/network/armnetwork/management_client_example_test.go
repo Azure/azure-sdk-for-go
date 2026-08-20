@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/CheckDnsNameAvailability.json
+// Generated from example definition: 2025-09-01/CheckDnsNameAvailability.json
 func ExampleManagementClient_CheckDNSNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleManagementClient_CheckDNSNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BastionShareableLinkDelete.json
+// Generated from example definition: 2025-09-01/BastionShareableLinkDelete.json
 func ExampleManagementClient_BeginDeleteBastionShareableLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleManagementClient_BeginDeleteBastionShareableLink() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BastionShareableLinkDeleteByToken.json
+// Generated from example definition: 2025-09-01/BastionShareableLinkDeleteByToken.json
 func ExampleManagementClient_BeginDeleteBastionShareableLinkByToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleManagementClient_BeginDeleteBastionShareableLinkByToken() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/BastionSessionDelete.json
+// Generated from example definition: 2025-09-01/BastionSessionDelete.json
 func ExampleManagementClient_NewDisconnectActiveSessionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleManagementClient_NewDisconnectActiveSessionsPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/expressRouteProviderPort.json
+// Generated from example definition: 2025-09-01/expressRouteProviderPort.json
 func ExampleManagementClient_ExpressRouteProviderPort() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -192,7 +192,7 @@ func ExampleManagementClient_ExpressRouteProviderPort() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/GenerateVirtualWanVpnServerConfigurationVpnProfile.json
+// Generated from example definition: 2025-09-01/GenerateVirtualWanVpnServerConfigurationVpnProfile.json
 func ExampleManagementClient_BeginGeneratevirtualwanvpnserverconfigurationvpnprofile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,7 +224,7 @@ func ExampleManagementClient_BeginGeneratevirtualwanvpnserverconfigurationvpnpro
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BastionSessionsList.json
+// Generated from example definition: 2025-09-01/BastionSessionsList.json
 func ExampleManagementClient_BeginGetActiveSessions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,7 +275,7 @@ func ExampleManagementClient_BeginGetActiveSessions() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/BastionShareableLinkGet.json
+// Generated from example definition: 2025-09-01/BastionShareableLinkGet.json
 func ExampleManagementClient_NewGetBastionShareableLinkPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -333,7 +333,7 @@ func ExampleManagementClient_NewGetBastionShareableLinkPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/NetworkManagerActiveConnectivityConfigurationsList.json
+// Generated from example definition: 2025-09-01/NetworkManagerActiveConnectivityConfigurationsList.json
 func ExampleManagementClient_ListActiveConnectivityConfigurations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -361,7 +361,7 @@ func ExampleManagementClient_ListActiveConnectivityConfigurations() {
 	// 		SkipToken: to.Ptr("FakeSkipTokenCode"),
 	// 		Value: []*armnetwork.ActiveConnectivityConfiguration{
 	// 			{
-	// 				CommitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-10T18:03:22.2578238+05:30"); return t}()),
+	// 				CommitTime: to.Ptr(time.Date(2020, time.July, 10, 12, 33, 22, 257823800, time.UTC)),
 	// 				ConfigurationGroups: []*armnetwork.ConfigurationGroup{
 	// 					{
 	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkManagers/testNetworkManager/networkGroups/group1"),
@@ -400,7 +400,7 @@ func ExampleManagementClient_ListActiveConnectivityConfigurations() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkManagerActiveSecurityAdminRulesList.json
+// Generated from example definition: 2025-09-01/NetworkManagerActiveSecurityAdminRulesList.json
 func ExampleManagementClient_ListActiveSecurityAdminRules() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,7 +428,7 @@ func ExampleManagementClient_ListActiveSecurityAdminRules() {
 	// 		SkipToken: to.Ptr("FakeSkipTokenCode"),
 	// 		Value: []armnetwork.ActiveBaseSecurityAdminRuleClassification{
 	// 			&armnetwork.ActiveDefaultSecurityAdminRule{
-	// 				CommitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-10T18:03:22.2578238+05:30"); return t}()),
+	// 				CommitTime: to.Ptr(time.Date(2020, time.July, 10, 12, 33, 22, 257823800, time.UTC)),
 	// 				ConfigurationDescription: to.Ptr("SampleDescription"),
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkManagers/testNetworkManager/securityAdminConfigurations/myTestSecurityConfig/ruleCollections/testRuleCollection/rules/SampleAdminRule"),
 	// 				Kind: to.Ptr(armnetwork.EffectiveAdminRuleKindDefault),
@@ -481,7 +481,7 @@ func ExampleManagementClient_ListActiveSecurityAdminRules() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkManagerEffectiveConnectivityConfigurationsList.json
+// Generated from example definition: 2025-09-01/NetworkManagerEffectiveConnectivityConfigurationsList.json
 func ExampleManagementClient_ListNetworkManagerEffectiveConnectivityConfigurations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -548,7 +548,7 @@ func ExampleManagementClient_ListNetworkManagerEffectiveConnectivityConfiguratio
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkManagerEffectiveSecurityAdminRulesList.json
+// Generated from example definition: 2025-09-01/NetworkManagerEffectiveSecurityAdminRulesList.json
 func ExampleManagementClient_ListNetworkManagerEffectiveSecurityAdminRules() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -624,7 +624,7 @@ func ExampleManagementClient_ListNetworkManagerEffectiveSecurityAdminRules() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/BastionShareableLinkCreate.json
+// Generated from example definition: 2025-09-01/BastionShareableLinkCreate.json
 func ExampleManagementClient_BeginPutBastionShareableLink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -689,7 +689,7 @@ func ExampleManagementClient_BeginPutBastionShareableLink() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualWanSupportedSecurityProviders.json
+// Generated from example definition: 2025-09-01/VirtualWanSupportedSecurityProviders.json
 func ExampleManagementClient_SupportedSecurityProviders() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

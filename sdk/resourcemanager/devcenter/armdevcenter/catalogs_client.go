@@ -82,8 +82,7 @@ func (client *CatalogsClient) connect(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -159,8 +158,7 @@ func (client *CatalogsClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -239,8 +237,7 @@ func (client *CatalogsClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -294,12 +291,7 @@ func (client *CatalogsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return CatalogsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CatalogsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -333,8 +325,11 @@ func (client *CatalogsClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *CatalogsClient) getHandleResponse(resp *http.Response) (CatalogsClientGetResponse, error) {
+func (client *CatalogsClient) getHandleResponse(resp *http.Response, successCodes ...int) (CatalogsClientGetResponse, error) {
 	result := CatalogsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Catalog); err != nil {
 		return CatalogsClientGetResponse{}, err
 	}
@@ -362,12 +357,7 @@ func (client *CatalogsClient) GetSyncErrorDetails(ctx context.Context, resourceG
 	if err != nil {
 		return CatalogsClientGetSyncErrorDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CatalogsClientGetSyncErrorDetailsResponse{}, err
-	}
-	resp, err := client.getSyncErrorDetailsHandleResponse(httpResp)
-	return resp, err
+	return client.getSyncErrorDetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSyncErrorDetailsCreateRequest creates the GetSyncErrorDetails request.
@@ -401,8 +391,11 @@ func (client *CatalogsClient) getSyncErrorDetailsCreateRequest(ctx context.Conte
 }
 
 // getSyncErrorDetailsHandleResponse handles the GetSyncErrorDetails response.
-func (client *CatalogsClient) getSyncErrorDetailsHandleResponse(resp *http.Response) (CatalogsClientGetSyncErrorDetailsResponse, error) {
+func (client *CatalogsClient) getSyncErrorDetailsHandleResponse(resp *http.Response, successCodes ...int) (CatalogsClientGetSyncErrorDetailsResponse, error) {
 	result := CatalogsClientGetSyncErrorDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncErrorDetails); err != nil {
 		return CatalogsClientGetSyncErrorDetailsResponse{}, err
 	}
@@ -425,50 +418,64 @@ func (client *CatalogsClient) NewListByDevCenterPager(resourceGroupName string, 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, options)
-			}, nil)
+			req, err := client.listByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, nextLink, options)
 			if err != nil {
 				return CatalogsClientListByDevCenterResponse{}, err
 			}
-			return client.listByDevCenterHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CatalogsClientListByDevCenterResponse{}, err
+			}
+			return client.listByDevCenterHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDevCenterCreateRequest creates the ListByDevCenter request.
-func (client *CatalogsClient) listByDevCenterCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, options *CatalogsClientListByDevCenterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CatalogsClient) listByDevCenterCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, nextLink string, options *CatalogsClientListByDevCenterOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if devCenterName == "" {
+			return nil, errors.New("parameter devCenterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if devCenterName == "" {
-		return nil, errors.New("parameter devCenterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByDevCenterHandleResponse handles the ListByDevCenter response.
-func (client *CatalogsClient) listByDevCenterHandleResponse(resp *http.Response) (CatalogsClientListByDevCenterResponse, error) {
+func (client *CatalogsClient) listByDevCenterHandleResponse(resp *http.Response, successCodes ...int) (CatalogsClientListByDevCenterResponse, error) {
 	result := CatalogsClientListByDevCenterResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CatalogListResult); err != nil {
 		return CatalogsClientListByDevCenterResponse{}, err
 	}
@@ -515,8 +522,7 @@ func (client *CatalogsClient) syncOperation(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -591,8 +597,7 @@ func (client *CatalogsClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

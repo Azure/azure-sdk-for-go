@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4
 
 go 1.25.0
 

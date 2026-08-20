@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/AFDProfiles_CheckEndpointNameAvailability.json
+// Generated from example definition: 2026-07-01/AFDProfiles_CheckEndpointNameAvailability.json
 func ExampleAFDProfilesClient_CheckEndpointNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleAFDProfilesClient_CheckEndpointNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/AFDProfiles_CheckHostNameAvailability.json
+// Generated from example definition: 2026-07-01/AFDProfiles_CheckHostNameAvailability.json
 func ExampleAFDProfilesClient_CheckHostNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleAFDProfilesClient_CheckHostNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/AFDProfiles_ListResourceUsage.json
+// Generated from example definition: 2026-07-01/AFDProfiles_ListResourceUsage.json
 func ExampleAFDProfilesClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleAFDProfilesClient_NewListResourceUsagePager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/AFDProfiles_Upgrade.json
+// Generated from example definition: 2026-07-01/AFDProfiles_Upgrade.json
 func ExampleAFDProfilesClient_BeginUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,7 +169,7 @@ func ExampleAFDProfilesClient_BeginUpgrade() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/AFDProfiles_ValidateSecret.json
+// Generated from example definition: 2026-07-01/AFDProfiles_ValidateSecret.json
 func ExampleAFDProfilesClient_ValidateSecret() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

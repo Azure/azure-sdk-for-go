@@ -12,19 +12,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"net/http"
 	"net/url"
 	"regexp"
 	"slices"
-	"strconv"
 )
 
 // RuleSetsServer is a fake server for instances of the armcdn.RuleSetsClient type.
 type RuleSetsServer struct {
-	// Create is the fake for method RuleSetsClient.Create
+	// BeginCreate is the fake for method RuleSetsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	Create func(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *armcdn.RuleSetsClientCreateOptions) (resp azfake.Responder[armcdn.RuleSetsClientCreateResponse], errResp azfake.ErrorResponder)
+	BeginCreate func(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, resource armcdn.RuleSet, options *armcdn.RuleSetsClientBeginCreateOptions) (resp azfake.PollerResponder[armcdn.RuleSetsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method RuleSetsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -49,6 +48,7 @@ type RuleSetsServer struct {
 func NewRuleSetsServerTransport(srv *RuleSetsServer) *RuleSetsServerTransport {
 	return &RuleSetsServerTransport{
 		srv:                       srv,
+		beginCreate:               newTracker[azfake.PollerResponder[armcdn.RuleSetsClientCreateResponse]](),
 		beginDelete:               newTracker[azfake.PollerResponder[armcdn.RuleSetsClientDeleteResponse]](),
 		newListByProfilePager:     newTracker[azfake.PagerResponder[armcdn.RuleSetsClientListByProfileResponse]](),
 		newListResourceUsagePager: newTracker[azfake.PagerResponder[armcdn.RuleSetsClientListResourceUsageResponse]](),
@@ -59,6 +59,7 @@ func NewRuleSetsServerTransport(srv *RuleSetsServer) *RuleSetsServerTransport {
 // Don't use this type directly, use NewRuleSetsServerTransport instead.
 type RuleSetsServerTransport struct {
 	srv                       *RuleSetsServer
+	beginCreate               *tracker[azfake.PollerResponder[armcdn.RuleSetsClientCreateResponse]]
 	beginDelete               *tracker[azfake.PollerResponder[armcdn.RuleSetsClientDeleteResponse]]
 	newListByProfilePager     *tracker[azfake.PagerResponder[armcdn.RuleSetsClientListByProfileResponse]]
 	newListResourceUsagePager *tracker[azfake.PagerResponder[armcdn.RuleSetsClientListResourceUsageResponse]]
@@ -85,8 +86,8 @@ func (r *RuleSetsServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "RuleSetsClient.Create":
-				res.resp, res.err = r.dispatchCreate(req)
+			case "RuleSetsClient.BeginCreate":
+				res.resp, res.err = r.dispatchBeginCreate(req)
 			case "RuleSetsClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
 			case "RuleSetsClient.Get":
@@ -111,43 +112,55 @@ func (r *RuleSetsServerTransport) dispatchToMethodFake(req *http.Request, method
 	}
 }
 
-func (r *RuleSetsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
-	if r.srv.Create == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
+func (r *RuleSetsServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginCreate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ruleSets/(?P<ruleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	beginCreate := r.beginCreate.get(req)
+	if beginCreate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ruleSets/(?P<ruleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcdn.RuleSet](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+		if err != nil {
+			return nil, err
+		}
+		ruleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleSetName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginCreate(req.Context(), resourceGroupNameParam, profileNameParam, ruleSetNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreate = &respr
+		r.beginCreate.add(req, beginCreate)
 	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+
+	resp, err := server.PollerResponderNext(beginCreate, req)
 	if err != nil {
 		return nil, err
 	}
-	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-	if err != nil {
-		return nil, err
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		r.beginCreate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
 	}
-	ruleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleSetName")])
-	if err != nil {
-		return nil, err
+	if !server.PollerResponderMore(beginCreate) {
+		r.beginCreate.remove(req)
 	}
-	respr, errRespr := r.srv.Create(req.Context(), resourceGroupNameParam, profileNameParam, ruleSetNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RuleSet, req)
-	if err != nil {
-		return nil, err
-	}
-	if val := server.GetResponse(respr).RetryAfter; val != nil {
-		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))
-	}
+
 	return resp, nil
 }
 

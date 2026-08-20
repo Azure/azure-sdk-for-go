@@ -820,7 +820,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAMicrosoftThreat
 		Properties: &armsecurityinsights.MSTIDataConnectorProperties{
 			DataTypes: &armsecurityinsights.MSTIDataConnectorDataTypes{
 				MicrosoftEmergingThreatFeed: &armsecurityinsights.MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed{
-					LookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1970-01-01T00:00:00.000Z"); return t }()),
+					LookbackPeriod: to.Ptr(time.Date(1970, time.January, 1, 0, 0, 0, 0, time.UTC)),
 					State:          to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 				},
 			},
@@ -843,7 +843,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAMicrosoftThreat
 	// 		Properties: &armsecurityinsights.MSTIDataConnectorProperties{
 	// 			DataTypes: &armsecurityinsights.MSTIDataConnectorDataTypes{
 	// 				MicrosoftEmergingThreatFeed: &armsecurityinsights.MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed{
-	// 					LookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1970-01-01T00:00:00.000Z"); return t}()),
+	// 					LookbackPeriod: to.Ptr(time.Date(1970, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
@@ -1092,7 +1092,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAPremiumMicrosof
 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 				},
 			},
-			LookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1970-01-01T00:00:00.000Z"); return t }()),
+			LookbackPeriod: to.Ptr(time.Date(1970, time.January, 1, 0, 0, 0, 0, time.UTC)),
 			TenantID:       to.Ptr("e4afb3c4-813b-4e68-b6de-e5360866e798"),
 		},
 	}, nil)
@@ -1115,7 +1115,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAPremiumMicrosof
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			LookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00Z"); return t}()),
+	// 			LookbackPeriod: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 			RequiredSKUsPresent: to.Ptr(true),
 	// 			TenantID: to.Ptr("e4afb3c4-813b-4e68-b6de-e5360866e798"),
 	// 		},
@@ -1200,7 +1200,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnThreatIntellig
 				},
 			},
 			TenantID:          to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
-			TipLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t }()),
+			TipLookbackPeriod: to.Ptr(time.Date(2020, time.January, 1, 13, 0, 30, 123000000, time.UTC)),
 		},
 	}, nil)
 	if err != nil {
@@ -1223,7 +1223,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAnThreatIntellig
 	// 				},
 	// 			},
 	// 			TenantID: to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
-	// 			TipLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t}()),
+	// 			TipLookbackPeriod: to.Ptr(time.Date(2020, time.January, 1, 13, 0, 30, 123000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -1253,7 +1253,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAThreatIntellige
 			FriendlyName:        to.Ptr("testTaxii"),
 			Password:            to.Ptr("--"),
 			PollingFrequency:    to.Ptr(armsecurityinsights.PollingFrequencyOnceADay),
-			TaxiiLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t }()),
+			TaxiiLookbackPeriod: to.Ptr(time.Date(2020, time.January, 1, 13, 0, 30, 123000000, time.UTC)),
 			TaxiiServer:         to.Ptr("https://limo.anomali.com/api/v1/taxii2/feeds"),
 			TenantID:            to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
 			UserName:            to.Ptr("--"),
@@ -1282,7 +1282,7 @@ func ExampleDataConnectorsClient_CreateOrUpdate_createsOrUpdatesAThreatIntellige
 	// 			},
 	// 			FriendlyName: to.Ptr("testTaxii"),
 	// 			PollingFrequency: to.Ptr(armsecurityinsights.PollingFrequencyOnceADay),
-	// 			TaxiiLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t}()),
+	// 			TaxiiLookbackPeriod: to.Ptr(time.Date(2020, time.January, 1, 13, 0, 30, 123000000, time.UTC)),
 	// 			TaxiiServer: to.Ptr("https://limo.anomali.com/api/v1/taxii2/feeds"),
 	// 			TenantID: to.Ptr("06b3ccb8-1384-4bcc-aec7-852f6d57161b"),
 	// 			WorkspaceID: to.Ptr("28e5f051-34cb-4208-9037-693e5342a871"),
@@ -2326,7 +2326,7 @@ func ExampleDataConnectorsClient_Get_getAMicrosoftThreatIntelligenceDataConnecto
 	// 		Properties: &armsecurityinsights.MSTIDataConnectorProperties{
 	// 			DataTypes: &armsecurityinsights.MSTIDataConnectorDataTypes{
 	// 				MicrosoftEmergingThreatFeed: &armsecurityinsights.MSTIDataConnectorDataTypesMicrosoftEmergingThreatFeed{
-	// 					LookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "1970-01-01T00:00:00.000Z"); return t}()),
+	// 					LookbackPeriod: to.Ptr(time.Date(1970, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
@@ -2566,7 +2566,7 @@ func ExampleDataConnectorsClient_Get_getAPremiumMicrosoftDefenderForThreatIntell
 	// 					State: to.Ptr(armsecurityinsights.DataTypeStateEnabled),
 	// 				},
 	// 			},
-	// 			LookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-12-26T22:16:07Z"); return t}()),
+	// 			LookbackPeriod: to.Ptr(time.Date(2023, time.December, 26, 22, 16, 7, 0, time.UTC)),
 	// 			RequiredSKUsPresent: to.Ptr(false),
 	// 			TenantID: to.Ptr("e4afb3c4-813b-4e68-b6de-e5360866e798"),
 	// 		},
@@ -2713,7 +2713,7 @@ func ExampleDataConnectorsClient_Get_getATiDataConnector() {
 	// 				},
 	// 			},
 	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
-	// 			TipLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t}()),
+	// 			TipLookbackPeriod: to.Ptr(time.Date(2020, time.January, 1, 13, 0, 30, 123000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -2754,7 +2754,7 @@ func ExampleDataConnectorsClient_Get_getATiTaxiiDataConnector() {
 	// 			FriendlyName: to.Ptr("My TI Taxii Connector"),
 	// 			Password: to.Ptr(""),
 	// 			PollingFrequency: to.Ptr(armsecurityinsights.PollingFrequencyOnceADay),
-	// 			TaxiiLookbackPeriod: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T13:00:30.123Z"); return t}()),
+	// 			TaxiiLookbackPeriod: to.Ptr(time.Date(2020, time.January, 1, 13, 0, 30, 123000000, time.UTC)),
 	// 			TaxiiServer: to.Ptr("https://mytaxiiserver.com/taxiing/v2/api"),
 	// 			TenantID: to.Ptr("2070ecc9-b4d5-4ae4-adaa-936fa1954fa8"),
 	// 			UserName: to.Ptr(""),

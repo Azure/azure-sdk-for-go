@@ -60,12 +60,7 @@ func (client *DeploymentInfoClient) List(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return DeploymentInfoClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeploymentInfoClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -95,8 +90,11 @@ func (client *DeploymentInfoClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client *DeploymentInfoClient) listHandleResponse(resp *http.Response) (DeploymentInfoClientListResponse, error) {
+func (client *DeploymentInfoClient) listHandleResponse(resp *http.Response, successCodes ...int) (DeploymentInfoClientListResponse, error) {
 	result := DeploymentInfoClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentInfoResponse); err != nil {
 		return DeploymentInfoClientListResponse{}, err
 	}

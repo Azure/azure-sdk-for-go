@@ -63,12 +63,7 @@ func (client *ProjectCatalogEnvironmentDefinitionsClient) GetErrorDetails(ctx co
 	if err != nil {
 		return ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
-	}
-	resp, err := client.getErrorDetailsHandleResponse(httpResp)
-	return resp, err
+	return client.getErrorDetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getErrorDetailsCreateRequest creates the GetErrorDetails request.
@@ -106,8 +101,11 @@ func (client *ProjectCatalogEnvironmentDefinitionsClient) getErrorDetailsCreateR
 }
 
 // getErrorDetailsHandleResponse handles the GetErrorDetails response.
-func (client *ProjectCatalogEnvironmentDefinitionsClient) getErrorDetailsHandleResponse(resp *http.Response) (ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsResponse, error) {
+func (client *ProjectCatalogEnvironmentDefinitionsClient) getErrorDetailsHandleResponse(resp *http.Response, successCodes ...int) (ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsResponse, error) {
 	result := ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CatalogResourceValidationErrorDetails); err != nil {
 		return ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
 	}

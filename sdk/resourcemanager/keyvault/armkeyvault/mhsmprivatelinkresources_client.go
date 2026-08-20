@@ -61,12 +61,7 @@ func (client *MHSMPrivateLinkResourcesClient) ListByMHSMResource(ctx context.Con
 	if err != nil {
 		return MHSMPrivateLinkResourcesClientListByMHSMResourceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MHSMPrivateLinkResourcesClientListByMHSMResourceResponse{}, err
-	}
-	resp, err := client.listByMHSMResourceHandleResponse(httpResp)
-	return resp, err
+	return client.listByMHSMResourceHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByMHSMResourceCreateRequest creates the ListByMHSMResource request.
@@ -96,8 +91,11 @@ func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceCreateRequest(ct
 }
 
 // listByMHSMResourceHandleResponse handles the ListByMHSMResource response.
-func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceHandleResponse(resp *http.Response) (MHSMPrivateLinkResourcesClientListByMHSMResourceResponse, error) {
+func (client *MHSMPrivateLinkResourcesClient) listByMHSMResourceHandleResponse(resp *http.Response, successCodes ...int) (MHSMPrivateLinkResourcesClientListByMHSMResourceResponse, error) {
 	result := MHSMPrivateLinkResourcesClientListByMHSMResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MHSMPrivateLinkResourceListResult); err != nil {
 		return MHSMPrivateLinkResourcesClientListByMHSMResourceResponse{}, err
 	}

@@ -6,7 +6,7 @@ package armnetwork
 
 const (
 	version20181001 string = "2018-10-01"
-	version20250701 string = "2025-07-01"
+	version20250901 string = "2025-09-01"
 )
 
 // Access - Access to be allowed or denied.
@@ -135,9 +135,10 @@ func PossibleAddressSpaceAggregationOptionValues() []AddressSpaceAggregationOpti
 
 // AddressUpdateAction - Specifies the type of update operation to perform on addresses within the address location of service
 // gateway.
-// - FullUpdate: Replaces all existing address data with the new list provided in the request. Any previously defined addresses
-// not included will be removed.
-// - PartialUpdate: Updates only the specified addresses.
+//
+//   - FullUpdate: Replaces all existing address data with the new list provided in the request. Any previously defined addresses
+//     not included will be removed.
+//   - PartialUpdate: Updates only the specified addresses.
 type AddressUpdateAction string
 
 const (
@@ -1431,6 +1432,59 @@ func PossibleConnectedGroupPrivateEndpointsScaleValues() []ConnectedGroupPrivate
 	}
 }
 
+// ConnectionAnalyzerEndpointType - The endpoint type for a connection analyzer source or destination.
+type ConnectionAnalyzerEndpointType string
+
+const (
+	// ConnectionAnalyzerEndpointTypeApplicationGateway - An Application Gateway endpoint, identified by its ARM resource ID.
+	ConnectionAnalyzerEndpointTypeApplicationGateway ConnectionAnalyzerEndpointType = "ApplicationGateway"
+	// ConnectionAnalyzerEndpointTypeBastionHost - An Azure Bastion host endpoint, identified by its ARM resource ID.
+	ConnectionAnalyzerEndpointTypeBastionHost ConnectionAnalyzerEndpointType = "BastionHost"
+	// ConnectionAnalyzerEndpointTypeExternalAddress - An external endpoint reachable from outside Azure, identified by an IP
+	// address or FQDN.
+	ConnectionAnalyzerEndpointTypeExternalAddress ConnectionAnalyzerEndpointType = "ExternalAddress"
+	// ConnectionAnalyzerEndpointTypeVM - An Azure virtual machine endpoint, identified by its ARM resource ID.
+	ConnectionAnalyzerEndpointTypeVM ConnectionAnalyzerEndpointType = "VM"
+	// ConnectionAnalyzerEndpointTypeVMSS - An Azure virtual machine scale set (or scale set instance) endpoint, identified by
+	// its ARM resource ID.
+	ConnectionAnalyzerEndpointTypeVMSS ConnectionAnalyzerEndpointType = "VMSS"
+)
+
+// PossibleConnectionAnalyzerEndpointTypeValues returns the possible values for the ConnectionAnalyzerEndpointType const type.
+func PossibleConnectionAnalyzerEndpointTypeValues() []ConnectionAnalyzerEndpointType {
+	return []ConnectionAnalyzerEndpointType{
+		ConnectionAnalyzerEndpointTypeApplicationGateway,
+		ConnectionAnalyzerEndpointTypeBastionHost,
+		ConnectionAnalyzerEndpointTypeExternalAddress,
+		ConnectionAnalyzerEndpointTypeVM,
+		ConnectionAnalyzerEndpointTypeVMSS,
+	}
+}
+
+// ConnectionAnalyzerStatus - Current execution status of the connection analyzer.
+type ConnectionAnalyzerStatus string
+
+const (
+	// ConnectionAnalyzerStatusFailed - The connection analyzer failed to complete its diagnostic operations.
+	ConnectionAnalyzerStatusFailed ConnectionAnalyzerStatus = "Failed"
+	// ConnectionAnalyzerStatusNotStarted - The connection analyzer has been created but execution has not yet begun.
+	ConnectionAnalyzerStatusNotStarted ConnectionAnalyzerStatus = "NotStarted"
+	// ConnectionAnalyzerStatusRunning - The connection analyzer is currently running its diagnostic operations.
+	ConnectionAnalyzerStatusRunning ConnectionAnalyzerStatus = "Running"
+	// ConnectionAnalyzerStatusSucceeded - The connection analyzer completed all diagnostic operations successfully.
+	ConnectionAnalyzerStatusSucceeded ConnectionAnalyzerStatus = "Succeeded"
+)
+
+// PossibleConnectionAnalyzerStatusValues returns the possible values for the ConnectionAnalyzerStatus const type.
+func PossibleConnectionAnalyzerStatusValues() []ConnectionAnalyzerStatus {
+	return []ConnectionAnalyzerStatus{
+		ConnectionAnalyzerStatusFailed,
+		ConnectionAnalyzerStatusNotStarted,
+		ConnectionAnalyzerStatusRunning,
+		ConnectionAnalyzerStatusSucceeded,
+	}
+}
+
 // ConnectionAuthenticationType - Gateway connection authentication type.
 type ConnectionAuthenticationType string
 
@@ -1806,6 +1860,33 @@ func PossibleDhGroupValues() []DhGroup {
 	}
 }
 
+// DiagnosticOperation - The type of diagnostic operation to run on a connection analyzer.
+type DiagnosticOperation string
+
+const (
+	// DiagnosticOperationConnectivityCheck - Performs an end-to-end connectivity check between the source and destination.
+	DiagnosticOperationConnectivityCheck DiagnosticOperation = "ConnectivityCheck"
+	// DiagnosticOperationExpressRouteDiagnostic - Runs Express Route specific diagnostics for the connection.
+	DiagnosticOperationExpressRouteDiagnostic DiagnosticOperation = "ExpressRouteDiagnostic"
+	// DiagnosticOperationNSG - Evaluates the network security group rules that apply to the traffic.
+	DiagnosticOperationNSG DiagnosticOperation = "NSG"
+	// DiagnosticOperationNextHop - Determines the next hop for traffic from the source to the destination.
+	DiagnosticOperationNextHop DiagnosticOperation = "NextHop"
+	// DiagnosticOperationPortScan - Scans the destination ports to determine their reachability.
+	DiagnosticOperationPortScan DiagnosticOperation = "PortScan"
+)
+
+// PossibleDiagnosticOperationValues returns the possible values for the DiagnosticOperation const type.
+func PossibleDiagnosticOperationValues() []DiagnosticOperation {
+	return []DiagnosticOperation{
+		DiagnosticOperationConnectivityCheck,
+		DiagnosticOperationExpressRouteDiagnostic,
+		DiagnosticOperationNSG,
+		DiagnosticOperationNextHop,
+		DiagnosticOperationPortScan,
+	}
+}
+
 // Direction - The direction of the traffic.
 type Direction string
 
@@ -1938,6 +2019,24 @@ func PossibleEffectiveSecurityRuleProtocolValues() []EffectiveSecurityRuleProtoc
 		EffectiveSecurityRuleProtocolAll,
 		EffectiveSecurityRuleProtocolTCP,
 		EffectiveSecurityRuleProtocolUDP,
+	}
+}
+
+// EnableOnlyIPv6PeeringState - The state of IPv6 peering.
+type EnableOnlyIPv6PeeringState string
+
+const (
+	// EnableOnlyIPv6PeeringStateDisabled - IPv6 peering is disabled.
+	EnableOnlyIPv6PeeringStateDisabled EnableOnlyIPv6PeeringState = "Disabled"
+	// EnableOnlyIPv6PeeringStateEnabled - IPv6 peering is enabled.
+	EnableOnlyIPv6PeeringStateEnabled EnableOnlyIPv6PeeringState = "Enabled"
+)
+
+// PossibleEnableOnlyIPv6PeeringStateValues returns the possible values for the EnableOnlyIPv6PeeringState const type.
+func PossibleEnableOnlyIPv6PeeringStateValues() []EnableOnlyIPv6PeeringState {
+	return []EnableOnlyIPv6PeeringState{
+		EnableOnlyIPv6PeeringStateDisabled,
+		EnableOnlyIPv6PeeringStateEnabled,
 	}
 }
 
@@ -2121,6 +2220,8 @@ const (
 	ExpressRouteCircuitSKUTierBasic ExpressRouteCircuitSKUTier = "Basic"
 	// ExpressRouteCircuitSKUTierLocal - Local
 	ExpressRouteCircuitSKUTierLocal ExpressRouteCircuitSKUTier = "Local"
+	// ExpressRouteCircuitSKUTierMultiCloud - MultiCloud tier for cross-cloud connectivity.
+	ExpressRouteCircuitSKUTierMultiCloud ExpressRouteCircuitSKUTier = "MultiCloud"
 	// ExpressRouteCircuitSKUTierPremium - Premium
 	ExpressRouteCircuitSKUTierPremium ExpressRouteCircuitSKUTier = "Premium"
 	// ExpressRouteCircuitSKUTierStandard - Standard
@@ -2132,6 +2233,7 @@ func PossibleExpressRouteCircuitSKUTierValues() []ExpressRouteCircuitSKUTier {
 	return []ExpressRouteCircuitSKUTier{
 		ExpressRouteCircuitSKUTierBasic,
 		ExpressRouteCircuitSKUTierLocal,
+		ExpressRouteCircuitSKUTierMultiCloud,
 		ExpressRouteCircuitSKUTierPremium,
 		ExpressRouteCircuitSKUTierStandard,
 	}
@@ -2170,6 +2272,60 @@ func PossibleExpressRouteFailoverLinkTypeValues() []ExpressRouteFailoverLinkType
 	return []ExpressRouteFailoverLinkType{
 		ExpressRouteFailoverLinkTypePrimary,
 		ExpressRouteFailoverLinkTypeSecondary,
+	}
+}
+
+// ExpressRouteLagBillingType - The billing type of the ExpressRouteLag resource.
+type ExpressRouteLagBillingType string
+
+const (
+	// ExpressRouteLagBillingTypeMeteredData - Metered data transfer billing.
+	ExpressRouteLagBillingTypeMeteredData ExpressRouteLagBillingType = "MeteredData"
+	// ExpressRouteLagBillingTypeUnlimitedData - Unlimited data transfer billing.
+	ExpressRouteLagBillingTypeUnlimitedData ExpressRouteLagBillingType = "UnlimitedData"
+)
+
+// PossibleExpressRouteLagBillingTypeValues returns the possible values for the ExpressRouteLagBillingType const type.
+func PossibleExpressRouteLagBillingTypeValues() []ExpressRouteLagBillingType {
+	return []ExpressRouteLagBillingType{
+		ExpressRouteLagBillingTypeMeteredData,
+		ExpressRouteLagBillingTypeUnlimitedData,
+	}
+}
+
+// ExpressRouteLagEncapsulation - Encapsulation method on LAG.
+type ExpressRouteLagEncapsulation string
+
+const (
+	// ExpressRouteLagEncapsulationDot1Q - IEEE 802.1Q encapsulation.
+	ExpressRouteLagEncapsulationDot1Q ExpressRouteLagEncapsulation = "Dot1Q"
+	// ExpressRouteLagEncapsulationQinQ - IEEE 802.1ad encapsulation.
+	ExpressRouteLagEncapsulationQinQ ExpressRouteLagEncapsulation = "QinQ"
+)
+
+// PossibleExpressRouteLagEncapsulationValues returns the possible values for the ExpressRouteLagEncapsulation const type.
+func PossibleExpressRouteLagEncapsulationValues() []ExpressRouteLagEncapsulation {
+	return []ExpressRouteLagEncapsulation{
+		ExpressRouteLagEncapsulationDot1Q,
+		ExpressRouteLagEncapsulationQinQ,
+	}
+}
+
+// ExpressRouteLagLacpTimer - LACP timer configuration.
+type ExpressRouteLagLacpTimer string
+
+const (
+	// ExpressRouteLagLacpTimerFast - Fast LACP timer (30 seconds).
+	ExpressRouteLagLacpTimerFast ExpressRouteLagLacpTimer = "Fast"
+	// ExpressRouteLagLacpTimerSlow - Slow LACP timer (90 seconds).
+	ExpressRouteLagLacpTimerSlow ExpressRouteLagLacpTimer = "Slow"
+)
+
+// PossibleExpressRouteLagLacpTimerValues returns the possible values for the ExpressRouteLagLacpTimer const type.
+func PossibleExpressRouteLagLacpTimerValues() []ExpressRouteLagLacpTimer {
+	return []ExpressRouteLagLacpTimer{
+		ExpressRouteLagLacpTimerFast,
+		ExpressRouteLagLacpTimerSlow,
 	}
 }
 
@@ -2609,10 +2765,11 @@ func PossibleFirewallPolicyIDPSSignatureSeverityValues() []FirewallPolicyIDPSSig
 
 // FirewallPolicyIntrusionDetectionProfileType - Specifies the Intrusion Detection signature profile to apply.
 // Values:
-// - Off: IDPS profiles disabled; uses the same signature set that existed before profiles.
-// - Emerging: Signatures of the newest, most recent threats.
-// - Core: Complete, modern, standard set of signatures.
-// - Extended: Core signatures plus older legacy signatures for maximum coverage.
+//
+//   - Off: IDPS profiles disabled; uses the same signature set that existed before profiles.
+//   - Emerging: Signatures of the newest, most recent threats.
+//   - Core: Complete, modern, standard set of signatures.
+//   - Extended: Core signatures plus older legacy signatures for maximum coverage.
 type FirewallPolicyIntrusionDetectionProfileType string
 
 const (
@@ -2810,6 +2967,27 @@ const (
 func PossibleFlowLogFormatTypeValues() []FlowLogFormatType {
 	return []FlowLogFormatType{
 		FlowLogFormatTypeJSON,
+	}
+}
+
+// GatewayEffectiveRouteNextHopType - The next hop type of a gateway effective route.
+type GatewayEffectiveRouteNextHopType string
+
+const (
+	// GatewayEffectiveRouteNextHopTypeTunnel - The next hop is a VPN tunnel.
+	GatewayEffectiveRouteNextHopTypeTunnel GatewayEffectiveRouteNextHopType = "Tunnel"
+	// GatewayEffectiveRouteNextHopTypeUnknown - The next hop type could not be determined.
+	GatewayEffectiveRouteNextHopTypeUnknown GatewayEffectiveRouteNextHopType = "Unknown"
+	// GatewayEffectiveRouteNextHopTypeVirtualNetwork - The next hop is within the local virtual network.
+	GatewayEffectiveRouteNextHopTypeVirtualNetwork GatewayEffectiveRouteNextHopType = "VirtualNetwork"
+)
+
+// PossibleGatewayEffectiveRouteNextHopTypeValues returns the possible values for the GatewayEffectiveRouteNextHopType const type.
+func PossibleGatewayEffectiveRouteNextHopTypeValues() []GatewayEffectiveRouteNextHopType {
+	return []GatewayEffectiveRouteNextHopType{
+		GatewayEffectiveRouteNextHopTypeTunnel,
+		GatewayEffectiveRouteNextHopTypeUnknown,
+		GatewayEffectiveRouteNextHopTypeVirtualNetwork,
 	}
 }
 
@@ -3378,6 +3556,30 @@ func PossibleIssueTypeValues() []IssueType {
 	}
 }
 
+// LabelSelectorOperator - operator represents a Kubernetes label selector requirement's relationship to a set of values.
+type LabelSelectorOperator string
+
+const (
+	// LabelSelectorOperatorDoesNotExist - The label key must not exist.
+	LabelSelectorOperatorDoesNotExist LabelSelectorOperator = "DoesNotExist"
+	// LabelSelectorOperatorExists - The label key must exist, regardless of its value.
+	LabelSelectorOperatorExists LabelSelectorOperator = "Exists"
+	// LabelSelectorOperatorIn - The label value must be in the supplied set of values.
+	LabelSelectorOperatorIn LabelSelectorOperator = "In"
+	// LabelSelectorOperatorNotIn - The label value must not be in the supplied set of values.
+	LabelSelectorOperatorNotIn LabelSelectorOperator = "NotIn"
+)
+
+// PossibleLabelSelectorOperatorValues returns the possible values for the LabelSelectorOperator const type.
+func PossibleLabelSelectorOperatorValues() []LabelSelectorOperator {
+	return []LabelSelectorOperator{
+		LabelSelectorOperatorDoesNotExist,
+		LabelSelectorOperatorExists,
+		LabelSelectorOperatorIn,
+		LabelSelectorOperatorNotIn,
+	}
+}
+
 // LoadBalancerBackendAddressAdminState - A list of administrative states which once set can override health probe so that
 // Load Balancer will always forward new connections to backend, or deny new connections and reset existing connections.
 type LoadBalancerBackendAddressAdminState string
@@ -3415,6 +3617,22 @@ func PossibleLoadBalancerDetailLevelValues() []LoadBalancerDetailLevel {
 	}
 }
 
+// LoadBalancerMode - The load balancer mode. Set to `Advanced` to enable additional capabilities on a Standard SKU load balancer.
+// Advanced mode must be specified at creation and cannot be changed afterward.
+type LoadBalancerMode string
+
+const (
+	// LoadBalancerModeAdvanced - Advanced mode, which enables additional capabilities on a Standard SKU load balancer.
+	LoadBalancerModeAdvanced LoadBalancerMode = "Advanced"
+)
+
+// PossibleLoadBalancerModeValues returns the possible values for the LoadBalancerMode const type.
+func PossibleLoadBalancerModeValues() []LoadBalancerMode {
+	return []LoadBalancerMode{
+		LoadBalancerModeAdvanced,
+	}
+}
+
 // LoadBalancerOutboundRuleProtocol - The protocol for the outbound rule in load balancer.
 type LoadBalancerOutboundRuleProtocol string
 
@@ -3444,6 +3662,8 @@ const (
 	LoadBalancerSKUNameBasic LoadBalancerSKUName = "Basic"
 	// LoadBalancerSKUNameGateway - Gateway
 	LoadBalancerSKUNameGateway LoadBalancerSKUName = "Gateway"
+	// LoadBalancerSKUNameService - Service load balancer SKU.
+	LoadBalancerSKUNameService LoadBalancerSKUName = "Service"
 	// LoadBalancerSKUNameStandard - Standard
 	LoadBalancerSKUNameStandard LoadBalancerSKUName = "Standard"
 )
@@ -3453,6 +3673,7 @@ func PossibleLoadBalancerSKUNameValues() []LoadBalancerSKUName {
 	return []LoadBalancerSKUName{
 		LoadBalancerSKUNameBasic,
 		LoadBalancerSKUNameGateway,
+		LoadBalancerSKUNameService,
 		LoadBalancerSKUNameStandard,
 	}
 }
@@ -3547,6 +3768,24 @@ func PossibleManagedRuleEnabledStateValues() []ManagedRuleEnabledState {
 	return []ManagedRuleEnabledState{
 		ManagedRuleEnabledStateDisabled,
 		ManagedRuleEnabledStateEnabled,
+	}
+}
+
+// MigrationType - The type of migration workflow performed on a Network Virtual Appliance.
+type MigrationType string
+
+const (
+	// MigrationTypeMigrateToNewILBArchitecture - Migrate the Network Virtual Appliance to the new internal load balancer architecture.
+	MigrationTypeMigrateToNewILBArchitecture MigrationType = "MigrateToNewILBArchitecture"
+	// MigrationTypeMigrateToNewOSVersion - Migrate the Network Virtual Appliance to a new OS / marketplace image version.
+	MigrationTypeMigrateToNewOSVersion MigrationType = "MigrateToNewOSVersion"
+)
+
+// PossibleMigrationTypeValues returns the possible values for the MigrationType const type.
+func PossibleMigrationTypeValues() []MigrationType {
+	return []MigrationType{
+		MigrationTypeMigrateToNewILBArchitecture,
+		MigrationTypeMigrateToNewOSVersion,
 	}
 }
 
@@ -4616,6 +4855,27 @@ func PossiblePublicIPPrefixSKUTierValues() []PublicIPPrefixSKUTier {
 	}
 }
 
+// ResiliencyLevel - The resiliency level of the ExpressRoute circuit.
+type ResiliencyLevel string
+
+const (
+	// ResiliencyLevelHigh - High resiliency level.
+	ResiliencyLevelHigh ResiliencyLevel = "High"
+	// ResiliencyLevelMaximum - Maximum resiliency level.
+	ResiliencyLevelMaximum ResiliencyLevel = "Maximum"
+	// ResiliencyLevelStandard - Standard resiliency level.
+	ResiliencyLevelStandard ResiliencyLevel = "Standard"
+)
+
+// PossibleResiliencyLevelValues returns the possible values for the ResiliencyLevel const type.
+func PossibleResiliencyLevelValues() []ResiliencyLevel {
+	return []ResiliencyLevel{
+		ResiliencyLevelHigh,
+		ResiliencyLevelMaximum,
+		ResiliencyLevelStandard,
+	}
+}
+
 // ResiliencyModel - Property to indicate if the Express Route Gateway has resiliency model of MultiHomed or SingleHomed
 type ResiliencyModel string
 
@@ -5180,6 +5440,8 @@ func PossibleServiceGatewaySKUTierValues() []ServiceGatewaySKUTier {
 type ServiceProviderProvisioningState string
 
 const (
+	// ServiceProviderProvisioningStateDeProvisioned - DeProvisioned State
+	ServiceProviderProvisioningStateDeProvisioned ServiceProviderProvisioningState = "DeProvisioned"
 	// ServiceProviderProvisioningStateDeprovisioning - Deprovisioning
 	ServiceProviderProvisioningStateDeprovisioning ServiceProviderProvisioningState = "Deprovisioning"
 	// ServiceProviderProvisioningStateNotProvisioned - NotProvisioned
@@ -5193,6 +5455,7 @@ const (
 // PossibleServiceProviderProvisioningStateValues returns the possible values for the ServiceProviderProvisioningState const type.
 func PossibleServiceProviderProvisioningStateValues() []ServiceProviderProvisioningState {
 	return []ServiceProviderProvisioningState{
+		ServiceProviderProvisioningStateDeProvisioned,
 		ServiceProviderProvisioningStateDeprovisioning,
 		ServiceProviderProvisioningStateNotProvisioned,
 		ServiceProviderProvisioningStateProvisioned,
@@ -5222,9 +5485,10 @@ func PossibleServiceTypeValues() []ServiceType {
 }
 
 // ServiceUpdateAction - Specifies the type of update operation to perform on services within the service gateway.
-// - FullUpdate: Replaces all existing services with the new list provided in the request. Any previously defined services
-// not included will be removed.
-// - PartialUpdate: Updates only the specified services.
+//
+//   - FullUpdate: Replaces all existing services with the new list provided in the request. Any previously defined services not
+//     included will be removed.
+//   - PartialUpdate: Updates only the specified services.
 type ServiceUpdateAction string
 
 const (
@@ -5372,9 +5636,10 @@ func PossibleTransportProtocolValues() []TransportProtocol {
 }
 
 // UpdateAction - Specifies the type of update operation to perform on address locations within the service gateway.
-// - FullUpdate: Replaces all existing address location data with the new list provided in the request. Any previously defined
-// locations not included will be removed.
-// - PartialUpdate: Updates only the specified address locations.
+//
+//   - FullUpdate: Replaces all existing address location data with the new list provided in the request. Any previously defined
+//     locations not included will be removed.
+//   - PartialUpdate: Updates only the specified address locations.
 type UpdateAction string
 
 const (

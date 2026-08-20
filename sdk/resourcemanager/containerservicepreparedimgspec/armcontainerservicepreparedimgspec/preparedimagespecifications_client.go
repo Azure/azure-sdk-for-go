@@ -84,8 +84,7 @@ func (client *PreparedImageSpecificationsClient) createOrUpdate(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -166,8 +165,7 @@ func (client *PreparedImageSpecificationsClient) deleteOperation(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -243,8 +241,7 @@ func (client *PreparedImageSpecificationsClient) deleteVersion(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -301,12 +298,7 @@ func (client *PreparedImageSpecificationsClient) Get(ctx context.Context, resour
 	if err != nil {
 		return PreparedImageSpecificationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PreparedImageSpecificationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -336,8 +328,11 @@ func (client *PreparedImageSpecificationsClient) getCreateRequest(ctx context.Co
 }
 
 // getHandleResponse handles the Get response.
-func (client *PreparedImageSpecificationsClient) getHandleResponse(resp *http.Response) (PreparedImageSpecificationsClientGetResponse, error) {
+func (client *PreparedImageSpecificationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (PreparedImageSpecificationsClientGetResponse, error) {
 	result := PreparedImageSpecificationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PreparedImageSpecification); err != nil {
 		return PreparedImageSpecificationsClientGetResponse{}, err
 	}
@@ -365,12 +360,7 @@ func (client *PreparedImageSpecificationsClient) GetVersion(ctx context.Context,
 	if err != nil {
 		return PreparedImageSpecificationsClientGetVersionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PreparedImageSpecificationsClientGetVersionResponse{}, err
-	}
-	resp, err := client.getVersionHandleResponse(httpResp)
-	return resp, err
+	return client.getVersionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getVersionCreateRequest creates the GetVersion request.
@@ -404,8 +394,11 @@ func (client *PreparedImageSpecificationsClient) getVersionCreateRequest(ctx con
 }
 
 // getVersionHandleResponse handles the GetVersion response.
-func (client *PreparedImageSpecificationsClient) getVersionHandleResponse(resp *http.Response) (PreparedImageSpecificationsClientGetVersionResponse, error) {
+func (client *PreparedImageSpecificationsClient) getVersionHandleResponse(resp *http.Response, successCodes ...int) (PreparedImageSpecificationsClientGetVersionResponse, error) {
 	result := PreparedImageSpecificationsClientGetVersionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PreparedImageSpecificationVersion); err != nil {
 		return PreparedImageSpecificationsClientGetVersionResponse{}, err
 	}
@@ -427,43 +420,57 @@ func (client *PreparedImageSpecificationsClient) NewListByResourceGroupPager(res
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return PreparedImageSpecificationsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PreparedImageSpecificationsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *PreparedImageSpecificationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *PreparedImageSpecificationsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PreparedImageSpecificationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *PreparedImageSpecificationsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260202Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260202Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *PreparedImageSpecificationsClient) listByResourceGroupHandleResponse(resp *http.Response) (PreparedImageSpecificationsClientListByResourceGroupResponse, error) {
+func (client *PreparedImageSpecificationsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (PreparedImageSpecificationsClientListByResourceGroupResponse, error) {
 	result := PreparedImageSpecificationsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PreparedImageSpecificationListResult); err != nil {
 		return PreparedImageSpecificationsClientListByResourceGroupResponse{}, err
 	}
@@ -484,39 +491,53 @@ func (client *PreparedImageSpecificationsClient) NewListBySubscriptionPager(opti
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return PreparedImageSpecificationsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PreparedImageSpecificationsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *PreparedImageSpecificationsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *PreparedImageSpecificationsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/preparedImageSpecifications"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PreparedImageSpecificationsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *PreparedImageSpecificationsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/preparedImageSpecifications"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260202Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260202Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *PreparedImageSpecificationsClient) listBySubscriptionHandleResponse(resp *http.Response) (PreparedImageSpecificationsClientListBySubscriptionResponse, error) {
+func (client *PreparedImageSpecificationsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (PreparedImageSpecificationsClientListBySubscriptionResponse, error) {
 	result := PreparedImageSpecificationsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PreparedImageSpecificationListResult); err != nil {
 		return PreparedImageSpecificationsClientListBySubscriptionResponse{}, err
 	}
@@ -539,47 +560,61 @@ func (client *PreparedImageSpecificationsClient) NewListVersionsPager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listVersionsCreateRequest(ctx, resourceGroupName, preparedImageSpecificationName, options)
-			}, nil)
+			req, err := client.listVersionsCreateRequest(ctx, resourceGroupName, preparedImageSpecificationName, nextLink, options)
 			if err != nil {
 				return PreparedImageSpecificationsClientListVersionsResponse{}, err
 			}
-			return client.listVersionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PreparedImageSpecificationsClientListVersionsResponse{}, err
+			}
+			return client.listVersionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listVersionsCreateRequest creates the ListVersions request.
-func (client *PreparedImageSpecificationsClient) listVersionsCreateRequest(ctx context.Context, resourceGroupName string, preparedImageSpecificationName string, _ *PreparedImageSpecificationsClientListVersionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PreparedImageSpecificationsClient) listVersionsCreateRequest(ctx context.Context, resourceGroupName string, preparedImageSpecificationName string, nextLink string, _ *PreparedImageSpecificationsClientListVersionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/preparedImageSpecifications/{preparedImageSpecificationName}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if preparedImageSpecificationName == "" {
+			return nil, errors.New("parameter preparedImageSpecificationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{preparedImageSpecificationName}", url.PathEscape(preparedImageSpecificationName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if preparedImageSpecificationName == "" {
-		return nil, errors.New("parameter preparedImageSpecificationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{preparedImageSpecificationName}", url.PathEscape(preparedImageSpecificationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260202Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260202Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listVersionsHandleResponse handles the ListVersions response.
-func (client *PreparedImageSpecificationsClient) listVersionsHandleResponse(resp *http.Response) (PreparedImageSpecificationsClientListVersionsResponse, error) {
+func (client *PreparedImageSpecificationsClient) listVersionsHandleResponse(resp *http.Response, successCodes ...int) (PreparedImageSpecificationsClientListVersionsResponse, error) {
 	result := PreparedImageSpecificationsClientListVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PreparedImageSpecificationVersionListResult); err != nil {
 		return PreparedImageSpecificationsClientListVersionsResponse{}, err
 	}
@@ -607,12 +642,7 @@ func (client *PreparedImageSpecificationsClient) Update(ctx context.Context, res
 	if err != nil {
 		return PreparedImageSpecificationsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PreparedImageSpecificationsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -649,8 +679,11 @@ func (client *PreparedImageSpecificationsClient) updateCreateRequest(ctx context
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PreparedImageSpecificationsClient) updateHandleResponse(resp *http.Response) (PreparedImageSpecificationsClientUpdateResponse, error) {
+func (client *PreparedImageSpecificationsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (PreparedImageSpecificationsClientUpdateResponse, error) {
 	result := PreparedImageSpecificationsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PreparedImageSpecification); err != nil {
 		return PreparedImageSpecificationsClientUpdateResponse{}, err
 	}

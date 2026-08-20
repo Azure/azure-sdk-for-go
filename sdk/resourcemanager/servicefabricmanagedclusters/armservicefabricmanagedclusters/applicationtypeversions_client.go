@@ -84,8 +84,7 @@ func (client *ApplicationTypeVersionsClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -170,8 +169,7 @@ func (client *ApplicationTypeVersionsClient) deleteOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -232,12 +230,7 @@ func (client *ApplicationTypeVersionsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return ApplicationTypeVersionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ApplicationTypeVersionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -275,8 +268,11 @@ func (client *ApplicationTypeVersionsClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *ApplicationTypeVersionsClient) getHandleResponse(resp *http.Response) (ApplicationTypeVersionsClientGetResponse, error) {
+func (client *ApplicationTypeVersionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ApplicationTypeVersionsClientGetResponse, error) {
 	result := ApplicationTypeVersionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationTypeVersionResource); err != nil {
 		return ApplicationTypeVersionsClientGetResponse{}, err
 	}
@@ -301,51 +297,65 @@ func (client *ApplicationTypeVersionsClient) NewListByApplicationTypesPager(reso
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByApplicationTypesCreateRequest(ctx, resourceGroupName, clusterName, applicationTypeName, options)
-			}, nil)
+			req, err := client.listByApplicationTypesCreateRequest(ctx, resourceGroupName, clusterName, applicationTypeName, nextLink, options)
 			if err != nil {
 				return ApplicationTypeVersionsClientListByApplicationTypesResponse{}, err
 			}
-			return client.listByApplicationTypesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ApplicationTypeVersionsClientListByApplicationTypesResponse{}, err
+			}
+			return client.listByApplicationTypesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByApplicationTypesCreateRequest creates the ListByApplicationTypes request.
-func (client *ApplicationTypeVersionsClient) listByApplicationTypesCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, _ *ApplicationTypeVersionsClientListByApplicationTypesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applicationTypes/{applicationTypeName}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ApplicationTypeVersionsClient) listByApplicationTypesCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, nextLink string, _ *ApplicationTypeVersionsClientListByApplicationTypesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applicationTypes/{applicationTypeName}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if clusterName == "" {
+			return nil, errors.New("parameter clusterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+		if applicationTypeName == "" {
+			return nil, errors.New("parameter applicationTypeName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{applicationTypeName}", url.PathEscape(applicationTypeName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if applicationTypeName == "" {
-		return nil, errors.New("parameter applicationTypeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{applicationTypeName}", url.PathEscape(applicationTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByApplicationTypesHandleResponse handles the ListByApplicationTypes response.
-func (client *ApplicationTypeVersionsClient) listByApplicationTypesHandleResponse(resp *http.Response) (ApplicationTypeVersionsClientListByApplicationTypesResponse, error) {
+func (client *ApplicationTypeVersionsClient) listByApplicationTypesHandleResponse(resp *http.Response, successCodes ...int) (ApplicationTypeVersionsClientListByApplicationTypesResponse, error) {
 	result := ApplicationTypeVersionsClientListByApplicationTypesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationTypeVersionResourceList); err != nil {
 		return ApplicationTypeVersionsClientListByApplicationTypesResponse{}, err
 	}
@@ -375,12 +385,7 @@ func (client *ApplicationTypeVersionsClient) Update(ctx context.Context, resourc
 	if err != nil {
 		return ApplicationTypeVersionsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ApplicationTypeVersionsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -422,8 +427,11 @@ func (client *ApplicationTypeVersionsClient) updateCreateRequest(ctx context.Con
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ApplicationTypeVersionsClient) updateHandleResponse(resp *http.Response) (ApplicationTypeVersionsClientUpdateResponse, error) {
+func (client *ApplicationTypeVersionsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ApplicationTypeVersionsClientUpdateResponse, error) {
 	result := ApplicationTypeVersionsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationTypeVersionResource); err != nil {
 		return ApplicationTypeVersionsClientUpdateResponse{}, err
 	}

@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultSourceControlClientVersion string = "2025-07-01-preview"
-
 // SourceControlClient contains the methods for the SourceControl group.
 // Don't use this type directly, use NewSourceControlClient() instead.
 //
@@ -60,51 +58,65 @@ func (client *SourceControlClient) NewListRepositoriesPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listRepositoriesCreateRequest(ctx, resourceGroupName, workspaceName, repositoryAccess, options)
-			}, nil)
+			req, err := client.listRepositoriesCreateRequest(ctx, resourceGroupName, workspaceName, repositoryAccess, nextLink, options)
 			if err != nil {
 				return SourceControlClientListRepositoriesResponse{}, err
 			}
-			return client.listRepositoriesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SourceControlClientListRepositoriesResponse{}, err
+			}
+			return client.listRepositoriesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listRepositoriesCreateRequest creates the ListRepositories request.
-func (client *SourceControlClient) listRepositoriesCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, repositoryAccess RepositoryAccessProperties, _ *SourceControlClientListRepositoriesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/listRepositories"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SourceControlClient) listRepositoriesCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, repositoryAccess RepositoryAccessProperties, nextLink string, _ *SourceControlClientListRepositoriesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/listRepositories"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultSourceControlClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, repositoryAccess); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, repositoryAccess); err != nil {
+			return nil, err
+		}
 	}
 	return req, nil
 }
 
 // listRepositoriesHandleResponse handles the ListRepositories response.
-func (client *SourceControlClient) listRepositoriesHandleResponse(resp *http.Response) (SourceControlClientListRepositoriesResponse, error) {
+func (client *SourceControlClient) listRepositoriesHandleResponse(resp *http.Response, successCodes ...int) (SourceControlClientListRepositoriesResponse, error) {
 	result := SourceControlClientListRepositoriesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RepoList); err != nil {
 		return SourceControlClientListRepositoriesResponse{}, err
 	}

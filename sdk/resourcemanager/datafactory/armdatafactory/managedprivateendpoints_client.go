@@ -64,12 +64,7 @@ func (client *ManagedPrivateEndpointsClient) CreateOrUpdate(ctx context.Context,
 	if err != nil {
 		return ManagedPrivateEndpointsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedPrivateEndpointsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -114,8 +109,11 @@ func (client *ManagedPrivateEndpointsClient) createOrUpdateCreateRequest(ctx con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ManagedPrivateEndpointsClient) createOrUpdateHandleResponse(resp *http.Response) (ManagedPrivateEndpointsClientCreateOrUpdateResponse, error) {
+func (client *ManagedPrivateEndpointsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ManagedPrivateEndpointsClientCreateOrUpdateResponse, error) {
 	result := ManagedPrivateEndpointsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedPrivateEndpointResource); err != nil {
 		return ManagedPrivateEndpointsClientCreateOrUpdateResponse{}, err
 	}
@@ -145,8 +143,7 @@ func (client *ManagedPrivateEndpointsClient) Delete(ctx context.Context, resourc
 		return ManagedPrivateEndpointsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedPrivateEndpointsClientDeleteResponse{}, err
+		return ManagedPrivateEndpointsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ManagedPrivateEndpointsClientDeleteResponse{}, nil
 }
@@ -206,12 +203,7 @@ func (client *ManagedPrivateEndpointsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return ManagedPrivateEndpointsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedPrivateEndpointsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -252,8 +244,11 @@ func (client *ManagedPrivateEndpointsClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedPrivateEndpointsClient) getHandleResponse(resp *http.Response) (ManagedPrivateEndpointsClientGetResponse, error) {
+func (client *ManagedPrivateEndpointsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedPrivateEndpointsClientGetResponse, error) {
 	result := ManagedPrivateEndpointsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedPrivateEndpointResource); err != nil {
 		return ManagedPrivateEndpointsClientGetResponse{}, err
 	}
@@ -277,51 +272,65 @@ func (client *ManagedPrivateEndpointsClient) NewListByFactoryPager(resourceGroup
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, managedVirtualNetworkName, options)
-			}, nil)
+			req, err := client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, managedVirtualNetworkName, nextLink, options)
 			if err != nil {
 				return ManagedPrivateEndpointsClientListByFactoryResponse{}, err
 			}
-			return client.listByFactoryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedPrivateEndpointsClientListByFactoryResponse{}, err
+			}
+			return client.listByFactoryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
-func (client *ManagedPrivateEndpointsClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, _ *ManagedPrivateEndpointsClientListByFactoryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedPrivateEndpointsClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, managedVirtualNetworkName string, nextLink string, _ *ManagedPrivateEndpointsClientListByFactoryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if factoryName == "" {
+			return nil, errors.New("parameter factoryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
+		if managedVirtualNetworkName == "" {
+			return nil, errors.New("parameter managedVirtualNetworkName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedVirtualNetworkName}", url.PathEscape(managedVirtualNetworkName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if factoryName == "" {
-		return nil, errors.New("parameter factoryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	if managedVirtualNetworkName == "" {
-		return nil, errors.New("parameter managedVirtualNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedVirtualNetworkName}", url.PathEscape(managedVirtualNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20180601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByFactoryHandleResponse handles the ListByFactory response.
-func (client *ManagedPrivateEndpointsClient) listByFactoryHandleResponse(resp *http.Response) (ManagedPrivateEndpointsClientListByFactoryResponse, error) {
+func (client *ManagedPrivateEndpointsClient) listByFactoryHandleResponse(resp *http.Response, successCodes ...int) (ManagedPrivateEndpointsClientListByFactoryResponse, error) {
 	result := ManagedPrivateEndpointsClientListByFactoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedPrivateEndpointListResponse); err != nil {
 		return ManagedPrivateEndpointsClientListByFactoryResponse{}, err
 	}

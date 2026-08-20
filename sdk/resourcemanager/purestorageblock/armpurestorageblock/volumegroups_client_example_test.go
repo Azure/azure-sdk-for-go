@@ -74,10 +74,10 @@ func ExampleVolumeGroupsClient_BeginCreate() {
 	// 		SystemData: &armpurestorageblock.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -147,10 +147,10 @@ func ExampleVolumeGroupsClient_Get() {
 	// 		SystemData: &armpurestorageblock.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -236,10 +236,10 @@ func ExampleVolumeGroupsClient_NewListByStoragePoolPager() {
 		// 				SystemData: &armpurestorageblock.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -342,10 +342,10 @@ func ExampleVolumeGroupsClient_BeginUpdate() {
 	// 		SystemData: &armpurestorageblock.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T08:30:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 8, 30, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }

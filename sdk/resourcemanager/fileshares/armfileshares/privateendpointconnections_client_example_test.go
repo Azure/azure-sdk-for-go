@@ -63,10 +63,10 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreate() {
 	// 		SystemData: &armfileshares.SystemData{
 	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-23T12:37:53.955Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-23T12:37:53.955Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -138,10 +138,10 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// 		SystemData: &armfileshares.SystemData{
 	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-23T12:37:53.955Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-23T12:37:53.955Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -193,10 +193,10 @@ func ExamplePrivateEndpointConnectionsClient_NewListByFileSharePager() {
 		// 				SystemData: &armfileshares.SystemData{
 		// 					CreatedBy: to.Ptr("user@example.com"),
 		// 					CreatedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-23T12:37:53.955Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@example.com"),
 		// 					LastModifiedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-23T12:37:53.955Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -220,10 +220,10 @@ func ExamplePrivateEndpointConnectionsClient_NewListByFileSharePager() {
 		// 				SystemData: &armfileshares.SystemData{
 		// 					CreatedBy: to.Ptr("user@example.com"),
 		// 					CreatedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-23T12:37:53.955Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@example.com"),
 		// 					LastModifiedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-23T12:37:53.955Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

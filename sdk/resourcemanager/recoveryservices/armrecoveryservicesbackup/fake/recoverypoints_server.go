@@ -28,10 +28,6 @@ type RecoveryPointsServer struct {
 	// NewListPager is the fake for method RecoveryPointsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, options *armrecoveryservicesbackup.RecoveryPointsClientListOptions) (resp azfake.PagerResponder[armrecoveryservicesbackup.RecoveryPointsClientListResponse])
-
-	// Update is the fake for method RecoveryPointsClient.Update
-	// HTTP status codes to indicate success: http.StatusOK
-	Update func(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters armrecoveryservicesbackup.UpdateRecoveryPointRequest, options *armrecoveryservicesbackup.RecoveryPointsClientUpdateOptions) (resp azfake.Responder[armrecoveryservicesbackup.RecoveryPointsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewRecoveryPointsServerTransport creates a new instance of RecoveryPointsServerTransport with the provided implementation.
@@ -76,8 +72,6 @@ func (r *RecoveryPointsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = r.dispatchGet(req)
 			case "RecoveryPointsClient.NewListPager":
 				res.resp, res.err = r.dispatchNewListPager(req)
-			case "RecoveryPointsClient.Update":
-				res.resp, res.err = r.dispatchUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -200,59 +194,6 @@ func (r *RecoveryPointsServerTransport) dispatchNewListPager(req *http.Request) 
 	}
 	if !server.PagerResponderMore(newListPager) {
 		r.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (r *RecoveryPointsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.Update == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionContainers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectedItems/(?P<protectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryPoints/(?P<recoveryPointId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 8 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armrecoveryservicesbackup.UpdateRecoveryPointRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
-	if err != nil {
-		return nil, err
-	}
-	fabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fabricName")])
-	if err != nil {
-		return nil, err
-	}
-	containerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("containerName")])
-	if err != nil {
-		return nil, err
-	}
-	protectedItemNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("protectedItemName")])
-	if err != nil {
-		return nil, err
-	}
-	recoveryPointIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("recoveryPointId")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.Update(req.Context(), resourceGroupNameParam, vaultNameParam, fabricNameParam, containerNameParam, protectedItemNameParam, recoveryPointIDParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RecoveryPointResource, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

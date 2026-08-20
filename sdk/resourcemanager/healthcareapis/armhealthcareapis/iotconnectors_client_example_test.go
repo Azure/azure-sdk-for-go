@@ -116,9 +116,9 @@ func ExampleIotConnectorsClient_BeginCreateOrUpdate() {
 	// 			ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armhealthcareapis.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-28T19:26:24.072Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 28, 19, 26, 24, 72000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-28T19:26:24.072Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 28, 19, 26, 24, 72000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 		},
 	// 		Tags: map[string]*string{
@@ -216,9 +216,9 @@ func ExampleIotConnectorsClient_Get() {
 	// 			ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateCreating),
 	// 		},
 	// 		SystemData: &armhealthcareapis.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-28T19:26:24.072Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 28, 19, 26, 24, 72000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-28T19:26:24.072Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 28, 19, 26, 24, 72000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 		},
 	// 		Tags: map[string]*string{
@@ -297,9 +297,9 @@ func ExampleIotConnectorsClient_NewListByWorkspacePager() {
 		// 					ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateCreating),
 		// 				},
 		// 				SystemData: &armhealthcareapis.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-28T19:26:24.072Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 28, 19, 26, 24, 72000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-28T19:26:24.072Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 28, 19, 26, 24, 72000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 				},
 		// 				Tags: map[string]*string{
@@ -349,9 +349,9 @@ func ExampleIotConnectorsClient_NewListByWorkspacePager() {
 		// 					ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningState("Suceeded")),
 		// 				},
 		// 				SystemData: &armhealthcareapis.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-27T19:26:24.072Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 27, 19, 26, 24, 72000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-27T19:26:24.072Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 27, 19, 26, 24, 72000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 				},
 		// 				Tags: map[string]*string{
@@ -439,9 +439,9 @@ func ExampleIotConnectorsClient_BeginUpdate() {
 	// 			ProvisioningState: to.Ptr(armhealthcareapis.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armhealthcareapis.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-28T19:26:24.072Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 28, 19, 26, 24, 72000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-28T19:26:24.072Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 28, 19, 26, 24, 72000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 		},
 	// 		Tags: map[string]*string{

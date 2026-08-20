@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/NetworkInterfaceCreate.json
+// Generated from example definition: 2025-09-01/NetworkInterfaceCreate.json
 func ExampleInterfacesClient_BeginCreateOrUpdate_createNetworkInterface() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleInterfacesClient_BeginCreateOrUpdate_createNetworkInterface() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkInterfaceCreateGatewayLoadBalancerConsumer.json
+// Generated from example definition: 2025-09-01/NetworkInterfaceCreateGatewayLoadBalancerConsumer.json
 func ExampleInterfacesClient_BeginCreateOrUpdate_createNetworkInterfaceWithGatewayLoadBalancerConsumerConfigured() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +202,7 @@ func ExampleInterfacesClient_BeginCreateOrUpdate_createNetworkInterfaceWithGatew
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkInterfaceDelete.json
+// Generated from example definition: 2025-09-01/NetworkInterfaceDelete.json
 func ExampleInterfacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +228,7 @@ func ExampleInterfacesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkInterfaceGet.json
+// Generated from example definition: 2025-09-01/NetworkInterfaceGet.json
 func ExampleInterfacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,7 +315,7 @@ func ExampleInterfacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/CloudServiceNetworkInterfaceGet.json
+// Generated from example definition: 2025-09-01/CloudServiceNetworkInterfaceGet.json
 func ExampleInterfacesClient_GetCloudServiceNetworkInterface() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -387,7 +387,7 @@ func ExampleInterfacesClient_GetCloudServiceNetworkInterface() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkInterfaceEffectiveRouteTableList.json
+// Generated from example definition: 2025-09-01/NetworkInterfaceEffectiveRouteTableList.json
 func ExampleInterfacesClient_BeginGetEffectiveRouteTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -477,7 +477,7 @@ func ExampleInterfacesClient_BeginGetEffectiveRouteTable() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkInterfaceList.json
+// Generated from example definition: 2025-09-01/NetworkInterfaceList.json
 func ExampleInterfacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -607,7 +607,7 @@ func ExampleInterfacesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/NetworkInterfaceListAll.json
+// Generated from example definition: 2025-09-01/NetworkInterfaceListAll.json
 func ExampleInterfacesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -723,7 +723,7 @@ func ExampleInterfacesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/CloudServiceNetworkInterfaceList.json
+// Generated from example definition: 2025-09-01/CloudServiceNetworkInterfaceList.json
 func ExampleInterfacesClient_NewListCloudServiceNetworkInterfacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -854,7 +854,7 @@ func ExampleInterfacesClient_NewListCloudServiceNetworkInterfacesPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/CloudServiceRoleInstanceNetworkInterfaceList.json
+// Generated from example definition: 2025-09-01/CloudServiceRoleInstanceNetworkInterfaceList.json
 func ExampleInterfacesClient_NewListCloudServiceRoleInstanceNetworkInterfacesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -935,7 +935,7 @@ func ExampleInterfacesClient_NewListCloudServiceRoleInstanceNetworkInterfacesPag
 	}
 }
 
-// Generated from example definition: 2025-07-01/NetworkInterfaceEffectiveNSGList.json
+// Generated from example definition: 2025-09-01/NetworkInterfaceEffectiveNSGList.json
 func ExampleInterfacesClient_BeginListEffectiveNetworkSecurityGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1022,7 +1022,7 @@ func ExampleInterfacesClient_BeginListEffectiveNetworkSecurityGroups() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkInterfaceUpdateTags.json
+// Generated from example definition: 2025-09-01/NetworkInterfaceUpdateTags.json
 func ExampleInterfacesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

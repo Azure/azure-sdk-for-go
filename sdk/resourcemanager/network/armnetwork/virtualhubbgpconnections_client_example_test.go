@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/VirtualHubBgpConnectionList.json
+// Generated from example definition: 2025-09-01/VirtualHubBgpConnectionList.json
 func ExampleVirtualHubBgpConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleVirtualHubBgpConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualRouterPeerListAdvertisedRoute.json
+// Generated from example definition: 2025-09-01/VirtualRouterPeerListAdvertisedRoute.json
 func ExampleVirtualHubBgpConnectionsClient_BeginListAdvertisedRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleVirtualHubBgpConnectionsClient_BeginListAdvertisedRoutes() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualRouterPeerListLearnedRoute.json
+// Generated from example definition: 2025-09-01/VirtualRouterPeerListLearnedRoute.json
 func ExampleVirtualHubBgpConnectionsClient_BeginListLearnedRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

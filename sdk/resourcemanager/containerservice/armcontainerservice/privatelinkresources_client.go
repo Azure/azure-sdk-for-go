@@ -63,12 +63,7 @@ func (client *PrivateLinkResourcesClient) List(ctx context.Context, resourceGrou
 	if err != nil {
 		return PrivateLinkResourcesClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateLinkResourcesClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -98,8 +93,11 @@ func (client *PrivateLinkResourcesClient) listCreateRequest(ctx context.Context,
 }
 
 // listHandleResponse handles the List response.
-func (client *PrivateLinkResourcesClient) listHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListResponse, error) {
+func (client *PrivateLinkResourcesClient) listHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinkResourcesClientListResponse, error) {
 	result := PrivateLinkResourcesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourcesListResult); err != nil {
 		return PrivateLinkResourcesClientListResponse{}, err
 	}

@@ -61,12 +61,7 @@ func (client *TopLevelDomainsClient) Get(ctx context.Context, name string, optio
 	if err != nil {
 		return TopLevelDomainsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TopLevelDomainsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -92,8 +87,11 @@ func (client *TopLevelDomainsClient) getCreateRequest(ctx context.Context, name 
 }
 
 // getHandleResponse handles the Get response.
-func (client *TopLevelDomainsClient) getHandleResponse(resp *http.Response) (TopLevelDomainsClientGetResponse, error) {
+func (client *TopLevelDomainsClient) getHandleResponse(resp *http.Response, successCodes ...int) (TopLevelDomainsClientGetResponse, error) {
 	result := TopLevelDomainsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopLevelDomain); err != nil {
 		return TopLevelDomainsClientGetResponse{}, err
 	}
@@ -116,39 +114,53 @@ func (client *TopLevelDomainsClient) NewListPager(options *TopLevelDomainsClient
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return TopLevelDomainsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TopLevelDomainsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *TopLevelDomainsClient) listCreateRequest(ctx context.Context, _ *TopLevelDomainsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TopLevelDomainsClient) listCreateRequest(ctx context.Context, nextLink string, _ *TopLevelDomainsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *TopLevelDomainsClient) listHandleResponse(resp *http.Response) (TopLevelDomainsClientListResponse, error) {
+func (client *TopLevelDomainsClient) listHandleResponse(resp *http.Response, successCodes ...int) (TopLevelDomainsClientListResponse, error) {
 	result := TopLevelDomainsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TopLevelDomainCollection); err != nil {
 		return TopLevelDomainsClientListResponse{}, err
 	}
@@ -173,47 +185,61 @@ func (client *TopLevelDomainsClient) NewListAgreementsPager(name string, agreeme
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAgreementsCreateRequest(ctx, name, agreementOption, options)
-			}, nil)
+			req, err := client.listAgreementsCreateRequest(ctx, name, agreementOption, nextLink, options)
 			if err != nil {
 				return TopLevelDomainsClientListAgreementsResponse{}, err
 			}
-			return client.listAgreementsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TopLevelDomainsClientListAgreementsResponse{}, err
+			}
+			return client.listAgreementsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAgreementsCreateRequest creates the ListAgreements request.
-func (client *TopLevelDomainsClient) listAgreementsCreateRequest(ctx context.Context, name string, agreementOption TopLevelDomainAgreementOption, _ *TopLevelDomainsClientListAgreementsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}/listAgreements"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TopLevelDomainsClient) listAgreementsCreateRequest(ctx context.Context, name string, agreementOption TopLevelDomainAgreementOption, nextLink string, _ *TopLevelDomainsClientListAgreementsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}/listAgreements"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, agreementOption); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, agreementOption); err != nil {
+			return nil, err
+		}
 	}
 	return req, nil
 }
 
 // listAgreementsHandleResponse handles the ListAgreements response.
-func (client *TopLevelDomainsClient) listAgreementsHandleResponse(resp *http.Response) (TopLevelDomainsClientListAgreementsResponse, error) {
+func (client *TopLevelDomainsClient) listAgreementsHandleResponse(resp *http.Response, successCodes ...int) (TopLevelDomainsClientListAgreementsResponse, error) {
 	result := TopLevelDomainsClientListAgreementsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TldLegalAgreementCollection); err != nil {
 		return TopLevelDomainsClientListAgreementsResponse{}, err
 	}

@@ -112,9 +112,9 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableIndexRe
 		// 				Kind: to.Ptr(""),
 		// 				Properties: &armpostgresqlflexibleservers.ObjectRecommendationProperties{
 		// 					AnalyzedWorkload: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesAnalyzedWorkload{
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 						EndTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 						QueryCount: to.Ptr[int32](25),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123456Z"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2025, time.June, 1, 19, 30, 22, 123456000, time.UTC)),
 		// 					},
 		// 					EstimatedImpact: []*armpostgresqlflexibleservers.ImpactRecord{
 		// 						{
@@ -143,8 +143,8 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableIndexRe
 		// 						to.Ptr[int64](-3775242682326862300),
 		// 						to.Ptr[int64](6829938984138799000),
 		// 					},
-		// 					InitialRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-		// 					LastRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 					InitialRecommendedTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+		// 					LastRecommendedTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 					RecommendationReason: to.Ptr("Column \"partsupp\".\"ps_suppkey\" appear in Join On clause(s) in query -3775242682326862475; Column \"partsupp\".\"ps_suppkey\" appear in Join On clause(s) in query 6829938984138799352;"),
 		// 					RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationTypeEnumCreateIndex),
 		// 					TimesRecommended: to.Ptr[int32](1),
@@ -167,9 +167,9 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableIndexRe
 		// 				Kind: to.Ptr(""),
 		// 				Properties: &armpostgresqlflexibleservers.ObjectRecommendationProperties{
 		// 					AnalyzedWorkload: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesAnalyzedWorkload{
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 						EndTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 						QueryCount: to.Ptr[int32](25),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123456Z"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2025, time.June, 1, 19, 30, 22, 123456000, time.UTC)),
 		// 					},
 		// 					EstimatedImpact: []*armpostgresqlflexibleservers.ImpactRecord{
 		// 						{
@@ -198,8 +198,8 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableIndexRe
 		// 						to.Ptr[int64](-3775242682326862300),
 		// 						to.Ptr[int64](4735984994430715000),
 		// 					},
-		// 					InitialRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-		// 					LastRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 					InitialRecommendedTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+		// 					LastRecommendedTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 					RecommendationReason: to.Ptr("Column \"partsupp\".\"ps_partkey\" appear in Equal Predicate clause(s) in query -3775242682326862475; Column \"partsupp\".\"ps_partkey\" appear in Join On clause(s) in query 4735984994430714735;"),
 		// 					RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationTypeEnumCreateIndex),
 		// 					TimesRecommended: to.Ptr[int32](1),
@@ -254,9 +254,9 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableIndexRe
 		// 				Kind: to.Ptr(""),
 		// 				Properties: &armpostgresqlflexibleservers.ObjectRecommendationProperties{
 		// 					AnalyzedWorkload: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesAnalyzedWorkload{
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 						EndTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 						QueryCount: to.Ptr[int32](25),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123456Z"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2025, time.June, 1, 19, 30, 22, 123456000, time.UTC)),
 		// 					},
 		// 					EstimatedImpact: []*armpostgresqlflexibleservers.ImpactRecord{
 		// 						{
@@ -285,8 +285,8 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableIndexRe
 		// 						to.Ptr[int64](-3775242682326862300),
 		// 						to.Ptr[int64](6829938984138799000),
 		// 					},
-		// 					InitialRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-		// 					LastRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 					InitialRecommendedTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+		// 					LastRecommendedTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 					RecommendationReason: to.Ptr("Column \"partsupp\".\"ps_suppkey\" appear in Join On clause(s) in query -3775242682326862475; Column \"partsupp\".\"ps_suppkey\" appear in Join On clause(s) in query 6829938984138799352;"),
 		// 					RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationTypeEnumCreateIndex),
 		// 					TimesRecommended: to.Ptr[int32](1),
@@ -309,9 +309,9 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableIndexRe
 		// 				Kind: to.Ptr(""),
 		// 				Properties: &armpostgresqlflexibleservers.ObjectRecommendationProperties{
 		// 					AnalyzedWorkload: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesAnalyzedWorkload{
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 						EndTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 						QueryCount: to.Ptr[int32](25),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123456Z"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2025, time.June, 1, 19, 30, 22, 123456000, time.UTC)),
 		// 					},
 		// 					EstimatedImpact: []*armpostgresqlflexibleservers.ImpactRecord{
 		// 						{
@@ -340,8 +340,8 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableIndexRe
 		// 						to.Ptr[int64](-3775242682326862300),
 		// 						to.Ptr[int64](4735984994430715000),
 		// 					},
-		// 					InitialRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-		// 					LastRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 					InitialRecommendedTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+		// 					LastRecommendedTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 					RecommendationReason: to.Ptr("Column \"partsupp\".\"ps_partkey\" appear in Equal Predicate clause(s) in query -3775242682326862475; Column \"partsupp\".\"ps_partkey\" appear in Join On clause(s) in query 4735984994430714735;"),
 		// 					RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationTypeEnumCreateIndex),
 		// 					TimesRecommended: to.Ptr[int32](1),
@@ -395,9 +395,9 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableTableRe
 		// 				Kind: to.Ptr(""),
 		// 				Properties: &armpostgresqlflexibleservers.ObjectRecommendationProperties{
 		// 					AnalyzedWorkload: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesAnalyzedWorkload{
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 						EndTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 						QueryCount: to.Ptr[int32](22),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123456Z"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2025, time.June, 1, 19, 30, 22, 123456000, time.UTC)),
 		// 					},
 		// 					EstimatedImpact: []*armpostgresqlflexibleservers.ImpactRecord{
 		// 					},
@@ -416,8 +416,8 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableTableRe
 		// 						to.Ptr[int64](-4753875211349607000),
 		// 						to.Ptr[int64](-8711548294430095000),
 		// 					},
-		// 					InitialRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-		// 					LastRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 					InitialRecommendedTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+		// 					LastRecommendedTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 					RecommendationReason: to.Ptr("Table \"nation\" in schema \"public\" is unanalyzed and appears in the following queries: 2071439792137543669, 7860150533486301820, 6411979446509505239, 3219604056681277471, -360410933364310591, 6171467644166224729, 3548728559597612316, -4753875211349607298, -8711548294430094920"),
 		// 					RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationTypeEnum("Analyze")),
 		// 					TimesRecommended: to.Ptr[int32](1),
@@ -435,9 +435,9 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableTableRe
 		// 				Kind: to.Ptr(""),
 		// 				Properties: &armpostgresqlflexibleservers.ObjectRecommendationProperties{
 		// 					AnalyzedWorkload: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesAnalyzedWorkload{
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 						EndTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 						QueryCount: to.Ptr[int32](22),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123456Z"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2025, time.June, 1, 19, 30, 22, 123456000, time.UTC)),
 		// 					},
 		// 					EstimatedImpact: []*armpostgresqlflexibleservers.ImpactRecord{
 		// 					},
@@ -450,8 +450,8 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableTableRe
 		// 						to.Ptr[int64](6171467644166225000),
 		// 						to.Ptr[int64](-4753875211349607000),
 		// 					},
-		// 					InitialRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-		// 					LastRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 					InitialRecommendedTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+		// 					LastRecommendedTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 					RecommendationReason: to.Ptr("Table \"region\" in schema \"public\" is unanalyzed and appears in the following queries: 3219604056681277471, 6171467644166224729, -4753875211349607298"),
 		// 					RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationTypeEnum("Analyze")),
 		// 					TimesRecommended: to.Ptr[int32](1),
@@ -501,9 +501,9 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableTableRe
 		// 				Kind: to.Ptr(""),
 		// 				Properties: &armpostgresqlflexibleservers.ObjectRecommendationProperties{
 		// 					AnalyzedWorkload: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesAnalyzedWorkload{
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 						EndTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 						QueryCount: to.Ptr[int32](22),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123456Z"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2025, time.June, 1, 19, 30, 22, 123456000, time.UTC)),
 		// 					},
 		// 					EstimatedImpact: []*armpostgresqlflexibleservers.ImpactRecord{
 		// 					},
@@ -522,8 +522,8 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableTableRe
 		// 						to.Ptr[int64](-4753875211349607000),
 		// 						to.Ptr[int64](-8711548294430095000),
 		// 					},
-		// 					InitialRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-		// 					LastRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 					InitialRecommendedTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+		// 					LastRecommendedTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 					RecommendationReason: to.Ptr("Table \"nation\" in schema \"public\" is unanalyzed and appears in the following queries: 2071439792137543669, 7860150533486301820, 6411979446509505239, 3219604056681277471, -360410933364310591, 6171467644166224729, 3548728559597612316, -4753875211349607298, -8711548294430094920"),
 		// 					RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationTypeEnum("Analyze")),
 		// 					TimesRecommended: to.Ptr[int32](1),
@@ -541,9 +541,9 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableTableRe
 		// 				Kind: to.Ptr(""),
 		// 				Properties: &armpostgresqlflexibleservers.ObjectRecommendationProperties{
 		// 					AnalyzedWorkload: &armpostgresqlflexibleservers.ObjectRecommendationPropertiesAnalyzedWorkload{
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 						EndTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 						QueryCount: to.Ptr[int32](22),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T19:30:22.123456Z"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2025, time.June, 1, 19, 30, 22, 123456000, time.UTC)),
 		// 					},
 		// 					EstimatedImpact: []*armpostgresqlflexibleservers.ImpactRecord{
 		// 					},
@@ -556,8 +556,8 @@ func ExampleTuningOptionsClient_NewListRecommendationsPager_listAvailableTableRe
 		// 						to.Ptr[int64](6171467644166225000),
 		// 						to.Ptr[int64](-4753875211349607000),
 		// 					},
-		// 					InitialRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
-		// 					LastRecommendedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T20:30:22.123456Z"); return t}()),
+		// 					InitialRecommendedTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
+		// 					LastRecommendedTime: to.Ptr(time.Date(2025, time.June, 1, 20, 30, 22, 123456000, time.UTC)),
 		// 					RecommendationReason: to.Ptr("Table \"region\" in schema \"public\" is unanalyzed and appears in the following queries: 3219604056681277471, 6171467644166224729, -4753875211349607298"),
 		// 					RecommendationType: to.Ptr(armpostgresqlflexibleservers.RecommendationTypeEnum("Analyze")),
 		// 					TimesRecommended: to.Ptr[int32](1),

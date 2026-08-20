@@ -18,6 +18,8 @@ import (
 
 // ServiceLocationsClient contains the methods for the ServiceLocations group.
 // Don't use this type directly, use NewServiceLocationsClient() instead.
+//
+// Generated from API version 2025-05-01
 type ServiceLocationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewServiceLocationsClient(subscriptionID string, credential azcore.TokenCre
 }
 
 // NewListPager - Lists all of the available locations for peering service.
-//
-// Generated from API version 2025-05-01
 //   - options - ServiceLocationsClientListOptions contains the optional parameters for the ServiceLocationsClient.NewListPager
 //     method.
 func (client *ServiceLocationsClient) NewListPager(options *ServiceLocationsClientListOptions) *runtime.Pager[ServiceLocationsClientListResponse] {
@@ -55,42 +55,56 @@ func (client *ServiceLocationsClient) NewListPager(options *ServiceLocationsClie
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ServiceLocationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServiceLocationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ServiceLocationsClient) listCreateRequest(ctx context.Context, options *ServiceLocationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceLocations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ServiceLocationsClient) listCreateRequest(ctx context.Context, nextLink string, options *ServiceLocationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringServiceLocations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	if options != nil && options.Country != nil {
-		reqQP.Set("country", *options.Country)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		if options != nil && options.Country != nil {
+			reqQP.Set("country", *options.Country)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ServiceLocationsClient) listHandleResponse(resp *http.Response) (ServiceLocationsClientListResponse, error) {
+func (client *ServiceLocationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ServiceLocationsClientListResponse, error) {
 	result := ServiceLocationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceLocationListResult); err != nil {
 		return ServiceLocationsClientListResponse{}, err
 	}

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/NetworkManagerCommitPut.json
+// Generated from example definition: 2025-09-01/NetworkManagerCommitPut.json
 func ExampleCommitsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,10 +54,10 @@ func ExampleCommitsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armnetwork.SystemData{
 	// 			CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-11T18:52:27Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-11T18:52:27Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 		},
 	// 		Properties: &armnetwork.CommitProperties{
 	// 			Description: to.Ptr("Sample Commit"),
@@ -79,7 +79,7 @@ func ExampleCommitsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkManagerCommitDelete.json
+// Generated from example definition: 2025-09-01/NetworkManagerCommitDelete.json
 func ExampleCommitsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleCommitsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/NetworkManagerCommitGet.json
+// Generated from example definition: 2025-09-01/NetworkManagerCommitGet.json
 func ExampleCommitsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -126,10 +126,10 @@ func ExampleCommitsClient_Get() {
 	// 		SystemData: &armnetwork.SystemData{
 	// 			CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-11T18:52:27Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-11T18:52:27Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 		},
 	// 		Properties: &armnetwork.CommitProperties{
 	// 			Description: to.Ptr("Sample Commit"),
@@ -151,7 +151,7 @@ func ExampleCommitsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkManagerCommitList.json
+// Generated from example definition: 2025-09-01/NetworkManagerCommitList.json
 func ExampleCommitsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,10 +183,10 @@ func ExampleCommitsClient_NewListPager() {
 		// 				SystemData: &armnetwork.SystemData{
 		// 					CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-11T18:52:27Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.January, 11, 18, 52, 27, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-11T18:52:27Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.January, 11, 18, 52, 27, 0, time.UTC)),
 		// 				},
 		// 				Properties: &armnetwork.CommitProperties{
 		// 					Description: to.Ptr("Sample Commit"),

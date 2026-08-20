@@ -62,12 +62,7 @@ func (client *DatabaseClient) InviteFollower(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DatabaseClientInviteFollowerResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabaseClientInviteFollowerResponse{}, err
-	}
-	resp, err := client.inviteFollowerHandleResponse(httpResp)
-	return resp, err
+	return client.inviteFollowerHandleResponse(httpResp, http.StatusOK)
 }
 
 // inviteFollowerCreateRequest creates the InviteFollower request.
@@ -105,8 +100,11 @@ func (client *DatabaseClient) inviteFollowerCreateRequest(ctx context.Context, r
 }
 
 // inviteFollowerHandleResponse handles the InviteFollower response.
-func (client *DatabaseClient) inviteFollowerHandleResponse(resp *http.Response) (DatabaseClientInviteFollowerResponse, error) {
+func (client *DatabaseClient) inviteFollowerHandleResponse(resp *http.Response, successCodes ...int) (DatabaseClientInviteFollowerResponse, error) {
 	result := DatabaseClientInviteFollowerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseInviteFollowerResult); err != nil {
 		return DatabaseClientInviteFollowerResponse{}, err
 	}

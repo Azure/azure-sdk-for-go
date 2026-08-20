@@ -18,6 +18,8 @@ import (
 
 // AccessPolicyClient contains the methods for the AccessPolicy group.
 // Don't use this type directly, use NewAccessPolicyClient() instead.
+//
+// Generated from API version 2024-11-01
 type AccessPolicyClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAccessPolicyClient(subscriptionID string, credential azcore.TokenCredent
 
 // BeginCreateUpdate - Adds an access policy to the redis cache
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - accessPolicyName - The name of the access policy that is being added to the Redis cache.
@@ -68,8 +68,6 @@ func (client *AccessPolicyClient) BeginCreateUpdate(ctx context.Context, resourc
 
 // CreateUpdate - Adds an access policy to the redis cache
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *AccessPolicyClient) createUpdate(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyName string, parameters CacheAccessPolicy, options *AccessPolicyClientBeginCreateUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessPolicyClient.BeginCreateUpdate"
@@ -85,8 +83,7 @@ func (client *AccessPolicyClient) createUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -115,8 +112,8 @@ func (client *AccessPolicyClient) createUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -127,8 +124,6 @@ func (client *AccessPolicyClient) createUpdateCreateRequest(ctx context.Context,
 
 // BeginDelete - Deletes the access policy from a redis cache
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - accessPolicyName - The name of the access policy that is being added to the Redis cache.
@@ -153,8 +148,6 @@ func (client *AccessPolicyClient) BeginDelete(ctx context.Context, resourceGroup
 
 // Delete - Deletes the access policy from a redis cache
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 func (client *AccessPolicyClient) deleteOperation(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyName string, options *AccessPolicyClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccessPolicyClient.BeginDelete"
@@ -170,8 +163,7 @@ func (client *AccessPolicyClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -200,15 +192,13 @@ func (client *AccessPolicyClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the detailed information about an access policy of a redis cache
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - accessPolicyName - The name of the access policy that is being added to the Redis cache.
@@ -227,12 +217,7 @@ func (client *AccessPolicyClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return AccessPolicyClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccessPolicyClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -259,15 +244,18 @@ func (client *AccessPolicyClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AccessPolicyClient) getHandleResponse(resp *http.Response) (AccessPolicyClientGetResponse, error) {
+func (client *AccessPolicyClient) getHandleResponse(resp *http.Response, successCodes ...int) (AccessPolicyClientGetResponse, error) {
 	result := AccessPolicyClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CacheAccessPolicy); err != nil {
 		return AccessPolicyClientGetResponse{}, err
 	}
@@ -275,8 +263,6 @@ func (client *AccessPolicyClient) getHandleResponse(resp *http.Response) (Access
 }
 
 // NewListPager - Gets the list of access policies associated with this redis cache
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - options - AccessPolicyClientListOptions contains the optional parameters for the AccessPolicyClient.NewListPager method.
@@ -291,47 +277,61 @@ func (client *AccessPolicyClient) NewListPager(resourceGroupName string, cacheNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, cacheName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, cacheName, nextLink, options)
 			if err != nil {
 				return AccessPolicyClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AccessPolicyClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AccessPolicyClient) listCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, _ *AccessPolicyClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/accessPolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AccessPolicyClient) listCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, nextLink string, _ *AccessPolicyClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/accessPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if cacheName == "" {
+			return nil, errors.New("parameter cacheName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cacheName == "" {
-		return nil, errors.New("parameter cacheName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AccessPolicyClient) listHandleResponse(resp *http.Response) (AccessPolicyClientListResponse, error) {
+func (client *AccessPolicyClient) listHandleResponse(resp *http.Response, successCodes ...int) (AccessPolicyClientListResponse, error) {
 	result := AccessPolicyClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CacheAccessPolicyList); err != nil {
 		return AccessPolicyClientListResponse{}, err
 	}

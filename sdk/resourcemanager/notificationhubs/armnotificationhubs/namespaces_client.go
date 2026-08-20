@@ -65,12 +65,7 @@ func (client *NamespacesClient) CheckAvailability(ctx context.Context, parameter
 	if err != nil {
 		return NamespacesClientCheckAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientCheckAvailabilityResponse{}, err
-	}
-	resp, err := client.checkAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkAvailabilityCreateRequest creates the CheckAvailability request.
@@ -96,8 +91,11 @@ func (client *NamespacesClient) checkAvailabilityCreateRequest(ctx context.Conte
 }
 
 // checkAvailabilityHandleResponse handles the CheckAvailability response.
-func (client *NamespacesClient) checkAvailabilityHandleResponse(resp *http.Response) (NamespacesClientCheckAvailabilityResponse, error) {
+func (client *NamespacesClient) checkAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientCheckAvailabilityResponse, error) {
 	result := NamespacesClientCheckAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAvailabilityResult); err != nil {
 		return NamespacesClientCheckAvailabilityResponse{}, err
 	}
@@ -145,8 +143,7 @@ func (client *NamespacesClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -203,12 +200,7 @@ func (client *NamespacesClient) CreateOrUpdateAuthorizationRule(ctx context.Cont
 	if err != nil {
 		return NamespacesClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientCreateOrUpdateAuthorizationRuleResponse{}, err
-	}
-	resp, err := client.createOrUpdateAuthorizationRuleHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateAuthorizationRuleHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateAuthorizationRuleCreateRequest creates the CreateOrUpdateAuthorizationRule request.
@@ -246,8 +238,11 @@ func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx
 }
 
 // createOrUpdateAuthorizationRuleHandleResponse handles the CreateOrUpdateAuthorizationRule response.
-func (client *NamespacesClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (NamespacesClientCreateOrUpdateAuthorizationRuleResponse, error) {
+func (client *NamespacesClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientCreateOrUpdateAuthorizationRuleResponse, error) {
 	result := NamespacesClientCreateOrUpdateAuthorizationRuleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessAuthorizationRuleResource); err != nil {
 		return NamespacesClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
@@ -274,8 +269,7 @@ func (client *NamespacesClient) Delete(ctx context.Context, resourceGroupName st
 		return NamespacesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientDeleteResponse{}, err
+		return NamespacesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return NamespacesClientDeleteResponse{}, nil
 }
@@ -327,8 +321,7 @@ func (client *NamespacesClient) DeleteAuthorizationRule(ctx context.Context, res
 		return NamespacesClientDeleteAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientDeleteAuthorizationRuleResponse{}, err
+		return NamespacesClientDeleteAuthorizationRuleResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return NamespacesClientDeleteAuthorizationRuleResponse{}, nil
 }
@@ -381,12 +374,7 @@ func (client *NamespacesClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return NamespacesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -416,8 +404,11 @@ func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *NamespacesClient) getHandleResponse(resp *http.Response) (NamespacesClientGetResponse, error) {
+func (client *NamespacesClient) getHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientGetResponse, error) {
 	result := NamespacesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceResource); err != nil {
 		return NamespacesClientGetResponse{}, err
 	}
@@ -445,12 +436,7 @@ func (client *NamespacesClient) GetAuthorizationRule(ctx context.Context, resour
 	if err != nil {
 		return NamespacesClientGetAuthorizationRuleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientGetAuthorizationRuleResponse{}, err
-	}
-	resp, err := client.getAuthorizationRuleHandleResponse(httpResp)
-	return resp, err
+	return client.getAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
@@ -484,8 +470,11 @@ func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Co
 }
 
 // getAuthorizationRuleHandleResponse handles the GetAuthorizationRule response.
-func (client *NamespacesClient) getAuthorizationRuleHandleResponse(resp *http.Response) (NamespacesClientGetAuthorizationRuleResponse, error) {
+func (client *NamespacesClient) getAuthorizationRuleHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientGetAuthorizationRuleResponse, error) {
 	result := NamespacesClientGetAuthorizationRuleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessAuthorizationRuleResource); err != nil {
 		return NamespacesClientGetAuthorizationRuleResponse{}, err
 	}
@@ -512,12 +501,7 @@ func (client *NamespacesClient) GetPnsCredentials(ctx context.Context, resourceG
 	if err != nil {
 		return NamespacesClientGetPnsCredentialsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientGetPnsCredentialsResponse{}, err
-	}
-	resp, err := client.getPnsCredentialsHandleResponse(httpResp)
-	return resp, err
+	return client.getPnsCredentialsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPnsCredentialsCreateRequest creates the GetPnsCredentials request.
@@ -547,8 +531,11 @@ func (client *NamespacesClient) getPnsCredentialsCreateRequest(ctx context.Conte
 }
 
 // getPnsCredentialsHandleResponse handles the GetPnsCredentials response.
-func (client *NamespacesClient) getPnsCredentialsHandleResponse(resp *http.Response) (NamespacesClientGetPnsCredentialsResponse, error) {
+func (client *NamespacesClient) getPnsCredentialsHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientGetPnsCredentialsResponse, error) {
 	result := NamespacesClientGetPnsCredentialsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PnsCredentialsResource); err != nil {
 		return NamespacesClientGetPnsCredentialsResponse{}, err
 	}
@@ -569,49 +556,63 @@ func (client *NamespacesClient) NewListPager(resourceGroupName string, options *
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return NamespacesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NamespacesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *NamespacesClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *NamespacesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NamespacesClient) listCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, options *NamespacesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20231001Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20231001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *NamespacesClient) listHandleResponse(resp *http.Response) (NamespacesClientListResponse, error) {
+func (client *NamespacesClient) listHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientListResponse, error) {
 	result := NamespacesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceListResult); err != nil {
 		return NamespacesClientListResponse{}, err
 	}
@@ -631,45 +632,59 @@ func (client *NamespacesClient) NewListAllPager(options *NamespacesClientListAll
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return NamespacesClientListAllResponse{}, err
 			}
-			return client.listAllHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NamespacesClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *NamespacesClient) listAllCreateRequest(ctx context.Context, options *NamespacesClientListAllOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NotificationHubs/namespaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NamespacesClient) listAllCreateRequest(ctx context.Context, nextLink string, options *NamespacesClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.NotificationHubs/namespaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20231001Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20231001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *NamespacesClient) listAllHandleResponse(resp *http.Response) (NamespacesClientListAllResponse, error) {
+func (client *NamespacesClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientListAllResponse, error) {
 	result := NamespacesClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceListResult); err != nil {
 		return NamespacesClientListAllResponse{}, err
 	}
@@ -692,47 +707,61 @@ func (client *NamespacesClient) NewListAuthorizationRulesPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, options)
-			}, nil)
+			req, err := client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
 			if err != nil {
 				return NamespacesClientListAuthorizationRulesResponse{}, err
 			}
-			return client.listAuthorizationRulesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NamespacesClientListAuthorizationRulesResponse{}, err
+			}
+			return client.listAuthorizationRulesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
-func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *NamespacesClientListAuthorizationRulesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/authorizationRules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *NamespacesClientListAuthorizationRulesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NotificationHubs/namespaces/{namespaceName}/authorizationRules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20231001Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAuthorizationRulesHandleResponse handles the ListAuthorizationRules response.
-func (client *NamespacesClient) listAuthorizationRulesHandleResponse(resp *http.Response) (NamespacesClientListAuthorizationRulesResponse, error) {
+func (client *NamespacesClient) listAuthorizationRulesHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientListAuthorizationRulesResponse, error) {
 	result := NamespacesClientListAuthorizationRulesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessAuthorizationRuleListResult); err != nil {
 		return NamespacesClientListAuthorizationRulesResponse{}, err
 	}
@@ -759,12 +788,7 @@ func (client *NamespacesClient) ListKeys(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return NamespacesClientListKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientListKeysResponse{}, err
-	}
-	resp, err := client.listKeysHandleResponse(httpResp)
-	return resp, err
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
@@ -798,8 +822,11 @@ func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resou
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *NamespacesClient) listKeysHandleResponse(resp *http.Response) (NamespacesClientListKeysResponse, error) {
+func (client *NamespacesClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientListKeysResponse, error) {
 	result := NamespacesClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListKeys); err != nil {
 		return NamespacesClientListKeysResponse{}, err
 	}
@@ -828,12 +855,7 @@ func (client *NamespacesClient) RegenerateKeys(ctx context.Context, resourceGrou
 	if err != nil {
 		return NamespacesClientRegenerateKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientRegenerateKeysResponse{}, err
-	}
-	resp, err := client.regenerateKeysHandleResponse(httpResp)
-	return resp, err
+	return client.regenerateKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.
@@ -871,8 +893,11 @@ func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context,
 }
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
-func (client *NamespacesClient) regenerateKeysHandleResponse(resp *http.Response) (NamespacesClientRegenerateKeysResponse, error) {
+func (client *NamespacesClient) regenerateKeysHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientRegenerateKeysResponse, error) {
 	result := NamespacesClientRegenerateKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceListKeys); err != nil {
 		return NamespacesClientRegenerateKeysResponse{}, err
 	}
@@ -899,12 +924,7 @@ func (client *NamespacesClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return NamespacesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -938,8 +958,11 @@ func (client *NamespacesClient) updateCreateRequest(ctx context.Context, resourc
 }
 
 // updateHandleResponse handles the Update response.
-func (client *NamespacesClient) updateHandleResponse(resp *http.Response) (NamespacesClientUpdateResponse, error) {
+func (client *NamespacesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientUpdateResponse, error) {
 	result := NamespacesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceResource); err != nil {
 		return NamespacesClientUpdateResponse{}, err
 	}

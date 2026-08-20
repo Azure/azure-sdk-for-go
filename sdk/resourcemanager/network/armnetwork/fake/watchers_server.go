@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -24,6 +24,30 @@ type WatchersServer struct {
 	// BeginCheckConnectivity is the fake for method WatchersClient.BeginCheckConnectivity
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCheckConnectivity func(ctx context.Context, resourceGroupName string, networkWatcherName string, parameters armnetwork.ConnectivityParameters, options *armnetwork.WatchersClientBeginCheckConnectivityOptions) (resp azfake.PollerResponder[armnetwork.WatchersClientCheckConnectivityResponse], errResp azfake.ErrorResponder)
+
+	// BeginConnectionAnalyzersCreate is the fake for method WatchersClient.BeginConnectionAnalyzersCreate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginConnectionAnalyzersCreate func(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, body armnetwork.ConnectionAnalyzer, options *armnetwork.WatchersClientBeginConnectionAnalyzersCreateOptions) (resp azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersCreateResponse], errResp azfake.ErrorResponder)
+
+	// BeginConnectionAnalyzersDelete is the fake for method WatchersClient.BeginConnectionAnalyzersDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginConnectionAnalyzersDelete func(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, options *armnetwork.WatchersClientBeginConnectionAnalyzersDeleteOptions) (resp azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersDeleteResponse], errResp azfake.ErrorResponder)
+
+	// ConnectionAnalyzersGet is the fake for method WatchersClient.ConnectionAnalyzersGet
+	// HTTP status codes to indicate success: http.StatusOK
+	ConnectionAnalyzersGet func(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, options *armnetwork.WatchersClientConnectionAnalyzersGetOptions) (resp azfake.Responder[armnetwork.WatchersClientConnectionAnalyzersGetResponse], errResp azfake.ErrorResponder)
+
+	// NewConnectionAnalyzersListPager is the fake for method WatchersClient.NewConnectionAnalyzersListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewConnectionAnalyzersListPager func(resourceGroupName string, networkWatcherName string, options *armnetwork.WatchersClientConnectionAnalyzersListOptions) (resp azfake.PagerResponder[armnetwork.WatchersClientConnectionAnalyzersListResponse])
+
+	// BeginConnectionAnalyzersQuery is the fake for method WatchersClient.BeginConnectionAnalyzersQuery
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginConnectionAnalyzersQuery func(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, options *armnetwork.WatchersClientBeginConnectionAnalyzersQueryOptions) (resp azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersQueryResponse], errResp azfake.ErrorResponder)
+
+	// ConnectionAnalyzersUpdateTags is the fake for method WatchersClient.ConnectionAnalyzersUpdateTags
+	// HTTP status codes to indicate success: http.StatusOK
+	ConnectionAnalyzersUpdateTags func(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, body armnetwork.TagsObject, options *armnetwork.WatchersClientConnectionAnalyzersUpdateTagsOptions) (resp azfake.Responder[armnetwork.WatchersClientConnectionAnalyzersUpdateTagsResponse], errResp azfake.ErrorResponder)
 
 	// CreateOrUpdate is the fake for method WatchersClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
@@ -101,6 +125,10 @@ func NewWatchersServerTransport(srv *WatchersServer) *WatchersServerTransport {
 	return &WatchersServerTransport{
 		srv:                                    srv,
 		beginCheckConnectivity:                 newTracker[azfake.PollerResponder[armnetwork.WatchersClientCheckConnectivityResponse]](),
+		beginConnectionAnalyzersCreate:         newTracker[azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersCreateResponse]](),
+		beginConnectionAnalyzersDelete:         newTracker[azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersDeleteResponse]](),
+		newConnectionAnalyzersListPager:        newTracker[azfake.PagerResponder[armnetwork.WatchersClientConnectionAnalyzersListResponse]](),
+		beginConnectionAnalyzersQuery:          newTracker[azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersQueryResponse]](),
 		beginDelete:                            newTracker[azfake.PollerResponder[armnetwork.WatchersClientDeleteResponse]](),
 		beginGetAzureReachabilityReport:        newTracker[azfake.PollerResponder[armnetwork.WatchersClientGetAzureReachabilityReportResponse]](),
 		beginGetFlowLogStatus:                  newTracker[azfake.PollerResponder[armnetwork.WatchersClientGetFlowLogStatusResponse]](),
@@ -122,6 +150,10 @@ func NewWatchersServerTransport(srv *WatchersServer) *WatchersServerTransport {
 type WatchersServerTransport struct {
 	srv                                    *WatchersServer
 	beginCheckConnectivity                 *tracker[azfake.PollerResponder[armnetwork.WatchersClientCheckConnectivityResponse]]
+	beginConnectionAnalyzersCreate         *tracker[azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersCreateResponse]]
+	beginConnectionAnalyzersDelete         *tracker[azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersDeleteResponse]]
+	newConnectionAnalyzersListPager        *tracker[azfake.PagerResponder[armnetwork.WatchersClientConnectionAnalyzersListResponse]]
+	beginConnectionAnalyzersQuery          *tracker[azfake.PollerResponder[armnetwork.WatchersClientConnectionAnalyzersQueryResponse]]
 	beginDelete                            *tracker[azfake.PollerResponder[armnetwork.WatchersClientDeleteResponse]]
 	beginGetAzureReachabilityReport        *tracker[azfake.PollerResponder[armnetwork.WatchersClientGetAzureReachabilityReportResponse]]
 	beginGetFlowLogStatus                  *tracker[azfake.PollerResponder[armnetwork.WatchersClientGetFlowLogStatusResponse]]
@@ -160,6 +192,18 @@ func (w *WatchersServerTransport) dispatchToMethodFake(req *http.Request, method
 			switch method {
 			case "WatchersClient.BeginCheckConnectivity":
 				res.resp, res.err = w.dispatchBeginCheckConnectivity(req)
+			case "WatchersClient.BeginConnectionAnalyzersCreate":
+				res.resp, res.err = w.dispatchBeginConnectionAnalyzersCreate(req)
+			case "WatchersClient.BeginConnectionAnalyzersDelete":
+				res.resp, res.err = w.dispatchBeginConnectionAnalyzersDelete(req)
+			case "WatchersClient.ConnectionAnalyzersGet":
+				res.resp, res.err = w.dispatchConnectionAnalyzersGet(req)
+			case "WatchersClient.NewConnectionAnalyzersListPager":
+				res.resp, res.err = w.dispatchNewConnectionAnalyzersListPager(req)
+			case "WatchersClient.BeginConnectionAnalyzersQuery":
+				res.resp, res.err = w.dispatchBeginConnectionAnalyzersQuery(req)
+			case "WatchersClient.ConnectionAnalyzersUpdateTags":
+				res.resp, res.err = w.dispatchConnectionAnalyzersUpdateTags(req)
 			case "WatchersClient.CreateOrUpdate":
 				res.resp, res.err = w.dispatchCreateOrUpdate(req)
 			case "WatchersClient.BeginDelete":
@@ -255,6 +299,273 @@ func (w *WatchersServerTransport) dispatchBeginCheckConnectivity(req *http.Reque
 		w.beginCheckConnectivity.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchBeginConnectionAnalyzersCreate(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginConnectionAnalyzersCreate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginConnectionAnalyzersCreate not implemented")}
+	}
+	beginConnectionAnalyzersCreate := w.beginConnectionAnalyzersCreate.get(req)
+	if beginConnectionAnalyzersCreate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectionAnalyzers/(?P<connectionAnalyzerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.ConnectionAnalyzer](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+		if err != nil {
+			return nil, err
+		}
+		connectionAnalyzerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionAnalyzerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginConnectionAnalyzersCreate(req.Context(), resourceGroupNameParam, networkWatcherNameParam, connectionAnalyzerNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginConnectionAnalyzersCreate = &respr
+		w.beginConnectionAnalyzersCreate.add(req, beginConnectionAnalyzersCreate)
+	}
+
+	resp, err := server.PollerResponderNext(beginConnectionAnalyzersCreate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		w.beginConnectionAnalyzersCreate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginConnectionAnalyzersCreate) {
+		w.beginConnectionAnalyzersCreate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchBeginConnectionAnalyzersDelete(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginConnectionAnalyzersDelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginConnectionAnalyzersDelete not implemented")}
+	}
+	beginConnectionAnalyzersDelete := w.beginConnectionAnalyzersDelete.get(req)
+	if beginConnectionAnalyzersDelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectionAnalyzers/(?P<connectionAnalyzerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+		if err != nil {
+			return nil, err
+		}
+		connectionAnalyzerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionAnalyzerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginConnectionAnalyzersDelete(req.Context(), resourceGroupNameParam, networkWatcherNameParam, connectionAnalyzerNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginConnectionAnalyzersDelete = &respr
+		w.beginConnectionAnalyzersDelete.add(req, beginConnectionAnalyzersDelete)
+	}
+
+	resp, err := server.PollerResponderNext(beginConnectionAnalyzersDelete, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		w.beginConnectionAnalyzersDelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginConnectionAnalyzersDelete) {
+		w.beginConnectionAnalyzersDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchConnectionAnalyzersGet(req *http.Request) (*http.Response, error) {
+	if w.srv.ConnectionAnalyzersGet == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ConnectionAnalyzersGet not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectionAnalyzers/(?P<connectionAnalyzerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+	if err != nil {
+		return nil, err
+	}
+	connectionAnalyzerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionAnalyzerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ConnectionAnalyzersGet(req.Context(), resourceGroupNameParam, networkWatcherNameParam, connectionAnalyzerNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectionAnalyzer, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchNewConnectionAnalyzersListPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewConnectionAnalyzersListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewConnectionAnalyzersListPager not implemented")}
+	}
+	newConnectionAnalyzersListPager := w.newConnectionAnalyzersListPager.get(req)
+	if newConnectionAnalyzersListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectionAnalyzers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := w.srv.NewConnectionAnalyzersListPager(resourceGroupNameParam, networkWatcherNameParam, nil)
+		newConnectionAnalyzersListPager = &resp
+		w.newConnectionAnalyzersListPager.add(req, newConnectionAnalyzersListPager)
+		server.PagerResponderInjectNextLinks(newConnectionAnalyzersListPager, req, func(page *armnetwork.WatchersClientConnectionAnalyzersListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newConnectionAnalyzersListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newConnectionAnalyzersListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newConnectionAnalyzersListPager) {
+		w.newConnectionAnalyzersListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchBeginConnectionAnalyzersQuery(req *http.Request) (*http.Response, error) {
+	if w.srv.BeginConnectionAnalyzersQuery == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginConnectionAnalyzersQuery not implemented")}
+	}
+	beginConnectionAnalyzersQuery := w.beginConnectionAnalyzersQuery.get(req)
+	if beginConnectionAnalyzersQuery == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectionAnalyzers/(?P<connectionAnalyzerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/query`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+		if err != nil {
+			return nil, err
+		}
+		connectionAnalyzerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionAnalyzerName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := w.srv.BeginConnectionAnalyzersQuery(req.Context(), resourceGroupNameParam, networkWatcherNameParam, connectionAnalyzerNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginConnectionAnalyzersQuery = &respr
+		w.beginConnectionAnalyzersQuery.add(req, beginConnectionAnalyzersQuery)
+	}
+
+	resp, err := server.PollerResponderNext(beginConnectionAnalyzersQuery, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		w.beginConnectionAnalyzersQuery.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginConnectionAnalyzersQuery) {
+		w.beginConnectionAnalyzersQuery.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (w *WatchersServerTransport) dispatchConnectionAnalyzersUpdateTags(req *http.Request) (*http.Response, error) {
+	if w.srv.ConnectionAnalyzersUpdateTags == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ConnectionAnalyzersUpdateTags not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkWatchers/(?P<networkWatcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connectionAnalyzers/(?P<connectionAnalyzerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.TagsObject](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkWatcherNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkWatcherName")])
+	if err != nil {
+		return nil, err
+	}
+	connectionAnalyzerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionAnalyzerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := w.srv.ConnectionAnalyzersUpdateTags(req.Context(), resourceGroupNameParam, networkWatcherNameParam, connectionAnalyzerNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ConnectionAnalyzer, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

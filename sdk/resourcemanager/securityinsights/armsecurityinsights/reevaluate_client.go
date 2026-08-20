@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultReevaluateClientVersion string = "2025-07-01-preview"
-
 // ReevaluateClient contains the methods for the Reevaluate group.
 // Don't use this type directly, use NewReevaluateClient() instead.
 //
@@ -64,12 +62,7 @@ func (client *ReevaluateClient) Recommendation(ctx context.Context, resourceGrou
 	if err != nil {
 		return ReevaluateClientRecommendationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReevaluateClientRecommendationResponse{}, err
-	}
-	resp, err := client.recommendationHandleResponse(httpResp)
-	return resp, err
+	return client.recommendationHandleResponse(httpResp, http.StatusOK)
 }
 
 // recommendationCreateRequest creates the Recommendation request.
@@ -96,15 +89,18 @@ func (client *ReevaluateClient) recommendationCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultReevaluateClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // recommendationHandleResponse handles the Recommendation response.
-func (client *ReevaluateClient) recommendationHandleResponse(resp *http.Response) (ReevaluateClientRecommendationResponse, error) {
+func (client *ReevaluateClient) recommendationHandleResponse(resp *http.Response, successCodes ...int) (ReevaluateClientRecommendationResponse, error) {
 	result := ReevaluateClientRecommendationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReevaluateResponse); err != nil {
 		return ReevaluateClientRecommendationResponse{}, err
 	}

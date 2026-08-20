@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (2026-08-14)
+## 0.2.0 (2026-08-20)
 ### Breaking Changes
 
 - Function `*PrivateEndpointConnectionsClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions)`

@@ -19,7 +19,7 @@ import (
 // ManagedComputeCapacitiesClient contains the methods for the ManagedComputeCapacities group.
 // Don't use this type directly, use NewManagedComputeCapacitiesClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-07-15-preview
 type ManagedComputeCapacitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -57,46 +57,60 @@ func (client *ManagedComputeCapacitiesClient) NewListPager(offer string, options
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, offer, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, offer, nextLink, options)
 			if err != nil {
 				return ManagedComputeCapacitiesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedComputeCapacitiesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ManagedComputeCapacitiesClient) listCreateRequest(ctx context.Context, offer string, options *ManagedComputeCapacitiesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/managedComputeCapacities"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedComputeCapacitiesClient) listCreateRequest(ctx context.Context, offer string, nextLink string, options *ManagedComputeCapacitiesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CognitiveServices/managedComputeCapacities"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.AcceleratorType != nil {
-		reqQP.Set("acceleratorType", *options.AcceleratorType)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.AcceleratorType != nil {
+			reqQP.Set("acceleratorType", *options.AcceleratorType)
+		}
+		reqQP.Set("api-version", version20260715Preview)
+		if options != nil && options.DeploymentID != nil {
+			reqQP.Set("deploymentId", *options.DeploymentID)
+		}
+		reqQP.Set("offer", offer)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260515Preview)
-	if options != nil && options.DeploymentID != nil {
-		reqQP.Set("deploymentId", *options.DeploymentID)
-	}
-	reqQP.Set("offer", offer)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ManagedComputeCapacitiesClient) listHandleResponse(resp *http.Response) (ManagedComputeCapacitiesClientListResponse, error) {
+func (client *ManagedComputeCapacitiesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ManagedComputeCapacitiesClientListResponse, error) {
 	result := ManagedComputeCapacitiesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedComputeCapacityListResult); err != nil {
 		return ManagedComputeCapacitiesClientListResponse{}, err
 	}

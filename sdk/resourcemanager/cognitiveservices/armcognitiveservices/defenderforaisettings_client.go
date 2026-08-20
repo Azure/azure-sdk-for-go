@@ -19,7 +19,7 @@ import (
 // DefenderForAISettingsClient contains the methods for the DefenderForAISettings group.
 // Don't use this type directly, use NewDefenderForAISettingsClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-07-15-preview
 type DefenderForAISettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,12 +63,7 @@ func (client *DefenderForAISettingsClient) CreateOrUpdate(ctx context.Context, r
 	if err != nil {
 		return DefenderForAISettingsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return DefenderForAISettingsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -95,7 +90,7 @@ func (client *DefenderForAISettingsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -106,8 +101,11 @@ func (client *DefenderForAISettingsClient) createOrUpdateCreateRequest(ctx conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DefenderForAISettingsClient) createOrUpdateHandleResponse(resp *http.Response) (DefenderForAISettingsClientCreateOrUpdateResponse, error) {
+func (client *DefenderForAISettingsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DefenderForAISettingsClientCreateOrUpdateResponse, error) {
 	result := DefenderForAISettingsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefenderForAISetting); err != nil {
 		return DefenderForAISettingsClientCreateOrUpdateResponse{}, err
 	}
@@ -135,12 +133,7 @@ func (client *DefenderForAISettingsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return DefenderForAISettingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefenderForAISettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -167,15 +160,18 @@ func (client *DefenderForAISettingsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DefenderForAISettingsClient) getHandleResponse(resp *http.Response) (DefenderForAISettingsClientGetResponse, error) {
+func (client *DefenderForAISettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DefenderForAISettingsClientGetResponse, error) {
 	result := DefenderForAISettingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefenderForAISetting); err != nil {
 		return DefenderForAISettingsClientGetResponse{}, err
 	}
@@ -198,47 +194,61 @@ func (client *DefenderForAISettingsClient) NewListPager(resourceGroupName string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return DefenderForAISettingsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DefenderForAISettingsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DefenderForAISettingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *DefenderForAISettingsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/defenderForAISettings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DefenderForAISettingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *DefenderForAISettingsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/defenderForAISettings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DefenderForAISettingsClient) listHandleResponse(resp *http.Response) (DefenderForAISettingsClientListResponse, error) {
+func (client *DefenderForAISettingsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DefenderForAISettingsClientListResponse, error) {
 	result := DefenderForAISettingsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefenderForAISettingResult); err != nil {
 		return DefenderForAISettingsClientListResponse{}, err
 	}
@@ -267,12 +277,7 @@ func (client *DefenderForAISettingsClient) Update(ctx context.Context, resourceG
 	if err != nil {
 		return DefenderForAISettingsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefenderForAISettingsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -299,7 +304,7 @@ func (client *DefenderForAISettingsClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -310,8 +315,11 @@ func (client *DefenderForAISettingsClient) updateCreateRequest(ctx context.Conte
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DefenderForAISettingsClient) updateHandleResponse(resp *http.Response) (DefenderForAISettingsClientUpdateResponse, error) {
+func (client *DefenderForAISettingsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (DefenderForAISettingsClientUpdateResponse, error) {
 	result := DefenderForAISettingsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefenderForAISetting); err != nil {
 		return DefenderForAISettingsClientUpdateResponse{}, err
 	}

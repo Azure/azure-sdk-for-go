@@ -20,7 +20,7 @@ import (
 // AccountConnectionsClient contains the methods for the AccountConnections group.
 // Don't use this type directly, use NewAccountConnectionsClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-07-15-preview
 type AccountConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -66,12 +66,7 @@ func (client *AccountConnectionsClient) Create(ctx context.Context, resourceGrou
 	if err != nil {
 		return AccountConnectionsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccountConnectionsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK)
 }
 
 // createCreateRequest creates the Create request.
@@ -98,7 +93,7 @@ func (client *AccountConnectionsClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -109,8 +104,11 @@ func (client *AccountConnectionsClient) createCreateRequest(ctx context.Context,
 }
 
 // createHandleResponse handles the Create response.
-func (client *AccountConnectionsClient) createHandleResponse(resp *http.Response) (AccountConnectionsClientCreateResponse, error) {
+func (client *AccountConnectionsClient) createHandleResponse(resp *http.Response, successCodes ...int) (AccountConnectionsClientCreateResponse, error) {
 	result := AccountConnectionsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionPropertiesV2BasicResource); err != nil {
 		return AccountConnectionsClientCreateResponse{}, err
 	}
@@ -141,8 +139,7 @@ func (client *AccountConnectionsClient) Delete(ctx context.Context, resourceGrou
 		return AccountConnectionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return AccountConnectionsClientDeleteResponse{}, err
+		return AccountConnectionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AccountConnectionsClientDeleteResponse{}, nil
 }
@@ -171,7 +168,7 @@ func (client *AccountConnectionsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -198,12 +195,7 @@ func (client *AccountConnectionsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AccountConnectionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccountConnectionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -230,15 +222,18 @@ func (client *AccountConnectionsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AccountConnectionsClient) getHandleResponse(resp *http.Response) (AccountConnectionsClientGetResponse, error) {
+func (client *AccountConnectionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AccountConnectionsClientGetResponse, error) {
 	result := AccountConnectionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionPropertiesV2BasicResource); err != nil {
 		return AccountConnectionsClientGetResponse{}, err
 	}
@@ -263,56 +258,70 @@ func (client *AccountConnectionsClient) NewListPager(resourceGroupName string, a
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return AccountConnectionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AccountConnectionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AccountConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *AccountConnectionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/connections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AccountConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, options *AccountConnectionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/connections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	if options != nil && options.Category != nil {
-		reqQP.Set("category", *options.Category)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260715Preview)
+		if options != nil && options.Category != nil {
+			reqQP.Set("category", *options.Category)
+		}
+		if options != nil && options.IncludeAll != nil {
+			reqQP.Set("includeAll", strconv.FormatBool(*options.IncludeAll))
+		}
+		if options != nil && options.Target != nil {
+			reqQP.Set("target", *options.Target)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.IncludeAll != nil {
-		reqQP.Set("includeAll", strconv.FormatBool(*options.IncludeAll))
-	}
-	if options != nil && options.Target != nil {
-		reqQP.Set("target", *options.Target)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AccountConnectionsClient) listHandleResponse(resp *http.Response) (AccountConnectionsClientListResponse, error) {
+func (client *AccountConnectionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AccountConnectionsClientListResponse, error) {
 	result := AccountConnectionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionPropertiesV2BasicResourceArmPaginatedResult); err != nil {
 		return AccountConnectionsClientListResponse{}, err
 	}
@@ -343,12 +352,7 @@ func (client *AccountConnectionsClient) Update(ctx context.Context, resourceGrou
 	if err != nil {
 		return AccountConnectionsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccountConnectionsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -375,7 +379,7 @@ func (client *AccountConnectionsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -386,8 +390,11 @@ func (client *AccountConnectionsClient) updateCreateRequest(ctx context.Context,
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AccountConnectionsClient) updateHandleResponse(resp *http.Response) (AccountConnectionsClientUpdateResponse, error) {
+func (client *AccountConnectionsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (AccountConnectionsClientUpdateResponse, error) {
 	result := AccountConnectionsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionPropertiesV2BasicResource); err != nil {
 		return AccountConnectionsClientUpdateResponse{}, err
 	}

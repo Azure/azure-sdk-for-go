@@ -20,7 +20,7 @@ import (
 // ProjectConnectionsClient contains the methods for the ProjectConnections group.
 // Don't use this type directly, use NewProjectConnectionsClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-07-15-preview
 type ProjectConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -67,12 +67,7 @@ func (client *ProjectConnectionsClient) Create(ctx context.Context, resourceGrou
 	if err != nil {
 		return ProjectConnectionsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProjectConnectionsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK)
 }
 
 // createCreateRequest creates the Create request.
@@ -103,7 +98,7 @@ func (client *ProjectConnectionsClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -114,8 +109,11 @@ func (client *ProjectConnectionsClient) createCreateRequest(ctx context.Context,
 }
 
 // createHandleResponse handles the Create response.
-func (client *ProjectConnectionsClient) createHandleResponse(resp *http.Response) (ProjectConnectionsClientCreateResponse, error) {
+func (client *ProjectConnectionsClient) createHandleResponse(resp *http.Response, successCodes ...int) (ProjectConnectionsClientCreateResponse, error) {
 	result := ProjectConnectionsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionPropertiesV2BasicResource); err != nil {
 		return ProjectConnectionsClientCreateResponse{}, err
 	}
@@ -147,8 +145,7 @@ func (client *ProjectConnectionsClient) Delete(ctx context.Context, resourceGrou
 		return ProjectConnectionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ProjectConnectionsClientDeleteResponse{}, err
+		return ProjectConnectionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ProjectConnectionsClientDeleteResponse{}, nil
 }
@@ -181,7 +178,7 @@ func (client *ProjectConnectionsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -209,12 +206,7 @@ func (client *ProjectConnectionsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ProjectConnectionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProjectConnectionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -245,15 +237,18 @@ func (client *ProjectConnectionsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProjectConnectionsClient) getHandleResponse(resp *http.Response) (ProjectConnectionsClientGetResponse, error) {
+func (client *ProjectConnectionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProjectConnectionsClientGetResponse, error) {
 	result := ProjectConnectionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionPropertiesV2BasicResource); err != nil {
 		return ProjectConnectionsClientGetResponse{}, err
 	}
@@ -279,60 +274,74 @@ func (client *ProjectConnectionsClient) NewListPager(resourceGroupName string, a
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, projectName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, projectName, nextLink, options)
 			if err != nil {
 				return ProjectConnectionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProjectConnectionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ProjectConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, options *ProjectConnectionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/connections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ProjectConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, nextLink string, options *ProjectConnectionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/connections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		if projectName == "" {
+			return nil, errors.New("parameter projectName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	if options != nil && options.Category != nil {
-		reqQP.Set("category", *options.Category)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260715Preview)
+		if options != nil && options.Category != nil {
+			reqQP.Set("category", *options.Category)
+		}
+		if options != nil && options.IncludeAll != nil {
+			reqQP.Set("includeAll", strconv.FormatBool(*options.IncludeAll))
+		}
+		if options != nil && options.Target != nil {
+			reqQP.Set("target", *options.Target)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.IncludeAll != nil {
-		reqQP.Set("includeAll", strconv.FormatBool(*options.IncludeAll))
-	}
-	if options != nil && options.Target != nil {
-		reqQP.Set("target", *options.Target)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ProjectConnectionsClient) listHandleResponse(resp *http.Response) (ProjectConnectionsClientListResponse, error) {
+func (client *ProjectConnectionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ProjectConnectionsClientListResponse, error) {
 	result := ProjectConnectionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionPropertiesV2BasicResourceArmPaginatedResult); err != nil {
 		return ProjectConnectionsClientListResponse{}, err
 	}
@@ -364,12 +373,7 @@ func (client *ProjectConnectionsClient) Update(ctx context.Context, resourceGrou
 	if err != nil {
 		return ProjectConnectionsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProjectConnectionsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -400,7 +404,7 @@ func (client *ProjectConnectionsClient) updateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -411,8 +415,11 @@ func (client *ProjectConnectionsClient) updateCreateRequest(ctx context.Context,
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ProjectConnectionsClient) updateHandleResponse(resp *http.Response) (ProjectConnectionsClientUpdateResponse, error) {
+func (client *ProjectConnectionsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ProjectConnectionsClientUpdateResponse, error) {
 	result := ProjectConnectionsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionPropertiesV2BasicResource); err != nil {
 		return ProjectConnectionsClientUpdateResponse{}, err
 	}

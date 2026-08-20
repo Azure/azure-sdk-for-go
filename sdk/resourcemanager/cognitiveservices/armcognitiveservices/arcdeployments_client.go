@@ -16,61 +16,62 @@ import (
 	"strings"
 )
 
-// ManagedComputeDeploymentsClient contains the methods for the ManagedComputeDeployments group.
-// Don't use this type directly, use NewManagedComputeDeploymentsClient() instead.
+// ArcDeploymentsClient contains the methods for the ArcDeployments group.
+// Don't use this type directly, use NewArcDeploymentsClient() instead.
 //
 // Generated from API version 2026-07-15-preview
-type ManagedComputeDeploymentsClient struct {
+type ArcDeploymentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewManagedComputeDeploymentsClient creates a new instance of ManagedComputeDeploymentsClient with the specified values.
+// NewArcDeploymentsClient creates a new instance of ArcDeploymentsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewManagedComputeDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedComputeDeploymentsClient, error) {
+func NewArcDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ArcDeploymentsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ManagedComputeDeploymentsClient{
+	client := &ArcDeploymentsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Creates or updates a managed compute deployment associated with the Cognitive Services account.
+// BeginCreateOrUpdate - Creates or updates an Arc deployment associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
-//   - deploymentName - The name of the managed compute deployment associated with the Cognitive Services Account
-//   - resource - The managed compute deployment properties.
-//   - options - ManagedComputeDeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedComputeDeploymentsClient.BeginCreateOrUpdate
+//   - deploymentName - The name of the Arc deployment associated with the Cognitive Services Account. The name must be unique
+//     within the account across deployments, managedComputeDeployments, and arcDeployments.
+//   - resource - The Arc deployment properties.
+//   - options - ArcDeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ArcDeploymentsClient.BeginCreateOrUpdate
 //     method.
-func (client *ManagedComputeDeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, resource ManagedComputeDeployment, options *ManagedComputeDeploymentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ManagedComputeDeploymentsClientCreateOrUpdateResponse], error) {
+func (client *ArcDeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, resource ArcDeployment, options *ArcDeploymentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ArcDeploymentsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, deploymentName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedComputeDeploymentsClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ArcDeploymentsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedComputeDeploymentsClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ArcDeploymentsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Creates or updates a managed compute deployment associated with the Cognitive Services account.
+// CreateOrUpdate - Creates or updates an Arc deployment associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedComputeDeploymentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, resource ManagedComputeDeployment, options *ManagedComputeDeploymentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *ArcDeploymentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, resource ArcDeployment, options *ArcDeploymentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ManagedComputeDeploymentsClient.BeginCreateOrUpdate"
+	const operationName = "ArcDeploymentsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -89,8 +90,8 @@ func (client *ManagedComputeDeploymentsClient) createOrUpdate(ctx context.Contex
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ManagedComputeDeploymentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, resource ManagedComputeDeployment, _ *ManagedComputeDeploymentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedComputeDeployments/{deploymentName}"
+func (client *ArcDeploymentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, resource ArcDeployment, _ *ArcDeploymentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/arcDeployments/{deploymentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -122,35 +123,36 @@ func (client *ManagedComputeDeploymentsClient) createOrUpdateCreateRequest(ctx c
 	return req, nil
 }
 
-// BeginDelete - Deletes the specified managed compute deployment associated with the Cognitive Services account.
+// BeginDelete - Deletes the specified Arc deployment associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
-//   - deploymentName - The name of the managed compute deployment associated with the Cognitive Services Account
-//   - options - ManagedComputeDeploymentsClientBeginDeleteOptions contains the optional parameters for the ManagedComputeDeploymentsClient.BeginDelete
+//   - deploymentName - The name of the Arc deployment associated with the Cognitive Services Account. The name must be unique
+//     within the account across deployments, managedComputeDeployments, and arcDeployments.
+//   - options - ArcDeploymentsClientBeginDeleteOptions contains the optional parameters for the ArcDeploymentsClient.BeginDelete
 //     method.
-func (client *ManagedComputeDeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ManagedComputeDeploymentsClientBeginDeleteOptions) (*runtime.Poller[ManagedComputeDeploymentsClientDeleteResponse], error) {
+func (client *ArcDeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ArcDeploymentsClientBeginDeleteOptions) (*runtime.Poller[ArcDeploymentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, deploymentName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedComputeDeploymentsClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ArcDeploymentsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedComputeDeploymentsClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ArcDeploymentsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Deletes the specified managed compute deployment associated with the Cognitive Services account.
+// Delete - Deletes the specified Arc deployment associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedComputeDeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ManagedComputeDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ArcDeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ArcDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ManagedComputeDeploymentsClient.BeginDelete"
+	const operationName = "ArcDeploymentsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -162,15 +164,15 @@ func (client *ManagedComputeDeploymentsClient) deleteOperation(ctx context.Conte
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ManagedComputeDeploymentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, _ *ManagedComputeDeploymentsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedComputeDeployments/{deploymentName}"
+func (client *ArcDeploymentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, _ *ArcDeploymentsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/arcDeployments/{deploymentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -197,33 +199,33 @@ func (client *ManagedComputeDeploymentsClient) deleteCreateRequest(ctx context.C
 	return req, nil
 }
 
-// Get - Gets the specified managed compute deployment associated with the Cognitive Services account.
+// Get - Gets the specified Arc deployment associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
-//   - deploymentName - The name of the managed compute deployment associated with the Cognitive Services Account
-//   - options - ManagedComputeDeploymentsClientGetOptions contains the optional parameters for the ManagedComputeDeploymentsClient.Get
-//     method.
-func (client *ManagedComputeDeploymentsClient) Get(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ManagedComputeDeploymentsClientGetOptions) (ManagedComputeDeploymentsClientGetResponse, error) {
+//   - deploymentName - The name of the Arc deployment associated with the Cognitive Services Account. The name must be unique
+//     within the account across deployments, managedComputeDeployments, and arcDeployments.
+//   - options - ArcDeploymentsClientGetOptions contains the optional parameters for the ArcDeploymentsClient.Get method.
+func (client *ArcDeploymentsClient) Get(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ArcDeploymentsClientGetOptions) (ArcDeploymentsClientGetResponse, error) {
 	var err error
-	const operationName = "ManagedComputeDeploymentsClient.Get"
+	const operationName = "ArcDeploymentsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, deploymentName, options)
 	if err != nil {
-		return ManagedComputeDeploymentsClientGetResponse{}, err
+		return ArcDeploymentsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ManagedComputeDeploymentsClientGetResponse{}, err
+		return ArcDeploymentsClientGetResponse{}, err
 	}
 	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ManagedComputeDeploymentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, _ *ManagedComputeDeploymentsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedComputeDeployments/{deploymentName}"
+func (client *ArcDeploymentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, _ *ArcDeploymentsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/arcDeployments/{deploymentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -252,40 +254,39 @@ func (client *ManagedComputeDeploymentsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedComputeDeploymentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedComputeDeploymentsClientGetResponse, error) {
-	result := ManagedComputeDeploymentsClientGetResponse{}
+func (client *ArcDeploymentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ArcDeploymentsClientGetResponse, error) {
+	result := ArcDeploymentsClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedComputeDeployment); err != nil {
-		return ManagedComputeDeploymentsClientGetResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.ArcDeployment); err != nil {
+		return ArcDeploymentsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - Gets the managed compute deployments associated with the Cognitive Services account.
+// NewListPager - Gets the Arc deployments associated with the Cognitive Services account.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
-//   - options - ManagedComputeDeploymentsClientListOptions contains the optional parameters for the ManagedComputeDeploymentsClient.NewListPager
-//     method.
-func (client *ManagedComputeDeploymentsClient) NewListPager(resourceGroupName string, accountName string, options *ManagedComputeDeploymentsClientListOptions) *runtime.Pager[ManagedComputeDeploymentsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ManagedComputeDeploymentsClientListResponse]{
-		More: func(page ManagedComputeDeploymentsClientListResponse) bool {
+//   - options - ArcDeploymentsClientListOptions contains the optional parameters for the ArcDeploymentsClient.NewListPager method.
+func (client *ArcDeploymentsClient) NewListPager(resourceGroupName string, accountName string, options *ArcDeploymentsClientListOptions) *runtime.Pager[ArcDeploymentsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ArcDeploymentsClientListResponse]{
+		More: func(page ArcDeploymentsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ManagedComputeDeploymentsClientListResponse) (ManagedComputeDeploymentsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedComputeDeploymentsClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *ArcDeploymentsClientListResponse) (ArcDeploymentsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ArcDeploymentsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
-				return ManagedComputeDeploymentsClientListResponse{}, err
+				return ArcDeploymentsClientListResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return ManagedComputeDeploymentsClientListResponse{}, err
+				return ArcDeploymentsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp, http.StatusOK)
 		},
@@ -294,12 +295,12 @@ func (client *ManagedComputeDeploymentsClient) NewListPager(resourceGroupName st
 }
 
 // listCreateRequest creates the List request.
-func (client *ManagedComputeDeploymentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *ManagedComputeDeploymentsClientListOptions) (*policy.Request, error) {
+func (client *ArcDeploymentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *ArcDeploymentsClientListOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedComputeDeployments"
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/arcDeployments"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter client.subscriptionID cannot be empty")
 		}
@@ -329,47 +330,48 @@ func (client *ManagedComputeDeploymentsClient) listCreateRequest(ctx context.Con
 }
 
 // listHandleResponse handles the List response.
-func (client *ManagedComputeDeploymentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ManagedComputeDeploymentsClientListResponse, error) {
-	result := ManagedComputeDeploymentsClientListResponse{}
+func (client *ArcDeploymentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ArcDeploymentsClientListResponse, error) {
+	result := ArcDeploymentsClientListResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedComputeDeploymentListResult); err != nil {
-		return ManagedComputeDeploymentsClientListResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.ArcDeploymentListResult); err != nil {
+		return ArcDeploymentsClientListResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdate - Updates the specified managed compute deployment associated with the Cognitive Services account.
+// BeginUpdate - Updates the specified Arc deployment associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
-//   - deploymentName - The name of the managed compute deployment associated with the Cognitive Services Account
-//   - properties - The managed compute deployment patch properties.
-//   - options - ManagedComputeDeploymentsClientBeginUpdateOptions contains the optional parameters for the ManagedComputeDeploymentsClient.BeginUpdate
+//   - deploymentName - The name of the Arc deployment associated with the Cognitive Services Account. The name must be unique
+//     within the account across deployments, managedComputeDeployments, and arcDeployments.
+//   - properties - The Arc deployment update properties.
+//   - options - ArcDeploymentsClientBeginUpdateOptions contains the optional parameters for the ArcDeploymentsClient.BeginUpdate
 //     method.
-func (client *ManagedComputeDeploymentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, properties PatchResourceSKU, options *ManagedComputeDeploymentsClientBeginUpdateOptions) (*runtime.Poller[ManagedComputeDeploymentsClientUpdateResponse], error) {
+func (client *ArcDeploymentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, properties ArcDeploymentUpdate, options *ArcDeploymentsClientBeginUpdateOptions) (*runtime.Poller[ArcDeploymentsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, deploymentName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedComputeDeploymentsClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ArcDeploymentsClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedComputeDeploymentsClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ArcDeploymentsClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Update - Updates the specified managed compute deployment associated with the Cognitive Services account.
+// Update - Updates the specified Arc deployment associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedComputeDeploymentsClient) update(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, properties PatchResourceSKU, options *ManagedComputeDeploymentsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *ArcDeploymentsClient) update(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, properties ArcDeploymentUpdate, options *ArcDeploymentsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "ManagedComputeDeploymentsClient.BeginUpdate"
+	const operationName = "ArcDeploymentsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -388,8 +390,8 @@ func (client *ManagedComputeDeploymentsClient) update(ctx context.Context, resou
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ManagedComputeDeploymentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, properties PatchResourceSKU, _ *ManagedComputeDeploymentsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedComputeDeployments/{deploymentName}"
+func (client *ArcDeploymentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, properties ArcDeploymentUpdate, _ *ArcDeploymentsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/arcDeployments/{deploymentName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}

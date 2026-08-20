@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/GetComputeOperationStatus.json
+// Generated from example definition: 2026-07-15-preview/GetComputeOperationStatus.json
 func ExampleComputeOperationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,8 +35,8 @@ func ExampleComputeOperationsClient_Get() {
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		Type: to.Ptr("Microsoft.CognitiveServices/locations/computeOperations"),
 	// 		Properties: &armcognitiveservices.ComputeOperationStatusProperties{
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-15T00:00:00Z"); return t}()),
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-15T00:05:00Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2026, time.January, 15, 0, 0, 0, 0, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2026, time.January, 15, 0, 5, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armcognitiveservices.ComputeOperationStatusTypeSucceeded),
 	// 		},
 	// 	},

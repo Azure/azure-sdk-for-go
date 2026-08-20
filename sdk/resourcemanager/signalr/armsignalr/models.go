@@ -144,15 +144,16 @@ type Dimension struct {
 // Feature of a resource, which controls the runtime behavior.
 type Feature struct {
 	// REQUIRED; FeatureFlags is the supported features of Azure SignalR service.
-	// - ServiceMode: Flag for backend server for SignalR service. Values allowed: "Default": have your own backend server; "Serverless":
-	// your application doesn't have a backend server; "Classic": for backward compatibility. Support both Default and Serverless
-	// mode but not recommended; "PredefinedOnly": for future use.
-	// - EnableConnectivityLogs: "true"/"false", to enable/disable the connectivity log category respectively.
-	// - EnableMessagingLogs: "true"/"false", to enable/disable the connectivity log category respectively.
-	// - EnableLiveTrace: Live Trace allows you to know what's happening inside Azure SignalR service, it will give you live traces
-	// in real time, it will be helpful when you developing your own Azure SignalR based web application or self-troubleshooting
-	// some issues. Please note that live traces are counted as outbound messages that will be charged. Values allowed: "true"/"false",
-	// to enable/disable live trace feature.
+	//
+	//   - ServiceMode: Flag for backend server for SignalR service. Values allowed: "Default": have your own backend server; "Serverless":
+	//     your application doesn't have a backend server; "Classic": for backward compatibility. Support both Default and Serverless
+	//     mode but not recommended; "PredefinedOnly": for future use.
+	//   - EnableConnectivityLogs: "true"/"false", to enable/disable the connectivity log category respectively.
+	//   - EnableMessagingLogs: "true"/"false", to enable/disable the connectivity log category respectively.
+	//   - EnableLiveTrace: Live Trace allows you to know what's happening inside Azure SignalR service, it will give you live traces
+	//     in real time, it will be helpful when you developing your own Azure SignalR based web application or self-troubleshooting
+	//     some issues. Please note that live traces are counted as outbound messages that will be charged. Values allowed: "true"/"false",
+	//     to enable/disable live trace feature.
 	Flag *FeatureFlags
 
 	// REQUIRED; Value of the feature flag. See Azure SignalR service document https://docs.microsoft.com/azure/azure-signalr/
@@ -1073,23 +1074,26 @@ type UpstreamTemplate struct {
 
 	// Gets or sets the matching pattern for category names. If not set, it matches any category.
 	// There are 3 kind of patterns supported:
-	// 1. "*", it to matches any category name.
-	// 2. Combine multiple categories with ",", for example "connections,messages", it matches category "connections" and "messages".
-	// 3. The single category name, for example, "connections", it matches the category "connections".
+	//
+	//  1. "*", it to matches any category name.
+	//  2. Combine multiple categories with ",", for example "connections,messages", it matches category "connections" and "messages".
+	//  3. The single category name, for example, "connections", it matches the category "connections".
 	CategoryPattern *string
 
 	// Gets or sets the matching pattern for event names. If not set, it matches any event.
 	// There are 3 kind of patterns supported:
-	// 1. "*", it to matches any event name.
-	// 2. Combine multiple events with ",", for example "connect,disconnect", it matches event "connect" and "disconnect".
-	// 3. The single event name, for example, "connect", it matches "connect".
+	//
+	//  1. "*", it to matches any event name.
+	//  2. Combine multiple events with ",", for example "connect,disconnect", it matches event "connect" and "disconnect".
+	//  3. The single event name, for example, "connect", it matches "connect".
 	EventPattern *string
 
 	// Gets or sets the matching pattern for hub names. If not set, it matches any hub.
 	// There are 3 kind of patterns supported:
-	// 1. "*", it to matches any hub name.
-	// 2. Combine multiple hubs with ",", for example "hub1,hub2", it matches "hub1" and "hub2".
-	// 3. The single hub name, for example, "hub1", it matches "hub1".
+	//
+	//  1. "*", it to matches any hub name.
+	//  2. Combine multiple hubs with ",", for example "hub1,hub2", it matches "hub1" and "hub2".
+	//  3. The single hub name, for example, "hub1", it matches "hub1".
 	HubPattern *string
 }
 

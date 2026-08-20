@@ -49,7 +49,7 @@ func ExampleTriggersClient_BeginCreateOrUpdate() {
 	// 			Status: &armvirtualmachineimagebuilder.TriggerStatus{
 	// 				Code: to.Ptr("Healthy"),
 	// 				Message: to.Ptr(""),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-21T17:32:28Z"); return t}()),
+	// 				Time: to.Ptr(time.Date(2024, time.October, 21, 17, 32, 28, 0, time.UTC)),
 	// 			},
 	// 		},
 	// 	},
@@ -106,7 +106,7 @@ func ExampleTriggersClient_Get() {
 	// 			Status: &armvirtualmachineimagebuilder.TriggerStatus{
 	// 				Code: to.Ptr("Healthy"),
 	// 				Message: to.Ptr(""),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-21T17:32:28Z"); return t}()),
+	// 				Time: to.Ptr(time.Date(2024, time.October, 21, 17, 32, 28, 0, time.UTC)),
 	// 			},
 	// 		},
 	// 	},
@@ -149,7 +149,7 @@ func ExampleTriggersClient_NewListByImageTemplatePager() {
 		// 					Status: &armvirtualmachineimagebuilder.TriggerStatus{
 		// 						Code: to.Ptr("Healthy"),
 		// 						Message: to.Ptr(""),
-		// 						Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-21T17:32:28Z"); return t}()),
+		// 						Time: to.Ptr(time.Date(2024, time.October, 21, 17, 32, 28, 0, time.UTC)),
 		// 					},
 		// 				},
 		// 			},

@@ -61,12 +61,7 @@ func (client *Client) CreateOrUpdate(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -100,9 +95,12 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceG
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *Client) createOrUpdateHandleResponse(resp *http.Response) (ClientCreateOrUpdateResponse, error) {
+func (client *Client) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ClientCreateOrUpdateResponse, error) {
 	result := ClientCreateOrUpdateResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertProcessingRule); err != nil {
@@ -130,12 +128,7 @@ func (client *Client) Delete(ctx context.Context, resourceGroupName string, aler
 	if err != nil {
 		return ClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientDeleteResponse{}, err
-	}
-	resp, err := client.deleteHandleResponse(httpResp)
-	return resp, err
+	return client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -164,9 +157,12 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *Client) deleteHandleResponse(resp *http.Response) (ClientDeleteResponse, error) {
+func (client *Client) deleteHandleResponse(resp *http.Response, successCodes ...int) (ClientDeleteResponse, error) {
 	result := ClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
 	return result, nil
@@ -191,12 +187,7 @@ func (client *Client) GetByName(ctx context.Context, resourceGroupName string, a
 	if err != nil {
 		return ClientGetByNameResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientGetByNameResponse{}, err
-	}
-	resp, err := client.getByNameHandleResponse(httpResp)
-	return resp, err
+	return client.getByNameHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByNameCreateRequest creates the GetByName request.
@@ -226,9 +217,12 @@ func (client *Client) getByNameCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getByNameHandleResponse handles the GetByName response.
-func (client *Client) getByNameHandleResponse(resp *http.Response) (ClientGetByNameResponse, error) {
+func (client *Client) getByNameHandleResponse(resp *http.Response, successCodes ...int) (ClientGetByNameResponse, error) {
 	result := ClientGetByNameResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertProcessingRule); err != nil {
@@ -252,44 +246,58 @@ func (client *Client) NewListByResourceGroupPager(resourceGroupName string, opti
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return ClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AlertsManagement/actionRules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AlertsManagement/actionRules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210808)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20210808)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (ClientListByResourceGroupResponse, error) {
+func (client *Client) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ClientListByResourceGroupResponse, error) {
 	result := ClientListByResourceGroupResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.List); err != nil {
@@ -311,40 +319,54 @@ func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscripti
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *Client) listBySubscriptionCreateRequest(ctx context.Context, _ *ClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AlertsManagement/actionRules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *Client) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *ClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AlertsManagement/actionRules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210808)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20210808)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *Client) listBySubscriptionHandleResponse(resp *http.Response) (ClientListBySubscriptionResponse, error) {
+func (client *Client) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (ClientListBySubscriptionResponse, error) {
 	result := ClientListBySubscriptionResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.List); err != nil {
@@ -373,12 +395,7 @@ func (client *Client) Update(ctx context.Context, resourceGroupName string, aler
 	if err != nil {
 		return ClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -412,9 +429,12 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 }
 
 // updateHandleResponse handles the Update response.
-func (client *Client) updateHandleResponse(resp *http.Response) (ClientUpdateResponse, error) {
+func (client *Client) updateHandleResponse(resp *http.Response, successCodes ...int) (ClientUpdateResponse, error) {
 	result := ClientUpdateResponse{}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertProcessingRule); err != nil {

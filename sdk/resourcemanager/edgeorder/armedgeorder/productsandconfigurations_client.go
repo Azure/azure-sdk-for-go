@@ -18,6 +18,8 @@ import (
 
 // ProductsAndConfigurationsClient contains the methods for the ProductsAndConfigurations group.
 // Don't use this type directly, use NewProductsAndConfigurationsClient() instead.
+//
+// Generated from API version 2024-02-01
 type ProductsAndConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewProductsAndConfigurationsClient(subscriptionID string, credential azcore
 }
 
 // NewListConfigurationsPager - List configurations for the given product family, product line and product for the given subscription.
-//
-// Generated from API version 2024-02-01
 //   - configurationsRequest - Filters for showing the configurations.
 //   - options - ProductsAndConfigurationsClientListConfigurationsOptions contains the optional parameters for the ProductsAndConfigurationsClient.NewListConfigurationsPager
 //     method.
@@ -56,46 +56,60 @@ func (client *ProductsAndConfigurationsClient) NewListConfigurationsPager(config
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listConfigurationsCreateRequest(ctx, configurationsRequest, options)
-			}, nil)
+			req, err := client.listConfigurationsCreateRequest(ctx, configurationsRequest, nextLink, options)
 			if err != nil {
 				return ProductsAndConfigurationsClientListConfigurationsResponse{}, err
 			}
-			return client.listConfigurationsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProductsAndConfigurationsClientListConfigurationsResponse{}, err
+			}
+			return client.listConfigurationsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listConfigurationsCreateRequest creates the ListConfigurations request.
-func (client *ProductsAndConfigurationsClient) listConfigurationsCreateRequest(ctx context.Context, configurationsRequest ConfigurationsRequest, options *ProductsAndConfigurationsClientListConfigurationsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/listConfigurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ProductsAndConfigurationsClient) listConfigurationsCreateRequest(ctx context.Context, configurationsRequest ConfigurationsRequest, nextLink string, options *ProductsAndConfigurationsClientListConfigurationsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/listConfigurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, configurationsRequest); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		reqQP.Set("api-version", version20240201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, configurationsRequest); err != nil {
+			return nil, err
+		}
 	}
 	return req, nil
 }
 
 // listConfigurationsHandleResponse handles the ListConfigurations response.
-func (client *ProductsAndConfigurationsClient) listConfigurationsHandleResponse(resp *http.Response) (ProductsAndConfigurationsClientListConfigurationsResponse, error) {
+func (client *ProductsAndConfigurationsClient) listConfigurationsHandleResponse(resp *http.Response, successCodes ...int) (ProductsAndConfigurationsClientListConfigurationsResponse, error) {
 	result := ProductsAndConfigurationsClientListConfigurationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Configurations); err != nil {
 		return ProductsAndConfigurationsClientListConfigurationsResponse{}, err
 	}
@@ -103,8 +117,6 @@ func (client *ProductsAndConfigurationsClient) listConfigurationsHandleResponse(
 }
 
 // NewListProductFamiliesPager - List product families for the given subscription.
-//
-// Generated from API version 2024-02-01
 //   - productFamiliesRequest - Filters for showing the product families.
 //   - options - ProductsAndConfigurationsClientListProductFamiliesOptions contains the optional parameters for the ProductsAndConfigurationsClient.NewListProductFamiliesPager
 //     method.
@@ -119,49 +131,63 @@ func (client *ProductsAndConfigurationsClient) NewListProductFamiliesPager(produ
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listProductFamiliesCreateRequest(ctx, productFamiliesRequest, options)
-			}, nil)
+			req, err := client.listProductFamiliesCreateRequest(ctx, productFamiliesRequest, nextLink, options)
 			if err != nil {
 				return ProductsAndConfigurationsClientListProductFamiliesResponse{}, err
 			}
-			return client.listProductFamiliesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProductsAndConfigurationsClientListProductFamiliesResponse{}, err
+			}
+			return client.listProductFamiliesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listProductFamiliesCreateRequest creates the ListProductFamilies request.
-func (client *ProductsAndConfigurationsClient) listProductFamiliesCreateRequest(ctx context.Context, productFamiliesRequest ProductFamiliesRequest, options *ProductsAndConfigurationsClientListProductFamiliesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/listProductFamilies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ProductsAndConfigurationsClient) listProductFamiliesCreateRequest(ctx context.Context, productFamiliesRequest ProductFamiliesRequest, nextLink string, options *ProductsAndConfigurationsClientListProductFamiliesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/listProductFamilies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
-	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, productFamiliesRequest); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		reqQP.Set("api-version", version20240201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, productFamiliesRequest); err != nil {
+			return nil, err
+		}
 	}
 	return req, nil
 }
 
 // listProductFamiliesHandleResponse handles the ListProductFamilies response.
-func (client *ProductsAndConfigurationsClient) listProductFamiliesHandleResponse(resp *http.Response) (ProductsAndConfigurationsClientListProductFamiliesResponse, error) {
+func (client *ProductsAndConfigurationsClient) listProductFamiliesHandleResponse(resp *http.Response, successCodes ...int) (ProductsAndConfigurationsClientListProductFamiliesResponse, error) {
 	result := ProductsAndConfigurationsClientListProductFamiliesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductFamilies); err != nil {
 		return ProductsAndConfigurationsClientListProductFamiliesResponse{}, err
 	}
@@ -169,8 +195,6 @@ func (client *ProductsAndConfigurationsClient) listProductFamiliesHandleResponse
 }
 
 // NewListProductFamiliesMetadataPager - List product families metadata for the given subscription.
-//
-// Generated from API version 2024-02-01
 //   - options - ProductsAndConfigurationsClientListProductFamiliesMetadataOptions contains the optional parameters for the ProductsAndConfigurationsClient.NewListProductFamiliesMetadataPager
 //     method.
 func (client *ProductsAndConfigurationsClient) NewListProductFamiliesMetadataPager(options *ProductsAndConfigurationsClientListProductFamiliesMetadataOptions) *runtime.Pager[ProductsAndConfigurationsClientListProductFamiliesMetadataResponse] {
@@ -184,42 +208,56 @@ func (client *ProductsAndConfigurationsClient) NewListProductFamiliesMetadataPag
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listProductFamiliesMetadataCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listProductFamiliesMetadataCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ProductsAndConfigurationsClientListProductFamiliesMetadataResponse{}, err
 			}
-			return client.listProductFamiliesMetadataHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProductsAndConfigurationsClientListProductFamiliesMetadataResponse{}, err
+			}
+			return client.listProductFamiliesMetadataHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listProductFamiliesMetadataCreateRequest creates the ListProductFamiliesMetadata request.
-func (client *ProductsAndConfigurationsClient) listProductFamiliesMetadataCreateRequest(ctx context.Context, options *ProductsAndConfigurationsClientListProductFamiliesMetadataOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/productFamiliesMetadata"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ProductsAndConfigurationsClient) listProductFamiliesMetadataCreateRequest(ctx context.Context, nextLink string, options *ProductsAndConfigurationsClientListProductFamiliesMetadataOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/productFamiliesMetadata"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		reqQP.Set("api-version", version20240201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listProductFamiliesMetadataHandleResponse handles the ListProductFamiliesMetadata response.
-func (client *ProductsAndConfigurationsClient) listProductFamiliesMetadataHandleResponse(resp *http.Response) (ProductsAndConfigurationsClientListProductFamiliesMetadataResponse, error) {
+func (client *ProductsAndConfigurationsClient) listProductFamiliesMetadataHandleResponse(resp *http.Response, successCodes ...int) (ProductsAndConfigurationsClientListProductFamiliesMetadataResponse, error) {
 	result := ProductsAndConfigurationsClientListProductFamiliesMetadataResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductFamiliesMetadata); err != nil {
 		return ProductsAndConfigurationsClientListProductFamiliesMetadataResponse{}, err
 	}

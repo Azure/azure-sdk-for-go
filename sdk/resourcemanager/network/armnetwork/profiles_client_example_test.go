@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/NetworkProfileCreateConfigOnly.json
+// Generated from example definition: 2025-09-01/NetworkProfileCreateConfigOnly.json
 func ExampleProfilesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleProfilesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkProfileDelete.json
+// Generated from example definition: 2025-09-01/NetworkProfileDelete.json
 func ExampleProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleProfilesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkProfileGetConfigOnly.json
+// Generated from example definition: 2025-09-01/NetworkProfileGetConfigOnly.json
 func ExampleProfilesClient_Get_getNetworkProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleProfilesClient_Get_getNetworkProfile() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkProfileGetWithContainerNic.json
+// Generated from example definition: 2025-09-01/NetworkProfileGetWithContainerNic.json
 func ExampleProfilesClient_Get_getNetworkProfileWithContainerNetworkInterfaces() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,7 +433,7 @@ func ExampleProfilesClient_Get_getNetworkProfileWithContainerNetworkInterfaces()
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkProfileList.json
+// Generated from example definition: 2025-09-01/NetworkProfileList.json
 func ExampleProfilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -548,7 +548,7 @@ func ExampleProfilesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/NetworkProfileListAll.json
+// Generated from example definition: 2025-09-01/NetworkProfileListAll.json
 func ExampleProfilesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -651,7 +651,7 @@ func ExampleProfilesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/NetworkProfileUpdateTags.json
+// Generated from example definition: 2025-09-01/NetworkProfileUpdateTags.json
 func ExampleProfilesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

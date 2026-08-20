@@ -60,12 +60,7 @@ func (client *SKUMixPlacementScoresClient) Get(ctx context.Context, location str
 	if err != nil {
 		return SKUMixPlacementScoresClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SKUMixPlacementScoresClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -91,8 +86,11 @@ func (client *SKUMixPlacementScoresClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *SKUMixPlacementScoresClient) getHandleResponse(resp *http.Response) (SKUMixPlacementScoresClientGetResponse, error) {
+func (client *SKUMixPlacementScoresClient) getHandleResponse(resp *http.Response, successCodes ...int) (SKUMixPlacementScoresClientGetResponse, error) {
 	result := SKUMixPlacementScoresClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUMixPlacementBase); err != nil {
 		return SKUMixPlacementScoresClientGetResponse{}, err
 	}
@@ -119,12 +117,7 @@ func (client *SKUMixPlacementScoresClient) Post(ctx context.Context, location st
 	if err != nil {
 		return SKUMixPlacementScoresClientPostResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SKUMixPlacementScoresClientPostResponse{}, err
-	}
-	resp, err := client.postHandleResponse(httpResp)
-	return resp, err
+	return client.postHandleResponse(httpResp, http.StatusOK)
 }
 
 // postCreateRequest creates the Post request.
@@ -154,8 +147,11 @@ func (client *SKUMixPlacementScoresClient) postCreateRequest(ctx context.Context
 }
 
 // postHandleResponse handles the Post response.
-func (client *SKUMixPlacementScoresClient) postHandleResponse(resp *http.Response) (SKUMixPlacementScoresClientPostResponse, error) {
+func (client *SKUMixPlacementScoresClient) postHandleResponse(resp *http.Response, successCodes ...int) (SKUMixPlacementScoresClientPostResponse, error) {
 	result := SKUMixPlacementScoresClientPostResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUMixPlacementResponse); err != nil {
 		return SKUMixPlacementScoresClientPostResponse{}, err
 	}

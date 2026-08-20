@@ -81,8 +81,7 @@ func (client *WorkloadImpactsClient) create(ctx context.Context, workloadImpactN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -132,8 +131,7 @@ func (client *WorkloadImpactsClient) Delete(ctx context.Context, workloadImpactN
 		return WorkloadImpactsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkloadImpactsClientDeleteResponse{}, err
+		return WorkloadImpactsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WorkloadImpactsClientDeleteResponse{}, nil
 }
@@ -177,12 +175,7 @@ func (client *WorkloadImpactsClient) Get(ctx context.Context, workloadImpactName
 	if err != nil {
 		return WorkloadImpactsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkloadImpactsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -208,8 +201,11 @@ func (client *WorkloadImpactsClient) getCreateRequest(ctx context.Context, workl
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkloadImpactsClient) getHandleResponse(resp *http.Response) (WorkloadImpactsClientGetResponse, error) {
+func (client *WorkloadImpactsClient) getHandleResponse(resp *http.Response, successCodes ...int) (WorkloadImpactsClientGetResponse, error) {
 	result := WorkloadImpactsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadImpact); err != nil {
 		return WorkloadImpactsClientGetResponse{}, err
 	}
@@ -230,39 +226,53 @@ func (client *WorkloadImpactsClient) NewListBySubscriptionPager(options *Workloa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return WorkloadImpactsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkloadImpactsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *WorkloadImpactsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *WorkloadImpactsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkloadImpactsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *WorkloadImpactsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *WorkloadImpactsClient) listBySubscriptionHandleResponse(resp *http.Response) (WorkloadImpactsClientListBySubscriptionResponse, error) {
+func (client *WorkloadImpactsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (WorkloadImpactsClientListBySubscriptionResponse, error) {
 	result := WorkloadImpactsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkloadImpactListResult); err != nil {
 		return WorkloadImpactsClientListBySubscriptionResponse{}, err
 	}

@@ -71,7 +71,7 @@ func ExampleOrdersClient_BeginCreateOrUpdate() {
 	// 			CurrentStatus: &armdataboxedge.OrderStatus{
 	// 				Comments: to.Ptr(""),
 	// 				Status: to.Ptr(armdataboxedge.OrderStateUntracked),
-	// 				UpdateDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-10T07:59:05.847Z"); return t}()),
+	// 				UpdateDateTime: to.Ptr(time.Date(2018, time.December, 10, 7, 59, 5, 847000000, time.UTC)),
 	// 			},
 	// 			DeliveryTrackingInfo: []*armdataboxedge.TrackingInfo{
 	// 			},
@@ -79,7 +79,7 @@ func ExampleOrdersClient_BeginCreateOrUpdate() {
 	// 				{
 	// 					Comments: to.Ptr("lorem ipsum"),
 	// 					Status: to.Ptr(armdataboxedge.OrderStateUntracked),
-	// 					UpdateDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-10T07:59:05.847Z"); return t}()),
+	// 					UpdateDateTime: to.Ptr(time.Date(2018, time.December, 10, 7, 59, 5, 847000000, time.UTC)),
 	// 				},
 	// 			},
 	// 			ReturnTrackingInfo: []*armdataboxedge.TrackingInfo{
@@ -160,7 +160,7 @@ func ExampleOrdersClient_Get() {
 	// 			CurrentStatus: &armdataboxedge.OrderStatus{
 	// 				Comments: to.Ptr(""),
 	// 				Status: to.Ptr(armdataboxedge.OrderStateUntracked),
-	// 				UpdateDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-10T07:59:05.847Z"); return t}()),
+	// 				UpdateDateTime: to.Ptr(time.Date(2018, time.December, 10, 7, 59, 5, 847000000, time.UTC)),
 	// 			},
 	// 			DeliveryTrackingInfo: []*armdataboxedge.TrackingInfo{
 	// 			},
@@ -168,7 +168,7 @@ func ExampleOrdersClient_Get() {
 	// 				{
 	// 					Comments: to.Ptr("lorem ipsum"),
 	// 					Status: to.Ptr(armdataboxedge.OrderStateUntracked),
-	// 					UpdateDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-10T07:59:05.847Z"); return t}()),
+	// 					UpdateDateTime: to.Ptr(time.Date(2018, time.December, 10, 7, 59, 5, 847000000, time.UTC)),
 	// 				},
 	// 			},
 	// 			ReturnTrackingInfo: []*armdataboxedge.TrackingInfo{
@@ -229,7 +229,7 @@ func ExampleOrdersClient_NewListByDataBoxEdgeDevicePager() {
 		// 					CurrentStatus: &armdataboxedge.OrderStatus{
 		// 						Comments: to.Ptr(""),
 		// 						Status: to.Ptr(armdataboxedge.OrderStateUntracked),
-		// 						UpdateDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-10T07:59:05.847Z"); return t}()),
+		// 						UpdateDateTime: to.Ptr(time.Date(2018, time.December, 10, 7, 59, 5, 847000000, time.UTC)),
 		// 					},
 		// 					DeliveryTrackingInfo: []*armdataboxedge.TrackingInfo{
 		// 					},
@@ -237,7 +237,7 @@ func ExampleOrdersClient_NewListByDataBoxEdgeDevicePager() {
 		// 						{
 		// 							Comments: to.Ptr("lorem ipsum"),
 		// 							Status: to.Ptr(armdataboxedge.OrderStateUntracked),
-		// 							UpdateDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-10T07:59:05.847Z"); return t}()),
+		// 							UpdateDateTime: to.Ptr(time.Date(2018, time.December, 10, 7, 59, 5, 847000000, time.UTC)),
 		// 						},
 		// 					},
 		// 					ReturnTrackingInfo: []*armdataboxedge.TrackingInfo{

@@ -205,10 +205,10 @@ func ExampleFleetManagedNamespacesClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("someUser"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-23T05:40:40.657Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("someOtherUser"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-23T05:40:40.657Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -347,10 +347,10 @@ func ExampleFleetManagedNamespacesClient_Get() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("someUser"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-23T05:40:40.657Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("someOtherUser"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-23T05:40:40.657Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -475,10 +475,10 @@ func ExampleFleetManagedNamespacesClient_NewListByFleetPager() {
 		// 				SystemData: &armcontainerservicefleet.SystemData{
 		// 					CreatedBy: to.Ptr("someUser"),
 		// 					CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-23T05:40:40.657Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 23, 5, 40, 40, 657000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("someOtherUser"),
 		// 					LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-23T05:40:40.657Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 23, 5, 40, 40, 657000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -603,10 +603,10 @@ func ExampleFleetManagedNamespacesClient_BeginUpdate() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("someUser"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-23T05:40:40.657Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("someOtherUser"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-23T05:40:40.657Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

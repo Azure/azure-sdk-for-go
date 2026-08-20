@@ -62,12 +62,7 @@ func (client *TasksClient) Create(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return TasksClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return TasksClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -105,8 +100,11 @@ func (client *TasksClient) createCreateRequest(ctx context.Context, resourceGrou
 }
 
 // createHandleResponse handles the Create response.
-func (client *TasksClient) createHandleResponse(resp *http.Response) (TasksClientCreateResponse, error) {
+func (client *TasksClient) createHandleResponse(resp *http.Response, successCodes ...int) (TasksClientCreateResponse, error) {
 	result := TasksClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Task); err != nil {
 		return TasksClientCreateResponse{}, err
 	}
@@ -134,8 +132,7 @@ func (client *TasksClient) Delete(ctx context.Context, resourceGroupName string,
 		return TasksClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return TasksClientDeleteResponse{}, err
+		return TasksClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TasksClientDeleteResponse{}, nil
 }
@@ -189,12 +186,7 @@ func (client *TasksClient) Get(ctx context.Context, resourceGroupName string, re
 	if err != nil {
 		return TasksClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TasksClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -228,8 +220,11 @@ func (client *TasksClient) getCreateRequest(ctx context.Context, resourceGroupNa
 }
 
 // getHandleResponse handles the Get response.
-func (client *TasksClient) getHandleResponse(resp *http.Response) (TasksClientGetResponse, error) {
+func (client *TasksClient) getHandleResponse(resp *http.Response, successCodes ...int) (TasksClientGetResponse, error) {
 	result := TasksClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Task); err != nil {
 		return TasksClientGetResponse{}, err
 	}
@@ -256,12 +251,7 @@ func (client *TasksClient) GetDetails(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return TasksClientGetDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TasksClientGetDetailsResponse{}, err
-	}
-	resp, err := client.getDetailsHandleResponse(httpResp)
-	return resp, err
+	return client.getDetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDetailsCreateRequest creates the GetDetails request.
@@ -295,8 +285,11 @@ func (client *TasksClient) getDetailsCreateRequest(ctx context.Context, resource
 }
 
 // getDetailsHandleResponse handles the GetDetails response.
-func (client *TasksClient) getDetailsHandleResponse(resp *http.Response) (TasksClientGetDetailsResponse, error) {
+func (client *TasksClient) getDetailsHandleResponse(resp *http.Response, successCodes ...int) (TasksClientGetDetailsResponse, error) {
 	result := TasksClientGetDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Task); err != nil {
 		return TasksClientGetDetailsResponse{}, err
 	}
@@ -318,47 +311,61 @@ func (client *TasksClient) NewListPager(resourceGroupName string, registryName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, registryName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, registryName, nextLink, options)
 			if err != nil {
 				return TasksClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TasksClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *TasksClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, _ *TasksClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TasksClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, nextLink string, _ *TasksClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tasks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if registryName == "" {
+			return nil, errors.New("parameter registryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if registryName == "" {
-		return nil, errors.New("parameter registryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *TasksClient) listHandleResponse(resp *http.Response) (TasksClientListResponse, error) {
+func (client *TasksClient) listHandleResponse(resp *http.Response, successCodes ...int) (TasksClientListResponse, error) {
 	result := TasksClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskListResult); err != nil {
 		return TasksClientListResponse{}, err
 	}
@@ -386,12 +393,7 @@ func (client *TasksClient) Update(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return TasksClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TasksClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -429,8 +431,11 @@ func (client *TasksClient) updateCreateRequest(ctx context.Context, resourceGrou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *TasksClient) updateHandleResponse(resp *http.Response) (TasksClientUpdateResponse, error) {
+func (client *TasksClient) updateHandleResponse(resp *http.Response, successCodes ...int) (TasksClientUpdateResponse, error) {
 	result := TasksClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Task); err != nil {
 		return TasksClientUpdateResponse{}, err
 	}

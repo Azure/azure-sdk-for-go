@@ -64,12 +64,7 @@ func (client *PlatformWorkloadIdentityRoleSetClient) Get(ctx context.Context, lo
 	if err != nil {
 		return PlatformWorkloadIdentityRoleSetClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlatformWorkloadIdentityRoleSetClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -99,8 +94,11 @@ func (client *PlatformWorkloadIdentityRoleSetClient) getCreateRequest(ctx contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *PlatformWorkloadIdentityRoleSetClient) getHandleResponse(resp *http.Response) (PlatformWorkloadIdentityRoleSetClientGetResponse, error) {
+func (client *PlatformWorkloadIdentityRoleSetClient) getHandleResponse(resp *http.Response, successCodes ...int) (PlatformWorkloadIdentityRoleSetClientGetResponse, error) {
 	result := PlatformWorkloadIdentityRoleSetClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PlatformWorkloadIdentityRoleSet); err != nil {
 		return PlatformWorkloadIdentityRoleSetClientGetResponse{}, err
 	}

@@ -59,51 +59,65 @@ func (client *ServiceClient) NewListAvailableSKUsByResourceGroupPager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAvailableSKUsByResourceGroupCreateRequest(ctx, resourceGroupName, location, availableSKURequest, options)
-			}, nil)
+			req, err := client.listAvailableSKUsByResourceGroupCreateRequest(ctx, resourceGroupName, location, availableSKURequest, nextLink, options)
 			if err != nil {
 				return ServiceClientListAvailableSKUsByResourceGroupResponse{}, err
 			}
-			return client.listAvailableSKUsByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServiceClientListAvailableSKUsByResourceGroupResponse{}, err
+			}
+			return client.listAvailableSKUsByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAvailableSKUsByResourceGroupCreateRequest creates the ListAvailableSKUsByResourceGroup request.
-func (client *ServiceClient) listAvailableSKUsByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, location string, availableSKURequest AvailableSKURequest, _ *ServiceClientListAvailableSKUsByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations/{location}/availableSkus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ServiceClient) listAvailableSKUsByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, location string, availableSKURequest AvailableSKURequest, nextLink string, _ *ServiceClientListAvailableSKUsByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBox/locations/{location}/availableSkus"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, availableSKURequest); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, availableSKURequest); err != nil {
+			return nil, err
+		}
 	}
 	return req, nil
 }
 
 // listAvailableSKUsByResourceGroupHandleResponse handles the ListAvailableSKUsByResourceGroup response.
-func (client *ServiceClient) listAvailableSKUsByResourceGroupHandleResponse(resp *http.Response) (ServiceClientListAvailableSKUsByResourceGroupResponse, error) {
+func (client *ServiceClient) listAvailableSKUsByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ServiceClientListAvailableSKUsByResourceGroupResponse, error) {
 	result := ServiceClientListAvailableSKUsByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableSKUsResult); err != nil {
 		return ServiceClientListAvailableSKUsByResourceGroupResponse{}, err
 	}
@@ -130,12 +144,7 @@ func (client *ServiceClient) RegionConfiguration(ctx context.Context, location s
 	if err != nil {
 		return ServiceClientRegionConfigurationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceClientRegionConfigurationResponse{}, err
-	}
-	resp, err := client.regionConfigurationHandleResponse(httpResp)
-	return resp, err
+	return client.regionConfigurationHandleResponse(httpResp, http.StatusOK)
 }
 
 // regionConfigurationCreateRequest creates the RegionConfiguration request.
@@ -165,8 +174,11 @@ func (client *ServiceClient) regionConfigurationCreateRequest(ctx context.Contex
 }
 
 // regionConfigurationHandleResponse handles the RegionConfiguration response.
-func (client *ServiceClient) regionConfigurationHandleResponse(resp *http.Response) (ServiceClientRegionConfigurationResponse, error) {
+func (client *ServiceClient) regionConfigurationHandleResponse(resp *http.Response, successCodes ...int) (ServiceClientRegionConfigurationResponse, error) {
 	result := ServiceClientRegionConfigurationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegionConfigurationResponse); err != nil {
 		return ServiceClientRegionConfigurationResponse{}, err
 	}
@@ -195,12 +207,7 @@ func (client *ServiceClient) RegionConfigurationByResourceGroup(ctx context.Cont
 	if err != nil {
 		return ServiceClientRegionConfigurationByResourceGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceClientRegionConfigurationByResourceGroupResponse{}, err
-	}
-	resp, err := client.regionConfigurationByResourceGroupHandleResponse(httpResp)
-	return resp, err
+	return client.regionConfigurationByResourceGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // regionConfigurationByResourceGroupCreateRequest creates the RegionConfigurationByResourceGroup request.
@@ -234,8 +241,11 @@ func (client *ServiceClient) regionConfigurationByResourceGroupCreateRequest(ctx
 }
 
 // regionConfigurationByResourceGroupHandleResponse handles the RegionConfigurationByResourceGroup response.
-func (client *ServiceClient) regionConfigurationByResourceGroupHandleResponse(resp *http.Response) (ServiceClientRegionConfigurationByResourceGroupResponse, error) {
+func (client *ServiceClient) regionConfigurationByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ServiceClientRegionConfigurationByResourceGroupResponse, error) {
 	result := ServiceClientRegionConfigurationByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegionConfigurationResponse); err != nil {
 		return ServiceClientRegionConfigurationByResourceGroupResponse{}, err
 	}
@@ -262,12 +272,7 @@ func (client *ServiceClient) ValidateAddress(ctx context.Context, location strin
 	if err != nil {
 		return ServiceClientValidateAddressResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceClientValidateAddressResponse{}, err
-	}
-	resp, err := client.validateAddressHandleResponse(httpResp)
-	return resp, err
+	return client.validateAddressHandleResponse(httpResp, http.StatusOK)
 }
 
 // validateAddressCreateRequest creates the ValidateAddress request.
@@ -297,8 +302,11 @@ func (client *ServiceClient) validateAddressCreateRequest(ctx context.Context, l
 }
 
 // validateAddressHandleResponse handles the ValidateAddress response.
-func (client *ServiceClient) validateAddressHandleResponse(resp *http.Response) (ServiceClientValidateAddressResponse, error) {
+func (client *ServiceClient) validateAddressHandleResponse(resp *http.Response, successCodes ...int) (ServiceClientValidateAddressResponse, error) {
 	result := ServiceClientValidateAddressResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AddressValidationOutput); err != nil {
 		return ServiceClientValidateAddressResponse{}, err
 	}
@@ -324,12 +332,7 @@ func (client *ServiceClient) ValidateInputs(ctx context.Context, location string
 	if err != nil {
 		return ServiceClientValidateInputsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceClientValidateInputsResponse{}, err
-	}
-	resp, err := client.validateInputsHandleResponse(httpResp)
-	return resp, err
+	return client.validateInputsHandleResponse(httpResp, http.StatusOK)
 }
 
 // validateInputsCreateRequest creates the ValidateInputs request.
@@ -359,8 +362,11 @@ func (client *ServiceClient) validateInputsCreateRequest(ctx context.Context, lo
 }
 
 // validateInputsHandleResponse handles the ValidateInputs response.
-func (client *ServiceClient) validateInputsHandleResponse(resp *http.Response) (ServiceClientValidateInputsResponse, error) {
+func (client *ServiceClient) validateInputsHandleResponse(resp *http.Response, successCodes ...int) (ServiceClientValidateInputsResponse, error) {
 	result := ServiceClientValidateInputsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidationResponse); err != nil {
 		return ServiceClientValidateInputsResponse{}, err
 	}
@@ -388,12 +394,7 @@ func (client *ServiceClient) ValidateInputsByResourceGroup(ctx context.Context, 
 	if err != nil {
 		return ServiceClientValidateInputsByResourceGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceClientValidateInputsByResourceGroupResponse{}, err
-	}
-	resp, err := client.validateInputsByResourceGroupHandleResponse(httpResp)
-	return resp, err
+	return client.validateInputsByResourceGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // validateInputsByResourceGroupCreateRequest creates the ValidateInputsByResourceGroup request.
@@ -427,8 +428,11 @@ func (client *ServiceClient) validateInputsByResourceGroupCreateRequest(ctx cont
 }
 
 // validateInputsByResourceGroupHandleResponse handles the ValidateInputsByResourceGroup response.
-func (client *ServiceClient) validateInputsByResourceGroupHandleResponse(resp *http.Response) (ServiceClientValidateInputsByResourceGroupResponse, error) {
+func (client *ServiceClient) validateInputsByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ServiceClientValidateInputsByResourceGroupResponse, error) {
 	result := ServiceClientValidateInputsByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidationResponse); err != nil {
 		return ServiceClientValidateInputsByResourceGroupResponse{}, err
 	}

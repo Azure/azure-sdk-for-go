@@ -83,8 +83,7 @@ func (client *BuildsClient) createOrUpdate(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -163,8 +162,7 @@ func (client *BuildsClient) deleteOperation(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -218,12 +216,7 @@ func (client *BuildsClient) Get(ctx context.Context, resourceGroupName string, b
 	if err != nil {
 		return BuildsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BuildsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -257,8 +250,11 @@ func (client *BuildsClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *BuildsClient) getHandleResponse(resp *http.Response) (BuildsClientGetResponse, error) {
+func (client *BuildsClient) getHandleResponse(resp *http.Response, successCodes ...int) (BuildsClientGetResponse, error) {
 	result := BuildsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BuildResource); err != nil {
 		return BuildsClientGetResponse{}, err
 	}

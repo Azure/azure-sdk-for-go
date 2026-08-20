@@ -19,6 +19,8 @@ import (
 
 // PoolClient contains the methods for the Pool group.
 // Don't use this type directly, use NewPoolClient() instead.
+//
+// Generated from API version 2025-06-01
 type PoolClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewPoolClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // Create - Creates a new pool inside the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -65,12 +65,7 @@ func (client *PoolClient) Create(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return PoolClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoolClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK)
 }
 
 // createCreateRequest creates the Create request.
@@ -97,8 +92,8 @@ func (client *PoolClient) createCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -114,10 +109,13 @@ func (client *PoolClient) createCreateRequest(ctx context.Context, resourceGroup
 }
 
 // createHandleResponse handles the Create response.
-func (client *PoolClient) createHandleResponse(resp *http.Response) (PoolClientCreateResponse, error) {
+func (client *PoolClient) createHandleResponse(resp *http.Response, successCodes ...int) (PoolClientCreateResponse, error) {
 	result := PoolClientCreateResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolClientCreateResponse{}, err
@@ -127,8 +125,6 @@ func (client *PoolClient) createHandleResponse(resp *http.Response) (PoolClientC
 
 // BeginDelete - Deletes the specified pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -154,8 +150,6 @@ func (client *PoolClient) BeginDelete(ctx context.Context, resourceGroupName str
 
 // Delete - Deletes the specified pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *PoolClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *PoolClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PoolClient.BeginDelete"
@@ -171,8 +165,7 @@ func (client *PoolClient) deleteOperation(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -201,15 +194,13 @@ func (client *PoolClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // DisableAutoScale - Disables automatic scaling for a pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -230,12 +221,7 @@ func (client *PoolClient) DisableAutoScale(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return PoolClientDisableAutoScaleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoolClientDisableAutoScaleResponse{}, err
-	}
-	resp, err := client.disableAutoScaleHandleResponse(httpResp)
-	return resp, err
+	return client.disableAutoScaleHandleResponse(httpResp, http.StatusOK)
 }
 
 // disableAutoScaleCreateRequest creates the DisableAutoScale request.
@@ -262,17 +248,20 @@ func (client *PoolClient) disableAutoScaleCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // disableAutoScaleHandleResponse handles the DisableAutoScale response.
-func (client *PoolClient) disableAutoScaleHandleResponse(resp *http.Response) (PoolClientDisableAutoScaleResponse, error) {
+func (client *PoolClient) disableAutoScaleHandleResponse(resp *http.Response, successCodes ...int) (PoolClientDisableAutoScaleResponse, error) {
 	result := PoolClientDisableAutoScaleResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolClientDisableAutoScaleResponse{}, err
@@ -282,8 +271,6 @@ func (client *PoolClient) disableAutoScaleHandleResponse(resp *http.Response) (P
 
 // Get - Gets information about the specified pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -304,12 +291,7 @@ func (client *PoolClient) Get(ctx context.Context, resourceGroupName string, acc
 	if err != nil {
 		return PoolClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoolClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -336,17 +318,20 @@ func (client *PoolClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PoolClient) getHandleResponse(resp *http.Response) (PoolClientGetResponse, error) {
+func (client *PoolClient) getHandleResponse(resp *http.Response, successCodes ...int) (PoolClientGetResponse, error) {
 	result := PoolClientGetResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolClientGetResponse{}, err
@@ -355,8 +340,6 @@ func (client *PoolClient) getHandleResponse(resp *http.Response) (PoolClientGetR
 }
 
 // NewListByBatchAccountPager - Lists all of the pools in the specified account.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -374,56 +357,70 @@ func (client *PoolClient) NewListByBatchAccountPager(resourceGroupName string, a
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByBatchAccountCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listByBatchAccountCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return PoolClientListByBatchAccountResponse{}, err
 			}
-			return client.listByBatchAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PoolClientListByBatchAccountResponse{}, err
+			}
+			return client.listByBatchAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByBatchAccountCreateRequest creates the ListByBatchAccount request.
-func (client *PoolClient) listByBatchAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *PoolClientListByBatchAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PoolClient) listByBatchAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, options *PoolClientListByBatchAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/pools"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Select != nil {
+			reqQP.Set("$select", *options.Select)
+		}
+		reqQP.Set("api-version", version20250601)
+		if options != nil && options.Maxresults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("$select", *options.Select)
-	}
-	reqQP.Set("api-version", "2025-06-01")
-	if options != nil && options.Maxresults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBatchAccountHandleResponse handles the ListByBatchAccount response.
-func (client *PoolClient) listByBatchAccountHandleResponse(resp *http.Response) (PoolClientListByBatchAccountResponse, error) {
+func (client *PoolClient) listByBatchAccountHandleResponse(resp *http.Response, successCodes ...int) (PoolClientListByBatchAccountResponse, error) {
 	result := PoolClientListByBatchAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListPoolsResult); err != nil {
 		return PoolClientListByBatchAccountResponse{}, err
 	}
@@ -438,8 +435,6 @@ func (client *PoolClient) listByBatchAccountHandleResponse(resp *http.Response) 
 // steady. A resize operation need not be an explicit resize pool request; this API can also be used to halt the initial sizing
 // of the pool when it is created.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -460,12 +455,7 @@ func (client *PoolClient) StopResize(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return PoolClientStopResizeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoolClientStopResizeResponse{}, err
-	}
-	resp, err := client.stopResizeHandleResponse(httpResp)
-	return resp, err
+	return client.stopResizeHandleResponse(httpResp, http.StatusOK)
 }
 
 // stopResizeCreateRequest creates the StopResize request.
@@ -492,17 +482,20 @@ func (client *PoolClient) stopResizeCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // stopResizeHandleResponse handles the StopResize response.
-func (client *PoolClient) stopResizeHandleResponse(resp *http.Response) (PoolClientStopResizeResponse, error) {
+func (client *PoolClient) stopResizeHandleResponse(resp *http.Response, successCodes ...int) (PoolClientStopResizeResponse, error) {
 	result := PoolClientStopResizeResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolClientStopResizeResponse{}, err
@@ -512,8 +505,6 @@ func (client *PoolClient) stopResizeHandleResponse(resp *http.Response) (PoolCli
 
 // Update - Updates the properties of an existing pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -536,12 +527,7 @@ func (client *PoolClient) Update(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return PoolClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoolClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -568,8 +554,8 @@ func (client *PoolClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -582,10 +568,13 @@ func (client *PoolClient) updateCreateRequest(ctx context.Context, resourceGroup
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PoolClient) updateHandleResponse(resp *http.Response) (PoolClientUpdateResponse, error) {
+func (client *PoolClient) updateHandleResponse(resp *http.Response, successCodes ...int) (PoolClientUpdateResponse, error) {
 	result := PoolClientUpdateResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
-		result.ETag = &val
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
+		result.Etag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolClientUpdateResponse{}, err

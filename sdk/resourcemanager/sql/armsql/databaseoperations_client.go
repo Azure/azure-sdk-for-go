@@ -18,6 +18,8 @@ import (
 
 // DatabaseOperationsClient contains the methods for the DatabaseOperations group.
 // Don't use this type directly, use NewDatabaseOperationsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type DatabaseOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDatabaseOperationsClient(subscriptionID string, credential azcore.TokenC
 
 // Cancel - Cancels the asynchronous operation on the database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -64,8 +64,7 @@ func (client *DatabaseOperationsClient) Cancel(ctx context.Context, resourceGrou
 		return DatabaseOperationsClientCancelResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabaseOperationsClientCancelResponse{}, err
+		return DatabaseOperationsClientCancelResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DatabaseOperationsClientCancelResponse{}, nil
 }
@@ -98,14 +97,12 @@ func (client *DatabaseOperationsClient) cancelCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // NewListByDatabasePager - Gets a list of operations performed on the database.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - databaseName - The name of the database.
@@ -122,51 +119,65 @@ func (client *DatabaseOperationsClient) NewListByDatabasePager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, options)
-			}, nil)
+			req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, serverName, databaseName, nextLink, options)
 			if err != nil {
 				return DatabaseOperationsClientListByDatabaseResponse{}, err
 			}
-			return client.listByDatabaseHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DatabaseOperationsClientListByDatabaseResponse{}, err
+			}
+			return client.listByDatabaseHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *DatabaseOperationsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, _ *DatabaseOperationsClientListByDatabaseOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/operations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DatabaseOperationsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, nextLink string, _ *DatabaseOperationsClientListByDatabaseOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/operations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serverName == "" {
+			return nil, errors.New("parameter serverName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *DatabaseOperationsClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseOperationsClientListByDatabaseResponse, error) {
+func (client *DatabaseOperationsClient) listByDatabaseHandleResponse(resp *http.Response, successCodes ...int) (DatabaseOperationsClientListByDatabaseResponse, error) {
 	result := DatabaseOperationsClientListByDatabaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseOperationListResult); err != nil {
 		return DatabaseOperationsClientListByDatabaseResponse{}, err
 	}

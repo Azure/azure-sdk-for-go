@@ -207,7 +207,9 @@ type AgentPool struct {
 	Location *string
 
 	// REQUIRED; The list of the resource properties.
-	Properties       *AgentPoolProperties
+	Properties *AgentPoolProperties
+
+	// The extended location of the resource.
 	ExtendedLocation *ExtendedLocation
 
 	// Resource tags.

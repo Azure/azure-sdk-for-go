@@ -88,8 +88,7 @@ func (client *RegistryEnvironmentContainersClient) createOrUpdate(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -173,8 +172,7 @@ func (client *RegistryEnvironmentContainersClient) deleteOperation(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -231,12 +229,7 @@ func (client *RegistryEnvironmentContainersClient) Get(ctx context.Context, reso
 	if err != nil {
 		return RegistryEnvironmentContainersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegistryEnvironmentContainersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -270,8 +263,11 @@ func (client *RegistryEnvironmentContainersClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *RegistryEnvironmentContainersClient) getHandleResponse(resp *http.Response) (RegistryEnvironmentContainersClientGetResponse, error) {
+func (client *RegistryEnvironmentContainersClient) getHandleResponse(resp *http.Response, successCodes ...int) (RegistryEnvironmentContainersClientGetResponse, error) {
 	result := RegistryEnvironmentContainersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentContainer); err != nil {
 		return RegistryEnvironmentContainersClientGetResponse{}, err
 	}
@@ -296,53 +292,67 @@ func (client *RegistryEnvironmentContainersClient) NewListPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, registryName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, registryName, nextLink, options)
 			if err != nil {
 				return RegistryEnvironmentContainersClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RegistryEnvironmentContainersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RegistryEnvironmentContainersClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, options *RegistryEnvironmentContainersClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/environments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RegistryEnvironmentContainersClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, nextLink string, options *RegistryEnvironmentContainersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/environments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if registryName == "" {
+			return nil, errors.New("parameter registryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if registryName == "" {
-		return nil, errors.New("parameter registryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", *options.Skip)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", *options.Skip)
+		}
+		reqQP.Set("api-version", version20260315Preview)
+		if options != nil && options.ListViewType != nil {
+			reqQP.Set("listViewType", string(*options.ListViewType))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260315Preview)
-	if options != nil && options.ListViewType != nil {
-		reqQP.Set("listViewType", string(*options.ListViewType))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RegistryEnvironmentContainersClient) listHandleResponse(resp *http.Response) (RegistryEnvironmentContainersClientListResponse, error) {
+func (client *RegistryEnvironmentContainersClient) listHandleResponse(resp *http.Response, successCodes ...int) (RegistryEnvironmentContainersClientListResponse, error) {
 	result := RegistryEnvironmentContainersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentContainerResourceArmPaginatedResult); err != nil {
 		return RegistryEnvironmentContainersClientListResponse{}, err
 	}

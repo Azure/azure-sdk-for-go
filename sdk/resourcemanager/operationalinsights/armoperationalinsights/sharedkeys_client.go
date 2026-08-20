@@ -61,12 +61,7 @@ func (client *SharedKeysClient) GetSharedKeys(ctx context.Context, resourceGroup
 	if err != nil {
 		return SharedKeysClientGetSharedKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SharedKeysClientGetSharedKeysResponse{}, err
-	}
-	resp, err := client.getSharedKeysHandleResponse(httpResp)
-	return resp, err
+	return client.getSharedKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSharedKeysCreateRequest creates the GetSharedKeys request.
@@ -96,8 +91,11 @@ func (client *SharedKeysClient) getSharedKeysCreateRequest(ctx context.Context, 
 }
 
 // getSharedKeysHandleResponse handles the GetSharedKeys response.
-func (client *SharedKeysClient) getSharedKeysHandleResponse(resp *http.Response) (SharedKeysClientGetSharedKeysResponse, error) {
+func (client *SharedKeysClient) getSharedKeysHandleResponse(resp *http.Response, successCodes ...int) (SharedKeysClientGetSharedKeysResponse, error) {
 	result := SharedKeysClientGetSharedKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedKeys); err != nil {
 		return SharedKeysClientGetSharedKeysResponse{}, err
 	}
@@ -124,12 +122,7 @@ func (client *SharedKeysClient) Regenerate(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return SharedKeysClientRegenerateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SharedKeysClientRegenerateResponse{}, err
-	}
-	resp, err := client.regenerateHandleResponse(httpResp)
-	return resp, err
+	return client.regenerateHandleResponse(httpResp, http.StatusOK)
 }
 
 // regenerateCreateRequest creates the Regenerate request.
@@ -159,8 +152,11 @@ func (client *SharedKeysClient) regenerateCreateRequest(ctx context.Context, res
 }
 
 // regenerateHandleResponse handles the Regenerate response.
-func (client *SharedKeysClient) regenerateHandleResponse(resp *http.Response) (SharedKeysClientRegenerateResponse, error) {
+func (client *SharedKeysClient) regenerateHandleResponse(resp *http.Response, successCodes ...int) (SharedKeysClientRegenerateResponse, error) {
 	result := SharedKeysClientRegenerateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedKeys); err != nil {
 		return SharedKeysClientRegenerateResponse{}, err
 	}

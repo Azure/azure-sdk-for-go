@@ -87,8 +87,7 @@ func (client *OpenShiftClustersClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -167,8 +166,7 @@ func (client *OpenShiftClustersClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -219,12 +217,7 @@ func (client *OpenShiftClustersClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return OpenShiftClustersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OpenShiftClustersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -254,8 +247,11 @@ func (client *OpenShiftClustersClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *OpenShiftClustersClient) getHandleResponse(resp *http.Response) (OpenShiftClustersClientGetResponse, error) {
+func (client *OpenShiftClustersClient) getHandleResponse(resp *http.Response, successCodes ...int) (OpenShiftClustersClientGetResponse, error) {
 	result := OpenShiftClustersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenShiftCluster); err != nil {
 		return OpenShiftClustersClientGetResponse{}, err
 	}
@@ -278,39 +274,53 @@ func (client *OpenShiftClustersClient) NewListPager(options *OpenShiftClustersCl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return OpenShiftClustersClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OpenShiftClustersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *OpenShiftClustersClient) listCreateRequest(ctx context.Context, _ *OpenShiftClustersClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.RedHatOpenShift/openShiftClusters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *OpenShiftClustersClient) listCreateRequest(ctx context.Context, nextLink string, _ *OpenShiftClustersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.RedHatOpenShift/openShiftClusters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250725)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250725)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *OpenShiftClustersClient) listHandleResponse(resp *http.Response) (OpenShiftClustersClientListResponse, error) {
+func (client *OpenShiftClustersClient) listHandleResponse(resp *http.Response, successCodes ...int) (OpenShiftClustersClientListResponse, error) {
 	result := OpenShiftClustersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenShiftClusterList); err != nil {
 		return OpenShiftClustersClientListResponse{}, err
 	}
@@ -340,12 +350,7 @@ func (client *OpenShiftClustersClient) ListAdminCredentials(ctx context.Context,
 	if err != nil {
 		return OpenShiftClustersClientListAdminCredentialsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OpenShiftClustersClientListAdminCredentialsResponse{}, err
-	}
-	resp, err := client.listAdminCredentialsHandleResponse(httpResp)
-	return resp, err
+	return client.listAdminCredentialsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAdminCredentialsCreateRequest creates the ListAdminCredentials request.
@@ -375,8 +380,11 @@ func (client *OpenShiftClustersClient) listAdminCredentialsCreateRequest(ctx con
 }
 
 // listAdminCredentialsHandleResponse handles the ListAdminCredentials response.
-func (client *OpenShiftClustersClient) listAdminCredentialsHandleResponse(resp *http.Response) (OpenShiftClustersClientListAdminCredentialsResponse, error) {
+func (client *OpenShiftClustersClient) listAdminCredentialsHandleResponse(resp *http.Response, successCodes ...int) (OpenShiftClustersClientListAdminCredentialsResponse, error) {
 	result := OpenShiftClustersClientListAdminCredentialsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenShiftClusterAdminKubeconfig); err != nil {
 		return OpenShiftClustersClientListAdminCredentialsResponse{}, err
 	}
@@ -400,43 +408,57 @@ func (client *OpenShiftClustersClient) NewListByResourceGroupPager(resourceGroup
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return OpenShiftClustersClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OpenShiftClustersClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *OpenShiftClustersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *OpenShiftClustersClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/openShiftClusters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *OpenShiftClustersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *OpenShiftClustersClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RedHatOpenShift/openShiftClusters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250725)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250725)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *OpenShiftClustersClient) listByResourceGroupHandleResponse(resp *http.Response) (OpenShiftClustersClientListByResourceGroupResponse, error) {
+func (client *OpenShiftClustersClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (OpenShiftClustersClientListByResourceGroupResponse, error) {
 	result := OpenShiftClustersClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenShiftClusterList); err != nil {
 		return OpenShiftClustersClientListByResourceGroupResponse{}, err
 	}
@@ -466,12 +488,7 @@ func (client *OpenShiftClustersClient) ListCredentials(ctx context.Context, reso
 	if err != nil {
 		return OpenShiftClustersClientListCredentialsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OpenShiftClustersClientListCredentialsResponse{}, err
-	}
-	resp, err := client.listCredentialsHandleResponse(httpResp)
-	return resp, err
+	return client.listCredentialsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCredentialsCreateRequest creates the ListCredentials request.
@@ -501,8 +518,11 @@ func (client *OpenShiftClustersClient) listCredentialsCreateRequest(ctx context.
 }
 
 // listCredentialsHandleResponse handles the ListCredentials response.
-func (client *OpenShiftClustersClient) listCredentialsHandleResponse(resp *http.Response) (OpenShiftClustersClientListCredentialsResponse, error) {
+func (client *OpenShiftClustersClient) listCredentialsHandleResponse(resp *http.Response, successCodes ...int) (OpenShiftClustersClientListCredentialsResponse, error) {
 	result := OpenShiftClustersClientListCredentialsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OpenShiftClusterCredentials); err != nil {
 		return OpenShiftClustersClientListCredentialsResponse{}, err
 	}
@@ -554,8 +574,7 @@ func (client *OpenShiftClustersClient) update(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

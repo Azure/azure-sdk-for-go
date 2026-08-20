@@ -60,12 +60,7 @@ func (client *SchemaClient) Get(ctx context.Context, resourceGroupName string, w
 	if err != nil {
 		return SchemaClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SchemaClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -95,8 +90,11 @@ func (client *SchemaClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *SchemaClient) getHandleResponse(resp *http.Response) (SchemaClientGetResponse, error) {
+func (client *SchemaClient) getHandleResponse(resp *http.Response, successCodes ...int) (SchemaClientGetResponse, error) {
 	result := SchemaClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SearchGetSchemaResponse); err != nil {
 		return SchemaClientGetResponse{}, err
 	}

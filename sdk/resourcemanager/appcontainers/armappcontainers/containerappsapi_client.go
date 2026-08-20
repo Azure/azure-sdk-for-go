@@ -59,12 +59,7 @@ func (client *ContainerAppsAPIClient) GetCustomDomainVerificationID(ctx context.
 	if err != nil {
 		return ContainerAppsAPIClientGetCustomDomainVerificationIDResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerAppsAPIClientGetCustomDomainVerificationIDResponse{}, err
-	}
-	resp, err := client.getCustomDomainVerificationIDHandleResponse(httpResp)
-	return resp, err
+	return client.getCustomDomainVerificationIDHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCustomDomainVerificationIDCreateRequest creates the GetCustomDomainVerificationID request.
@@ -86,8 +81,11 @@ func (client *ContainerAppsAPIClient) getCustomDomainVerificationIDCreateRequest
 }
 
 // getCustomDomainVerificationIDHandleResponse handles the GetCustomDomainVerificationID response.
-func (client *ContainerAppsAPIClient) getCustomDomainVerificationIDHandleResponse(resp *http.Response) (ContainerAppsAPIClientGetCustomDomainVerificationIDResponse, error) {
+func (client *ContainerAppsAPIClient) getCustomDomainVerificationIDHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsAPIClientGetCustomDomainVerificationIDResponse, error) {
 	result := ContainerAppsAPIClientGetCustomDomainVerificationIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return ContainerAppsAPIClientGetCustomDomainVerificationIDResponse{}, err
@@ -120,12 +118,7 @@ func (client *ContainerAppsAPIClient) JobExecution(ctx context.Context, resource
 	if err != nil {
 		return ContainerAppsAPIClientJobExecutionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerAppsAPIClientJobExecutionResponse{}, err
-	}
-	resp, err := client.jobExecutionHandleResponse(httpResp)
-	return resp, err
+	return client.jobExecutionHandleResponse(httpResp, http.StatusOK)
 }
 
 // jobExecutionCreateRequest creates the JobExecution request.
@@ -159,8 +152,11 @@ func (client *ContainerAppsAPIClient) jobExecutionCreateRequest(ctx context.Cont
 }
 
 // jobExecutionHandleResponse handles the JobExecution response.
-func (client *ContainerAppsAPIClient) jobExecutionHandleResponse(resp *http.Response) (ContainerAppsAPIClientJobExecutionResponse, error) {
+func (client *ContainerAppsAPIClient) jobExecutionHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsAPIClientJobExecutionResponse, error) {
 	result := ContainerAppsAPIClientJobExecutionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecution); err != nil {
 		return ContainerAppsAPIClientJobExecutionResponse{}, err
 	}

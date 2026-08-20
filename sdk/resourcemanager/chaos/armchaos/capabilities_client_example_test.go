@@ -44,8 +44,8 @@ func ExampleCapabilitiesClient_CreateOrUpdate() {
 	// 			Urn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.4662189Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.4662189Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.May, 14, 5, 8, 38, 466218900, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.May, 14, 5, 8, 38, 466218900, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -104,8 +104,8 @@ func ExampleCapabilitiesClient_Get() {
 	// 			Urn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.4662189Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.4662189Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.May, 14, 5, 8, 38, 466218900, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.May, 14, 5, 8, 38, 466218900, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -149,8 +149,8 @@ func ExampleCapabilitiesClient_NewListPager() {
 		// 					Urn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.4662189Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.4662189Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.May, 14, 5, 8, 38, 466218900, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.May, 14, 5, 8, 38, 466218900, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

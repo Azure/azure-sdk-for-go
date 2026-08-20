@@ -55,39 +55,53 @@ func (client *Client) NewListByResourcePager(resourceURI string, options *Client
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceCreateRequest(ctx, resourceURI, options)
-			}, nil)
+			req, err := client.listByResourceCreateRequest(ctx, resourceURI, nextLink, options)
 			if err != nil {
 				return ClientListByResourceResponse{}, err
 			}
-			return client.listByResourceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ClientListByResourceResponse{}, err
+			}
+			return client.listByResourceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceCreateRequest creates the ListByResource request.
-func (client *Client) listByResourceCreateRequest(ctx context.Context, resourceURI string, _ *ClientListByResourceOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.AlertsManagement/alertRuleRecommendations"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
+func (client *Client) listByResourceCreateRequest(ctx context.Context, resourceURI string, nextLink string, _ *ClientListByResourceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.AlertsManagement/alertRuleRecommendations"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20230801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceHandleResponse handles the ListByResource response.
-func (client *Client) listByResourceHandleResponse(resp *http.Response) (ClientListByResourceResponse, error) {
+func (client *Client) listByResourceHandleResponse(resp *http.Response, successCodes ...int) (ClientListByResourceResponse, error) {
 	result := ClientListByResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResponse); err != nil {
 		return ClientListByResourceResponse{}, err
 	}
@@ -108,40 +122,54 @@ func (client *Client) NewListByTargetTypePager(targetType string, options *Clien
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByTargetTypeCreateRequest(ctx, targetType, options)
-			}, nil)
+			req, err := client.listByTargetTypeCreateRequest(ctx, targetType, nextLink, options)
 			if err != nil {
 				return ClientListByTargetTypeResponse{}, err
 			}
-			return client.listByTargetTypeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ClientListByTargetTypeResponse{}, err
+			}
+			return client.listByTargetTypeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByTargetTypeCreateRequest creates the ListByTargetType request.
-func (client *Client) listByTargetTypeCreateRequest(ctx context.Context, targetType string, _ *ClientListByTargetTypeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AlertsManagement/alertRuleRecommendations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *Client) listByTargetTypeCreateRequest(ctx context.Context, targetType string, nextLink string, _ *ClientListByTargetTypeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AlertsManagement/alertRuleRecommendations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230801Preview)
-	reqQP.Set("targetType", targetType)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20230801Preview)
+		reqQP.Set("targetType", targetType)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByTargetTypeHandleResponse handles the ListByTargetType response.
-func (client *Client) listByTargetTypeHandleResponse(resp *http.Response) (ClientListByTargetTypeResponse, error) {
+func (client *Client) listByTargetTypeHandleResponse(resp *http.Response, successCodes ...int) (ClientListByTargetTypeResponse, error) {
 	result := ClientListByTargetTypeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResponse); err != nil {
 		return ClientListByTargetTypeResponse{}, err
 	}

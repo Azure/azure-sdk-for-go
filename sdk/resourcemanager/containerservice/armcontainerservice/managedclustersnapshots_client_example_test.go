@@ -68,7 +68,7 @@ func ExampleManagedClusterSnapshotsClient_CreateOrUpdate() {
 	// 			SnapshotType: to.Ptr(armcontainerservice.SnapshotTypeManagedCluster),
 	// 		},
 	// 		SystemData: &armcontainerservice.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298420761Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 9, 20, 13, 23, 298420761, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 	// 		},
@@ -147,7 +147,7 @@ func ExampleManagedClusterSnapshotsClient_Get() {
 	// 			SnapshotType: to.Ptr(armcontainerservice.SnapshotTypeManagedCluster),
 	// 		},
 	// 		SystemData: &armcontainerservice.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298420761Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 9, 20, 13, 23, 298420761, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 	// 		},
@@ -210,7 +210,7 @@ func ExampleManagedClusterSnapshotsClient_NewListPager() {
 		// 					SnapshotType: to.Ptr(armcontainerservice.SnapshotTypeManagedCluster),
 		// 				},
 		// 				SystemData: &armcontainerservice.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298420761Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 9, 20, 13, 23, 298420761, time.UTC)),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 		// 				},
@@ -276,7 +276,7 @@ func ExampleManagedClusterSnapshotsClient_NewListByResourceGroupPager() {
 		// 					SnapshotType: to.Ptr(armcontainerservice.SnapshotTypeManagedCluster),
 		// 				},
 		// 				SystemData: &armcontainerservice.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298420761Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 9, 20, 13, 23, 298420761, time.UTC)),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 		// 				},
@@ -341,7 +341,7 @@ func ExampleManagedClusterSnapshotsClient_UpdateTags() {
 	// 			SnapshotType: to.Ptr(armcontainerservice.SnapshotTypeManagedCluster),
 	// 		},
 	// 		SystemData: &armcontainerservice.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298420761Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 9, 20, 13, 23, 298420761, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 	// 		},

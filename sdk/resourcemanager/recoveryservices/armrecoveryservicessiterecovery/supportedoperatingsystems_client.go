@@ -63,12 +63,7 @@ func (client *SupportedOperatingSystemsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return SupportedOperatingSystemsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SupportedOperatingSystemsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -101,8 +96,11 @@ func (client *SupportedOperatingSystemsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *SupportedOperatingSystemsClient) getHandleResponse(resp *http.Response) (SupportedOperatingSystemsClientGetResponse, error) {
+func (client *SupportedOperatingSystemsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SupportedOperatingSystemsClientGetResponse, error) {
 	result := SupportedOperatingSystemsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SupportedOperatingSystems); err != nil {
 		return SupportedOperatingSystemsClientGetResponse{}, err
 	}

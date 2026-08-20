@@ -62,12 +62,7 @@ func (client *OrganizationsClient) GetAPIKey(ctx context.Context, options *Organ
 	if err != nil {
 		return OrganizationsClientGetAPIKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OrganizationsClientGetAPIKeyResponse{}, err
-	}
-	resp, err := client.getAPIKeyHandleResponse(httpResp)
-	return resp, err
+	return client.getAPIKeyHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAPIKeyCreateRequest creates the GetAPIKey request.
@@ -96,8 +91,11 @@ func (client *OrganizationsClient) getAPIKeyCreateRequest(ctx context.Context, o
 }
 
 // getAPIKeyHandleResponse handles the GetAPIKey response.
-func (client *OrganizationsClient) getAPIKeyHandleResponse(resp *http.Response) (OrganizationsClientGetAPIKeyResponse, error) {
+func (client *OrganizationsClient) getAPIKeyHandleResponse(resp *http.Response, successCodes ...int) (OrganizationsClientGetAPIKeyResponse, error) {
 	result := OrganizationsClientGetAPIKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserAPIKeyResponse); err != nil {
 		return OrganizationsClientGetAPIKeyResponse{}, err
 	}
@@ -127,12 +125,7 @@ func (client *OrganizationsClient) GetElasticToAzureSubscriptionMapping(ctx cont
 	if err != nil {
 		return OrganizationsClientGetElasticToAzureSubscriptionMappingResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OrganizationsClientGetElasticToAzureSubscriptionMappingResponse{}, err
-	}
-	resp, err := client.getElasticToAzureSubscriptionMappingHandleResponse(httpResp)
-	return resp, err
+	return client.getElasticToAzureSubscriptionMappingHandleResponse(httpResp, http.StatusOK)
 }
 
 // getElasticToAzureSubscriptionMappingCreateRequest creates the GetElasticToAzureSubscriptionMapping request.
@@ -154,8 +147,11 @@ func (client *OrganizationsClient) getElasticToAzureSubscriptionMappingCreateReq
 }
 
 // getElasticToAzureSubscriptionMappingHandleResponse handles the GetElasticToAzureSubscriptionMapping response.
-func (client *OrganizationsClient) getElasticToAzureSubscriptionMappingHandleResponse(resp *http.Response) (OrganizationsClientGetElasticToAzureSubscriptionMappingResponse, error) {
+func (client *OrganizationsClient) getElasticToAzureSubscriptionMappingHandleResponse(resp *http.Response, successCodes ...int) (OrganizationsClientGetElasticToAzureSubscriptionMappingResponse, error) {
 	result := OrganizationsClientGetElasticToAzureSubscriptionMappingResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OrganizationToAzureSubscriptionMappingResponse); err != nil {
 		return OrganizationsClientGetElasticToAzureSubscriptionMappingResponse{}, err
 	}
@@ -202,8 +198,7 @@ func (client *OrganizationsClient) resubscribe(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

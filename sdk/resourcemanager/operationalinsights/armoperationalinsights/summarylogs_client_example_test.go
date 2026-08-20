@@ -29,7 +29,7 @@ func ExampleSummaryLogsClient_BeginCreateOrUpdate() {
 			RuleDefinition: &armoperationalinsights.RuleDefinition{
 				BinDelay:         to.Ptr[int32](10),
 				BinSize:          to.Ptr[int32](180),
-				BinStartTime:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T04:05:06Z"); return t }()),
+				BinStartTime:     to.Ptr(time.Date(2020, time.February, 3, 4, 5, 6, 0, time.UTC)),
 				DestinationTable: to.Ptr("MyDestinationTable_CL"),
 				Query:            to.Ptr("MyTable_CL"),
 			},
@@ -62,14 +62,14 @@ func ExampleSummaryLogsClient_BeginCreateOrUpdate() {
 	// 			RuleDefinition: &armoperationalinsights.RuleDefinition{
 	// 				BinDelay: to.Ptr[int32](10),
 	// 				BinSize: to.Ptr[int32](180),
-	// 				BinStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-03T04:00:00Z"); return t}()),
+	// 				BinStartTime: to.Ptr(time.Date(2024, time.February, 3, 4, 0, 0, 0, time.UTC)),
 	// 				DestinationTable: to.Ptr("MyDestinationTable_CL"),
 	// 				Query: to.Ptr("MyTable_CL"),
 	// 			},
 	// 			RuleType: to.Ptr(armoperationalinsights.RuleTypeEnumUser),
 	// 		},
 	// 		SystemData: &armoperationalinsights.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T04:05:06Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 3, 4, 5, 6, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 		},
 	// 		Identity: &armoperationalinsights.SummaryLogsIdentity{
@@ -134,7 +134,7 @@ func ExampleSummaryLogsClient_Get() {
 	// 			RuleDefinition: &armoperationalinsights.RuleDefinition{
 	// 				BinDelay: to.Ptr[int32](10),
 	// 				BinSize: to.Ptr[int32](180),
-	// 				BinStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T04:05:06Z"); return t}()),
+	// 				BinStartTime: to.Ptr(time.Date(2020, time.February, 3, 4, 5, 6, 0, time.UTC)),
 	// 				DestinationTable: to.Ptr("MyDestinationTable_CL"),
 	// 				Query: to.Ptr("MyTable_CL"),
 	// 			},
@@ -142,7 +142,7 @@ func ExampleSummaryLogsClient_Get() {
 	// 			StatusCode: to.Ptr(armoperationalinsights.StatusCodeEnumUserAction),
 	// 		},
 	// 		SystemData: &armoperationalinsights.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T04:05:06Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 3, 4, 5, 6, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 		},
 	// 		Identity: &armoperationalinsights.SummaryLogsIdentity{
@@ -192,7 +192,7 @@ func ExampleSummaryLogsClient_NewListByWorkspacePager() {
 		// 					RuleDefinition: &armoperationalinsights.RuleDefinition{
 		// 						BinDelay: to.Ptr[int32](10),
 		// 						BinSize: to.Ptr[int32](180),
-		// 						BinStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T04:05:06Z"); return t}()),
+		// 						BinStartTime: to.Ptr(time.Date(2020, time.February, 3, 4, 5, 6, 0, time.UTC)),
 		// 						DestinationTable: to.Ptr("MyDestinationTable_CL"),
 		// 						Query: to.Ptr("MyTable_CL"),
 		// 					},
@@ -200,7 +200,7 @@ func ExampleSummaryLogsClient_NewListByWorkspacePager() {
 		// 					StatusCode: to.Ptr(armoperationalinsights.StatusCodeEnumUserAction),
 		// 				},
 		// 				SystemData: &armoperationalinsights.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-02-03T04:05:06Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.February, 3, 4, 5, 6, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("22222222-2222-2222-2222-222222222222"),
 		// 				},
 		// 				Identity: &armoperationalinsights.SummaryLogsIdentity{
@@ -228,7 +228,7 @@ func ExampleSummaryLogsClient_NewListByWorkspacePager() {
 		// 					RuleType: to.Ptr(armoperationalinsights.RuleTypeEnumUser),
 		// 				},
 		// 				SystemData: &armoperationalinsights.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-04-03T04:05:06Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.April, 3, 4, 5, 6, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("22222222-2222-2222-2222-222222222222"),
 		// 				},
 		// 				Identity: &armoperationalinsights.SummaryLogsIdentity{
@@ -262,7 +262,7 @@ func ExampleSummaryLogsClient_BeginRetryBin() {
 	}
 	poller, err := clientFactory.NewSummaryLogsClient().BeginRetryBin(ctx, "oiautorest6685", "oiautorest6685", "summarylogs1", armoperationalinsights.SummaryLogsRetryBin{
 		Properties: &armoperationalinsights.SummaryLogsRetryBinProperties{
-			RetryBinStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-03T04:00:00Z"); return t }()),
+			RetryBinStartTime: to.Ptr(time.Date(2020, time.February, 3, 4, 0, 0, 0, time.UTC)),
 		},
 	}, nil)
 	if err != nil {

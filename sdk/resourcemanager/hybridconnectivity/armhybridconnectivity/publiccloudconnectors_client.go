@@ -82,8 +82,7 @@ func (client *PublicCloudConnectorsClient) createOrUpdate(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -139,8 +138,7 @@ func (client *PublicCloudConnectorsClient) Delete(ctx context.Context, resourceG
 		return PublicCloudConnectorsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return PublicCloudConnectorsClientDeleteResponse{}, err
+		return PublicCloudConnectorsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return PublicCloudConnectorsClientDeleteResponse{}, nil
 }
@@ -190,12 +188,7 @@ func (client *PublicCloudConnectorsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return PublicCloudConnectorsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PublicCloudConnectorsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -225,8 +218,11 @@ func (client *PublicCloudConnectorsClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *PublicCloudConnectorsClient) getHandleResponse(resp *http.Response) (PublicCloudConnectorsClientGetResponse, error) {
+func (client *PublicCloudConnectorsClient) getHandleResponse(resp *http.Response, successCodes ...int) (PublicCloudConnectorsClientGetResponse, error) {
 	result := PublicCloudConnectorsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicCloudConnector); err != nil {
 		return PublicCloudConnectorsClientGetResponse{}, err
 	}
@@ -248,43 +244,57 @@ func (client *PublicCloudConnectorsClient) NewListByResourceGroupPager(resourceG
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return PublicCloudConnectorsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PublicCloudConnectorsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *PublicCloudConnectorsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *PublicCloudConnectorsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridConnectivity/publicCloudConnectors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PublicCloudConnectorsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *PublicCloudConnectorsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridConnectivity/publicCloudConnectors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *PublicCloudConnectorsClient) listByResourceGroupHandleResponse(resp *http.Response) (PublicCloudConnectorsClientListByResourceGroupResponse, error) {
+func (client *PublicCloudConnectorsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (PublicCloudConnectorsClientListByResourceGroupResponse, error) {
 	result := PublicCloudConnectorsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicCloudConnectorListResult); err != nil {
 		return PublicCloudConnectorsClientListByResourceGroupResponse{}, err
 	}
@@ -305,47 +315,59 @@ func (client *PublicCloudConnectorsClient) NewListBySubscriptionPager(options *P
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return PublicCloudConnectorsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PublicCloudConnectorsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *PublicCloudConnectorsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *PublicCloudConnectorsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridConnectivity/publicCloudConnectors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PublicCloudConnectorsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *PublicCloudConnectorsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridConnectivity/publicCloudConnectors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *PublicCloudConnectorsClient) listBySubscriptionHandleResponse(resp *http.Response) (PublicCloudConnectorsClientListBySubscriptionResponse, error) {
+func (client *PublicCloudConnectorsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (PublicCloudConnectorsClientListBySubscriptionResponse, error) {
 	result := PublicCloudConnectorsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicCloudConnectorListResult); err != nil {
 		return PublicCloudConnectorsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginTestPermissions - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - publicCloudConnector - Represent public cloud connectors resource.
 //   - options - PublicCloudConnectorsClientBeginTestPermissionsOptions contains the optional parameters for the PublicCloudConnectorsClient.BeginTestPermissions
@@ -367,7 +389,7 @@ func (client *PublicCloudConnectorsClient) BeginTestPermissions(ctx context.Cont
 	}
 }
 
-// TestPermissions - A long-running resource action.
+// TestPermissions -
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PublicCloudConnectorsClient) testPermissions(ctx context.Context, resourceGroupName string, publicCloudConnector string, options *PublicCloudConnectorsClientBeginTestPermissionsOptions) (*http.Response, error) {
 	var err error
@@ -384,8 +406,7 @@ func (client *PublicCloudConnectorsClient) testPermissions(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -437,12 +458,7 @@ func (client *PublicCloudConnectorsClient) Update(ctx context.Context, resourceG
 	if err != nil {
 		return PublicCloudConnectorsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PublicCloudConnectorsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -476,8 +492,11 @@ func (client *PublicCloudConnectorsClient) updateCreateRequest(ctx context.Conte
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PublicCloudConnectorsClient) updateHandleResponse(resp *http.Response) (PublicCloudConnectorsClientUpdateResponse, error) {
+func (client *PublicCloudConnectorsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (PublicCloudConnectorsClientUpdateResponse, error) {
 	result := PublicCloudConnectorsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicCloudConnector); err != nil {
 		return PublicCloudConnectorsClientUpdateResponse{}, err
 	}

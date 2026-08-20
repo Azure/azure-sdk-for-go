@@ -34,8 +34,8 @@ func ExampleScheduledActionOperationStatusClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/providers/Microsoft.Compute/locations/eastus/scheduledActionsOperationStatuses/00000000-0000-0000-0000-000000000000"),
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		Status: to.Ptr("Succeeded"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-24T00:23:55.281Z"); return t}()),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-24T00:24:55.281Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2026, time.June, 24, 0, 23, 55, 281000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2026, time.June, 24, 0, 24, 55, 281000000, time.UTC)),
 	// 		PercentComplete: to.Ptr[float64](100),
 	// 		Operations: []*armbulkactions.OperationStatusResult{
 	// 			{

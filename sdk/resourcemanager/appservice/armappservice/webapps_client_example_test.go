@@ -239,7 +239,7 @@ func ExampleWebAppsClient_Backup() {
 				FrequencyUnit:         to.Ptr(armappservice.FrequencyUnitDay),
 				KeepAtLeastOneBackup:  to.Ptr(true),
 				RetentionPeriodInDays: to.Ptr[int32](30),
-				StartTime:             to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-02T17:33:11.641Z"); return t }()),
+				StartTime:             to.Ptr(time.Date(2022, time.September, 2, 17, 33, 11, 641000000, time.UTC)),
 			},
 			Databases: []*armappservice.DatabaseBackupSetting{
 				{
@@ -273,7 +273,7 @@ func ExampleWebAppsClient_Backup() {
 	// 		Properties: &armappservice.BackupItemProperties{
 	// 			Name: to.Ptr("sitef6141_2024-11-01"),
 	// 			BlobName: to.Ptr("sitef6141_2024-11-01"),
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-03T17:33:11.641Z"); return t}()),
+	// 			Created: to.Ptr(time.Date(2022, time.September, 3, 17, 33, 11, 641000000, time.UTC)),
 	// 			Databases: []*armappservice.DatabaseBackupSetting{
 	// 				{
 	// 					Name: to.Ptr("backenddb"),
@@ -288,9 +288,9 @@ func ExampleWebAppsClient_Backup() {
 	// 					DatabaseType: to.Ptr(armappservice.DatabaseTypeSQLAzure),
 	// 				},
 	// 			},
-	// 			FinishedTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-02T17:33:11.641Z"); return t}()),
+	// 			FinishedTimeStamp: to.Ptr(time.Date(2022, time.September, 2, 17, 33, 11, 641000000, time.UTC)),
 	// 			BackupID: to.Ptr[int32](12345),
-	// 			LastRestoreTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-04T17:33:11.641Z"); return t}()),
+	// 			LastRestoreTimeStamp: to.Ptr(time.Date(2022, time.September, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			Log: to.Ptr("Succeeded"),
 	// 			Scheduled: to.Ptr(true),
 	// 			SizeInBytes: to.Ptr[int64](56091883),
@@ -383,7 +383,7 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_cloneWebApp() {
 	// 			HyperV: to.Ptr(false),
 	// 			IsXenon: to.Ptr(false),
 	// 			KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
 	// 			OutboundVnetRouting: &armappservice.OutboundVnetRouting{
 	// 				AllTraffic: to.Ptr(false),
@@ -580,7 +580,7 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_createOrUpdateFlexConsumptionFunct
 	// 			HTTPSOnly: to.Ptr(true),
 	// 			HyperV: to.Ptr(false),
 	// 			IsXenon: to.Ptr(false),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-09T00:24:54.8"); return t}()),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Time{}),
 	// 			OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
 	// 			OutboundVnetRouting: &armappservice.OutboundVnetRouting{
 	// 				AllTraffic: to.Ptr(false),
@@ -811,7 +811,7 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_createOrUpdateFlexConsumptionFunct
 	// 			HTTPSOnly: to.Ptr(true),
 	// 			HyperV: to.Ptr(false),
 	// 			IsXenon: to.Ptr(false),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-09T00:24:54.8"); return t}()),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Time{}),
 	// 			OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
 	// 			OutboundVnetRouting: &armappservice.OutboundVnetRouting{
 	// 				AllTraffic: to.Ptr(false),
@@ -969,7 +969,7 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_createOrUpdateWebApp() {
 	// 			HyperV: to.Ptr(false),
 	// 			IsXenon: to.Ptr(false),
 	// 			KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
 	// 			OutboundVnetRouting: &armappservice.OutboundVnetRouting{
 	// 				AllTraffic: to.Ptr(false),
@@ -1263,7 +1263,7 @@ func ExampleWebAppsClient_BeginCreateOrUpdateSlot_cloneWebAppSlot() {
 	// 			HyperV: to.Ptr(false),
 	// 			IsXenon: to.Ptr(false),
 	// 			KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
 	// 			OutboundVnetRouting: &armappservice.OutboundVnetRouting{
 	// 				AllTraffic: to.Ptr(false),
@@ -1408,7 +1408,7 @@ func ExampleWebAppsClient_BeginCreateOrUpdateSlot_createOrUpdateWebAppSlot() {
 	// 			HyperV: to.Ptr(false),
 	// 			IsXenon: to.Ptr(false),
 	// 			KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
 	// 			OutboundVnetRouting: &armappservice.OutboundVnetRouting{
 	// 				AllTraffic: to.Ptr(false),
@@ -1829,7 +1829,7 @@ func ExampleWebAppsClient_Get() {
 	// 			HyperV: to.Ptr(false),
 	// 			IsXenon: to.Ptr(false),
 	// 			KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
 	// 			OutboundVnetRouting: &armappservice.OutboundVnetRouting{
 	// 				AllTraffic: to.Ptr(false),
@@ -2322,7 +2322,7 @@ func ExampleWebAppsClient_GetBackupStatus() {
 	// 		Properties: &armappservice.BackupItemProperties{
 	// 			Name: to.Ptr("sitef6141_2024-11-01"),
 	// 			BlobName: to.Ptr("sitef6141_2024-11-01"),
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-03T17:33:11.641Z"); return t}()),
+	// 			Created: to.Ptr(time.Date(2022, time.September, 3, 17, 33, 11, 641000000, time.UTC)),
 	// 			Databases: []*armappservice.DatabaseBackupSetting{
 	// 				{
 	// 					Name: to.Ptr("backenddb"),
@@ -2337,9 +2337,9 @@ func ExampleWebAppsClient_GetBackupStatus() {
 	// 					DatabaseType: to.Ptr(armappservice.DatabaseTypeSQLAzure),
 	// 				},
 	// 			},
-	// 			FinishedTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-05T17:33:11.641Z"); return t}()),
+	// 			FinishedTimeStamp: to.Ptr(time.Date(2022, time.September, 5, 17, 33, 11, 641000000, time.UTC)),
 	// 			BackupID: to.Ptr[int32](12345),
-	// 			LastRestoreTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-04T17:33:11.641Z"); return t}()),
+	// 			LastRestoreTimeStamp: to.Ptr(time.Date(2022, time.September, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			Log: to.Ptr("Succeeded"),
 	// 			Scheduled: to.Ptr(true),
 	// 			SizeInBytes: to.Ptr[int64](56091883),
@@ -2513,7 +2513,7 @@ func ExampleWebAppsClient_GetInstanceInfo() {
 	// 		Properties: &armappservice.WebSiteInstanceStatusProperties{
 	// 			Containers: map[string]*armappservice.ContainerInfo{
 	// 				"c1": &armappservice.ContainerInfo{
-	// 					CurrentTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2013-10-21T13:28:06.419Z"); return t}()),
+	// 					CurrentTimeStamp: to.Ptr(time.Date(2013, time.October, 21, 13, 28, 6, 419000000, time.UTC)),
 	// 				},
 	// 			},
 	// 			DetectorURL: to.Ptr("testsec579"),
@@ -2550,7 +2550,7 @@ func ExampleWebAppsClient_GetInstanceInfoSlot() {
 	// 		Properties: &armappservice.WebSiteInstanceStatusProperties{
 	// 			Containers: map[string]*armappservice.ContainerInfo{
 	// 				"c1": &armappservice.ContainerInfo{
-	// 					CurrentTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2013-10-21T13:28:06.419Z"); return t}()),
+	// 					CurrentTimeStamp: to.Ptr(time.Date(2013, time.October, 21, 13, 28, 6, 419000000, time.UTC)),
 	// 				},
 	// 			},
 	// 			DetectorURL: to.Ptr("testsec579"),
@@ -3169,7 +3169,7 @@ func ExampleWebAppsClient_GetSlot() {
 	// 			HyperV: to.Ptr(false),
 	// 			IsXenon: to.Ptr(false),
 	// 			KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
 	// 			OutboundVnetRouting: &armappservice.OutboundVnetRouting{
 	// 				AllTraffic: to.Ptr(false),
@@ -3420,7 +3420,7 @@ func ExampleWebAppsClient_NewListPager() {
 		// 					HyperV: to.Ptr(false),
 		// 					IsXenon: to.Ptr(false),
 		// 					KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-		// 					LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+		// 					LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 		// 					OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
 		// 					OutboundVnetRouting: &armappservice.OutboundVnetRouting{
 		// 						AllTraffic: to.Ptr(false),
@@ -3538,7 +3538,7 @@ func ExampleWebAppsClient_NewListPager() {
 		// 					HyperV: to.Ptr(false),
 		// 					IsXenon: to.Ptr(false),
 		// 					KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-		// 					LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+		// 					LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 		// 					OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
 		// 					OutboundVnetRouting: &armappservice.OutboundVnetRouting{
 		// 						AllTraffic: to.Ptr(false),
@@ -3673,7 +3673,7 @@ func ExampleWebAppsClient_ListBackupStatusSecrets() {
 				FrequencyUnit:         to.Ptr(armappservice.FrequencyUnitDay),
 				KeepAtLeastOneBackup:  to.Ptr(true),
 				RetentionPeriodInDays: to.Ptr[int32](30),
-				StartTime:             to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-02T17:33:11.641Z"); return t }()),
+				StartTime:             to.Ptr(time.Date(2022, time.September, 2, 17, 33, 11, 641000000, time.UTC)),
 			},
 			Databases: []*armappservice.DatabaseBackupSetting{
 				{
@@ -3707,7 +3707,7 @@ func ExampleWebAppsClient_ListBackupStatusSecrets() {
 	// 		Properties: &armappservice.BackupItemProperties{
 	// 			Name: to.Ptr("sitef6141_2024-11-01"),
 	// 			BlobName: to.Ptr("sitef6141_2024-11-01"),
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-03T17:33:11.641Z"); return t}()),
+	// 			Created: to.Ptr(time.Date(2022, time.September, 3, 17, 33, 11, 641000000, time.UTC)),
 	// 			Databases: []*armappservice.DatabaseBackupSetting{
 	// 				{
 	// 					Name: to.Ptr("backenddb"),
@@ -3722,9 +3722,9 @@ func ExampleWebAppsClient_ListBackupStatusSecrets() {
 	// 					DatabaseType: to.Ptr(armappservice.DatabaseTypeSQLAzure),
 	// 				},
 	// 			},
-	// 			FinishedTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-05T17:33:11.641Z"); return t}()),
+	// 			FinishedTimeStamp: to.Ptr(time.Date(2022, time.September, 5, 17, 33, 11, 641000000, time.UTC)),
 	// 			BackupID: to.Ptr[int32](12345),
-	// 			LastRestoreTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-04T17:33:11.641Z"); return t}()),
+	// 			LastRestoreTimeStamp: to.Ptr(time.Date(2022, time.September, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			Log: to.Ptr("Succeeded"),
 	// 			Scheduled: to.Ptr(true),
 	// 			SizeInBytes: to.Ptr[int64](56091883),
@@ -3768,7 +3768,7 @@ func ExampleWebAppsClient_NewListBackupsPager() {
 		// 				Properties: &armappservice.BackupItemProperties{
 		// 					Name: to.Ptr("sitef6141_2024-11-01"),
 		// 					BlobName: to.Ptr("sitef6141_2024-11-01"),
-		// 					Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-03T17:33:11.641Z"); return t}()),
+		// 					Created: to.Ptr(time.Date(2022, time.September, 3, 17, 33, 11, 641000000, time.UTC)),
 		// 					Databases: []*armappservice.DatabaseBackupSetting{
 		// 						{
 		// 							Name: to.Ptr("backenddb"),
@@ -3783,9 +3783,9 @@ func ExampleWebAppsClient_NewListBackupsPager() {
 		// 							DatabaseType: to.Ptr(armappservice.DatabaseTypeSQLAzure),
 		// 						},
 		// 					},
-		// 					FinishedTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-05T17:33:11.641Z"); return t}()),
+		// 					FinishedTimeStamp: to.Ptr(time.Date(2022, time.September, 5, 17, 33, 11, 641000000, time.UTC)),
 		// 					BackupID: to.Ptr[int32](12345),
-		// 					LastRestoreTimeStamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-04T17:33:11.641Z"); return t}()),
+		// 					LastRestoreTimeStamp: to.Ptr(time.Date(2022, time.September, 4, 17, 33, 11, 641000000, time.UTC)),
 		// 					Log: to.Ptr("Succeeded"),
 		// 					Scheduled: to.Ptr(true),
 		// 					SizeInBytes: to.Ptr[int64](56091883),
@@ -3959,7 +3959,7 @@ func ExampleWebAppsClient_NewListByResourceGroupPager() {
 		// 					HyperV: to.Ptr(false),
 		// 					IsXenon: to.Ptr(false),
 		// 					KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-		// 					LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+		// 					LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 		// 					OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
 		// 					OutboundVnetRouting: &armappservice.OutboundVnetRouting{
 		// 						AllTraffic: to.Ptr(false),
@@ -4077,7 +4077,7 @@ func ExampleWebAppsClient_NewListByResourceGroupPager() {
 		// 					HyperV: to.Ptr(false),
 		// 					IsXenon: to.Ptr(false),
 		// 					KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-		// 					LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+		// 					LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 		// 					OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
 		// 					OutboundVnetRouting: &armappservice.OutboundVnetRouting{
 		// 						AllTraffic: to.Ptr(false),
@@ -4515,7 +4515,7 @@ func ExampleWebAppsClient_NewListSlotsPager() {
 		// 					Reserved: to.Ptr(false),
 		// 					IsXenon: to.Ptr(false),
 		// 					HyperV: to.Ptr(false),
-		// 					LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+		// 					LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 		// 					OutboundVnetRouting: &armappservice.OutboundVnetRouting{
 		// 						AllTraffic: to.Ptr(false),
 		// 						ApplicationTraffic: to.Ptr(false),
@@ -4628,7 +4628,7 @@ func ExampleWebAppsClient_NewListSlotsPager() {
 		// 					Reserved: to.Ptr(false),
 		// 					IsXenon: to.Ptr(false),
 		// 					HyperV: to.Ptr(false),
-		// 					LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+		// 					LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 		// 					OutboundVnetRouting: &armappservice.OutboundVnetRouting{
 		// 						AllTraffic: to.Ptr(false),
 		// 						ApplicationTraffic: to.Ptr(false),
@@ -5212,7 +5212,7 @@ func ExampleWebAppsClient_Update() {
 	// 			HyperV: to.Ptr(false),
 	// 			IsXenon: to.Ptr(false),
 	// 			KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
 	// 			OutboundVnetRouting: &armappservice.OutboundVnetRouting{
 	// 				AllTraffic: to.Ptr(false),
@@ -5810,7 +5810,7 @@ func ExampleWebAppsClient_UpdateSlot() {
 	// 			HyperV: to.Ptr(false),
 	// 			IsXenon: to.Ptr(false),
 	// 			KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-	// 			LastModifiedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:33:11.641Z"); return t}()),
+	// 			LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
 	// 			OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
 	// 			OutboundVnetRouting: &armappservice.OutboundVnetRouting{
 	// 				AllTraffic: to.Ptr(false),

@@ -4,6 +4,10 @@
 
 package armmanagednetworkfabric
 
+const (
+	version20250715 string = "2025-07-15"
+)
+
 // ACLActionType - Type of actions that can be performed.
 type ACLActionType string
 

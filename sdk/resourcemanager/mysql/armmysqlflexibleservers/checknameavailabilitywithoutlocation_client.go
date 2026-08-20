@@ -60,12 +60,7 @@ func (client *CheckNameAvailabilityWithoutLocationClient) Execute(ctx context.Co
 	if err != nil {
 		return CheckNameAvailabilityWithoutLocationClientExecuteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CheckNameAvailabilityWithoutLocationClientExecuteResponse{}, err
-	}
-	resp, err := client.executeHandleResponse(httpResp)
-	return resp, err
+	return client.executeHandleResponse(httpResp, http.StatusOK)
 }
 
 // executeCreateRequest creates the Execute request.
@@ -91,8 +86,11 @@ func (client *CheckNameAvailabilityWithoutLocationClient) executeCreateRequest(c
 }
 
 // executeHandleResponse handles the Execute response.
-func (client *CheckNameAvailabilityWithoutLocationClient) executeHandleResponse(resp *http.Response) (CheckNameAvailabilityWithoutLocationClientExecuteResponse, error) {
+func (client *CheckNameAvailabilityWithoutLocationClient) executeHandleResponse(resp *http.Response, successCodes ...int) (CheckNameAvailabilityWithoutLocationClientExecuteResponse, error) {
 	result := CheckNameAvailabilityWithoutLocationClientExecuteResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailability); err != nil {
 		return CheckNameAvailabilityWithoutLocationClientExecuteResponse{}, err
 	}

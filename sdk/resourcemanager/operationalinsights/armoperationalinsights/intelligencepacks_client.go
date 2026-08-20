@@ -63,8 +63,7 @@ func (client *IntelligencePacksClient) Disable(ctx context.Context, resourceGrou
 		return IntelligencePacksClientDisableResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IntelligencePacksClientDisableResponse{}, err
+		return IntelligencePacksClientDisableResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return IntelligencePacksClientDisableResponse{}, nil
 }
@@ -120,8 +119,7 @@ func (client *IntelligencePacksClient) Enable(ctx context.Context, resourceGroup
 		return IntelligencePacksClientEnableResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IntelligencePacksClientEnableResponse{}, err
+		return IntelligencePacksClientEnableResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return IntelligencePacksClientEnableResponse{}, nil
 }
@@ -174,12 +172,7 @@ func (client *IntelligencePacksClient) List(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return IntelligencePacksClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IntelligencePacksClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -209,8 +202,11 @@ func (client *IntelligencePacksClient) listCreateRequest(ctx context.Context, re
 }
 
 // listHandleResponse handles the List response.
-func (client *IntelligencePacksClient) listHandleResponse(resp *http.Response) (IntelligencePacksClientListResponse, error) {
+func (client *IntelligencePacksClient) listHandleResponse(resp *http.Response, successCodes ...int) (IntelligencePacksClientListResponse, error) {
 	result := IntelligencePacksClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntelligencePackArray); err != nil {
 		return IntelligencePacksClientListResponse{}, err
 	}

@@ -67,12 +67,7 @@ func (client *ModelVersionsClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return ModelVersionsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ModelVersionsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -114,8 +109,11 @@ func (client *ModelVersionsClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ModelVersionsClient) createOrUpdateHandleResponse(resp *http.Response) (ModelVersionsClientCreateOrUpdateResponse, error) {
+func (client *ModelVersionsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ModelVersionsClientCreateOrUpdateResponse, error) {
 	result := ModelVersionsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ModelVersion); err != nil {
 		return ModelVersionsClientCreateOrUpdateResponse{}, err
 	}
@@ -146,8 +144,7 @@ func (client *ModelVersionsClient) Delete(ctx context.Context, resourceGroupName
 		return ModelVersionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ModelVersionsClientDeleteResponse{}, err
+		return ModelVersionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ModelVersionsClientDeleteResponse{}, nil
 }
@@ -208,12 +205,7 @@ func (client *ModelVersionsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ModelVersionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ModelVersionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -251,8 +243,11 @@ func (client *ModelVersionsClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *ModelVersionsClient) getHandleResponse(resp *http.Response) (ModelVersionsClientGetResponse, error) {
+func (client *ModelVersionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ModelVersionsClientGetResponse, error) {
 	result := ModelVersionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ModelVersion); err != nil {
 		return ModelVersionsClientGetResponse{}, err
 	}
@@ -277,81 +272,95 @@ func (client *ModelVersionsClient) NewListPager(resourceGroupName string, worksp
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, workspaceName, name, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, name, nextLink, options)
 			if err != nil {
 				return ModelVersionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ModelVersionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ModelVersionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *ModelVersionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/models/{name}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ModelVersionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, nextLink string, options *ModelVersionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/models/{name}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("$orderBy", *options.OrderBy)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.OrderBy != nil {
+			reqQP.Set("$orderBy", *options.OrderBy)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", *options.Skip)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260315Preview)
+		if options != nil && options.Description != nil {
+			reqQP.Set("description", *options.Description)
+		}
+		if options != nil && options.Feed != nil {
+			reqQP.Set("feed", *options.Feed)
+		}
+		if options != nil && options.ListViewType != nil {
+			reqQP.Set("listViewType", string(*options.ListViewType))
+		}
+		if options != nil && options.Offset != nil {
+			reqQP.Set("offset", strconv.FormatInt(int64(*options.Offset), 10))
+		}
+		if options != nil && options.Properties != nil {
+			reqQP.Set("properties", *options.Properties)
+		}
+		if options != nil && options.Tags != nil {
+			reqQP.Set("tags", *options.Tags)
+		}
+		if options != nil && options.Version != nil {
+			reqQP.Set("version", *options.Version)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", *options.Skip)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20260315Preview)
-	if options != nil && options.Description != nil {
-		reqQP.Set("description", *options.Description)
-	}
-	if options != nil && options.Feed != nil {
-		reqQP.Set("feed", *options.Feed)
-	}
-	if options != nil && options.ListViewType != nil {
-		reqQP.Set("listViewType", string(*options.ListViewType))
-	}
-	if options != nil && options.Offset != nil {
-		reqQP.Set("offset", strconv.FormatInt(int64(*options.Offset), 10))
-	}
-	if options != nil && options.Properties != nil {
-		reqQP.Set("properties", *options.Properties)
-	}
-	if options != nil && options.Tags != nil {
-		reqQP.Set("tags", *options.Tags)
-	}
-	if options != nil && options.Version != nil {
-		reqQP.Set("version", *options.Version)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ModelVersionsClient) listHandleResponse(resp *http.Response) (ModelVersionsClientListResponse, error) {
+func (client *ModelVersionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ModelVersionsClientListResponse, error) {
 	result := ModelVersionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ModelVersionResourceArmPaginatedResult); err != nil {
 		return ModelVersionsClientListResponse{}, err
 	}
@@ -405,8 +414,7 @@ func (client *ModelVersionsClient) publish(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

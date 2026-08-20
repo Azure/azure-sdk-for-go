@@ -18,6 +18,8 @@ import (
 
 // AsyncOperationStatusClient contains the methods for the AsyncOperationStatus group.
 // Don't use this type directly, use NewAsyncOperationStatusClient() instead.
+//
+// Generated from API version 2024-11-01
 type AsyncOperationStatusClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAsyncOperationStatusClient(subscriptionID string, credential azcore.Toke
 
 // Get - For checking the ongoing status of an operation
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - location - The location at which operation was triggered
 //   - operationID - The ID of asynchronous operation
 //   - options - AsyncOperationStatusClientGetOptions contains the optional parameters for the AsyncOperationStatusClient.Get
@@ -61,12 +61,7 @@ func (client *AsyncOperationStatusClient) Get(ctx context.Context, location stri
 	if err != nil {
 		return AsyncOperationStatusClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AsyncOperationStatusClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -89,15 +84,18 @@ func (client *AsyncOperationStatusClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AsyncOperationStatusClient) getHandleResponse(resp *http.Response) (AsyncOperationStatusClientGetResponse, error) {
+func (client *AsyncOperationStatusClient) getHandleResponse(resp *http.Response, successCodes ...int) (AsyncOperationStatusClientGetResponse, error) {
 	result := AsyncOperationStatusClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
 		return AsyncOperationStatusClientGetResponse{}, err
 	}

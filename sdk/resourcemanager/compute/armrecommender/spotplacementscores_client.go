@@ -59,12 +59,7 @@ func (client *SpotPlacementScoresClient) Get(ctx context.Context, location strin
 	if err != nil {
 		return SpotPlacementScoresClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SpotPlacementScoresClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -90,8 +85,11 @@ func (client *SpotPlacementScoresClient) getCreateRequest(ctx context.Context, l
 }
 
 // getHandleResponse handles the Get response.
-func (client *SpotPlacementScoresClient) getHandleResponse(resp *http.Response) (SpotPlacementScoresClientGetResponse, error) {
+func (client *SpotPlacementScoresClient) getHandleResponse(resp *http.Response, successCodes ...int) (SpotPlacementScoresClientGetResponse, error) {
 	result := SpotPlacementScoresClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComputeDiagnosticBase); err != nil {
 		return SpotPlacementScoresClientGetResponse{}, err
 	}
@@ -118,12 +116,7 @@ func (client *SpotPlacementScoresClient) Post(ctx context.Context, location stri
 	if err != nil {
 		return SpotPlacementScoresClientPostResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SpotPlacementScoresClientPostResponse{}, err
-	}
-	resp, err := client.postHandleResponse(httpResp)
-	return resp, err
+	return client.postHandleResponse(httpResp, http.StatusOK)
 }
 
 // postCreateRequest creates the Post request.
@@ -153,8 +146,11 @@ func (client *SpotPlacementScoresClient) postCreateRequest(ctx context.Context, 
 }
 
 // postHandleResponse handles the Post response.
-func (client *SpotPlacementScoresClient) postHandleResponse(resp *http.Response) (SpotPlacementScoresClientPostResponse, error) {
+func (client *SpotPlacementScoresClient) postHandleResponse(resp *http.Response, successCodes ...int) (SpotPlacementScoresClientPostResponse, error) {
 	result := SpotPlacementScoresClientPostResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SpotPlacementScoresResponse); err != nil {
 		return SpotPlacementScoresClientPostResponse{}, err
 	}

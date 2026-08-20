@@ -62,12 +62,7 @@ func (client *SchemasClient) CreateOrReplace(ctx context.Context, resourceGroupN
 	if err != nil {
 		return SchemasClientCreateOrReplaceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SchemasClientCreateOrReplaceResponse{}, err
-	}
-	resp, err := client.createOrReplaceHandleResponse(httpResp)
-	return resp, err
+	return client.createOrReplaceHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrReplaceCreateRequest creates the CreateOrReplace request.
@@ -105,8 +100,11 @@ func (client *SchemasClient) createOrReplaceCreateRequest(ctx context.Context, r
 }
 
 // createOrReplaceHandleResponse handles the CreateOrReplace response.
-func (client *SchemasClient) createOrReplaceHandleResponse(resp *http.Response) (SchemasClientCreateOrReplaceResponse, error) {
+func (client *SchemasClient) createOrReplaceHandleResponse(resp *http.Response, successCodes ...int) (SchemasClientCreateOrReplaceResponse, error) {
 	result := SchemasClientCreateOrReplaceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schema); err != nil {
 		return SchemasClientCreateOrReplaceResponse{}, err
 	}
@@ -153,8 +151,7 @@ func (client *SchemasClient) deleteOperation(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -208,12 +205,7 @@ func (client *SchemasClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return SchemasClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SchemasClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -247,8 +239,11 @@ func (client *SchemasClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *SchemasClient) getHandleResponse(resp *http.Response) (SchemasClientGetResponse, error) {
+func (client *SchemasClient) getHandleResponse(resp *http.Response, successCodes ...int) (SchemasClientGetResponse, error) {
 	result := SchemasClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Schema); err != nil {
 		return SchemasClientGetResponse{}, err
 	}
@@ -271,47 +266,61 @@ func (client *SchemasClient) NewListBySchemaRegistryPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySchemaRegistryCreateRequest(ctx, resourceGroupName, schemaRegistryName, options)
-			}, nil)
+			req, err := client.listBySchemaRegistryCreateRequest(ctx, resourceGroupName, schemaRegistryName, nextLink, options)
 			if err != nil {
 				return SchemasClientListBySchemaRegistryResponse{}, err
 			}
-			return client.listBySchemaRegistryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SchemasClientListBySchemaRegistryResponse{}, err
+			}
+			return client.listBySchemaRegistryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySchemaRegistryCreateRequest creates the ListBySchemaRegistry request.
-func (client *SchemasClient) listBySchemaRegistryCreateRequest(ctx context.Context, resourceGroupName string, schemaRegistryName string, _ *SchemasClientListBySchemaRegistryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SchemasClient) listBySchemaRegistryCreateRequest(ctx context.Context, resourceGroupName string, schemaRegistryName string, nextLink string, _ *SchemasClientListBySchemaRegistryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/schemaRegistries/{schemaRegistryName}/schemas"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if schemaRegistryName == "" {
+			return nil, errors.New("parameter schemaRegistryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{schemaRegistryName}", url.PathEscape(schemaRegistryName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if schemaRegistryName == "" {
-		return nil, errors.New("parameter schemaRegistryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{schemaRegistryName}", url.PathEscape(schemaRegistryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySchemaRegistryHandleResponse handles the ListBySchemaRegistry response.
-func (client *SchemasClient) listBySchemaRegistryHandleResponse(resp *http.Response) (SchemasClientListBySchemaRegistryResponse, error) {
+func (client *SchemasClient) listBySchemaRegistryHandleResponse(resp *http.Response, successCodes ...int) (SchemasClientListBySchemaRegistryResponse, error) {
 	result := SchemasClientListBySchemaRegistryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaListResult); err != nil {
 		return SchemasClientListBySchemaRegistryResponse{}, err
 	}

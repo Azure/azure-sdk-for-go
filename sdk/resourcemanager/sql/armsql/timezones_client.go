@@ -18,6 +18,8 @@ import (
 
 // TimeZonesClient contains the methods for the TimeZones group.
 // Don't use this type directly, use NewTimeZonesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type TimeZonesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewTimeZonesClient(subscriptionID string, credential azcore.TokenCredential
 
 // Get - Gets a managed instance time zone.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - locationName - The location of the database.
 //   - timeZoneID - The time zone ID.
 //   - options - TimeZonesClientGetOptions contains the optional parameters for the TimeZonesClient.Get method.
@@ -60,12 +60,7 @@ func (client *TimeZonesClient) Get(ctx context.Context, locationName string, tim
 	if err != nil {
 		return TimeZonesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TimeZonesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -88,15 +83,18 @@ func (client *TimeZonesClient) getCreateRequest(ctx context.Context, locationNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *TimeZonesClient) getHandleResponse(resp *http.Response) (TimeZonesClientGetResponse, error) {
+func (client *TimeZonesClient) getHandleResponse(resp *http.Response, successCodes ...int) (TimeZonesClientGetResponse, error) {
 	result := TimeZonesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TimeZone); err != nil {
 		return TimeZonesClientGetResponse{}, err
 	}
@@ -104,8 +102,6 @@ func (client *TimeZonesClient) getHandleResponse(resp *http.Response) (TimeZones
 }
 
 // NewListByLocationPager - Gets a list of managed instance time zones by location.
-//
-// Generated from API version 2025-02-01-preview
 //   - locationName - The location of the database.
 //   - options - TimeZonesClientListByLocationOptions contains the optional parameters for the TimeZonesClient.NewListByLocationPager
 //     method.
@@ -120,43 +116,57 @@ func (client *TimeZonesClient) NewListByLocationPager(locationName string, optio
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByLocationCreateRequest(ctx, locationName, options)
-			}, nil)
+			req, err := client.listByLocationCreateRequest(ctx, locationName, nextLink, options)
 			if err != nil {
 				return TimeZonesClientListByLocationResponse{}, err
 			}
-			return client.listByLocationHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TimeZonesClientListByLocationResponse{}, err
+			}
+			return client.listByLocationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *TimeZonesClient) listByLocationCreateRequest(ctx context.Context, locationName string, _ *TimeZonesClientListByLocationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/timeZones"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TimeZonesClient) listByLocationCreateRequest(ctx context.Context, locationName string, nextLink string, _ *TimeZonesClientListByLocationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/timeZones"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if locationName == "" {
+			return nil, errors.New("parameter locationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *TimeZonesClient) listByLocationHandleResponse(resp *http.Response) (TimeZonesClientListByLocationResponse, error) {
+func (client *TimeZonesClient) listByLocationHandleResponse(resp *http.Response, successCodes ...int) (TimeZonesClientListByLocationResponse, error) {
 	result := TimeZonesClientListByLocationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TimeZoneListResult); err != nil {
 		return TimeZonesClientListByLocationResponse{}, err
 	}

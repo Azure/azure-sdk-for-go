@@ -18,6 +18,8 @@ import (
 
 // NetworkTapRulesClient contains the methods for the NetworkTapRules group.
 // Don't use this type directly, use NewNetworkTapRulesClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkTapRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkTapRulesClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreate - Create Network Tap Rule resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkTapRuleName - Name of the Network Tap Rule.
 //   - body - Request payload.
@@ -67,8 +67,6 @@ func (client *NetworkTapRulesClient) BeginCreate(ctx context.Context, resourceGr
 
 // Create - Create Network Tap Rule resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkTapRulesClient) create(ctx context.Context, resourceGroupName string, networkTapRuleName string, body NetworkTapRule, options *NetworkTapRulesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkTapRulesClient.BeginCreate"
@@ -84,8 +82,7 @@ func (client *NetworkTapRulesClient) create(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -110,8 +107,8 @@ func (client *NetworkTapRulesClient) createCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,8 +119,6 @@ func (client *NetworkTapRulesClient) createCreateRequest(ctx context.Context, re
 
 // BeginDelete - Delete Network Tap Rule resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkTapRuleName - Name of the Network Tap Rule.
 //   - options - NetworkTapRulesClientBeginDeleteOptions contains the optional parameters for the NetworkTapRulesClient.BeginDelete
@@ -147,8 +142,6 @@ func (client *NetworkTapRulesClient) BeginDelete(ctx context.Context, resourceGr
 
 // Delete - Delete Network Tap Rule resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkTapRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkTapRuleName string, options *NetworkTapRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkTapRulesClient.BeginDelete"
@@ -164,8 +157,7 @@ func (client *NetworkTapRulesClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -190,15 +182,13 @@ func (client *NetworkTapRulesClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get Network Tap Rule resource details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkTapRuleName - Name of the Network Tap Rule.
 //   - options - NetworkTapRulesClientGetOptions contains the optional parameters for the NetworkTapRulesClient.Get method.
@@ -216,12 +206,7 @@ func (client *NetworkTapRulesClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return NetworkTapRulesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkTapRulesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -244,15 +229,18 @@ func (client *NetworkTapRulesClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *NetworkTapRulesClient) getHandleResponse(resp *http.Response) (NetworkTapRulesClientGetResponse, error) {
+func (client *NetworkTapRulesClient) getHandleResponse(resp *http.Response, successCodes ...int) (NetworkTapRulesClientGetResponse, error) {
 	result := NetworkTapRulesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkTapRule); err != nil {
 		return NetworkTapRulesClientGetResponse{}, err
 	}
@@ -260,8 +248,6 @@ func (client *NetworkTapRulesClient) getHandleResponse(resp *http.Response) (Net
 }
 
 // NewListByResourceGroupPager - List all the Network Tap Rule resources in the given resource group.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkTapRulesClientListByResourceGroupOptions contains the optional parameters for the NetworkTapRulesClient.NewListByResourceGroupPager
 //     method.
@@ -276,43 +262,57 @@ func (client *NetworkTapRulesClient) NewListByResourceGroupPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return NetworkTapRulesClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkTapRulesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NetworkTapRulesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *NetworkTapRulesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NetworkTapRulesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *NetworkTapRulesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkTapRules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *NetworkTapRulesClient) listByResourceGroupHandleResponse(resp *http.Response) (NetworkTapRulesClientListByResourceGroupResponse, error) {
+func (client *NetworkTapRulesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (NetworkTapRulesClientListByResourceGroupResponse, error) {
 	result := NetworkTapRulesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkTapRulesListResult); err != nil {
 		return NetworkTapRulesClientListByResourceGroupResponse{}, err
 	}
@@ -320,8 +320,6 @@ func (client *NetworkTapRulesClient) listByResourceGroupHandleResponse(resp *htt
 }
 
 // NewListBySubscriptionPager - List all the Network Tap Rule resources in the given subscription.
-//
-// Generated from API version 2025-07-15
 //   - options - NetworkTapRulesClientListBySubscriptionOptions contains the optional parameters for the NetworkTapRulesClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkTapRulesClient) NewListBySubscriptionPager(options *NetworkTapRulesClientListBySubscriptionOptions) *runtime.Pager[NetworkTapRulesClientListBySubscriptionResponse] {
@@ -335,39 +333,53 @@ func (client *NetworkTapRulesClient) NewListBySubscriptionPager(options *Network
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return NetworkTapRulesClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkTapRulesClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *NetworkTapRulesClient) listBySubscriptionCreateRequest(ctx context.Context, _ *NetworkTapRulesClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkTapRules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NetworkTapRulesClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *NetworkTapRulesClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkTapRules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *NetworkTapRulesClient) listBySubscriptionHandleResponse(resp *http.Response) (NetworkTapRulesClientListBySubscriptionResponse, error) {
+func (client *NetworkTapRulesClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (NetworkTapRulesClientListBySubscriptionResponse, error) {
 	result := NetworkTapRulesClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkTapRulesListResult); err != nil {
 		return NetworkTapRulesClientListBySubscriptionResponse{}, err
 	}
@@ -376,8 +388,6 @@ func (client *NetworkTapRulesClient) listBySubscriptionHandleResponse(resp *http
 
 // BeginResync - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkTapRuleName - Name of the Network Tap Rule.
 //   - options - NetworkTapRulesClientBeginResyncOptions contains the optional parameters for the NetworkTapRulesClient.BeginResync
@@ -401,8 +411,6 @@ func (client *NetworkTapRulesClient) BeginResync(ctx context.Context, resourceGr
 
 // Resync - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkTapRulesClient) resync(ctx context.Context, resourceGroupName string, networkTapRuleName string, options *NetworkTapRulesClientBeginResyncOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkTapRulesClient.BeginResync"
@@ -418,8 +426,7 @@ func (client *NetworkTapRulesClient) resync(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -444,16 +451,14 @@ func (client *NetworkTapRulesClient) resyncCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginUpdate - Update certain properties of the Network Tap Rule resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkTapRuleName - Name of the Network Tap Rule.
 //   - body - Network Tap Rule properties to update.
@@ -478,8 +483,6 @@ func (client *NetworkTapRulesClient) BeginUpdate(ctx context.Context, resourceGr
 
 // Update - Update certain properties of the Network Tap Rule resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkTapRulesClient) update(ctx context.Context, resourceGroupName string, networkTapRuleName string, body NetworkTapRulePatch, options *NetworkTapRulesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkTapRulesClient.BeginUpdate"
@@ -495,8 +498,7 @@ func (client *NetworkTapRulesClient) update(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -521,8 +523,8 @@ func (client *NetworkTapRulesClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -533,8 +535,6 @@ func (client *NetworkTapRulesClient) updateCreateRequest(ctx context.Context, re
 
 // BeginUpdateAdministrativeState - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkTapRuleName - Name of the Network Tap Rule.
 //   - body - Request payload.
@@ -559,8 +559,6 @@ func (client *NetworkTapRulesClient) BeginUpdateAdministrativeState(ctx context.
 
 // UpdateAdministrativeState - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkTapRulesClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, networkTapRuleName string, body UpdateAdministrativeState, options *NetworkTapRulesClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkTapRulesClient.BeginUpdateAdministrativeState"
@@ -576,8 +574,7 @@ func (client *NetworkTapRulesClient) updateAdministrativeState(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -602,8 +599,8 @@ func (client *NetworkTapRulesClient) updateAdministrativeStateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -614,8 +611,6 @@ func (client *NetworkTapRulesClient) updateAdministrativeStateCreateRequest(ctx 
 
 // BeginValidateConfiguration - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkTapRuleName - Name of the Network Tap Rule.
 //   - options - NetworkTapRulesClientBeginValidateConfigurationOptions contains the optional parameters for the NetworkTapRulesClient.BeginValidateConfiguration
@@ -639,8 +634,6 @@ func (client *NetworkTapRulesClient) BeginValidateConfiguration(ctx context.Cont
 
 // ValidateConfiguration - Implements the operation to the underlying resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkTapRulesClient) validateConfiguration(ctx context.Context, resourceGroupName string, networkTapRuleName string, options *NetworkTapRulesClientBeginValidateConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkTapRulesClient.BeginValidateConfiguration"
@@ -656,8 +649,7 @@ func (client *NetworkTapRulesClient) validateConfiguration(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -682,8 +674,8 @@ func (client *NetworkTapRulesClient) validateConfigurationCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

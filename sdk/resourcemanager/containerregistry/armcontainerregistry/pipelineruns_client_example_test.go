@@ -67,7 +67,7 @@ func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateExport() {
 	// 				Progress: &armcontainerregistry.ProgressProperties{
 	// 					Percentage: to.Ptr("20"),
 	// 				},
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:23:21.9261521+00:00"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2020, time.March, 4, 17, 23, 21, 926152100, time.UTC)),
 	// 				Target: &armcontainerregistry.ExportPipelineTargetProperties{
 	// 					Type: to.Ptr("AzureStorageBlob"),
 	// 					URI: to.Ptr("https://accountname.blob.core.windows.net/containername/myblob.tar.gz"),
@@ -129,7 +129,7 @@ func ExamplePipelineRunsClient_BeginCreate_pipelineRunCreateImport() {
 	// 				Progress: &armcontainerregistry.ProgressProperties{
 	// 					Percentage: to.Ptr("100"),
 	// 				},
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:23:21.9261521+00:00"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2020, time.March, 4, 17, 23, 21, 926152100, time.UTC)),
 	// 				ImportedArtifacts: []*string{
 	// 					to.Ptr("sourceRepository/hello-world"),
 	// 					to.Ptr("sourceRepository2@sha256:00000000000000000000000000000000000"),
@@ -211,7 +211,7 @@ func ExamplePipelineRunsClient_Get() {
 	// 				Progress: &armcontainerregistry.ProgressProperties{
 	// 					Percentage: to.Ptr("20"),
 	// 				},
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:23:21.9261521+00:00"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2020, time.March, 4, 17, 23, 21, 926152100, time.UTC)),
 	// 				Target: &armcontainerregistry.ExportPipelineTargetProperties{
 	// 					Type: to.Ptr("AzureStorageBlob"),
 	// 					URI: to.Ptr("https://accountname.blob.core.windows.net/containername/myblob.tar.gz"),
@@ -268,7 +268,7 @@ func ExamplePipelineRunsClient_NewListPager() {
 		// 						Progress: &armcontainerregistry.ProgressProperties{
 		// 							Percentage: to.Ptr("20"),
 		// 						},
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-04T17:23:21.9261521+00:00"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2020, time.March, 4, 17, 23, 21, 926152100, time.UTC)),
 		// 						Target: &armcontainerregistry.ExportPipelineTargetProperties{
 		// 							Type: to.Ptr("AzureStorageBlob"),
 		// 							URI: to.Ptr("https://accountname.blob.core.windows.net/containername/myblob.tar.gz"),
@@ -292,7 +292,7 @@ func ExamplePipelineRunsClient_NewListPager() {
 		// 						Progress: &armcontainerregistry.ProgressProperties{
 		// 							Percentage: to.Ptr("100"),
 		// 						},
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-03-03T17:23:21.9261521+00:00"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2020, time.March, 3, 17, 23, 21, 926152100, time.UTC)),
 		// 						ImportedArtifacts: []*string{
 		// 							to.Ptr("sourceRepository/hello-world"),
 		// 							to.Ptr("sourceRepository2@sha256:00000000000000000000000000000000000"),

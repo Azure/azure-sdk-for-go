@@ -60,12 +60,7 @@ func (client *AscOperationsClient) Get(ctx context.Context, location string, ope
 	if err != nil {
 		return AscOperationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AscOperationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -95,8 +90,11 @@ func (client *AscOperationsClient) getCreateRequest(ctx context.Context, locatio
 }
 
 // getHandleResponse handles the Get response.
-func (client *AscOperationsClient) getHandleResponse(resp *http.Response) (AscOperationsClientGetResponse, error) {
+func (client *AscOperationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AscOperationsClientGetResponse, error) {
 	result := AscOperationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AscOperation); err != nil {
 		return AscOperationsClientGetResponse{}, err
 	}

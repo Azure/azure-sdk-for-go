@@ -36,7 +36,7 @@ func ExampleBackupsClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backups/daily_20210615T160516"),
 	// 		Properties: &armmysqlflexibleservers.ServerBackupProperties{
 	// 			BackupType: to.Ptr("FULL"),
-	// 			CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T16:05:19.902522+00:00"); return t}()),
+	// 			CompletedTime: to.Ptr(time.Date(2021, time.June, 15, 16, 5, 19, 902522000, time.UTC)),
 	// 			Source: to.Ptr("Automatic"),
 	// 		},
 	// 	},
@@ -74,7 +74,7 @@ func ExampleBackupsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backups/daily_20210615T160516"),
 		// 				Properties: &armmysqlflexibleservers.ServerBackupProperties{
 		// 					BackupType: to.Ptr("FULL"),
-		// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-15T16:05:19.902522+00:00"); return t}()),
+		// 					CompletedTime: to.Ptr(time.Date(2021, time.June, 15, 16, 5, 19, 902522000, time.UTC)),
 		// 					Source: to.Ptr("Automatic"),
 		// 				},
 		// 			},
@@ -84,7 +84,7 @@ func ExampleBackupsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backups/daily_20210616T160520"),
 		// 				Properties: &armmysqlflexibleservers.ServerBackupProperties{
 		// 					BackupType: to.Ptr("FULL"),
-		// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-16T16:05:23.9243453+00:00"); return t}()),
+		// 					CompletedTime: to.Ptr(time.Date(2021, time.June, 16, 16, 5, 23, 924345300, time.UTC)),
 		// 					Source: to.Ptr("Automatic"),
 		// 				},
 		// 			},
@@ -94,7 +94,7 @@ func ExampleBackupsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backups/daily_20210617T160525"),
 		// 				Properties: &armmysqlflexibleservers.ServerBackupProperties{
 		// 					BackupType: to.Ptr("FULL"),
-		// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-17T16:05:28.1247488+00:00"); return t}()),
+		// 					CompletedTime: to.Ptr(time.Date(2021, time.June, 17, 16, 5, 28, 124748800, time.UTC)),
 		// 					Source: to.Ptr("Automatic"),
 		// 				},
 		// 			},
@@ -104,7 +104,7 @@ func ExampleBackupsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backups/daily_20210618T160529"),
 		// 				Properties: &armmysqlflexibleservers.ServerBackupProperties{
 		// 					BackupType: to.Ptr("FULL"),
-		// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-18T16:05:32.2736701+00:00"); return t}()),
+		// 					CompletedTime: to.Ptr(time.Date(2021, time.June, 18, 16, 5, 32, 273670100, time.UTC)),
 		// 					Source: to.Ptr("Automatic"),
 		// 				},
 		// 			},
@@ -114,7 +114,7 @@ func ExampleBackupsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backups/daily_20210619T160533"),
 		// 				Properties: &armmysqlflexibleservers.ServerBackupProperties{
 		// 					BackupType: to.Ptr("FULL"),
-		// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-19T16:05:36.8603354+00:00"); return t}()),
+		// 					CompletedTime: to.Ptr(time.Date(2021, time.June, 19, 16, 5, 36, 860335400, time.UTC)),
 		// 					Source: to.Ptr("Automatic"),
 		// 				},
 		// 			},
@@ -124,7 +124,7 @@ func ExampleBackupsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backups/daily_20210620T160538"),
 		// 				Properties: &armmysqlflexibleservers.ServerBackupProperties{
 		// 					BackupType: to.Ptr("FULL"),
-		// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-20T16:05:41.9200138+00:00"); return t}()),
+		// 					CompletedTime: to.Ptr(time.Date(2021, time.June, 20, 16, 5, 41, 920013800, time.UTC)),
 		// 					Source: to.Ptr("Automatic"),
 		// 				},
 		// 			},
@@ -134,7 +134,7 @@ func ExampleBackupsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backups/daily_20210621T160543"),
 		// 				Properties: &armmysqlflexibleservers.ServerBackupProperties{
 		// 					BackupType: to.Ptr("FULL"),
-		// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-21T16:05:48.8528447+00:00"); return t}()),
+		// 					CompletedTime: to.Ptr(time.Date(2021, time.June, 21, 16, 5, 48, 852844700, time.UTC)),
 		// 					Source: to.Ptr("Automatic"),
 		// 				},
 		// 			},
@@ -144,7 +144,7 @@ func ExampleBackupsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backups/daily_20210622T160803"),
 		// 				Properties: &armmysqlflexibleservers.ServerBackupProperties{
 		// 					BackupType: to.Ptr("FULL"),
-		// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-22T16:08:06.3121688+00:00"); return t}()),
+		// 					CompletedTime: to.Ptr(time.Date(2021, time.June, 22, 16, 8, 6, 312168800, time.UTC)),
 		// 					Source: to.Ptr("Automatic"),
 		// 				},
 		// 			},
@@ -154,7 +154,7 @@ func ExampleBackupsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backups/daily_20210622T210807"),
 		// 				Properties: &armmysqlflexibleservers.ServerBackupProperties{
 		// 					BackupType: to.Ptr("FULL"),
-		// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-22T21:08:10.5057354+00:00"); return t}()),
+		// 					CompletedTime: to.Ptr(time.Date(2021, time.June, 22, 21, 8, 10, 505735400, time.UTC)),
 		// 					Source: to.Ptr("Automatic"),
 		// 				},
 		// 			},
@@ -164,7 +164,7 @@ func ExampleBackupsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backups/daily_20210623T212413"),
 		// 				Properties: &armmysqlflexibleservers.ServerBackupProperties{
 		// 					BackupType: to.Ptr("FULL"),
-		// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-23T21:24:16.9401531+00:00"); return t}()),
+		// 					CompletedTime: to.Ptr(time.Date(2021, time.June, 23, 21, 24, 16, 940153100, time.UTC)),
 		// 					Source: to.Ptr("Automatic"),
 		// 				},
 		// 			},
@@ -174,7 +174,7 @@ func ExampleBackupsClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backups/daily_20210624T061328"),
 		// 				Properties: &armmysqlflexibleservers.ServerBackupProperties{
 		// 					BackupType: to.Ptr("FULL"),
-		// 					CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-24T06:13:31.4962137+00:00"); return t}()),
+		// 					CompletedTime: to.Ptr(time.Date(2021, time.June, 24, 6, 13, 31, 496213700, time.UTC)),
 		// 					Source: to.Ptr("Automatic"),
 		// 				},
 		// 			},
@@ -209,7 +209,7 @@ func ExampleBackupsClient_Put() {
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver/backups/customer_20220507t073755_bb392c3b-17c6-4d3f-9742-8479ca87b3ac_mybackup"),
 	// 		Properties: &armmysqlflexibleservers.ServerBackupProperties{
 	// 			BackupType: to.Ptr("FULL"),
-	// 			CompletedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-05-07T07:38:01.1498043+00:00"); return t}()),
+	// 			CompletedTime: to.Ptr(time.Date(2022, time.May, 7, 7, 38, 1, 149804300, time.UTC)),
 	// 			Source: to.Ptr("Automatic"),
 	// 		},
 	// 	},

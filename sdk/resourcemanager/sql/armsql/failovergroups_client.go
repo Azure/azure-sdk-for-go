@@ -18,6 +18,8 @@ import (
 
 // FailoverGroupsClient contains the methods for the FailoverGroups group.
 // Don't use this type directly, use NewFailoverGroupsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type FailoverGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewFailoverGroupsClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginCreateOrUpdate - Creates or updates a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - failoverGroupName - The name of the failover group.
@@ -68,8 +68,6 @@ func (client *FailoverGroupsClient) BeginCreateOrUpdate(ctx context.Context, res
 
 // CreateOrUpdate - Creates or updates a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *FailoverGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroup, options *FailoverGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FailoverGroupsClient.BeginCreateOrUpdate"
@@ -85,8 +83,7 @@ func (client *FailoverGroupsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -115,8 +112,8 @@ func (client *FailoverGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -127,8 +124,6 @@ func (client *FailoverGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // BeginDelete - Deletes a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - failoverGroupName - The name of the failover group.
@@ -153,8 +148,6 @@ func (client *FailoverGroupsClient) BeginDelete(ctx context.Context, resourceGro
 
 // Delete - Deletes a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *FailoverGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FailoverGroupsClient.BeginDelete"
@@ -170,8 +163,7 @@ func (client *FailoverGroupsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -200,15 +192,13 @@ func (client *FailoverGroupsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginFailover - Fails over from the current primary server to this server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - failoverGroupName - The name of the failover group.
@@ -233,8 +223,6 @@ func (client *FailoverGroupsClient) BeginFailover(ctx context.Context, resourceG
 
 // Failover - Fails over from the current primary server to this server.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *FailoverGroupsClient) failover(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FailoverGroupsClient.BeginFailover"
@@ -250,8 +238,7 @@ func (client *FailoverGroupsClient) failover(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -280,8 +267,8 @@ func (client *FailoverGroupsClient) failoverCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -289,8 +276,6 @@ func (client *FailoverGroupsClient) failoverCreateRequest(ctx context.Context, r
 // BeginForceFailoverAllowDataLoss - Fails over from the current primary server to this server. This operation might result
 // in data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - failoverGroupName - The name of the failover group.
@@ -316,8 +301,6 @@ func (client *FailoverGroupsClient) BeginForceFailoverAllowDataLoss(ctx context.
 // ForceFailoverAllowDataLoss - Fails over from the current primary server to this server. This operation might result in
 // data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *FailoverGroupsClient) forceFailoverAllowDataLoss(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginForceFailoverAllowDataLossOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FailoverGroupsClient.BeginForceFailoverAllowDataLoss"
@@ -333,8 +316,7 @@ func (client *FailoverGroupsClient) forceFailoverAllowDataLoss(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -363,16 +345,14 @@ func (client *FailoverGroupsClient) forceFailoverAllowDataLossCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // Get - Gets a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - failoverGroupName - The name of the failover group.
@@ -391,12 +371,7 @@ func (client *FailoverGroupsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return FailoverGroupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FailoverGroupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -423,15 +398,18 @@ func (client *FailoverGroupsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *FailoverGroupsClient) getHandleResponse(resp *http.Response) (FailoverGroupsClientGetResponse, error) {
+func (client *FailoverGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (FailoverGroupsClientGetResponse, error) {
 	result := FailoverGroupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FailoverGroup); err != nil {
 		return FailoverGroupsClientGetResponse{}, err
 	}
@@ -439,8 +417,6 @@ func (client *FailoverGroupsClient) getHandleResponse(resp *http.Response) (Fail
 }
 
 // NewListByServerPager - Lists the failover groups in a server.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - FailoverGroupsClientListByServerOptions contains the optional parameters for the FailoverGroupsClient.NewListByServerPager
@@ -456,47 +432,61 @@ func (client *FailoverGroupsClient) NewListByServerPager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			}, nil)
+			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, nextLink, options)
 			if err != nil {
 				return FailoverGroupsClientListByServerResponse{}, err
 			}
-			return client.listByServerHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FailoverGroupsClientListByServerResponse{}, err
+			}
+			return client.listByServerHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *FailoverGroupsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, _ *FailoverGroupsClientListByServerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FailoverGroupsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, nextLink string, _ *FailoverGroupsClientListByServerOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/failoverGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serverName == "" {
+			return nil, errors.New("parameter serverName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *FailoverGroupsClient) listByServerHandleResponse(resp *http.Response) (FailoverGroupsClientListByServerResponse, error) {
+func (client *FailoverGroupsClient) listByServerHandleResponse(resp *http.Response, successCodes ...int) (FailoverGroupsClientListByServerResponse, error) {
 	result := FailoverGroupsClientListByServerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FailoverGroupListResult); err != nil {
 		return FailoverGroupsClientListByServerResponse{}, err
 	}
@@ -506,8 +496,6 @@ func (client *FailoverGroupsClient) listByServerHandleResponse(resp *http.Respon
 // BeginTryPlannedBeforeForcedFailover - Fails over from the current primary server to this server. This operation tries planned
 // before forced failover but might still result in data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - failoverGroupName - The name of the failover group.
@@ -533,8 +521,6 @@ func (client *FailoverGroupsClient) BeginTryPlannedBeforeForcedFailover(ctx cont
 // TryPlannedBeforeForcedFailover - Fails over from the current primary server to this server. This operation tries planned
 // before forced failover but might still result in data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *FailoverGroupsClient) tryPlannedBeforeForcedFailover(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, options *FailoverGroupsClientBeginTryPlannedBeforeForcedFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FailoverGroupsClient.BeginTryPlannedBeforeForcedFailover"
@@ -550,8 +536,7 @@ func (client *FailoverGroupsClient) tryPlannedBeforeForcedFailover(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -580,16 +565,14 @@ func (client *FailoverGroupsClient) tryPlannedBeforeForcedFailoverCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginUpdate - Updates a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - failoverGroupName - The name of the failover group.
@@ -615,8 +598,6 @@ func (client *FailoverGroupsClient) BeginUpdate(ctx context.Context, resourceGro
 
 // Update - Updates a failover group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *FailoverGroupsClient) update(ctx context.Context, resourceGroupName string, serverName string, failoverGroupName string, parameters FailoverGroupUpdate, options *FailoverGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FailoverGroupsClient.BeginUpdate"
@@ -632,8 +613,7 @@ func (client *FailoverGroupsClient) update(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -662,8 +642,8 @@ func (client *FailoverGroupsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

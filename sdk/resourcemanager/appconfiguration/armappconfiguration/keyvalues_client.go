@@ -64,12 +64,7 @@ func (client *KeyValuesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return KeyValuesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return KeyValuesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -107,8 +102,11 @@ func (client *KeyValuesClient) createOrUpdateCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *KeyValuesClient) createOrUpdateHandleResponse(resp *http.Response) (KeyValuesClientCreateOrUpdateResponse, error) {
+func (client *KeyValuesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (KeyValuesClientCreateOrUpdateResponse, error) {
 	result := KeyValuesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValue); err != nil {
 		return KeyValuesClientCreateOrUpdateResponse{}, err
 	}
@@ -157,8 +155,7 @@ func (client *KeyValuesClient) deleteOperation(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -213,12 +210,7 @@ func (client *KeyValuesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return KeyValuesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return KeyValuesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -252,8 +244,11 @@ func (client *KeyValuesClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *KeyValuesClient) getHandleResponse(resp *http.Response) (KeyValuesClientGetResponse, error) {
+func (client *KeyValuesClient) getHandleResponse(resp *http.Response, successCodes ...int) (KeyValuesClientGetResponse, error) {
 	result := KeyValuesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyValue); err != nil {
 		return KeyValuesClientGetResponse{}, err
 	}

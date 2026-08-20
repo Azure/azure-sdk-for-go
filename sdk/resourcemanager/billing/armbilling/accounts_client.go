@@ -86,8 +86,7 @@ func (client *AccountsClient) addPaymentTerms(ctx context.Context, billingAccoun
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -156,8 +155,7 @@ func (client *AccountsClient) cancelPaymentTerms(ctx context.Context, billingAcc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -178,7 +176,7 @@ func (client *AccountsClient) cancelPaymentTermsCreateRequest(ctx context.Contex
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+	if err := runtime.MarshalAsJSON(req, parameters.UTC()); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -204,12 +202,7 @@ func (client *AccountsClient) ConfirmTransition(ctx context.Context, billingAcco
 	if err != nil {
 		return AccountsClientConfirmTransitionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccountsClientConfirmTransitionResponse{}, err
-	}
-	resp, err := client.confirmTransitionHandleResponse(httpResp)
-	return resp, err
+	return client.confirmTransitionHandleResponse(httpResp, http.StatusOK)
 }
 
 // confirmTransitionCreateRequest creates the ConfirmTransition request.
@@ -231,8 +224,11 @@ func (client *AccountsClient) confirmTransitionCreateRequest(ctx context.Context
 }
 
 // confirmTransitionHandleResponse handles the ConfirmTransition response.
-func (client *AccountsClient) confirmTransitionHandleResponse(resp *http.Response) (AccountsClientConfirmTransitionResponse, error) {
+func (client *AccountsClient) confirmTransitionHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientConfirmTransitionResponse, error) {
 	result := AccountsClientConfirmTransitionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TransitionDetails); err != nil {
 		return AccountsClientConfirmTransitionResponse{}, err
 	}
@@ -257,12 +253,7 @@ func (client *AccountsClient) Get(ctx context.Context, billingAccountName string
 	if err != nil {
 		return AccountsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccountsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -284,8 +275,11 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, billingAccou
 }
 
 // getHandleResponse handles the Get response.
-func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsClientGetResponse, error) {
+func (client *AccountsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientGetResponse, error) {
 	result := AccountsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Account); err != nil {
 		return AccountsClientGetResponse{}, err
 	}
@@ -305,71 +299,85 @@ func (client *AccountsClient) NewListPager(options *AccountsClientListOptions) *
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return AccountsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AccountsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AccountsClient) listCreateRequest(ctx context.Context, options *AccountsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *AccountsClient) listCreateRequest(ctx context.Context, nextLink string, options *AccountsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	if options != nil && options.Expand != nil {
-		reqQP.Set("expand", *options.Expand)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		if options != nil && options.Expand != nil {
+			reqQP.Set("expand", *options.Expand)
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		if options != nil && options.IncludeAll != nil {
+			reqQP.Set("includeAll", strconv.FormatBool(*options.IncludeAll))
+		}
+		if options != nil && options.IncludeAllWithoutBillingProfiles != nil {
+			reqQP.Set("includeAllWithoutBillingProfiles", strconv.FormatBool(*options.IncludeAllWithoutBillingProfiles))
+		}
+		if options != nil && options.IncludeDeleted != nil {
+			reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
+		}
+		if options != nil && options.IncludePendingAgreement != nil {
+			reqQP.Set("includePendingAgreement", strconv.FormatBool(*options.IncludePendingAgreement))
+		}
+		if options != nil && options.IncludeResellee != nil {
+			reqQP.Set("includeResellee", strconv.FormatBool(*options.IncludeResellee))
+		}
+		if options != nil && options.LegalOwnerOID != nil {
+			reqQP.Set("legalOwnerOID", *options.LegalOwnerOID)
+		}
+		if options != nil && options.LegalOwnerTID != nil {
+			reqQP.Set("legalOwnerTID", *options.LegalOwnerTID)
+		}
+		if options != nil && options.Search != nil {
+			reqQP.Set("search", *options.Search)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
-	}
-	if options != nil && options.IncludeAll != nil {
-		reqQP.Set("includeAll", strconv.FormatBool(*options.IncludeAll))
-	}
-	if options != nil && options.IncludeAllWithoutBillingProfiles != nil {
-		reqQP.Set("includeAllWithoutBillingProfiles", strconv.FormatBool(*options.IncludeAllWithoutBillingProfiles))
-	}
-	if options != nil && options.IncludeDeleted != nil {
-		reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
-	}
-	if options != nil && options.IncludePendingAgreement != nil {
-		reqQP.Set("includePendingAgreement", strconv.FormatBool(*options.IncludePendingAgreement))
-	}
-	if options != nil && options.IncludeResellee != nil {
-		reqQP.Set("includeResellee", strconv.FormatBool(*options.IncludeResellee))
-	}
-	if options != nil && options.LegalOwnerOID != nil {
-		reqQP.Set("legalOwnerOID", *options.LegalOwnerOID)
-	}
-	if options != nil && options.LegalOwnerTID != nil {
-		reqQP.Set("legalOwnerTID", *options.LegalOwnerTID)
-	}
-	if options != nil && options.Search != nil {
-		reqQP.Set("search", *options.Search)
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AccountsClient) listHandleResponse(resp *http.Response) (AccountsClientListResponse, error) {
+func (client *AccountsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientListResponse, error) {
 	result := AccountsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountListResult); err != nil {
 		return AccountsClientListResponse{}, err
 	}
@@ -393,42 +401,56 @@ func (client *AccountsClient) NewListInvoiceSectionsByCreateSubscriptionPermissi
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listInvoiceSectionsByCreateSubscriptionPermissionCreateRequest(ctx, billingAccountName, options)
-			}, nil)
+			req, err := client.listInvoiceSectionsByCreateSubscriptionPermissionCreateRequest(ctx, billingAccountName, nextLink, options)
 			if err != nil {
 				return AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}, err
 			}
-			return client.listInvoiceSectionsByCreateSubscriptionPermissionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}, err
+			}
+			return client.listInvoiceSectionsByCreateSubscriptionPermissionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listInvoiceSectionsByCreateSubscriptionPermissionCreateRequest creates the ListInvoiceSectionsByCreateSubscriptionPermission request.
-func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionCreateRequest(ctx context.Context, billingAccountName string, options *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/listInvoiceSectionsWithCreateSubscriptionPermission"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionCreateRequest(ctx context.Context, billingAccountName string, nextLink string, options *AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/listInvoiceSectionsWithCreateSubscriptionPermission"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listInvoiceSectionsByCreateSubscriptionPermissionHandleResponse handles the ListInvoiceSectionsByCreateSubscriptionPermission response.
-func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionHandleResponse(resp *http.Response) (AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse, error) {
+func (client *AccountsClient) listInvoiceSectionsByCreateSubscriptionPermissionHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse, error) {
 	result := AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InvoiceSectionWithCreateSubPermissionListResult); err != nil {
 		return AccountsClientListInvoiceSectionsByCreateSubscriptionPermissionResponse{}, err
 	}
@@ -480,8 +502,7 @@ func (client *AccountsClient) update(ctx context.Context, billingAccountName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -529,12 +550,7 @@ func (client *AccountsClient) ValidatePaymentTerms(ctx context.Context, billingA
 	if err != nil {
 		return AccountsClientValidatePaymentTermsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccountsClientValidatePaymentTermsResponse{}, err
-	}
-	resp, err := client.validatePaymentTermsHandleResponse(httpResp)
-	return resp, err
+	return client.validatePaymentTermsHandleResponse(httpResp, http.StatusOK)
 }
 
 // validatePaymentTermsCreateRequest creates the ValidatePaymentTerms request.
@@ -560,8 +576,11 @@ func (client *AccountsClient) validatePaymentTermsCreateRequest(ctx context.Cont
 }
 
 // validatePaymentTermsHandleResponse handles the ValidatePaymentTerms response.
-func (client *AccountsClient) validatePaymentTermsHandleResponse(resp *http.Response) (AccountsClientValidatePaymentTermsResponse, error) {
+func (client *AccountsClient) validatePaymentTermsHandleResponse(resp *http.Response, successCodes ...int) (AccountsClientValidatePaymentTermsResponse, error) {
 	result := AccountsClientValidatePaymentTermsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PaymentTermsEligibilityResult); err != nil {
 		return AccountsClientValidatePaymentTermsResponse{}, err
 	}

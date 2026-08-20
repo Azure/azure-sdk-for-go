@@ -62,12 +62,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) GetByPrivateLinkScop
 	if err != nil {
 		return NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse{}, err
-	}
-	resp, err := client.getByPrivateLinkScopeHandleResponse(httpResp)
-	return resp, err
+	return client.getByPrivateLinkScopeHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByPrivateLinkScopeCreateRequest creates the GetByPrivateLinkScope request.
@@ -101,8 +96,11 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getByPrivateLinkScop
 }
 
 // getByPrivateLinkScopeHandleResponse handles the GetByPrivateLinkScope response.
-func (client *NetworkSecurityPerimeterConfigurationsClient) getByPrivateLinkScopeHandleResponse(resp *http.Response) (NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse, error) {
+func (client *NetworkSecurityPerimeterConfigurationsClient) getByPrivateLinkScopeHandleResponse(resp *http.Response, successCodes ...int) (NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse, error) {
 	result := NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfiguration); err != nil {
 		return NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse{}, err
 	}
@@ -125,47 +123,61 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) NewListByPrivateLink
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByPrivateLinkScopeCreateRequest(ctx, resourceGroupName, scopeName, options)
-			}, nil)
+			req, err := client.listByPrivateLinkScopeCreateRequest(ctx, resourceGroupName, scopeName, nextLink, options)
 			if err != nil {
 				return NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse{}, err
 			}
-			return client.listByPrivateLinkScopeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse{}, err
+			}
+			return client.listByPrivateLinkScopeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByPrivateLinkScopeCreateRequest creates the ListByPrivateLinkScope request.
-func (client *NetworkSecurityPerimeterConfigurationsClient) listByPrivateLinkScopeCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, _ *NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/privateLinkScopes/{scopeName}/networkSecurityPerimeterConfigurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NetworkSecurityPerimeterConfigurationsClient) listByPrivateLinkScopeCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, nextLink string, _ *NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/privateLinkScopes/{scopeName}/networkSecurityPerimeterConfigurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if scopeName == "" {
+			return nil, errors.New("parameter scopeName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scopeName}", url.PathEscape(scopeName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if scopeName == "" {
-		return nil, errors.New("parameter scopeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scopeName}", url.PathEscape(scopeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByPrivateLinkScopeHandleResponse handles the ListByPrivateLinkScope response.
-func (client *NetworkSecurityPerimeterConfigurationsClient) listByPrivateLinkScopeHandleResponse(resp *http.Response) (NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse, error) {
+func (client *NetworkSecurityPerimeterConfigurationsClient) listByPrivateLinkScopeHandleResponse(resp *http.Response, successCodes ...int) (NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse, error) {
 	result := NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfigurationListResult); err != nil {
 		return NetworkSecurityPerimeterConfigurationsClientListByPrivateLinkScopeResponse{}, err
 	}
@@ -213,8 +225,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) reconcileForPrivateL
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

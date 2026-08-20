@@ -198,7 +198,7 @@ func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 	// res = armbulkactions.BulkCreateCustomClientCreateOrUpdateResponse{
 	// 	LocationBasedBulkCreateCustom: armbulkactions.LocationBasedBulkCreateCustom{
 	// 		Properties: &armbulkactions.BulkCreateCustomProperties{
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 	// 			Capacity: to.Ptr[int32](10),
 	// 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
@@ -329,10 +329,10 @@ func ExampleBulkCreateCustomClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armbulkactions.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:25:00Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -381,7 +381,7 @@ func ExampleBulkCreateCustomClient_Get() {
 	// res = armbulkactions.BulkCreateCustomClientGetResponse{
 	// 	LocationBasedBulkCreateCustom: armbulkactions.LocationBasedBulkCreateCustom{
 	// 		Properties: &armbulkactions.BulkCreateCustomProperties{
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 	// 			Capacity: to.Ptr[int32](10),
 	// 			CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
@@ -500,10 +500,10 @@ func ExampleBulkCreateCustomClient_Get() {
 	// 		SystemData: &armbulkactions.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:25:00Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -533,8 +533,8 @@ func ExampleBulkCreateCustomClient_GetAsyncOperationStatus() {
 	// 		Name: to.Ptr("f1ac145b-9d8b-417d-8101-9962d03c0904"),
 	// 		Status: to.Ptr("Failed"),
 	// 		PercentComplete: to.Ptr[float64](100),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:35:00Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2026, time.July, 8, 18, 35, 0, 0, time.UTC)),
 	// 		Operations: []*armbulkactions.OperationStatusResult{
 	// 			{
 	// 				ID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/providers/Microsoft.Compute/locations/eastus/bulkCreateCustom/9d8e1f2a-3b4c-4d5e-6f7a-8b9c0d1e2f3a"),
@@ -542,8 +542,8 @@ func ExampleBulkCreateCustomClient_GetAsyncOperationStatus() {
 	// 				ResourceID: to.Ptr("/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/virtualMachines/bulkvm-payments-0"),
 	// 				Status: to.Ptr("Failed"),
 	// 				PercentComplete: to.Ptr[float64](100),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:32:00Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
+	// 				EndTime: to.Ptr(time.Date(2026, time.July, 8, 18, 32, 0, 0, time.UTC)),
 	// 				Operations: []*armbulkactions.OperationStatusResult{
 	// 				},
 	// 				Error: &armbulkactions.ErrorDetail{
@@ -606,7 +606,7 @@ func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 		// 		Value: []*armbulkactions.LocationBasedBulkCreateCustom{
 		// 			{
 		// 				Properties: &armbulkactions.BulkCreateCustomProperties{
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 		// 					Capacity: to.Ptr[int32](10),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
@@ -725,15 +725,15 @@ func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:25:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Properties: &armbulkactions.BulkCreateCustomProperties{
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateCreating),
 		// 					Capacity: to.Ptr[int32](10),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
@@ -852,10 +852,10 @@ func ExampleBulkCreateCustomClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:25:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -892,7 +892,7 @@ func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 		// 		Value: []*armbulkactions.LocationBasedBulkCreateCustom{
 		// 			{
 		// 				Properties: &armbulkactions.BulkCreateCustomProperties{
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateSucceeded),
 		// 					Capacity: to.Ptr[int32](10),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
@@ -1011,15 +1011,15 @@ func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:25:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
 		// 				Properties: &armbulkactions.BulkCreateCustomProperties{
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armbulkactions.ProvisioningStateCreating),
 		// 					Capacity: to.Ptr[int32](10),
 		// 					CapacityType: to.Ptr(armbulkactions.CapacityTypeVM),
@@ -1138,10 +1138,10 @@ func ExampleBulkCreateCustomClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:20:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 20, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-08T18:25:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.July, 8, 18, 25, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

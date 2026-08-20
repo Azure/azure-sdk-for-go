@@ -48,7 +48,7 @@ func ExampleServerKeysClient_BeginCreateOrUpdate_createsOrUpdatesAServerKey() {
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ServerKeyProperties{
 	// 			ServerKeyType: to.Ptr(armsql.ServerKeyTypeAzureKeyVault),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-15T00:00:00Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2024, time.November, 15, 0, 0, 0, 0, time.UTC)),
 	// 			Thumbprint: to.Ptr("00112233445566778899AABBCCDDEEFFAABBCCDD"),
 	// 		},
 	// 	},
@@ -91,7 +91,7 @@ func ExampleServerKeysClient_BeginCreateOrUpdate_createsOrUpdatesAServerKeyWithV
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ServerKeyProperties{
 	// 			ServerKeyType: to.Ptr(armsql.ServerKeyTypeAzureKeyVault),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-15T00:00:00Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2024, time.November, 15, 0, 0, 0, 0, time.UTC)),
 	// 			Thumbprint: to.Ptr("00112233445566778899AABBCCDDEEFFAABBCCDD"),
 	// 		},
 	// 	},
@@ -151,7 +151,7 @@ func ExampleServerKeysClient_Get_getTheServerKey() {
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ServerKeyProperties{
 	// 			ServerKeyType: to.Ptr(armsql.ServerKeyTypeAzureKeyVault),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-15T00:00:00Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2024, time.November, 15, 0, 0, 0, 0, time.UTC)),
 	// 			Thumbprint: to.Ptr("00112233445566778899AABBCCDDEEFFAABBCCDD"),
 	// 		},
 	// 	},
@@ -185,7 +185,7 @@ func ExampleServerKeysClient_Get_getTheServerKeyWithVersionlessKey() {
 	// 		Location: to.Ptr("Japan East"),
 	// 		Properties: &armsql.ServerKeyProperties{
 	// 			ServerKeyType: to.Ptr(armsql.ServerKeyTypeAzureKeyVault),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-15T00:00:00Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2024, time.November, 15, 0, 0, 0, 0, time.UTC)),
 	// 			KeyVersion: to.Ptr("01234567890123456789012345678901"),
 	// 			Thumbprint: to.Ptr("00112233445566778899AABBCCDDEEFFAABBCCDD"),
 	// 		},
@@ -226,7 +226,7 @@ func ExampleServerKeysClient_NewListByServerPager() {
 		// 				Location: to.Ptr("Japan East"),
 		// 				Properties: &armsql.ServerKeyProperties{
 		// 					ServerKeyType: to.Ptr(armsql.ServerKeyTypeAzureKeyVault),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-15T00:00:00Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2024, time.November, 15, 0, 0, 0, 0, time.UTC)),
 		// 					Thumbprint: to.Ptr("00112233445566778899AABBCCDDEEFFAABBCCDD"),
 		// 				},
 		// 			},
@@ -238,7 +238,7 @@ func ExampleServerKeysClient_NewListByServerPager() {
 		// 				Location: to.Ptr("Japan East"),
 		// 				Properties: &armsql.ServerKeyProperties{
 		// 					ServerKeyType: to.Ptr(armsql.ServerKeyTypeAzureKeyVault),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-15T00:00:00Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2024, time.November, 15, 0, 0, 0, 0, time.UTC)),
 		// 					Thumbprint: to.Ptr("AAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBB"),
 		// 				},
 		// 			},

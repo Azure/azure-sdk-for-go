@@ -18,6 +18,8 @@ import (
 
 // DirectLineClient contains the methods for the DirectLine group.
 // Don't use this type directly, use NewDirectLineClient() instead.
+//
+// Generated from API version 2023-09-15-preview
 type DirectLineClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDirectLineClient(subscriptionID string, credential azcore.TokenCredentia
 
 // RegenerateKeys - Regenerates secret keys and returns them for the DirectLine Channel of a particular BotService resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Bot resource.
 //   - channelName - The name of the Channel resource for which keys are to be regenerated.
@@ -63,12 +63,7 @@ func (client *DirectLineClient) RegenerateKeys(ctx context.Context, resourceGrou
 	if err != nil {
 		return DirectLineClientRegenerateKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DirectLineClientRegenerateKeysResponse{}, err
-	}
-	resp, err := client.regenerateKeysHandleResponse(httpResp)
-	return resp, err
+	return client.regenerateKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.
@@ -95,8 +90,8 @@ func (client *DirectLineClient) regenerateKeysCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -106,8 +101,11 @@ func (client *DirectLineClient) regenerateKeysCreateRequest(ctx context.Context,
 }
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
-func (client *DirectLineClient) regenerateKeysHandleResponse(resp *http.Response) (DirectLineClientRegenerateKeysResponse, error) {
+func (client *DirectLineClient) regenerateKeysHandleResponse(resp *http.Response, successCodes ...int) (DirectLineClientRegenerateKeysResponse, error) {
 	result := DirectLineClientRegenerateKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BotChannel); err != nil {
 		return DirectLineClientRegenerateKeysResponse{}, err
 	}

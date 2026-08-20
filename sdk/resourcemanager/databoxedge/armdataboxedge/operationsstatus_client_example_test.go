@@ -32,14 +32,14 @@ func ExampleOperationsStatusClient_Get() {
 	// res = armdataboxedge.OperationsStatusClientGetResponse{
 	// 	Job: armdataboxedge.Job{
 	// 		Name: to.Ptr("159a00c7-8543-4343-9435-263ac87df3bb"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T03:18:51.4270267Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2018, time.December, 18, 3, 18, 51, 427026700, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/id/locations/westus/operationsStatus/159a00c7-8543-4343-9435-263ac87df3bb"),
 	// 		PercentComplete: to.Ptr[int32](100),
 	// 		Properties: &armdataboxedge.JobProperties{
 	// 			CurrentStage: to.Ptr(armdataboxedge.UpdateOperationStageSuccess),
 	// 			JobType: to.Ptr(armdataboxedge.JobTypeDownloadUpdates),
 	// 		},
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-12-18T02:18:51.4270267Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2018, time.December, 18, 2, 18, 51, 427026700, time.UTC)),
 	// 		Status: to.Ptr(armdataboxedge.JobStatusSucceeded),
 	// 	},
 	// }

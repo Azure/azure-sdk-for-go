@@ -18,6 +18,8 @@ import (
 
 // NetworkDeviceSKUsClient contains the methods for the NetworkDeviceSKUs group.
 // Don't use this type directly, use NewNetworkDeviceSKUsClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkDeviceSKUsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkDeviceSKUsClient(subscriptionID string, credential azcore.TokenCr
 
 // Get - Get a Network Device SKU details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - networkDeviceSKUName - Name of the Network Device SKU.
 //   - options - NetworkDeviceSKUsClientGetOptions contains the optional parameters for the NetworkDeviceSKUsClient.Get method.
 func (client *NetworkDeviceSKUsClient) Get(ctx context.Context, networkDeviceSKUName string, options *NetworkDeviceSKUsClientGetOptions) (NetworkDeviceSKUsClientGetResponse, error) {
@@ -59,12 +59,7 @@ func (client *NetworkDeviceSKUsClient) Get(ctx context.Context, networkDeviceSKU
 	if err != nil {
 		return NetworkDeviceSKUsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkDeviceSKUsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -83,15 +78,18 @@ func (client *NetworkDeviceSKUsClient) getCreateRequest(ctx context.Context, net
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *NetworkDeviceSKUsClient) getHandleResponse(resp *http.Response) (NetworkDeviceSKUsClientGetResponse, error) {
+func (client *NetworkDeviceSKUsClient) getHandleResponse(resp *http.Response, successCodes ...int) (NetworkDeviceSKUsClientGetResponse, error) {
 	result := NetworkDeviceSKUsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkDeviceSKU); err != nil {
 		return NetworkDeviceSKUsClientGetResponse{}, err
 	}
@@ -99,8 +97,6 @@ func (client *NetworkDeviceSKUsClient) getHandleResponse(resp *http.Response) (N
 }
 
 // NewListBySubscriptionPager - List Network Device SKUs for the given subscription.
-//
-// Generated from API version 2025-07-15
 //   - options - NetworkDeviceSKUsClientListBySubscriptionOptions contains the optional parameters for the NetworkDeviceSKUsClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkDeviceSKUsClient) NewListBySubscriptionPager(options *NetworkDeviceSKUsClientListBySubscriptionOptions) *runtime.Pager[NetworkDeviceSKUsClientListBySubscriptionResponse] {
@@ -114,39 +110,53 @@ func (client *NetworkDeviceSKUsClient) NewListBySubscriptionPager(options *Netwo
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return NetworkDeviceSKUsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkDeviceSKUsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *NetworkDeviceSKUsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *NetworkDeviceSKUsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkDeviceSkus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NetworkDeviceSKUsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *NetworkDeviceSKUsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkDeviceSkus"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *NetworkDeviceSKUsClient) listBySubscriptionHandleResponse(resp *http.Response) (NetworkDeviceSKUsClientListBySubscriptionResponse, error) {
+func (client *NetworkDeviceSKUsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (NetworkDeviceSKUsClientListBySubscriptionResponse, error) {
 	result := NetworkDeviceSKUsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkDeviceSKUsListResult); err != nil {
 		return NetworkDeviceSKUsClientListBySubscriptionResponse{}, err
 	}

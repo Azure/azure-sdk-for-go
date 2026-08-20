@@ -20,7 +20,7 @@ import (
 // SubscriptionNetworkManagerConnectionsClient contains the methods for the SubscriptionNetworkManagerConnections group.
 // Don't use this type directly, use NewSubscriptionNetworkManagerConnectionsClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type SubscriptionNetworkManagerConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -62,12 +62,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) CreateOrUpdate(ctx co
 	if err != nil {
 		return SubscriptionNetworkManagerConnectionsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SubscriptionNetworkManagerConnectionsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -86,7 +81,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) createOrUpdateCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -97,8 +92,11 @@ func (client *SubscriptionNetworkManagerConnectionsClient) createOrUpdateCreateR
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SubscriptionNetworkManagerConnectionsClient) createOrUpdateHandleResponse(resp *http.Response) (SubscriptionNetworkManagerConnectionsClientCreateOrUpdateResponse, error) {
+func (client *SubscriptionNetworkManagerConnectionsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SubscriptionNetworkManagerConnectionsClientCreateOrUpdateResponse, error) {
 	result := SubscriptionNetworkManagerConnectionsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagerConnection); err != nil {
 		return SubscriptionNetworkManagerConnectionsClientCreateOrUpdateResponse{}, err
 	}
@@ -125,8 +123,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) Delete(ctx context.Co
 		return SubscriptionNetworkManagerConnectionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SubscriptionNetworkManagerConnectionsClientDeleteResponse{}, err
+		return SubscriptionNetworkManagerConnectionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SubscriptionNetworkManagerConnectionsClientDeleteResponse{}, nil
 }
@@ -147,7 +144,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) deleteCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -171,12 +168,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) Get(ctx context.Conte
 	if err != nil {
 		return SubscriptionNetworkManagerConnectionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SubscriptionNetworkManagerConnectionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -195,15 +187,18 @@ func (client *SubscriptionNetworkManagerConnectionsClient) getCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SubscriptionNetworkManagerConnectionsClient) getHandleResponse(resp *http.Response) (SubscriptionNetworkManagerConnectionsClientGetResponse, error) {
+func (client *SubscriptionNetworkManagerConnectionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SubscriptionNetworkManagerConnectionsClientGetResponse, error) {
 	result := SubscriptionNetworkManagerConnectionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagerConnection); err != nil {
 		return SubscriptionNetworkManagerConnectionsClientGetResponse{}, err
 	}
@@ -224,45 +219,59 @@ func (client *SubscriptionNetworkManagerConnectionsClient) NewListPager(options 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return SubscriptionNetworkManagerConnectionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SubscriptionNetworkManagerConnectionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *SubscriptionNetworkManagerConnectionsClient) listCreateRequest(ctx context.Context, options *SubscriptionNetworkManagerConnectionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkManagerConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SubscriptionNetworkManagerConnectionsClient) listCreateRequest(ctx context.Context, nextLink string, options *SubscriptionNetworkManagerConnectionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkManagerConnections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SubscriptionNetworkManagerConnectionsClient) listHandleResponse(resp *http.Response) (SubscriptionNetworkManagerConnectionsClientListResponse, error) {
+func (client *SubscriptionNetworkManagerConnectionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SubscriptionNetworkManagerConnectionsClientListResponse, error) {
 	result := SubscriptionNetworkManagerConnectionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagerConnectionListResult); err != nil {
 		return SubscriptionNetworkManagerConnectionsClientListResponse{}, err
 	}

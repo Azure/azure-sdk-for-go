@@ -52,13 +52,13 @@ func ExampleNetworkDevicesClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientCreateResponse{
-	// 	NetworkDevice: &armmanagednetworkfabric.NetworkDevice{
+	// 	NetworkDevice: armmanagednetworkfabric.NetworkDevice{
 	// 		Properties: &armmanagednetworkfabric.NetworkDeviceProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			HostName: to.Ptr("NFA-Device"),
@@ -97,10 +97,10 @@ func ExampleNetworkDevicesClient_BeginCreate() {
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -123,7 +123,7 @@ func ExampleNetworkDevicesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -146,7 +146,7 @@ func ExampleNetworkDevicesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientGetResponse{
-	// 	NetworkDevice: &armmanagednetworkfabric.NetworkDevice{
+	// 	NetworkDevice: armmanagednetworkfabric.NetworkDevice{
 	// 		Properties: &armmanagednetworkfabric.NetworkDeviceProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			HostName: to.Ptr("NFA-Device"),
@@ -164,7 +164,7 @@ func ExampleNetworkDevicesClient_Get() {
 	// 			},
 	// 			SecretRotationStatus: []*armmanagednetworkfabric.SecretRotationStatus{
 	// 				{
-	// 					LastRotationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-09T04:51:41.251Z"); return t}()),
+	// 					LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 					SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusInSync),
 	// 					SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
 	// 						KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-1/7e61b8efbcdd4e28963560dba3021df7"),
@@ -175,7 +175,7 @@ func ExampleNetworkDevicesClient_Get() {
 	// 					SecretType: to.Ptr("Admin user password"),
 	// 				},
 	// 				{
-	// 					LastRotationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-09T02:32:12.904Z"); return t}()),
+	// 					LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 2, 32, 12, 904000000, time.UTC)),
 	// 					SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusOutOfSync),
 	// 					SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
 	// 						KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-2/11a536561da34d6b8b452d880df58f3a"),
@@ -186,7 +186,7 @@ func ExampleNetworkDevicesClient_Get() {
 	// 					SecretType: to.Ptr("AzureOperatorRW user password"),
 	// 				},
 	// 				{
-	// 					LastRotationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-09T02:32:12.904Z"); return t}()),
+	// 					LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 2, 32, 12, 904000000, time.UTC)),
 	// 					SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusSynchronizing),
 	// 					SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
 	// 						KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-3/22b646561da34d6b8b452d880df69a4b"),
@@ -199,7 +199,7 @@ func ExampleNetworkDevicesClient_Get() {
 	// 			},
 	// 			CertificateRotationStatus: []*armmanagednetworkfabric.CertificateRotationStatus{
 	// 				{
-	// 					LastRotationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-09T04:51:41.251Z"); return t}()),
+	// 					LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 					SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusInSync),
 	// 					CertificateArchiveReference: &armmanagednetworkfabric.CertificateArchiveReference{
 	// 						KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/certificates/example-certificate-1/9f3c2a7d4e8b4c1a9a7f2e6d5c3b1a2f"),
@@ -224,10 +224,10 @@ func ExampleNetworkDevicesClient_Get() {
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -288,10 +288,10 @@ func ExampleNetworkDevicesClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armmanagednetworkfabric.SystemData{
 		// 					CreatedBy: to.Ptr("email@address.com"),
 		// 					CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("UserId"),
 		// 					LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -356,10 +356,10 @@ func ExampleNetworkDevicesClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armmanagednetworkfabric.SystemData{
 		// 					CreatedBy: to.Ptr("email@address.com"),
 		// 					CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("UserId"),
 		// 					LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -388,13 +388,13 @@ func ExampleNetworkDevicesClient_BeginReboot() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientRebootResponse{
-	// 	OperationStatusResult: &armmanagednetworkfabric.OperationStatusResult{
+	// 	OperationStatusResult: armmanagednetworkfabric.OperationStatusResult{
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
@@ -431,19 +431,19 @@ func ExampleNetworkDevicesClient_BeginRefreshConfiguration() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientRefreshConfigurationResponse{
-	// 	NetworkDeviceRefreshConfigurationResponse: &armmanagednetworkfabric.NetworkDeviceRefreshConfigurationResponse{
+	// 	NetworkDeviceRefreshConfigurationResponse: armmanagednetworkfabric.NetworkDeviceRefreshConfigurationResponse{
 	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
 	// 		Name: to.Ptr("example-device"),
 	// 		Status: to.Ptr("Succeeded"),
 	// 		PercentComplete: to.Ptr[float64](71),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-17T10:47:32.146Z"); return t}()),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-17T10:47:32.146Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2025, time.June, 17, 10, 47, 32, 146000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.June, 17, 10, 47, 32, 146000000, time.UTC)),
 	// 		Operations: []*armmanagednetworkfabric.OperationStatusResult{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
@@ -451,8 +451,8 @@ func ExampleNetworkDevicesClient_BeginRefreshConfiguration() {
 	// 				ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
 	// 				Name: to.Ptr("example-device"),
 	// 				PercentComplete: to.Ptr[float64](17),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-17T10:47:32.140Z"); return t}()),
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-17T10:47:32.140Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2025, time.June, 17, 10, 47, 32, 140000000, time.UTC)),
+	// 				EndTime: to.Ptr(time.Date(2025, time.June, 17, 10, 47, 32, 140000000, time.UTC)),
 	// 				Operations: []*armmanagednetworkfabric.OperationStatusResult{
 	// 					{
 	// 						ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
@@ -460,8 +460,8 @@ func ExampleNetworkDevicesClient_BeginRefreshConfiguration() {
 	// 						Name: to.Ptr("example-device"),
 	// 						Status: to.Ptr("InProgress"),
 	// 						PercentComplete: to.Ptr[float64](84),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-17T10:47:32.137Z"); return t}()),
-	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-17T10:47:32.139Z"); return t}()),
+	// 						StartTime: to.Ptr(time.Date(2025, time.June, 17, 10, 47, 32, 137000000, time.UTC)),
+	// 						EndTime: to.Ptr(time.Date(2025, time.June, 17, 10, 47, 32, 139000000, time.UTC)),
 	// 						Operations: []*armmanagednetworkfabric.OperationStatusResult{
 	// 						},
 	// 						Error: &armmanagednetworkfabric.ErrorDetail{
@@ -532,17 +532,17 @@ func ExampleNetworkDevicesClient_BeginResyncCertificates_successfulCertificateRe
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientResyncCertificatesResponse{
-	// 	NetworkFabricResyncCertificatesResponse: &armmanagednetworkfabric.NetworkFabricResyncCertificatesResponse{
+	// 	NetworkFabricResyncCertificatesResponse: armmanagednetworkfabric.NetworkFabricResyncCertificatesResponse{
 	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
 	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-25T08:06:00.912Z"); return t}()),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-25T09:10:00.912Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 912000000, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -565,17 +565,17 @@ func ExampleNetworkDevicesClient_BeginResyncCertificates_errorWhilePerformingCer
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientResyncCertificatesResponse{
-	// 	NetworkFabricResyncCertificatesResponse: &armmanagednetworkfabric.NetworkFabricResyncCertificatesResponse{
+	// 	NetworkFabricResyncCertificatesResponse: armmanagednetworkfabric.NetworkFabricResyncCertificatesResponse{
 	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
 	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-25T08:06:00.912Z"); return t}()),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-25T09:10:00.912Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 912000000, time.UTC)),
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr("CouldNotConnect"),
@@ -602,17 +602,17 @@ func ExampleNetworkDevicesClient_BeginResyncPasswords_successfulPasswordResync()
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientResyncPasswordsResponse{
-	// 	NetworkDeviceResyncPasswordsResponse: &armmanagednetworkfabric.NetworkDeviceResyncPasswordsResponse{
+	// 	NetworkDeviceResyncPasswordsResponse: armmanagednetworkfabric.NetworkDeviceResyncPasswordsResponse{
 	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
 	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-25T08:06:00.912Z"); return t}()),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-25T09:10:00.912Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 912000000, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -635,17 +635,17 @@ func ExampleNetworkDevicesClient_BeginResyncPasswords_errorWhilePerformingPasswo
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientResyncPasswordsResponse{
-	// 	NetworkDeviceResyncPasswordsResponse: &armmanagednetworkfabric.NetworkDeviceResyncPasswordsResponse{
+	// 	NetworkDeviceResyncPasswordsResponse: armmanagednetworkfabric.NetworkDeviceResyncPasswordsResponse{
 	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
 	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-25T08:06:00.912Z"); return t}()),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-25T09:10:00.912Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2025, time.September, 25, 8, 6, 0, 912000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.September, 25, 9, 10, 0, 912000000, time.UTC)),
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr("CouldNotConnect"),
@@ -674,13 +674,13 @@ func ExampleNetworkDevicesClient_BeginRunRoCommand() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientRunRoCommandResponse{
-	// 	CommonPostActionResponseForDeviceROCommandsOperationStatusResult: &armmanagednetworkfabric.CommonPostActionResponseForDeviceROCommandsOperationStatusResult{
+	// 	CommonPostActionResponseForDeviceROCommandsOperationStatusResult: armmanagednetworkfabric.CommonPostActionResponseForDeviceROCommandsOperationStatusResult{
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr("zuwgsrizc"),
 	// 			Message: to.Ptr("v"),
@@ -695,7 +695,7 @@ func ExampleNetworkDevicesClient_BeginRunRoCommand() {
 	// 				},
 	// 			},
 	// 		},
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-25T08:06:00.912Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2025, time.April, 25, 8, 6, 0, 912000000, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/providers/Microsoft.ManagedNetworkFabric/locations/UKSOUTH/operationStatuses/b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
 	// 		Name: to.Ptr("b7c3d8f2-56e4-4a9b-8c7d-123456789ABC*1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF1234567890ABCDEF"),
 	// 		Properties: &armmanagednetworkfabric.CommonPostActionResponseForDeviceROCommands{
@@ -704,7 +704,7 @@ func ExampleNetworkDevicesClient_BeginRunRoCommand() {
 	// 			DeviceConfigurationPreview: to.Ptr("{\n  \"architecture\": \"arm64\",\n  \"bootupTimestamp\": 1745279999.1234567,\n  \"configMacAddress\": \"11:22:33:44:55:66\",\n  \"hardwareRevision\": \"RevB\",\n  \"hwMacAddress\": \"66:55:44:33:22:11\",\n  \"imageFormatVersion\": \"2.0\",\n  \"imageOptimization\": \"High\",\n  \"internalBuildId\": \"a123b456-c789-0123-d456-7890e123f456\",\n  \"internalVersion\": \"5.12.1FX-NX-12345678.5121FXNX\",\n  \"isIntlVersion\": true,\n  \"kernelVersion\": \"6.0.0-1.cm3\",\n  \"memFree\": 209715200,\n  \"memTotal\": 262144000,\n  \"mfgName\": \"Cisco\",\n  \"modelName\": \"vEOS\",\n  \"serialNumber\": \"1234567890ABCDEF1234567890ABCDEF\",\n  \"systemMacAddress\": \"aa:bb:cc:dd:ee:ff\",\n  \"uptime\": 123456.78901234567,\n  \"version\": \"5.12.1FX-NX-12345678.5121FXNX (release build)\"\n}"),
 	// 		},
 	// 		ResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-25T08:06:00.912Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2025, time.April, 25, 8, 6, 0, 912000000, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }
@@ -730,13 +730,13 @@ func ExampleNetworkDevicesClient_BeginRunRwCommand() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientRunRwCommandResponse{
-	// 	NetworkDeviceRunRwCommandResponse: &armmanagednetworkfabric.NetworkDeviceRunRwCommandResponse{
+	// 	NetworkDeviceRunRwCommandResponse: armmanagednetworkfabric.NetworkDeviceRunRwCommandResponse{
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr("CommandExecutionPending"),
@@ -802,13 +802,13 @@ func ExampleNetworkDevicesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientUpdateResponse{
-	// 	NetworkDevice: &armmanagednetworkfabric.NetworkDevice{
+	// 	NetworkDevice: armmanagednetworkfabric.NetworkDevice{
 	// 		Properties: &armmanagednetworkfabric.NetworkDeviceProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			HostName: to.Ptr("NFA-Device"),
@@ -847,10 +847,10 @@ func ExampleNetworkDevicesClient_BeginUpdate() {
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -878,13 +878,13 @@ func ExampleNetworkDevicesClient_BeginUpdateAdministrativeState() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientUpdateAdministrativeStateResponse{
-	// 	NetworkDeviceUpdateAdministrativeStateResponse: &armmanagednetworkfabric.NetworkDeviceUpdateAdministrativeStateResponse{
+	// 	NetworkDeviceUpdateAdministrativeStateResponse: armmanagednetworkfabric.NetworkDeviceUpdateAdministrativeStateResponse{
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
@@ -924,17 +924,17 @@ func ExampleNetworkDevicesClient_BeginUpgrade() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.NetworkDevicesClientUpgradeResponse{
-	// 	NetworkDeviceUpgradeResponse: &armmanagednetworkfabric.NetworkDeviceUpgradeResponse{
+	// 	NetworkDeviceUpgradeResponse: armmanagednetworkfabric.NetworkDeviceUpgradeResponse{
 	// 		Status: to.Ptr("Failed"),
 	// 		PercentComplete: to.Ptr[float64](30),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-28T04:16:32.382Z"); return t}()),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-28T04:16:32.382Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2025, time.June, 28, 4, 16, 32, 382000000, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2025, time.June, 28, 4, 16, 32, 382000000, time.UTC)),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr("InsufficientResources"),
 	// 			Message: to.Ptr("The system has insufficient resources to complete the operation."),

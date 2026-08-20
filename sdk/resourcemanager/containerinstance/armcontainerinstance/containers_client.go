@@ -64,12 +64,7 @@ func (client *ContainersClient) Attach(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ContainersClientAttachResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainersClientAttachResponse{}, err
-	}
-	resp, err := client.attachHandleResponse(httpResp)
-	return resp, err
+	return client.attachHandleResponse(httpResp, http.StatusOK)
 }
 
 // attachCreateRequest creates the Attach request.
@@ -103,8 +98,11 @@ func (client *ContainersClient) attachCreateRequest(ctx context.Context, resourc
 }
 
 // attachHandleResponse handles the Attach response.
-func (client *ContainersClient) attachHandleResponse(resp *http.Response) (ContainersClientAttachResponse, error) {
+func (client *ContainersClient) attachHandleResponse(resp *http.Response, successCodes ...int) (ContainersClientAttachResponse, error) {
 	result := ContainersClientAttachResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerAttachResponse); err != nil {
 		return ContainersClientAttachResponse{}, err
 	}
@@ -135,12 +133,7 @@ func (client *ContainersClient) ExecuteCommand(ctx context.Context, resourceGrou
 	if err != nil {
 		return ContainersClientExecuteCommandResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainersClientExecuteCommandResponse{}, err
-	}
-	resp, err := client.executeCommandHandleResponse(httpResp)
-	return resp, err
+	return client.executeCommandHandleResponse(httpResp, http.StatusOK)
 }
 
 // executeCommandCreateRequest creates the ExecuteCommand request.
@@ -178,8 +171,11 @@ func (client *ContainersClient) executeCommandCreateRequest(ctx context.Context,
 }
 
 // executeCommandHandleResponse handles the ExecuteCommand response.
-func (client *ContainersClient) executeCommandHandleResponse(resp *http.Response) (ContainersClientExecuteCommandResponse, error) {
+func (client *ContainersClient) executeCommandHandleResponse(resp *http.Response, successCodes ...int) (ContainersClientExecuteCommandResponse, error) {
 	result := ContainersClientExecuteCommandResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerExecResponse); err != nil {
 		return ContainersClientExecuteCommandResponse{}, err
 	}
@@ -208,12 +204,7 @@ func (client *ContainersClient) ListLogs(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ContainersClientListLogsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainersClientListLogsResponse{}, err
-	}
-	resp, err := client.listLogsHandleResponse(httpResp)
-	return resp, err
+	return client.listLogsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listLogsCreateRequest creates the ListLogs request.
@@ -253,8 +244,11 @@ func (client *ContainersClient) listLogsCreateRequest(ctx context.Context, resou
 }
 
 // listLogsHandleResponse handles the ListLogs response.
-func (client *ContainersClient) listLogsHandleResponse(resp *http.Response) (ContainersClientListLogsResponse, error) {
+func (client *ContainersClient) listLogsHandleResponse(resp *http.Response, successCodes ...int) (ContainersClientListLogsResponse, error) {
 	result := ContainersClientListLogsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Logs); err != nil {
 		return ContainersClientListLogsResponse{}, err
 	}

@@ -64,12 +64,7 @@ func (client *ProtectedItemsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ProtectedItemsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectedItemsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -107,8 +102,11 @@ func (client *ProtectedItemsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProtectedItemsClient) getHandleResponse(resp *http.Response) (ProtectedItemsClientGetResponse, error) {
+func (client *ProtectedItemsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProtectedItemsClientGetResponse, error) {
 	result := ProtectedItemsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectedItem); err != nil {
 		return ProtectedItemsClientGetResponse{}, err
 	}
@@ -139,12 +137,7 @@ func (client *ProtectedItemsClient) GetRestorePoints(ctx context.Context, resour
 	if err != nil {
 		return ProtectedItemsClientGetRestorePointsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectedItemsClientGetRestorePointsResponse{}, err
-	}
-	resp, err := client.getRestorePointsHandleResponse(httpResp)
-	return resp, err
+	return client.getRestorePointsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getRestorePointsCreateRequest creates the GetRestorePoints request.
@@ -182,8 +175,11 @@ func (client *ProtectedItemsClient) getRestorePointsCreateRequest(ctx context.Co
 }
 
 // getRestorePointsHandleResponse handles the GetRestorePoints response.
-func (client *ProtectedItemsClient) getRestorePointsHandleResponse(resp *http.Response) (ProtectedItemsClientGetRestorePointsResponse, error) {
+func (client *ProtectedItemsClient) getRestorePointsHandleResponse(resp *http.Response, successCodes ...int) (ProtectedItemsClientGetRestorePointsResponse, error) {
 	result := ProtectedItemsClientGetRestorePointsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestorePoints); err != nil {
 		return ProtectedItemsClientGetRestorePointsResponse{}, err
 	}
@@ -207,51 +203,65 @@ func (client *ProtectedItemsClient) NewListByProtectionGroupPager(resourceGroupN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByProtectionGroupCreateRequest(ctx, resourceGroupName, cloudAccountName, protectionGroupName, options)
-			}, nil)
+			req, err := client.listByProtectionGroupCreateRequest(ctx, resourceGroupName, cloudAccountName, protectionGroupName, nextLink, options)
 			if err != nil {
 				return ProtectedItemsClientListByProtectionGroupResponse{}, err
 			}
-			return client.listByProtectionGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProtectedItemsClientListByProtectionGroupResponse{}, err
+			}
+			return client.listByProtectionGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByProtectionGroupCreateRequest creates the ListByProtectionGroup request.
-func (client *ProtectedItemsClient) listByProtectionGroupCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, _ *ProtectedItemsClientListByProtectionGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}/protectedItems"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ProtectedItemsClient) listByProtectionGroupCreateRequest(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, nextLink string, _ *ProtectedItemsClientListByProtectionGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Commvault.ContentStore/cloudAccounts/{cloudAccountName}/protectionGroups/{protectionGroupName}/protectedItems"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if cloudAccountName == "" {
+			return nil, errors.New("parameter cloudAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{cloudAccountName}", url.PathEscape(cloudAccountName))
+		if protectionGroupName == "" {
+			return nil, errors.New("parameter protectionGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{protectionGroupName}", url.PathEscape(protectionGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudAccountName == "" {
-		return nil, errors.New("parameter cloudAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudAccountName}", url.PathEscape(cloudAccountName))
-	if protectionGroupName == "" {
-		return nil, errors.New("parameter protectionGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{protectionGroupName}", url.PathEscape(protectionGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260703Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260703Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByProtectionGroupHandleResponse handles the ListByProtectionGroup response.
-func (client *ProtectedItemsClient) listByProtectionGroupHandleResponse(resp *http.Response) (ProtectedItemsClientListByProtectionGroupResponse, error) {
+func (client *ProtectedItemsClient) listByProtectionGroupHandleResponse(resp *http.Response, successCodes ...int) (ProtectedItemsClientListByProtectionGroupResponse, error) {
 	result := ProtectedItemsClientListByProtectionGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectedItemListResult); err != nil {
 		return ProtectedItemsClientListByProtectionGroupResponse{}, err
 	}
@@ -282,12 +292,7 @@ func (client *ProtectedItemsClient) Restore(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ProtectedItemsClientRestoreResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectedItemsClientRestoreResponse{}, err
-	}
-	resp, err := client.restoreHandleResponse(httpResp)
-	return resp, err
+	return client.restoreHandleResponse(httpResp, http.StatusOK)
 }
 
 // restoreCreateRequest creates the Restore request.
@@ -329,8 +334,11 @@ func (client *ProtectedItemsClient) restoreCreateRequest(ctx context.Context, re
 }
 
 // restoreHandleResponse handles the Restore response.
-func (client *ProtectedItemsClient) restoreHandleResponse(resp *http.Response) (ProtectedItemsClientRestoreResponse, error) {
+func (client *ProtectedItemsClient) restoreHandleResponse(resp *http.Response, successCodes ...int) (ProtectedItemsClientRestoreResponse, error) {
 	result := ProtectedItemsClientRestoreResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestoreProtectionItemResponse); err != nil {
 		return ProtectedItemsClientRestoreResponse{}, err
 	}

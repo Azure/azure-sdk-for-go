@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/BlockCapacityReservationGroup_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/BlockCapacityReservationGroup_CreateOrUpdate.json
 func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateABlockCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateABlockC
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/CapacityReservationGroup_CreateOrUpdate.json
 func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateACapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,77 @@ func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateACapaci
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/TargetedCapacityReservationGroup_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/OpenCapacityReservationGroup_CreateOrUpdate.json
+func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateAnOpenCapacityReservationGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCapacityReservationGroupsClient().CreateOrUpdate(ctx, "myResourceGroup", "openCapacityReservationGroup", armcompute.CapacityReservationGroup{
+		Location: to.Ptr("westus"),
+		Tags: map[string]*string{
+			"department": to.Ptr("finance"),
+		},
+		Zones: []*string{
+			to.Ptr("1"),
+			to.Ptr("2"),
+		},
+		Properties: &armcompute.CapacityReservationGroupProperties{
+			SharingProfile: &armcompute.ResourceSharingProfile{
+				SubscriptionIDs: []*armcompute.SubResource{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id1}"),
+					},
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id2}"),
+					},
+				},
+			},
+			ReservationType: to.Ptr(armcompute.ReservationTypeOpen),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.CapacityReservationGroupsClientCreateOrUpdateResponse{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
+	// 		Location: to.Ptr("westus"),
+	// 		Tags: map[string]*string{
+	// 			"department": to.Ptr("finance"),
+	// 			"owner": to.Ptr("myCompany"),
+	// 		},
+	// 		Name: to.Ptr("openCapacityReservationGroup"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/CapacityReservationGroups/openCapacityReservationGroup"),
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 			to.Ptr("2"),
+	// 		},
+	// 		Properties: &armcompute.CapacityReservationGroupProperties{
+	// 			SharingProfile: &armcompute.ResourceSharingProfile{
+	// 				SubscriptionIDs: []*armcompute.SubResource{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id1}"),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id2}"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ReservationType: to.Ptr(armcompute.ReservationTypeOpen),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/capacityReservationExamples/TargetedCapacityReservationGroup_CreateOrUpdate.json
 func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateATargetedCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +270,7 @@ func ExampleCapacityReservationGroupsClient_CreateOrUpdate_createOrUpdateATarget
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/CapacityReservationGroup_Delete_MaximumSet_Gen.json
 func ExampleCapacityReservationGroupsClient_Delete_capacityReservationGroupDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +292,7 @@ func ExampleCapacityReservationGroupsClient_Delete_capacityReservationGroupDelet
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/CapacityReservationGroup_Delete_MinimumSet_Gen.json
 func ExampleCapacityReservationGroupsClient_Delete_capacityReservationGroupDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,7 +314,7 @@ func ExampleCapacityReservationGroupsClient_Delete_capacityReservationGroupDelet
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/BlockCapacityReservationGroup_Get.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/BlockCapacityReservationGroup_Get.json
 func ExampleCapacityReservationGroupsClient_Get_getABlockCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -336,7 +406,7 @@ func ExampleCapacityReservationGroupsClient_Get_getABlockCapacityReservationGrou
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_Get.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/CapacityReservationGroup_Get.json
 func ExampleCapacityReservationGroupsClient_Get_getACapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -445,7 +515,89 @@ func ExampleCapacityReservationGroupsClient_Get_getACapacityReservationGroup() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/TargetedCapacityReservationGroup_Get.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/OpenCapacityReservationGroup_Get.json
+func ExampleCapacityReservationGroupsClient_Get_getAnOpenCapacityReservationGroupWithInstanceView() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewCapacityReservationGroupsClient().Get(ctx, "myResourceGroup", "openCapacityReservationGroup", &armcompute.CapacityReservationGroupsClientGetOptions{
+		Expand: to.Ptr(armcompute.CapacityReservationGroupInstanceViewTypesInstanceView)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.CapacityReservationGroupsClientGetResponse{
+	// 	CapacityReservationGroup: armcompute.CapacityReservationGroup{
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/CapacityReservationGroups/openCapacityReservationGroup"),
+	// 		Properties: &armcompute.CapacityReservationGroupProperties{
+	// 			CapacityReservations: []*armcompute.SubResourceReadOnly{
+	// 				{
+	// 					ID: to.Ptr("subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/capacityReservationGroups/openCapacityReservationGroup/capacityReservations/openCapacityReservation1"),
+	// 				},
+	// 			},
+	// 			SharingProfile: &armcompute.ResourceSharingProfile{
+	// 				SubscriptionIDs: []*armcompute.SubResource{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id1}"),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id2}"),
+	// 					},
+	// 				},
+	// 			},
+	// 			InstanceView: &armcompute.CapacityReservationGroupInstanceView{
+	// 				CapacityReservations: []*armcompute.CapacityReservationInstanceViewWithName{
+	// 					{
+	// 						Name: to.Ptr("openCapacityReservation1"),
+	// 						UtilizationInfo: &armcompute.CapacityReservationUtilization{
+	// 							CurrentCapacity: to.Ptr[int32](10),
+	// 							UsedReservedCountBySubscription: map[string]*int32{
+	// 								"{subscription-id1}": to.Ptr[int32](3),
+	// 								"{subscription-id2}": to.Ptr[int32](2),
+	// 							},
+	// 						},
+	// 						Statuses: []*armcompute.InstanceViewStatus{
+	// 							{
+	// 								Code: to.Ptr("ProvisioningState/succeeded"),
+	// 								Level: to.Ptr(armcompute.StatusLevelTypesInfo),
+	// 								DisplayStatus: to.Ptr("Provisioning succeeded"),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				SharedSubscriptionIDs: []*armcompute.SubResourceReadOnly{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id1}"),
+	// 					},
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id2}"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ReservationType: to.Ptr(armcompute.ReservationTypeOpen),
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Tags: map[string]*string{
+	// 			"{tagName}": to.Ptr("{tagValue}"),
+	// 		},
+	// 		Name: to.Ptr("openCapacityReservationGroup"),
+	// 		Zones: []*string{
+	// 			to.Ptr("1"),
+	// 			to.Ptr("2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/capacityReservationExamples/TargetedCapacityReservationGroup_Get.json
 func ExampleCapacityReservationGroupsClient_Get_getATargetedCapacityReservationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -555,7 +707,7 @@ func ExampleCapacityReservationGroupsClient_Get_getATargetedCapacityReservationG
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_ListByResourceGroup.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/CapacityReservationGroup_ListByResourceGroup.json
 func ExampleCapacityReservationGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -676,7 +828,7 @@ func ExampleCapacityReservationGroupsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_ListBySubscription.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/CapacityReservationGroup_ListBySubscription.json
 func ExampleCapacityReservationGroupsClient_NewListBySubscriptionPager_listCapacityReservationGroupsInSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -797,7 +949,7 @@ func ExampleCapacityReservationGroupsClient_NewListBySubscriptionPager_listCapac
 	}
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_ListBySubscriptionWithResourceIdsQuery.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/CapacityReservationGroup_ListBySubscriptionWithResourceIdsQuery.json
 func ExampleCapacityReservationGroupsClient_NewListBySubscriptionPager_listCapacityReservationGroupsWithResourceIdsOnlyInSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -839,7 +991,7 @@ func ExampleCapacityReservationGroupsClient_NewListBySubscriptionPager_listCapac
 	}
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/CapacityReservationGroup_Update_MaximumSet_Gen.json
 func ExampleCapacityReservationGroupsClient_Update_capacityReservationGroupUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -901,7 +1053,7 @@ func ExampleCapacityReservationGroupsClient_Update_capacityReservationGroupUpdat
 	// 								Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 								DisplayStatus: to.Ptr("aaaaaa"),
 	// 								Message: to.Ptr("a"),
-	// 								Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.522Z"); return t}()),
+	// 								Time: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 522000000, time.UTC)),
 	// 							},
 	// 						},
 	// 					},
@@ -915,7 +1067,7 @@ func ExampleCapacityReservationGroupsClient_Update_capacityReservationGroupUpdat
 	// }
 }
 
-// Generated from example definition: 2026-03-01/capacityReservationExamples/CapacityReservationGroup_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/capacityReservationExamples/CapacityReservationGroup_Update_MinimumSet_Gen.json
 func ExampleCapacityReservationGroupsClient_Update_capacityReservationGroupUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

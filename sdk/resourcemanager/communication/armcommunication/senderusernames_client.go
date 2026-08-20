@@ -66,12 +66,7 @@ func (client *SenderUsernamesClient) CreateOrUpdate(ctx context.Context, resourc
 	if err != nil {
 		return SenderUsernamesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SenderUsernamesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -113,8 +108,11 @@ func (client *SenderUsernamesClient) createOrUpdateCreateRequest(ctx context.Con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SenderUsernamesClient) createOrUpdateHandleResponse(resp *http.Response) (SenderUsernamesClientCreateOrUpdateResponse, error) {
+func (client *SenderUsernamesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SenderUsernamesClientCreateOrUpdateResponse, error) {
 	result := SenderUsernamesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SenderUsernameResource); err != nil {
 		return SenderUsernamesClientCreateOrUpdateResponse{}, err
 	}
@@ -145,8 +143,7 @@ func (client *SenderUsernamesClient) Delete(ctx context.Context, resourceGroupNa
 		return SenderUsernamesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SenderUsernamesClientDeleteResponse{}, err
+		return SenderUsernamesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SenderUsernamesClientDeleteResponse{}, nil
 }
@@ -207,12 +204,7 @@ func (client *SenderUsernamesClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return SenderUsernamesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SenderUsernamesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -250,8 +242,11 @@ func (client *SenderUsernamesClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *SenderUsernamesClient) getHandleResponse(resp *http.Response) (SenderUsernamesClientGetResponse, error) {
+func (client *SenderUsernamesClient) getHandleResponse(resp *http.Response, successCodes ...int) (SenderUsernamesClientGetResponse, error) {
 	result := SenderUsernamesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SenderUsernameResource); err != nil {
 		return SenderUsernamesClientGetResponse{}, err
 	}
@@ -277,51 +272,65 @@ func (client *SenderUsernamesClient) NewListByDomainsPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDomainsCreateRequest(ctx, resourceGroupName, emailServiceName, domainName, options)
-			}, nil)
+			req, err := client.listByDomainsCreateRequest(ctx, resourceGroupName, emailServiceName, domainName, nextLink, options)
 			if err != nil {
 				return SenderUsernamesClientListByDomainsResponse{}, err
 			}
-			return client.listByDomainsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SenderUsernamesClientListByDomainsResponse{}, err
+			}
+			return client.listByDomainsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDomainsCreateRequest creates the ListByDomains request.
-func (client *SenderUsernamesClient) listByDomainsCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, _ *SenderUsernamesClientListByDomainsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SenderUsernamesClient) listByDomainsCreateRequest(ctx context.Context, resourceGroupName string, emailServiceName string, domainName string, nextLink string, _ *SenderUsernamesClientListByDomainsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Communication/emailServices/{emailServiceName}/domains/{domainName}/senderUsernames"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if emailServiceName == "" {
+			return nil, errors.New("parameter emailServiceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{emailServiceName}", url.PathEscape(emailServiceName))
+		if domainName == "" {
+			return nil, errors.New("parameter domainName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if emailServiceName == "" {
-		return nil, errors.New("parameter emailServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{emailServiceName}", url.PathEscape(emailServiceName))
-	if domainName == "" {
-		return nil, errors.New("parameter domainName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByDomainsHandleResponse handles the ListByDomains response.
-func (client *SenderUsernamesClient) listByDomainsHandleResponse(resp *http.Response) (SenderUsernamesClientListByDomainsResponse, error) {
+func (client *SenderUsernamesClient) listByDomainsHandleResponse(resp *http.Response, successCodes ...int) (SenderUsernamesClientListByDomainsResponse, error) {
 	result := SenderUsernamesClientListByDomainsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SenderUsernameResourceCollection); err != nil {
 		return SenderUsernamesClientListByDomainsResponse{}, err
 	}

@@ -136,13 +136,13 @@ func ExampleMachineRunCommandsClient_Get() {
 	// 		Properties: &armhybridcompute.MachineRunCommandProperties{
 	// 			AsyncExecution: to.Ptr(false),
 	// 			InstanceView: &armhybridcompute.MachineRunCommandInstanceView{
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-15T20:48:41.4641785+00:00"); return t}()),
+	// 				EndTime: to.Ptr(time.Date(2023, time.June, 15, 20, 48, 41, 464178500, time.UTC)),
 	// 				Error: to.Ptr(""),
 	// 				ExecutionMessage: to.Ptr(""),
 	// 				ExecutionState: to.Ptr(armhybridcompute.ExecutionStateSucceeded),
 	// 				ExitCode: to.Ptr[int32](0),
 	// 				Output: to.Ptr("Hello World"),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-15T20:48:41.4641785+00:00"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2023, time.June, 15, 20, 48, 41, 464178500, time.UTC)),
 	// 			},
 	// 			Parameters: []*armhybridcompute.RunCommandInputParameter{
 	// 				{
@@ -204,13 +204,13 @@ func ExampleMachineRunCommandsClient_NewListPager() {
 		// 				Properties: &armhybridcompute.MachineRunCommandProperties{
 		// 					AsyncExecution: to.Ptr(false),
 		// 					InstanceView: &armhybridcompute.MachineRunCommandInstanceView{
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-15T20:48:41.4641785+00:00"); return t}()),
+		// 						EndTime: to.Ptr(time.Date(2023, time.June, 15, 20, 48, 41, 464178500, time.UTC)),
 		// 						Error: to.Ptr(""),
 		// 						ExecutionMessage: to.Ptr(""),
 		// 						ExecutionState: to.Ptr(armhybridcompute.ExecutionStateSucceeded),
 		// 						ExitCode: to.Ptr[int32](0),
 		// 						Output: to.Ptr("Hello World"),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-15T20:48:41.4641785+00:00"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2023, time.June, 15, 20, 48, 41, 464178500, time.UTC)),
 		// 					},
 		// 					Parameters: []*armhybridcompute.RunCommandInputParameter{
 		// 						{
@@ -240,13 +240,13 @@ func ExampleMachineRunCommandsClient_NewListPager() {
 		// 				Properties: &armhybridcompute.MachineRunCommandProperties{
 		// 					AsyncExecution: to.Ptr(false),
 		// 					InstanceView: &armhybridcompute.MachineRunCommandInstanceView{
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-15T20:48:41.4641785+00:00"); return t}()),
+		// 						EndTime: to.Ptr(time.Date(2023, time.June, 15, 20, 48, 41, 464178500, time.UTC)),
 		// 						Error: to.Ptr(""),
 		// 						ExecutionMessage: to.Ptr(""),
 		// 						ExecutionState: to.Ptr(armhybridcompute.ExecutionStateSucceeded),
 		// 						ExitCode: to.Ptr[int32](0),
 		// 						Output: to.Ptr("<some output>"),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-15T20:48:41.4641785+00:00"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2023, time.June, 15, 20, 48, 41, 464178500, time.UTC)),
 		// 					},
 		// 					Parameters: []*armhybridcompute.RunCommandInputParameter{
 		// 					},

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/VpnConnectionPut.json
+// Generated from example definition: 2025-09-01/VpnConnectionPut.json
 func ExampleVPNConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleVPNConnectionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VpnConnectionDelete.json
+// Generated from example definition: 2025-09-01/VpnConnectionDelete.json
 func ExampleVPNConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleVPNConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VpnConnectionGet.json
+// Generated from example definition: 2025-09-01/VpnConnectionGet.json
 func ExampleVPNConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,7 +300,7 @@ func ExampleVPNConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VpnConnectionList.json
+// Generated from example definition: 2025-09-01/VpnConnectionList.json
 func ExampleVPNConnectionsClient_NewListByVPNGatewayPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -425,7 +425,7 @@ func ExampleVPNConnectionsClient_NewListByVPNGatewayPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VpnConnectionStartPacketCapture.json
+// Generated from example definition: 2025-09-01/VpnConnectionStartPacketCapture.json
 func ExampleVPNConnectionsClient_BeginStartPacketCapture_startPacketCaptureOnVpnConnectionWithoutFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -458,7 +458,7 @@ func ExampleVPNConnectionsClient_BeginStartPacketCapture_startPacketCaptureOnVpn
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VpnConnectionStartPacketCaptureFilterData.json
+// Generated from example definition: 2025-09-01/VpnConnectionStartPacketCaptureFilterData.json
 func ExampleVPNConnectionsClient_BeginStartPacketCapture_startPacketCaptureOnVpnConnectionWithFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -492,7 +492,7 @@ func ExampleVPNConnectionsClient_BeginStartPacketCapture_startPacketCaptureOnVpn
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VpnConnectionStopPacketCapture.json
+// Generated from example definition: 2025-09-01/VpnConnectionStopPacketCapture.json
 func ExampleVPNConnectionsClient_BeginStopPacketCapture() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

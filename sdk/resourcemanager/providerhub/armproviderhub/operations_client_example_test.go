@@ -68,7 +68,7 @@ func ExampleOperationsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.OperationsClientCreateOrUpdateResponse{
-	// 	OperationsPutContent: &armproviderhub.OperationsPutContent{
+	// 	OperationsPutContent: armproviderhub.OperationsPutContent{
 	// 		Name: to.Ptr("operationTest"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/operations"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/operations/default"),
@@ -109,10 +109,10 @@ func ExampleOperationsClient_CreateOrUpdate() {
 	// 			},
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 	// 		},
@@ -262,7 +262,7 @@ func ExampleOperationsClient_ListByProviderRegistration() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.OperationsClientListByProviderRegistrationResponse{
-	// 	undefined: &[]*armproviderhub.OperationsDefinition{
+	// 	OperationsDefinitionArray: []*armproviderhub.OperationsDefinition{
 	// 		{
 	// 			Name: to.Ptr("Microsoft.Contoso/Employees/Read"),
 	// 			Display: &armproviderhub.OperationsDefinitionDisplay{

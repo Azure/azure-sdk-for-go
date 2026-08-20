@@ -82,8 +82,7 @@ func (client *SubscriptionsAliasesClient) createOrUpdate(ctx context.Context, bi
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -134,12 +133,7 @@ func (client *SubscriptionsAliasesClient) Get(ctx context.Context, billingAccoun
 	if err != nil {
 		return SubscriptionsAliasesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SubscriptionsAliasesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -165,8 +159,11 @@ func (client *SubscriptionsAliasesClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *SubscriptionsAliasesClient) getHandleResponse(resp *http.Response) (SubscriptionsAliasesClientGetResponse, error) {
+func (client *SubscriptionsAliasesClient) getHandleResponse(resp *http.Response, successCodes ...int) (SubscriptionsAliasesClientGetResponse, error) {
 	result := SubscriptionsAliasesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionAlias); err != nil {
 		return SubscriptionsAliasesClientGetResponse{}, err
 	}
@@ -189,60 +186,74 @@ func (client *SubscriptionsAliasesClient) NewListByBillingAccountPager(billingAc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByBillingAccountCreateRequest(ctx, billingAccountName, options)
-			}, nil)
+			req, err := client.listByBillingAccountCreateRequest(ctx, billingAccountName, nextLink, options)
 			if err != nil {
 				return SubscriptionsAliasesClientListByBillingAccountResponse{}, err
 			}
-			return client.listByBillingAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SubscriptionsAliasesClientListByBillingAccountResponse{}, err
+			}
+			return client.listByBillingAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByBillingAccountCreateRequest creates the ListByBillingAccount request.
-func (client *SubscriptionsAliasesClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, options *SubscriptionsAliasesClientListByBillingAccountOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptionAliases"
-	if billingAccountName == "" {
-		return nil, errors.New("parameter billingAccountName cannot be empty")
+func (client *SubscriptionsAliasesClient) listByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, nextLink string, options *SubscriptionsAliasesClientListByBillingAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingSubscriptionAliases"
+		if billingAccountName == "" {
+			return nil, errors.New("parameter billingAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountName}", url.PathEscape(billingAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	if options != nil && options.Count != nil {
-		reqQP.Set("count", strconv.FormatBool(*options.Count))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		if options != nil && options.Count != nil {
+			reqQP.Set("count", strconv.FormatBool(*options.Count))
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("filter", *options.Filter)
+		}
+		if options != nil && options.IncludeDeleted != nil {
+			reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
+		}
+		if options != nil && options.OrderBy != nil {
+			reqQP.Set("orderBy", *options.OrderBy)
+		}
+		if options != nil && options.Search != nil {
+			reqQP.Set("search", *options.Search)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("filter", *options.Filter)
-	}
-	if options != nil && options.IncludeDeleted != nil {
-		reqQP.Set("includeDeleted", strconv.FormatBool(*options.IncludeDeleted))
-	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("orderBy", *options.OrderBy)
-	}
-	if options != nil && options.Search != nil {
-		reqQP.Set("search", *options.Search)
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", strconv.FormatInt(*options.Skip, 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(*options.Top, 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBillingAccountHandleResponse handles the ListByBillingAccount response.
-func (client *SubscriptionsAliasesClient) listByBillingAccountHandleResponse(resp *http.Response) (SubscriptionsAliasesClientListByBillingAccountResponse, error) {
+func (client *SubscriptionsAliasesClient) listByBillingAccountHandleResponse(resp *http.Response, successCodes ...int) (SubscriptionsAliasesClientListByBillingAccountResponse, error) {
 	result := SubscriptionsAliasesClientListByBillingAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionAliasListResult); err != nil {
 		return SubscriptionsAliasesClientListByBillingAccountResponse{}, err
 	}

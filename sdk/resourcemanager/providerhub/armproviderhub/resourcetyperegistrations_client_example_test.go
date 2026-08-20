@@ -215,13 +215,13 @@ func ExampleResourceTypeRegistrationsClient_BeginCreateOrUpdate_directResourceTy
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ResourceTypeRegistrationsClientCreateOrUpdateResponse{
-	// 	ResourceTypeRegistration: &armproviderhub.ResourceTypeRegistration{
+	// 	ResourceTypeRegistration: armproviderhub.ResourceTypeRegistration{
 	// 		Name: to.Ptr("Microsoft.Contoso/employees"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourceTypeRegistrations"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourceTypeRegistrations/employees"),
@@ -424,10 +424,10 @@ func ExampleResourceTypeRegistrationsClient_BeginCreateOrUpdate_directResourceTy
 	// 			},
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 	// 		},
@@ -530,13 +530,13 @@ func ExampleResourceTypeRegistrationsClient_BeginCreateOrUpdate_resourceTypeRegi
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ResourceTypeRegistrationsClientCreateOrUpdateResponse{
-	// 	ResourceTypeRegistration: &armproviderhub.ResourceTypeRegistration{
+	// 	ResourceTypeRegistration: armproviderhub.ResourceTypeRegistration{
 	// 		Name: to.Ptr("Microsoft.Contoso/employees"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourceTypeRegistrations"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourceTypeRegistrations/employees"),
@@ -631,10 +631,10 @@ func ExampleResourceTypeRegistrationsClient_BeginCreateOrUpdate_resourceTypeRegi
 	// 			},
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 	// 		},
@@ -659,7 +659,7 @@ func ExampleResourceTypeRegistrationsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -682,7 +682,7 @@ func ExampleResourceTypeRegistrationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ResourceTypeRegistrationsClientGetResponse{
-	// 	ResourceTypeRegistration: &armproviderhub.ResourceTypeRegistration{
+	// 	ResourceTypeRegistration: armproviderhub.ResourceTypeRegistration{
 	// 		Name: to.Ptr("Microsoft.Contoso/employees"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourceTypeRegistrations"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourceTypeRegistrations/employees"),
@@ -779,10 +779,10 @@ func ExampleResourceTypeRegistrationsClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 	// 		},
@@ -912,10 +912,10 @@ func ExampleResourceTypeRegistrationsClient_NewListByProviderRegistrationPager()
 		// 					},
 		// 				},
 		// 				SystemData: &armproviderhub.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 		// 				},

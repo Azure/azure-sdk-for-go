@@ -894,10 +894,12 @@ type BrokerListenerResourceListResult struct {
 // BrokerPersistence - Disk persistence configuration.
 // When persistence is enabled, certain items (non-performance-critical data) selected for persistence will reside only on
 // disk. Below are the affected items:
-// - Retained messages will be stored on disk only.
-// - WILL messages will be stored on disk only.
-// - DSS key/value pairs will be stored on disk only, except for performance-critical items like timed locks, which remain
-// in both disk and memory for improved performance.
+//
+//   - Retained messages will be stored on disk only.
+//   - WILL messages will be stored on disk only.
+//   - DSS key/value pairs will be stored on disk only, except for performance-critical items like timed locks, which remain in
+//     both disk and memory for improved performance.
+//
 // Optional. Everything is in-memory if not set.
 // Note: if configured, all MQTT session states are written to disk.
 type BrokerPersistence struct {

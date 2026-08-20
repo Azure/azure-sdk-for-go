@@ -18,6 +18,8 @@ import (
 
 // InstancePoolOperationsClient contains the methods for the InstancePoolOperations group.
 // Don't use this type directly, use NewInstancePoolOperationsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type InstancePoolOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewInstancePoolOperationsClient(subscriptionID string, credential azcore.To
 
 // Get - Gets a management operation on a instance pool.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instancePoolName - The name of the instance pool to be retrieved.
 //   - options - InstancePoolOperationsClientGetOptions contains the optional parameters for the InstancePoolOperationsClient.Get
@@ -61,12 +61,7 @@ func (client *InstancePoolOperationsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return InstancePoolOperationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InstancePoolOperationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -93,15 +88,18 @@ func (client *InstancePoolOperationsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *InstancePoolOperationsClient) getHandleResponse(resp *http.Response) (InstancePoolOperationsClientGetResponse, error) {
+func (client *InstancePoolOperationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (InstancePoolOperationsClientGetResponse, error) {
 	result := InstancePoolOperationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InstancePoolOperation); err != nil {
 		return InstancePoolOperationsClientGetResponse{}, err
 	}
@@ -109,8 +107,6 @@ func (client *InstancePoolOperationsClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListByInstancePoolPager - Gets a list of operations performed on the instance pool.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - instancePoolName - The name of the instance pool to be retrieved.
 //   - options - InstancePoolOperationsClientListByInstancePoolOptions contains the optional parameters for the InstancePoolOperationsClient.NewListByInstancePoolPager
@@ -126,47 +122,61 @@ func (client *InstancePoolOperationsClient) NewListByInstancePoolPager(resourceG
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByInstancePoolCreateRequest(ctx, resourceGroupName, instancePoolName, options)
-			}, nil)
+			req, err := client.listByInstancePoolCreateRequest(ctx, resourceGroupName, instancePoolName, nextLink, options)
 			if err != nil {
 				return InstancePoolOperationsClientListByInstancePoolResponse{}, err
 			}
-			return client.listByInstancePoolHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InstancePoolOperationsClientListByInstancePoolResponse{}, err
+			}
+			return client.listByInstancePoolHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByInstancePoolCreateRequest creates the ListByInstancePool request.
-func (client *InstancePoolOperationsClient) listByInstancePoolCreateRequest(ctx context.Context, resourceGroupName string, instancePoolName string, _ *InstancePoolOperationsClientListByInstancePoolOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}/operations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *InstancePoolOperationsClient) listByInstancePoolCreateRequest(ctx context.Context, resourceGroupName string, instancePoolName string, nextLink string, _ *InstancePoolOperationsClientListByInstancePoolOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}/operations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if instancePoolName == "" {
+			return nil, errors.New("parameter instancePoolName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{instancePoolName}", url.PathEscape(instancePoolName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if instancePoolName == "" {
-		return nil, errors.New("parameter instancePoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{instancePoolName}", url.PathEscape(instancePoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByInstancePoolHandleResponse handles the ListByInstancePool response.
-func (client *InstancePoolOperationsClient) listByInstancePoolHandleResponse(resp *http.Response) (InstancePoolOperationsClientListByInstancePoolResponse, error) {
+func (client *InstancePoolOperationsClient) listByInstancePoolHandleResponse(resp *http.Response, successCodes ...int) (InstancePoolOperationsClientListByInstancePoolResponse, error) {
 	result := InstancePoolOperationsClientListByInstancePoolResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InstancePoolOperationListResult); err != nil {
 		return InstancePoolOperationsClientListByInstancePoolResponse{}, err
 	}

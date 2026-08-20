@@ -17,8 +17,6 @@ import (
 	"strings"
 )
 
-const defaultBookmarkRelationsClientVersion string = "2025-07-01-preview"
-
 // BookmarkRelationsClient contains the methods for the BookmarkRelations group.
 // Don't use this type directly, use NewBookmarkRelationsClient() instead.
 //
@@ -67,12 +65,7 @@ func (client *BookmarkRelationsClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return BookmarkRelationsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return BookmarkRelationsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -103,7 +96,7 @@ func (client *BookmarkRelationsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultBookmarkRelationsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -114,8 +107,11 @@ func (client *BookmarkRelationsClient) createOrUpdateCreateRequest(ctx context.C
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *BookmarkRelationsClient) createOrUpdateHandleResponse(resp *http.Response) (BookmarkRelationsClientCreateOrUpdateResponse, error) {
+func (client *BookmarkRelationsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (BookmarkRelationsClientCreateOrUpdateResponse, error) {
 	result := BookmarkRelationsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Relation); err != nil {
 		return BookmarkRelationsClientCreateOrUpdateResponse{}, err
 	}
@@ -145,8 +141,7 @@ func (client *BookmarkRelationsClient) Delete(ctx context.Context, resourceGroup
 		return BookmarkRelationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return BookmarkRelationsClientDeleteResponse{}, err
+		return BookmarkRelationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return BookmarkRelationsClientDeleteResponse{}, nil
 }
@@ -179,7 +174,7 @@ func (client *BookmarkRelationsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultBookmarkRelationsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -205,12 +200,7 @@ func (client *BookmarkRelationsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return BookmarkRelationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BookmarkRelationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -241,15 +231,18 @@ func (client *BookmarkRelationsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultBookmarkRelationsClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *BookmarkRelationsClient) getHandleResponse(resp *http.Response) (BookmarkRelationsClientGetResponse, error) {
+func (client *BookmarkRelationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (BookmarkRelationsClientGetResponse, error) {
 	result := BookmarkRelationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Relation); err != nil {
 		return BookmarkRelationsClientGetResponse{}, err
 	}
@@ -273,63 +266,77 @@ func (client *BookmarkRelationsClient) NewListPager(resourceGroupName string, wo
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, workspaceName, bookmarkID, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, bookmarkID, nextLink, options)
 			if err != nil {
 				return BookmarkRelationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BookmarkRelationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *BookmarkRelationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, options *BookmarkRelationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/bookmarks/{bookmarkId}/relations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *BookmarkRelationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, nextLink string, options *BookmarkRelationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/bookmarks/{bookmarkId}/relations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		if bookmarkID == "" {
+			return nil, errors.New("parameter bookmarkID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{bookmarkId}", url.PathEscape(bookmarkID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if bookmarkID == "" {
-		return nil, errors.New("parameter bookmarkID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{bookmarkId}", url.PathEscape(bookmarkID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Orderby != nil {
+			reqQP.Set("$orderby", *options.Orderby)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Orderby != nil {
-		reqQP.Set("$orderby", *options.Orderby)
-	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", defaultBookmarkRelationsClientVersion)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *BookmarkRelationsClient) listHandleResponse(resp *http.Response) (BookmarkRelationsClientListResponse, error) {
+func (client *BookmarkRelationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (BookmarkRelationsClientListResponse, error) {
 	result := BookmarkRelationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RelationList); err != nil {
 		return BookmarkRelationsClientListResponse{}, err
 	}

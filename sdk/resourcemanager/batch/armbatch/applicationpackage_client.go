@@ -19,6 +19,8 @@ import (
 
 // ApplicationPackageClient contains the methods for the ApplicationPackage group.
 // Don't use this type directly, use NewApplicationPackageClient() instead.
+//
+// Generated from API version 2025-06-01
 type ApplicationPackageClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewApplicationPackageClient(subscriptionID string, credential azcore.TokenC
 // Activate - Activates the specified application package. This should be done after the `ApplicationPackage` was created
 // and uploaded. This needs to be done before an `ApplicationPackage` can be used on Pools or Tasks.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -68,12 +68,7 @@ func (client *ApplicationPackageClient) Activate(ctx context.Context, resourceGr
 	if err != nil {
 		return ApplicationPackageClientActivateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ApplicationPackageClientActivateResponse{}, err
-	}
-	resp, err := client.activateHandleResponse(httpResp)
-	return resp, err
+	return client.activateHandleResponse(httpResp, http.StatusOK)
 }
 
 // activateCreateRequest creates the Activate request.
@@ -104,8 +99,8 @@ func (client *ApplicationPackageClient) activateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -115,8 +110,11 @@ func (client *ApplicationPackageClient) activateCreateRequest(ctx context.Contex
 }
 
 // activateHandleResponse handles the Activate response.
-func (client *ApplicationPackageClient) activateHandleResponse(resp *http.Response) (ApplicationPackageClientActivateResponse, error) {
+func (client *ApplicationPackageClient) activateHandleResponse(resp *http.Response, successCodes ...int) (ApplicationPackageClientActivateResponse, error) {
 	result := ApplicationPackageClientActivateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationPackage); err != nil {
 		return ApplicationPackageClientActivateResponse{}, err
 	}
@@ -127,8 +125,6 @@ func (client *ApplicationPackageClient) activateHandleResponse(resp *http.Respon
 // Once it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can be used.
 // If the auto storage account was configured to use storage keys, the URL returned will contain a SAS.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -152,12 +148,7 @@ func (client *ApplicationPackageClient) Create(ctx context.Context, resourceGrou
 	if err != nil {
 		return ApplicationPackageClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ApplicationPackageClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK)
 }
 
 // createCreateRequest creates the Create request.
@@ -188,8 +179,8 @@ func (client *ApplicationPackageClient) createCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -199,8 +190,11 @@ func (client *ApplicationPackageClient) createCreateRequest(ctx context.Context,
 }
 
 // createHandleResponse handles the Create response.
-func (client *ApplicationPackageClient) createHandleResponse(resp *http.Response) (ApplicationPackageClientCreateResponse, error) {
+func (client *ApplicationPackageClient) createHandleResponse(resp *http.Response, successCodes ...int) (ApplicationPackageClientCreateResponse, error) {
 	result := ApplicationPackageClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationPackage); err != nil {
 		return ApplicationPackageClientCreateResponse{}, err
 	}
@@ -209,8 +203,6 @@ func (client *ApplicationPackageClient) createHandleResponse(resp *http.Response
 
 // Delete - Deletes an application package record and its associated binary file.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -234,8 +226,7 @@ func (client *ApplicationPackageClient) Delete(ctx context.Context, resourceGrou
 		return ApplicationPackageClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ApplicationPackageClientDeleteResponse{}, err
+		return ApplicationPackageClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ApplicationPackageClientDeleteResponse{}, nil
 }
@@ -268,15 +259,13 @@ func (client *ApplicationPackageClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets information about the specified application package.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -298,12 +287,7 @@ func (client *ApplicationPackageClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ApplicationPackageClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ApplicationPackageClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -334,15 +318,18 @@ func (client *ApplicationPackageClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ApplicationPackageClient) getHandleResponse(resp *http.Response) (ApplicationPackageClientGetResponse, error) {
+func (client *ApplicationPackageClient) getHandleResponse(resp *http.Response, successCodes ...int) (ApplicationPackageClientGetResponse, error) {
 	result := ApplicationPackageClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationPackage); err != nil {
 		return ApplicationPackageClientGetResponse{}, err
 	}
@@ -350,8 +337,6 @@ func (client *ApplicationPackageClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListPager - Lists all of the application packages in the specified application.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -370,54 +355,68 @@ func (client *ApplicationPackageClient) NewListPager(resourceGroupName string, a
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, applicationName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, applicationName, nextLink, options)
 			if err != nil {
 				return ApplicationPackageClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ApplicationPackageClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ApplicationPackageClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, applicationName string, options *ApplicationPackageClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ApplicationPackageClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, applicationName string, nextLink string, options *ApplicationPackageClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/applications/{applicationName}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		if applicationName == "" {
+			return nil, errors.New("parameter applicationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if applicationName == "" {
-		return nil, errors.New("parameter applicationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	if options != nil && options.Maxresults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250601)
+		if options != nil && options.Maxresults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ApplicationPackageClient) listHandleResponse(resp *http.Response) (ApplicationPackageClientListResponse, error) {
+func (client *ApplicationPackageClient) listHandleResponse(resp *http.Response, successCodes ...int) (ApplicationPackageClientListResponse, error) {
 	result := ApplicationPackageClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListApplicationPackagesResult); err != nil {
 		return ApplicationPackageClientListResponse{}, err
 	}

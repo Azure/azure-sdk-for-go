@@ -74,7 +74,7 @@ func ExampleOccurrencesClient_BeginDelay() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewOccurrencesClient().BeginDelay(ctx, "rgcompute", "myScheduledAction", "CB26D7CB-3E27-465F-99C8-EAF7A4118245", armbulkactions.DelayRequest{
-		Delay: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-22T17:00:00.000-07:00"); return t }()),
+		Delay: to.Ptr(time.Date(2025, time.May, 22, 17, 0, 0, 0, time.FixedZone("", -25200))),
 		ResourceIDs: []*string{
 			to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
 		},
@@ -133,7 +133,7 @@ func ExampleOccurrencesClient_Get() {
 	// res = armbulkactions.OccurrencesClientGetResponse{
 	// 	Occurrence: armbulkactions.Occurrence{
 	// 		Properties: &armbulkactions.OccurrenceProperties{
-	// 			ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:59.243Z"); return t}()),
+	// 			ScheduledTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 59, 243000000, time.UTC)),
 	// 			ResultSummary: &armbulkactions.OccurrenceResultSummary{
 	// 				Total: to.Ptr[int32](25),
 	// 				Statuses: []*armbulkactions.ResourceResultSummary{
@@ -161,10 +161,10 @@ func ExampleOccurrencesClient_Get() {
 	// 		SystemData: &armbulkactions.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -197,7 +197,7 @@ func ExampleOccurrencesClient_NewListByScheduledActionPager() {
 		// 		Value: []*armbulkactions.Occurrence{
 		// 			{
 		// 				Properties: &armbulkactions.OccurrenceProperties{
-		// 					ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:59.243Z"); return t}()),
+		// 					ScheduledTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 59, 243000000, time.UTC)),
 		// 					ResultSummary: &armbulkactions.OccurrenceResultSummary{
 		// 						Total: to.Ptr[int32](25),
 		// 						Statuses: []*armbulkactions.ResourceResultSummary{
@@ -225,10 +225,10 @@ func ExampleOccurrencesClient_NewListByScheduledActionPager() {
 		// 				SystemData: &armbulkactions.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armbulkactions.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:55.288Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 55, 288000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -273,7 +273,7 @@ func ExampleOccurrencesClient_NewListResourcesPager() {
 		// 						Disabled: to.Ptr(true),
 		// 					},
 		// 				},
-		// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-17T00:23:59.751Z"); return t}()),
+		// 				ScheduledTime: to.Ptr(time.Date(2025, time.April, 17, 0, 23, 59, 751000000, time.UTC)),
 		// 				ProvisioningState: to.Ptr(armbulkactions.ResourceProvisioningStateSucceeded),
 		// 				ErrorDetails: &armbulkactions.Error{
 		// 					Code: to.Ptr("InternalServerError"),

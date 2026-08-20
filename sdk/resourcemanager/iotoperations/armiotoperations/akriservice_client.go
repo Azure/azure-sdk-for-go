@@ -83,8 +83,7 @@ func (client *AkriServiceClient) createOrUpdate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -163,8 +162,7 @@ func (client *AkriServiceClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -218,12 +216,7 @@ func (client *AkriServiceClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return AkriServiceClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AkriServiceClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -257,8 +250,11 @@ func (client *AkriServiceClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *AkriServiceClient) getHandleResponse(resp *http.Response) (AkriServiceClientGetResponse, error) {
+func (client *AkriServiceClient) getHandleResponse(resp *http.Response, successCodes ...int) (AkriServiceClientGetResponse, error) {
 	result := AkriServiceClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AkriServiceResource); err != nil {
 		return AkriServiceClientGetResponse{}, err
 	}
@@ -281,47 +277,61 @@ func (client *AkriServiceClient) NewListByInstanceResourcePager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByInstanceResourceCreateRequest(ctx, resourceGroupName, instanceName, options)
-			}, nil)
+			req, err := client.listByInstanceResourceCreateRequest(ctx, resourceGroupName, instanceName, nextLink, options)
 			if err != nil {
 				return AkriServiceClientListByInstanceResourceResponse{}, err
 			}
-			return client.listByInstanceResourceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AkriServiceClientListByInstanceResourceResponse{}, err
+			}
+			return client.listByInstanceResourceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByInstanceResourceCreateRequest creates the ListByInstanceResource request.
-func (client *AkriServiceClient) listByInstanceResourceCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, _ *AkriServiceClientListByInstanceResourceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriServices"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AkriServiceClient) listByInstanceResourceCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, nextLink string, _ *AkriServiceClientListByInstanceResourceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriServices"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if instanceName == "" {
+			return nil, errors.New("parameter instanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if instanceName == "" {
-		return nil, errors.New("parameter instanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByInstanceResourceHandleResponse handles the ListByInstanceResource response.
-func (client *AkriServiceClient) listByInstanceResourceHandleResponse(resp *http.Response) (AkriServiceClientListByInstanceResourceResponse, error) {
+func (client *AkriServiceClient) listByInstanceResourceHandleResponse(resp *http.Response, successCodes ...int) (AkriServiceClientListByInstanceResourceResponse, error) {
 	result := AkriServiceClientListByInstanceResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AkriServiceResourceListResult); err != nil {
 		return AkriServiceClientListByInstanceResourceResponse{}, err
 	}

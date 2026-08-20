@@ -55,12 +55,7 @@ func (client *CopilotSettingsClient) CreateOrUpdate(ctx context.Context, resourc
 	if err != nil {
 		return CopilotSettingsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return CopilotSettingsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -82,8 +77,11 @@ func (client *CopilotSettingsClient) createOrUpdateCreateRequest(ctx context.Con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CopilotSettingsClient) createOrUpdateHandleResponse(resp *http.Response) (CopilotSettingsClientCreateOrUpdateResponse, error) {
+func (client *CopilotSettingsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (CopilotSettingsClientCreateOrUpdateResponse, error) {
 	result := CopilotSettingsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CopilotSettingsResource); err != nil {
 		return CopilotSettingsClientCreateOrUpdateResponse{}, err
 	}
@@ -108,8 +106,7 @@ func (client *CopilotSettingsClient) Delete(ctx context.Context, options *Copilo
 		return CopilotSettingsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return CopilotSettingsClientDeleteResponse{}, err
+		return CopilotSettingsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return CopilotSettingsClientDeleteResponse{}, nil
 }
@@ -144,12 +141,7 @@ func (client *CopilotSettingsClient) Get(ctx context.Context, options *CopilotSe
 	if err != nil {
 		return CopilotSettingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CopilotSettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -167,8 +159,11 @@ func (client *CopilotSettingsClient) getCreateRequest(ctx context.Context, _ *Co
 }
 
 // getHandleResponse handles the Get response.
-func (client *CopilotSettingsClient) getHandleResponse(resp *http.Response) (CopilotSettingsClientGetResponse, error) {
+func (client *CopilotSettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (CopilotSettingsClientGetResponse, error) {
 	result := CopilotSettingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CopilotSettingsResource); err != nil {
 		return CopilotSettingsClientGetResponse{}, err
 	}
@@ -193,12 +188,7 @@ func (client *CopilotSettingsClient) Update(ctx context.Context, properties Copi
 	if err != nil {
 		return CopilotSettingsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CopilotSettingsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -220,8 +210,11 @@ func (client *CopilotSettingsClient) updateCreateRequest(ctx context.Context, pr
 }
 
 // updateHandleResponse handles the Update response.
-func (client *CopilotSettingsClient) updateHandleResponse(resp *http.Response) (CopilotSettingsClientUpdateResponse, error) {
+func (client *CopilotSettingsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (CopilotSettingsClientUpdateResponse, error) {
 	result := CopilotSettingsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CopilotSettingsResource); err != nil {
 		return CopilotSettingsClientUpdateResponse{}, err
 	}

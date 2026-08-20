@@ -61,12 +61,7 @@ func (client *VMIngestionClient) Details(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return VMIngestionClientDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VMIngestionClientDetailsResponse{}, err
-	}
-	resp, err := client.detailsHandleResponse(httpResp)
-	return resp, err
+	return client.detailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // detailsCreateRequest creates the Details request.
@@ -96,8 +91,11 @@ func (client *VMIngestionClient) detailsCreateRequest(ctx context.Context, resou
 }
 
 // detailsHandleResponse handles the Details response.
-func (client *VMIngestionClient) detailsHandleResponse(resp *http.Response) (VMIngestionClientDetailsResponse, error) {
+func (client *VMIngestionClient) detailsHandleResponse(resp *http.Response, successCodes ...int) (VMIngestionClientDetailsResponse, error) {
 	result := VMIngestionClientDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMIngestionDetailsResponse); err != nil {
 		return VMIngestionClientDetailsResponse{}, err
 	}

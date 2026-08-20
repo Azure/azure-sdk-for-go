@@ -19,6 +19,8 @@ import (
 
 // OrderItemsClient contains the methods for the OrderItems group.
 // Don't use this type directly, use NewOrderItemsClient() instead.
+//
+// Generated from API version 2024-02-01
 type OrderItemsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewOrderItemsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // Cancel - Cancel order item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - orderItemName - The name of the order item.
 //   - cancellationReason - Reason for cancellation.
@@ -63,8 +63,7 @@ func (client *OrderItemsClient) Cancel(ctx context.Context, resourceGroupName st
 		return OrderItemsClientCancelResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return OrderItemsClientCancelResponse{}, err
+		return OrderItemsClientCancelResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return OrderItemsClientCancelResponse{}, nil
 }
@@ -89,8 +88,8 @@ func (client *OrderItemsClient) cancelCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, cancellationReason); err != nil {
 		return nil, err
@@ -102,8 +101,6 @@ func (client *OrderItemsClient) cancelCreateRequest(ctx context.Context, resourc
 // the Update order item
 // API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - orderItemName - The name of the order item.
 //   - orderItemResource - Order item details from request body.
@@ -129,8 +126,6 @@ func (client *OrderItemsClient) BeginCreate(ctx context.Context, resourceGroupNa
 // Update order item
 // API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 func (client *OrderItemsClient) create(ctx context.Context, resourceGroupName string, orderItemName string, orderItemResource OrderItemResource, options *OrderItemsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OrderItemsClient.BeginCreate"
@@ -146,8 +141,7 @@ func (client *OrderItemsClient) create(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -172,8 +166,8 @@ func (client *OrderItemsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, orderItemResource); err != nil {
@@ -184,8 +178,6 @@ func (client *OrderItemsClient) createCreateRequest(ctx context.Context, resourc
 
 // BeginDelete - Delete an order item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - orderItemName - The name of the order item.
 //   - options - OrderItemsClientBeginDeleteOptions contains the optional parameters for the OrderItemsClient.BeginDelete method.
@@ -208,8 +200,6 @@ func (client *OrderItemsClient) BeginDelete(ctx context.Context, resourceGroupNa
 
 // Delete - Delete an order item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 func (client *OrderItemsClient) deleteOperation(ctx context.Context, resourceGroupName string, orderItemName string, options *OrderItemsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OrderItemsClient.BeginDelete"
@@ -225,8 +215,7 @@ func (client *OrderItemsClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -251,15 +240,13 @@ func (client *OrderItemsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get an order item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - orderItemName - The name of the order item.
 //   - options - OrderItemsClientGetOptions contains the optional parameters for the OrderItemsClient.Get method.
@@ -277,12 +264,7 @@ func (client *OrderItemsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return OrderItemsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OrderItemsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -308,15 +290,18 @@ func (client *OrderItemsClient) getCreateRequest(ctx context.Context, resourceGr
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *OrderItemsClient) getHandleResponse(resp *http.Response) (OrderItemsClientGetResponse, error) {
+func (client *OrderItemsClient) getHandleResponse(resp *http.Response, successCodes ...int) (OrderItemsClientGetResponse, error) {
 	result := OrderItemsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OrderItemResource); err != nil {
 		return OrderItemsClientGetResponse{}, err
 	}
@@ -324,8 +309,6 @@ func (client *OrderItemsClient) getHandleResponse(resp *http.Response) (OrderIte
 }
 
 // NewListByResourceGroupPager - List order items at resource group level.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - OrderItemsClientListByResourceGroupOptions contains the optional parameters for the OrderItemsClient.NewListByResourceGroupPager
 //     method.
@@ -340,55 +323,69 @@ func (client *OrderItemsClient) NewListByResourceGroupPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return OrderItemsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OrderItemsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *OrderItemsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *OrderItemsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *OrderItemsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, options *OrderItemsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/orderItems"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20240201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *OrderItemsClient) listByResourceGroupHandleResponse(resp *http.Response) (OrderItemsClientListByResourceGroupResponse, error) {
+func (client *OrderItemsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (OrderItemsClientListByResourceGroupResponse, error) {
 	result := OrderItemsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OrderItemResourceList); err != nil {
 		return OrderItemsClientListByResourceGroupResponse{}, err
 	}
@@ -396,8 +393,6 @@ func (client *OrderItemsClient) listByResourceGroupHandleResponse(resp *http.Res
 }
 
 // NewListBySubscriptionPager - List order items at subscription level.
-//
-// Generated from API version 2024-02-01
 //   - options - OrderItemsClientListBySubscriptionOptions contains the optional parameters for the OrderItemsClient.NewListBySubscriptionPager
 //     method.
 func (client *OrderItemsClient) NewListBySubscriptionPager(options *OrderItemsClientListBySubscriptionOptions) *runtime.Pager[OrderItemsClientListBySubscriptionResponse] {
@@ -411,51 +406,65 @@ func (client *OrderItemsClient) NewListBySubscriptionPager(options *OrderItemsCl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return OrderItemsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OrderItemsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *OrderItemsClient) listBySubscriptionCreateRequest(ctx context.Context, options *OrderItemsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/orderItems"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *OrderItemsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, options *OrderItemsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/orderItems"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20240201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *OrderItemsClient) listBySubscriptionHandleResponse(resp *http.Response) (OrderItemsClientListBySubscriptionResponse, error) {
+func (client *OrderItemsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (OrderItemsClientListBySubscriptionResponse, error) {
 	result := OrderItemsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OrderItemResourceList); err != nil {
 		return OrderItemsClientListBySubscriptionResponse{}, err
 	}
@@ -464,8 +473,6 @@ func (client *OrderItemsClient) listBySubscriptionHandleResponse(resp *http.Resp
 
 // BeginReturn - Return order item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - orderItemName - The name of the order item.
 //   - returnOrderItemDetails - Return order item details.
@@ -489,8 +496,6 @@ func (client *OrderItemsClient) BeginReturn(ctx context.Context, resourceGroupNa
 
 // Return - Return order item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 func (client *OrderItemsClient) returnOperation(ctx context.Context, resourceGroupName string, orderItemName string, returnOrderItemDetails ReturnOrderItemDetails, options *OrderItemsClientBeginReturnOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OrderItemsClient.BeginReturn"
@@ -506,8 +511,7 @@ func (client *OrderItemsClient) returnOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -532,8 +536,8 @@ func (client *OrderItemsClient) returnCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, returnOrderItemDetails); err != nil {
 		return nil, err
@@ -543,8 +547,6 @@ func (client *OrderItemsClient) returnCreateRequest(ctx context.Context, resourc
 
 // BeginUpdate - Update the properties of an existing order item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - orderItemName - The name of the order item.
 //   - orderItemUpdateParameter - Order item update parameters from request body.
@@ -568,8 +570,6 @@ func (client *OrderItemsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 
 // Update - Update the properties of an existing order item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 func (client *OrderItemsClient) update(ctx context.Context, resourceGroupName string, orderItemName string, orderItemUpdateParameter OrderItemUpdateParameter, options *OrderItemsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OrderItemsClient.BeginUpdate"
@@ -585,8 +585,7 @@ func (client *OrderItemsClient) update(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -611,8 +610,8 @@ func (client *OrderItemsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

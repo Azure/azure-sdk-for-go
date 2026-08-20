@@ -59,12 +59,7 @@ func (client *ProvidersClient) Get(ctx context.Context, resourceProviderNamespac
 	if err != nil {
 		return ProvidersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProvidersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -93,8 +88,11 @@ func (client *ProvidersClient) getCreateRequest(ctx context.Context, resourcePro
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProvidersClient) getHandleResponse(resp *http.Response) (ProvidersClientGetResponse, error) {
+func (client *ProvidersClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProvidersClientGetResponse, error) {
 	result := ProvidersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Provider); err != nil {
 		return ProvidersClientGetResponse{}, err
 	}
@@ -120,12 +118,7 @@ func (client *ProvidersClient) GetAtTenantScope(ctx context.Context, resourcePro
 	if err != nil {
 		return ProvidersClientGetAtTenantScopeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProvidersClientGetAtTenantScopeResponse{}, err
-	}
-	resp, err := client.getAtTenantScopeHandleResponse(httpResp)
-	return resp, err
+	return client.getAtTenantScopeHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAtTenantScopeCreateRequest creates the GetAtTenantScope request.
@@ -150,8 +143,11 @@ func (client *ProvidersClient) getAtTenantScopeCreateRequest(ctx context.Context
 }
 
 // getAtTenantScopeHandleResponse handles the GetAtTenantScope response.
-func (client *ProvidersClient) getAtTenantScopeHandleResponse(resp *http.Response) (ProvidersClientGetAtTenantScopeResponse, error) {
+func (client *ProvidersClient) getAtTenantScopeHandleResponse(resp *http.Response, successCodes ...int) (ProvidersClientGetAtTenantScopeResponse, error) {
 	result := ProvidersClientGetAtTenantScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Provider); err != nil {
 		return ProvidersClientGetAtTenantScopeResponse{}, err
 	}
@@ -171,42 +167,56 @@ func (client *ProvidersClient) NewListPager(options *ProvidersClientListOptions)
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ProvidersClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProvidersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ProvidersClient) listCreateRequest(ctx context.Context, options *ProvidersClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ProvidersClient) listCreateRequest(ctx context.Context, nextLink string, options *ProvidersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		reqQP.Set("api-version", version20250401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ProvidersClient) listHandleResponse(resp *http.Response) (ProvidersClientListResponse, error) {
+func (client *ProvidersClient) listHandleResponse(resp *http.Response, successCodes ...int) (ProvidersClientListResponse, error) {
 	result := ProvidersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderListResult); err != nil {
 		return ProvidersClientListResponse{}, err
 	}
@@ -227,38 +237,52 @@ func (client *ProvidersClient) NewListAtTenantScopePager(options *ProvidersClien
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAtTenantScopeCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listAtTenantScopeCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ProvidersClientListAtTenantScopeResponse{}, err
 			}
-			return client.listAtTenantScopeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProvidersClientListAtTenantScopeResponse{}, err
+			}
+			return client.listAtTenantScopeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAtTenantScopeCreateRequest creates the ListAtTenantScope request.
-func (client *ProvidersClient) listAtTenantScopeCreateRequest(ctx context.Context, options *ProvidersClientListAtTenantScopeOptions) (*policy.Request, error) {
-	urlPath := "/providers"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *ProvidersClient) listAtTenantScopeCreateRequest(ctx context.Context, nextLink string, options *ProvidersClientListAtTenantScopeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		reqQP.Set("api-version", version20250401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listAtTenantScopeHandleResponse handles the ListAtTenantScope response.
-func (client *ProvidersClient) listAtTenantScopeHandleResponse(resp *http.Response) (ProvidersClientListAtTenantScopeResponse, error) {
+func (client *ProvidersClient) listAtTenantScopeHandleResponse(resp *http.Response, successCodes ...int) (ProvidersClientListAtTenantScopeResponse, error) {
 	result := ProvidersClientListAtTenantScopeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderListResult); err != nil {
 		return ProvidersClientListAtTenantScopeResponse{}, err
 	}
@@ -284,12 +308,7 @@ func (client *ProvidersClient) ProviderPermissions(ctx context.Context, resource
 	if err != nil {
 		return ProvidersClientProviderPermissionsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProvidersClientProviderPermissionsResponse{}, err
-	}
-	resp, err := client.providerPermissionsHandleResponse(httpResp)
-	return resp, err
+	return client.providerPermissionsHandleResponse(httpResp, http.StatusOK)
 }
 
 // providerPermissionsCreateRequest creates the ProviderPermissions request.
@@ -315,8 +334,11 @@ func (client *ProvidersClient) providerPermissionsCreateRequest(ctx context.Cont
 }
 
 // providerPermissionsHandleResponse handles the ProviderPermissions response.
-func (client *ProvidersClient) providerPermissionsHandleResponse(resp *http.Response) (ProvidersClientProviderPermissionsResponse, error) {
+func (client *ProvidersClient) providerPermissionsHandleResponse(resp *http.Response, successCodes ...int) (ProvidersClientProviderPermissionsResponse, error) {
 	result := ProvidersClientProviderPermissionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderPermissionListResult); err != nil {
 		return ProvidersClientProviderPermissionsResponse{}, err
 	}
@@ -341,12 +363,7 @@ func (client *ProvidersClient) Register(ctx context.Context, resourceProviderNam
 	if err != nil {
 		return ProvidersClientRegisterResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProvidersClientRegisterResponse{}, err
-	}
-	resp, err := client.registerHandleResponse(httpResp)
-	return resp, err
+	return client.registerHandleResponse(httpResp, http.StatusOK)
 }
 
 // registerCreateRequest creates the Register request.
@@ -379,8 +396,11 @@ func (client *ProvidersClient) registerCreateRequest(ctx context.Context, resour
 }
 
 // registerHandleResponse handles the Register response.
-func (client *ProvidersClient) registerHandleResponse(resp *http.Response) (ProvidersClientRegisterResponse, error) {
+func (client *ProvidersClient) registerHandleResponse(resp *http.Response, successCodes ...int) (ProvidersClientRegisterResponse, error) {
 	result := ProvidersClientRegisterResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Provider); err != nil {
 		return ProvidersClientRegisterResponse{}, err
 	}
@@ -409,8 +429,7 @@ func (client *ProvidersClient) RegisterAtManagementGroupScope(ctx context.Contex
 		return ProvidersClientRegisterAtManagementGroupScopeResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProvidersClientRegisterAtManagementGroupScopeResponse{}, err
+		return ProvidersClientRegisterAtManagementGroupScopeResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ProvidersClientRegisterAtManagementGroupScopeResponse{}, nil
 }
@@ -454,12 +473,7 @@ func (client *ProvidersClient) Unregister(ctx context.Context, resourceProviderN
 	if err != nil {
 		return ProvidersClientUnregisterResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProvidersClientUnregisterResponse{}, err
-	}
-	resp, err := client.unregisterHandleResponse(httpResp)
-	return resp, err
+	return client.unregisterHandleResponse(httpResp, http.StatusOK)
 }
 
 // unregisterCreateRequest creates the Unregister request.
@@ -485,8 +499,11 @@ func (client *ProvidersClient) unregisterCreateRequest(ctx context.Context, reso
 }
 
 // unregisterHandleResponse handles the Unregister response.
-func (client *ProvidersClient) unregisterHandleResponse(resp *http.Response) (ProvidersClientUnregisterResponse, error) {
+func (client *ProvidersClient) unregisterHandleResponse(resp *http.Response, successCodes ...int) (ProvidersClientUnregisterResponse, error) {
 	result := ProvidersClientUnregisterResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Provider); err != nil {
 		return ProvidersClientUnregisterResponse{}, err
 	}

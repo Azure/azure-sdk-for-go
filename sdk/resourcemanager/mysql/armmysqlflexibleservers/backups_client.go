@@ -61,12 +61,7 @@ func (client *BackupsClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return BackupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -100,8 +95,11 @@ func (client *BackupsClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *BackupsClient) getHandleResponse(resp *http.Response) (BackupsClientGetResponse, error) {
+func (client *BackupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (BackupsClientGetResponse, error) {
 	result := BackupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBackup); err != nil {
 		return BackupsClientGetResponse{}, err
 	}
@@ -124,47 +122,61 @@ func (client *BackupsClient) NewListByServerPager(resourceGroupName string, serv
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			}, nil)
+			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, nextLink, options)
 			if err != nil {
 				return BackupsClientListByServerResponse{}, err
 			}
-			return client.listByServerHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BackupsClientListByServerResponse{}, err
+			}
+			return client.listByServerHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *BackupsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, _ *BackupsClientListByServerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/backups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *BackupsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, nextLink string, _ *BackupsClientListByServerOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/backups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serverName == "" {
+			return nil, errors.New("parameter serverName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241230)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241230)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *BackupsClient) listByServerHandleResponse(resp *http.Response) (BackupsClientListByServerResponse, error) {
+func (client *BackupsClient) listByServerHandleResponse(resp *http.Response, successCodes ...int) (BackupsClientListByServerResponse, error) {
 	result := BackupsClientListByServerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBackupListResult); err != nil {
 		return BackupsClientListByServerResponse{}, err
 	}
@@ -191,12 +203,7 @@ func (client *BackupsClient) Put(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return BackupsClientPutResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupsClientPutResponse{}, err
-	}
-	resp, err := client.putHandleResponse(httpResp)
-	return resp, err
+	return client.putHandleResponse(httpResp, http.StatusOK)
 }
 
 // putCreateRequest creates the Put request.
@@ -230,8 +237,11 @@ func (client *BackupsClient) putCreateRequest(ctx context.Context, resourceGroup
 }
 
 // putHandleResponse handles the Put response.
-func (client *BackupsClient) putHandleResponse(resp *http.Response) (BackupsClientPutResponse, error) {
+func (client *BackupsClient) putHandleResponse(resp *http.Response, successCodes ...int) (BackupsClientPutResponse, error) {
 	result := BackupsClientPutResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerBackup); err != nil {
 		return BackupsClientPutResponse{}, err
 	}

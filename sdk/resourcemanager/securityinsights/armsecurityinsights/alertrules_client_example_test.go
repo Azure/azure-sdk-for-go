@@ -288,7 +288,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAFusionAlertRule() {
 	// 			AlertRuleTemplateName: to.Ptr("f71aba3d-28fb-450b-b192-4e76a83015c8"),
 	// 			DisplayName: to.Ptr("Advanced Multi-Stage Attack Detection"),
 	// 			Enabled: to.Ptr(true),
-	// 			LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T13:13:11.5340061Z"); return t}()),
+	// 			LastModifiedUTC: to.Ptr(time.Date(2019, time.September, 4, 13, 13, 11, 534006100, time.UTC)),
 	// 			Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
 	// 			SourceSettings: []*armsecurityinsights.FusionSourceSettings{
 	// 				{
@@ -835,7 +835,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAFusionAlertRuleWith
 	// 			AlertRuleTemplateName: to.Ptr("f71aba3d-28fb-450b-b192-4e76a83015c8"),
 	// 			DisplayName: to.Ptr("Advanced Multi-Stage Attack Detection"),
 	// 			Enabled: to.Ptr(true),
-	// 			LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T13:13:11.5340061Z"); return t}()),
+	// 			LastModifiedUTC: to.Ptr(time.Date(2019, time.September, 4, 13, 13, 11, 534006100, time.UTC)),
 	// 			Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
 	// 			SourceSettings: []*armsecurityinsights.FusionSourceSettings{
 	// 				{
@@ -1142,7 +1142,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAMicrosoftSecurityIn
 	// 		Properties: &armsecurityinsights.MicrosoftSecurityIncidentCreationAlertRuleProperties{
 	// 			DisplayName: to.Ptr("testing displayname"),
 	// 			Enabled: to.Ptr(true),
-	// 			LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T12:05:35.7296311Z"); return t}()),
+	// 			LastModifiedUTC: to.Ptr(time.Date(2019, time.September, 4, 12, 5, 35, 729631100, time.UTC)),
 	// 			ProductFilter: to.Ptr(armsecurityinsights.MicrosoftSecurityProductNameMicrosoftCloudAppSecurity),
 	// 		},
 	// 	},
@@ -1230,7 +1230,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesANrtAlertRule() {
 	// 					ReopenClosedIncident: to.Ptr(false),
 	// 				},
 	// 			},
-	// 			LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
+	// 			LastModifiedUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
 	// 			Query: to.Ptr("ProtectionStatus | extend HostCustomEntity = Computer | extend IPCustomEntity = ComputerIP_Hidden"),
 	// 			Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
 	// 			SuppressionDuration: to.Ptr("PT1H"),
@@ -1420,7 +1420,7 @@ func ExampleAlertRulesClient_CreateOrUpdate_createsOrUpdatesAScheduledAlertRule(
 	// 					ReopenClosedIncident: to.Ptr(false),
 	// 				},
 	// 			},
-	// 			LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-01T13:17:30Z"); return t}()),
+	// 			LastModifiedUTC: to.Ptr(time.Date(2021, time.March, 1, 13, 17, 30, 0, time.UTC)),
 	// 			Query: to.Ptr("Heartbeat"),
 	// 			QueryFrequency: to.Ptr("PT1H"),
 	// 			QueryPeriod: to.Ptr("P2DT1H30M"),
@@ -1494,7 +1494,7 @@ func ExampleAlertRulesClient_Get_getAFusionAlertRule() {
 	// 			AlertRuleTemplateName: to.Ptr("f71aba3d-28fb-450b-b192-4e76a83015c8"),
 	// 			DisplayName: to.Ptr("Advanced Multi-Stage Attack Detection"),
 	// 			Enabled: to.Ptr(true),
-	// 			LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-20T13:13:11.5340061Z"); return t}()),
+	// 			LastModifiedUTC: to.Ptr(time.Date(2021, time.October, 20, 13, 13, 11, 534006100, time.UTC)),
 	// 			Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
 	// 			SourceSettings: []*armsecurityinsights.FusionSourceSettings{
 	// 				{
@@ -1803,7 +1803,7 @@ func ExampleAlertRulesClient_Get_getAMicrosoftSecurityIncidentCreationRule() {
 	// 		Properties: &armsecurityinsights.MicrosoftSecurityIncidentCreationAlertRuleProperties{
 	// 			DisplayName: to.Ptr("testing displayname"),
 	// 			Enabled: to.Ptr(true),
-	// 			LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T12:05:35.7296311Z"); return t}()),
+	// 			LastModifiedUTC: to.Ptr(time.Date(2019, time.September, 4, 12, 5, 35, 729631100, time.UTC)),
 	// 			ProductFilter: to.Ptr(armsecurityinsights.MicrosoftSecurityProductNameMicrosoftCloudAppSecurity),
 	// 		},
 	// 	},
@@ -1855,7 +1855,7 @@ func ExampleAlertRulesClient_Get_getAnNrtAlertRule() {
 	// 					ReopenClosedIncident: to.Ptr(false),
 	// 				},
 	// 			},
-	// 			LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-01-01T13:15:30Z"); return t}()),
+	// 			LastModifiedUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
 	// 			Query: to.Ptr("ProtectionStatus | extend HostCustomEntity = Computer | extend IPCustomEntity = ComputerIP_Hidden"),
 	// 			Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
 	// 			SuppressionDuration: to.Ptr("PT1H"),
@@ -1952,7 +1952,7 @@ func ExampleAlertRulesClient_Get_getAScheduledAlertRule() {
 	// 					ReopenClosedIncident: to.Ptr(false),
 	// 				},
 	// 			},
-	// 			LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-01T13:17:30Z"); return t}()),
+	// 			LastModifiedUTC: to.Ptr(time.Date(2021, time.March, 1, 13, 17, 30, 0, time.UTC)),
 	// 			Query: to.Ptr("Heartbeat"),
 	// 			QueryFrequency: to.Ptr("PT1H"),
 	// 			QueryPeriod: to.Ptr("P2DT1H30M"),
@@ -2059,7 +2059,7 @@ func ExampleAlertRulesClient_NewListPager() {
 		// 							ReopenClosedIncident: to.Ptr(false),
 		// 						},
 		// 					},
-		// 					LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-03-01T13:17:30Z"); return t}()),
+		// 					LastModifiedUTC: to.Ptr(time.Date(2021, time.March, 1, 13, 17, 30, 0, time.UTC)),
 		// 					Query: to.Ptr("Heartbeat"),
 		// 					QueryFrequency: to.Ptr("PT1H"),
 		// 					QueryPeriod: to.Ptr("P2DT1H30M"),
@@ -2087,7 +2087,7 @@ func ExampleAlertRulesClient_NewListPager() {
 		// 				Properties: &armsecurityinsights.MicrosoftSecurityIncidentCreationAlertRuleProperties{
 		// 					DisplayName: to.Ptr("testing displayname"),
 		// 					Enabled: to.Ptr(true),
-		// 					LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T12:05:35.7296311Z"); return t}()),
+		// 					LastModifiedUTC: to.Ptr(time.Date(2019, time.September, 4, 12, 5, 35, 729631100, time.UTC)),
 		// 					ProductFilter: to.Ptr(armsecurityinsights.MicrosoftSecurityProductNameMicrosoftCloudAppSecurity),
 		// 				},
 		// 			},
@@ -2102,7 +2102,7 @@ func ExampleAlertRulesClient_NewListPager() {
 		// 					AlertRuleTemplateName: to.Ptr("f71aba3d-28fb-450b-b192-4e76a83015c8"),
 		// 					DisplayName: to.Ptr("Advanced Multi-Stage Attack Detection"),
 		// 					Enabled: to.Ptr(true),
-		// 					LastModifiedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-22T07:12:34.9065092Z"); return t}()),
+		// 					LastModifiedUTC: to.Ptr(time.Date(2021, time.October, 22, 7, 12, 34, 906509200, time.UTC)),
 		// 					Severity: to.Ptr(armsecurityinsights.AlertSeverityHigh),
 		// 					SourceSettings: []*armsecurityinsights.FusionSourceSettings{
 		// 						{

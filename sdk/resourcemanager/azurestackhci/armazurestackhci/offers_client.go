@@ -62,12 +62,7 @@ func (client *OffersClient) Get(ctx context.Context, resourceGroupName string, c
 	if err != nil {
 		return OffersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OffersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -108,8 +103,11 @@ func (client *OffersClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *OffersClient) getHandleResponse(resp *http.Response) (OffersClientGetResponse, error) {
+func (client *OffersClient) getHandleResponse(resp *http.Response, successCodes ...int) (OffersClientGetResponse, error) {
 	result := OffersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Offer); err != nil {
 		return OffersClientGetResponse{}, err
 	}
@@ -132,50 +130,64 @@ func (client *OffersClient) NewListByClusterPager(resourceGroupName string, clus
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
-			}, nil)
+			req, err := client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, nextLink, options)
 			if err != nil {
 				return OffersClientListByClusterResponse{}, err
 			}
-			return client.listByClusterHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OffersClientListByClusterResponse{}, err
+			}
+			return client.listByClusterHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
-func (client *OffersClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, options *OffersClientListByClusterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/offers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *OffersClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nextLink string, options *OffersClientListByClusterOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/offers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if clusterName == "" {
+			return nil, errors.New("parameter clusterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		reqQP.Set("api-version", version20260430)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260430)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByClusterHandleResponse handles the ListByCluster response.
-func (client *OffersClient) listByClusterHandleResponse(resp *http.Response) (OffersClientListByClusterResponse, error) {
+func (client *OffersClient) listByClusterHandleResponse(resp *http.Response, successCodes ...int) (OffersClientListByClusterResponse, error) {
 	result := OffersClientListByClusterResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OfferList); err != nil {
 		return OffersClientListByClusterResponse{}, err
 	}
@@ -199,54 +211,68 @@ func (client *OffersClient) NewListByPublisherPager(resourceGroupName string, cl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByPublisherCreateRequest(ctx, resourceGroupName, clusterName, publisherName, options)
-			}, nil)
+			req, err := client.listByPublisherCreateRequest(ctx, resourceGroupName, clusterName, publisherName, nextLink, options)
 			if err != nil {
 				return OffersClientListByPublisherResponse{}, err
 			}
-			return client.listByPublisherHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OffersClientListByPublisherResponse{}, err
+			}
+			return client.listByPublisherHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByPublisherCreateRequest creates the ListByPublisher request.
-func (client *OffersClient) listByPublisherCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, publisherName string, options *OffersClientListByPublisherOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/publishers/{publisherName}/offers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *OffersClient) listByPublisherCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, publisherName string, nextLink string, options *OffersClientListByPublisherOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/publishers/{publisherName}/offers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if clusterName == "" {
+			return nil, errors.New("parameter clusterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+		if publisherName == "" {
+			return nil, errors.New("parameter publisherName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{publisherName}", url.PathEscape(publisherName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if publisherName == "" {
-		return nil, errors.New("parameter publisherName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{publisherName}", url.PathEscape(publisherName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		reqQP.Set("api-version", version20260430)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260430)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByPublisherHandleResponse handles the ListByPublisher response.
-func (client *OffersClient) listByPublisherHandleResponse(resp *http.Response) (OffersClientListByPublisherResponse, error) {
+func (client *OffersClient) listByPublisherHandleResponse(resp *http.Response, successCodes ...int) (OffersClientListByPublisherResponse, error) {
 	result := OffersClientListByPublisherResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OfferList); err != nil {
 		return OffersClientListByPublisherResponse{}, err
 	}

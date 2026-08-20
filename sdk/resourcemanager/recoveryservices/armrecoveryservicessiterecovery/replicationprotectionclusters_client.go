@@ -89,8 +89,7 @@ func (client *ReplicationProtectionClustersClient) applyRecoveryPoint(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -185,8 +184,7 @@ func (client *ReplicationProtectionClustersClient) create(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -280,8 +278,7 @@ func (client *ReplicationProtectionClustersClient) failoverCommit(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -349,12 +346,7 @@ func (client *ReplicationProtectionClustersClient) Get(ctx context.Context, reso
 	if err != nil {
 		return ReplicationProtectionClustersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReplicationProtectionClustersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -396,8 +388,11 @@ func (client *ReplicationProtectionClustersClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationProtectionClustersClient) getHandleResponse(resp *http.Response) (ReplicationProtectionClustersClientGetResponse, error) {
+func (client *ReplicationProtectionClustersClient) getHandleResponse(resp *http.Response, successCodes ...int) (ReplicationProtectionClustersClientGetResponse, error) {
 	result := ReplicationProtectionClustersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationProtectionCluster); err != nil {
 		return ReplicationProtectionClustersClientGetResponse{}, err
 	}
@@ -430,12 +425,7 @@ func (client *ReplicationProtectionClustersClient) GetOperationResults(ctx conte
 	if err != nil {
 		return ReplicationProtectionClustersClientGetOperationResultsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReplicationProtectionClustersClientGetOperationResultsResponse{}, err
-	}
-	resp, err := client.getOperationResultsHandleResponse(httpResp)
-	return resp, err
+	return client.getOperationResultsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getOperationResultsCreateRequest creates the GetOperationResults request.
@@ -481,8 +471,11 @@ func (client *ReplicationProtectionClustersClient) getOperationResultsCreateRequ
 }
 
 // getOperationResultsHandleResponse handles the GetOperationResults response.
-func (client *ReplicationProtectionClustersClient) getOperationResultsHandleResponse(resp *http.Response) (ReplicationProtectionClustersClientGetOperationResultsResponse, error) {
+func (client *ReplicationProtectionClustersClient) getOperationResultsHandleResponse(resp *http.Response, successCodes ...int) (ReplicationProtectionClustersClientGetOperationResultsResponse, error) {
 	result := ReplicationProtectionClustersClientGetOperationResultsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationProtectionCluster); err != nil {
 		return ReplicationProtectionClustersClientGetOperationResultsResponse{}, err
 	}
@@ -507,53 +500,67 @@ func (client *ReplicationProtectionClustersClient) NewListPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
 			if err != nil {
 				return ReplicationProtectionClustersClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReplicationProtectionClustersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationProtectionClustersClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *ReplicationProtectionClustersClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionClusters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ReplicationProtectionClustersClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, options *ReplicationProtectionClustersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionClusters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250801)
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("skipToken", *options.SkipToken)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250801)
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("skipToken", *options.SkipToken)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ReplicationProtectionClustersClient) listHandleResponse(resp *http.Response) (ReplicationProtectionClustersClientListResponse, error) {
+func (client *ReplicationProtectionClustersClient) listHandleResponse(resp *http.Response, successCodes ...int) (ReplicationProtectionClustersClientListResponse, error) {
 	result := ReplicationProtectionClustersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationProtectionClusterCollection); err != nil {
 		return ReplicationProtectionClustersClientListResponse{}, err
 	}
@@ -580,55 +587,69 @@ func (client *ReplicationProtectionClustersClient) NewListByReplicationProtectio
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByReplicationProtectionContainersCreateRequest(ctx, resourceGroupName, resourceName, fabricName, protectionContainerName, options)
-			}, nil)
+			req, err := client.listByReplicationProtectionContainersCreateRequest(ctx, resourceGroupName, resourceName, fabricName, protectionContainerName, nextLink, options)
 			if err != nil {
 				return ReplicationProtectionClustersClientListByReplicationProtectionContainersResponse{}, err
 			}
-			return client.listByReplicationProtectionContainersHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReplicationProtectionClustersClientListByReplicationProtectionContainersResponse{}, err
+			}
+			return client.listByReplicationProtectionContainersHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByReplicationProtectionContainersCreateRequest creates the ListByReplicationProtectionContainers request.
-func (client *ReplicationProtectionClustersClient) listByReplicationProtectionContainersCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, _ *ReplicationProtectionClustersClientListByReplicationProtectionContainersOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionClusters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ReplicationProtectionClustersClient) listByReplicationProtectionContainersCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, protectionContainerName string, nextLink string, _ *ReplicationProtectionClustersClientListByReplicationProtectionContainersOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionClusters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		if fabricName == "" {
+			return nil, errors.New("parameter fabricName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
+		if protectionContainerName == "" {
+			return nil, errors.New("parameter protectionContainerName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{protectionContainerName}", url.PathEscape(protectionContainerName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if fabricName == "" {
-		return nil, errors.New("parameter fabricName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fabricName}", url.PathEscape(fabricName))
-	if protectionContainerName == "" {
-		return nil, errors.New("parameter protectionContainerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{protectionContainerName}", url.PathEscape(protectionContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByReplicationProtectionContainersHandleResponse handles the ListByReplicationProtectionContainers response.
-func (client *ReplicationProtectionClustersClient) listByReplicationProtectionContainersHandleResponse(resp *http.Response) (ReplicationProtectionClustersClientListByReplicationProtectionContainersResponse, error) {
+func (client *ReplicationProtectionClustersClient) listByReplicationProtectionContainersHandleResponse(resp *http.Response, successCodes ...int) (ReplicationProtectionClustersClientListByReplicationProtectionContainersResponse, error) {
 	result := ReplicationProtectionClustersClientListByReplicationProtectionContainersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationProtectionClusterCollection); err != nil {
 		return ReplicationProtectionClustersClientListByReplicationProtectionContainersResponse{}, err
 	}
@@ -684,8 +705,7 @@ func (client *ReplicationProtectionClustersClient) purge(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -774,8 +794,7 @@ func (client *ReplicationProtectionClustersClient) repairReplication(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -866,8 +885,7 @@ func (client *ReplicationProtectionClustersClient) testFailover(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -962,8 +980,7 @@ func (client *ReplicationProtectionClustersClient) testFailoverCleanup(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1058,8 +1075,7 @@ func (client *ReplicationProtectionClustersClient) unplannedFailover(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

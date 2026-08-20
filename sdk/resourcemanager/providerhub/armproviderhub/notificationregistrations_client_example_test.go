@@ -55,7 +55,7 @@ func ExampleNotificationRegistrationsClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.NotificationRegistrationsClientCreateOrUpdateResponse{
-	// 	NotificationRegistration: &armproviderhub.NotificationRegistration{
+	// 	NotificationRegistration: armproviderhub.NotificationRegistration{
 	// 		Name: to.Ptr("fooNotificationRegistration"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/notificationregistrations"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/notificationregistrations/fooNotificationRegistration"),
@@ -83,10 +83,10 @@ func ExampleNotificationRegistrationsClient_CreateOrUpdate() {
 	// 			NotificationMode: to.Ptr(armproviderhub.NotificationModeEventHub),
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 	// 		},
@@ -135,7 +135,7 @@ func ExampleNotificationRegistrationsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.NotificationRegistrationsClientGetResponse{
-	// 	NotificationRegistration: &armproviderhub.NotificationRegistration{
+	// 	NotificationRegistration: armproviderhub.NotificationRegistration{
 	// 		Name: to.Ptr("fooNotificationRegistration"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/notificationregistrations"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/notificationregistrations/fooNotificationRegistration"),
@@ -163,10 +163,10 @@ func ExampleNotificationRegistrationsClient_Get() {
 	// 			NotificationMode: to.Ptr(armproviderhub.NotificationModeEventHub),
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 	// 		},
@@ -227,10 +227,10 @@ func ExampleNotificationRegistrationsClient_NewListByProviderRegistrationPager()
 		// 					NotificationMode: to.Ptr(armproviderhub.NotificationModeEventHub),
 		// 				},
 		// 				SystemData: &armproviderhub.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 		// 				},
@@ -255,10 +255,10 @@ func ExampleNotificationRegistrationsClient_NewListByProviderRegistrationPager()
 		// 					NotificationMode: to.Ptr(armproviderhub.NotificationModeEventHub),
 		// 				},
 		// 				SystemData: &armproviderhub.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 		// 				},

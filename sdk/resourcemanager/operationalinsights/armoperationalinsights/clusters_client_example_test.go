@@ -57,10 +57,10 @@ func ExampleClustersClient_BeginCreateOrUpdate() {
 	// 		Properties: &armoperationalinsights.ClusterProperties{
 	// 			BillingType: to.Ptr(armoperationalinsights.BillingTypeCluster),
 	// 			ClusterID: to.Ptr("1c3f2afc-9ec1-4e74-bfe8-022b83bcd7b1"),
-	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T17:40:33Z"); return t}()),
+	// 			CreatedDate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
 	// 			IsAvailabilityZonesEnabled: to.Ptr(true),
 	// 			IsDoubleEncryptionEnabled: to.Ptr(true),
-	// 			LastModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T17:40:33Z"); return t}()),
+	// 			LastModifiedDate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armoperationalinsights.ClusterEntityStatusSucceeded),
 	// 		},
 	// 		SKU: &armoperationalinsights.ClusterSKU{
@@ -129,13 +129,13 @@ func ExampleClustersClient_Get() {
 	// 		Properties: &armoperationalinsights.ClusterProperties{
 	// 			AssociatedWorkspaces: []*armoperationalinsights.AssociatedWorkspace{
 	// 				{
-	// 					AssociateDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T23:40:33Z"); return t}()),
+	// 					AssociateDate: to.Ptr(time.Date(2020, time.January, 13, 23, 40, 33, 0, time.UTC)),
 	// 					ResourceID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/testRG/providers/microsoft.operationalinsights/workspaces/testWs1"),
 	// 					WorkspaceID: to.Ptr("942bdefd-e6c9-411c-ac69-70ffad564363"),
 	// 					WorkspaceName: to.Ptr("testWs1"),
 	// 				},
 	// 				{
-	// 					AssociateDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T23:40:33Z"); return t}()),
+	// 					AssociateDate: to.Ptr(time.Date(2020, time.January, 13, 23, 40, 33, 0, time.UTC)),
 	// 					ResourceID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/testRG/providers/microsoft.operationalinsights/workspaces/testWs2"),
 	// 					WorkspaceID: to.Ptr("c7edb8f8-67f7-41f2-bddb-aecf22507e3f"),
 	// 					WorkspaceName: to.Ptr("testWs2"),
@@ -143,11 +143,11 @@ func ExampleClustersClient_Get() {
 	// 			},
 	// 			BillingType: to.Ptr(armoperationalinsights.BillingTypeCluster),
 	// 			CapacityReservationProperties: &armoperationalinsights.CapacityReservationProperties{
-	// 				LastSKUUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T17:40:33Z"); return t}()),
+	// 				LastSKUUpdate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
 	// 				MinCapacity: to.Ptr[int64](100),
 	// 			},
 	// 			ClusterID: to.Ptr("1c3f2afc-9ec1-4e74-bfe8-022b83bcd7b1"),
-	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T17:40:33Z"); return t}()),
+	// 			CreatedDate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
 	// 			IsAvailabilityZonesEnabled: to.Ptr(true),
 	// 			IsDoubleEncryptionEnabled: to.Ptr(true),
 	// 			KeyVaultProperties: &armoperationalinsights.KeyVaultProperties{
@@ -155,12 +155,12 @@ func ExampleClustersClient_Get() {
 	// 				KeyVaultURI: to.Ptr("https://aztest2170.vault.azure.net"),
 	// 				KeyVersion: to.Ptr("654ft6c4e63845cbb50fd6fg51540429"),
 	// 			},
-	// 			LastModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T17:40:33Z"); return t}()),
+	// 			LastModifiedDate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armoperationalinsights.ClusterEntityStatusSucceeded),
 	// 			Replication: &armoperationalinsights.ClusterReplicationProperties{
-	// 				CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T17:40:33Z"); return t}()),
+	// 				CreatedDate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
 	// 				Enabled: to.Ptr(true),
-	// 				LastModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-13T17:40:33Z"); return t}()),
+	// 				LastModifiedDate: to.Ptr(time.Date(2020, time.January, 13, 17, 40, 33, 0, time.UTC)),
 	// 				Location: to.Ptr("westus3"),
 	// 				ProvisioningState: to.Ptr(armoperationalinsights.ClusterReplicationStateSucceeded),
 	// 			},
@@ -346,13 +346,13 @@ func ExampleClustersClient_BeginUpdate() {
 	// 		Properties: &armoperationalinsights.ClusterProperties{
 	// 			AssociatedWorkspaces: []*armoperationalinsights.AssociatedWorkspace{
 	// 				{
-	// 					AssociateDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-05T07:35:51Z"); return t}()),
+	// 					AssociateDate: to.Ptr(time.Date(2020, time.July, 5, 7, 35, 51, 0, time.UTC)),
 	// 					ResourceID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/testRG/providers/microsoft.operationalinsights/workspaces/testWs1"),
 	// 					WorkspaceID: to.Ptr("942bdefd-e6c9-411c-ac69-70ffad564363"),
 	// 					WorkspaceName: to.Ptr("testWs1"),
 	// 				},
 	// 				{
-	// 					AssociateDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-05T07:35:51Z"); return t}()),
+	// 					AssociateDate: to.Ptr(time.Date(2020, time.July, 5, 7, 35, 51, 0, time.UTC)),
 	// 					ResourceID: to.Ptr("/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/testRG/providers/microsoft.operationalinsights/workspaces/testWs2"),
 	// 					WorkspaceID: to.Ptr("c7edb8f8-67f7-41f2-bddb-aecf22507e3f"),
 	// 					WorkspaceName: to.Ptr("testWs2"),
@@ -360,17 +360,17 @@ func ExampleClustersClient_BeginUpdate() {
 	// 			},
 	// 			BillingType: to.Ptr(armoperationalinsights.BillingTypeCluster),
 	// 			CapacityReservationProperties: &armoperationalinsights.CapacityReservationProperties{
-	// 				LastSKUUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-04T07:35:51Z"); return t}()),
+	// 				LastSKUUpdate: to.Ptr(time.Date(2020, time.July, 4, 7, 35, 51, 0, time.UTC)),
 	// 				MinCapacity: to.Ptr[int64](100),
 	// 			},
 	// 			ClusterID: to.Ptr("1c3f2afc-9ec1-4e74-bfe8-022b83bcd7b1"),
-	// 			CreatedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-04T07:35:51Z"); return t}()),
+	// 			CreatedDate: to.Ptr(time.Date(2020, time.July, 4, 7, 35, 51, 0, time.UTC)),
 	// 			KeyVaultProperties: &armoperationalinsights.KeyVaultProperties{
 	// 				KeyName: to.Ptr("aztest2170cert"),
 	// 				KeyVaultURI: to.Ptr("https://aztest2170.vault.azure.net"),
 	// 				KeyVersion: to.Ptr("654ft6c4e63845cbb50fd6fg51540429"),
 	// 			},
-	// 			LastModifiedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-07-04T07:35:51Z"); return t}()),
+	// 			LastModifiedDate: to.Ptr(time.Date(2020, time.July, 4, 7, 35, 51, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armoperationalinsights.ClusterEntityStatusSucceeded),
 	// 		},
 	// 		SKU: &armoperationalinsights.ClusterSKU{

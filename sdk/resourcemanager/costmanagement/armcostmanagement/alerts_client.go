@@ -58,12 +58,7 @@ func (client *AlertsClient) Dismiss(ctx context.Context, scope string, alertID s
 	if err != nil {
 		return AlertsClientDismissResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertsClientDismissResponse{}, err
-	}
-	resp, err := client.dismissHandleResponse(httpResp)
-	return resp, err
+	return client.dismissHandleResponse(httpResp, http.StatusOK)
 }
 
 // dismissCreateRequest creates the Dismiss request.
@@ -93,8 +88,11 @@ func (client *AlertsClient) dismissCreateRequest(ctx context.Context, scope stri
 }
 
 // dismissHandleResponse handles the Dismiss response.
-func (client *AlertsClient) dismissHandleResponse(resp *http.Response) (AlertsClientDismissResponse, error) {
+func (client *AlertsClient) dismissHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientDismissResponse, error) {
 	result := AlertsClientDismissResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
 		return AlertsClientDismissResponse{}, err
 	}
@@ -120,12 +118,7 @@ func (client *AlertsClient) Get(ctx context.Context, scope string, alertID strin
 	if err != nil {
 		return AlertsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -151,8 +144,11 @@ func (client *AlertsClient) getCreateRequest(ctx context.Context, scope string, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *AlertsClient) getHandleResponse(resp *http.Response) (AlertsClientGetResponse, error) {
+func (client *AlertsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetResponse, error) {
 	result := AlertsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
 		return AlertsClientGetResponse{}, err
 	}
@@ -185,12 +181,7 @@ func (client *AlertsClient) List(ctx context.Context, scope string, options *Ale
 	if err != nil {
 		return AlertsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -212,8 +203,11 @@ func (client *AlertsClient) listCreateRequest(ctx context.Context, scope string,
 }
 
 // listHandleResponse handles the List response.
-func (client *AlertsClient) listHandleResponse(resp *http.Response) (AlertsClientListResponse, error) {
+func (client *AlertsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientListResponse, error) {
 	result := AlertsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsResult); err != nil {
 		return AlertsClientListResponse{}, err
 	}
@@ -241,12 +235,7 @@ func (client *AlertsClient) ListExternal(ctx context.Context, externalCloudProvi
 	if err != nil {
 		return AlertsClientListExternalResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertsClientListExternalResponse{}, err
-	}
-	resp, err := client.listExternalHandleResponse(httpResp)
-	return resp, err
+	return client.listExternalHandleResponse(httpResp, http.StatusOK)
 }
 
 // listExternalCreateRequest creates the ListExternal request.
@@ -272,8 +261,11 @@ func (client *AlertsClient) listExternalCreateRequest(ctx context.Context, exter
 }
 
 // listExternalHandleResponse handles the ListExternal response.
-func (client *AlertsClient) listExternalHandleResponse(resp *http.Response) (AlertsClientListExternalResponse, error) {
+func (client *AlertsClient) listExternalHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientListExternalResponse, error) {
 	result := AlertsClientListExternalResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsResult); err != nil {
 		return AlertsClientListExternalResponse{}, err
 	}

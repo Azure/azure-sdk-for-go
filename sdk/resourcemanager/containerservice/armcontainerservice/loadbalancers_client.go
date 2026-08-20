@@ -63,12 +63,7 @@ func (client *LoadBalancersClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return LoadBalancersClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return LoadBalancersClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -106,8 +101,11 @@ func (client *LoadBalancersClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *LoadBalancersClient) createOrUpdateHandleResponse(resp *http.Response) (LoadBalancersClientCreateOrUpdateResponse, error) {
+func (client *LoadBalancersClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (LoadBalancersClientCreateOrUpdateResponse, error) {
 	result := LoadBalancersClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LoadBalancer); err != nil {
 		return LoadBalancersClientCreateOrUpdateResponse{}, err
 	}
@@ -155,8 +153,7 @@ func (client *LoadBalancersClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -210,12 +207,7 @@ func (client *LoadBalancersClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return LoadBalancersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LoadBalancersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -249,8 +241,11 @@ func (client *LoadBalancersClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *LoadBalancersClient) getHandleResponse(resp *http.Response) (LoadBalancersClientGetResponse, error) {
+func (client *LoadBalancersClient) getHandleResponse(resp *http.Response, successCodes ...int) (LoadBalancersClientGetResponse, error) {
 	result := LoadBalancersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LoadBalancer); err != nil {
 		return LoadBalancersClientGetResponse{}, err
 	}
@@ -273,47 +268,61 @@ func (client *LoadBalancersClient) NewListByManagedClusterPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByManagedClusterCreateRequest(ctx, resourceGroupName, resourceName, options)
-			}, nil)
+			req, err := client.listByManagedClusterCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
 			if err != nil {
 				return LoadBalancersClientListByManagedClusterResponse{}, err
 			}
-			return client.listByManagedClusterHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LoadBalancersClientListByManagedClusterResponse{}, err
+			}
+			return client.listByManagedClusterHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByManagedClusterCreateRequest creates the ListByManagedCluster request.
-func (client *LoadBalancersClient) listByManagedClusterCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *LoadBalancersClientListByManagedClusterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/loadBalancers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LoadBalancersClient) listByManagedClusterCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *LoadBalancersClientListByManagedClusterOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/loadBalancers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260502Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByManagedClusterHandleResponse handles the ListByManagedCluster response.
-func (client *LoadBalancersClient) listByManagedClusterHandleResponse(resp *http.Response) (LoadBalancersClientListByManagedClusterResponse, error) {
+func (client *LoadBalancersClient) listByManagedClusterHandleResponse(resp *http.Response, successCodes ...int) (LoadBalancersClientListByManagedClusterResponse, error) {
 	result := LoadBalancersClientListByManagedClusterResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LoadBalancerListResult); err != nil {
 		return LoadBalancersClientListByManagedClusterResponse{}, err
 	}

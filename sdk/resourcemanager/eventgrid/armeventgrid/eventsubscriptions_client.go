@@ -87,8 +87,7 @@ func (client *EventSubscriptionsClient) createOrUpdate(ctx context.Context, scop
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -163,8 +162,7 @@ func (client *EventSubscriptionsClient) deleteOperation(ctx context.Context, sco
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -211,12 +209,7 @@ func (client *EventSubscriptionsClient) Get(ctx context.Context, scope string, e
 	if err != nil {
 		return EventSubscriptionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EventSubscriptionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -242,8 +235,11 @@ func (client *EventSubscriptionsClient) getCreateRequest(ctx context.Context, sc
 }
 
 // getHandleResponse handles the Get response.
-func (client *EventSubscriptionsClient) getHandleResponse(resp *http.Response) (EventSubscriptionsClientGetResponse, error) {
+func (client *EventSubscriptionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientGetResponse, error) {
 	result := EventSubscriptionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscription); err != nil {
 		return EventSubscriptionsClientGetResponse{}, err
 	}
@@ -272,12 +268,7 @@ func (client *EventSubscriptionsClient) GetDeliveryAttributes(ctx context.Contex
 	if err != nil {
 		return EventSubscriptionsClientGetDeliveryAttributesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EventSubscriptionsClientGetDeliveryAttributesResponse{}, err
-	}
-	resp, err := client.getDeliveryAttributesHandleResponse(httpResp)
-	return resp, err
+	return client.getDeliveryAttributesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDeliveryAttributesCreateRequest creates the GetDeliveryAttributes request.
@@ -303,8 +294,11 @@ func (client *EventSubscriptionsClient) getDeliveryAttributesCreateRequest(ctx c
 }
 
 // getDeliveryAttributesHandleResponse handles the GetDeliveryAttributes response.
-func (client *EventSubscriptionsClient) getDeliveryAttributesHandleResponse(resp *http.Response) (EventSubscriptionsClientGetDeliveryAttributesResponse, error) {
+func (client *EventSubscriptionsClient) getDeliveryAttributesHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientGetDeliveryAttributesResponse, error) {
 	result := EventSubscriptionsClientGetDeliveryAttributesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeliveryAttributeListResult); err != nil {
 		return EventSubscriptionsClientGetDeliveryAttributesResponse{}, err
 	}
@@ -333,12 +327,7 @@ func (client *EventSubscriptionsClient) GetFullURL(ctx context.Context, scope st
 	if err != nil {
 		return EventSubscriptionsClientGetFullURLResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EventSubscriptionsClientGetFullURLResponse{}, err
-	}
-	resp, err := client.getFullURLHandleResponse(httpResp)
-	return resp, err
+	return client.getFullURLHandleResponse(httpResp, http.StatusOK)
 }
 
 // getFullURLCreateRequest creates the GetFullURL request.
@@ -364,8 +353,11 @@ func (client *EventSubscriptionsClient) getFullURLCreateRequest(ctx context.Cont
 }
 
 // getFullURLHandleResponse handles the GetFullURL response.
-func (client *EventSubscriptionsClient) getFullURLHandleResponse(resp *http.Response) (EventSubscriptionsClientGetFullURLResponse, error) {
+func (client *EventSubscriptionsClient) getFullURLHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientGetFullURLResponse, error) {
 	result := EventSubscriptionsClientGetFullURLResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionFullURL); err != nil {
 		return EventSubscriptionsClientGetFullURLResponse{}, err
 	}
@@ -391,57 +383,71 @@ func (client *EventSubscriptionsClient) NewListByDomainTopicPager(resourceGroupN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDomainTopicCreateRequest(ctx, resourceGroupName, domainName, topicName, options)
-			}, nil)
+			req, err := client.listByDomainTopicCreateRequest(ctx, resourceGroupName, domainName, topicName, nextLink, options)
 			if err != nil {
 				return EventSubscriptionsClientListByDomainTopicResponse{}, err
 			}
-			return client.listByDomainTopicHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListByDomainTopicResponse{}, err
+			}
+			return client.listByDomainTopicHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDomainTopicCreateRequest creates the ListByDomainTopic request.
-func (client *EventSubscriptionsClient) listByDomainTopicCreateRequest(ctx context.Context, resourceGroupName string, domainName string, topicName string, options *EventSubscriptionsClientListByDomainTopicOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{topicName}/providers/Microsoft.EventGrid/eventSubscriptions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EventSubscriptionsClient) listByDomainTopicCreateRequest(ctx context.Context, resourceGroupName string, domainName string, topicName string, nextLink string, options *EventSubscriptionsClientListByDomainTopicOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{topicName}/providers/Microsoft.EventGrid/eventSubscriptions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if domainName == "" {
+			return nil, errors.New("parameter domainName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
+		if topicName == "" {
+			return nil, errors.New("parameter topicName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if domainName == "" {
-		return nil, errors.New("parameter domainName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	if topicName == "" {
-		return nil, errors.New("parameter topicName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByDomainTopicHandleResponse handles the ListByDomainTopic response.
-func (client *EventSubscriptionsClient) listByDomainTopicHandleResponse(resp *http.Response) (EventSubscriptionsClientListByDomainTopicResponse, error) {
+func (client *EventSubscriptionsClient) listByDomainTopicHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListByDomainTopicResponse, error) {
 	result := EventSubscriptionsClientListByDomainTopicResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListByDomainTopicResponse{}, err
 	}
@@ -468,61 +474,75 @@ func (client *EventSubscriptionsClient) NewListByResourcePager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceCreateRequest(ctx, resourceGroupName, providerNamespace, resourceTypeName, resourceName, options)
-			}, nil)
+			req, err := client.listByResourceCreateRequest(ctx, resourceGroupName, providerNamespace, resourceTypeName, resourceName, nextLink, options)
 			if err != nil {
 				return EventSubscriptionsClientListByResourceResponse{}, err
 			}
-			return client.listByResourceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListByResourceResponse{}, err
+			}
+			return client.listByResourceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceCreateRequest creates the ListByResource request.
-func (client *EventSubscriptionsClient) listByResourceCreateRequest(ctx context.Context, resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string, options *EventSubscriptionsClientListByResourceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerNamespace}/{resourceTypeName}/{resourceName}/providers/Microsoft.EventGrid/eventSubscriptions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EventSubscriptionsClient) listByResourceCreateRequest(ctx context.Context, resourceGroupName string, providerNamespace string, resourceTypeName string, resourceName string, nextLink string, options *EventSubscriptionsClientListByResourceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{providerNamespace}/{resourceTypeName}/{resourceName}/providers/Microsoft.EventGrid/eventSubscriptions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if providerNamespace == "" {
+			return nil, errors.New("parameter providerNamespace cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
+		if resourceTypeName == "" {
+			return nil, errors.New("parameter resourceTypeName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceTypeName}", url.PathEscape(resourceTypeName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if providerNamespace == "" {
-		return nil, errors.New("parameter providerNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-	if resourceTypeName == "" {
-		return nil, errors.New("parameter resourceTypeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceTypeName}", url.PathEscape(resourceTypeName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceHandleResponse handles the ListByResource response.
-func (client *EventSubscriptionsClient) listByResourceHandleResponse(resp *http.Response) (EventSubscriptionsClientListByResourceResponse, error) {
+func (client *EventSubscriptionsClient) listByResourceHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListByResourceResponse, error) {
 	result := EventSubscriptionsClientListByResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListByResourceResponse{}, err
 	}
@@ -546,49 +566,63 @@ func (client *EventSubscriptionsClient) NewListGlobalByResourceGroupPager(resour
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listGlobalByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listGlobalByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return EventSubscriptionsClientListGlobalByResourceGroupResponse{}, err
 			}
-			return client.listGlobalByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListGlobalByResourceGroupResponse{}, err
+			}
+			return client.listGlobalByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listGlobalByResourceGroupCreateRequest creates the ListGlobalByResourceGroup request.
-func (client *EventSubscriptionsClient) listGlobalByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *EventSubscriptionsClientListGlobalByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/eventSubscriptions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EventSubscriptionsClient) listGlobalByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, options *EventSubscriptionsClientListGlobalByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/eventSubscriptions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listGlobalByResourceGroupHandleResponse handles the ListGlobalByResourceGroup response.
-func (client *EventSubscriptionsClient) listGlobalByResourceGroupHandleResponse(resp *http.Response) (EventSubscriptionsClientListGlobalByResourceGroupResponse, error) {
+func (client *EventSubscriptionsClient) listGlobalByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListGlobalByResourceGroupResponse, error) {
 	result := EventSubscriptionsClientListGlobalByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListGlobalByResourceGroupResponse{}, err
 	}
@@ -614,53 +648,67 @@ func (client *EventSubscriptionsClient) NewListGlobalByResourceGroupForTopicType
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listGlobalByResourceGroupForTopicTypeCreateRequest(ctx, resourceGroupName, topicTypeName, options)
-			}, nil)
+			req, err := client.listGlobalByResourceGroupForTopicTypeCreateRequest(ctx, resourceGroupName, topicTypeName, nextLink, options)
 			if err != nil {
 				return EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse{}, err
 			}
-			return client.listGlobalByResourceGroupForTopicTypeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse{}, err
+			}
+			return client.listGlobalByResourceGroupForTopicTypeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listGlobalByResourceGroupForTopicTypeCreateRequest creates the ListGlobalByResourceGroupForTopicType request.
-func (client *EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeCreateRequest(ctx context.Context, resourceGroupName string, topicTypeName string, options *EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topicTypes/{topicTypeName}/eventSubscriptions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeCreateRequest(ctx context.Context, resourceGroupName string, topicTypeName string, nextLink string, options *EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topicTypes/{topicTypeName}/eventSubscriptions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if topicTypeName == "" {
+			return nil, errors.New("parameter topicTypeName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{topicTypeName}", url.PathEscape(topicTypeName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if topicTypeName == "" {
-		return nil, errors.New("parameter topicTypeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{topicTypeName}", url.PathEscape(topicTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listGlobalByResourceGroupForTopicTypeHandleResponse handles the ListGlobalByResourceGroupForTopicType response.
-func (client *EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeHandleResponse(resp *http.Response) (EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse, error) {
+func (client *EventSubscriptionsClient) listGlobalByResourceGroupForTopicTypeHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse, error) {
 	result := EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListGlobalByResourceGroupForTopicTypeResponse{}, err
 	}
@@ -683,45 +731,59 @@ func (client *EventSubscriptionsClient) NewListGlobalBySubscriptionPager(options
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listGlobalBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listGlobalBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return EventSubscriptionsClientListGlobalBySubscriptionResponse{}, err
 			}
-			return client.listGlobalBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListGlobalBySubscriptionResponse{}, err
+			}
+			return client.listGlobalBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listGlobalBySubscriptionCreateRequest creates the ListGlobalBySubscription request.
-func (client *EventSubscriptionsClient) listGlobalBySubscriptionCreateRequest(ctx context.Context, options *EventSubscriptionsClientListGlobalBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/eventSubscriptions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EventSubscriptionsClient) listGlobalBySubscriptionCreateRequest(ctx context.Context, nextLink string, options *EventSubscriptionsClientListGlobalBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/eventSubscriptions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listGlobalBySubscriptionHandleResponse handles the ListGlobalBySubscription response.
-func (client *EventSubscriptionsClient) listGlobalBySubscriptionHandleResponse(resp *http.Response) (EventSubscriptionsClientListGlobalBySubscriptionResponse, error) {
+func (client *EventSubscriptionsClient) listGlobalBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListGlobalBySubscriptionResponse, error) {
 	result := EventSubscriptionsClientListGlobalBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListGlobalBySubscriptionResponse{}, err
 	}
@@ -745,49 +807,63 @@ func (client *EventSubscriptionsClient) NewListGlobalBySubscriptionForTopicTypeP
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listGlobalBySubscriptionForTopicTypeCreateRequest(ctx, topicTypeName, options)
-			}, nil)
+			req, err := client.listGlobalBySubscriptionForTopicTypeCreateRequest(ctx, topicTypeName, nextLink, options)
 			if err != nil {
 				return EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse{}, err
 			}
-			return client.listGlobalBySubscriptionForTopicTypeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse{}, err
+			}
+			return client.listGlobalBySubscriptionForTopicTypeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listGlobalBySubscriptionForTopicTypeCreateRequest creates the ListGlobalBySubscriptionForTopicType request.
-func (client *EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeCreateRequest(ctx context.Context, topicTypeName string, options *EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/topicTypes/{topicTypeName}/eventSubscriptions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeCreateRequest(ctx context.Context, topicTypeName string, nextLink string, options *EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/topicTypes/{topicTypeName}/eventSubscriptions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if topicTypeName == "" {
+			return nil, errors.New("parameter topicTypeName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{topicTypeName}", url.PathEscape(topicTypeName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if topicTypeName == "" {
-		return nil, errors.New("parameter topicTypeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{topicTypeName}", url.PathEscape(topicTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listGlobalBySubscriptionForTopicTypeHandleResponse handles the ListGlobalBySubscriptionForTopicType response.
-func (client *EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeHandleResponse(resp *http.Response) (EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse, error) {
+func (client *EventSubscriptionsClient) listGlobalBySubscriptionForTopicTypeHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse, error) {
 	result := EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListGlobalBySubscriptionForTopicTypeResponse{}, err
 	}
@@ -812,53 +888,67 @@ func (client *EventSubscriptionsClient) NewListRegionalByResourceGroupPager(reso
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listRegionalByResourceGroupCreateRequest(ctx, resourceGroupName, location, options)
-			}, nil)
+			req, err := client.listRegionalByResourceGroupCreateRequest(ctx, resourceGroupName, location, nextLink, options)
 			if err != nil {
 				return EventSubscriptionsClientListRegionalByResourceGroupResponse{}, err
 			}
-			return client.listRegionalByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListRegionalByResourceGroupResponse{}, err
+			}
+			return client.listRegionalByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listRegionalByResourceGroupCreateRequest creates the ListRegionalByResourceGroup request.
-func (client *EventSubscriptionsClient) listRegionalByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, location string, options *EventSubscriptionsClientListRegionalByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/locations/{location}/eventSubscriptions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EventSubscriptionsClient) listRegionalByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, location string, nextLink string, options *EventSubscriptionsClientListRegionalByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/locations/{location}/eventSubscriptions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listRegionalByResourceGroupHandleResponse handles the ListRegionalByResourceGroup response.
-func (client *EventSubscriptionsClient) listRegionalByResourceGroupHandleResponse(resp *http.Response) (EventSubscriptionsClientListRegionalByResourceGroupResponse, error) {
+func (client *EventSubscriptionsClient) listRegionalByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListRegionalByResourceGroupResponse, error) {
 	result := EventSubscriptionsClientListRegionalByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListRegionalByResourceGroupResponse{}, err
 	}
@@ -885,57 +975,71 @@ func (client *EventSubscriptionsClient) NewListRegionalByResourceGroupForTopicTy
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listRegionalByResourceGroupForTopicTypeCreateRequest(ctx, resourceGroupName, location, topicTypeName, options)
-			}, nil)
+			req, err := client.listRegionalByResourceGroupForTopicTypeCreateRequest(ctx, resourceGroupName, location, topicTypeName, nextLink, options)
 			if err != nil {
 				return EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse{}, err
 			}
-			return client.listRegionalByResourceGroupForTopicTypeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse{}, err
+			}
+			return client.listRegionalByResourceGroupForTopicTypeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listRegionalByResourceGroupForTopicTypeCreateRequest creates the ListRegionalByResourceGroupForTopicType request.
-func (client *EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeCreateRequest(ctx context.Context, resourceGroupName string, location string, topicTypeName string, options *EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/locations/{location}/topicTypes/{topicTypeName}/eventSubscriptions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeCreateRequest(ctx context.Context, resourceGroupName string, location string, topicTypeName string, nextLink string, options *EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/locations/{location}/topicTypes/{topicTypeName}/eventSubscriptions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		if topicTypeName == "" {
+			return nil, errors.New("parameter topicTypeName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{topicTypeName}", url.PathEscape(topicTypeName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if topicTypeName == "" {
-		return nil, errors.New("parameter topicTypeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{topicTypeName}", url.PathEscape(topicTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listRegionalByResourceGroupForTopicTypeHandleResponse handles the ListRegionalByResourceGroupForTopicType response.
-func (client *EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeHandleResponse(resp *http.Response) (EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse, error) {
+func (client *EventSubscriptionsClient) listRegionalByResourceGroupForTopicTypeHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse, error) {
 	result := EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListRegionalByResourceGroupForTopicTypeResponse{}, err
 	}
@@ -959,49 +1063,63 @@ func (client *EventSubscriptionsClient) NewListRegionalBySubscriptionPager(locat
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listRegionalBySubscriptionCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listRegionalBySubscriptionCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return EventSubscriptionsClientListRegionalBySubscriptionResponse{}, err
 			}
-			return client.listRegionalBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListRegionalBySubscriptionResponse{}, err
+			}
+			return client.listRegionalBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listRegionalBySubscriptionCreateRequest creates the ListRegionalBySubscription request.
-func (client *EventSubscriptionsClient) listRegionalBySubscriptionCreateRequest(ctx context.Context, location string, options *EventSubscriptionsClientListRegionalBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/locations/{location}/eventSubscriptions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EventSubscriptionsClient) listRegionalBySubscriptionCreateRequest(ctx context.Context, location string, nextLink string, options *EventSubscriptionsClientListRegionalBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/locations/{location}/eventSubscriptions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listRegionalBySubscriptionHandleResponse handles the ListRegionalBySubscription response.
-func (client *EventSubscriptionsClient) listRegionalBySubscriptionHandleResponse(resp *http.Response) (EventSubscriptionsClientListRegionalBySubscriptionResponse, error) {
+func (client *EventSubscriptionsClient) listRegionalBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListRegionalBySubscriptionResponse, error) {
 	result := EventSubscriptionsClientListRegionalBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListRegionalBySubscriptionResponse{}, err
 	}
@@ -1027,53 +1145,67 @@ func (client *EventSubscriptionsClient) NewListRegionalBySubscriptionForTopicTyp
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listRegionalBySubscriptionForTopicTypeCreateRequest(ctx, location, topicTypeName, options)
-			}, nil)
+			req, err := client.listRegionalBySubscriptionForTopicTypeCreateRequest(ctx, location, topicTypeName, nextLink, options)
 			if err != nil {
 				return EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse{}, err
 			}
-			return client.listRegionalBySubscriptionForTopicTypeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse{}, err
+			}
+			return client.listRegionalBySubscriptionForTopicTypeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listRegionalBySubscriptionForTopicTypeCreateRequest creates the ListRegionalBySubscriptionForTopicType request.
-func (client *EventSubscriptionsClient) listRegionalBySubscriptionForTopicTypeCreateRequest(ctx context.Context, location string, topicTypeName string, options *EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/locations/{location}/topicTypes/{topicTypeName}/eventSubscriptions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EventSubscriptionsClient) listRegionalBySubscriptionForTopicTypeCreateRequest(ctx context.Context, location string, topicTypeName string, nextLink string, options *EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/locations/{location}/topicTypes/{topicTypeName}/eventSubscriptions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		if topicTypeName == "" {
+			return nil, errors.New("parameter topicTypeName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{topicTypeName}", url.PathEscape(topicTypeName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if topicTypeName == "" {
-		return nil, errors.New("parameter topicTypeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{topicTypeName}", url.PathEscape(topicTypeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listRegionalBySubscriptionForTopicTypeHandleResponse handles the ListRegionalBySubscriptionForTopicType response.
-func (client *EventSubscriptionsClient) listRegionalBySubscriptionForTopicTypeHandleResponse(resp *http.Response) (EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse, error) {
+func (client *EventSubscriptionsClient) listRegionalBySubscriptionForTopicTypeHandleResponse(resp *http.Response, successCodes ...int) (EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse, error) {
 	result := EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return EventSubscriptionsClientListRegionalBySubscriptionForTopicTypeResponse{}, err
 	}
@@ -1125,8 +1257,7 @@ func (client *EventSubscriptionsClient) update(ctx context.Context, scope string
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

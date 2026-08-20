@@ -63,12 +63,7 @@ func (client *ManagedEnvironmentsDiagnosticsClient) GetRoot(ctx context.Context,
 	if err != nil {
 		return ManagedEnvironmentsDiagnosticsClientGetRootResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedEnvironmentsDiagnosticsClientGetRootResponse{}, err
-	}
-	resp, err := client.getRootHandleResponse(httpResp)
-	return resp, err
+	return client.getRootHandleResponse(httpResp, http.StatusOK)
 }
 
 // getRootCreateRequest creates the GetRoot request.
@@ -98,8 +93,11 @@ func (client *ManagedEnvironmentsDiagnosticsClient) getRootCreateRequest(ctx con
 }
 
 // getRootHandleResponse handles the GetRoot response.
-func (client *ManagedEnvironmentsDiagnosticsClient) getRootHandleResponse(resp *http.Response) (ManagedEnvironmentsDiagnosticsClientGetRootResponse, error) {
+func (client *ManagedEnvironmentsDiagnosticsClient) getRootHandleResponse(resp *http.Response, successCodes ...int) (ManagedEnvironmentsDiagnosticsClientGetRootResponse, error) {
 	result := ManagedEnvironmentsDiagnosticsClientGetRootResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedEnvironment); err != nil {
 		return ManagedEnvironmentsDiagnosticsClientGetRootResponse{}, err
 	}

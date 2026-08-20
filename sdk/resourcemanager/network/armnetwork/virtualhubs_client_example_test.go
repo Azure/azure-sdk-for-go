@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/VirtualHubPut.json
+// Generated from example definition: 2025-09-01/VirtualHubPut.json
 func ExampleVirtualHubsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,8 +26,9 @@ func ExampleVirtualHubsClient_BeginCreateOrUpdate() {
 	poller, err := clientFactory.NewVirtualHubsClient().BeginCreateOrUpdate(ctx, "rg1", "virtualHub2", armnetwork.VirtualHub{
 		Location: to.Ptr("West US"),
 		Properties: &armnetwork.VirtualHubProperties{
-			AddressPrefix: to.Ptr("10.168.0.0/24"),
-			SKU:           to.Ptr("Basic"),
+			AddressPrefix:   to.Ptr("10.168.0.0/24"),
+			AddressPrefixV6: to.Ptr("2001:db8::/56"),
+			SKU:             to.Ptr("Basic"),
 			VirtualWan: &armnetwork.SubResource{
 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"),
 			},
@@ -55,6 +56,7 @@ func ExampleVirtualHubsClient_BeginCreateOrUpdate() {
 	// 		Location: to.Ptr("West US"),
 	// 		Properties: &armnetwork.VirtualHubProperties{
 	// 			AddressPrefix: to.Ptr("10.168.0.0/24"),
+	// 			AddressPrefixV6: to.Ptr("2001:db8::/56"),
 	// 			AllowBranchToBranchTraffic: to.Ptr(false),
 	// 			HubRoutingPreference: to.Ptr(armnetwork.HubRoutingPreferenceExpressRoute),
 	// 			PreferredRoutingGateway: to.Ptr(armnetwork.PreferredRoutingGatewayExpressRoute),
@@ -71,6 +73,10 @@ func ExampleVirtualHubsClient_BeginCreateOrUpdate() {
 	// 				to.Ptr("10.10.1.12"),
 	// 				to.Ptr("10.10.1.13"),
 	// 			},
+	// 			VirtualRouterIPsV6: []*string{
+	// 				to.Ptr("2001:db8:0:1::5"),
+	// 				to.Ptr("2001:db8:0:1::4"),
+	// 			},
 	// 			VirtualWan: &armnetwork.SubResource{
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"),
 	// 			},
@@ -79,7 +85,7 @@ func ExampleVirtualHubsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualHubDelete.json
+// Generated from example definition: 2025-09-01/VirtualHubDelete.json
 func ExampleVirtualHubsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +111,7 @@ func ExampleVirtualHubsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualHubGet.json
+// Generated from example definition: 2025-09-01/VirtualHubGet.json
 func ExampleVirtualHubsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,6 +138,7 @@ func ExampleVirtualHubsClient_Get() {
 	// 		Location: to.Ptr("West US"),
 	// 		Properties: &armnetwork.VirtualHubProperties{
 	// 			AddressPrefix: to.Ptr("10.10.1.0/24"),
+	// 			AddressPrefixV6: to.Ptr("2001:db8::/56"),
 	// 			AllowBranchToBranchTraffic: to.Ptr(false),
 	// 			HubRoutingPreference: to.Ptr(armnetwork.HubRoutingPreferenceExpressRoute),
 	// 			PreferredRoutingGateway: to.Ptr(armnetwork.PreferredRoutingGatewayExpressRoute),
@@ -148,6 +155,10 @@ func ExampleVirtualHubsClient_Get() {
 	// 				to.Ptr("10.10.1.12"),
 	// 				to.Ptr("10.10.1.13"),
 	// 			},
+	// 			VirtualRouterIPsV6: []*string{
+	// 				to.Ptr("2001:db8:0:1::5"),
+	// 				to.Ptr("2001:db8:0:1::4"),
+	// 			},
 	// 			VirtualWan: &armnetwork.SubResource{
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"),
 	// 			},
@@ -156,7 +167,7 @@ func ExampleVirtualHubsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/EffectiveRoutesListForConnection.json
+// Generated from example definition: 2025-09-01/EffectiveRoutesListForConnection.json
 func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesForAConnectionResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +223,7 @@ func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesF
 	// }
 }
 
-// Generated from example definition: 2025-07-01/EffectiveRoutesListForRouteTable.json
+// Generated from example definition: 2025-09-01/EffectiveRoutesListForRouteTable.json
 func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesForARouteTableResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +279,7 @@ func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesF
 	// }
 }
 
-// Generated from example definition: 2025-07-01/EffectiveRoutesListForVirtualHub.json
+// Generated from example definition: 2025-09-01/EffectiveRoutesListForVirtualHub.json
 func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesForTheVirtualHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,7 +331,7 @@ func ExampleVirtualHubsClient_BeginGetEffectiveVirtualHubRoutes_effectiveRoutesF
 	// }
 }
 
-// Generated from example definition: 2025-07-01/GetInboundRoutes.json
+// Generated from example definition: 2025-09-01/GetInboundRoutes.json
 func ExampleVirtualHubsClient_BeginGetInboundRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -363,7 +374,7 @@ func ExampleVirtualHubsClient_BeginGetInboundRoutes() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/GetOutboundRoutes.json
+// Generated from example definition: 2025-09-01/GetOutboundRoutes.json
 func ExampleVirtualHubsClient_BeginGetOutboundRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -406,7 +417,7 @@ func ExampleVirtualHubsClient_BeginGetOutboundRoutes() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualHubList.json
+// Generated from example definition: 2025-09-01/VirtualHubList.json
 func ExampleVirtualHubsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -439,6 +450,7 @@ func ExampleVirtualHubsClient_NewListPager() {
 		// 				Location: to.Ptr("West US"),
 		// 				Properties: &armnetwork.VirtualHubProperties{
 		// 					AddressPrefix: to.Ptr("10.10.1.0/24"),
+		// 					AddressPrefixV6: to.Ptr("2001:db8::/56"),
 		// 					AllowBranchToBranchTraffic: to.Ptr(false),
 		// 					HubRoutingPreference: to.Ptr(armnetwork.HubRoutingPreferenceExpressRoute),
 		// 					PreferredRoutingGateway: to.Ptr(armnetwork.PreferredRoutingGatewayExpressRoute),
@@ -489,6 +501,10 @@ func ExampleVirtualHubsClient_NewListPager() {
 		// 						to.Ptr("10.10.1.12"),
 		// 						to.Ptr("10.10.1.13"),
 		// 					},
+		// 					VirtualRouterIPsV6: []*string{
+		// 						to.Ptr("2001:db8:0:1::5"),
+		// 						to.Ptr("2001:db8:0:1::4"),
+		// 					},
 		// 					VirtualWan: &armnetwork.SubResource{
 		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"),
 		// 					},
@@ -502,6 +518,7 @@ func ExampleVirtualHubsClient_NewListPager() {
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armnetwork.VirtualHubProperties{
 		// 					AddressPrefix: to.Ptr("210.10.1.0/24"),
+		// 					AddressPrefixV6: to.Ptr("2001:db8:1::/56"),
 		// 					AllowBranchToBranchTraffic: to.Ptr(false),
 		// 					HubRoutingPreference: to.Ptr(armnetwork.HubRoutingPreferenceExpressRoute),
 		// 					PreferredRoutingGateway: to.Ptr(armnetwork.PreferredRoutingGatewayExpressRoute),
@@ -552,6 +569,10 @@ func ExampleVirtualHubsClient_NewListPager() {
 		// 						to.Ptr("10.10.1.12"),
 		// 						to.Ptr("10.10.1.13"),
 		// 					},
+		// 					VirtualRouterIPsV6: []*string{
+		// 						to.Ptr("2001:db8:1:1::5"),
+		// 						to.Ptr("2001:db8:1:1::4"),
+		// 					},
 		// 					VirtualWan: &armnetwork.SubResource{
 		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"),
 		// 					},
@@ -563,7 +584,7 @@ func ExampleVirtualHubsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualHubListByResourceGroup.json
+// Generated from example definition: 2025-09-01/VirtualHubListByResourceGroup.json
 func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -596,6 +617,7 @@ func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
 		// 				Location: to.Ptr("West US"),
 		// 				Properties: &armnetwork.VirtualHubProperties{
 		// 					AddressPrefix: to.Ptr("10.10.1.0/24"),
+		// 					AddressPrefixV6: to.Ptr("2001:db8::/56"),
 		// 					AllowBranchToBranchTraffic: to.Ptr(false),
 		// 					HubRoutingPreference: to.Ptr(armnetwork.HubRoutingPreferenceExpressRoute),
 		// 					PreferredRoutingGateway: to.Ptr(armnetwork.PreferredRoutingGatewayExpressRoute),
@@ -645,6 +667,10 @@ func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
 		// 					VirtualRouterIPs: []*string{
 		// 						to.Ptr("10.10.1.12"),
 		// 						to.Ptr("10.10.1.13"),
+		// 					},
+		// 					VirtualRouterIPsV6: []*string{
+		// 						to.Ptr("2001:db8:0:1::5"),
+		// 						to.Ptr("2001:db8:0:1::4"),
 		// 					},
 		// 					VirtualWan: &armnetwork.SubResource{
 		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"),
@@ -659,6 +685,7 @@ func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armnetwork.VirtualHubProperties{
 		// 					AddressPrefix: to.Ptr("210.10.1.0/24"),
+		// 					AddressPrefixV6: to.Ptr("2001:db8:1::/56"),
 		// 					AllowBranchToBranchTraffic: to.Ptr(false),
 		// 					HubRoutingPreference: to.Ptr(armnetwork.HubRoutingPreferenceExpressRoute),
 		// 					PreferredRoutingGateway: to.Ptr(armnetwork.PreferredRoutingGatewayExpressRoute),
@@ -709,6 +736,10 @@ func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
 		// 						to.Ptr("10.10.1.12"),
 		// 						to.Ptr("10.10.1.13"),
 		// 					},
+		// 					VirtualRouterIPsV6: []*string{
+		// 						to.Ptr("2001:db8:1:1::5"),
+		// 						to.Ptr("2001:db8:1:1::4"),
+		// 					},
 		// 					VirtualWan: &armnetwork.SubResource{
 		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"),
 		// 					},
@@ -720,7 +751,7 @@ func ExampleVirtualHubsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualHubUpdateTags.json
+// Generated from example definition: 2025-09-01/VirtualHubUpdateTags.json
 func ExampleVirtualHubsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -752,6 +783,7 @@ func ExampleVirtualHubsClient_UpdateTags() {
 	// 		Location: to.Ptr("West US"),
 	// 		Properties: &armnetwork.VirtualHubProperties{
 	// 			AddressPrefix: to.Ptr("10.168.0.0/24"),
+	// 			AddressPrefixV6: to.Ptr("2001:db8::/56"),
 	// 			AllowBranchToBranchTraffic: to.Ptr(false),
 	// 			HubRoutingPreference: to.Ptr(armnetwork.HubRoutingPreferenceExpressRoute),
 	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
@@ -765,6 +797,10 @@ func ExampleVirtualHubsClient_UpdateTags() {
 	// 			VirtualRouterIPs: []*string{
 	// 				to.Ptr("10.10.1.12"),
 	// 				to.Ptr("10.10.1.13"),
+	// 			},
+	// 			VirtualRouterIPsV6: []*string{
+	// 				to.Ptr("2001:db8:0:1::5"),
+	// 				to.Ptr("2001:db8:0:1::4"),
 	// 			},
 	// 			VirtualWan: &armnetwork.SubResource{
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualWans/virtualWan1"),

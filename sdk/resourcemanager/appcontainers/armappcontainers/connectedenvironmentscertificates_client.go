@@ -87,8 +87,7 @@ func (client *ConnectedEnvironmentsCertificatesClient) createOrUpdate(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -172,8 +171,7 @@ func (client *ConnectedEnvironmentsCertificatesClient) deleteOperation(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -230,12 +228,7 @@ func (client *ConnectedEnvironmentsCertificatesClient) Get(ctx context.Context, 
 	if err != nil {
 		return ConnectedEnvironmentsCertificatesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectedEnvironmentsCertificatesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -269,8 +262,11 @@ func (client *ConnectedEnvironmentsCertificatesClient) getCreateRequest(ctx cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConnectedEnvironmentsCertificatesClient) getHandleResponse(resp *http.Response) (ConnectedEnvironmentsCertificatesClientGetResponse, error) {
+func (client *ConnectedEnvironmentsCertificatesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConnectedEnvironmentsCertificatesClientGetResponse, error) {
 	result := ConnectedEnvironmentsCertificatesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Certificate); err != nil {
 		return ConnectedEnvironmentsCertificatesClientGetResponse{}, err
 	}
@@ -295,47 +291,61 @@ func (client *ConnectedEnvironmentsCertificatesClient) NewListPager(resourceGrou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, nextLink, options)
 			if err != nil {
 				return ConnectedEnvironmentsCertificatesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConnectedEnvironmentsCertificatesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ConnectedEnvironmentsCertificatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, _ *ConnectedEnvironmentsCertificatesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConnectedEnvironmentsCertificatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, nextLink string, _ *ConnectedEnvironmentsCertificatesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if connectedEnvironmentName == "" {
+			return nil, errors.New("parameter connectedEnvironmentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{connectedEnvironmentName}", url.PathEscape(connectedEnvironmentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if connectedEnvironmentName == "" {
-		return nil, errors.New("parameter connectedEnvironmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectedEnvironmentName}", url.PathEscape(connectedEnvironmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251002Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ConnectedEnvironmentsCertificatesClient) listHandleResponse(resp *http.Response) (ConnectedEnvironmentsCertificatesClientListResponse, error) {
+func (client *ConnectedEnvironmentsCertificatesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ConnectedEnvironmentsCertificatesClientListResponse, error) {
 	result := ConnectedEnvironmentsCertificatesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateCollection); err != nil {
 		return ConnectedEnvironmentsCertificatesClientListResponse{}, err
 	}
@@ -388,8 +398,7 @@ func (client *ConnectedEnvironmentsCertificatesClient) update(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

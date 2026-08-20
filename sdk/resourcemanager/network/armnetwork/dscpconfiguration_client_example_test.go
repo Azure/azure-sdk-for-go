@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/DscpConfigurationCreate.json
+// Generated from example definition: 2025-09-01/DscpConfigurationCreate.json
 func ExampleDscpConfigurationClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,7 +182,7 @@ func ExampleDscpConfigurationClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/DscpConfigurationDelete.json
+// Generated from example definition: 2025-09-01/DscpConfigurationDelete.json
 func ExampleDscpConfigurationClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleDscpConfigurationClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/DscpConfigurationGet.json
+// Generated from example definition: 2025-09-01/DscpConfigurationGet.json
 func ExampleDscpConfigurationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -310,7 +310,7 @@ func ExampleDscpConfigurationClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/DscpConfigurationList.json
+// Generated from example definition: 2025-09-01/DscpConfigurationList.json
 func ExampleDscpConfigurationClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -501,7 +501,7 @@ func ExampleDscpConfigurationClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/DscpConfigurationListAll.json
+// Generated from example definition: 2025-09-01/DscpConfigurationListAll.json
 func ExampleDscpConfigurationClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

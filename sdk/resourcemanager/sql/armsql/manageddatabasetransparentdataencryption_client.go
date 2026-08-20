@@ -18,6 +18,8 @@ import (
 
 // ManagedDatabaseTransparentDataEncryptionClient contains the methods for the ManagedDatabaseTransparentDataEncryption group.
 // Don't use this type directly, use NewManagedDatabaseTransparentDataEncryptionClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ManagedDatabaseTransparentDataEncryptionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewManagedDatabaseTransparentDataEncryptionClient(subscriptionID string, cr
 
 // CreateOrUpdate - Updates a database's transparent data encryption configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -64,12 +64,7 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) CreateOrUpdate(ctx
 	if err != nil {
 		return ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -100,8 +95,8 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -111,8 +106,11 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateCrea
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateHandleResponse(resp *http.Response) (ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse, error) {
+func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse, error) {
 	result := ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedTransparentDataEncryption); err != nil {
 		return ManagedDatabaseTransparentDataEncryptionClientCreateOrUpdateResponse{}, err
 	}
@@ -121,8 +119,6 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) createOrUpdateHand
 
 // Get - Gets a managed database's transparent data encryption.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -143,12 +139,7 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) Get(ctx context.Co
 	if err != nil {
 		return ManagedDatabaseTransparentDataEncryptionClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabaseTransparentDataEncryptionClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -179,15 +170,18 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) getCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) getHandleResponse(resp *http.Response) (ManagedDatabaseTransparentDataEncryptionClientGetResponse, error) {
+func (client *ManagedDatabaseTransparentDataEncryptionClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseTransparentDataEncryptionClientGetResponse, error) {
 	result := ManagedDatabaseTransparentDataEncryptionClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedTransparentDataEncryption); err != nil {
 		return ManagedDatabaseTransparentDataEncryptionClientGetResponse{}, err
 	}
@@ -195,8 +189,6 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) getHandleResponse(
 }
 
 // NewListByDatabasePager - Gets a list of managed database's transparent data encryptions.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -213,51 +205,65 @@ func (client *ManagedDatabaseTransparentDataEncryptionClient) NewListByDatabaseP
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
-			}, nil)
+			req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, nextLink, options)
 			if err != nil {
 				return ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse{}, err
 			}
-			return client.listByDatabaseHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse{}, err
+			}
+			return client.listByDatabaseHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, _ *ManagedDatabaseTransparentDataEncryptionClientListByDatabaseOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/transparentDataEncryption"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, nextLink string, _ *ManagedDatabaseTransparentDataEncryptionClientListByDatabaseOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/transparentDataEncryption"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse, error) {
+func (client *ManagedDatabaseTransparentDataEncryptionClient) listByDatabaseHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse, error) {
 	result := ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedTransparentDataEncryptionListResult); err != nil {
 		return ManagedDatabaseTransparentDataEncryptionClientListByDatabaseResponse{}, err
 	}

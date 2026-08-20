@@ -59,12 +59,7 @@ func (client *ScoresClient) Get(ctx context.Context, name string, options *Score
 	if err != nil {
 		return ScoresClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ScoresClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -90,8 +85,11 @@ func (client *ScoresClient) getCreateRequest(ctx context.Context, name string, _
 }
 
 // getHandleResponse handles the Get response.
-func (client *ScoresClient) getHandleResponse(resp *http.Response) (ScoresClientGetResponse, error) {
+func (client *ScoresClient) getHandleResponse(resp *http.Response, successCodes ...int) (ScoresClientGetResponse, error) {
 	result := ScoresClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScoreEntityForAdvisor); err != nil {
 		return ScoresClientGetResponse{}, err
 	}
@@ -115,10 +113,7 @@ func (client *ScoresClient) NewListPager(options *ScoresClientListOptions) *runt
 			if err != nil {
 				return ScoresClientListResponse{}, err
 			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ScoresClientListResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listHandleResponse(resp)
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
@@ -143,8 +138,11 @@ func (client *ScoresClient) listCreateRequest(ctx context.Context, _ *ScoresClie
 }
 
 // listHandleResponse handles the List response.
-func (client *ScoresClient) listHandleResponse(resp *http.Response) (ScoresClientListResponse, error) {
+func (client *ScoresClient) listHandleResponse(resp *http.Response, successCodes ...int) (ScoresClientListResponse, error) {
 	result := ScoresClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScoreResponse); err != nil {
 		return ScoresClientListResponse{}, err
 	}

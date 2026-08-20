@@ -18,6 +18,8 @@ import (
 
 // NetworkFabricsClient contains the methods for the NetworkFabrics group.
 // Don't use this type directly, use NewNetworkFabricsClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkFabricsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkFabricsClient(subscriptionID string, credential azcore.TokenCrede
 
 // BeginArmConfigurationDiff - Post action: Triggers diff of NetworkFabric ARM Configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientBeginArmConfigurationDiffOptions contains the optional parameters for the NetworkFabricsClient.BeginArmConfigurationDiff
@@ -66,8 +66,6 @@ func (client *NetworkFabricsClient) BeginArmConfigurationDiff(ctx context.Contex
 
 // ArmConfigurationDiff - Post action: Triggers diff of NetworkFabric ARM Configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) armConfigurationDiff(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginArmConfigurationDiffOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginArmConfigurationDiff"
@@ -83,8 +81,7 @@ func (client *NetworkFabricsClient) armConfigurationDiff(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -109,16 +106,14 @@ func (client *NetworkFabricsClient) armConfigurationDiffCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginCommitBatchStatus - Post action: Returns a status of commit batch operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - body - Request payload.
@@ -143,8 +138,6 @@ func (client *NetworkFabricsClient) BeginCommitBatchStatus(ctx context.Context, 
 
 // CommitBatchStatus - Post action: Returns a status of commit batch operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) commitBatchStatus(ctx context.Context, resourceGroupName string, networkFabricName string, body CommitBatchStatusRequest, options *NetworkFabricsClientBeginCommitBatchStatusOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginCommitBatchStatus"
@@ -160,8 +153,7 @@ func (client *NetworkFabricsClient) commitBatchStatus(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -186,8 +178,8 @@ func (client *NetworkFabricsClient) commitBatchStatusCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -198,8 +190,6 @@ func (client *NetworkFabricsClient) commitBatchStatusCreateRequest(ctx context.C
 
 // BeginCommitConfiguration - Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientBeginCommitConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginCommitConfiguration
@@ -223,8 +213,6 @@ func (client *NetworkFabricsClient) BeginCommitConfiguration(ctx context.Context
 
 // CommitConfiguration - Atomic update of the given Network Fabric instance. Sync update of NFA resources at Fabric level.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) commitConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginCommitConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginCommitConfiguration"
@@ -240,8 +228,7 @@ func (client *NetworkFabricsClient) commitConfiguration(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -266,8 +253,8 @@ func (client *NetworkFabricsClient) commitConfigurationCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
 		req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -281,8 +268,6 @@ func (client *NetworkFabricsClient) commitConfigurationCreateRequest(ctx context
 
 // BeginCreate - Create Network Fabric resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - body - Request payload.
@@ -307,8 +292,6 @@ func (client *NetworkFabricsClient) BeginCreate(ctx context.Context, resourceGro
 
 // Create - Create Network Fabric resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) create(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabric, options *NetworkFabricsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginCreate"
@@ -324,8 +307,7 @@ func (client *NetworkFabricsClient) create(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -350,8 +332,8 @@ func (client *NetworkFabricsClient) createCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -362,8 +344,6 @@ func (client *NetworkFabricsClient) createCreateRequest(ctx context.Context, res
 
 // BeginDelete - Delete Network Fabric resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientBeginDeleteOptions contains the optional parameters for the NetworkFabricsClient.BeginDelete
@@ -387,8 +367,6 @@ func (client *NetworkFabricsClient) BeginDelete(ctx context.Context, resourceGro
 
 // Delete - Delete Network Fabric resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginDelete"
@@ -404,8 +382,7 @@ func (client *NetworkFabricsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -430,15 +407,13 @@ func (client *NetworkFabricsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginDeprovision - Deprovisions the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientBeginDeprovisionOptions contains the optional parameters for the NetworkFabricsClient.BeginDeprovision
@@ -462,8 +437,6 @@ func (client *NetworkFabricsClient) BeginDeprovision(ctx context.Context, resour
 
 // Deprovision - Deprovisions the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) deprovision(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginDeprovisionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginDeprovision"
@@ -479,8 +452,7 @@ func (client *NetworkFabricsClient) deprovision(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -505,16 +477,14 @@ func (client *NetworkFabricsClient) deprovisionCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginDiscardCommitBatch - Post action: Discards a Batch operation in progress.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - body - Request payload.
@@ -539,8 +509,6 @@ func (client *NetworkFabricsClient) BeginDiscardCommitBatch(ctx context.Context,
 
 // DiscardCommitBatch - Post action: Discards a Batch operation in progress.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) discardCommitBatch(ctx context.Context, resourceGroupName string, networkFabricName string, body DiscardCommitBatchRequest, options *NetworkFabricsClientBeginDiscardCommitBatchOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginDiscardCommitBatch"
@@ -556,8 +524,7 @@ func (client *NetworkFabricsClient) discardCommitBatch(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -582,8 +549,8 @@ func (client *NetworkFabricsClient) discardCommitBatchCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -594,8 +561,6 @@ func (client *NetworkFabricsClient) discardCommitBatchCreateRequest(ctx context.
 
 // Get - Get Network Fabric resource details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientGetOptions contains the optional parameters for the NetworkFabricsClient.Get method.
@@ -613,12 +578,7 @@ func (client *NetworkFabricsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return NetworkFabricsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkFabricsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -641,15 +601,18 @@ func (client *NetworkFabricsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *NetworkFabricsClient) getHandleResponse(resp *http.Response) (NetworkFabricsClientGetResponse, error) {
+func (client *NetworkFabricsClient) getHandleResponse(resp *http.Response, successCodes ...int) (NetworkFabricsClientGetResponse, error) {
 	result := NetworkFabricsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkFabric); err != nil {
 		return NetworkFabricsClientGetResponse{}, err
 	}
@@ -658,8 +621,6 @@ func (client *NetworkFabricsClient) getHandleResponse(resp *http.Response) (Netw
 
 // BeginGetTopology - Gets Topology of the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientBeginGetTopologyOptions contains the optional parameters for the NetworkFabricsClient.BeginGetTopology
@@ -683,8 +644,6 @@ func (client *NetworkFabricsClient) BeginGetTopology(ctx context.Context, resour
 
 // GetTopology - Gets Topology of the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) getTopology(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginGetTopologyOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginGetTopology"
@@ -700,8 +659,7 @@ func (client *NetworkFabricsClient) getTopology(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -726,15 +684,13 @@ func (client *NetworkFabricsClient) getTopologyCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // NewListByResourceGroupPager - List all the Network Fabric resources in the given resource group.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkFabricsClientListByResourceGroupOptions contains the optional parameters for the NetworkFabricsClient.NewListByResourceGroupPager
 //     method.
@@ -749,43 +705,57 @@ func (client *NetworkFabricsClient) NewListByResourceGroupPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return NetworkFabricsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkFabricsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NetworkFabricsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *NetworkFabricsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NetworkFabricsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *NetworkFabricsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkFabrics"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *NetworkFabricsClient) listByResourceGroupHandleResponse(resp *http.Response) (NetworkFabricsClientListByResourceGroupResponse, error) {
+func (client *NetworkFabricsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (NetworkFabricsClientListByResourceGroupResponse, error) {
 	result := NetworkFabricsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkFabricsListResult); err != nil {
 		return NetworkFabricsClientListByResourceGroupResponse{}, err
 	}
@@ -793,8 +763,6 @@ func (client *NetworkFabricsClient) listByResourceGroupHandleResponse(resp *http
 }
 
 // NewListBySubscriptionPager - List all the Network Fabric resources in the given subscription.
-//
-// Generated from API version 2025-07-15
 //   - options - NetworkFabricsClientListBySubscriptionOptions contains the optional parameters for the NetworkFabricsClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkFabricsClient) NewListBySubscriptionPager(options *NetworkFabricsClientListBySubscriptionOptions) *runtime.Pager[NetworkFabricsClientListBySubscriptionResponse] {
@@ -808,39 +776,53 @@ func (client *NetworkFabricsClient) NewListBySubscriptionPager(options *NetworkF
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return NetworkFabricsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkFabricsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *NetworkFabricsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *NetworkFabricsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkFabrics"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NetworkFabricsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *NetworkFabricsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkFabrics"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *NetworkFabricsClient) listBySubscriptionHandleResponse(resp *http.Response) (NetworkFabricsClientListBySubscriptionResponse, error) {
+func (client *NetworkFabricsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (NetworkFabricsClientListBySubscriptionResponse, error) {
 	result := NetworkFabricsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkFabricsListResult); err != nil {
 		return NetworkFabricsClientListBySubscriptionResponse{}, err
 	}
@@ -849,8 +831,6 @@ func (client *NetworkFabricsClient) listBySubscriptionHandleResponse(resp *http.
 
 // BeginLockFabric - Post action: Triggers network fabric lock operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - body - Request payload.
@@ -875,8 +855,6 @@ func (client *NetworkFabricsClient) BeginLockFabric(ctx context.Context, resourc
 
 // LockFabric - Post action: Triggers network fabric lock operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) lockFabric(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricLockRequest, options *NetworkFabricsClientBeginLockFabricOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginLockFabric"
@@ -892,8 +870,7 @@ func (client *NetworkFabricsClient) lockFabric(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -918,8 +895,8 @@ func (client *NetworkFabricsClient) lockFabricCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -930,8 +907,6 @@ func (client *NetworkFabricsClient) lockFabricCreateRequest(ctx context.Context,
 
 // BeginProvision - Provisions the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientBeginProvisionOptions contains the optional parameters for the NetworkFabricsClient.BeginProvision
@@ -955,8 +930,6 @@ func (client *NetworkFabricsClient) BeginProvision(ctx context.Context, resource
 
 // Provision - Provisions the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) provision(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginProvisionOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginProvision"
@@ -972,8 +945,7 @@ func (client *NetworkFabricsClient) provision(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -998,16 +970,14 @@ func (client *NetworkFabricsClient) provisionCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginRefreshConfiguration - Refreshes the configuration of the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientBeginRefreshConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginRefreshConfiguration
@@ -1031,8 +1001,6 @@ func (client *NetworkFabricsClient) BeginRefreshConfiguration(ctx context.Contex
 
 // RefreshConfiguration - Refreshes the configuration of the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) refreshConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRefreshConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginRefreshConfiguration"
@@ -1048,8 +1016,7 @@ func (client *NetworkFabricsClient) refreshConfiguration(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1074,8 +1041,8 @@ func (client *NetworkFabricsClient) refreshConfigurationCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1085,8 +1052,6 @@ func (client *NetworkFabricsClient) refreshConfigurationCreateRequest(ctx contex
 // Updates all Network Devices to use the latest certificates. Does not generate new certificates. Allows network devices
 // missed during a previous certificate rotation to be brought back into sync.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientBeginResyncCertificatesOptions contains the optional parameters for the NetworkFabricsClient.BeginResyncCertificates
@@ -1113,8 +1078,6 @@ func (client *NetworkFabricsClient) BeginResyncCertificates(ctx context.Context,
 // Updates all Network Devices to use the latest certificates. Does not generate new certificates. Allows network devices
 // missed during a previous certificate rotation to be brought back into sync.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) resyncCertificates(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginResyncCertificatesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginResyncCertificates"
@@ -1130,8 +1093,7 @@ func (client *NetworkFabricsClient) resyncCertificates(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1156,8 +1118,8 @@ func (client *NetworkFabricsClient) resyncCertificatesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1167,8 +1129,6 @@ func (client *NetworkFabricsClient) resyncCertificatesCreateRequest(ctx context.
 // Updates the Terminal Server and all Network Devices to use the latest passwords. Does not generate new passwords.
 // Allows devices to be brought back in sync after a partially successful password rotation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientBeginResyncPasswordsOptions contains the optional parameters for the NetworkFabricsClient.BeginResyncPasswords
@@ -1195,8 +1155,6 @@ func (client *NetworkFabricsClient) BeginResyncPasswords(ctx context.Context, re
 // Updates the Terminal Server and all Network Devices to use the latest passwords. Does not generate new passwords.
 // Allows devices to be brought back in sync after a partially successful password rotation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) resyncPasswords(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginResyncPasswordsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginResyncPasswords"
@@ -1212,8 +1170,7 @@ func (client *NetworkFabricsClient) resyncPasswords(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1238,8 +1195,8 @@ func (client *NetworkFabricsClient) resyncPasswordsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1249,8 +1206,6 @@ func (client *NetworkFabricsClient) resyncPasswordsCreateRequest(ctx context.Con
 // Creates new certificates, then updates the Network Devices to use the new certificates. Note that disabled devices cannot
 // be updated and must be resynchronized with the new certificates once they are enabled.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientBeginRotateCertificatesOptions contains the optional parameters for the NetworkFabricsClient.BeginRotateCertificates
@@ -1277,8 +1232,6 @@ func (client *NetworkFabricsClient) BeginRotateCertificates(ctx context.Context,
 // Creates new certificates, then updates the Network Devices to use the new certificates. Note that disabled devices cannot
 // be updated and must be resynchronized with the new certificates once they are enabled.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) rotateCertificates(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRotateCertificatesOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginRotateCertificates"
@@ -1294,8 +1247,7 @@ func (client *NetworkFabricsClient) rotateCertificates(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1320,8 +1272,8 @@ func (client *NetworkFabricsClient) rotateCertificatesCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
@@ -1333,8 +1285,6 @@ func (client *NetworkFabricsClient) rotateCertificatesCreateRequest(ctx context.
 // Fails if any of the devices could not be updated with the new password.
 // Failed devices should be resynchronized with the new passwords once possible.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientBeginRotatePasswordsOptions contains the optional parameters for the NetworkFabricsClient.BeginRotatePasswords
@@ -1363,8 +1313,6 @@ func (client *NetworkFabricsClient) BeginRotatePasswords(ctx context.Context, re
 // Fails if any of the devices could not be updated with the new password.
 // Failed devices should be resynchronized with the new passwords once possible.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) rotatePasswords(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginRotatePasswordsOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginRotatePasswords"
@@ -1380,8 +1328,7 @@ func (client *NetworkFabricsClient) rotatePasswords(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1406,16 +1353,14 @@ func (client *NetworkFabricsClient) rotatePasswordsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginUpdate - Update certain properties of the Network Fabric resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - body - Network Fabric properties to update.
@@ -1440,8 +1385,6 @@ func (client *NetworkFabricsClient) BeginUpdate(ctx context.Context, resourceGro
 
 // Update - Update certain properties of the Network Fabric resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) update(ctx context.Context, resourceGroupName string, networkFabricName string, body NetworkFabricPatch, options *NetworkFabricsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginUpdate"
@@ -1457,8 +1400,7 @@ func (client *NetworkFabricsClient) update(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1483,8 +1425,8 @@ func (client *NetworkFabricsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -1496,8 +1438,6 @@ func (client *NetworkFabricsClient) updateCreateRequest(ctx context.Context, res
 // BeginUpdateInfraManagementBfdConfiguration - Updates the Infra Management BFD Configuration of the underlying resources
 // in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - body - Request payload.
@@ -1523,8 +1463,6 @@ func (client *NetworkFabricsClient) BeginUpdateInfraManagementBfdConfiguration(c
 // UpdateInfraManagementBfdConfiguration - Updates the Infra Management BFD Configuration of the underlying resources in the
 // given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) updateInfraManagementBfdConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, options *NetworkFabricsClientBeginUpdateInfraManagementBfdConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginUpdateInfraManagementBfdConfiguration"
@@ -1540,8 +1478,7 @@ func (client *NetworkFabricsClient) updateInfraManagementBfdConfiguration(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1566,8 +1503,8 @@ func (client *NetworkFabricsClient) updateInfraManagementBfdConfigurationCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -1579,8 +1516,6 @@ func (client *NetworkFabricsClient) updateInfraManagementBfdConfigurationCreateR
 // BeginUpdateWorkloadManagementBfdConfiguration - Updates the Workload Management BFD Configuration of the underlying resources
 // in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - body - Request payload.
@@ -1606,8 +1541,6 @@ func (client *NetworkFabricsClient) BeginUpdateWorkloadManagementBfdConfiguratio
 // UpdateWorkloadManagementBfdConfiguration - Updates the Workload Management BFD Configuration of the underlying resources
 // in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) updateWorkloadManagementBfdConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body UpdateAdministrativeState, options *NetworkFabricsClientBeginUpdateWorkloadManagementBfdConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginUpdateWorkloadManagementBfdConfiguration"
@@ -1623,8 +1556,7 @@ func (client *NetworkFabricsClient) updateWorkloadManagementBfdConfiguration(ctx
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1649,8 +1581,8 @@ func (client *NetworkFabricsClient) updateWorkloadManagementBfdConfigurationCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -1661,8 +1593,6 @@ func (client *NetworkFabricsClient) updateWorkloadManagementBfdConfigurationCrea
 
 // BeginUpgrade - Upgrades the version of the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - body - Network Fabric properties to update.
@@ -1687,8 +1617,6 @@ func (client *NetworkFabricsClient) BeginUpgrade(ctx context.Context, resourceGr
 
 // Upgrade - Upgrades the version of the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) upgrade(ctx context.Context, resourceGroupName string, networkFabricName string, body UpgradeNetworkFabricProperties, options *NetworkFabricsClientBeginUpgradeOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginUpgrade"
@@ -1704,8 +1632,7 @@ func (client *NetworkFabricsClient) upgrade(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1730,8 +1657,8 @@ func (client *NetworkFabricsClient) upgradeCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -1742,8 +1669,6 @@ func (client *NetworkFabricsClient) upgradeCreateRequest(ctx context.Context, re
 
 // BeginValidateConfiguration - Validates the configuration of the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - body - Validate configuration properties.
@@ -1768,8 +1693,6 @@ func (client *NetworkFabricsClient) BeginValidateConfiguration(ctx context.Conte
 
 // ValidateConfiguration - Validates the configuration of the underlying resources in the given Network Fabric instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) validateConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, body ValidateConfigurationProperties, options *NetworkFabricsClientBeginValidateConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginValidateConfiguration"
@@ -1785,8 +1708,7 @@ func (client *NetworkFabricsClient) validateConfiguration(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1811,8 +1733,8 @@ func (client *NetworkFabricsClient) validateConfigurationCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -1823,8 +1745,6 @@ func (client *NetworkFabricsClient) validateConfigurationCreateRequest(ctx conte
 
 // BeginViewDeviceConfiguration - Post action: Triggers view of network fabric configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkFabricName - Name of the Network Fabric.
 //   - options - NetworkFabricsClientBeginViewDeviceConfigurationOptions contains the optional parameters for the NetworkFabricsClient.BeginViewDeviceConfiguration
@@ -1848,8 +1768,6 @@ func (client *NetworkFabricsClient) BeginViewDeviceConfiguration(ctx context.Con
 
 // ViewDeviceConfiguration - Post action: Triggers view of network fabric configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkFabricsClient) viewDeviceConfiguration(ctx context.Context, resourceGroupName string, networkFabricName string, options *NetworkFabricsClientBeginViewDeviceConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkFabricsClient.BeginViewDeviceConfiguration"
@@ -1865,8 +1783,7 @@ func (client *NetworkFabricsClient) viewDeviceConfiguration(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1891,8 +1808,8 @@ func (client *NetworkFabricsClient) viewDeviceConfigurationCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

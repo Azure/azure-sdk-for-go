@@ -56,13 +56,15 @@ func (client *OutboundRulesClient) BeginPost(ctx context.Context, resourceGroupN
 		},
 		Fetcher: func(ctx context.Context, page *OutboundRulesClientPostResponse) (OutboundRulesClientPostResponse, error) {
 			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OutboundRulesClient.BeginPost")
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), *page.NextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.postCreateRequest(ctx, resourceGroupName, workspaceName, managedNetworkName, body, options)
-			}, nil)
+			req, err := client.postCreateRequest(ctx, resourceGroupName, workspaceName, managedNetworkName, body, *page.NextLink, options)
 			if err != nil {
 				return OutboundRulesClientPostResponse{}, err
 			}
-			return client.postHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OutboundRulesClientPostResponse{}, err
+			}
+			return client.postHandleResponse(resp, http.StatusOK, http.StatusAccepted)
 		},
 		Tracer: client.internal.Tracer(),
 	})
@@ -93,7 +95,7 @@ func (client *OutboundRulesClient) post(ctx context.Context, resourceGroupName s
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.postCreateRequest(ctx, resourceGroupName, workspaceName, managedNetworkName, body, options)
+	req, err := client.postCreateRequest(ctx, resourceGroupName, workspaceName, managedNetworkName, body, "", options)
 	if err != nil {
 		return nil, err
 	}
@@ -102,49 +104,60 @@ func (client *OutboundRulesClient) post(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
 // postCreateRequest creates the Post request.
-func (client *OutboundRulesClient) postCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, managedNetworkName string, body ManagedNetworkSettingsBasicResource, _ *OutboundRulesClientBeginPostOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/managedNetworks/{managedNetworkName}/batchOutboundRules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *OutboundRulesClient) postCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, managedNetworkName string, body ManagedNetworkSettingsBasicResource, nextLink string, _ *OutboundRulesClientBeginPostOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/managedNetworks/{managedNetworkName}/batchOutboundRules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		if managedNetworkName == "" {
+			return nil, errors.New("parameter managedNetworkName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedNetworkName}", url.PathEscape(managedNetworkName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if managedNetworkName == "" {
-		return nil, errors.New("parameter managedNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedNetworkName}", url.PathEscape(managedNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, body); err != nil {
+			return nil, err
+		}
 	}
 	return req, nil
 }
 
 // postHandleResponse handles the Post response.
-func (client *OutboundRulesClient) postHandleResponse(resp *http.Response) (OutboundRulesClientPostResponse, error) {
+func (client *OutboundRulesClient) postHandleResponse(resp *http.Response, successCodes ...int) (OutboundRulesClientPostResponse, error) {
 	result := OutboundRulesClientPostResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundRuleListResult); err != nil {
 		return OutboundRulesClientPostResponse{}, err
 	}

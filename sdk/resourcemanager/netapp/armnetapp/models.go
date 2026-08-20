@@ -332,10 +332,12 @@ type AuthorizeRequest struct {
 // a) retrieving the bucket server certificate, and
 // b) storing the bucket credentials
 // Notes:
-// 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
-// use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
-// is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
-// 2. These properties are mutually exclusive with the server.certificateObject property.
+//
+//  1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
+//     use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
+//     is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
+//
+//  2. These properties are mutually exclusive with the server.certificateObject property.
 type AzureKeyVaultDetails struct {
 	// Specifies the Azure Key Vault settings for retrieving the bucket server certificate.
 	CertificateAkvDetails *CertificateAkvDetails
@@ -719,10 +721,11 @@ type BucketPatchProperties struct {
 	// a) retrieving the bucket server certificate, and
 	// b) storing the bucket credentials
 	// Notes:
-	// 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
-	// use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
-	// is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
-	// 2. These properties are mutually exclusive with the server.certificateObject property.
+	//
+	//  1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
+	//     use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
+	//     is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
+	//  2. These properties are mutually exclusive with the server.certificateObject property.
 	AkvDetails *AzureKeyVaultDetails
 
 	// File System user having access to volume data. For Unix, this is the user's uid and gid. For Windows, this is the user's
@@ -746,10 +749,11 @@ type BucketProperties struct {
 	// a) retrieving the bucket server certificate, and
 	// b) storing the bucket credentials
 	// Notes:
-	// 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
-	// use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
-	// is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
-	// 2. These properties are mutually exclusive with the server.certificateObject property.
+	//
+	//  1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
+	//     use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
+	//     is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
+	//  2. These properties are mutually exclusive with the server.certificateObject property.
 	AkvDetails *AzureKeyVaultDetails
 
 	// File System user having access to volume data. For Unix, this is the user's uid and gid. For Windows, this is the user's
@@ -2361,7 +2365,9 @@ type ListQuotaReportResponse struct {
 	QuotaReportRecords []*QuotaReport
 }
 
-// ListQuotaReportResult - * Result of ListQuotaReportResponse
+// ListQuotaReportResult -
+//
+//   - Result of ListQuotaReportResponse
 type ListQuotaReportResult struct {
 	// Represents the properties of the ListQuotaReport.
 	Properties *ListQuotaReportResponse

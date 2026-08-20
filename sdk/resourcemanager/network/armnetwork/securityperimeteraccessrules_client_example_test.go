@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/NspAccessRulePut.json
+// Generated from example definition: 2025-09-01/NspAccessRulePut.json
 func ExampleSecurityPerimeterAccessRulesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,10 +64,10 @@ func ExampleSecurityPerimeterAccessRulesClient_CreateOrUpdate() {
 	// 			},
 	// 		},
 	// 		SystemData: &armnetwork.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 	// 			CreatedBy: to.Ptr("user"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 	// 		},
@@ -75,7 +75,7 @@ func ExampleSecurityPerimeterAccessRulesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NspAccessRuleDelete.json
+// Generated from example definition: 2025-09-01/NspAccessRuleDelete.json
 func ExampleSecurityPerimeterAccessRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleSecurityPerimeterAccessRulesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NspAccessRuleGet.json
+// Generated from example definition: 2025-09-01/NspAccessRuleGet.json
 func ExampleSecurityPerimeterAccessRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,10 +141,10 @@ func ExampleSecurityPerimeterAccessRulesClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armnetwork.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 	// 			CreatedBy: to.Ptr("user"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 	// 		},
@@ -152,7 +152,7 @@ func ExampleSecurityPerimeterAccessRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NspAccessRuleList.json
+// Generated from example definition: 2025-09-01/NspAccessRuleList.json
 func ExampleSecurityPerimeterAccessRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,10 +203,10 @@ func ExampleSecurityPerimeterAccessRulesClient_NewListPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armnetwork.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 		// 					CreatedBy: to.Ptr("user"),
 		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user"),
 		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 		// 				},
@@ -236,10 +236,10 @@ func ExampleSecurityPerimeterAccessRulesClient_NewListPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armnetwork.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 		// 					CreatedBy: to.Ptr("user"),
 		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-07T18:07:36.3446713Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.February, 7, 18, 7, 36, 344671300, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user"),
 		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 		// 				},
@@ -250,7 +250,7 @@ func ExampleSecurityPerimeterAccessRulesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/NspAccessRuleReconcile.json
+// Generated from example definition: 2025-09-01/NspAccessRuleReconcile.json
 func ExampleSecurityPerimeterAccessRulesClient_Reconcile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

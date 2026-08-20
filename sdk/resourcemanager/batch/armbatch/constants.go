@@ -4,6 +4,10 @@
 
 package armbatch
 
+const (
+	version20250601 string = "2025-06-01"
+)
+
 // AccessRuleDirection - Direction of Access Rule
 type AccessRuleDirection string
 
@@ -587,13 +591,21 @@ func PossibleNetworkSecurityGroupRuleAccessValues() []NetworkSecurityGroupRuleAc
 type NetworkSecurityPerimeterConfigurationProvisioningState string
 
 const (
-	NetworkSecurityPerimeterConfigurationProvisioningStateAccepted  NetworkSecurityPerimeterConfigurationProvisioningState = "Accepted"
-	NetworkSecurityPerimeterConfigurationProvisioningStateCanceled  NetworkSecurityPerimeterConfigurationProvisioningState = "Canceled"
-	NetworkSecurityPerimeterConfigurationProvisioningStateCreating  NetworkSecurityPerimeterConfigurationProvisioningState = "Creating"
-	NetworkSecurityPerimeterConfigurationProvisioningStateDeleting  NetworkSecurityPerimeterConfigurationProvisioningState = "Deleting"
-	NetworkSecurityPerimeterConfigurationProvisioningStateFailed    NetworkSecurityPerimeterConfigurationProvisioningState = "Failed"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateAccepted - The configuration request was accepted and provisioning
+	// has not started yet.
+	NetworkSecurityPerimeterConfigurationProvisioningStateAccepted NetworkSecurityPerimeterConfigurationProvisioningState = "Accepted"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateCanceled - The configuration provisioning was canceled.
+	NetworkSecurityPerimeterConfigurationProvisioningStateCanceled NetworkSecurityPerimeterConfigurationProvisioningState = "Canceled"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateCreating - The configuration is being created.
+	NetworkSecurityPerimeterConfigurationProvisioningStateCreating NetworkSecurityPerimeterConfigurationProvisioningState = "Creating"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateDeleting - The configuration is being deleted.
+	NetworkSecurityPerimeterConfigurationProvisioningStateDeleting NetworkSecurityPerimeterConfigurationProvisioningState = "Deleting"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateFailed - The configuration failed to provision.
+	NetworkSecurityPerimeterConfigurationProvisioningStateFailed NetworkSecurityPerimeterConfigurationProvisioningState = "Failed"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded - The configuration was provisioned successfully.
 	NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded NetworkSecurityPerimeterConfigurationProvisioningState = "Succeeded"
-	NetworkSecurityPerimeterConfigurationProvisioningStateUpdating  NetworkSecurityPerimeterConfigurationProvisioningState = "Updating"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateUpdating - The configuration is being updated.
+	NetworkSecurityPerimeterConfigurationProvisioningStateUpdating NetworkSecurityPerimeterConfigurationProvisioningState = "Updating"
 )
 
 // PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues returns the possible values for the NetworkSecurityPerimeterConfigurationProvisioningState const type.
@@ -910,7 +922,9 @@ func PossibleSecurityTypesValues() []SecurityTypes {
 type Severity string
 
 const (
-	SeverityError   Severity = "Error"
+	// SeverityError - The issue is an error and prevents the configuration from being applied.
+	SeverityError Severity = "Error"
+	// SeverityWarning - The issue is a warning and does not prevent the configuration from being applied.
 	SeverityWarning Severity = "Warning"
 )
 

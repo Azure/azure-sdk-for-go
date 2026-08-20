@@ -82,8 +82,7 @@ func (client *WebhooksClient) create(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -162,8 +161,7 @@ func (client *WebhooksClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -217,12 +215,7 @@ func (client *WebhooksClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return WebhooksClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebhooksClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -256,8 +249,11 @@ func (client *WebhooksClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *WebhooksClient) getHandleResponse(resp *http.Response) (WebhooksClientGetResponse, error) {
+func (client *WebhooksClient) getHandleResponse(resp *http.Response, successCodes ...int) (WebhooksClientGetResponse, error) {
 	result := WebhooksClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Webhook); err != nil {
 		return WebhooksClientGetResponse{}, err
 	}
@@ -285,12 +281,7 @@ func (client *WebhooksClient) GetCallbackConfig(ctx context.Context, resourceGro
 	if err != nil {
 		return WebhooksClientGetCallbackConfigResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebhooksClientGetCallbackConfigResponse{}, err
-	}
-	resp, err := client.getCallbackConfigHandleResponse(httpResp)
-	return resp, err
+	return client.getCallbackConfigHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCallbackConfigCreateRequest creates the GetCallbackConfig request.
@@ -324,8 +315,11 @@ func (client *WebhooksClient) getCallbackConfigCreateRequest(ctx context.Context
 }
 
 // getCallbackConfigHandleResponse handles the GetCallbackConfig response.
-func (client *WebhooksClient) getCallbackConfigHandleResponse(resp *http.Response) (WebhooksClientGetCallbackConfigResponse, error) {
+func (client *WebhooksClient) getCallbackConfigHandleResponse(resp *http.Response, successCodes ...int) (WebhooksClientGetCallbackConfigResponse, error) {
 	result := WebhooksClientGetCallbackConfigResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CallbackConfig); err != nil {
 		return WebhooksClientGetCallbackConfigResponse{}, err
 	}
@@ -347,47 +341,61 @@ func (client *WebhooksClient) NewListPager(resourceGroupName string, registryNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, registryName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, registryName, nextLink, options)
 			if err != nil {
 				return WebhooksClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebhooksClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *WebhooksClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, _ *WebhooksClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebhooksClient) listCreateRequest(ctx context.Context, resourceGroupName string, registryName string, nextLink string, _ *WebhooksClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if registryName == "" {
+			return nil, errors.New("parameter registryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if registryName == "" {
-		return nil, errors.New("parameter registryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *WebhooksClient) listHandleResponse(resp *http.Response) (WebhooksClientListResponse, error) {
+func (client *WebhooksClient) listHandleResponse(resp *http.Response, successCodes ...int) (WebhooksClientListResponse, error) {
 	result := WebhooksClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebhookListResult); err != nil {
 		return WebhooksClientListResponse{}, err
 	}
@@ -410,51 +418,65 @@ func (client *WebhooksClient) NewListEventsPager(resourceGroupName string, regis
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listEventsCreateRequest(ctx, resourceGroupName, registryName, webhookName, options)
-			}, nil)
+			req, err := client.listEventsCreateRequest(ctx, resourceGroupName, registryName, webhookName, nextLink, options)
 			if err != nil {
 				return WebhooksClientListEventsResponse{}, err
 			}
-			return client.listEventsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebhooksClientListEventsResponse{}, err
+			}
+			return client.listEventsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listEventsCreateRequest creates the ListEvents request.
-func (client *WebhooksClient) listEventsCreateRequest(ctx context.Context, resourceGroupName string, registryName string, webhookName string, _ *WebhooksClientListEventsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}/listEvents"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebhooksClient) listEventsCreateRequest(ctx context.Context, resourceGroupName string, registryName string, webhookName string, nextLink string, _ *WebhooksClientListEventsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/webhooks/{webhookName}/listEvents"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if registryName == "" {
+			return nil, errors.New("parameter registryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
+		if webhookName == "" {
+			return nil, errors.New("parameter webhookName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{webhookName}", url.PathEscape(webhookName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if registryName == "" {
-		return nil, errors.New("parameter registryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	if webhookName == "" {
-		return nil, errors.New("parameter webhookName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{webhookName}", url.PathEscape(webhookName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listEventsHandleResponse handles the ListEvents response.
-func (client *WebhooksClient) listEventsHandleResponse(resp *http.Response) (WebhooksClientListEventsResponse, error) {
+func (client *WebhooksClient) listEventsHandleResponse(resp *http.Response, successCodes ...int) (WebhooksClientListEventsResponse, error) {
 	result := WebhooksClientListEventsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventListResult); err != nil {
 		return WebhooksClientListEventsResponse{}, err
 	}
@@ -481,12 +503,7 @@ func (client *WebhooksClient) Ping(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return WebhooksClientPingResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebhooksClientPingResponse{}, err
-	}
-	resp, err := client.pingHandleResponse(httpResp)
-	return resp, err
+	return client.pingHandleResponse(httpResp, http.StatusOK)
 }
 
 // pingCreateRequest creates the Ping request.
@@ -520,8 +537,11 @@ func (client *WebhooksClient) pingCreateRequest(ctx context.Context, resourceGro
 }
 
 // pingHandleResponse handles the Ping response.
-func (client *WebhooksClient) pingHandleResponse(resp *http.Response) (WebhooksClientPingResponse, error) {
+func (client *WebhooksClient) pingHandleResponse(resp *http.Response, successCodes ...int) (WebhooksClientPingResponse, error) {
 	result := WebhooksClientPingResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventInfo); err != nil {
 		return WebhooksClientPingResponse{}, err
 	}
@@ -569,8 +589,7 @@ func (client *WebhooksClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

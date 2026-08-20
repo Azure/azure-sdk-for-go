@@ -18,6 +18,8 @@ import (
 
 // InternetGatewaysClient contains the methods for the InternetGateways group.
 // Don't use this type directly, use NewInternetGatewaysClient() instead.
+//
+// Generated from API version 2025-07-15
 type InternetGatewaysClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewInternetGatewaysClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCreate - Creates a Network Fabric Service Internet Gateway resource instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - internetGatewayName - Name of the Internet Gateway.
 //   - body - Request payload.
@@ -67,8 +67,6 @@ func (client *InternetGatewaysClient) BeginCreate(ctx context.Context, resourceG
 
 // Create - Creates a Network Fabric Service Internet Gateway resource instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *InternetGatewaysClient) create(ctx context.Context, resourceGroupName string, internetGatewayName string, body InternetGateway, options *InternetGatewaysClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InternetGatewaysClient.BeginCreate"
@@ -84,8 +82,7 @@ func (client *InternetGatewaysClient) create(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -110,8 +107,8 @@ func (client *InternetGatewaysClient) createCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,8 +119,6 @@ func (client *InternetGatewaysClient) createCreateRequest(ctx context.Context, r
 
 // BeginDelete - Execute a delete on Network Fabric Service Internet Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - internetGatewayName - Name of the Internet Gateway.
 //   - options - InternetGatewaysClientBeginDeleteOptions contains the optional parameters for the InternetGatewaysClient.BeginDelete
@@ -147,8 +142,6 @@ func (client *InternetGatewaysClient) BeginDelete(ctx context.Context, resourceG
 
 // Delete - Execute a delete on Network Fabric Service Internet Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *InternetGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, internetGatewayName string, options *InternetGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InternetGatewaysClient.BeginDelete"
@@ -164,8 +157,7 @@ func (client *InternetGatewaysClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -190,15 +182,13 @@ func (client *InternetGatewaysClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Implements Gateway GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - internetGatewayName - Name of the Internet Gateway.
 //   - options - InternetGatewaysClientGetOptions contains the optional parameters for the InternetGatewaysClient.Get method.
@@ -216,12 +206,7 @@ func (client *InternetGatewaysClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return InternetGatewaysClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InternetGatewaysClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -244,15 +229,18 @@ func (client *InternetGatewaysClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *InternetGatewaysClient) getHandleResponse(resp *http.Response) (InternetGatewaysClientGetResponse, error) {
+func (client *InternetGatewaysClient) getHandleResponse(resp *http.Response, successCodes ...int) (InternetGatewaysClientGetResponse, error) {
 	result := InternetGatewaysClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InternetGateway); err != nil {
 		return InternetGatewaysClientGetResponse{}, err
 	}
@@ -260,8 +248,6 @@ func (client *InternetGatewaysClient) getHandleResponse(resp *http.Response) (In
 }
 
 // NewListByResourceGroupPager - Displays Internet Gateways list by resource group GET method.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - InternetGatewaysClientListByResourceGroupOptions contains the optional parameters for the InternetGatewaysClient.NewListByResourceGroupPager
 //     method.
@@ -276,43 +262,57 @@ func (client *InternetGatewaysClient) NewListByResourceGroupPager(resourceGroupN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return InternetGatewaysClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InternetGatewaysClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *InternetGatewaysClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *InternetGatewaysClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGateways"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *InternetGatewaysClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *InternetGatewaysClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/internetGateways"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *InternetGatewaysClient) listByResourceGroupHandleResponse(resp *http.Response) (InternetGatewaysClientListByResourceGroupResponse, error) {
+func (client *InternetGatewaysClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (InternetGatewaysClientListByResourceGroupResponse, error) {
 	result := InternetGatewaysClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InternetGatewaysListResult); err != nil {
 		return InternetGatewaysClientListByResourceGroupResponse{}, err
 	}
@@ -320,8 +320,6 @@ func (client *InternetGatewaysClient) listByResourceGroupHandleResponse(resp *ht
 }
 
 // NewListBySubscriptionPager - Displays Internet Gateways list by subscription GET method.
-//
-// Generated from API version 2025-07-15
 //   - options - InternetGatewaysClientListBySubscriptionOptions contains the optional parameters for the InternetGatewaysClient.NewListBySubscriptionPager
 //     method.
 func (client *InternetGatewaysClient) NewListBySubscriptionPager(options *InternetGatewaysClientListBySubscriptionOptions) *runtime.Pager[InternetGatewaysClientListBySubscriptionResponse] {
@@ -335,39 +333,53 @@ func (client *InternetGatewaysClient) NewListBySubscriptionPager(options *Intern
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return InternetGatewaysClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InternetGatewaysClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *InternetGatewaysClient) listBySubscriptionCreateRequest(ctx context.Context, _ *InternetGatewaysClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/internetGateways"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *InternetGatewaysClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *InternetGatewaysClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/internetGateways"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *InternetGatewaysClient) listBySubscriptionHandleResponse(resp *http.Response) (InternetGatewaysClientListBySubscriptionResponse, error) {
+func (client *InternetGatewaysClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (InternetGatewaysClientListBySubscriptionResponse, error) {
 	result := InternetGatewaysClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InternetGatewaysListResult); err != nil {
 		return InternetGatewaysClientListBySubscriptionResponse{}, err
 	}
@@ -376,8 +388,6 @@ func (client *InternetGatewaysClient) listBySubscriptionHandleResponse(resp *htt
 
 // BeginUpdate - Execute patch on Network Fabric Service Internet Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - internetGatewayName - Name of the Internet Gateway.
 //   - body - API to update certain properties of the InternetGateway resource..
@@ -402,8 +412,6 @@ func (client *InternetGatewaysClient) BeginUpdate(ctx context.Context, resourceG
 
 // Update - Execute patch on Network Fabric Service Internet Gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *InternetGatewaysClient) update(ctx context.Context, resourceGroupName string, internetGatewayName string, body InternetGatewayPatch, options *InternetGatewaysClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InternetGatewaysClient.BeginUpdate"
@@ -419,8 +427,7 @@ func (client *InternetGatewaysClient) update(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -445,8 +452,8 @@ func (client *InternetGatewaysClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

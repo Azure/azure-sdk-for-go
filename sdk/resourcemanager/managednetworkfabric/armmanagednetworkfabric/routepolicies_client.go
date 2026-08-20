@@ -18,6 +18,8 @@ import (
 
 // RoutePoliciesClient contains the methods for the RoutePolicies group.
 // Don't use this type directly, use NewRoutePoliciesClient() instead.
+//
+// Generated from API version 2025-07-15
 type RoutePoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewRoutePoliciesClient(subscriptionID string, credential azcore.TokenCreden
 
 // BeginCommitConfiguration - Commits the configuration of the given resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - routePolicyName - Name of the Route Policy.
 //   - options - RoutePoliciesClientBeginCommitConfigurationOptions contains the optional parameters for the RoutePoliciesClient.BeginCommitConfiguration
@@ -66,8 +66,6 @@ func (client *RoutePoliciesClient) BeginCommitConfiguration(ctx context.Context,
 
 // CommitConfiguration - Commits the configuration of the given resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *RoutePoliciesClient) commitConfiguration(ctx context.Context, resourceGroupName string, routePolicyName string, options *RoutePoliciesClientBeginCommitConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutePoliciesClient.BeginCommitConfiguration"
@@ -83,8 +81,7 @@ func (client *RoutePoliciesClient) commitConfiguration(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -109,16 +106,14 @@ func (client *RoutePoliciesClient) commitConfigurationCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginCreate - Implements Route Policy PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - routePolicyName - Name of the Route Policy.
 //   - body - Request payload.
@@ -143,8 +138,6 @@ func (client *RoutePoliciesClient) BeginCreate(ctx context.Context, resourceGrou
 
 // Create - Implements Route Policy PUT method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *RoutePoliciesClient) create(ctx context.Context, resourceGroupName string, routePolicyName string, body RoutePolicy, options *RoutePoliciesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutePoliciesClient.BeginCreate"
@@ -160,8 +153,7 @@ func (client *RoutePoliciesClient) create(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -186,8 +178,8 @@ func (client *RoutePoliciesClient) createCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -198,8 +190,6 @@ func (client *RoutePoliciesClient) createCreateRequest(ctx context.Context, reso
 
 // BeginDelete - Implements Route Policy DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - routePolicyName - Name of the Route Policy.
 //   - options - RoutePoliciesClientBeginDeleteOptions contains the optional parameters for the RoutePoliciesClient.BeginDelete
@@ -223,8 +213,6 @@ func (client *RoutePoliciesClient) BeginDelete(ctx context.Context, resourceGrou
 
 // Delete - Implements Route Policy DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *RoutePoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, routePolicyName string, options *RoutePoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutePoliciesClient.BeginDelete"
@@ -240,8 +228,7 @@ func (client *RoutePoliciesClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -266,15 +253,13 @@ func (client *RoutePoliciesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Implements Route Policy GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - routePolicyName - Name of the Route Policy.
 //   - options - RoutePoliciesClientGetOptions contains the optional parameters for the RoutePoliciesClient.Get method.
@@ -292,12 +277,7 @@ func (client *RoutePoliciesClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return RoutePoliciesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RoutePoliciesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -320,15 +300,18 @@ func (client *RoutePoliciesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RoutePoliciesClient) getHandleResponse(resp *http.Response) (RoutePoliciesClientGetResponse, error) {
+func (client *RoutePoliciesClient) getHandleResponse(resp *http.Response, successCodes ...int) (RoutePoliciesClientGetResponse, error) {
 	result := RoutePoliciesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoutePolicy); err != nil {
 		return RoutePoliciesClientGetResponse{}, err
 	}
@@ -336,8 +319,6 @@ func (client *RoutePoliciesClient) getHandleResponse(resp *http.Response) (Route
 }
 
 // NewListByResourceGroupPager - Implements RoutePolicies list by resource group GET method.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - RoutePoliciesClientListByResourceGroupOptions contains the optional parameters for the RoutePoliciesClient.NewListByResourceGroupPager
 //     method.
@@ -352,43 +333,57 @@ func (client *RoutePoliciesClient) NewListByResourceGroupPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return RoutePoliciesClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RoutePoliciesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *RoutePoliciesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *RoutePoliciesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RoutePoliciesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *RoutePoliciesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/routePolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *RoutePoliciesClient) listByResourceGroupHandleResponse(resp *http.Response) (RoutePoliciesClientListByResourceGroupResponse, error) {
+func (client *RoutePoliciesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (RoutePoliciesClientListByResourceGroupResponse, error) {
 	result := RoutePoliciesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoutePoliciesListResult); err != nil {
 		return RoutePoliciesClientListByResourceGroupResponse{}, err
 	}
@@ -396,8 +391,6 @@ func (client *RoutePoliciesClient) listByResourceGroupHandleResponse(resp *http.
 }
 
 // NewListBySubscriptionPager - Implements RoutePolicies list by subscription GET method.
-//
-// Generated from API version 2025-07-15
 //   - options - RoutePoliciesClientListBySubscriptionOptions contains the optional parameters for the RoutePoliciesClient.NewListBySubscriptionPager
 //     method.
 func (client *RoutePoliciesClient) NewListBySubscriptionPager(options *RoutePoliciesClientListBySubscriptionOptions) *runtime.Pager[RoutePoliciesClientListBySubscriptionResponse] {
@@ -411,39 +404,53 @@ func (client *RoutePoliciesClient) NewListBySubscriptionPager(options *RoutePoli
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return RoutePoliciesClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RoutePoliciesClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *RoutePoliciesClient) listBySubscriptionCreateRequest(ctx context.Context, _ *RoutePoliciesClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/routePolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RoutePoliciesClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *RoutePoliciesClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/routePolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *RoutePoliciesClient) listBySubscriptionHandleResponse(resp *http.Response) (RoutePoliciesClientListBySubscriptionResponse, error) {
+func (client *RoutePoliciesClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (RoutePoliciesClientListBySubscriptionResponse, error) {
 	result := RoutePoliciesClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoutePoliciesListResult); err != nil {
 		return RoutePoliciesClientListBySubscriptionResponse{}, err
 	}
@@ -452,8 +459,6 @@ func (client *RoutePoliciesClient) listBySubscriptionHandleResponse(resp *http.R
 
 // BeginUpdate - API to update certain properties of the Route Policy resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - routePolicyName - Name of the Route Policy.
 //   - body - Route Policy properties to update.
@@ -478,8 +483,6 @@ func (client *RoutePoliciesClient) BeginUpdate(ctx context.Context, resourceGrou
 
 // Update - API to update certain properties of the Route Policy resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *RoutePoliciesClient) update(ctx context.Context, resourceGroupName string, routePolicyName string, body RoutePolicyPatch, options *RoutePoliciesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutePoliciesClient.BeginUpdate"
@@ -495,8 +498,7 @@ func (client *RoutePoliciesClient) update(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -521,8 +523,8 @@ func (client *RoutePoliciesClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -533,8 +535,6 @@ func (client *RoutePoliciesClient) updateCreateRequest(ctx context.Context, reso
 
 // BeginUpdateAdministrativeState - Updated the admin state for this Route Policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - routePolicyName - Name of the Route Policy.
 //   - body - Request payload.
@@ -559,8 +559,6 @@ func (client *RoutePoliciesClient) BeginUpdateAdministrativeState(ctx context.Co
 
 // UpdateAdministrativeState - Updated the admin state for this Route Policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *RoutePoliciesClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, routePolicyName string, body UpdateAdministrativeState, options *RoutePoliciesClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutePoliciesClient.BeginUpdateAdministrativeState"
@@ -576,8 +574,7 @@ func (client *RoutePoliciesClient) updateAdministrativeState(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -602,8 +599,8 @@ func (client *RoutePoliciesClient) updateAdministrativeStateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -614,8 +611,6 @@ func (client *RoutePoliciesClient) updateAdministrativeStateCreateRequest(ctx co
 
 // BeginValidateConfiguration - Validates the configuration of the resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - routePolicyName - Name of the Route Policy.
 //   - options - RoutePoliciesClientBeginValidateConfigurationOptions contains the optional parameters for the RoutePoliciesClient.BeginValidateConfiguration
@@ -639,8 +634,6 @@ func (client *RoutePoliciesClient) BeginValidateConfiguration(ctx context.Contex
 
 // ValidateConfiguration - Validates the configuration of the resources.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *RoutePoliciesClient) validateConfiguration(ctx context.Context, resourceGroupName string, routePolicyName string, options *RoutePoliciesClientBeginValidateConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutePoliciesClient.BeginValidateConfiguration"
@@ -656,8 +649,7 @@ func (client *RoutePoliciesClient) validateConfiguration(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -682,8 +674,8 @@ func (client *RoutePoliciesClient) validateConfigurationCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

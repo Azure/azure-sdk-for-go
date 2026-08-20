@@ -84,8 +84,7 @@ func (client *MongoDBResourcesClient) createUpdateMongoDBCollection(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -170,8 +169,7 @@ func (client *MongoDBResourcesClient) createUpdateMongoDBDatabase(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -249,8 +247,7 @@ func (client *MongoDBResourcesClient) createUpdateMongoRoleDefinition(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -328,8 +325,7 @@ func (client *MongoDBResourcesClient) createUpdateMongoUserDefinition(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -410,8 +406,7 @@ func (client *MongoDBResourcesClient) deleteMongoDBCollection(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -490,8 +485,7 @@ func (client *MongoDBResourcesClient) deleteMongoDBDatabase(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -564,8 +558,7 @@ func (client *MongoDBResourcesClient) deleteMongoRoleDefinition(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -638,8 +631,7 @@ func (client *MongoDBResourcesClient) deleteMongoUserDefinition(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -695,12 +687,7 @@ func (client *MongoDBResourcesClient) GetMongoDBCollection(ctx context.Context, 
 	if err != nil {
 		return MongoDBResourcesClientGetMongoDBCollectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MongoDBResourcesClientGetMongoDBCollectionResponse{}, err
-	}
-	resp, err := client.getMongoDBCollectionHandleResponse(httpResp)
-	return resp, err
+	return client.getMongoDBCollectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMongoDBCollectionCreateRequest creates the GetMongoDBCollection request.
@@ -738,8 +725,11 @@ func (client *MongoDBResourcesClient) getMongoDBCollectionCreateRequest(ctx cont
 }
 
 // getMongoDBCollectionHandleResponse handles the GetMongoDBCollection response.
-func (client *MongoDBResourcesClient) getMongoDBCollectionHandleResponse(resp *http.Response) (MongoDBResourcesClientGetMongoDBCollectionResponse, error) {
+func (client *MongoDBResourcesClient) getMongoDBCollectionHandleResponse(resp *http.Response, successCodes ...int) (MongoDBResourcesClientGetMongoDBCollectionResponse, error) {
 	result := MongoDBResourcesClientGetMongoDBCollectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MongoDBCollectionGetResults); err != nil {
 		return MongoDBResourcesClientGetMongoDBCollectionResponse{}, err
 	}
@@ -769,12 +759,7 @@ func (client *MongoDBResourcesClient) GetMongoDBCollectionThroughput(ctx context
 	if err != nil {
 		return MongoDBResourcesClientGetMongoDBCollectionThroughputResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MongoDBResourcesClientGetMongoDBCollectionThroughputResponse{}, err
-	}
-	resp, err := client.getMongoDBCollectionThroughputHandleResponse(httpResp)
-	return resp, err
+	return client.getMongoDBCollectionThroughputHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMongoDBCollectionThroughputCreateRequest creates the GetMongoDBCollectionThroughput request.
@@ -812,8 +797,11 @@ func (client *MongoDBResourcesClient) getMongoDBCollectionThroughputCreateReques
 }
 
 // getMongoDBCollectionThroughputHandleResponse handles the GetMongoDBCollectionThroughput response.
-func (client *MongoDBResourcesClient) getMongoDBCollectionThroughputHandleResponse(resp *http.Response) (MongoDBResourcesClientGetMongoDBCollectionThroughputResponse, error) {
+func (client *MongoDBResourcesClient) getMongoDBCollectionThroughputHandleResponse(resp *http.Response, successCodes ...int) (MongoDBResourcesClientGetMongoDBCollectionThroughputResponse, error) {
 	result := MongoDBResourcesClientGetMongoDBCollectionThroughputResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
 		return MongoDBResourcesClientGetMongoDBCollectionThroughputResponse{}, err
 	}
@@ -841,12 +829,7 @@ func (client *MongoDBResourcesClient) GetMongoDBDatabase(ctx context.Context, re
 	if err != nil {
 		return MongoDBResourcesClientGetMongoDBDatabaseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MongoDBResourcesClientGetMongoDBDatabaseResponse{}, err
-	}
-	resp, err := client.getMongoDBDatabaseHandleResponse(httpResp)
-	return resp, err
+	return client.getMongoDBDatabaseHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMongoDBDatabaseCreateRequest creates the GetMongoDBDatabase request.
@@ -880,8 +863,11 @@ func (client *MongoDBResourcesClient) getMongoDBDatabaseCreateRequest(ctx contex
 }
 
 // getMongoDBDatabaseHandleResponse handles the GetMongoDBDatabase response.
-func (client *MongoDBResourcesClient) getMongoDBDatabaseHandleResponse(resp *http.Response) (MongoDBResourcesClientGetMongoDBDatabaseResponse, error) {
+func (client *MongoDBResourcesClient) getMongoDBDatabaseHandleResponse(resp *http.Response, successCodes ...int) (MongoDBResourcesClientGetMongoDBDatabaseResponse, error) {
 	result := MongoDBResourcesClientGetMongoDBDatabaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MongoDBDatabaseGetResults); err != nil {
 		return MongoDBResourcesClientGetMongoDBDatabaseResponse{}, err
 	}
@@ -910,12 +896,7 @@ func (client *MongoDBResourcesClient) GetMongoDBDatabaseThroughput(ctx context.C
 	if err != nil {
 		return MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse{}, err
-	}
-	resp, err := client.getMongoDBDatabaseThroughputHandleResponse(httpResp)
-	return resp, err
+	return client.getMongoDBDatabaseThroughputHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMongoDBDatabaseThroughputCreateRequest creates the GetMongoDBDatabaseThroughput request.
@@ -949,8 +930,11 @@ func (client *MongoDBResourcesClient) getMongoDBDatabaseThroughputCreateRequest(
 }
 
 // getMongoDBDatabaseThroughputHandleResponse handles the GetMongoDBDatabaseThroughput response.
-func (client *MongoDBResourcesClient) getMongoDBDatabaseThroughputHandleResponse(resp *http.Response) (MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse, error) {
+func (client *MongoDBResourcesClient) getMongoDBDatabaseThroughputHandleResponse(resp *http.Response, successCodes ...int) (MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse, error) {
 	result := MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ThroughputSettingsGetResults); err != nil {
 		return MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse{}, err
 	}
@@ -976,12 +960,7 @@ func (client *MongoDBResourcesClient) GetMongoRoleDefinition(ctx context.Context
 	if err != nil {
 		return MongoDBResourcesClientGetMongoRoleDefinitionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MongoDBResourcesClientGetMongoRoleDefinitionResponse{}, err
-	}
-	resp, err := client.getMongoRoleDefinitionHandleResponse(httpResp)
-	return resp, err
+	return client.getMongoRoleDefinitionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMongoRoleDefinitionCreateRequest creates the GetMongoRoleDefinition request.
@@ -1015,8 +994,11 @@ func (client *MongoDBResourcesClient) getMongoRoleDefinitionCreateRequest(ctx co
 }
 
 // getMongoRoleDefinitionHandleResponse handles the GetMongoRoleDefinition response.
-func (client *MongoDBResourcesClient) getMongoRoleDefinitionHandleResponse(resp *http.Response) (MongoDBResourcesClientGetMongoRoleDefinitionResponse, error) {
+func (client *MongoDBResourcesClient) getMongoRoleDefinitionHandleResponse(resp *http.Response, successCodes ...int) (MongoDBResourcesClientGetMongoRoleDefinitionResponse, error) {
 	result := MongoDBResourcesClientGetMongoRoleDefinitionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MongoRoleDefinitionGetResults); err != nil {
 		return MongoDBResourcesClientGetMongoRoleDefinitionResponse{}, err
 	}
@@ -1042,12 +1024,7 @@ func (client *MongoDBResourcesClient) GetMongoUserDefinition(ctx context.Context
 	if err != nil {
 		return MongoDBResourcesClientGetMongoUserDefinitionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MongoDBResourcesClientGetMongoUserDefinitionResponse{}, err
-	}
-	resp, err := client.getMongoUserDefinitionHandleResponse(httpResp)
-	return resp, err
+	return client.getMongoUserDefinitionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMongoUserDefinitionCreateRequest creates the GetMongoUserDefinition request.
@@ -1081,8 +1058,11 @@ func (client *MongoDBResourcesClient) getMongoUserDefinitionCreateRequest(ctx co
 }
 
 // getMongoUserDefinitionHandleResponse handles the GetMongoUserDefinition response.
-func (client *MongoDBResourcesClient) getMongoUserDefinitionHandleResponse(resp *http.Response) (MongoDBResourcesClientGetMongoUserDefinitionResponse, error) {
+func (client *MongoDBResourcesClient) getMongoUserDefinitionHandleResponse(resp *http.Response, successCodes ...int) (MongoDBResourcesClientGetMongoUserDefinitionResponse, error) {
 	result := MongoDBResourcesClientGetMongoUserDefinitionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MongoUserDefinitionGetResults); err != nil {
 		return MongoDBResourcesClientGetMongoUserDefinitionResponse{}, err
 	}
@@ -1106,51 +1086,65 @@ func (client *MongoDBResourcesClient) NewListMongoDBCollectionsPager(resourceGro
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listMongoDBCollectionsCreateRequest(ctx, resourceGroupName, accountName, databaseName, options)
-			}, nil)
+			req, err := client.listMongoDBCollectionsCreateRequest(ctx, resourceGroupName, accountName, databaseName, nextLink, options)
 			if err != nil {
 				return MongoDBResourcesClientListMongoDBCollectionsResponse{}, err
 			}
-			return client.listMongoDBCollectionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MongoDBResourcesClientListMongoDBCollectionsResponse{}, err
+			}
+			return client.listMongoDBCollectionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listMongoDBCollectionsCreateRequest creates the ListMongoDBCollections request.
-func (client *MongoDBResourcesClient) listMongoDBCollectionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *MongoDBResourcesClientListMongoDBCollectionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MongoDBResourcesClient) listMongoDBCollectionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, nextLink string, _ *MongoDBResourcesClientListMongoDBCollectionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listMongoDBCollectionsHandleResponse handles the ListMongoDBCollections response.
-func (client *MongoDBResourcesClient) listMongoDBCollectionsHandleResponse(resp *http.Response) (MongoDBResourcesClientListMongoDBCollectionsResponse, error) {
+func (client *MongoDBResourcesClient) listMongoDBCollectionsHandleResponse(resp *http.Response, successCodes ...int) (MongoDBResourcesClientListMongoDBCollectionsResponse, error) {
 	result := MongoDBResourcesClientListMongoDBCollectionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MongoDBCollectionListResult); err != nil {
 		return MongoDBResourcesClientListMongoDBCollectionsResponse{}, err
 	}
@@ -1173,47 +1167,61 @@ func (client *MongoDBResourcesClient) NewListMongoDBDatabasesPager(resourceGroup
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listMongoDBDatabasesCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listMongoDBDatabasesCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return MongoDBResourcesClientListMongoDBDatabasesResponse{}, err
 			}
-			return client.listMongoDBDatabasesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MongoDBResourcesClientListMongoDBDatabasesResponse{}, err
+			}
+			return client.listMongoDBDatabasesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listMongoDBDatabasesCreateRequest creates the ListMongoDBDatabases request.
-func (client *MongoDBResourcesClient) listMongoDBDatabasesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *MongoDBResourcesClientListMongoDBDatabasesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MongoDBResourcesClient) listMongoDBDatabasesCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *MongoDBResourcesClientListMongoDBDatabasesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listMongoDBDatabasesHandleResponse handles the ListMongoDBDatabases response.
-func (client *MongoDBResourcesClient) listMongoDBDatabasesHandleResponse(resp *http.Response) (MongoDBResourcesClientListMongoDBDatabasesResponse, error) {
+func (client *MongoDBResourcesClient) listMongoDBDatabasesHandleResponse(resp *http.Response, successCodes ...int) (MongoDBResourcesClientListMongoDBDatabasesResponse, error) {
 	result := MongoDBResourcesClientListMongoDBDatabasesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MongoDBDatabaseListResult); err != nil {
 		return MongoDBResourcesClientListMongoDBDatabasesResponse{}, err
 	}
@@ -1236,47 +1244,61 @@ func (client *MongoDBResourcesClient) NewListMongoRoleDefinitionsPager(resourceG
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listMongoRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listMongoRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return MongoDBResourcesClientListMongoRoleDefinitionsResponse{}, err
 			}
-			return client.listMongoRoleDefinitionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MongoDBResourcesClientListMongoRoleDefinitionsResponse{}, err
+			}
+			return client.listMongoRoleDefinitionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listMongoRoleDefinitionsCreateRequest creates the ListMongoRoleDefinitions request.
-func (client *MongoDBResourcesClient) listMongoRoleDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *MongoDBResourcesClientListMongoRoleDefinitionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbRoleDefinitions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MongoDBResourcesClient) listMongoRoleDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *MongoDBResourcesClientListMongoRoleDefinitionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbRoleDefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listMongoRoleDefinitionsHandleResponse handles the ListMongoRoleDefinitions response.
-func (client *MongoDBResourcesClient) listMongoRoleDefinitionsHandleResponse(resp *http.Response) (MongoDBResourcesClientListMongoRoleDefinitionsResponse, error) {
+func (client *MongoDBResourcesClient) listMongoRoleDefinitionsHandleResponse(resp *http.Response, successCodes ...int) (MongoDBResourcesClientListMongoRoleDefinitionsResponse, error) {
 	result := MongoDBResourcesClientListMongoRoleDefinitionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MongoRoleDefinitionListResult); err != nil {
 		return MongoDBResourcesClientListMongoRoleDefinitionsResponse{}, err
 	}
@@ -1299,47 +1321,61 @@ func (client *MongoDBResourcesClient) NewListMongoUserDefinitionsPager(resourceG
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listMongoUserDefinitionsCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listMongoUserDefinitionsCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return MongoDBResourcesClientListMongoUserDefinitionsResponse{}, err
 			}
-			return client.listMongoUserDefinitionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MongoDBResourcesClientListMongoUserDefinitionsResponse{}, err
+			}
+			return client.listMongoUserDefinitionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listMongoUserDefinitionsCreateRequest creates the ListMongoUserDefinitions request.
-func (client *MongoDBResourcesClient) listMongoUserDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *MongoDBResourcesClientListMongoUserDefinitionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbUserDefinitions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MongoDBResourcesClient) listMongoUserDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *MongoDBResourcesClientListMongoUserDefinitionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbUserDefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listMongoUserDefinitionsHandleResponse handles the ListMongoUserDefinitions response.
-func (client *MongoDBResourcesClient) listMongoUserDefinitionsHandleResponse(resp *http.Response) (MongoDBResourcesClientListMongoUserDefinitionsResponse, error) {
+func (client *MongoDBResourcesClient) listMongoUserDefinitionsHandleResponse(resp *http.Response, successCodes ...int) (MongoDBResourcesClientListMongoUserDefinitionsResponse, error) {
 	result := MongoDBResourcesClientListMongoUserDefinitionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MongoUserDefinitionListResult); err != nil {
 		return MongoDBResourcesClientListMongoUserDefinitionsResponse{}, err
 	}
@@ -1388,8 +1424,7 @@ func (client *MongoDBResourcesClient) migrateMongoDBCollectionToAutoscale(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1471,8 +1506,7 @@ func (client *MongoDBResourcesClient) migrateMongoDBCollectionToManualThroughput
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1552,8 +1586,7 @@ func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToAutoscale(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1629,8 +1662,7 @@ func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToManualThroughput(c
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1708,8 +1740,7 @@ func (client *MongoDBResourcesClient) retrieveContinuousBackupInformation(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1795,8 +1826,7 @@ func (client *MongoDBResourcesClient) updateMongoDBCollectionThroughput(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1881,8 +1911,7 @@ func (client *MongoDBResourcesClient) updateMongoDBDatabaseThroughput(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

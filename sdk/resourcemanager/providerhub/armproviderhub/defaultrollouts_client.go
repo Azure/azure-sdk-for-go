@@ -18,6 +18,8 @@ import (
 
 // DefaultRolloutsClient contains the methods for the DefaultRollouts group.
 // Don't use this type directly, use NewDefaultRolloutsClient() instead.
+//
+// Generated from API version 2024-09-01
 type DefaultRolloutsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDefaultRolloutsClient(subscriptionID string, credential azcore.TokenCred
 
 // BeginCreateOrUpdate - Creates or updates the rollout details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - rolloutName - The rollout name.
 //   - properties - The Default rollout properties supplied to the CreateOrUpdate operation.
@@ -67,8 +67,6 @@ func (client *DefaultRolloutsClient) BeginCreateOrUpdate(ctx context.Context, pr
 
 // CreateOrUpdate - Creates or updates the rollout details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *DefaultRolloutsClient) createOrUpdate(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, options *DefaultRolloutsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DefaultRolloutsClient.BeginCreateOrUpdate"
@@ -84,8 +82,7 @@ func (client *DefaultRolloutsClient) createOrUpdate(ctx context.Context, provide
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -110,8 +107,8 @@ func (client *DefaultRolloutsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -122,8 +119,6 @@ func (client *DefaultRolloutsClient) createOrUpdateCreateRequest(ctx context.Con
 
 // Delete - Deletes the rollout resource. Rollout must be in terminal state.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - rolloutName - The rollout name.
 //   - options - DefaultRolloutsClientDeleteOptions contains the optional parameters for the DefaultRolloutsClient.Delete method.
@@ -142,8 +137,7 @@ func (client *DefaultRolloutsClient) Delete(ctx context.Context, providerNamespa
 		return DefaultRolloutsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DefaultRolloutsClientDeleteResponse{}, err
+		return DefaultRolloutsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DefaultRolloutsClientDeleteResponse{}, nil
 }
@@ -168,15 +162,13 @@ func (client *DefaultRolloutsClient) deleteCreateRequest(ctx context.Context, pr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the default rollout details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - rolloutName - The rollout name.
 //   - options - DefaultRolloutsClientGetOptions contains the optional parameters for the DefaultRolloutsClient.Get method.
@@ -194,12 +186,7 @@ func (client *DefaultRolloutsClient) Get(ctx context.Context, providerNamespace 
 	if err != nil {
 		return DefaultRolloutsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefaultRolloutsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -222,15 +209,18 @@ func (client *DefaultRolloutsClient) getCreateRequest(ctx context.Context, provi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DefaultRolloutsClient) getHandleResponse(resp *http.Response) (DefaultRolloutsClientGetResponse, error) {
+func (client *DefaultRolloutsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DefaultRolloutsClientGetResponse, error) {
 	result := DefaultRolloutsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefaultRollout); err != nil {
 		return DefaultRolloutsClientGetResponse{}, err
 	}
@@ -238,8 +228,6 @@ func (client *DefaultRolloutsClient) getHandleResponse(resp *http.Response) (Def
 }
 
 // NewListByProviderRegistrationPager - Gets the list of the rollouts for the given provider.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - DefaultRolloutsClientListByProviderRegistrationOptions contains the optional parameters for the DefaultRolloutsClient.NewListByProviderRegistrationPager
 //     method.
@@ -254,43 +242,57 @@ func (client *DefaultRolloutsClient) NewListByProviderRegistrationPager(provider
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, options)
-			}, nil)
+			req, err := client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, nextLink, options)
 			if err != nil {
 				return DefaultRolloutsClientListByProviderRegistrationResponse{}, err
 			}
-			return client.listByProviderRegistrationHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DefaultRolloutsClientListByProviderRegistrationResponse{}, err
+			}
+			return client.listByProviderRegistrationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByProviderRegistrationCreateRequest creates the ListByProviderRegistration request.
-func (client *DefaultRolloutsClient) listByProviderRegistrationCreateRequest(ctx context.Context, providerNamespace string, _ *DefaultRolloutsClientListByProviderRegistrationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DefaultRolloutsClient) listByProviderRegistrationCreateRequest(ctx context.Context, providerNamespace string, nextLink string, _ *DefaultRolloutsClientListByProviderRegistrationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if providerNamespace == "" {
+			return nil, errors.New("parameter providerNamespace cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if providerNamespace == "" {
-		return nil, errors.New("parameter providerNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByProviderRegistrationHandleResponse handles the ListByProviderRegistration response.
-func (client *DefaultRolloutsClient) listByProviderRegistrationHandleResponse(resp *http.Response) (DefaultRolloutsClientListByProviderRegistrationResponse, error) {
+func (client *DefaultRolloutsClient) listByProviderRegistrationHandleResponse(resp *http.Response, successCodes ...int) (DefaultRolloutsClientListByProviderRegistrationResponse, error) {
 	result := DefaultRolloutsClientListByProviderRegistrationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefaultRolloutArrayResponseWithContinuation); err != nil {
 		return DefaultRolloutsClientListByProviderRegistrationResponse{}, err
 	}
@@ -299,8 +301,6 @@ func (client *DefaultRolloutsClient) listByProviderRegistrationHandleResponse(re
 
 // Stop - Stops or cancels the rollout, if in progress.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - rolloutName - The rollout name.
 //   - options - DefaultRolloutsClientStopOptions contains the optional parameters for the DefaultRolloutsClient.Stop method.
@@ -319,8 +319,7 @@ func (client *DefaultRolloutsClient) Stop(ctx context.Context, providerNamespace
 		return DefaultRolloutsClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefaultRolloutsClientStopResponse{}, err
+		return DefaultRolloutsClientStopResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DefaultRolloutsClientStopResponse{}, nil
 }
@@ -345,7 +344,7 @@ func (client *DefaultRolloutsClient) stopCreateRequest(ctx context.Context, prov
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

@@ -108,7 +108,7 @@ func (o *OperationStatusesServerTransport) dispatchGet(req *http.Request) (*http
 		return nil, err
 	}
 	if val := server.GetResponse(respr).Location; val != nil {
-		resp.Header.Set("location", *val)
+		resp.Header.Set("Location", *val)
 	}
 	return resp, nil
 }

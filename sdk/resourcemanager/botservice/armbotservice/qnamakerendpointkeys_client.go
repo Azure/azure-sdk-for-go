@@ -18,6 +18,8 @@ import (
 
 // QnAMakerEndpointKeysClient contains the methods for the QnAMakerEndpointKeys group.
 // Don't use this type directly, use NewQnAMakerEndpointKeysClient() instead.
+//
+// Generated from API version 2023-09-15-preview
 type QnAMakerEndpointKeysClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewQnAMakerEndpointKeysClient(subscriptionID string, credential azcore.Toke
 
 // Get - Lists the QnA Maker endpoint keys
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-15-preview
 //   - parameters - The request body
 //   - options - QnAMakerEndpointKeysClientGetOptions contains the optional parameters for the QnAMakerEndpointKeysClient.Get
 //     method.
@@ -60,12 +60,7 @@ func (client *QnAMakerEndpointKeysClient) Get(ctx context.Context, parameters Qn
 	if err != nil {
 		return QnAMakerEndpointKeysClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return QnAMakerEndpointKeysClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -80,8 +75,8 @@ func (client *QnAMakerEndpointKeysClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -91,8 +86,11 @@ func (client *QnAMakerEndpointKeysClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *QnAMakerEndpointKeysClient) getHandleResponse(resp *http.Response) (QnAMakerEndpointKeysClientGetResponse, error) {
+func (client *QnAMakerEndpointKeysClient) getHandleResponse(resp *http.Response, successCodes ...int) (QnAMakerEndpointKeysClientGetResponse, error) {
 	result := QnAMakerEndpointKeysClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QnAMakerEndpointKeysResponse); err != nil {
 		return QnAMakerEndpointKeysClientGetResponse{}, err
 	}

@@ -44,8 +44,8 @@ func ExampleCertificatesClient_CreateOrUpdate_createOrUpdateCertificate() {
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armappcontainers.CertificateProperties{
 	// 			CertificateType: to.Ptr(armappcontainers.CertificateTypeImagePullTrustedCA),
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-	// 			IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+	// 			ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
+	// 			IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 			Issuer: to.Ptr("Issuer Name"),
 	// 			ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
 	// 			SubjectAlternativeNames: []*string{
@@ -97,8 +97,8 @@ func ExampleCertificatesClient_CreateOrUpdate_createOrUpdateCertificateUsingMana
 	// 				KeyVaultURL: to.Ptr("https://xxxxxxxx.vault.azure.net/certificates/certName"),
 	// 			},
 	// 			CertificateType: to.Ptr(armappcontainers.CertificateTypeServerSSLCertificate),
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-	// 			IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+	// 			ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
+	// 			IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 			Issuer: to.Ptr("Issuer Name"),
 	// 			ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
 	// 			SubjectAlternativeNames: []*string{
@@ -160,8 +160,8 @@ func ExampleCertificatesClient_Get() {
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armappcontainers.CertificateProperties{
 	// 			CertificateType: to.Ptr(armappcontainers.CertificateTypeServerSSLCertificate),
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-	// 			IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+	// 			ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
+	// 			IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 			Issuer: to.Ptr("Issuer Name"),
 	// 			ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
 	// 			SubjectAlternativeNames: []*string{
@@ -207,8 +207,8 @@ func ExampleCertificatesClient_NewListPager() {
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armappcontainers.CertificateProperties{
 		// 					CertificateType: to.Ptr(armappcontainers.CertificateTypeImagePullTrustedCA),
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-		// 					IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
+		// 					IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 		// 					Issuer: to.Ptr("Issuer Name"),
 		// 					ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
 		// 					SubjectAlternativeNames: []*string{
@@ -226,8 +226,8 @@ func ExampleCertificatesClient_NewListPager() {
 		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armappcontainers.CertificateProperties{
 		// 					CertificateType: to.Ptr(armappcontainers.CertificateTypeServerSSLCertificate),
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-		// 					IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
+		// 					IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 		// 					Issuer: to.Ptr("Issuer Name"),
 		// 					ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
 		// 					SubjectAlternativeNames: []*string{
@@ -274,8 +274,8 @@ func ExampleCertificatesClient_Update() {
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armappcontainers.CertificateProperties{
 	// 			CertificateType: to.Ptr(armappcontainers.CertificateTypeServerSSLCertificate),
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-06T04:00:00Z"); return t}()),
-	// 			IssueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-06T04:00:00Z"); return t}()),
+	// 			ExpirationDate: to.Ptr(time.Date(2022, time.November, 6, 4, 0, 0, 0, time.UTC)),
+	// 			IssueDate: to.Ptr(time.Date(2021, time.November, 6, 4, 0, 0, 0, time.UTC)),
 	// 			Issuer: to.Ptr("Issuer Name"),
 	// 			ProvisioningState: to.Ptr(armappcontainers.CertificateProvisioningStateSucceeded),
 	// 			SubjectAlternativeNames: []*string{

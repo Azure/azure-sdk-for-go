@@ -18,6 +18,8 @@ import (
 
 // ServerAdvisorsClient contains the methods for the ServerAdvisors group.
 // Don't use this type directly, use NewServerAdvisorsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ServerAdvisorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewServerAdvisorsClient(subscriptionID string, credential azcore.TokenCrede
 
 // Get - Gets a server advisor.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - advisorName - The name of the Server Advisor.
@@ -61,12 +61,7 @@ func (client *ServerAdvisorsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ServerAdvisorsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServerAdvisorsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -93,15 +88,18 @@ func (client *ServerAdvisorsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServerAdvisorsClient) getHandleResponse(resp *http.Response) (ServerAdvisorsClientGetResponse, error) {
+func (client *ServerAdvisorsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ServerAdvisorsClientGetResponse, error) {
 	result := ServerAdvisorsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Advisor); err != nil {
 		return ServerAdvisorsClientGetResponse{}, err
 	}
@@ -110,8 +108,6 @@ func (client *ServerAdvisorsClient) getHandleResponse(resp *http.Response) (Serv
 
 // ListByServer - Gets a list of server advisors.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - options - ServerAdvisorsClientListByServerOptions contains the optional parameters for the ServerAdvisorsClient.ListByServer
@@ -130,12 +126,7 @@ func (client *ServerAdvisorsClient) ListByServer(ctx context.Context, resourceGr
 	if err != nil {
 		return ServerAdvisorsClientListByServerResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServerAdvisorsClientListByServerResponse{}, err
-	}
-	resp, err := client.listByServerHandleResponse(httpResp)
-	return resp, err
+	return client.listByServerHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -161,15 +152,18 @@ func (client *ServerAdvisorsClient) listByServerCreateRequest(ctx context.Contex
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ServerAdvisorsClient) listByServerHandleResponse(resp *http.Response) (ServerAdvisorsClientListByServerResponse, error) {
+func (client *ServerAdvisorsClient) listByServerHandleResponse(resp *http.Response, successCodes ...int) (ServerAdvisorsClientListByServerResponse, error) {
 	result := ServerAdvisorsClientListByServerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvisorArray); err != nil {
 		return ServerAdvisorsClientListByServerResponse{}, err
 	}
@@ -178,8 +172,6 @@ func (client *ServerAdvisorsClient) listByServerHandleResponse(resp *http.Respon
 
 // Update - Updates a server advisor.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - advisorName - The name of the Server Advisor.
@@ -199,12 +191,7 @@ func (client *ServerAdvisorsClient) Update(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ServerAdvisorsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServerAdvisorsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -231,8 +218,8 @@ func (client *ServerAdvisorsClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -242,8 +229,11 @@ func (client *ServerAdvisorsClient) updateCreateRequest(ctx context.Context, res
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ServerAdvisorsClient) updateHandleResponse(resp *http.Response) (ServerAdvisorsClientUpdateResponse, error) {
+func (client *ServerAdvisorsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ServerAdvisorsClientUpdateResponse, error) {
 	result := ServerAdvisorsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Advisor); err != nil {
 		return ServerAdvisorsClientUpdateResponse{}, err
 	}

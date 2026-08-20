@@ -66,12 +66,7 @@ func (client *RecordSetsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	if err != nil {
 		return RecordSetsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return RecordSetsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,8 +114,11 @@ func (client *RecordSetsClient) createOrUpdateCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RecordSetsClient) createOrUpdateHandleResponse(resp *http.Response) (RecordSetsClientCreateOrUpdateResponse, error) {
+func (client *RecordSetsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (RecordSetsClientCreateOrUpdateResponse, error) {
 	result := RecordSetsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Retry-After"); val != "" {
 		retryAfter32, err := strconv.ParseInt(val, 10, 32)
 		retryAfter := int32(retryAfter32)
@@ -158,8 +156,7 @@ func (client *RecordSetsClient) Delete(ctx context.Context, resourceGroupName st
 		return RecordSetsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return RecordSetsClientDeleteResponse{}, err
+		return RecordSetsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return RecordSetsClientDeleteResponse{}, nil
 }
@@ -221,12 +218,7 @@ func (client *RecordSetsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return RecordSetsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RecordSetsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -264,8 +256,11 @@ func (client *RecordSetsClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecordSetsClient) getHandleResponse(resp *http.Response) (RecordSetsClientGetResponse, error) {
+func (client *RecordSetsClient) getHandleResponse(resp *http.Response, successCodes ...int) (RecordSetsClientGetResponse, error) {
 	result := RecordSetsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSet); err != nil {
 		return RecordSetsClientGetResponse{}, err
 	}
@@ -288,53 +283,67 @@ func (client *RecordSetsClient) NewListAllByDNSZonePager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllByDNSZoneCreateRequest(ctx, resourceGroupName, zoneName, options)
-			}, nil)
+			req, err := client.listAllByDNSZoneCreateRequest(ctx, resourceGroupName, zoneName, nextLink, options)
 			if err != nil {
 				return RecordSetsClientListAllByDNSZoneResponse{}, err
 			}
-			return client.listAllByDNSZoneHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RecordSetsClientListAllByDNSZoneResponse{}, err
+			}
+			return client.listAllByDNSZoneHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAllByDNSZoneCreateRequest creates the ListAllByDNSZone request.
-func (client *RecordSetsClient) listAllByDNSZoneCreateRequest(ctx context.Context, resourceGroupName string, zoneName string, options *RecordSetsClientListAllByDNSZoneOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/all"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RecordSetsClient) listAllByDNSZoneCreateRequest(ctx context.Context, resourceGroupName string, zoneName string, nextLink string, options *RecordSetsClientListAllByDNSZoneOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/all"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if zoneName == "" {
+			return nil, errors.New("parameter zoneName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{zoneName}", url.PathEscape(zoneName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if zoneName == "" {
-		return nil, errors.New("parameter zoneName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{zoneName}", url.PathEscape(zoneName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.RecordSetNameSuffix != nil {
-		reqQP.Set("$recordsetnamesuffix", *options.RecordSetNameSuffix)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.RecordSetNameSuffix != nil {
+			reqQP.Set("$recordsetnamesuffix", *options.RecordSetNameSuffix)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20230701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20230701Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listAllByDNSZoneHandleResponse handles the ListAllByDNSZone response.
-func (client *RecordSetsClient) listAllByDNSZoneHandleResponse(resp *http.Response) (RecordSetsClientListAllByDNSZoneResponse, error) {
+func (client *RecordSetsClient) listAllByDNSZoneHandleResponse(resp *http.Response, successCodes ...int) (RecordSetsClientListAllByDNSZoneResponse, error) {
 	result := RecordSetsClientListAllByDNSZoneResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSetListResult); err != nil {
 		return RecordSetsClientListAllByDNSZoneResponse{}, err
 	}
@@ -357,53 +366,67 @@ func (client *RecordSetsClient) NewListByDNSZonePager(resourceGroupName string, 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDNSZoneCreateRequest(ctx, resourceGroupName, zoneName, options)
-			}, nil)
+			req, err := client.listByDNSZoneCreateRequest(ctx, resourceGroupName, zoneName, nextLink, options)
 			if err != nil {
 				return RecordSetsClientListByDNSZoneResponse{}, err
 			}
-			return client.listByDNSZoneHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RecordSetsClientListByDNSZoneResponse{}, err
+			}
+			return client.listByDNSZoneHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDNSZoneCreateRequest creates the ListByDNSZone request.
-func (client *RecordSetsClient) listByDNSZoneCreateRequest(ctx context.Context, resourceGroupName string, zoneName string, options *RecordSetsClientListByDNSZoneOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/recordsets"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RecordSetsClient) listByDNSZoneCreateRequest(ctx context.Context, resourceGroupName string, zoneName string, nextLink string, options *RecordSetsClientListByDNSZoneOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/recordsets"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if zoneName == "" {
+			return nil, errors.New("parameter zoneName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{zoneName}", url.PathEscape(zoneName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if zoneName == "" {
-		return nil, errors.New("parameter zoneName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{zoneName}", url.PathEscape(zoneName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Recordsetnamesuffix != nil {
-		reqQP.Set("$recordsetnamesuffix", *options.Recordsetnamesuffix)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Recordsetnamesuffix != nil {
+			reqQP.Set("$recordsetnamesuffix", *options.Recordsetnamesuffix)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20230701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20230701Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByDNSZoneHandleResponse handles the ListByDNSZone response.
-func (client *RecordSetsClient) listByDNSZoneHandleResponse(resp *http.Response) (RecordSetsClientListByDNSZoneResponse, error) {
+func (client *RecordSetsClient) listByDNSZoneHandleResponse(resp *http.Response, successCodes ...int) (RecordSetsClientListByDNSZoneResponse, error) {
 	result := RecordSetsClientListByDNSZoneResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSetListResult); err != nil {
 		return RecordSetsClientListByDNSZoneResponse{}, err
 	}
@@ -427,57 +450,71 @@ func (client *RecordSetsClient) NewListByTypePager(resourceGroupName string, zon
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByTypeCreateRequest(ctx, resourceGroupName, zoneName, recordType, options)
-			}, nil)
+			req, err := client.listByTypeCreateRequest(ctx, resourceGroupName, zoneName, recordType, nextLink, options)
 			if err != nil {
 				return RecordSetsClientListByTypeResponse{}, err
 			}
-			return client.listByTypeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RecordSetsClientListByTypeResponse{}, err
+			}
+			return client.listByTypeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByTypeCreateRequest creates the ListByType request.
-func (client *RecordSetsClient) listByTypeCreateRequest(ctx context.Context, resourceGroupName string, zoneName string, recordType RecordType, options *RecordSetsClientListByTypeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/{recordType}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RecordSetsClient) listByTypeCreateRequest(ctx context.Context, resourceGroupName string, zoneName string, recordType RecordType, nextLink string, options *RecordSetsClientListByTypeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}/{recordType}"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if zoneName == "" {
+			return nil, errors.New("parameter zoneName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{zoneName}", url.PathEscape(zoneName))
+		if recordType == "" {
+			return nil, errors.New("parameter recordType cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{recordType}", url.PathEscape(string(recordType)))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if zoneName == "" {
-		return nil, errors.New("parameter zoneName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{zoneName}", url.PathEscape(zoneName))
-	if recordType == "" {
-		return nil, errors.New("parameter recordType cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{recordType}", url.PathEscape(string(recordType)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Recordsetnamesuffix != nil {
-		reqQP.Set("$recordsetnamesuffix", *options.Recordsetnamesuffix)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Recordsetnamesuffix != nil {
+			reqQP.Set("$recordsetnamesuffix", *options.Recordsetnamesuffix)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20230701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20230701Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByTypeHandleResponse handles the ListByType response.
-func (client *RecordSetsClient) listByTypeHandleResponse(resp *http.Response) (RecordSetsClientListByTypeResponse, error) {
+func (client *RecordSetsClient) listByTypeHandleResponse(resp *http.Response, successCodes ...int) (RecordSetsClientListByTypeResponse, error) {
 	result := RecordSetsClientListByTypeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSetListResult); err != nil {
 		return RecordSetsClientListByTypeResponse{}, err
 	}
@@ -506,12 +543,7 @@ func (client *RecordSetsClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return RecordSetsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RecordSetsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -556,8 +588,11 @@ func (client *RecordSetsClient) updateCreateRequest(ctx context.Context, resourc
 }
 
 // updateHandleResponse handles the Update response.
-func (client *RecordSetsClient) updateHandleResponse(resp *http.Response) (RecordSetsClientUpdateResponse, error) {
+func (client *RecordSetsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (RecordSetsClientUpdateResponse, error) {
 	result := RecordSetsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecordSet); err != nil {
 		return RecordSetsClientUpdateResponse{}, err
 	}

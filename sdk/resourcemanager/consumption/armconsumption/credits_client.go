@@ -57,12 +57,7 @@ func (client *CreditsClient) Get(ctx context.Context, billingAccountID string, b
 	if err != nil {
 		return CreditsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return CreditsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
 }
 
 // getCreateRequest creates the Get request.
@@ -88,8 +83,11 @@ func (client *CreditsClient) getCreateRequest(ctx context.Context, billingAccoun
 }
 
 // getHandleResponse handles the Get response.
-func (client *CreditsClient) getHandleResponse(resp *http.Response) (CreditsClientGetResponse, error) {
+func (client *CreditsClient) getHandleResponse(resp *http.Response, successCodes ...int) (CreditsClientGetResponse, error) {
 	result := CreditsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreditSummary); err != nil {
 		return CreditsClientGetResponse{}, err
 	}

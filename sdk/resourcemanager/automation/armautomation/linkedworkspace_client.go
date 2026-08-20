@@ -60,12 +60,7 @@ func (client *LinkedWorkspaceClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return LinkedWorkspaceClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LinkedWorkspaceClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -95,8 +90,11 @@ func (client *LinkedWorkspaceClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *LinkedWorkspaceClient) getHandleResponse(resp *http.Response) (LinkedWorkspaceClientGetResponse, error) {
+func (client *LinkedWorkspaceClient) getHandleResponse(resp *http.Response, successCodes ...int) (LinkedWorkspaceClientGetResponse, error) {
 	result := LinkedWorkspaceClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedWorkspace); err != nil {
 		return LinkedWorkspaceClientGetResponse{}, err
 	}

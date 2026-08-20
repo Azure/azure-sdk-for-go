@@ -59,12 +59,7 @@ func (client *UserMetricsKeysClient) CreateOrUpdate(ctx context.Context, options
 	if err != nil {
 		return UserMetricsKeysClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return UserMetricsKeysClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -86,8 +81,11 @@ func (client *UserMetricsKeysClient) createOrUpdateCreateRequest(ctx context.Con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *UserMetricsKeysClient) createOrUpdateHandleResponse(resp *http.Response) (UserMetricsKeysClientCreateOrUpdateResponse, error) {
+func (client *UserMetricsKeysClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (UserMetricsKeysClientCreateOrUpdateResponse, error) {
 	result := UserMetricsKeysClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserMetricsModel); err != nil {
 		return UserMetricsKeysClientCreateOrUpdateResponse{}, err
 	}
@@ -111,12 +109,7 @@ func (client *UserMetricsKeysClient) Delete(ctx context.Context, options *UserMe
 	if err != nil {
 		return UserMetricsKeysClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UserMetricsKeysClientDeleteResponse{}, err
-	}
-	resp, err := client.deleteHandleResponse(httpResp)
-	return resp, err
+	return client.deleteHandleResponse(httpResp, http.StatusOK)
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -138,8 +131,11 @@ func (client *UserMetricsKeysClient) deleteCreateRequest(ctx context.Context, _ 
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *UserMetricsKeysClient) deleteHandleResponse(resp *http.Response) (UserMetricsKeysClientDeleteResponse, error) {
+func (client *UserMetricsKeysClient) deleteHandleResponse(resp *http.Response, successCodes ...int) (UserMetricsKeysClientDeleteResponse, error) {
 	result := UserMetricsKeysClientDeleteResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeleteOperationResult); err != nil {
 		return UserMetricsKeysClientDeleteResponse{}, err
 	}
@@ -163,12 +159,7 @@ func (client *UserMetricsKeysClient) Get(ctx context.Context, options *UserMetri
 	if err != nil {
 		return UserMetricsKeysClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UserMetricsKeysClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -190,8 +181,11 @@ func (client *UserMetricsKeysClient) getCreateRequest(ctx context.Context, _ *Us
 }
 
 // getHandleResponse handles the Get response.
-func (client *UserMetricsKeysClient) getHandleResponse(resp *http.Response) (UserMetricsKeysClientGetResponse, error) {
+func (client *UserMetricsKeysClient) getHandleResponse(resp *http.Response, successCodes ...int) (UserMetricsKeysClientGetResponse, error) {
 	result := UserMetricsKeysClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UserMetricsModel); err != nil {
 		return UserMetricsKeysClientGetResponse{}, err
 	}

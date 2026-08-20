@@ -63,12 +63,7 @@ func (client *MemberCapOverridesClient) CreateOrUpdate(ctx context.Context, loca
 	if err != nil {
 		return MemberCapOverridesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return MemberCapOverridesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -106,8 +101,11 @@ func (client *MemberCapOverridesClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *MemberCapOverridesClient) createOrUpdateHandleResponse(resp *http.Response) (MemberCapOverridesClientCreateOrUpdateResponse, error) {
+func (client *MemberCapOverridesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (MemberCapOverridesClientCreateOrUpdateResponse, error) {
 	result := MemberCapOverridesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MemberCapOverride); err != nil {
 		return MemberCapOverridesClientCreateOrUpdateResponse{}, err
 	}
@@ -136,8 +134,7 @@ func (client *MemberCapOverridesClient) Delete(ctx context.Context, location str
 		return MemberCapOverridesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return MemberCapOverridesClientDeleteResponse{}, err
+		return MemberCapOverridesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return MemberCapOverridesClientDeleteResponse{}, nil
 }
@@ -191,12 +188,7 @@ func (client *MemberCapOverridesClient) Get(ctx context.Context, location string
 	if err != nil {
 		return MemberCapOverridesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MemberCapOverridesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -230,8 +222,11 @@ func (client *MemberCapOverridesClient) getCreateRequest(ctx context.Context, lo
 }
 
 // getHandleResponse handles the Get response.
-func (client *MemberCapOverridesClient) getHandleResponse(resp *http.Response) (MemberCapOverridesClientGetResponse, error) {
+func (client *MemberCapOverridesClient) getHandleResponse(resp *http.Response, successCodes ...int) (MemberCapOverridesClientGetResponse, error) {
 	result := MemberCapOverridesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MemberCapOverride); err != nil {
 		return MemberCapOverridesClientGetResponse{}, err
 	}
@@ -254,47 +249,61 @@ func (client *MemberCapOverridesClient) NewListByParentPager(location string, vm
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByParentCreateRequest(ctx, location, vmFamilyName, options)
-			}, nil)
+			req, err := client.listByParentCreateRequest(ctx, location, vmFamilyName, nextLink, options)
 			if err != nil {
 				return MemberCapOverridesClientListByParentResponse{}, err
 			}
-			return client.listByParentHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MemberCapOverridesClientListByParentResponse{}, err
+			}
+			return client.listByParentHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByParentCreateRequest creates the ListByParent request.
-func (client *MemberCapOverridesClient) listByParentCreateRequest(ctx context.Context, location string, vmFamilyName string, _ *MemberCapOverridesClientListByParentOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}/memberCapOverrides"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MemberCapOverridesClient) listByParentCreateRequest(ctx context.Context, location string, vmFamilyName string, nextLink string, _ *MemberCapOverridesClientListByParentOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}/memberCapOverrides"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		if vmFamilyName == "" {
+			return nil, errors.New("parameter vmFamilyName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{vmFamilyName}", url.PathEscape(vmFamilyName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	if vmFamilyName == "" {
-		return nil, errors.New("parameter vmFamilyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vmFamilyName}", url.PathEscape(vmFamilyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260731)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260731)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByParentHandleResponse handles the ListByParent response.
-func (client *MemberCapOverridesClient) listByParentHandleResponse(resp *http.Response) (MemberCapOverridesClientListByParentResponse, error) {
+func (client *MemberCapOverridesClient) listByParentHandleResponse(resp *http.Response, successCodes ...int) (MemberCapOverridesClientListByParentResponse, error) {
 	result := MemberCapOverridesClientListByParentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MemberCapOverrideListResult); err != nil {
 		return MemberCapOverridesClientListByParentResponse{}, err
 	}

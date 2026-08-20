@@ -46,7 +46,7 @@ func ExampleBackupsClient_BeginCreate() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupVaults/backupVault1/backups/backup1"),
 	// 		Properties: &armnetapp.BackupProperties{
 	// 			BackupType: to.Ptr(armnetapp.BackupTypeManual),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
 	// 			Label: to.Ptr("myLabel"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			Size: to.Ptr[int64](10011),
@@ -104,7 +104,7 @@ func ExampleBackupsClient_Get() {
 	// 		Properties: &armnetapp.BackupProperties{
 	// 			BackupPolicyResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupPolicies/policy1"),
 	// 			BackupType: to.Ptr(armnetapp.BackupTypeManual),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
 	// 			Label: to.Ptr("myLabel"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			Size: to.Ptr[int64](10011),
@@ -209,7 +209,7 @@ func ExampleBackupsClient_NewListByVaultPager() {
 		// 				Properties: &armnetapp.BackupProperties{
 		// 					BackupPolicyResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupPolicies/policy1"),
 		// 					BackupType: to.Ptr(armnetapp.BackupTypeManual),
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
 		// 					Label: to.Ptr("myLabel"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					Size: to.Ptr[int64](10011),
@@ -252,7 +252,7 @@ func ExampleBackupsClient_BeginUpdate() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/backupVaults/backupVault1/backups/backup1"),
 	// 		Properties: &armnetapp.BackupProperties{
 	// 			BackupType: to.Ptr(armnetapp.BackupTypeManual),
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
 	// 			Label: to.Ptr("myLabel"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			Size: to.Ptr[int64](10011),

@@ -90,8 +90,7 @@ func (client *ManagedClustersClient) abortLatestOperation(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -162,8 +161,7 @@ func (client *ManagedClustersClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -244,8 +242,7 @@ func (client *ManagedClustersClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -300,12 +297,7 @@ func (client *ManagedClustersClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ManagedClustersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClustersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -335,8 +327,11 @@ func (client *ManagedClustersClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedClustersClient) getHandleResponse(resp *http.Response) (ManagedClustersClientGetResponse, error) {
+func (client *ManagedClustersClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientGetResponse, error) {
 	result := ManagedClustersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedCluster); err != nil {
 		return ManagedClustersClientGetResponse{}, err
 	}
@@ -367,12 +362,7 @@ func (client *ManagedClustersClient) GetAccessProfile(ctx context.Context, resou
 	if err != nil {
 		return ManagedClustersClientGetAccessProfileResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClustersClientGetAccessProfileResponse{}, err
-	}
-	resp, err := client.getAccessProfileHandleResponse(httpResp)
-	return resp, err
+	return client.getAccessProfileHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAccessProfileCreateRequest creates the GetAccessProfile request.
@@ -406,8 +396,11 @@ func (client *ManagedClustersClient) getAccessProfileCreateRequest(ctx context.C
 }
 
 // getAccessProfileHandleResponse handles the GetAccessProfile response.
-func (client *ManagedClustersClient) getAccessProfileHandleResponse(resp *http.Response) (ManagedClustersClientGetAccessProfileResponse, error) {
+func (client *ManagedClustersClient) getAccessProfileHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientGetAccessProfileResponse, error) {
 	result := ManagedClustersClientGetAccessProfileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedClusterAccessProfile); err != nil {
 		return ManagedClustersClientGetAccessProfileResponse{}, err
 	}
@@ -435,12 +428,7 @@ func (client *ManagedClustersClient) GetCommandResult(ctx context.Context, resou
 	if err != nil {
 		return ManagedClustersClientGetCommandResultResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClustersClientGetCommandResultResponse{}, err
-	}
-	resp, err := client.getCommandResultHandleResponse(httpResp)
-	return resp, err
+	return client.getCommandResultHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getCommandResultCreateRequest creates the GetCommandResult request.
@@ -474,9 +462,12 @@ func (client *ManagedClustersClient) getCommandResultCreateRequest(ctx context.C
 }
 
 // getCommandResultHandleResponse handles the GetCommandResult response.
-func (client *ManagedClustersClient) getCommandResultHandleResponse(resp *http.Response) (ManagedClustersClientGetCommandResultResponse, error) {
+func (client *ManagedClustersClient) getCommandResultHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientGetCommandResultResponse, error) {
 	result := ManagedClustersClientGetCommandResultResponse{}
-	if val := resp.Header.Get("location"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunCommandResult); err != nil {
@@ -507,12 +498,7 @@ func (client *ManagedClustersClient) GetGuardrailsVersions(ctx context.Context, 
 	if err != nil {
 		return ManagedClustersClientGetGuardrailsVersionsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClustersClientGetGuardrailsVersionsResponse{}, err
-	}
-	resp, err := client.getGuardrailsVersionsHandleResponse(httpResp)
-	return resp, err
+	return client.getGuardrailsVersionsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getGuardrailsVersionsCreateRequest creates the GetGuardrailsVersions request.
@@ -542,8 +528,11 @@ func (client *ManagedClustersClient) getGuardrailsVersionsCreateRequest(ctx cont
 }
 
 // getGuardrailsVersionsHandleResponse handles the GetGuardrailsVersions response.
-func (client *ManagedClustersClient) getGuardrailsVersionsHandleResponse(resp *http.Response) (ManagedClustersClientGetGuardrailsVersionsResponse, error) {
+func (client *ManagedClustersClient) getGuardrailsVersionsHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientGetGuardrailsVersionsResponse, error) {
 	result := ManagedClustersClientGetGuardrailsVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GuardrailsAvailableVersion); err != nil {
 		return ManagedClustersClientGetGuardrailsVersionsResponse{}, err
 	}
@@ -572,12 +561,7 @@ func (client *ManagedClustersClient) GetMeshRevisionProfile(ctx context.Context,
 	if err != nil {
 		return ManagedClustersClientGetMeshRevisionProfileResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClustersClientGetMeshRevisionProfileResponse{}, err
-	}
-	resp, err := client.getMeshRevisionProfileHandleResponse(httpResp)
-	return resp, err
+	return client.getMeshRevisionProfileHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMeshRevisionProfileCreateRequest creates the GetMeshRevisionProfile request.
@@ -607,8 +591,11 @@ func (client *ManagedClustersClient) getMeshRevisionProfileCreateRequest(ctx con
 }
 
 // getMeshRevisionProfileHandleResponse handles the GetMeshRevisionProfile response.
-func (client *ManagedClustersClient) getMeshRevisionProfileHandleResponse(resp *http.Response) (ManagedClustersClientGetMeshRevisionProfileResponse, error) {
+func (client *ManagedClustersClient) getMeshRevisionProfileHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientGetMeshRevisionProfileResponse, error) {
 	result := ManagedClustersClientGetMeshRevisionProfileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MeshRevisionProfile); err != nil {
 		return ManagedClustersClientGetMeshRevisionProfileResponse{}, err
 	}
@@ -636,12 +623,7 @@ func (client *ManagedClustersClient) GetMeshUpgradeProfile(ctx context.Context, 
 	if err != nil {
 		return ManagedClustersClientGetMeshUpgradeProfileResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClustersClientGetMeshUpgradeProfileResponse{}, err
-	}
-	resp, err := client.getMeshUpgradeProfileHandleResponse(httpResp)
-	return resp, err
+	return client.getMeshUpgradeProfileHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMeshUpgradeProfileCreateRequest creates the GetMeshUpgradeProfile request.
@@ -675,8 +657,11 @@ func (client *ManagedClustersClient) getMeshUpgradeProfileCreateRequest(ctx cont
 }
 
 // getMeshUpgradeProfileHandleResponse handles the GetMeshUpgradeProfile response.
-func (client *ManagedClustersClient) getMeshUpgradeProfileHandleResponse(resp *http.Response) (ManagedClustersClientGetMeshUpgradeProfileResponse, error) {
+func (client *ManagedClustersClient) getMeshUpgradeProfileHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientGetMeshUpgradeProfileResponse, error) {
 	result := ManagedClustersClientGetMeshUpgradeProfileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MeshUpgradeProfile); err != nil {
 		return ManagedClustersClientGetMeshUpgradeProfileResponse{}, err
 	}
@@ -705,12 +690,7 @@ func (client *ManagedClustersClient) GetSafeguardsVersions(ctx context.Context, 
 	if err != nil {
 		return ManagedClustersClientGetSafeguardsVersionsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClustersClientGetSafeguardsVersionsResponse{}, err
-	}
-	resp, err := client.getSafeguardsVersionsHandleResponse(httpResp)
-	return resp, err
+	return client.getSafeguardsVersionsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSafeguardsVersionsCreateRequest creates the GetSafeguardsVersions request.
@@ -740,8 +720,11 @@ func (client *ManagedClustersClient) getSafeguardsVersionsCreateRequest(ctx cont
 }
 
 // getSafeguardsVersionsHandleResponse handles the GetSafeguardsVersions response.
-func (client *ManagedClustersClient) getSafeguardsVersionsHandleResponse(resp *http.Response) (ManagedClustersClientGetSafeguardsVersionsResponse, error) {
+func (client *ManagedClustersClient) getSafeguardsVersionsHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientGetSafeguardsVersionsResponse, error) {
 	result := ManagedClustersClientGetSafeguardsVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SafeguardsAvailableVersion); err != nil {
 		return ManagedClustersClientGetSafeguardsVersionsResponse{}, err
 	}
@@ -768,12 +751,7 @@ func (client *ManagedClustersClient) GetUpgradeProfile(ctx context.Context, reso
 	if err != nil {
 		return ManagedClustersClientGetUpgradeProfileResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClustersClientGetUpgradeProfileResponse{}, err
-	}
-	resp, err := client.getUpgradeProfileHandleResponse(httpResp)
-	return resp, err
+	return client.getUpgradeProfileHandleResponse(httpResp, http.StatusOK)
 }
 
 // getUpgradeProfileCreateRequest creates the GetUpgradeProfile request.
@@ -803,8 +781,11 @@ func (client *ManagedClustersClient) getUpgradeProfileCreateRequest(ctx context.
 }
 
 // getUpgradeProfileHandleResponse handles the GetUpgradeProfile response.
-func (client *ManagedClustersClient) getUpgradeProfileHandleResponse(resp *http.Response) (ManagedClustersClientGetUpgradeProfileResponse, error) {
+func (client *ManagedClustersClient) getUpgradeProfileHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientGetUpgradeProfileResponse, error) {
 	result := ManagedClustersClientGetUpgradeProfileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedClusterUpgradeProfile); err != nil {
 		return ManagedClustersClientGetUpgradeProfileResponse{}, err
 	}
@@ -825,39 +806,53 @@ func (client *ManagedClustersClient) NewListPager(options *ManagedClustersClient
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ManagedClustersClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedClustersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ManagedClustersClient) listCreateRequest(ctx context.Context, _ *ManagedClustersClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedClustersClient) listCreateRequest(ctx context.Context, nextLink string, _ *ManagedClustersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260502Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ManagedClustersClient) listHandleResponse(resp *http.Response) (ManagedClustersClientListResponse, error) {
+func (client *ManagedClustersClient) listHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListResponse, error) {
 	result := ManagedClustersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedClusterListResult); err != nil {
 		return ManagedClustersClientListResponse{}, err
 	}
@@ -879,43 +874,57 @@ func (client *ManagedClustersClient) NewListByResourceGroupPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return ManagedClustersClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedClustersClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ManagedClustersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ManagedClustersClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedClustersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ManagedClustersClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260502Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ManagedClustersClient) listByResourceGroupHandleResponse(resp *http.Response) (ManagedClustersClientListByResourceGroupResponse, error) {
+func (client *ManagedClustersClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListByResourceGroupResponse, error) {
 	result := ManagedClustersClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedClusterListResult); err != nil {
 		return ManagedClustersClientListByResourceGroupResponse{}, err
 	}
@@ -942,12 +951,7 @@ func (client *ManagedClustersClient) ListClusterAdminCredentials(ctx context.Con
 	if err != nil {
 		return ManagedClustersClientListClusterAdminCredentialsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClustersClientListClusterAdminCredentialsResponse{}, err
-	}
-	resp, err := client.listClusterAdminCredentialsHandleResponse(httpResp)
-	return resp, err
+	return client.listClusterAdminCredentialsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listClusterAdminCredentialsCreateRequest creates the ListClusterAdminCredentials request.
@@ -980,8 +984,11 @@ func (client *ManagedClustersClient) listClusterAdminCredentialsCreateRequest(ct
 }
 
 // listClusterAdminCredentialsHandleResponse handles the ListClusterAdminCredentials response.
-func (client *ManagedClustersClient) listClusterAdminCredentialsHandleResponse(resp *http.Response) (ManagedClustersClientListClusterAdminCredentialsResponse, error) {
+func (client *ManagedClustersClient) listClusterAdminCredentialsHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListClusterAdminCredentialsResponse, error) {
 	result := ManagedClustersClientListClusterAdminCredentialsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialResults); err != nil {
 		return ManagedClustersClientListClusterAdminCredentialsResponse{}, err
 	}
@@ -1008,12 +1015,7 @@ func (client *ManagedClustersClient) ListClusterMonitoringUserCredentials(ctx co
 	if err != nil {
 		return ManagedClustersClientListClusterMonitoringUserCredentialsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClustersClientListClusterMonitoringUserCredentialsResponse{}, err
-	}
-	resp, err := client.listClusterMonitoringUserCredentialsHandleResponse(httpResp)
-	return resp, err
+	return client.listClusterMonitoringUserCredentialsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listClusterMonitoringUserCredentialsCreateRequest creates the ListClusterMonitoringUserCredentials request.
@@ -1046,8 +1048,11 @@ func (client *ManagedClustersClient) listClusterMonitoringUserCredentialsCreateR
 }
 
 // listClusterMonitoringUserCredentialsHandleResponse handles the ListClusterMonitoringUserCredentials response.
-func (client *ManagedClustersClient) listClusterMonitoringUserCredentialsHandleResponse(resp *http.Response) (ManagedClustersClientListClusterMonitoringUserCredentialsResponse, error) {
+func (client *ManagedClustersClient) listClusterMonitoringUserCredentialsHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListClusterMonitoringUserCredentialsResponse, error) {
 	result := ManagedClustersClientListClusterMonitoringUserCredentialsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialResults); err != nil {
 		return ManagedClustersClientListClusterMonitoringUserCredentialsResponse{}, err
 	}
@@ -1074,12 +1079,7 @@ func (client *ManagedClustersClient) ListClusterUserCredentials(ctx context.Cont
 	if err != nil {
 		return ManagedClustersClientListClusterUserCredentialsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClustersClientListClusterUserCredentialsResponse{}, err
-	}
-	resp, err := client.listClusterUserCredentialsHandleResponse(httpResp)
-	return resp, err
+	return client.listClusterUserCredentialsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listClusterUserCredentialsCreateRequest creates the ListClusterUserCredentials request.
@@ -1115,8 +1115,11 @@ func (client *ManagedClustersClient) listClusterUserCredentialsCreateRequest(ctx
 }
 
 // listClusterUserCredentialsHandleResponse handles the ListClusterUserCredentials response.
-func (client *ManagedClustersClient) listClusterUserCredentialsHandleResponse(resp *http.Response) (ManagedClustersClientListClusterUserCredentialsResponse, error) {
+func (client *ManagedClustersClient) listClusterUserCredentialsHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListClusterUserCredentialsResponse, error) {
 	result := ManagedClustersClientListClusterUserCredentialsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialResults); err != nil {
 		return ManagedClustersClientListClusterUserCredentialsResponse{}, err
 	}
@@ -1140,43 +1143,57 @@ func (client *ManagedClustersClient) NewListGuardrailsVersionsPager(location str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listGuardrailsVersionsCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listGuardrailsVersionsCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return ManagedClustersClientListGuardrailsVersionsResponse{}, err
 			}
-			return client.listGuardrailsVersionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedClustersClientListGuardrailsVersionsResponse{}, err
+			}
+			return client.listGuardrailsVersionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listGuardrailsVersionsCreateRequest creates the ListGuardrailsVersions request.
-func (client *ManagedClustersClient) listGuardrailsVersionsCreateRequest(ctx context.Context, location string, _ *ManagedClustersClientListGuardrailsVersionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/guardrailsVersions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedClustersClient) listGuardrailsVersionsCreateRequest(ctx context.Context, location string, nextLink string, _ *ManagedClustersClientListGuardrailsVersionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/guardrailsVersions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260502Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listGuardrailsVersionsHandleResponse handles the ListGuardrailsVersions response.
-func (client *ManagedClustersClient) listGuardrailsVersionsHandleResponse(resp *http.Response) (ManagedClustersClientListGuardrailsVersionsResponse, error) {
+func (client *ManagedClustersClient) listGuardrailsVersionsHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListGuardrailsVersionsResponse, error) {
 	result := ManagedClustersClientListGuardrailsVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GuardrailsAvailableVersionsList); err != nil {
 		return ManagedClustersClientListGuardrailsVersionsResponse{}, err
 	}
@@ -1205,12 +1222,7 @@ func (client *ManagedClustersClient) ListKubernetesVersions(ctx context.Context,
 	if err != nil {
 		return ManagedClustersClientListKubernetesVersionsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClustersClientListKubernetesVersionsResponse{}, err
-	}
-	resp, err := client.listKubernetesVersionsHandleResponse(httpResp)
-	return resp, err
+	return client.listKubernetesVersionsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listKubernetesVersionsCreateRequest creates the ListKubernetesVersions request.
@@ -1236,8 +1248,11 @@ func (client *ManagedClustersClient) listKubernetesVersionsCreateRequest(ctx con
 }
 
 // listKubernetesVersionsHandleResponse handles the ListKubernetesVersions response.
-func (client *ManagedClustersClient) listKubernetesVersionsHandleResponse(resp *http.Response) (ManagedClustersClientListKubernetesVersionsResponse, error) {
+func (client *ManagedClustersClient) listKubernetesVersionsHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListKubernetesVersionsResponse, error) {
 	result := ManagedClustersClientListKubernetesVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KubernetesVersionListResult); err != nil {
 		return ManagedClustersClientListKubernetesVersionsResponse{}, err
 	}
@@ -1261,43 +1276,57 @@ func (client *ManagedClustersClient) NewListMeshRevisionProfilesPager(location s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listMeshRevisionProfilesCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listMeshRevisionProfilesCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return ManagedClustersClientListMeshRevisionProfilesResponse{}, err
 			}
-			return client.listMeshRevisionProfilesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedClustersClientListMeshRevisionProfilesResponse{}, err
+			}
+			return client.listMeshRevisionProfilesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listMeshRevisionProfilesCreateRequest creates the ListMeshRevisionProfiles request.
-func (client *ManagedClustersClient) listMeshRevisionProfilesCreateRequest(ctx context.Context, location string, _ *ManagedClustersClientListMeshRevisionProfilesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/meshRevisionProfiles"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedClustersClient) listMeshRevisionProfilesCreateRequest(ctx context.Context, location string, nextLink string, _ *ManagedClustersClientListMeshRevisionProfilesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/meshRevisionProfiles"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260502Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listMeshRevisionProfilesHandleResponse handles the ListMeshRevisionProfiles response.
-func (client *ManagedClustersClient) listMeshRevisionProfilesHandleResponse(resp *http.Response) (ManagedClustersClientListMeshRevisionProfilesResponse, error) {
+func (client *ManagedClustersClient) listMeshRevisionProfilesHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListMeshRevisionProfilesResponse, error) {
 	result := ManagedClustersClientListMeshRevisionProfilesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MeshRevisionProfileList); err != nil {
 		return ManagedClustersClientListMeshRevisionProfilesResponse{}, err
 	}
@@ -1320,47 +1349,61 @@ func (client *ManagedClustersClient) NewListMeshUpgradeProfilesPager(resourceGro
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listMeshUpgradeProfilesCreateRequest(ctx, resourceGroupName, resourceName, options)
-			}, nil)
+			req, err := client.listMeshUpgradeProfilesCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
 			if err != nil {
 				return ManagedClustersClientListMeshUpgradeProfilesResponse{}, err
 			}
-			return client.listMeshUpgradeProfilesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedClustersClientListMeshUpgradeProfilesResponse{}, err
+			}
+			return client.listMeshUpgradeProfilesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listMeshUpgradeProfilesCreateRequest creates the ListMeshUpgradeProfiles request.
-func (client *ManagedClustersClient) listMeshUpgradeProfilesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ManagedClustersClientListMeshUpgradeProfilesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/meshUpgradeProfiles"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedClustersClient) listMeshUpgradeProfilesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *ManagedClustersClientListMeshUpgradeProfilesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/meshUpgradeProfiles"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260502Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listMeshUpgradeProfilesHandleResponse handles the ListMeshUpgradeProfiles response.
-func (client *ManagedClustersClient) listMeshUpgradeProfilesHandleResponse(resp *http.Response) (ManagedClustersClientListMeshUpgradeProfilesResponse, error) {
+func (client *ManagedClustersClient) listMeshUpgradeProfilesHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListMeshUpgradeProfilesResponse, error) {
 	result := ManagedClustersClientListMeshUpgradeProfilesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MeshUpgradeProfileList); err != nil {
 		return ManagedClustersClientListMeshUpgradeProfilesResponse{}, err
 	}
@@ -1387,47 +1430,61 @@ func (client *ManagedClustersClient) NewListOutboundNetworkDependenciesEndpoints
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, resourceName, options)
-			}, nil)
+			req, err := client.listOutboundNetworkDependenciesEndpointsCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
 			if err != nil {
 				return ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 			}
-			return client.listOutboundNetworkDependenciesEndpointsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, err
+			}
+			return client.listOutboundNetworkDependenciesEndpointsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listOutboundNetworkDependenciesEndpointsCreateRequest creates the ListOutboundNetworkDependenciesEndpoints request.
-func (client *ManagedClustersClient) listOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ManagedClustersClientListOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/outboundNetworkDependenciesEndpoints"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedClustersClient) listOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *ManagedClustersClientListOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/outboundNetworkDependenciesEndpoints"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260502Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listOutboundNetworkDependenciesEndpointsHandleResponse handles the ListOutboundNetworkDependenciesEndpoints response.
-func (client *ManagedClustersClient) listOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response) (ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse, error) {
+func (client *ManagedClustersClient) listOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse, error) {
 	result := ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OutboundEnvironmentEndpointCollection); err != nil {
 		return ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
@@ -1451,43 +1508,57 @@ func (client *ManagedClustersClient) NewListSafeguardsVersionsPager(location str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSafeguardsVersionsCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listSafeguardsVersionsCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return ManagedClustersClientListSafeguardsVersionsResponse{}, err
 			}
-			return client.listSafeguardsVersionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedClustersClientListSafeguardsVersionsResponse{}, err
+			}
+			return client.listSafeguardsVersionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSafeguardsVersionsCreateRequest creates the ListSafeguardsVersions request.
-func (client *ManagedClustersClient) listSafeguardsVersionsCreateRequest(ctx context.Context, location string, _ *ManagedClustersClientListSafeguardsVersionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/safeguardsVersions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedClustersClient) listSafeguardsVersionsCreateRequest(ctx context.Context, location string, nextLink string, _ *ManagedClustersClientListSafeguardsVersionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/safeguardsVersions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260502Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSafeguardsVersionsHandleResponse handles the ListSafeguardsVersions response.
-func (client *ManagedClustersClient) listSafeguardsVersionsHandleResponse(resp *http.Response) (ManagedClustersClientListSafeguardsVersionsResponse, error) {
+func (client *ManagedClustersClient) listSafeguardsVersionsHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListSafeguardsVersionsResponse, error) {
 	result := ManagedClustersClientListSafeguardsVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SafeguardsAvailableVersionsList); err != nil {
 		return ManagedClustersClientListSafeguardsVersionsResponse{}, err
 	}
@@ -1535,8 +1606,7 @@ func (client *ManagedClustersClient) rebalanceLoadBalancers(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1617,8 +1687,7 @@ func (client *ManagedClustersClient) resetAADProfile(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1697,8 +1766,7 @@ func (client *ManagedClustersClient) resetServicePrincipalProfile(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1778,8 +1846,7 @@ func (client *ManagedClustersClient) rotateClusterCertificates(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1849,8 +1916,7 @@ func (client *ManagedClustersClient) rotateServiceAccountSigningKeys(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1927,8 +1993,7 @@ func (client *ManagedClustersClient) runCommand(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -2007,8 +2072,7 @@ func (client *ManagedClustersClient) start(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -2088,8 +2152,7 @@ func (client *ManagedClustersClient) stop(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -2160,8 +2223,7 @@ func (client *ManagedClustersClient) updateTags(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

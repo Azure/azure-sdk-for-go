@@ -66,12 +66,12 @@ func ExampleEventClient_FetchBilllingCommunicationDetailsBySubscriptionIDAndTrac
 	// 							},
 	// 							ImpactedTenants: []*string{
 	// 							},
-	// 							LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-13T15:43:48.1203530Z"); return t}()),
+	// 							LastUpdateTime: to.Ptr(time.Date(2025, time.May, 13, 15, 43, 48, 120353000, time.UTC)),
 	// 							Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
 	// 							Updates: []*armresourcehealth.Update{
 	// 								{
 	// 									Summary: to.Ptr("Upcoming billing changes to your resources."),
-	// 									UpdateDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-13T15:43:48.1203530Z"); return t}()),
+	// 									UpdateDateTime: to.Ptr(time.Date(2025, time.May, 13, 15, 43, 48, 120353000, time.UTC)),
 	// 								},
 	// 							},
 	// 						},
@@ -80,11 +80,11 @@ func ExampleEventClient_FetchBilllingCommunicationDetailsBySubscriptionIDAndTrac
 	// 					ImpactedServiceGUID: to.Ptr("80853877-1df8-40c2-9c79-44c0d1c95e01"),
 	// 				},
 	// 			},
-	// 			ImpactMitigationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-14T15:43:48.1203530Z"); return t}()),
-	// 			ImpactStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-12T14:45:48.1203530Z"); return t}()),
+	// 			ImpactMitigationTime: to.Ptr(time.Date(2025, time.July, 14, 15, 43, 48, 120353000, time.UTC)),
+	// 			ImpactStartTime: to.Ptr(time.Date(2025, time.June, 12, 14, 45, 48, 120353000, time.UTC)),
 	// 			IsEventSensitive: to.Ptr(false),
 	// 			IsHIR: to.Ptr(false),
-	// 			LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-13T15:43:48.1203530Z"); return t}()),
+	// 			LastUpdateTime: to.Ptr(time.Date(2025, time.May, 13, 15, 43, 48, 120353000, time.UTC)),
 	// 			Level: to.Ptr(armresourcehealth.LevelValuesWarning),
 	// 			Links: []*armresourcehealth.Link{
 	// 				{
@@ -195,7 +195,7 @@ func ExampleEventClient_FetchDetailsBySubscriptionIDAndTrackingID() {
 	// 							},
 	// 							ImpactedTenants: []*string{
 	// 							},
-	// 							LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-13T15:43:48.1203530Z"); return t}()),
+	// 							LastUpdateTime: to.Ptr(time.Date(2025, time.May, 13, 15, 43, 48, 120353000, time.UTC)),
 	// 							Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
 	// 							Updates: []*armresourcehealth.Update{
 	// 								{
@@ -203,7 +203,7 @@ func ExampleEventClient_FetchDetailsBySubscriptionIDAndTrackingID() {
 	// 										to.Ptr("Final PIR"),
 	// 									},
 	// 									Summary: to.Ptr("Update 3 - An outage alert is being investigated. More information will be provided as it is known."),
-	// 									UpdateDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-13T15:43:48.1203530Z"); return t}()),
+	// 									UpdateDateTime: to.Ptr(time.Date(2025, time.May, 13, 15, 43, 48, 120353000, time.UTC)),
 	// 								},
 	// 								{
 	// 									EventTags: []*string{
@@ -211,14 +211,14 @@ func ExampleEventClient_FetchDetailsBySubscriptionIDAndTrackingID() {
 	// 										to.Ptr("Preliminary PIR"),
 	// 									},
 	// 									Summary: to.Ptr("Update 2 - An outage alert is being investigated. More information will be provided as it is known."),
-	// 									UpdateDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-13T10:32:48.1203530Z"); return t}()),
+	// 									UpdateDateTime: to.Ptr(time.Date(2025, time.May, 13, 10, 32, 48, 120353000, time.UTC)),
 	// 								},
 	// 								{
 	// 									EventTags: []*string{
 	// 										to.Ptr("Action Recommended"),
 	// 									},
 	// 									Summary: to.Ptr("Update 1 - An outage alert is being investigated. More information will be provided as it is known."),
-	// 									UpdateDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-12T15:00:48.1203530Z"); return t}()),
+	// 									UpdateDateTime: to.Ptr(time.Date(2025, time.May, 12, 15, 0, 48, 120353000, time.UTC)),
 	// 								},
 	// 							},
 	// 						},
@@ -227,11 +227,11 @@ func ExampleEventClient_FetchDetailsBySubscriptionIDAndTrackingID() {
 	// 					ImpactedServiceGUID: to.Ptr("fd8065f5-ffd0-4756-8788-e6a11bf36257"),
 	// 				},
 	// 			},
-	// 			ImpactMitigationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-14T15:43:48.1203530Z"); return t}()),
-	// 			ImpactStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-12T14:45:48.1203530Z"); return t}()),
+	// 			ImpactMitigationTime: to.Ptr(time.Date(2025, time.May, 14, 15, 43, 48, 120353000, time.UTC)),
+	// 			ImpactStartTime: to.Ptr(time.Date(2025, time.May, 12, 14, 45, 48, 120353000, time.UTC)),
 	// 			IsEventSensitive: to.Ptr(false),
 	// 			IsHIR: to.Ptr(false),
-	// 			LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-13T15:43:48.1203530Z"); return t}()),
+	// 			LastUpdateTime: to.Ptr(time.Date(2025, time.May, 13, 15, 43, 48, 120353000, time.UTC)),
 	// 			Level: to.Ptr(armresourcehealth.LevelValuesWarning),
 	// 			Links: []*armresourcehealth.Link{
 	// 				{
@@ -334,7 +334,7 @@ func ExampleEventClient_FetchDetailsByTenantIDAndTrackingID() {
 	// 							ImpactedTenants: []*string{
 	// 								to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 							},
-	// 							LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:05:00Z"); return t}()),
+	// 							LastUpdateTime: to.Ptr(time.Date(2017, time.December, 5, 21, 5, 0, 0, time.UTC)),
 	// 							Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
 	// 						},
 	// 					},
@@ -342,10 +342,10 @@ func ExampleEventClient_FetchDetailsByTenantIDAndTrackingID() {
 	// 					ImpactedServiceGUID: to.Ptr("fd8065f5-ffd0-4756-8788-e6a11bf36257"),
 	// 				},
 	// 			},
-	// 			ImpactMitigationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
-	// 			ImpactStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-07T00:00:00Z"); return t}()),
+	// 			ImpactMitigationTime: to.Ptr(time.Date(2018, time.November, 8, 0, 0, 0, 0, time.UTC)),
+	// 			ImpactStartTime: to.Ptr(time.Date(2018, time.November, 7, 0, 0, 0, 0, time.UTC)),
 	// 			IsHIR: to.Ptr(false),
-	// 			LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
+	// 			LastUpdateTime: to.Ptr(time.Date(2018, time.November, 8, 0, 0, 0, 0, time.UTC)),
 	// 			Level: to.Ptr(armresourcehealth.LevelValuesWarning),
 	// 			Links: []*armresourcehealth.Link{
 	// 				{
@@ -456,7 +456,7 @@ func ExampleEventClient_GetBySubscriptionIDAndTrackingID() {
 	// 							},
 	// 							ImpactedTenants: []*string{
 	// 							},
-	// 							LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-13T15:43:48.1203530Z"); return t}()),
+	// 							LastUpdateTime: to.Ptr(time.Date(2025, time.May, 13, 15, 43, 48, 120353000, time.UTC)),
 	// 							Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
 	// 							Updates: []*armresourcehealth.Update{
 	// 								{
@@ -464,7 +464,7 @@ func ExampleEventClient_GetBySubscriptionIDAndTrackingID() {
 	// 										to.Ptr("Final PIR"),
 	// 									},
 	// 									Summary: to.Ptr("Update 3 - An outage alert is being investigated. More information will be provided as it is known."),
-	// 									UpdateDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-13T15:43:48.1203530Z"); return t}()),
+	// 									UpdateDateTime: to.Ptr(time.Date(2025, time.May, 13, 15, 43, 48, 120353000, time.UTC)),
 	// 								},
 	// 								{
 	// 									EventTags: []*string{
@@ -472,14 +472,14 @@ func ExampleEventClient_GetBySubscriptionIDAndTrackingID() {
 	// 										to.Ptr("Preliminary PIR"),
 	// 									},
 	// 									Summary: to.Ptr("Update 2 - An outage alert is being investigated. More information will be provided as it is known."),
-	// 									UpdateDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-13T10:32:48.1203530Z"); return t}()),
+	// 									UpdateDateTime: to.Ptr(time.Date(2025, time.May, 13, 10, 32, 48, 120353000, time.UTC)),
 	// 								},
 	// 								{
 	// 									EventTags: []*string{
 	// 										to.Ptr("Action Recommended"),
 	// 									},
 	// 									Summary: to.Ptr("Update 1 - An outage alert is being investigated. More information will be provided as it is known."),
-	// 									UpdateDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-12T15:00:48.1203530Z"); return t}()),
+	// 									UpdateDateTime: to.Ptr(time.Date(2025, time.May, 12, 15, 0, 48, 120353000, time.UTC)),
 	// 								},
 	// 							},
 	// 						},
@@ -488,11 +488,11 @@ func ExampleEventClient_GetBySubscriptionIDAndTrackingID() {
 	// 					ImpactedServiceGUID: to.Ptr("fd8065f5-ffd0-4756-8788-e6a11bf36257"),
 	// 				},
 	// 			},
-	// 			ImpactMitigationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-14T15:43:48.1203530Z"); return t}()),
-	// 			ImpactStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-12T14:45:48.1203530Z"); return t}()),
+	// 			ImpactMitigationTime: to.Ptr(time.Date(2025, time.May, 14, 15, 43, 48, 120353000, time.UTC)),
+	// 			ImpactStartTime: to.Ptr(time.Date(2025, time.May, 12, 14, 45, 48, 120353000, time.UTC)),
 	// 			IsEventSensitive: to.Ptr(false),
 	// 			IsHIR: to.Ptr(false),
-	// 			LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-05-13T15:43:48.1203530Z"); return t}()),
+	// 			LastUpdateTime: to.Ptr(time.Date(2025, time.May, 13, 15, 43, 48, 120353000, time.UTC)),
 	// 			Level: to.Ptr(armresourcehealth.LevelValuesWarning),
 	// 			Links: []*armresourcehealth.Link{
 	// 				{
@@ -597,7 +597,7 @@ func ExampleEventClient_GetByTenantIDAndTrackingID() {
 	// 							ImpactedTenants: []*string{
 	// 								to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 							},
-	// 							LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-05T21:05:00Z"); return t}()),
+	// 							LastUpdateTime: to.Ptr(time.Date(2017, time.December, 5, 21, 5, 0, 0, time.UTC)),
 	// 							Status: to.Ptr(armresourcehealth.EventStatusValuesActive),
 	// 						},
 	// 					},
@@ -605,10 +605,10 @@ func ExampleEventClient_GetByTenantIDAndTrackingID() {
 	// 					ImpactedServiceGUID: to.Ptr("fd8065f5-ffd0-4756-8788-e6a11bf36257"),
 	// 				},
 	// 			},
-	// 			ImpactMitigationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
-	// 			ImpactStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-07T00:00:00Z"); return t}()),
+	// 			ImpactMitigationTime: to.Ptr(time.Date(2018, time.November, 8, 0, 0, 0, 0, time.UTC)),
+	// 			ImpactStartTime: to.Ptr(time.Date(2018, time.November, 7, 0, 0, 0, 0, time.UTC)),
 	// 			IsHIR: to.Ptr(false),
-	// 			LastUpdateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-08T00:00:00Z"); return t}()),
+	// 			LastUpdateTime: to.Ptr(time.Date(2018, time.November, 8, 0, 0, 0, 0, time.UTC)),
 	// 			Level: to.Ptr(armresourcehealth.LevelValuesWarning),
 	// 			Links: []*armresourcehealth.Link{
 	// 				{

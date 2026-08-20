@@ -60,12 +60,7 @@ func (client *DefaultWafPolicyClient) List(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return DefaultWafPolicyClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefaultWafPolicyClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -95,8 +90,11 @@ func (client *DefaultWafPolicyClient) listCreateRequest(ctx context.Context, res
 }
 
 // listHandleResponse handles the List response.
-func (client *DefaultWafPolicyClient) listHandleResponse(resp *http.Response) (DefaultWafPolicyClientListResponse, error) {
+func (client *DefaultWafPolicyClient) listHandleResponse(resp *http.Response, successCodes ...int) (DefaultWafPolicyClientListResponse, error) {
 	result := DefaultWafPolicyClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentDefaultWafPolicyListResponse); err != nil {
 		return DefaultWafPolicyClientListResponse{}, err
 	}

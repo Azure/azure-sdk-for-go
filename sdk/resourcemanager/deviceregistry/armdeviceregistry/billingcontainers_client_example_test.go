@@ -38,10 +38,10 @@ func ExampleBillingContainersClient_Get() {
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("0e1b4448-67b9-46a1-8158-e3dade4c008e"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-05-20T21:51:21.169954Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.May, 20, 21, 51, 21, 169954000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("0e1b4448-67b9-46a1-8158-e3dade4c008e"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-18T20:37:41.9371846Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.June, 18, 20, 37, 41, 937184600, time.UTC)),
 	// 		},
 	// 		Properties: &armdeviceregistry.BillingContainerProperties{
 	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
@@ -83,10 +83,10 @@ func ExampleBillingContainersClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armdeviceregistry.SystemData{
 		// 					CreatedBy: to.Ptr("0e1b4448-67b9-46a1-8158-e3dade4c008e"),
 		// 					CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-05-01T22:52:46.0165055Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.May, 1, 22, 52, 46, 16505500, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("0e1b4448-67b9-46a1-8158-e3dade4c008e"),
 		// 					LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-05-01T22:52:46.0165055Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.May, 1, 22, 52, 46, 16505500, time.UTC)),
 		// 				},
 		// 				Properties: &armdeviceregistry.BillingContainerProperties{
 		// 					ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
@@ -100,10 +100,10 @@ func ExampleBillingContainersClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armdeviceregistry.SystemData{
 		// 					CreatedBy: to.Ptr("0e1b4448-67b9-46a1-8158-e3dade4c008e"),
 		// 					CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-05-01T23:58:23.3213061Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.May, 1, 23, 58, 23, 321306100, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("0e1b4448-67b9-46a1-8158-e3dade4c008e"),
 		// 					LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-05-01T23:58:23.3213061Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.May, 1, 23, 58, 23, 321306100, time.UTC)),
 		// 				},
 		// 				Properties: &armdeviceregistry.BillingContainerProperties{
 		// 					ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),

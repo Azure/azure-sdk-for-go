@@ -17,6 +17,7 @@ import (
 type messageReceiver interface {
 	ReceiveMessages(context.Context, int, *azservicebus.ReceiveMessagesOptions) ([]*azservicebus.ReceivedMessage, error)
 	CompleteMessage(context.Context, *azservicebus.ReceivedMessage, *azservicebus.CompleteMessageOptions) error
+	Close(context.Context) error
 }
 
 type newReceiver func(string, *azservicebus.ReceiverOptions) (messageReceiver, error)
@@ -26,6 +27,7 @@ func processMessage(ctx context.Context, createReceiver newReceiver) error {
 	if err != nil {
 		return err
 	}
+	defer func() { _ = receiver.Close(ctx) }()
 
 	messages, err := receiver.ReceiveMessages(ctx, 1, nil)
 	if err != nil {
@@ -44,6 +46,7 @@ func processMessage(ctx context.Context, createReceiver newReceiver) error {
 type fakeReceiver struct {
 	messages  []*azservicebus.ReceivedMessage
 	completed int
+	closed    bool
 }
 
 func (f *fakeReceiver) ReceiveMessages(context.Context, int, *azservicebus.ReceiveMessagesOptions) ([]*azservicebus.ReceivedMessage, error) {
@@ -52,6 +55,11 @@ func (f *fakeReceiver) ReceiveMessages(context.Context, int, *azservicebus.Recei
 
 func (f *fakeReceiver) CompleteMessage(context.Context, *azservicebus.ReceivedMessage, *azservicebus.CompleteMessageOptions) error {
 	f.completed++
+	return nil
+}
+
+func (f *fakeReceiver) Close(context.Context) error {
+	f.closed = true
 	return nil
 }
 
@@ -93,4 +101,5 @@ func TestUnitTestingReceiver(t *testing.T) {
 	err := processMessage(context.TODO(), createReceiver)
 	require.NoError(t, err)
 	require.Equal(t, 1, fake.completed)
+	require.True(t, fake.closed)
 }

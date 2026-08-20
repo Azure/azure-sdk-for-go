@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.0 (2026-08-18)
+## 0.3.0 (2026-08-20)
 ### Breaking Changes
 
 - Type of `OccurrenceExtensionProperties.ProvisioningState` has been changed from `*ResourceProvisioningState` to `*OccurrenceResourceProvisioningState`

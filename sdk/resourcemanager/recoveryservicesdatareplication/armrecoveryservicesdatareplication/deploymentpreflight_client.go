@@ -63,12 +63,7 @@ func (client *DeploymentPreflightClient) Post(ctx context.Context, resourceGroup
 	if err != nil {
 		return DeploymentPreflightClientPostResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeploymentPreflightClientPostResponse{}, err
-	}
-	resp, err := client.postHandleResponse(httpResp)
-	return resp, err
+	return client.postHandleResponse(httpResp, http.StatusOK)
 }
 
 // postCreateRequest creates the Post request.
@@ -105,8 +100,11 @@ func (client *DeploymentPreflightClient) postCreateRequest(ctx context.Context, 
 }
 
 // postHandleResponse handles the Post response.
-func (client *DeploymentPreflightClient) postHandleResponse(resp *http.Response) (DeploymentPreflightClientPostResponse, error) {
+func (client *DeploymentPreflightClient) postHandleResponse(resp *http.Response, successCodes ...int) (DeploymentPreflightClientPostResponse, error) {
 	result := DeploymentPreflightClientPostResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentPreflightModel); err != nil {
 		return DeploymentPreflightClientPostResponse{}, err
 	}

@@ -85,8 +85,7 @@ func (client *AccessPointResourcesClient) createOrReplace(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -176,8 +175,7 @@ func (client *AccessPointResourcesClient) deleteOperation(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -242,12 +240,7 @@ func (client *AccessPointResourcesClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return AccessPointResourcesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AccessPointResourcesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -289,8 +282,11 @@ func (client *AccessPointResourcesClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *AccessPointResourcesClient) getHandleResponse(resp *http.Response) (AccessPointResourcesClientGetResponse, error) {
+func (client *AccessPointResourcesClient) getHandleResponse(resp *http.Response, successCodes ...int) (AccessPointResourcesClientGetResponse, error) {
 	result := AccessPointResourcesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessPointResource); err != nil {
 		return AccessPointResourcesClientGetResponse{}, err
 	}
@@ -315,55 +311,69 @@ func (client *AccessPointResourcesClient) NewListPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, organizationName, environmentID, networkGatewayID, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, organizationName, environmentID, networkGatewayID, nextLink, options)
 			if err != nil {
 				return AccessPointResourcesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AccessPointResourcesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AccessPointResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, networkGatewayID string, _ *AccessPointResourcesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/networkGateways/{networkGatewayId}/accessPoints"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AccessPointResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, networkGatewayID string, nextLink string, _ *AccessPointResourcesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/networkGateways/{networkGatewayId}/accessPoints"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if organizationName == "" {
+			return nil, errors.New("parameter organizationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+		if environmentID == "" {
+			return nil, errors.New("parameter environmentID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{environmentId}", url.PathEscape(environmentID))
+		if networkGatewayID == "" {
+			return nil, errors.New("parameter networkGatewayID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{networkGatewayId}", url.PathEscape(networkGatewayID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if organizationName == "" {
-		return nil, errors.New("parameter organizationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
-	if environmentID == "" {
-		return nil, errors.New("parameter environmentID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{environmentId}", url.PathEscape(environmentID))
-	if networkGatewayID == "" {
-		return nil, errors.New("parameter networkGatewayID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkGatewayId}", url.PathEscape(networkGatewayID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260602Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AccessPointResourcesClient) listHandleResponse(resp *http.Response) (AccessPointResourcesClientListResponse, error) {
+func (client *AccessPointResourcesClient) listHandleResponse(resp *http.Response, successCodes ...int) (AccessPointResourcesClientListResponse, error) {
 	result := AccessPointResourcesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessPointResourceListResult); err != nil {
 		return AccessPointResourcesClientListResponse{}, err
 	}

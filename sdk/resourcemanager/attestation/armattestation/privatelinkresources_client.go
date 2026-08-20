@@ -18,6 +18,8 @@ import (
 
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
+//
+// Generated from API version 2021-06-01
 type PrivateLinkResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 
 // ListByProvider - Gets the private link resources supported for the attestation provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2021-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerName - Name of the attestation provider.
 //   - options - PrivateLinkResourcesClientListByProviderOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByProvider
@@ -61,12 +61,7 @@ func (client *PrivateLinkResourcesClient) ListByProvider(ctx context.Context, re
 	if err != nil {
 		return PrivateLinkResourcesClientListByProviderResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateLinkResourcesClientListByProviderResponse{}, err
-	}
-	resp, err := client.listByProviderHandleResponse(httpResp)
-	return resp, err
+	return client.listByProviderHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByProviderCreateRequest creates the ListByProvider request.
@@ -89,15 +84,18 @@ func (client *PrivateLinkResourcesClient) listByProviderCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2021-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20210601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByProviderHandleResponse handles the ListByProvider response.
-func (client *PrivateLinkResourcesClient) listByProviderHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByProviderResponse, error) {
+func (client *PrivateLinkResourcesClient) listByProviderHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinkResourcesClientListByProviderResponse, error) {
 	result := PrivateLinkResourcesClientListByProviderResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return PrivateLinkResourcesClientListByProviderResponse{}, err
 	}

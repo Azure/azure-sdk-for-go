@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ApproveRollingUpgrade.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ApproveRollingUpgrade.json
 func ExampleVirtualMachineScaleSetsClient_BeginApproveRollingUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginApproveRollingUpgrade() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_ConvertToSinglePlacementGroup_virtualMachineScaleSetConvertToSinglePlacementGroupMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleVirtualMachineScaleSetsClient_ConvertToSinglePlacementGroup_virtualM
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ConvertToSinglePlacementGroup_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_ConvertToSinglePlacementGroup_virtualMachineScaleSetConvertToSinglePlacementGroupMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleVirtualMachineScaleSetsClient_ConvertToSinglePlacementGroup_virtualM
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_CreateA_WithDiffOsDiskUsingDiffDiskPlacement.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_CreateA_WithDiffOsDiskUsingDiffDiskPlacement.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithEphemeralOSDisksUsingPlacementProperty() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -249,9 +249,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -263,185 +260,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_CreateA_WithDiffOsDiskUsingDiffDiskPlacementAndFullCachingEnabled.json
-func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithEphemeralOSDisksUsingPlacementPropertyAndEnableFullCachingSetToTrue() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualMachineScaleSetsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "{vmss-name}", armcompute.VirtualMachineScaleSet{
-		SKU: &armcompute.SKU{
-			Tier:     to.Ptr("Standard"),
-			Capacity: to.Ptr[int64](3),
-			Name:     to.Ptr("Standard_DS1_v2"),
-		},
-		Properties: &armcompute.VirtualMachineScaleSetProperties{
-			Overprovision: to.Ptr(true),
-			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-					ImageReference: &armcompute.ImageReference{
-						SKU:       to.Ptr("windows2016"),
-						Publisher: to.Ptr("microsoft-ads"),
-						Version:   to.Ptr("latest"),
-						Offer:     to.Ptr("windows-data-science-vm"),
-					},
-					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-						Caching: to.Ptr(armcompute.CachingTypesReadOnly),
-						DiffDiskSettings: &armcompute.DiffDiskSettings{
-							Option:            to.Ptr(armcompute.DiffDiskOptionsLocal),
-							Placement:         to.Ptr(armcompute.DiffDiskPlacementResourceDisk),
-							EnableFullCaching: to.Ptr(true),
-						},
-						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-						},
-						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-					},
-				},
-				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-					ComputerNamePrefix: to.Ptr("{vmss-name}"),
-					AdminUsername:      to.Ptr("{your-username}"),
-					AdminPassword:      to.Ptr("{your-password}"),
-				},
-				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-						{
-							Name: to.Ptr("{vmss-name}"),
-							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-								Primary:            to.Ptr(true),
-								EnableIPForwarding: to.Ptr(true),
-								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-									{
-										Name: to.Ptr("{vmss-name}"),
-										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-											Subnet: &armcompute.APIEntityReference{
-												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"),
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			UpgradePolicy: &armcompute.UpgradePolicy{
-				Mode: to.Ptr(armcompute.UpgradeModeManual),
-			},
-		},
-		Plan: &armcompute.Plan{
-			Publisher: to.Ptr("microsoft-ads"),
-			Product:   to.Ptr("windows-data-science-vm"),
-			Name:      to.Ptr("windows2016"),
-		},
-		Location: to.Ptr("westus"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
-	// 		SKU: &armcompute.SKU{
-	// 			Tier: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int64](3),
-	// 			Name: to.Ptr("Standard_DS1_v2"),
-	// 		},
-	// 		Name: to.Ptr("{vmss-name}"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
-	// 		Plan: &armcompute.Plan{
-	// 			Publisher: to.Ptr("microsoft-ads"),
-	// 			Product: to.Ptr("standard-data-science-vm"),
-	// 			Name: to.Ptr("standard-data-science-vm"),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
-	// 			SinglePlacementGroup: to.Ptr(true),
-	// 			Overprovision: to.Ptr(true),
-	// 			UniqueID: to.Ptr("b9e23088-6ffc-46e0-9e02-b0a6eeef47db"),
-	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-	// 					ImageReference: &armcompute.ImageReference{
-	// 						SKU: to.Ptr("standard-data-science-vm"),
-	// 						Publisher: to.Ptr("microsoft-ads"),
-	// 						Version: to.Ptr("latest"),
-	// 						Offer: to.Ptr("standard-data-science-vm"),
-	// 					},
-	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-	// 						Caching: to.Ptr(armcompute.CachingTypesReadOnly),
-	// 						DiffDiskSettings: &armcompute.DiffDiskSettings{
-	// 							Option: to.Ptr(armcompute.DiffDiskOptionsLocal),
-	// 							Placement: to.Ptr(armcompute.DiffDiskPlacementResourceDisk),
-	// 						},
-	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-	// 						},
-	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-	// 					},
-	// 				},
-	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-	// 					ComputerNamePrefix: to.Ptr("{vmss-name}"),
-	// 					AdminUsername: to.Ptr("{your-username}"),
-	// 					Secrets: []*armcompute.VaultSecretGroup{
-	// 					},
-	// 					WindowsConfiguration: &armcompute.WindowsConfiguration{
-	// 						ProvisionVMAgent: to.Ptr(true),
-	// 						EnableAutomaticUpdates: to.Ptr(true),
-	// 					},
-	// 				},
-	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-	// 						{
-	// 							Name: to.Ptr("{vmss-name}"),
-	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-	// 								DNSSettings: &armcompute.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
-	// 									DNSServers: []*string{
-	// 									},
-	// 								},
-	// 								Primary: to.Ptr(true),
-	// 								EnableIPForwarding: to.Ptr(true),
-	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-	// 									{
-	// 										Name: to.Ptr("{vmss-name}"),
-	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-	// 											Subnet: &armcompute.APIEntityReference{
-	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/nsgExistingVnet/subnets/nsgExistingSubnet"),
-	// 											},
-	// 											PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
-	// 										},
-	// 									},
-	// 								},
-	// 								EnableAcceleratedNetworking: to.Ptr(false),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
-	// 			},
-	// 			UpgradePolicy: &armcompute.UpgradePolicy{
-	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
-	// 			},
-	// 			ProvisioningState: to.Ptr("Creating"),
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_CreateA_WithDiffOsDiskUsingDiffDiskPlacementAsNvmeDisk.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_CreateA_WithDiffOsDiskUsingDiffDiskPlacementAsNvmeDisk.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithEphemeralOSDiskProvisioningInNvmeDiskUsingPlacementProperty() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -604,9 +423,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -618,7 +434,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_CustomImageFromAnUnmanagedGeneralizedOsImage.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_CustomImageFromAnUnmanagedGeneralizedOsImage.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createACustomImageScaleSetFromAnUnmanagedGeneralizedOSImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -752,9 +568,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createACustomImage
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -768,7 +581,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createACustomImage
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromACustomImage.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromACustomImage.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetFromACustomImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -904,9 +717,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetFro
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -920,7 +730,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetFro
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromAGeneralizedSharedImage.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromAGeneralizedSharedImage.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetFromAGeneralizedSharedImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1056,9 +866,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetFro
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -1072,7 +879,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetFro
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromASpecializedSharedImage.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromASpecializedSharedImage.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetFromASpecializedSharedImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1194,9 +1001,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetFro
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -1210,7 +1014,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetFro
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromWithDisableTcpStateTrackingNetworkInterface.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromWithDisableTcpStateTrackingNetworkInterface.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWhereNicConfigHasDisableTcpStateTrackingProperty() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1395,9 +1199,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWhe
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -1411,7 +1212,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWhe
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromWithFpgaNetworkInterface.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromWithFpgaNetworkInterface.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithFpgaNetworkInterfaces() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1592,9 +1393,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -1608,7 +1406,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromWithNetworkInterfaceWithDnsSettings.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_FromWithNetworkInterfaceWithDnsSettings.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithNetworkInterfacesWithPublicIPAddressDnsSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1829,9 +1627,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -1845,7 +1640,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_PlatformImageWithUnmanagedOsDisks.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_PlatformImageWithUnmanagedOsDisks.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAPlatformImageScaleSetWithUnmanagedOSDisks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1994,9 +1789,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAPlatformIma
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -2010,7 +1802,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAPlatformIma
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAMarketplaceImagePlan.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAMarketplaceImagePlan.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithAMarketplaceImagePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2165,9 +1957,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -2179,7 +1968,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithApplicationProfile.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithApplicationProfile.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithApplicationProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2350,9 +2139,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -2366,7 +2152,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAutomaticRepairs.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAutomaticRepairs.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithAutomaticRepairsEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2530,9 +2316,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -2567,208 +2350,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAutomaticSkuMigrationPolicy.json
-func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithAutomaticSkuMigrationPolicy() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualMachineScaleSetsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "{vmss-name}", armcompute.VirtualMachineScaleSet{
-		SKU: &armcompute.SKU{
-			Capacity: to.Ptr[int64](10),
-			Name:     to.Ptr("Mix"),
-		},
-		Location: to.Ptr("westus"),
-		Properties: &armcompute.VirtualMachineScaleSetProperties{
-			SinglePlacementGroup: to.Ptr(false),
-			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-					ImageReference: &armcompute.ImageReference{
-						SKU:       to.Ptr("2016-Datacenter"),
-						Publisher: to.Ptr("MicrosoftWindowsServer"),
-						Version:   to.Ptr("latest"),
-						Offer:     to.Ptr("WindowsServer"),
-					},
-					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-						},
-						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-					},
-				},
-				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-					ComputerNamePrefix: to.Ptr("{vmss-name}"),
-					AdminUsername:      to.Ptr("{your-username}"),
-					AdminPassword:      to.Ptr("{your-password}"),
-				},
-				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-						{
-							Name: to.Ptr("{vmss-name}"),
-							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-								Primary:            to.Ptr(true),
-								EnableIPForwarding: to.Ptr(true),
-								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-									{
-										Name: to.Ptr("{vmss-name}"),
-										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-											Subnet: &armcompute.APIEntityReference{
-												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"),
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-				Priority:       to.Ptr(armcompute.VirtualMachinePriorityTypesSpot),
-				EvictionPolicy: to.Ptr(armcompute.VirtualMachineEvictionPolicyTypesDeallocate),
-				BillingProfile: &armcompute.BillingProfile{
-					MaxPrice: to.Ptr[float64](-1),
-				},
-			},
-			OrchestrationMode: to.Ptr(armcompute.OrchestrationModeFlexible),
-			PriorityMixPolicy: &armcompute.PriorityMixPolicy{
-				BaseRegularPriorityCount:           to.Ptr[int32](4),
-				RegularPriorityPercentageAboveBase: to.Ptr[int32](50),
-			},
-			SKUProfile: &armcompute.SKUProfile{
-				VMSizes: []*armcompute.SKUProfileVMSize{
-					{
-						Name: to.Ptr("Standard_D8s_v5"),
-					},
-					{
-						Name: to.Ptr("Standard_E16s_v5"),
-					},
-					{
-						Name: to.Ptr("Standard_D2s_v5"),
-					},
-				},
-				AllocationStrategy: to.Ptr(armcompute.AllocationStrategyCapacityOptimized),
-				AutomaticSKUMigrationPolicy: &armcompute.AutomaticSKUMigrationPolicy{
-					Enabled: to.Ptr(true),
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
-	// 		SKU: &armcompute.SKU{
-	// 			Capacity: to.Ptr[int64](10),
-	// 			Name: to.Ptr("Mix"),
-	// 		},
-	// 		Name: to.Ptr("{vmss-name}"),
-	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
-	// 			SinglePlacementGroup: to.Ptr(false),
-	// 			UniqueID: to.Ptr("d053ec5a-8da6-495f-ab13-38216503c6d7"),
-	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-	// 					ImageReference: &armcompute.ImageReference{
-	// 						SKU: to.Ptr("2016-Datacenter"),
-	// 						Publisher: to.Ptr("MicrosoftWindowsServer"),
-	// 						Version: to.Ptr("latest"),
-	// 						Offer: to.Ptr("WindowsServer"),
-	// 					},
-	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-	// 						},
-	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-	// 					},
-	// 				},
-	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-	// 					ComputerNamePrefix: to.Ptr("{vmss-name}"),
-	// 					AdminUsername: to.Ptr("{your-username}"),
-	// 					Secrets: []*armcompute.VaultSecretGroup{
-	// 					},
-	// 					WindowsConfiguration: &armcompute.WindowsConfiguration{
-	// 						ProvisionVMAgent: to.Ptr(true),
-	// 						EnableAutomaticUpdates: to.Ptr(true),
-	// 					},
-	// 				},
-	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-	// 						{
-	// 							Name: to.Ptr("{vmss-name}"),
-	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-	// 								DNSSettings: &armcompute.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
-	// 									DNSServers: []*string{
-	// 									},
-	// 								},
-	// 								Primary: to.Ptr(true),
-	// 								EnableIPForwarding: to.Ptr(true),
-	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-	// 									{
-	// 										Name: to.Ptr("{vmss-name}"),
-	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-	// 											Subnet: &armcompute.APIEntityReference{
-	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/nsgExistingVnet/subnets/nsgExistingSubnet"),
-	// 											},
-	// 											PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
-	// 										},
-	// 									},
-	// 								},
-	// 								EnableAcceleratedNetworking: to.Ptr(false),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				Priority: to.Ptr(armcompute.VirtualMachinePriorityTypesSpot),
-	// 				EvictionPolicy: to.Ptr(armcompute.VirtualMachineEvictionPolicyTypesDeallocate),
-	// 				BillingProfile: &armcompute.BillingProfile{
-	// 					MaxPrice: to.Ptr[float64](-1),
-	// 				},
-	// 			},
-	// 			OrchestrationMode: to.Ptr(armcompute.OrchestrationModeFlexible),
-	// 			PriorityMixPolicy: &armcompute.PriorityMixPolicy{
-	// 				BaseRegularPriorityCount: to.Ptr[int32](4),
-	// 				RegularPriorityPercentageAboveBase: to.Ptr[int32](50),
-	// 			},
-	// 			SKUProfile: &armcompute.SKUProfile{
-	// 				VMSizes: []*armcompute.SKUProfileVMSize{
-	// 					{
-	// 						Name: to.Ptr("Standard_D8s_v5"),
-	// 					},
-	// 					{
-	// 						Name: to.Ptr("Standard_E16s_v5"),
-	// 					},
-	// 					{
-	// 						Name: to.Ptr("Standard_D2s_v5"),
-	// 					},
-	// 				},
-	// 				AllocationStrategy: to.Ptr(armcompute.AllocationStrategyCapacityOptimized),
-	// 				AutomaticSKUMigrationPolicy: &armcompute.AutomaticSKUMigrationPolicy{
-	// 					Enabled: to.Ptr(true),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr("Creating"),
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAutomaticZoneRebalancingPolicy.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAutomaticZoneRebalancingPolicy.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithAutomaticZoneRebalancingEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2918,9 +2500,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -2941,7 +2520,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAzureApplicationGateway.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAzureApplicationGateway.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithAnAzureApplicationGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3094,9 +2673,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -3110,7 +2686,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAzureLoadBalancer.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithAzureLoadBalancer.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithAnAzureLoadBalancer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3279,9 +2855,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -3295,7 +2868,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithBootDiagnostics.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithBootDiagnostics.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithBootDiagnostics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3450,9 +3023,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -3466,7 +3036,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithCapacityReservation.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithCapacityReservation.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createOrUpdateAScaleSetWithCapacityReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3619,8 +3189,167 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createOrUpdateASca
 	// 						ID: to.Ptr("subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/CapacityReservationGroups/{crgName}"),
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
+	// 			},
+	// 			UpgradePolicy: &armcompute.UpgradePolicy{
+	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Creating"),
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithDeterministicProcessorMode.json
+func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAVmssWithDeterministicProcessorMode() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualMachineScaleSetsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "{vmss-name}", armcompute.VirtualMachineScaleSet{
+		SKU: &armcompute.SKU{
+			Tier:     to.Ptr("Standard"),
+			Capacity: to.Ptr[int64](3),
+			Name:     to.Ptr("Standard_E2pds_v8"),
+		},
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineScaleSetProperties{
+			Overprovision: to.Ptr(true),
+			UpgradePolicy: &armcompute.UpgradePolicy{
+				Mode: to.Ptr(armcompute.UpgradeModeManual),
+			},
+			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
+				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
+					ImageReference: &armcompute.ImageReference{
+						SKU:       to.Ptr("2019-Datacenter"),
+						Publisher: to.Ptr("MicrosoftWindowsServer"),
+						Version:   to.Ptr("latest"),
+						Offer:     to.Ptr("WindowsServer"),
+					},
+					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
+						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
+							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+						},
+						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					},
+				},
+				HardwareProfile: &armcompute.VirtualMachineScaleSetHardwareProfile{
+					ProcessorMode: to.Ptr(armcompute.ProcessorModeDeterministic),
+				},
+				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
+					ComputerNamePrefix: to.Ptr("{vmss-name}"),
+					AdminUsername:      to.Ptr("{your-username}"),
+					AdminPassword:      to.Ptr("{your-password}"),
+				},
+				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
+					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
+						{
+							Name: to.Ptr("{vmss-name}"),
+							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
+								Primary:            to.Ptr(true),
+								EnableIPForwarding: to.Ptr(true),
+								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
+									{
+										Name: to.Ptr("{vmss-name}"),
+										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
+											Subnet: &armcompute.APIEntityReference{
+												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"),
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
+	// 		SKU: &armcompute.SKU{
+	// 			Tier: to.Ptr("Standard"),
+	// 			Capacity: to.Ptr[int64](3),
+	// 			Name: to.Ptr("Standard_E2pds_v8"),
+	// 		},
+	// 		Name: to.Ptr("{vmss-name}"),
+	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
+	// 			SinglePlacementGroup: to.Ptr(true),
+	// 			Overprovision: to.Ptr(true),
+	// 			UniqueID: to.Ptr("d053ec5a-8da6-495f-ab13-38216503c6d7"),
+	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
+	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
+	// 					ImageReference: &armcompute.ImageReference{
+	// 						SKU: to.Ptr("2019-Datacenter"),
+	// 						Publisher: to.Ptr("MicrosoftWindowsServer"),
+	// 						Version: to.Ptr("latest"),
+	// 						Offer: to.Ptr("WindowsServer"),
+	// 					},
+	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
+	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
+	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+	// 						},
+	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+	// 					},
+	// 				},
+	// 				HardwareProfile: &armcompute.VirtualMachineScaleSetHardwareProfile{
+	// 					ProcessorMode: to.Ptr(armcompute.ProcessorModeDeterministic),
+	// 				},
+	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
+	// 					ComputerNamePrefix: to.Ptr("{vmss-name}"),
+	// 					AdminUsername: to.Ptr("{your-username}"),
+	// 					Secrets: []*armcompute.VaultSecretGroup{
+	// 					},
+	// 					WindowsConfiguration: &armcompute.WindowsConfiguration{
+	// 						ProvisionVMAgent: to.Ptr(true),
+	// 						EnableAutomaticUpdates: to.Ptr(true),
+	// 					},
+	// 				},
+	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
+	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
+	// 						{
+	// 							Name: to.Ptr("{vmss-name}"),
+	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
+	// 								DNSSettings: &armcompute.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
+	// 									DNSServers: []*string{
+	// 									},
+	// 								},
+	// 								Primary: to.Ptr(true),
+	// 								EnableIPForwarding: to.Ptr(true),
+	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
+	// 									{
+	// 										Name: to.Ptr("{vmss-name}"),
+	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
+	// 											Subnet: &armcompute.APIEntityReference{
+	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"),
+	// 											},
+	// 											PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
+	// 										},
+	// 									},
+	// 								},
+	// 								EnableAcceleratedNetworking: to.Ptr(false),
+	// 							},
+	// 						},
+	// 					},
 	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
@@ -3635,7 +3364,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createOrUpdateASca
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithDiffOsDisk.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithDiffOsDisk.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithEphemeralOSDisks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3796,9 +3525,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -3810,7 +3536,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithDiskControllerType.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithDiskControllerType.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithDiskControllerType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3991,9 +3717,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			ScheduledEventsPolicy: &armcompute.ScheduledEventsPolicy{
 	// 				ScheduledEventsAdditionalPublishingTargets: &armcompute.ScheduledEventsAdditionalPublishingTargets{
@@ -4024,7 +3747,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithDiskEncryptionSetResource.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithDiskEncryptionSetResource.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithDiskEncryptionSetResourceInOSDiskAndDataDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4194,9 +3917,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -4210,7 +3930,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithEmptyDataDisksOnEachVm.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithEmptyDataDisksOnEachVm.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithEmptyDataDisksOnEachVM() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4387,9 +4107,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -4403,7 +4120,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithEncryptionAtHost.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithEncryptionAtHost.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithHostEncryptionUsingEncryptionAtHostProperty() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4526,7 +4243,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 				},
 	// 				SecurityProfile: &armcompute.SecurityProfile{
 	// 					EncryptionAtHost: to.Ptr(true),
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
 	// 				},
 	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
 	// 					ComputerNamePrefix: to.Ptr("{vmss-name}"),
@@ -4576,7 +4292,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithExtensionsSuppressFailuresEnabled.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithExtensionsSuppressFailuresEnabled.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAVmssWithAnExtensionThatHasSuppressFailuresEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4762,9 +4478,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAVmssWithAnE
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -4778,7 +4491,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAVmssWithAnE
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithExtensionsTimeBudget.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithExtensionsTimeBudget.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithExtensionTimeBudget() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4964,9 +4677,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -4980,207 +4690,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithExternalHealthPolicy.json
-func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithExternalHealthPolicyEnabled() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualMachineScaleSetsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "{vmss-name}", armcompute.VirtualMachineScaleSet{
-		SKU: &armcompute.SKU{
-			Tier:     to.Ptr("Standard"),
-			Capacity: to.Ptr[int64](3),
-			Name:     to.Ptr("Standard_D1_v2"),
-		},
-		Location: to.Ptr("westus"),
-		Properties: &armcompute.VirtualMachineScaleSetProperties{
-			Overprovision: to.Ptr(true),
-			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-					ImageReference: &armcompute.ImageReference{
-						SKU:       to.Ptr("2016-Datacenter"),
-						Publisher: to.Ptr("MicrosoftWindowsServer"),
-						Version:   to.Ptr("latest"),
-						Offer:     to.Ptr("WindowsServer"),
-					},
-					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-						},
-						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-					},
-				},
-				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-					ComputerNamePrefix: to.Ptr("{vmss-name}"),
-					AdminUsername:      to.Ptr("{your-username}"),
-					AdminPassword:      to.Ptr("{your-password}"),
-				},
-				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-						{
-							Name: to.Ptr("{vmss-name}"),
-							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-								Primary:            to.Ptr(true),
-								EnableIPForwarding: to.Ptr(true),
-								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-									{
-										Name: to.Ptr("{vmss-name}"),
-										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-											Subnet: &armcompute.APIEntityReference{
-												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"),
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			UpgradePolicy: &armcompute.UpgradePolicy{
-				Mode: to.Ptr(armcompute.UpgradeModeManual),
-			},
-			ScheduledEventsPolicy: &armcompute.ScheduledEventsPolicy{
-				ScheduledEventsAdditionalPublishingTargets: &armcompute.ScheduledEventsAdditionalPublishingTargets{
-					EventGridAndResourceGraph: &armcompute.EventGridAndResourceGraph{
-						Enable:                    to.Ptr(true),
-						ScheduledEventsAPIVersion: to.Ptr("2020-07-01"),
-					},
-				},
-				UserInitiatedRedeploy: &armcompute.UserInitiatedRedeploy{
-					AutomaticallyApprove: to.Ptr(true),
-				},
-				UserInitiatedReboot: &armcompute.UserInitiatedReboot{
-					AutomaticallyApprove: to.Ptr(true),
-				},
-				AllInstancesDown: &armcompute.AllInstancesDown{
-					AutomaticallyApprove: to.Ptr(true),
-				},
-			},
-			ExternalHealthPolicy: &armcompute.ExternalHealthPolicy{
-				Enabled:        to.Ptr(true),
-				ExpiryDuration: to.Ptr("PT10M"),
-				GracePeriod:    to.Ptr("PT4H"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
-	// 		SKU: &armcompute.SKU{
-	// 			Tier: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int64](3),
-	// 			Name: to.Ptr("Standard_D1_v2"),
-	// 		},
-	// 		Name: to.Ptr("{vmss-name}"),
-	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
-	// 			SinglePlacementGroup: to.Ptr(true),
-	// 			Overprovision: to.Ptr(true),
-	// 			UniqueID: to.Ptr("d053ec5a-8da6-495f-ab13-38216503c6d7"),
-	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-	// 					ImageReference: &armcompute.ImageReference{
-	// 						SKU: to.Ptr("2016-Datacenter"),
-	// 						Publisher: to.Ptr("MicrosoftWindowsServer"),
-	// 						Version: to.Ptr("latest"),
-	// 						Offer: to.Ptr("WindowsServer"),
-	// 					},
-	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-	// 						},
-	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-	// 					},
-	// 				},
-	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-	// 					ComputerNamePrefix: to.Ptr("{vmss-name}"),
-	// 					AdminUsername: to.Ptr("{your-username}"),
-	// 					Secrets: []*armcompute.VaultSecretGroup{
-	// 					},
-	// 					WindowsConfiguration: &armcompute.WindowsConfiguration{
-	// 						ProvisionVMAgent: to.Ptr(true),
-	// 						EnableAutomaticUpdates: to.Ptr(true),
-	// 					},
-	// 				},
-	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-	// 						{
-	// 							Name: to.Ptr("{vmss-name}"),
-	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-	// 								DNSSettings: &armcompute.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
-	// 									DNSServers: []*string{
-	// 									},
-	// 								},
-	// 								Primary: to.Ptr(true),
-	// 								EnableIPForwarding: to.Ptr(true),
-	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-	// 									{
-	// 										Name: to.Ptr("{vmss-name}"),
-	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-	// 											Subnet: &armcompute.APIEntityReference{
-	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/nsgExistingVnet/subnets/nsgExistingSubnet"),
-	// 											},
-	// 											PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
-	// 										},
-	// 									},
-	// 								},
-	// 								EnableAcceleratedNetworking: to.Ptr(false),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			UpgradePolicy: &armcompute.UpgradePolicy{
-	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
-	// 			},
-	// 			ScheduledEventsPolicy: &armcompute.ScheduledEventsPolicy{
-	// 				ScheduledEventsAdditionalPublishingTargets: &armcompute.ScheduledEventsAdditionalPublishingTargets{
-	// 					EventGridAndResourceGraph: &armcompute.EventGridAndResourceGraph{
-	// 						Enable: to.Ptr(true),
-	// 						ScheduledEventsAPIVersion: to.Ptr("2020-07-01"),
-	// 					},
-	// 				},
-	// 				UserInitiatedRedeploy: &armcompute.UserInitiatedRedeploy{
-	// 					AutomaticallyApprove: to.Ptr(true),
-	// 				},
-	// 				UserInitiatedReboot: &armcompute.UserInitiatedReboot{
-	// 					AutomaticallyApprove: to.Ptr(true),
-	// 				},
-	// 				AllInstancesDown: &armcompute.AllInstancesDown{
-	// 					AutomaticallyApprove: to.Ptr(true),
-	// 				},
-	// 			},
-	// 			ExternalHealthPolicy: &armcompute.ExternalHealthPolicy{
-	// 				Enabled: to.Ptr(true),
-	// 				ExpiryDuration: to.Ptr("PT10M"),
-	// 				GracePeriod: to.Ptr("PT4H"),
-	// 			},
-	// 			ProvisioningState: to.Ptr("Creating"),
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithHighSpeedInterconnectPlacement.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithHighSpeedInterconnectPlacement.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAVirtualMachineScaleSetWithHighSpeedInterconnectPlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5335,9 +4845,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAVirtualMach
 	// 					},
 	// 					NetworkAPIVersion: to.Ptr(armcompute.NetworkAPIVersionTwoThousandTwenty1101),
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 		},
 	// 		Location: to.Ptr("westus"),
@@ -5347,374 +4854,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAVirtualMach
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithInterconnectBlock.json
-func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createOrUpdateAScaleSetWithInterconnectBlock() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualMachineScaleSetsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "{vmss-name}", armcompute.VirtualMachineScaleSet{
-		SKU: &armcompute.SKU{
-			Tier:     to.Ptr("Standard"),
-			Capacity: to.Ptr[int64](3),
-			Name:     to.Ptr("Standard_ND128isr_GB300_v6"),
-		},
-		Location: to.Ptr("westus"),
-		Properties: &armcompute.VirtualMachineScaleSetProperties{
-			Overprovision:                  to.Ptr(true),
-			HighSpeedInterconnectPlacement: to.Ptr(armcompute.HighSpeedInterconnectPlacementTrunk),
-			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-					ImageReference: &armcompute.ImageReference{
-						Publisher: to.Ptr("microsoft-dsvm"),
-						Offer:     to.Ptr("ubuntu-hpc"),
-						SKU:       to.Ptr("2404-gb"),
-						Version:   to.Ptr("latest"),
-					},
-					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
-						},
-						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-					},
-				},
-				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-					ComputerNamePrefix: to.Ptr("{vmss-name}"),
-					AdminUsername:      to.Ptr("{your-username}"),
-					AdminPassword:      to.Ptr("{your-password}"),
-					LinuxConfiguration: &armcompute.LinuxConfiguration{
-						DisablePasswordAuthentication: to.Ptr(false),
-					},
-				},
-				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-					InterconnectGroupProfile: &armcompute.InterconnectGroupProfile{
-						InterconnectGroup: &armcompute.SubResource{
-							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
-						},
-						Subgroups: []*armcompute.SubResource{
-							{
-								ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup/subgroups/subgroup0"),
-							},
-						},
-					},
-					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-						{
-							Name: to.Ptr("{vmss-name}"),
-							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-								Primary:            to.Ptr(true),
-								EnableIPForwarding: to.Ptr(true),
-								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-									{
-										Name: to.Ptr("{vmss-name}"),
-										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-											Subnet: &armcompute.APIEntityReference{
-												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"),
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-				InterconnectBlockProfile: &armcompute.InterconnectBlockProfile{
-					InterconnectBlock: &armcompute.APIEntityReference{
-						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/interconnectBlocks/myInterconnectBlock"),
-					},
-				},
-			},
-			UpgradePolicy: &armcompute.UpgradePolicy{
-				Mode: to.Ptr(armcompute.UpgradeModeManual),
-			},
-		},
-		Zones: []*string{
-			to.Ptr("1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
-	// 		SKU: &armcompute.SKU{
-	// 			Tier: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int64](3),
-	// 			Name: to.Ptr("Standard_ND128isr_GB300_v6"),
-	// 		},
-	// 		Name: to.Ptr("{vmss-name}"),
-	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
-	// 			SinglePlacementGroup: to.Ptr(false),
-	// 			OrchestrationMode: to.Ptr(armcompute.OrchestrationModeUniform),
-	// 			HighSpeedInterconnectPlacement: to.Ptr(armcompute.HighSpeedInterconnectPlacementTrunk),
-	// 			Overprovision: to.Ptr(true),
-	// 			UniqueID: to.Ptr("d053ec5a-8da6-495f-ab13-38216503c6d7"),
-	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-	// 					ImageReference: &armcompute.ImageReference{
-	// 						Publisher: to.Ptr("microsoft-dsvm"),
-	// 						Offer: to.Ptr("ubuntu-hpc"),
-	// 						SKU: to.Ptr("2404-gb"),
-	// 						Version: to.Ptr("latest"),
-	// 					},
-	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
-	// 						},
-	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-	// 					},
-	// 				},
-	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-	// 					ComputerNamePrefix: to.Ptr("{vmss-name}"),
-	// 					AdminUsername: to.Ptr("{your-username}"),
-	// 					Secrets: []*armcompute.VaultSecretGroup{
-	// 					},
-	// 					LinuxConfiguration: &armcompute.LinuxConfiguration{
-	// 						DisablePasswordAuthentication: to.Ptr(false),
-	// 						ProvisionVMAgent: to.Ptr(true),
-	// 					},
-	// 				},
-	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-	// 					InterconnectGroupProfile: &armcompute.InterconnectGroupProfile{
-	// 						InterconnectGroup: &armcompute.SubResource{
-	// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
-	// 						},
-	// 						Subgroups: []*armcompute.SubResource{
-	// 							{
-	// 								ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup/subgroups/subgroup0"),
-	// 							},
-	// 						},
-	// 					},
-	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-	// 						{
-	// 							Name: to.Ptr("{vmss-name}"),
-	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-	// 								DNSSettings: &armcompute.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
-	// 									DNSServers: []*string{
-	// 									},
-	// 								},
-	// 								Primary: to.Ptr(true),
-	// 								EnableIPForwarding: to.Ptr(true),
-	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-	// 									{
-	// 										Name: to.Ptr("{vmss-name}"),
-	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-	// 											Subnet: &armcompute.APIEntityReference{
-	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/nsgExistingVnet/subnets/nsgExistingSubnet"),
-	// 											},
-	// 											PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
-	// 										},
-	// 									},
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				InterconnectBlockProfile: &armcompute.InterconnectBlockProfile{
-	// 					InterconnectBlock: &armcompute.APIEntityReference{
-	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/interconnectBlocks/myInterconnectBlock"),
-	// 					},
-	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
-	// 			},
-	// 			UpgradePolicy: &armcompute.UpgradePolicy{
-	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
-	// 			},
-	// 			ProvisioningState: to.Ptr("Creating"),
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
-	// 		Zones: []*string{
-	// 			to.Ptr("1"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithLifecycleHooksProfile.json
-func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAVirtualMachineScaleSetWithLifecycleHooksProfile() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("2e2e3046-f85f-4966-8fd2-5fd7bf6ea717", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualMachineScaleSetsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "{vmss-name}", armcompute.VirtualMachineScaleSet{
-		SKU: &armcompute.SKU{
-			Tier:     to.Ptr("Standard"),
-			Capacity: to.Ptr[int64](4),
-			Name:     to.Ptr("Standard_D1_v2"),
-		},
-		Location: to.Ptr("westus"),
-		Properties: &armcompute.VirtualMachineScaleSetProperties{
-			LifecycleHooksProfile: &armcompute.LifecycleHooksProfile{
-				LifecycleHooks: []*armcompute.LifecycleHook{
-					{
-						Type:          to.Ptr(armcompute.VMScaleSetLifecycleHookEventTypeUpgradeAutoOSRollingBatchStarting),
-						WaitDuration:  to.Ptr("PT20M"),
-						DefaultAction: to.Ptr(armcompute.LifecycleHookActionApprove),
-					},
-				},
-			},
-			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-					ImageReference: &armcompute.ImageReference{
-						SKU:       to.Ptr("2016-Datacenter"),
-						Publisher: to.Ptr("MicrosoftWindowsServer"),
-						Version:   to.Ptr("latest"),
-						Offer:     to.Ptr("WindowsServer"),
-					},
-					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-						},
-						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-					},
-				},
-				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-					ComputerNamePrefix: to.Ptr("{vmss-name}"),
-					AdminUsername:      to.Ptr("{your-username}"),
-					AdminPassword:      to.Ptr("{your-password}"),
-				},
-				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-						{
-							Name: to.Ptr("{vmss-name}"),
-							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-								Primary:            to.Ptr(true),
-								EnableIPForwarding: to.Ptr(true),
-								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-									{
-										Name: to.Ptr("{vmss-name}"),
-										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-											Subnet: &armcompute.APIEntityReference{
-												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"),
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
-	// 		SKU: &armcompute.SKU{
-	// 			Tier: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int64](4),
-	// 			Name: to.Ptr("Standard_D1_v2"),
-	// 		},
-	// 		Name: to.Ptr("{vmss-name}"),
-	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
-	// 			SinglePlacementGroup: to.Ptr(true),
-	// 			Overprovision: to.Ptr(true),
-	// 			UniqueID: to.Ptr("d053ec5a-8da6-495f-ab13-38216503c6d7"),
-	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-	// 					ImageReference: &armcompute.ImageReference{
-	// 						SKU: to.Ptr("2016-Datacenter"),
-	// 						Publisher: to.Ptr("MicrosoftWindowsServer"),
-	// 						Version: to.Ptr("latest"),
-	// 						Offer: to.Ptr("WindowsServer"),
-	// 					},
-	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-	// 						},
-	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-	// 					},
-	// 				},
-	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-	// 					ComputerNamePrefix: to.Ptr("{vmss-name}"),
-	// 					AdminUsername: to.Ptr("{your-username}"),
-	// 					Secrets: []*armcompute.VaultSecretGroup{
-	// 					},
-	// 					WindowsConfiguration: &armcompute.WindowsConfiguration{
-	// 						ProvisionVMAgent: to.Ptr(true),
-	// 						EnableAutomaticUpdates: to.Ptr(true),
-	// 					},
-	// 				},
-	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-	// 						{
-	// 							Name: to.Ptr("{vmss-name}"),
-	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-	// 								DNSSettings: &armcompute.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
-	// 									DNSServers: []*string{
-	// 									},
-	// 								},
-	// 								Primary: to.Ptr(true),
-	// 								EnableIPForwarding: to.Ptr(true),
-	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-	// 									{
-	// 										Name: to.Ptr("{vmss-name}"),
-	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-	// 											Subnet: &armcompute.APIEntityReference{
-	// 												ID: to.Ptr("/subscriptions/2e2e3046-f85f-4966-8fd2-5fd7bf6ea717/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/nsgExistingVnet/subnets/nsgExistingSubnet"),
-	// 											},
-	// 											PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
-	// 										},
-	// 									},
-	// 								},
-	// 								EnableAcceleratedNetworking: to.Ptr(false),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			LifecycleHooksProfile: &armcompute.LifecycleHooksProfile{
-	// 				LifecycleHooks: []*armcompute.LifecycleHook{
-	// 					{
-	// 						Type: to.Ptr(armcompute.VMScaleSetLifecycleHookEventTypeUpgradeAutoOSRollingBatchStarting),
-	// 						WaitDuration: to.Ptr("PT20M"),
-	// 						DefaultAction: to.Ptr(armcompute.LifecycleHookActionApprove),
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr("Updating"),
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-	// 		ID: to.Ptr("/subscriptions/2e2e3046-f85f-4966-8fd2-5fd7bf6ea717/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithManagedBootDiagnostics.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithManagedBootDiagnostics.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithManagedBootDiagnostics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5867,9 +5007,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -5883,7 +5020,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithMaxInstancePercentPerZonePolicy.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithMaxInstancePercentPerZonePolicy.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithMaxInstancePercentPerZonePolicyEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6034,9 +5171,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -6058,7 +5192,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithMaxZoneCount.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithMaxZoneCount.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAZonesAutoScaleSetWithMaxZoneCount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6209,9 +5343,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAZonesAutoSc
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -6233,7 +5364,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAZonesAutoSc
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithOSImageScheduledEventEnabled.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithOSImageScheduledEventEnabled.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithOSImageScheduledEventsEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6388,9 +5519,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						NotBeforeTimeout: to.Ptr("PT15M"),
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -6404,8 +5532,8 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithOperationRecoverySettings.json
-func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithOperationRecoverySettingsEnabled() {
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithOpportunisticProcessorMode.json
+func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAVmssWithOpportunisticProcessorMode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -6419,15 +5547,18 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 		SKU: &armcompute.SKU{
 			Tier:     to.Ptr("Standard"),
 			Capacity: to.Ptr[int64](3),
-			Name:     to.Ptr("Standard_D1_v2"),
+			Name:     to.Ptr("Standard_D2s_v5"),
 		},
 		Location: to.Ptr("westus"),
 		Properties: &armcompute.VirtualMachineScaleSetProperties{
-			Overprovision: to.Ptr(false),
+			Overprovision: to.Ptr(true),
+			UpgradePolicy: &armcompute.UpgradePolicy{
+				Mode: to.Ptr(armcompute.UpgradeModeManual),
+			},
 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
 					ImageReference: &armcompute.ImageReference{
-						SKU:       to.Ptr("2016-Datacenter"),
+						SKU:       to.Ptr("2019-Datacenter"),
 						Publisher: to.Ptr("MicrosoftWindowsServer"),
 						Version:   to.Ptr("latest"),
 						Offer:     to.Ptr("WindowsServer"),
@@ -6439,6 +5570,9 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 						},
 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
 					},
+				},
+				HardwareProfile: &armcompute.VirtualMachineScaleSetHardwareProfile{
+					ProcessorMode: to.Ptr(armcompute.ProcessorModeOpportunistic),
 				},
 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
 					ComputerNamePrefix: to.Ptr("{vmss-name}"),
@@ -6467,22 +5601,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 					},
 				},
 			},
-			UpgradePolicy: &armcompute.UpgradePolicy{
-				Mode: to.Ptr(armcompute.UpgradeModeManual),
-			},
-			ResiliencyPolicy: &armcompute.ResiliencyPolicy{
-				OperationRecoverySettings: &armcompute.OperationRecoverySettings{
-					RestartRecoveryPolicy: &armcompute.RestartRecoveryPolicy{
-						Enabled: to.Ptr(true),
-					},
-					StartRecoveryPolicy: &armcompute.StartRecoveryPolicy{
-						Enabled: to.Ptr(true),
-					},
-					ReimageRecoveryPolicy: &armcompute.ReimageRecoveryPolicy{
-						Enabled: to.Ptr(true),
-					},
-				},
-			},
 		},
 	}, nil)
 	if err != nil {
@@ -6500,17 +5618,17 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 		SKU: &armcompute.SKU{
 	// 			Tier: to.Ptr("Standard"),
 	// 			Capacity: to.Ptr[int64](3),
-	// 			Name: to.Ptr("Standard_D1_v2"),
+	// 			Name: to.Ptr("Standard_D2s_v5"),
 	// 		},
 	// 		Name: to.Ptr("{vmss-name}"),
 	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
 	// 			SinglePlacementGroup: to.Ptr(true),
-	// 			Overprovision: to.Ptr(false),
-	// 			UniqueID: to.Ptr("d053ec5a-8da6-495f-ab13-38216503c6d7"),
+	// 			Overprovision: to.Ptr(true),
+	// 			UniqueID: to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
 	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
 	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
 	// 					ImageReference: &armcompute.ImageReference{
-	// 						SKU: to.Ptr("2016-Datacenter"),
+	// 						SKU: to.Ptr("2019-Datacenter"),
 	// 						Publisher: to.Ptr("MicrosoftWindowsServer"),
 	// 						Version: to.Ptr("latest"),
 	// 						Offer: to.Ptr("WindowsServer"),
@@ -6522,6 +5640,9 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
 	// 					},
+	// 				},
+	// 				HardwareProfile: &armcompute.VirtualMachineScaleSetHardwareProfile{
+	// 					ProcessorMode: to.Ptr(armcompute.ProcessorModeOpportunistic),
 	// 				},
 	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
 	// 					ComputerNamePrefix: to.Ptr("{vmss-name}"),
@@ -6549,7 +5670,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 										Name: to.Ptr("{vmss-name}"),
 	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
 	// 											Subnet: &armcompute.APIEntityReference{
-	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/nsgExistingVnet/subnets/nsgExistingSubnet"),
+	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"),
 	// 											},
 	// 											PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
 	// 										},
@@ -6564,19 +5685,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
 	// 			},
-	// 			ResiliencyPolicy: &armcompute.ResiliencyPolicy{
-	// 				OperationRecoverySettings: &armcompute.OperationRecoverySettings{
-	// 					RestartRecoveryPolicy: &armcompute.RestartRecoveryPolicy{
-	// 						Enabled: to.Ptr(true),
-	// 					},
-	// 					StartRecoveryPolicy: &armcompute.StartRecoveryPolicy{
-	// 						Enabled: to.Ptr(true),
-	// 					},
-	// 					ReimageRecoveryPolicy: &armcompute.ReimageRecoveryPolicy{
-	// 						Enabled: to.Ptr(true),
-	// 					},
-	// 				},
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Location: to.Ptr("westus"),
@@ -6586,7 +5694,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPasswordAuthentication.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPasswordAuthentication.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithPasswordAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6729,9 +5837,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -6745,7 +5850,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPlacement.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPlacement.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithPlacementPolicyAuto() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6895,9 +6000,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -6918,7 +6020,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPremiumStorage.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPremiumStorage.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithPremiumStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7061,9 +6163,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -7077,7 +6176,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPriorityMixPolicy.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithPriorityMixPolicy.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithPriorityMixPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7238,9 +6337,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 					},
 	// 					NetworkAPIVersion: to.Ptr(armcompute.NetworkAPIVersionTwoThousandTwenty1101),
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 		},
 	// 		Location: to.Ptr("westus"),
@@ -7250,7 +6346,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithProtectedSettingsFromKeyVault.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithProtectedSettingsFromKeyVault.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAVmssWithAnExtensionWithProtectedSettingsFromKeyVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7446,9 +6542,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAVmssWithAnE
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -7462,7 +6555,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAVmssWithAnE
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithProxyAgentSettings.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithProxyAgentSettings.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithProxyAgentSettingsOfEnabledAndMode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7635,7 +6728,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithResilientVMCreationPolicy.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithResilientVMCreationPolicy.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithResilientVMCreationEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7783,9 +6876,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -7804,7 +6894,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithResilientVMDeletionPolicy.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithResilientVMDeletionPolicy.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithResilientVMDeletionEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7952,9 +7042,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -7973,7 +7060,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithScaleInPolicy.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithScaleInPolicy.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithScaleInPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8123,9 +7210,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -8146,7 +7230,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSecurityPostureReference.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSecurityPostureReference.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithSecurityPostureReference() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8294,9 +7378,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
@@ -8313,7 +7394,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSecurityTypeConfidentialVM.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSecurityTypeConfidentialVM.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithSecurityTypeAsConfidentialVM() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8489,7 +7570,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSecurityTypeConfidentialVMWithNonPersistedTPM.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSecurityTypeConfidentialVMWithNonPersistedTPM.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithSecurityTypeAsConfidentialVMAndNonPersistedTpmSecurityEncryptionType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8665,7 +7746,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithServiceArtifactReference.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithServiceArtifactReference.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithServiceArtifactReference() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8813,9 +7894,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
@@ -8832,7 +7910,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSkuProfile.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSkuProfile.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithSkuProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8998,9 +8076,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 				BillingProfile: &armcompute.BillingProfile{
 	// 					MaxPrice: to.Ptr[float64](-1),
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			OrchestrationMode: to.Ptr(armcompute.OrchestrationModeFlexible),
 	// 			PriorityMixPolicy: &armcompute.PriorityMixPolicy{
@@ -9030,7 +8105,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSkuProfile_Prioritized.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSkuProfile_Prioritized.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithSkuProfileAndPrioritizedAllocationStrategy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -9199,9 +8274,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 				BillingProfile: &armcompute.BillingProfile{
 	// 					MaxPrice: to.Ptr[float64](-1),
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			OrchestrationMode: to.Ptr(armcompute.OrchestrationModeFlexible),
 	// 			PriorityMixPolicy: &armcompute.PriorityMixPolicy{
@@ -9234,7 +8306,381 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSpotRestorePolicy.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSpotPlusPriority.json
+func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithSpotPlusPriorityUniform() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualMachineScaleSetsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "{vmss-name}", armcompute.VirtualMachineScaleSet{
+		SKU: &armcompute.SKU{
+			Tier:     to.Ptr("Standard"),
+			Capacity: to.Ptr[int64](2),
+			Name:     to.Ptr("Standard_D2s_v5"),
+		},
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineScaleSetProperties{
+			Overprovision: to.Ptr(true),
+			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
+				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
+					ImageReference: &armcompute.ImageReference{
+						SKU:       to.Ptr("2016-Datacenter"),
+						Publisher: to.Ptr("MicrosoftWindowsServer"),
+						Version:   to.Ptr("latest"),
+						Offer:     to.Ptr("WindowsServer"),
+					},
+					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
+						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
+							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+						},
+						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					},
+				},
+				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
+					ComputerNamePrefix: to.Ptr("{vmss-name}"),
+					AdminUsername:      to.Ptr("{your-username}"),
+					AdminPassword:      to.Ptr("{your-password}"),
+				},
+				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
+					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
+						{
+							Name: to.Ptr("{vmss-name}"),
+							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
+								Primary:            to.Ptr(true),
+								EnableIPForwarding: to.Ptr(true),
+								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
+									{
+										Name: to.Ptr("{vmss-name}"),
+										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
+											Subnet: &armcompute.APIEntityReference{
+												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"),
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+				Priority:       to.Ptr(armcompute.VirtualMachinePriorityTypesSpotPlus),
+				EvictionPolicy: to.Ptr(armcompute.VirtualMachineEvictionPolicyTypesDeallocate),
+				BillingProfile: &armcompute.BillingProfile{
+					MaxPrice: to.Ptr[float64](-1),
+				},
+			},
+			UpgradePolicy: &armcompute.UpgradePolicy{
+				Mode: to.Ptr(armcompute.UpgradeModeManual),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
+	// 		SKU: &armcompute.SKU{
+	// 			Tier: to.Ptr("Standard"),
+	// 			Capacity: to.Ptr[int64](2),
+	// 			Name: to.Ptr("Standard_D2s_v5"),
+	// 		},
+	// 		Name: to.Ptr("{vmss-name}"),
+	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
+	// 			SinglePlacementGroup: to.Ptr(true),
+	// 			Overprovision: to.Ptr(true),
+	// 			UniqueID: to.Ptr("b1c2d3e4-f5a6-7890-bcde-f01234567890"),
+	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
+	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
+	// 					ImageReference: &armcompute.ImageReference{
+	// 						SKU: to.Ptr("2016-Datacenter"),
+	// 						Publisher: to.Ptr("MicrosoftWindowsServer"),
+	// 						Version: to.Ptr("latest"),
+	// 						Offer: to.Ptr("WindowsServer"),
+	// 					},
+	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
+	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
+	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+	// 						},
+	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+	// 					},
+	// 				},
+	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
+	// 					ComputerNamePrefix: to.Ptr("{vmss-name}"),
+	// 					AdminUsername: to.Ptr("{your-username}"),
+	// 					Secrets: []*armcompute.VaultSecretGroup{
+	// 					},
+	// 					WindowsConfiguration: &armcompute.WindowsConfiguration{
+	// 						ProvisionVMAgent: to.Ptr(true),
+	// 						EnableAutomaticUpdates: to.Ptr(true),
+	// 					},
+	// 				},
+	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
+	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
+	// 						{
+	// 							Name: to.Ptr("{vmss-name}"),
+	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
+	// 								DNSSettings: &armcompute.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
+	// 									DNSServers: []*string{
+	// 									},
+	// 								},
+	// 								Primary: to.Ptr(true),
+	// 								EnableIPForwarding: to.Ptr(true),
+	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
+	// 									{
+	// 										Name: to.Ptr("{vmss-name}"),
+	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
+	// 											Subnet: &armcompute.APIEntityReference{
+	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/nsgExistingVnet/subnets/nsgExistingSubnet"),
+	// 											},
+	// 											PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
+	// 										},
+	// 									},
+	// 								},
+	// 								EnableAcceleratedNetworking: to.Ptr(false),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				Priority: to.Ptr(armcompute.VirtualMachinePriorityTypesSpotPlus),
+	// 				EvictionPolicy: to.Ptr(armcompute.VirtualMachineEvictionPolicyTypesDeallocate),
+	// 				BillingProfile: &armcompute.BillingProfile{
+	// 					MaxPrice: to.Ptr[float64](-1),
+	// 				},
+	// 			},
+	// 			UpgradePolicy: &armcompute.UpgradePolicy{
+	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Creating"),
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSpotPlusPriorityFlex.json
+func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithSpotPlusPriorityFlexible() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualMachineScaleSetsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "{vmss-name}", armcompute.VirtualMachineScaleSet{
+		SKU: &armcompute.SKU{
+			Capacity: to.Ptr[int64](10),
+			Name:     to.Ptr("Mix"),
+		},
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineScaleSetProperties{
+			OrchestrationMode:        to.Ptr(armcompute.OrchestrationModeFlexible),
+			PlatformFaultDomainCount: to.Ptr[int32](1),
+			SinglePlacementGroup:     to.Ptr(false),
+			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
+				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
+					ImageReference: &armcompute.ImageReference{
+						Publisher: to.Ptr("Canonical"),
+						Offer:     to.Ptr("0001-com-ubuntu-server-focal"),
+						SKU:       to.Ptr("20_04-lts-gen2"),
+						Version:   to.Ptr("latest"),
+					},
+					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
+						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+						Caching:      to.Ptr(armcompute.CachingTypesReadWrite),
+						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
+							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+						},
+					},
+				},
+				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
+					ComputerNamePrefix: to.Ptr("{vmss-name}"),
+					AdminUsername:      to.Ptr("{your-username}"),
+				},
+				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
+					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
+						{
+							Name: to.Ptr("{vmss-name}"),
+							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
+								Primary:                     to.Ptr(true),
+								EnableIPForwarding:          to.Ptr(true),
+								EnableAcceleratedNetworking: to.Ptr(false),
+								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
+									{
+										Name: to.Ptr("{vmss-name}"),
+										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
+											Subnet: &armcompute.APIEntityReference{
+												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"),
+											},
+											Primary:                               to.Ptr(true),
+											ApplicationGatewayBackendAddressPools: []*armcompute.SubResource{},
+											LoadBalancerBackendAddressPools:       []*armcompute.SubResource{},
+											PublicIPAddressConfiguration: &armcompute.VirtualMachineScaleSetPublicIPAddressConfiguration{
+												Name: to.Ptr("{vmss-name}"),
+												Properties: &armcompute.VirtualMachineScaleSetPublicIPAddressConfigurationProperties{
+													IdleTimeoutInMinutes: to.Ptr[int32](15),
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+					NetworkAPIVersion: to.Ptr(armcompute.NetworkAPIVersionTwoThousandTwenty1101),
+				},
+				Priority:       to.Ptr(armcompute.VirtualMachinePriorityTypesSpotPlus),
+				EvictionPolicy: to.Ptr(armcompute.VirtualMachineEvictionPolicyTypesDeallocate),
+				BillingProfile: &armcompute.BillingProfile{
+					MaxPrice: to.Ptr[float64](-1),
+				},
+			},
+			PriorityMixPolicy: &armcompute.PriorityMixPolicy{
+				BaseRegularPriorityCount:           to.Ptr[int32](4),
+				RegularPriorityPercentageAboveBase: to.Ptr[int32](50),
+			},
+			SKUProfile: &armcompute.SKUProfile{
+				VMSizes: []*armcompute.SKUProfileVMSize{
+					{
+						Name: to.Ptr("Standard_D8s_v5"),
+					},
+					{
+						Name: to.Ptr("Standard_E16s_v5"),
+					},
+					{
+						Name: to.Ptr("Standard_D2s_v5"),
+					},
+				},
+				AllocationStrategy: to.Ptr(armcompute.AllocationStrategyCapacityOptimized),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
+	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
+	// 		SKU: &armcompute.SKU{
+	// 			Capacity: to.Ptr[int64](10),
+	// 			Name: to.Ptr("Mix"),
+	// 		},
+	// 		Name: to.Ptr("{vmss-name}"),
+	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
+	// 			OrchestrationMode: to.Ptr(armcompute.OrchestrationModeFlexible),
+	// 			PlatformFaultDomainCount: to.Ptr[int32](1),
+	// 			SinglePlacementGroup: to.Ptr(false),
+	// 			UniqueID: to.Ptr("c2d3e4f5-a6b7-8901-cdef-012345678901"),
+	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
+	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
+	// 					ImageReference: &armcompute.ImageReference{
+	// 						Publisher: to.Ptr("Canonical"),
+	// 						Offer: to.Ptr("0001-com-ubuntu-server-focal"),
+	// 						SKU: to.Ptr("20_04-lts-gen2"),
+	// 						Version: to.Ptr("latest"),
+	// 					},
+	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
+	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
+	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+	// 						},
+	// 					},
+	// 				},
+	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
+	// 					ComputerNamePrefix: to.Ptr("{vmss-name}"),
+	// 					AdminUsername: to.Ptr("{your-username}"),
+	// 				},
+	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
+	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
+	// 						{
+	// 							Name: to.Ptr("{vmss-name}"),
+	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
+	// 								Primary: to.Ptr(true),
+	// 								EnableIPForwarding: to.Ptr(true),
+	// 								EnableAcceleratedNetworking: to.Ptr(false),
+	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
+	// 									{
+	// 										Name: to.Ptr("{vmss-name}"),
+	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
+	// 											Subnet: &armcompute.APIEntityReference{
+	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"),
+	// 											},
+	// 											Primary: to.Ptr(true),
+	// 											ApplicationGatewayBackendAddressPools: []*armcompute.SubResource{
+	// 											},
+	// 											LoadBalancerBackendAddressPools: []*armcompute.SubResource{
+	// 											},
+	// 											PublicIPAddressConfiguration: &armcompute.VirtualMachineScaleSetPublicIPAddressConfiguration{
+	// 												Name: to.Ptr("{vmss-name}"),
+	// 												Properties: &armcompute.VirtualMachineScaleSetPublicIPAddressConfigurationProperties{
+	// 													IdleTimeoutInMinutes: to.Ptr[int32](15),
+	// 												},
+	// 											},
+	// 										},
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					NetworkAPIVersion: to.Ptr(armcompute.NetworkAPIVersionTwoThousandTwenty1101),
+	// 				},
+	// 				Priority: to.Ptr(armcompute.VirtualMachinePriorityTypesSpotPlus),
+	// 				EvictionPolicy: to.Ptr(armcompute.VirtualMachineEvictionPolicyTypesDeallocate),
+	// 				BillingProfile: &armcompute.BillingProfile{
+	// 					MaxPrice: to.Ptr[float64](-1),
+	// 				},
+	// 			},
+	// 			PriorityMixPolicy: &armcompute.PriorityMixPolicy{
+	// 				BaseRegularPriorityCount: to.Ptr[int32](4),
+	// 				RegularPriorityPercentageAboveBase: to.Ptr[int32](50),
+	// 			},
+	// 			SKUProfile: &armcompute.SKUProfile{
+	// 				VMSizes: []*armcompute.SKUProfileVMSize{
+	// 					{
+	// 						Name: to.Ptr("Standard_D8s_v5"),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("Standard_E16s_v5"),
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("Standard_D2s_v5"),
+	// 					},
+	// 				},
+	// 				AllocationStrategy: to.Ptr(armcompute.AllocationStrategyCapacityOptimized),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Creating"),
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSpotRestorePolicy.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithSpotRestorePolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -9391,9 +8837,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 				BillingProfile: &armcompute.BillingProfile{
 	// 					MaxPrice: to.Ptr[float64](-1),
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -9411,7 +8854,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSshAuthentication.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithSshAuthentication.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithSshAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -9571,9 +9014,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -9587,196 +9027,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithStorageFaultDomainAlignment.json
-func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetContainingDisksWithStorageFaultDomainAlignment() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualMachineScaleSetsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "{vmss-name}", armcompute.VirtualMachineScaleSet{
-		SKU: &armcompute.SKU{
-			Tier:     to.Ptr("Standard"),
-			Capacity: to.Ptr[int64](3),
-			Name:     to.Ptr("Standard_D1_v2"),
-		},
-		Location: to.Ptr("westus"),
-		Properties: &armcompute.VirtualMachineScaleSetProperties{
-			Overprovision: to.Ptr(true),
-			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-					ImageReference: &armcompute.ImageReference{
-						SKU:       to.Ptr("2016-Datacenter"),
-						Publisher: to.Ptr("MicrosoftWindowsServer"),
-						Version:   to.Ptr("latest"),
-						Offer:     to.Ptr("WindowsServer"),
-					},
-					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-						},
-						CreateOption:                to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-						StorageFaultDomainAlignment: to.Ptr(armcompute.StorageFaultDomainAlignmentTypeBestEffortAligned),
-					},
-				},
-				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-					ComputerNamePrefix: to.Ptr("{vmss-name}"),
-					AdminUsername:      to.Ptr("{your-username}"),
-					AdminPassword:      to.Ptr("{your-password}"),
-				},
-				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-						{
-							Name: to.Ptr("{vmss-name}"),
-							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-								Primary:            to.Ptr(true),
-								EnableIPForwarding: to.Ptr(true),
-								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-									{
-										Name: to.Ptr("{vmss-name}"),
-										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-											Subnet: &armcompute.APIEntityReference{
-												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/{existing-virtual-network-name}/subnets/{existing-subnet-name}"),
-											},
-										},
-									},
-								},
-							},
-						},
-					},
-				},
-			},
-			UpgradePolicy: &armcompute.UpgradePolicy{
-				Mode: to.Ptr(armcompute.UpgradeModeManual),
-			},
-			ScheduledEventsPolicy: &armcompute.ScheduledEventsPolicy{
-				ScheduledEventsAdditionalPublishingTargets: &armcompute.ScheduledEventsAdditionalPublishingTargets{
-					EventGridAndResourceGraph: &armcompute.EventGridAndResourceGraph{
-						Enable: to.Ptr(true),
-					},
-				},
-				UserInitiatedRedeploy: &armcompute.UserInitiatedRedeploy{
-					AutomaticallyApprove: to.Ptr(true),
-				},
-				UserInitiatedReboot: &armcompute.UserInitiatedReboot{
-					AutomaticallyApprove: to.Ptr(true),
-				},
-			},
-			ZonalPlatformFaultDomainAlignMode: to.Ptr(armcompute.ZonalPlatformFaultDomainAlignModeAligned),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachineScaleSetsClientCreateOrUpdateResponse{
-	// 	VirtualMachineScaleSet: armcompute.VirtualMachineScaleSet{
-	// 		SKU: &armcompute.SKU{
-	// 			Tier: to.Ptr("Standard"),
-	// 			Capacity: to.Ptr[int64](3),
-	// 			Name: to.Ptr("Standard_D1_v2"),
-	// 		},
-	// 		Name: to.Ptr("{vmss-name}"),
-	// 		Properties: &armcompute.VirtualMachineScaleSetProperties{
-	// 			SinglePlacementGroup: to.Ptr(true),
-	// 			Overprovision: to.Ptr(true),
-	// 			UniqueID: to.Ptr("d053ec5a-8da6-495f-ab13-38216503c6d7"),
-	// 			VirtualMachineProfile: &armcompute.VirtualMachineScaleSetVMProfile{
-	// 				StorageProfile: &armcompute.VirtualMachineScaleSetStorageProfile{
-	// 					ImageReference: &armcompute.ImageReference{
-	// 						SKU: to.Ptr("2016-Datacenter"),
-	// 						Publisher: to.Ptr("MicrosoftWindowsServer"),
-	// 						Version: to.Ptr("latest"),
-	// 						Offer: to.Ptr("WindowsServer"),
-	// 					},
-	// 					OSDisk: &armcompute.VirtualMachineScaleSetOSDisk{
-	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-	// 						ManagedDisk: &armcompute.VirtualMachineScaleSetManagedDiskParameters{
-	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-	// 						},
-	// 						StorageFaultDomainAlignment: to.Ptr(armcompute.StorageFaultDomainAlignmentTypeBestEffortAligned),
-	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-	// 					},
-	// 				},
-	// 				OSProfile: &armcompute.VirtualMachineScaleSetOSProfile{
-	// 					ComputerNamePrefix: to.Ptr("{vmss-name}"),
-	// 					AdminUsername: to.Ptr("{your-username}"),
-	// 					Secrets: []*armcompute.VaultSecretGroup{
-	// 					},
-	// 					WindowsConfiguration: &armcompute.WindowsConfiguration{
-	// 						ProvisionVMAgent: to.Ptr(true),
-	// 						EnableAutomaticUpdates: to.Ptr(true),
-	// 					},
-	// 				},
-	// 				NetworkProfile: &armcompute.VirtualMachineScaleSetNetworkProfile{
-	// 					NetworkInterfaceConfigurations: []*armcompute.VirtualMachineScaleSetNetworkConfiguration{
-	// 						{
-	// 							Name: to.Ptr("{vmss-name}"),
-	// 							Properties: &armcompute.VirtualMachineScaleSetNetworkConfigurationProperties{
-	// 								DNSSettings: &armcompute.VirtualMachineScaleSetNetworkConfigurationDNSSettings{
-	// 									DNSServers: []*string{
-	// 									},
-	// 								},
-	// 								Primary: to.Ptr(true),
-	// 								EnableIPForwarding: to.Ptr(true),
-	// 								IPConfigurations: []*armcompute.VirtualMachineScaleSetIPConfiguration{
-	// 									{
-	// 										Name: to.Ptr("{vmss-name}"),
-	// 										Properties: &armcompute.VirtualMachineScaleSetIPConfigurationProperties{
-	// 											Subnet: &armcompute.APIEntityReference{
-	// 												ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/nsgExistingVnet/subnets/nsgExistingSubnet"),
-	// 											},
-	// 											PrivateIPAddressVersion: to.Ptr(armcompute.IPVersionIPv4),
-	// 										},
-	// 									},
-	// 								},
-	// 								EnableAcceleratedNetworking: to.Ptr(false),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
-	// 			},
-	// 			UpgradePolicy: &armcompute.UpgradePolicy{
-	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
-	// 			},
-	// 			ScheduledEventsPolicy: &armcompute.ScheduledEventsPolicy{
-	// 				ScheduledEventsAdditionalPublishingTargets: &armcompute.ScheduledEventsAdditionalPublishingTargets{
-	// 					EventGridAndResourceGraph: &armcompute.EventGridAndResourceGraph{
-	// 						Enable: to.Ptr(true),
-	// 					},
-	// 				},
-	// 				UserInitiatedRedeploy: &armcompute.UserInitiatedRedeploy{
-	// 					AutomaticallyApprove: to.Ptr(true),
-	// 				},
-	// 				UserInitiatedReboot: &armcompute.UserInitiatedReboot{
-	// 					AutomaticallyApprove: to.Ptr(true),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr("Creating"),
-	// 			ZonalPlatformFaultDomainAlignMode: to.Ptr(armcompute.ZonalPlatformFaultDomainAlignModeAligned),
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		Type: to.Ptr("Microsoft.Compute/virtualMachineScaleSets"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/{vmss-name}"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithTerminateScheduledEventEnabled.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithTerminateScheduledEventEnabled.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithTerminateScheduledEventsEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -9931,9 +9182,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						NotBeforeTimeout: to.Ptr("PT5M"),
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -9947,7 +9195,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithUefiSettings.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithUefiSettings.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithUefiSettingsOfSecureBootAndVTpm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10117,7 +9365,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithUserData.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithUserData.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithUserData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10267,9 +9515,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -10283,7 +9528,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithVMSizeProperties.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithVMSizeProperties.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithVMSizeProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10445,9 +9690,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -10461,7 +9703,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithVMsInDifferentZones.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithVMsInDifferentZones.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithVirtualMachinesInDifferentZones() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10643,9 +9885,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeAutomatic),
@@ -10663,7 +9902,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithZonalPlatformFaultDomainAlignMode.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Create_WithZonalPlatformFaultDomainAlignMode.json
 func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWithZonalPlatformFaultDomainAlignModeAsAligned() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10820,9 +10059,6 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			UpgradePolicy: &armcompute.UpgradePolicy{
 	// 				Mode: to.Ptr(armcompute.UpgradeModeManual),
@@ -10850,7 +10086,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginCreateOrUpdate_createAScaleSetWit
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Deallocate_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Deallocate_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginDeallocate_virtualMachineScaleSetDeallocateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10882,7 +10118,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginDeallocate_virtualMachineScaleSet
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Deallocate_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Deallocate_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginDeallocate_virtualMachineScaleSetDeallocateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10908,7 +10144,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginDeallocate_virtualMachineScaleSet
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Delete_Force.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Delete_Force.json
 func ExampleVirtualMachineScaleSetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10935,7 +10171,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_DeleteInstances_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_DeleteInstances_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginDeleteInstances_virtualMachineScaleSetDeleteInstancesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10966,7 +10202,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginDeleteInstances_virtualMachineSca
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_DeleteInstances_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_DeleteInstances_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginDeleteInstances_virtualMachineScaleSetDeleteInstancesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10996,7 +10232,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginDeleteInstances_virtualMachineSca
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_virtualMachineScaleSetForceRecoveryServiceFabricPlatformUpdateDomainWalkMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11022,7 +10258,7 @@ func ExampleVirtualMachineScaleSetsClient_ForceRecoveryServiceFabricPlatformUpda
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_ForceRecoveryServiceFabricPlatformUpdateDomainWalk_virtualMachineScaleSetForceRecoveryServiceFabricPlatformUpdateDomainWalkMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11046,7 +10282,7 @@ func ExampleVirtualMachineScaleSetsClient_ForceRecoveryServiceFabricPlatformUpda
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get.json
 func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11151,10 +10387,7 @@ func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSet() {
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
-	// 				TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-27T01:03:40.3138469+00:00"); return t}()),
+	// 				TimeCreated: to.Ptr(time.Date(2023, time.September, 27, 1, 3, 40, 313846900, time.UTC)),
 	// 			},
 	// 			ProvisioningState: to.Ptr("succeeded"),
 	// 			Overprovision: to.Ptr(false),
@@ -11163,13 +10396,13 @@ func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSet() {
 	// 			HostGroup: &armcompute.SubResource{
 	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/hostGroups/myHostGroup"),
 	// 			},
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_AutoPlacedOnDedicatedHostGroup.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_AutoPlacedOnDedicatedHostGroup.json
 func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSetPlacedOnADedicatedHostGroupThroughAutomaticPlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11259,9 +10492,6 @@ func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSetPlacedOn
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr("succeeded"),
 	// 			Overprovision: to.Ptr(false),
@@ -11275,7 +10505,7 @@ func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSetPlacedOn
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithDiskControllerType.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithDiskControllerType.json
 func ExampleVirtualMachineScaleSetsClient_Get_getVMScaleSetVMWithDiskControllerType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11381,9 +10611,6 @@ func ExampleVirtualMachineScaleSetsClient_Get_getVMScaleSetVMWithDiskControllerT
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr("succeeded"),
 	// 			Overprovision: to.Ptr(false),
@@ -11397,7 +10624,7 @@ func ExampleVirtualMachineScaleSetsClient_Get_getVMScaleSetVMWithDiskControllerT
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithUserData.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Get_WithUserData.json
 func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSetWithUserData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11502,9 +10729,6 @@ func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSetWithUser
 	// 						},
 	// 					},
 	// 				},
-	// 				SecurityProfile: &armcompute.SecurityProfile{
-	// 					SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr("succeeded"),
 	// 			Overprovision: to.Ptr(false),
@@ -11518,7 +10742,7 @@ func ExampleVirtualMachineScaleSetsClient_Get_getAVirtualMachineScaleSetWithUser
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetInstanceView_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetInstanceView_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_GetInstanceView_virtualMachineScaleSetGetInstanceViewMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11563,7 +10787,7 @@ func ExampleVirtualMachineScaleSetsClient_GetInstanceView_virtualMachineScaleSet
 	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 				DisplayStatus: to.Ptr("Provisioning succeeded"),
 	// 				Message: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaa"),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.526Z"); return t}()),
+	// 				Time: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 526000000, time.UTC)),
 	// 			},
 	// 		},
 	// 		OrchestrationServices: []*armcompute.OrchestrationServiceSummary{
@@ -11575,14 +10799,14 @@ func ExampleVirtualMachineScaleSetsClient_GetInstanceView_virtualMachineScaleSet
 	// 				ServiceName: to.Ptr(armcompute.OrchestrationServiceNamesAutomaticZoneRebalancing),
 	// 				ServiceState: to.Ptr(armcompute.OrchestrationServiceStateRunning),
 	// 				LatestOperationStatus: to.Ptr(armcompute.OrchestrationServiceOperationStatusInProgress),
-	// 				LastStatusChangeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-09T13:26:28.360Z"); return t}()),
+	// 				LastStatusChangeTime: to.Ptr(time.Date(2025, time.July, 9, 13, 26, 28, 360000000, time.UTC)),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetInstanceView_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetInstanceView_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_GetInstanceView_virtualMachineScaleSetGetInstanceViewMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11606,7 +10830,7 @@ func ExampleVirtualMachineScaleSetsClient_GetInstanceView_virtualMachineScaleSet
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetOSUpgradeHistory_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetOSUpgradeHistory_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_NewGetOSUpgradeHistoryPager_virtualMachineScaleSetGetOSUpgradeHistoryMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11635,8 +10859,8 @@ func ExampleVirtualMachineScaleSetsClient_NewGetOSUpgradeHistoryPager_virtualMac
 		// 				Properties: &armcompute.UpgradeOperationHistoricalStatusInfoProperties{
 		// 					RunningStatus: &armcompute.UpgradeOperationHistoryStatus{
 		// 						Code: to.Ptr(armcompute.UpgradeStateRollingForward),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T13:05:40.442Z"); return t}()),
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T13:05:40.443Z"); return t}()),
+		// 						StartTime: to.Ptr(time.Date(2021, time.November, 30, 13, 5, 40, 442000000, time.UTC)),
+		// 						EndTime: to.Ptr(time.Date(2021, time.November, 30, 13, 5, 40, 443000000, time.UTC)),
 		// 					},
 		// 					Progress: &armcompute.RollingUpgradeProgressInfo{
 		// 						SuccessfulInstanceCount: to.Ptr[int32](6),
@@ -11701,7 +10925,7 @@ func ExampleVirtualMachineScaleSetsClient_NewGetOSUpgradeHistoryPager_virtualMac
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetOSUpgradeHistory_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_GetOSUpgradeHistory_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_NewGetOSUpgradeHistoryPager_virtualMachineScaleSetGetOSUpgradeHistoryMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11734,7 +10958,7 @@ func ExampleVirtualMachineScaleSetsClient_NewGetOSUpgradeHistoryPager_virtualMac
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_List_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_NewListPager_virtualMachineScaleSetListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -12445,7 +11669,7 @@ func ExampleVirtualMachineScaleSetsClient_NewListPager_virtualMachineScaleSetLis
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_List_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_NewListPager_virtualMachineScaleSetListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -12484,7 +11708,7 @@ func ExampleVirtualMachineScaleSetsClient_NewListPager_virtualMachineScaleSetLis
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListAll_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListAll_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_NewListAllPager_virtualMachineScaleSetListAllMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -12873,7 +12097,7 @@ func ExampleVirtualMachineScaleSetsClient_NewListAllPager_virtualMachineScaleSet
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListAll_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListAll_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_NewListAllPager_virtualMachineScaleSetListAllMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -12908,7 +12132,7 @@ func ExampleVirtualMachineScaleSetsClient_NewListAllPager_virtualMachineScaleSet
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListBySubscription_ByLocation.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListBySubscription_ByLocation.json
 func ExampleVirtualMachineScaleSetsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13004,9 +12228,6 @@ func ExampleVirtualMachineScaleSetsClient_NewListByLocationPager() {
 		// 								},
 		// 							},
 		// 						},
-		// 						SecurityProfile: &armcompute.SecurityProfile{
-		// 							SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr("succeeded"),
 		// 					Overprovision: to.Ptr(false),
@@ -13085,9 +12306,6 @@ func ExampleVirtualMachineScaleSetsClient_NewListByLocationPager() {
 		// 								},
 		// 							},
 		// 						},
-		// 						SecurityProfile: &armcompute.SecurityProfile{
-		// 							SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-		// 						},
 		// 					},
 		// 					ProvisioningState: to.Ptr("succeeded"),
 		// 					Overprovision: to.Ptr(false),
@@ -13101,7 +12319,7 @@ func ExampleVirtualMachineScaleSetsClient_NewListByLocationPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListSkus_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListSkus_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_NewListSKUsPager_virtualMachineScaleSetListSkusMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13147,7 +12365,7 @@ func ExampleVirtualMachineScaleSetsClient_NewListSKUsPager_virtualMachineScaleSe
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListSkus_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ListSkus_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_NewListSKUsPager_virtualMachineScaleSetListSkusMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13180,7 +12398,35 @@ func ExampleVirtualMachineScaleSetsClient_NewListSKUsPager_virtualMachineScaleSe
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_PerformMaintenance_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_MigrateVMAvailabilityZone.json
+func ExampleVirtualMachineScaleSetsClient_BeginMigrateVMAvailabilityZone() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualMachineScaleSetsClient().BeginMigrateVMAvailabilityZone(ctx, "myResourceGroup", "{vmss-name}", armcompute.MigrateVMAvailabilityZoneInput{
+		InstanceIDs: []*string{
+			to.Ptr("0"),
+			to.Ptr("1"),
+			to.Ptr("2"),
+		},
+		TargetZone: to.Ptr("2"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_PerformMaintenance_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginPerformMaintenance_virtualMachineScaleSetPerformMaintenanceMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13211,7 +12457,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginPerformMaintenance_virtualMachine
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_PerformMaintenance_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_PerformMaintenance_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginPerformMaintenance_virtualMachineScaleSetPerformMaintenanceMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13237,7 +12483,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginPerformMaintenance_virtualMachine
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_PowerOff_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_PowerOff_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginPowerOff_virtualMachineScaleSetPowerOffMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13269,7 +12515,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginPowerOff_virtualMachineScaleSetPo
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_PowerOff_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_PowerOff_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginPowerOff_virtualMachineScaleSetPowerOffMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13295,7 +12541,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginPowerOff_virtualMachineScaleSetPo
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Reapply_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Reapply_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginReapply_virtualMachineScaleSetsReapplyMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13321,7 +12567,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginReapply_virtualMachineScaleSetsRe
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Reapply_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Reapply_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginReapply_virtualMachineScaleSetsReapplyMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13347,7 +12593,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginReapply_virtualMachineScaleSetsRe
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Redeploy_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Redeploy_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginRedeploy_virtualMachineScaleSetRedeployMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13378,7 +12624,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginRedeploy_virtualMachineScaleSetRe
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Redeploy_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Redeploy_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginRedeploy_virtualMachineScaleSetRedeployMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13404,7 +12650,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginRedeploy_virtualMachineScaleSetRe
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Reimage_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Reimage_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginReimage_virtualMachineScaleSetReimageMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13437,7 +12683,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginReimage_virtualMachineScaleSetRei
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Reimage_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Reimage_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginReimage_virtualMachineScaleSetReimageMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13463,7 +12709,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginReimage_virtualMachineScaleSetRei
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ReimageAll_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ReimageAll_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginReimageAll_virtualMachineScaleSetReimageAllMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13494,7 +12740,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginReimageAll_virtualMachineScaleSet
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ReimageAll_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ReimageAll_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginReimageAll_virtualMachineScaleSetReimageAllMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13520,7 +12766,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginReimageAll_virtualMachineScaleSet
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Restart_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Restart_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginRestart_virtualMachineScaleSetRestartMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13551,7 +12797,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginRestart_virtualMachineScaleSetRes
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Restart_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Restart_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginRestart_virtualMachineScaleSetRestartMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13577,7 +12823,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginRestart_virtualMachineScaleSetRes
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ScaleOut.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_ScaleOut.json
 func ExampleVirtualMachineScaleSetsClient_BeginScaleOut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13608,7 +12854,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginScaleOut() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_SetOrchestrationServiceState_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_SetOrchestrationServiceState_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginSetOrchestrationServiceState_virtualMachineScaleSetSetOrchestrationServiceStateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13637,7 +12883,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginSetOrchestrationServiceState_virt
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_SetOrchestrationServiceState_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_SetOrchestrationServiceState_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginSetOrchestrationServiceState_virtualMachineScaleSetSetOrchestrationServiceStateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13666,7 +12912,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginSetOrchestrationServiceState_virt
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Start_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Start_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginStart_virtualMachineScaleSetStartMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13697,7 +12943,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginStart_virtualMachineScaleSetStart
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Start_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Start_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginStart_virtualMachineScaleSetStartMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -13723,7 +12969,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginStart_virtualMachineScaleSetStart
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Update_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginUpdate_virtualMachineScaleSetUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -14189,6 +13435,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginUpdate_virtualMachineScaleSetUpda
 	// 														{
 	// 															IPTagType: to.Ptr("aaaaaaa"),
 	// 															Tag: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 															FirstPartyServiceTagID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firstPartyServiceTags/{firstPartyServiceTagName}"),
 	// 														},
 	// 													},
 	// 													PublicIPPrefix: &armcompute.SubResource{
@@ -14398,7 +13645,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginUpdate_virtualMachineScaleSetUpda
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Update_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginUpdate_virtualMachineScaleSetUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -14427,7 +13674,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginUpdate_virtualMachineScaleSetUpda
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_UpdateInstances_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_UpdateInstances_MaximumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginUpdateInstances_virtualMachineScaleSetUpdateInstancesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -14457,7 +13704,7 @@ func ExampleVirtualMachineScaleSetsClient_BeginUpdateInstances_virtualMachineSca
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_UpdateInstances_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineScaleSetExamples/VirtualMachineScaleSet_UpdateInstances_MinimumSet_Gen.json
 func ExampleVirtualMachineScaleSetsClient_BeginUpdateInstances_virtualMachineScaleSetUpdateInstancesMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

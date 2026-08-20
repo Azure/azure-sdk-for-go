@@ -61,12 +61,7 @@ func (client *BillingMetersClient) Get(ctx context.Context, location string, opt
 	if err != nil {
 		return BillingMetersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BillingMetersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -92,8 +87,11 @@ func (client *BillingMetersClient) getCreateRequest(ctx context.Context, locatio
 }
 
 // getHandleResponse handles the Get response.
-func (client *BillingMetersClient) getHandleResponse(resp *http.Response) (BillingMetersClientGetResponse, error) {
+func (client *BillingMetersClient) getHandleResponse(resp *http.Response, successCodes ...int) (BillingMetersClientGetResponse, error) {
 	result := BillingMetersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BillingMeterCollection); err != nil {
 		return BillingMetersClientGetResponse{}, err
 	}

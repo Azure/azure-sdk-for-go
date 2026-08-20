@@ -82,8 +82,7 @@ func (client *ContainerAppsBuildsClient) deleteOperation(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -137,12 +136,7 @@ func (client *ContainerAppsBuildsClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ContainerAppsBuildsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerAppsBuildsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -176,8 +170,11 @@ func (client *ContainerAppsBuildsClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *ContainerAppsBuildsClient) getHandleResponse(resp *http.Response) (ContainerAppsBuildsClientGetResponse, error) {
+func (client *ContainerAppsBuildsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsBuildsClientGetResponse, error) {
 	result := ContainerAppsBuildsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerAppsBuildResource); err != nil {
 		return ContainerAppsBuildsClientGetResponse{}, err
 	}

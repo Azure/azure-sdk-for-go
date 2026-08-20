@@ -91,8 +91,7 @@ func (client *NamespaceTopicEventSubscriptionsClient) createOrUpdate(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -181,8 +180,7 @@ func (client *NamespaceTopicEventSubscriptionsClient) deleteOperation(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -244,12 +242,7 @@ func (client *NamespaceTopicEventSubscriptionsClient) Get(ctx context.Context, r
 	if err != nil {
 		return NamespaceTopicEventSubscriptionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespaceTopicEventSubscriptionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -287,8 +280,11 @@ func (client *NamespaceTopicEventSubscriptionsClient) getCreateRequest(ctx conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *NamespaceTopicEventSubscriptionsClient) getHandleResponse(resp *http.Response) (NamespaceTopicEventSubscriptionsClientGetResponse, error) {
+func (client *NamespaceTopicEventSubscriptionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (NamespaceTopicEventSubscriptionsClientGetResponse, error) {
 	result := NamespaceTopicEventSubscriptionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Subscription); err != nil {
 		return NamespaceTopicEventSubscriptionsClientGetResponse{}, err
 	}
@@ -319,12 +315,7 @@ func (client *NamespaceTopicEventSubscriptionsClient) GetDeliveryAttributes(ctx 
 	if err != nil {
 		return NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesResponse{}, err
-	}
-	resp, err := client.getDeliveryAttributesHandleResponse(httpResp)
-	return resp, err
+	return client.getDeliveryAttributesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDeliveryAttributesCreateRequest creates the GetDeliveryAttributes request.
@@ -362,8 +353,11 @@ func (client *NamespaceTopicEventSubscriptionsClient) getDeliveryAttributesCreat
 }
 
 // getDeliveryAttributesHandleResponse handles the GetDeliveryAttributes response.
-func (client *NamespaceTopicEventSubscriptionsClient) getDeliveryAttributesHandleResponse(resp *http.Response) (NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesResponse, error) {
+func (client *NamespaceTopicEventSubscriptionsClient) getDeliveryAttributesHandleResponse(resp *http.Response, successCodes ...int) (NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesResponse, error) {
 	result := NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeliveryAttributeListResult); err != nil {
 		return NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesResponse{}, err
 	}
@@ -394,12 +388,7 @@ func (client *NamespaceTopicEventSubscriptionsClient) GetFullURL(ctx context.Con
 	if err != nil {
 		return NamespaceTopicEventSubscriptionsClientGetFullURLResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespaceTopicEventSubscriptionsClientGetFullURLResponse{}, err
-	}
-	resp, err := client.getFullURLHandleResponse(httpResp)
-	return resp, err
+	return client.getFullURLHandleResponse(httpResp, http.StatusOK)
 }
 
 // getFullURLCreateRequest creates the GetFullURL request.
@@ -437,8 +426,11 @@ func (client *NamespaceTopicEventSubscriptionsClient) getFullURLCreateRequest(ct
 }
 
 // getFullURLHandleResponse handles the GetFullURL response.
-func (client *NamespaceTopicEventSubscriptionsClient) getFullURLHandleResponse(resp *http.Response) (NamespaceTopicEventSubscriptionsClientGetFullURLResponse, error) {
+func (client *NamespaceTopicEventSubscriptionsClient) getFullURLHandleResponse(resp *http.Response, successCodes ...int) (NamespaceTopicEventSubscriptionsClientGetFullURLResponse, error) {
 	result := NamespaceTopicEventSubscriptionsClientGetFullURLResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionFullURL); err != nil {
 		return NamespaceTopicEventSubscriptionsClientGetFullURLResponse{}, err
 	}
@@ -464,57 +456,71 @@ func (client *NamespaceTopicEventSubscriptionsClient) NewListByNamespaceTopicPag
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByNamespaceTopicCreateRequest(ctx, resourceGroupName, namespaceName, topicName, options)
-			}, nil)
+			req, err := client.listByNamespaceTopicCreateRequest(ctx, resourceGroupName, namespaceName, topicName, nextLink, options)
 			if err != nil {
 				return NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse{}, err
 			}
-			return client.listByNamespaceTopicHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse{}, err
+			}
+			return client.listByNamespaceTopicHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByNamespaceTopicCreateRequest creates the ListByNamespaceTopic request.
-func (client *NamespaceTopicEventSubscriptionsClient) listByNamespaceTopicCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, options *NamespaceTopicEventSubscriptionsClientListByNamespaceTopicOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topics/{topicName}/eventSubscriptions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NamespaceTopicEventSubscriptionsClient) listByNamespaceTopicCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, nextLink string, options *NamespaceTopicEventSubscriptionsClientListByNamespaceTopicOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/topics/{topicName}/eventSubscriptions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		if topicName == "" {
+			return nil, errors.New("parameter topicName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if topicName == "" {
-		return nil, errors.New("parameter topicName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByNamespaceTopicHandleResponse handles the ListByNamespaceTopic response.
-func (client *NamespaceTopicEventSubscriptionsClient) listByNamespaceTopicHandleResponse(resp *http.Response) (NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse, error) {
+func (client *NamespaceTopicEventSubscriptionsClient) listByNamespaceTopicHandleResponse(resp *http.Response, successCodes ...int) (NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse, error) {
 	result := NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionsListResult); err != nil {
 		return NamespaceTopicEventSubscriptionsClientListByNamespaceTopicResponse{}, err
 	}
@@ -569,8 +575,7 @@ func (client *NamespaceTopicEventSubscriptionsClient) update(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

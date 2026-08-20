@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v11"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01/RansomwareReports_ClearSuspects.json
+// Generated from example definition: 2026-05-15-preview/RansomwareReports_ClearSuspects.json
 func ExampleRansomwareReportsClient_BeginClearSuspects() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleRansomwareReportsClient_BeginClearSuspects() {
 	}
 }
 
-// Generated from example definition: 2026-05-01/RansomwareReports_Get.json
+// Generated from example definition: 2026-05-15-preview/RansomwareReports_Get.json
 func ExampleRansomwareReportsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleRansomwareReportsClient_Get() {
 	// 		Name: to.Ptr("account1/pool1/volume1/ransomwareReport1"),
 	// 		Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/ransomwarereports"),
 	// 		Properties: &armnetapp.RansomwareReportProperties{
-	// 			EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-15T13:23:33Z"); return t}()),
+	// 			EventTime: to.Ptr(time.Date(2025, time.August, 15, 13, 23, 33, 0, time.UTC)),
 	// 			Severity: to.Ptr(armnetapp.RansomwareReportSeverityModerate),
 	// 			State: to.Ptr(armnetapp.RansomwareReportStateActive),
 	// 			ClearedCount: to.Ptr[int32](0),
@@ -75,7 +75,7 @@ func ExampleRansomwareReportsClient_Get() {
 	// 					SuspectFiles: []*armnetapp.SuspectFile{
 	// 						{
 	// 							SuspectFileName: to.Ptr("file1.threat"),
-	// 							FileTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-15T13:23:33Z"); return t}()),
+	// 							FileTimestamp: to.Ptr(time.Date(2025, time.August, 15, 13, 23, 33, 0, time.UTC)),
 	// 						},
 	// 					},
 	// 				},
@@ -85,7 +85,7 @@ func ExampleRansomwareReportsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01/RansomwareReports_List.json
+// Generated from example definition: 2026-05-15-preview/RansomwareReports_List.json
 func ExampleRansomwareReportsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleRansomwareReportsClient_NewListPager() {
 		// 				Name: to.Ptr("account1/pool1/volume1/ransomwareReport1"),
 		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/ransomwarereports"),
 		// 				Properties: &armnetapp.RansomwareReportProperties{
-		// 					EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-15T13:23:33Z"); return t}()),
+		// 					EventTime: to.Ptr(time.Date(2025, time.August, 15, 13, 23, 33, 0, time.UTC)),
 		// 					Severity: to.Ptr(armnetapp.RansomwareReportSeverityModerate),
 		// 					State: to.Ptr(armnetapp.RansomwareReportStateActive),
 		// 					ClearedCount: to.Ptr[int32](0),
@@ -128,7 +128,7 @@ func ExampleRansomwareReportsClient_NewListPager() {
 		// 							SuspectFiles: []*armnetapp.SuspectFile{
 		// 								{
 		// 									SuspectFileName: to.Ptr("file1.threat"),
-		// 									FileTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-15T13:23:33Z"); return t}()),
+		// 									FileTimestamp: to.Ptr(time.Date(2025, time.August, 15, 13, 23, 33, 0, time.UTC)),
 		// 								},
 		// 							},
 		// 						},
@@ -140,7 +140,7 @@ func ExampleRansomwareReportsClient_NewListPager() {
 		// 				Name: to.Ptr("account1/pool1/volume1/ransomwareReport2"),
 		// 				Type: to.Ptr("Microsoft.NetApp/netAppAccounts/capacityPools/volumes/ransomwarereports"),
 		// 				Properties: &armnetapp.RansomwareReportProperties{
-		// 					EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-15T14:24:33Z"); return t}()),
+		// 					EventTime: to.Ptr(time.Date(2025, time.August, 15, 14, 24, 33, 0, time.UTC)),
 		// 					Severity: to.Ptr(armnetapp.RansomwareReportSeverityModerate),
 		// 					State: to.Ptr(armnetapp.RansomwareReportStateResolved),
 		// 					ClearedCount: to.Ptr[int32](0),
@@ -153,7 +153,7 @@ func ExampleRansomwareReportsClient_NewListPager() {
 		// 							SuspectFiles: []*armnetapp.SuspectFile{
 		// 								{
 		// 									SuspectFileName: to.Ptr("file1.txt"),
-		// 									FileTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-15T13:23:33Z"); return t}()),
+		// 									FileTimestamp: to.Ptr(time.Date(2025, time.August, 15, 13, 23, 33, 0, time.UTC)),
 		// 								},
 		// 							},
 		// 						},

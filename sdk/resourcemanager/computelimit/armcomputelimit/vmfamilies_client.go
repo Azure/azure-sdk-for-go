@@ -60,12 +60,7 @@ func (client *VMFamiliesClient) Get(ctx context.Context, location string, vmFami
 	if err != nil {
 		return VMFamiliesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VMFamiliesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -95,8 +90,11 @@ func (client *VMFamiliesClient) getCreateRequest(ctx context.Context, location s
 }
 
 // getHandleResponse handles the Get response.
-func (client *VMFamiliesClient) getHandleResponse(resp *http.Response) (VMFamiliesClientGetResponse, error) {
+func (client *VMFamiliesClient) getHandleResponse(resp *http.Response, successCodes ...int) (VMFamiliesClientGetResponse, error) {
 	result := VMFamiliesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMFamily); err != nil {
 		return VMFamiliesClientGetResponse{}, err
 	}
@@ -118,46 +116,60 @@ func (client *VMFamiliesClient) NewListBySubscriptionLocationResourcePager(locat
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionLocationResourceCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listBySubscriptionLocationResourceCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return VMFamiliesClientListBySubscriptionLocationResourceResponse{}, err
 			}
-			return client.listBySubscriptionLocationResourceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VMFamiliesClientListBySubscriptionLocationResourceResponse{}, err
+			}
+			return client.listBySubscriptionLocationResourceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionLocationResourceCreateRequest creates the ListBySubscriptionLocationResource request.
-func (client *VMFamiliesClient) listBySubscriptionLocationResourceCreateRequest(ctx context.Context, location string, options *VMFamiliesClientListBySubscriptionLocationResourceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/vmFamilies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *VMFamiliesClient) listBySubscriptionLocationResourceCreateRequest(ctx context.Context, location string, nextLink string, options *VMFamiliesClientListBySubscriptionLocationResourceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/vmFamilies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20260731)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260731)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionLocationResourceHandleResponse handles the ListBySubscriptionLocationResource response.
-func (client *VMFamiliesClient) listBySubscriptionLocationResourceHandleResponse(resp *http.Response) (VMFamiliesClientListBySubscriptionLocationResourceResponse, error) {
+func (client *VMFamiliesClient) listBySubscriptionLocationResourceHandleResponse(resp *http.Response, successCodes ...int) (VMFamiliesClientListBySubscriptionLocationResourceResponse, error) {
 	result := VMFamiliesClientListBySubscriptionLocationResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VMFamilyListResult); err != nil {
 		return VMFamiliesClientListBySubscriptionLocationResourceResponse{}, err
 	}

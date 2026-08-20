@@ -24,7 +24,7 @@ func ExampleUsageAggregatesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewUsageAggregatesClient().NewListPager(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2014-05-01T00:00:00+00:00"); return t }(), func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-06-01T00:00:00+00:00"); return t }(), &armcommerce.UsageAggregatesClientListOptions{
+	pager := clientFactory.NewUsageAggregatesClient().NewListPager(time.Date(2014, time.May, 1, 0, 0, 0, 0, time.UTC), time.Date(2015, time.June, 1, 0, 0, 0, 0, time.UTC), &armcommerce.UsageAggregatesClientListOptions{
 		AggregationGranularity: to.Ptr(armcommerce.AggregationGranularityDaily),
 		ShowDetails:            to.Ptr(true)})
 	for pager.More() {
@@ -54,8 +54,8 @@ func ExampleUsageAggregatesClient_NewListPager() {
 		// 					Quantity: to.Ptr[float32](0.057865),
 		// 					SubscriptionID: to.Ptr("f68815e6-3c41-45ef-bbd8-5f83303c396b"),
 		// 					Unit: to.Ptr("GB"),
-		// 					UsageEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-04T00:00:00+00:00"); return t}()),
-		// 					UsageStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2015-03-03T00:00:00+00:00"); return t}()),
+		// 					UsageEndTime: to.Ptr(time.Date(2015, time.March, 4, 0, 0, 0, 0, time.UTC)),
+		// 					UsageStartTime: to.Ptr(time.Date(2015, time.March, 3, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

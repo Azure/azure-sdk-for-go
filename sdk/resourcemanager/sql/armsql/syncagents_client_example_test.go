@@ -44,7 +44,7 @@ func ExampleSyncAgentsClient_BeginCreateOrUpdate_createANewSyncAgent() {
 	// 		Type: to.Ptr("Microsoft.Sql/servers/syncAgents"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/syncAgents/syncagentcrud-3187"),
 	// 		Properties: &armsql.SyncAgentProperties{
-	// 			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.9999999Z"); return t}()),
+	// 			ExpiryTime: to.Ptr(time.Date(9999, time.December, 31, 23, 59, 59, 999999900, time.UTC)),
 	// 			IsUpToDate: to.Ptr(true),
 	// 			State: to.Ptr(armsql.SyncAgentStateNeverConnected),
 	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/databases/sync"),
@@ -86,7 +86,7 @@ func ExampleSyncAgentsClient_BeginCreateOrUpdate_updateASyncAgent() {
 	// 		Type: to.Ptr("Microsoft.Sql/servers/syncAgents"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/syncAgents/syncagentcrud-3187"),
 	// 		Properties: &armsql.SyncAgentProperties{
-	// 			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.9999999Z"); return t}()),
+	// 			ExpiryTime: to.Ptr(time.Date(9999, time.December, 31, 23, 59, 59, 999999900, time.UTC)),
 	// 			IsUpToDate: to.Ptr(true),
 	// 			State: to.Ptr(armsql.SyncAgentStateNeverConnected),
 	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/databases/sync"),
@@ -171,7 +171,7 @@ func ExampleSyncAgentsClient_Get() {
 	// 		Type: to.Ptr("Microsoft.Sql/servers/syncAgents"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/syncAgents/syncagentcrud-3187"),
 	// 		Properties: &armsql.SyncAgentProperties{
-	// 			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.9999999Z"); return t}()),
+	// 			ExpiryTime: to.Ptr(time.Date(9999, time.December, 31, 23, 59, 59, 999999900, time.UTC)),
 	// 			IsUpToDate: to.Ptr(true),
 	// 			State: to.Ptr(armsql.SyncAgentStateNeverConnected),
 	// 			SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/databases/sync"),
@@ -211,7 +211,7 @@ func ExampleSyncAgentsClient_NewListByServerPager() {
 		// 				Type: to.Ptr("Microsoft.Sql/servers/syncAgents"),
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/syncAgents/syncagentcrud-3187"),
 		// 				Properties: &armsql.SyncAgentProperties{
-		// 					ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "9999-12-31T23:59:59.9999999Z"); return t}()),
+		// 					ExpiryTime: to.Ptr(time.Date(9999, time.December, 31, 23, 59, 59, 999999900, time.UTC)),
 		// 					IsUpToDate: to.Ptr(true),
 		// 					State: to.Ptr(armsql.SyncAgentStateNeverConnected),
 		// 					SyncDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-Onebox/providers/Microsoft.Sql/servers/syncagentcrud-8475/databases/sync"),

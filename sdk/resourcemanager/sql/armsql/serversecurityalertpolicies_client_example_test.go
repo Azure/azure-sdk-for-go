@@ -69,10 +69,10 @@ func ExampleServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateAServerS
 	// 			StorageEndpoint: to.Ptr("https://mystorage.blob.core.windows.net"),
 	// 		},
 	// 		SystemData: &armsql.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armsql.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armsql.CreatedByTypeUser),
 	// 		},
@@ -125,10 +125,10 @@ func ExampleServerSecurityAlertPoliciesClient_BeginCreateOrUpdate_updateAServerS
 	// 			StorageEndpoint: to.Ptr("https://mystorage.blob.core.windows.net"),
 	// 		},
 	// 		SystemData: &armsql.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armsql.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armsql.CreatedByTypeUser),
 	// 		},
@@ -160,7 +160,7 @@ func ExampleServerSecurityAlertPoliciesClient_Get() {
 	// 		Type: to.Ptr("Microsoft.Sql/servers/securityAlertPolicies"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/securityalert-4799/providers/Microsoft.Sql/servers/securityalert-6440/securityAlertPolicies/default"),
 	// 		Properties: &armsql.SecurityAlertsPolicyProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			DisabledAlerts: []*string{
 	// 				to.Ptr("Access_Anomaly"),
 	// 			},
@@ -174,10 +174,10 @@ func ExampleServerSecurityAlertPoliciesClient_Get() {
 	// 			StorageEndpoint: to.Ptr("https://mystorage.blob.core.windows.net"),
 	// 		},
 	// 		SystemData: &armsql.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armsql.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armsql.CreatedByTypeUser),
 	// 		},
@@ -215,7 +215,7 @@ func ExampleServerSecurityAlertPoliciesClient_NewListByServerPager() {
 		// 				Type: to.Ptr("Microsoft.Sql/servers/securityAlertPolicies"),
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/securityalert-4799/providers/Microsoft.Sql/servers/securityalert-6440/securityAlertPolicies/Default"),
 		// 				Properties: &armsql.SecurityAlertsPolicyProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 		// 					DisabledAlerts: []*string{
 		// 						to.Ptr("Access_Anomaly"),
 		// 					},
@@ -229,10 +229,10 @@ func ExampleServerSecurityAlertPoliciesClient_NewListByServerPager() {
 		// 					StorageEndpoint: to.Ptr("https://mystorage.blob.core.windows.net"),
 		// 				},
 		// 				SystemData: &armsql.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armsql.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armsql.CreatedByTypeUser),
 		// 				},

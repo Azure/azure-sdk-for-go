@@ -63,12 +63,7 @@ func (client *PartnerTopicsClient) Activate(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return PartnerTopicsClientActivateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PartnerTopicsClientActivateResponse{}, err
-	}
-	resp, err := client.activateHandleResponse(httpResp)
-	return resp, err
+	return client.activateHandleResponse(httpResp, http.StatusOK)
 }
 
 // activateCreateRequest creates the Activate request.
@@ -98,8 +93,11 @@ func (client *PartnerTopicsClient) activateCreateRequest(ctx context.Context, re
 }
 
 // activateHandleResponse handles the Activate response.
-func (client *PartnerTopicsClient) activateHandleResponse(resp *http.Response) (PartnerTopicsClientActivateResponse, error) {
+func (client *PartnerTopicsClient) activateHandleResponse(resp *http.Response, successCodes ...int) (PartnerTopicsClientActivateResponse, error) {
 	result := PartnerTopicsClientActivateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerTopic); err != nil {
 		return PartnerTopicsClientActivateResponse{}, err
 	}
@@ -129,12 +127,7 @@ func (client *PartnerTopicsClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return PartnerTopicsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return PartnerTopicsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -168,8 +161,11 @@ func (client *PartnerTopicsClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *PartnerTopicsClient) createOrUpdateHandleResponse(resp *http.Response) (PartnerTopicsClientCreateOrUpdateResponse, error) {
+func (client *PartnerTopicsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (PartnerTopicsClientCreateOrUpdateResponse, error) {
 	result := PartnerTopicsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerTopic); err != nil {
 		return PartnerTopicsClientCreateOrUpdateResponse{}, err
 	}
@@ -198,12 +194,7 @@ func (client *PartnerTopicsClient) Deactivate(ctx context.Context, resourceGroup
 	if err != nil {
 		return PartnerTopicsClientDeactivateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PartnerTopicsClientDeactivateResponse{}, err
-	}
-	resp, err := client.deactivateHandleResponse(httpResp)
-	return resp, err
+	return client.deactivateHandleResponse(httpResp, http.StatusOK)
 }
 
 // deactivateCreateRequest creates the Deactivate request.
@@ -233,8 +224,11 @@ func (client *PartnerTopicsClient) deactivateCreateRequest(ctx context.Context, 
 }
 
 // deactivateHandleResponse handles the Deactivate response.
-func (client *PartnerTopicsClient) deactivateHandleResponse(resp *http.Response) (PartnerTopicsClientDeactivateResponse, error) {
+func (client *PartnerTopicsClient) deactivateHandleResponse(resp *http.Response, successCodes ...int) (PartnerTopicsClientDeactivateResponse, error) {
 	result := PartnerTopicsClientDeactivateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerTopic); err != nil {
 		return PartnerTopicsClientDeactivateResponse{}, err
 	}
@@ -285,8 +279,7 @@ func (client *PartnerTopicsClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -337,12 +330,7 @@ func (client *PartnerTopicsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return PartnerTopicsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PartnerTopicsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -372,8 +360,11 @@ func (client *PartnerTopicsClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *PartnerTopicsClient) getHandleResponse(resp *http.Response) (PartnerTopicsClientGetResponse, error) {
+func (client *PartnerTopicsClient) getHandleResponse(resp *http.Response, successCodes ...int) (PartnerTopicsClientGetResponse, error) {
 	result := PartnerTopicsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerTopic); err != nil {
 		return PartnerTopicsClientGetResponse{}, err
 	}
@@ -397,49 +388,63 @@ func (client *PartnerTopicsClient) NewListByResourceGroupPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return PartnerTopicsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PartnerTopicsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *PartnerTopicsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *PartnerTopicsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerTopics"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PartnerTopicsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, options *PartnerTopicsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerTopics"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *PartnerTopicsClient) listByResourceGroupHandleResponse(resp *http.Response) (PartnerTopicsClientListByResourceGroupResponse, error) {
+func (client *PartnerTopicsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (PartnerTopicsClientListByResourceGroupResponse, error) {
 	result := PartnerTopicsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerTopicsListResult); err != nil {
 		return PartnerTopicsClientListByResourceGroupResponse{}, err
 	}
@@ -462,45 +467,59 @@ func (client *PartnerTopicsClient) NewListBySubscriptionPager(options *PartnerTo
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return PartnerTopicsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PartnerTopicsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *PartnerTopicsClient) listBySubscriptionCreateRequest(ctx context.Context, options *PartnerTopicsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/partnerTopics"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PartnerTopicsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, options *PartnerTopicsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/partnerTopics"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *PartnerTopicsClient) listBySubscriptionHandleResponse(resp *http.Response) (PartnerTopicsClientListBySubscriptionResponse, error) {
+func (client *PartnerTopicsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (PartnerTopicsClientListBySubscriptionResponse, error) {
 	result := PartnerTopicsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerTopicsListResult); err != nil {
 		return PartnerTopicsClientListBySubscriptionResponse{}, err
 	}
@@ -529,12 +548,7 @@ func (client *PartnerTopicsClient) Update(ctx context.Context, resourceGroupName
 	if err != nil {
 		return PartnerTopicsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return PartnerTopicsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // updateCreateRequest creates the Update request.
@@ -568,8 +582,11 @@ func (client *PartnerTopicsClient) updateCreateRequest(ctx context.Context, reso
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PartnerTopicsClient) updateHandleResponse(resp *http.Response) (PartnerTopicsClientUpdateResponse, error) {
+func (client *PartnerTopicsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (PartnerTopicsClientUpdateResponse, error) {
 	result := PartnerTopicsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerTopic); err != nil {
 		return PartnerTopicsClientUpdateResponse{}, err
 	}

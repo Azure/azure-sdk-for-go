@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/VirtualNetworkAppliances_CreateOrUpdate.json
+// Generated from example definition: 2025-09-01/VirtualNetworkAppliances_CreateOrUpdate.json
 func ExampleVirtualNetworkAppliancesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleVirtualNetworkAppliancesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkAppliances_Delete.json
+// Generated from example definition: 2025-09-01/VirtualNetworkAppliances_Delete.json
 func ExampleVirtualNetworkAppliancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleVirtualNetworkAppliancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkAppliances_Get.json
+// Generated from example definition: 2025-09-01/VirtualNetworkAppliances_Get.json
 func ExampleVirtualNetworkAppliancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExampleVirtualNetworkAppliancesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkAppliances_List.json
+// Generated from example definition: 2025-09-01/VirtualNetworkAppliances_List.json
 func ExampleVirtualNetworkAppliancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,7 +224,7 @@ func ExampleVirtualNetworkAppliancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkAppliances_ListBySubscription.json
+// Generated from example definition: 2025-09-01/VirtualNetworkAppliances_ListBySubscription.json
 func ExampleVirtualNetworkAppliancesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,7 +307,7 @@ func ExampleVirtualNetworkAppliancesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkAppliances_UpdateTags.json
+// Generated from example definition: 2025-09-01/VirtualNetworkAppliances_UpdateTags.json
 func ExampleVirtualNetworkAppliancesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

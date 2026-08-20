@@ -86,8 +86,7 @@ func (client *RaiPolicyClient) create(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -178,8 +177,7 @@ func (client *RaiPolicyClient) deleteOperation(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -243,12 +241,7 @@ func (client *RaiPolicyClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return RaiPolicyClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RaiPolicyClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -286,8 +279,11 @@ func (client *RaiPolicyClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *RaiPolicyClient) getHandleResponse(resp *http.Response) (RaiPolicyClientGetResponse, error) {
+func (client *RaiPolicyClient) getHandleResponse(resp *http.Response, successCodes ...int) (RaiPolicyClientGetResponse, error) {
 	result := RaiPolicyClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiPolicyPropertiesBasicResource); err != nil {
 		return RaiPolicyClientGetResponse{}, err
 	}

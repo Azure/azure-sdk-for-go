@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
 func ExampleRecoveryPointsRecommendedForMoveClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleRecoveryPointsRecommendedForMoveClient_NewListPager() {
 		// 							Status: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierStatusValid),
 		// 						},
 		// 					},
-		// 					RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-21T22:48:25.4353958Z"); return t}()),
+		// 					RecoveryPointTime: to.Ptr(time.Date(2017, time.December, 21, 22, 48, 25, 435395800, time.UTC)),
 		// 					RecoveryPointType: to.Ptr("CrashConsistent"),
 		// 					SourceVMStorageType: to.Ptr("NormalStorage"),
 		// 					VirtualMachineSize: to.Ptr("Standard_D1"),
@@ -108,7 +108,7 @@ func ExampleRecoveryPointsRecommendedForMoveClient_NewListPager() {
 		// 							Status: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierStatusRehydrated),
 		// 						},
 		// 					},
-		// 					RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-20T22:49:44.3317945Z"); return t}()),
+		// 					RecoveryPointTime: to.Ptr(time.Date(2017, time.December, 20, 22, 49, 44, 331794500, time.UTC)),
 		// 					RecoveryPointType: to.Ptr("CrashConsistent"),
 		// 					SourceVMStorageType: to.Ptr("NormalStorage"),
 		// 					VirtualMachineSize: to.Ptr("Standard_D1"),

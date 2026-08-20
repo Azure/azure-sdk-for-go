@@ -61,8 +61,7 @@ func (client *TriggerRunsClient) Cancel(ctx context.Context, resourceGroupName s
 		return TriggerRunsClientCancelResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TriggerRunsClientCancelResponse{}, err
+		return TriggerRunsClientCancelResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TriggerRunsClientCancelResponse{}, nil
 }
@@ -121,12 +120,7 @@ func (client *TriggerRunsClient) QueryByFactory(ctx context.Context, resourceGro
 	if err != nil {
 		return TriggerRunsClientQueryByFactoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TriggerRunsClientQueryByFactoryResponse{}, err
-	}
-	resp, err := client.queryByFactoryHandleResponse(httpResp)
-	return resp, err
+	return client.queryByFactoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // queryByFactoryCreateRequest creates the QueryByFactory request.
@@ -160,8 +154,11 @@ func (client *TriggerRunsClient) queryByFactoryCreateRequest(ctx context.Context
 }
 
 // queryByFactoryHandleResponse handles the QueryByFactory response.
-func (client *TriggerRunsClient) queryByFactoryHandleResponse(resp *http.Response) (TriggerRunsClientQueryByFactoryResponse, error) {
+func (client *TriggerRunsClient) queryByFactoryHandleResponse(resp *http.Response, successCodes ...int) (TriggerRunsClientQueryByFactoryResponse, error) {
 	result := TriggerRunsClientQueryByFactoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggerRunsQueryResponse); err != nil {
 		return TriggerRunsClientQueryByFactoryResponse{}, err
 	}
@@ -188,8 +185,7 @@ func (client *TriggerRunsClient) Rerun(ctx context.Context, resourceGroupName st
 		return TriggerRunsClientRerunResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TriggerRunsClientRerunResponse{}, err
+		return TriggerRunsClientRerunResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TriggerRunsClientRerunResponse{}, nil
 }

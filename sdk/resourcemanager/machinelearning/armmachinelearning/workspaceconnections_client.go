@@ -66,12 +66,7 @@ func (client *WorkspaceConnectionsClient) Create(ctx context.Context, resourceGr
 	if err != nil {
 		return WorkspaceConnectionsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceConnectionsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK)
 }
 
 // createCreateRequest creates the Create request.
@@ -109,8 +104,11 @@ func (client *WorkspaceConnectionsClient) createCreateRequest(ctx context.Contex
 }
 
 // createHandleResponse handles the Create response.
-func (client *WorkspaceConnectionsClient) createHandleResponse(resp *http.Response) (WorkspaceConnectionsClientCreateResponse, error) {
+func (client *WorkspaceConnectionsClient) createHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceConnectionsClientCreateResponse, error) {
 	result := WorkspaceConnectionsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceConnectionPropertiesV2BasicResource); err != nil {
 		return WorkspaceConnectionsClientCreateResponse{}, err
 	}
@@ -141,8 +139,7 @@ func (client *WorkspaceConnectionsClient) Delete(ctx context.Context, resourceGr
 		return WorkspaceConnectionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceConnectionsClientDeleteResponse{}, err
+		return WorkspaceConnectionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WorkspaceConnectionsClientDeleteResponse{}, nil
 }
@@ -199,12 +196,7 @@ func (client *WorkspaceConnectionsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return WorkspaceConnectionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceConnectionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -238,8 +230,11 @@ func (client *WorkspaceConnectionsClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkspaceConnectionsClient) getHandleResponse(resp *http.Response) (WorkspaceConnectionsClientGetResponse, error) {
+func (client *WorkspaceConnectionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceConnectionsClientGetResponse, error) {
 	result := WorkspaceConnectionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceConnectionPropertiesV2BasicResource); err != nil {
 		return WorkspaceConnectionsClientGetResponse{}, err
 	}
@@ -264,56 +259,70 @@ func (client *WorkspaceConnectionsClient) NewListPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, nextLink, options)
 			if err != nil {
 				return WorkspaceConnectionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkspaceConnectionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkspaceConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspaceConnectionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkspaceConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, nextLink string, options *WorkspaceConnectionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	if options != nil && options.Category != nil {
-		reqQP.Set("category", *options.Category)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315Preview)
+		if options != nil && options.Category != nil {
+			reqQP.Set("category", *options.Category)
+		}
+		if options != nil && options.IncludeAll != nil {
+			reqQP.Set("includeAll", strconv.FormatBool(*options.IncludeAll))
+		}
+		if options != nil && options.Target != nil {
+			reqQP.Set("target", *options.Target)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.IncludeAll != nil {
-		reqQP.Set("includeAll", strconv.FormatBool(*options.IncludeAll))
-	}
-	if options != nil && options.Target != nil {
-		reqQP.Set("target", *options.Target)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkspaceConnectionsClient) listHandleResponse(resp *http.Response) (WorkspaceConnectionsClientListResponse, error) {
+func (client *WorkspaceConnectionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceConnectionsClientListResponse, error) {
 	result := WorkspaceConnectionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceConnectionPropertiesV2BasicResourceArmPaginatedResult); err != nil {
 		return WorkspaceConnectionsClientListResponse{}, err
 	}
@@ -343,12 +352,7 @@ func (client *WorkspaceConnectionsClient) ListSecrets(ctx context.Context, resou
 	if err != nil {
 		return WorkspaceConnectionsClientListSecretsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceConnectionsClientListSecretsResponse{}, err
-	}
-	resp, err := client.listSecretsHandleResponse(httpResp)
-	return resp, err
+	return client.listSecretsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listSecretsCreateRequest creates the ListSecrets request.
@@ -382,8 +386,11 @@ func (client *WorkspaceConnectionsClient) listSecretsCreateRequest(ctx context.C
 }
 
 // listSecretsHandleResponse handles the ListSecrets response.
-func (client *WorkspaceConnectionsClient) listSecretsHandleResponse(resp *http.Response) (WorkspaceConnectionsClientListSecretsResponse, error) {
+func (client *WorkspaceConnectionsClient) listSecretsHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceConnectionsClientListSecretsResponse, error) {
 	result := WorkspaceConnectionsClientListSecretsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceConnectionPropertiesV2BasicResource); err != nil {
 		return WorkspaceConnectionsClientListSecretsResponse{}, err
 	}
@@ -435,8 +442,7 @@ func (client *WorkspaceConnectionsClient) testConnection(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -501,12 +507,7 @@ func (client *WorkspaceConnectionsClient) Update(ctx context.Context, resourceGr
 	if err != nil {
 		return WorkspaceConnectionsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkspaceConnectionsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -544,8 +545,11 @@ func (client *WorkspaceConnectionsClient) updateCreateRequest(ctx context.Contex
 }
 
 // updateHandleResponse handles the Update response.
-func (client *WorkspaceConnectionsClient) updateHandleResponse(resp *http.Response) (WorkspaceConnectionsClientUpdateResponse, error) {
+func (client *WorkspaceConnectionsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (WorkspaceConnectionsClientUpdateResponse, error) {
 	result := WorkspaceConnectionsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkspaceConnectionPropertiesV2BasicResource); err != nil {
 		return WorkspaceConnectionsClientUpdateResponse{}, err
 	}

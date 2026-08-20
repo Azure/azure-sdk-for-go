@@ -63,12 +63,7 @@ func (client *MicrosoftSerialConsoleClient) DisableConsole(ctx context.Context, 
 	if err != nil {
 		return MicrosoftSerialConsoleClientDisableConsoleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MicrosoftSerialConsoleClientDisableConsoleResponse{}, err
-	}
-	resp, err := client.disableConsoleHandleResponse(httpResp)
-	return resp, err
+	return client.disableConsoleHandleResponse(httpResp, http.StatusOK)
 }
 
 // disableConsoleCreateRequest creates the DisableConsole request.
@@ -94,8 +89,11 @@ func (client *MicrosoftSerialConsoleClient) disableConsoleCreateRequest(ctx cont
 }
 
 // disableConsoleHandleResponse handles the DisableConsole response.
-func (client *MicrosoftSerialConsoleClient) disableConsoleHandleResponse(resp *http.Response) (MicrosoftSerialConsoleClientDisableConsoleResponse, error) {
+func (client *MicrosoftSerialConsoleClient) disableConsoleHandleResponse(resp *http.Response, successCodes ...int) (MicrosoftSerialConsoleClientDisableConsoleResponse, error) {
 	result := MicrosoftSerialConsoleClientDisableConsoleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DisableSerialConsoleResult); err != nil {
 		return MicrosoftSerialConsoleClientDisableConsoleResponse{}, err
 	}
@@ -123,12 +121,7 @@ func (client *MicrosoftSerialConsoleClient) EnableConsole(ctx context.Context, d
 	if err != nil {
 		return MicrosoftSerialConsoleClientEnableConsoleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MicrosoftSerialConsoleClientEnableConsoleResponse{}, err
-	}
-	resp, err := client.enableConsoleHandleResponse(httpResp)
-	return resp, err
+	return client.enableConsoleHandleResponse(httpResp, http.StatusOK)
 }
 
 // enableConsoleCreateRequest creates the EnableConsole request.
@@ -154,8 +147,11 @@ func (client *MicrosoftSerialConsoleClient) enableConsoleCreateRequest(ctx conte
 }
 
 // enableConsoleHandleResponse handles the EnableConsole response.
-func (client *MicrosoftSerialConsoleClient) enableConsoleHandleResponse(resp *http.Response) (MicrosoftSerialConsoleClientEnableConsoleResponse, error) {
+func (client *MicrosoftSerialConsoleClient) enableConsoleHandleResponse(resp *http.Response, successCodes ...int) (MicrosoftSerialConsoleClientEnableConsoleResponse, error) {
 	result := MicrosoftSerialConsoleClientEnableConsoleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnableSerialConsoleResult); err != nil {
 		return MicrosoftSerialConsoleClientEnableConsoleResponse{}, err
 	}
@@ -183,12 +179,7 @@ func (client *MicrosoftSerialConsoleClient) GetConsoleStatus(ctx context.Context
 	if err != nil {
 		return MicrosoftSerialConsoleClientGetConsoleStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MicrosoftSerialConsoleClientGetConsoleStatusResponse{}, err
-	}
-	resp, err := client.getConsoleStatusHandleResponse(httpResp)
-	return resp, err
+	return client.getConsoleStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // getConsoleStatusCreateRequest creates the GetConsoleStatus request.
@@ -214,8 +205,11 @@ func (client *MicrosoftSerialConsoleClient) getConsoleStatusCreateRequest(ctx co
 }
 
 // getConsoleStatusHandleResponse handles the GetConsoleStatus response.
-func (client *MicrosoftSerialConsoleClient) getConsoleStatusHandleResponse(resp *http.Response) (MicrosoftSerialConsoleClientGetConsoleStatusResponse, error) {
+func (client *MicrosoftSerialConsoleClient) getConsoleStatusHandleResponse(resp *http.Response, successCodes ...int) (MicrosoftSerialConsoleClientGetConsoleStatusResponse, error) {
 	result := MicrosoftSerialConsoleClientGetConsoleStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Status); err != nil {
 		return MicrosoftSerialConsoleClientGetConsoleStatusResponse{}, err
 	}
@@ -240,12 +234,7 @@ func (client *MicrosoftSerialConsoleClient) ListOperations(ctx context.Context, 
 	if err != nil {
 		return MicrosoftSerialConsoleClientListOperationsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MicrosoftSerialConsoleClientListOperationsResponse{}, err
-	}
-	resp, err := client.listOperationsHandleResponse(httpResp)
-	return resp, err
+	return client.listOperationsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listOperationsCreateRequest creates the ListOperations request.
@@ -263,8 +252,11 @@ func (client *MicrosoftSerialConsoleClient) listOperationsCreateRequest(ctx cont
 }
 
 // listOperationsHandleResponse handles the ListOperations response.
-func (client *MicrosoftSerialConsoleClient) listOperationsHandleResponse(resp *http.Response) (MicrosoftSerialConsoleClientListOperationsResponse, error) {
+func (client *MicrosoftSerialConsoleClient) listOperationsHandleResponse(resp *http.Response, successCodes ...int) (MicrosoftSerialConsoleClientListOperationsResponse, error) {
 	result := MicrosoftSerialConsoleClientListOperationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Operations); err != nil {
 		return MicrosoftSerialConsoleClientListOperationsResponse{}, err
 	}

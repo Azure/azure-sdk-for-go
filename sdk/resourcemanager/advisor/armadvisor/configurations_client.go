@@ -64,12 +64,7 @@ func (client *ConfigurationsClient) CreateInResourceGroup(ctx context.Context, c
 	if err != nil {
 		return ConfigurationsClientCreateInResourceGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationsClientCreateInResourceGroupResponse{}, err
-	}
-	resp, err := client.createInResourceGroupHandleResponse(httpResp)
-	return resp, err
+	return client.createInResourceGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // createInResourceGroupCreateRequest creates the CreateInResourceGroup request.
@@ -103,8 +98,11 @@ func (client *ConfigurationsClient) createInResourceGroupCreateRequest(ctx conte
 }
 
 // createInResourceGroupHandleResponse handles the CreateInResourceGroup response.
-func (client *ConfigurationsClient) createInResourceGroupHandleResponse(resp *http.Response) (ConfigurationsClientCreateInResourceGroupResponse, error) {
+func (client *ConfigurationsClient) createInResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationsClientCreateInResourceGroupResponse, error) {
 	result := ConfigurationsClientCreateInResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigData); err != nil {
 		return ConfigurationsClientCreateInResourceGroupResponse{}, err
 	}
@@ -133,12 +131,7 @@ func (client *ConfigurationsClient) CreateInSubscription(ctx context.Context, co
 	if err != nil {
 		return ConfigurationsClientCreateInSubscriptionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationsClientCreateInSubscriptionResponse{}, err
-	}
-	resp, err := client.createInSubscriptionHandleResponse(httpResp)
-	return resp, err
+	return client.createInSubscriptionHandleResponse(httpResp, http.StatusOK)
 }
 
 // createInSubscriptionCreateRequest creates the CreateInSubscription request.
@@ -168,8 +161,11 @@ func (client *ConfigurationsClient) createInSubscriptionCreateRequest(ctx contex
 }
 
 // createInSubscriptionHandleResponse handles the CreateInSubscription response.
-func (client *ConfigurationsClient) createInSubscriptionHandleResponse(resp *http.Response) (ConfigurationsClientCreateInSubscriptionResponse, error) {
+func (client *ConfigurationsClient) createInSubscriptionHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationsClientCreateInSubscriptionResponse, error) {
 	result := ConfigurationsClientCreateInSubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigData); err != nil {
 		return ConfigurationsClientCreateInSubscriptionResponse{}, err
 	}
@@ -193,43 +189,57 @@ func (client *ConfigurationsClient) NewListByResourceGroupPager(resourceGroup st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroup, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroup, nextLink, options)
 			if err != nil {
 				return ConfigurationsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConfigurationsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ConfigurationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroup string, _ *ConfigurationsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Advisor/configurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConfigurationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroup string, nextLink string, _ *ConfigurationsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Advisor/configurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroup == "" {
+			return nil, errors.New("parameter resourceGroup cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroup}", url.PathEscape(resourceGroup))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroup == "" {
-		return nil, errors.New("parameter resourceGroup cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroup}", url.PathEscape(resourceGroup))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ConfigurationsClient) listByResourceGroupHandleResponse(resp *http.Response) (ConfigurationsClientListByResourceGroupResponse, error) {
+func (client *ConfigurationsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationsClientListByResourceGroupResponse, error) {
 	result := ConfigurationsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationListResult); err != nil {
 		return ConfigurationsClientListByResourceGroupResponse{}, err
 	}
@@ -252,39 +262,53 @@ func (client *ConfigurationsClient) NewListBySubscriptionPager(options *Configur
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ConfigurationsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConfigurationsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ConfigurationsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *ConfigurationsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/configurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConfigurationsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *ConfigurationsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/configurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ConfigurationsClient) listBySubscriptionHandleResponse(resp *http.Response) (ConfigurationsClientListBySubscriptionResponse, error) {
+func (client *ConfigurationsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationsClientListBySubscriptionResponse, error) {
 	result := ConfigurationsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationListResult); err != nil {
 		return ConfigurationsClientListBySubscriptionResponse{}, err
 	}

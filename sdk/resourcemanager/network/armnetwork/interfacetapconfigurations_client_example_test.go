@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/NetworkInterfaceTapConfigurationCreate.json
+// Generated from example definition: 2025-09-01/NetworkInterfaceTapConfigurationCreate.json
 func ExampleInterfaceTapConfigurationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleInterfaceTapConfigurationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkInterfaceTapConfigurationDelete.json
+// Generated from example definition: 2025-09-01/NetworkInterfaceTapConfigurationDelete.json
 func ExampleInterfaceTapConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleInterfaceTapConfigurationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkInterfaceTapConfigurationGet.json
+// Generated from example definition: 2025-09-01/NetworkInterfaceTapConfigurationGet.json
 func ExampleInterfaceTapConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleInterfaceTapConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkInterfaceTapConfigurationList.json
+// Generated from example definition: 2025-09-01/NetworkInterfaceTapConfigurationList.json
 func ExampleInterfaceTapConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

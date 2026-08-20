@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/NetworkVirtualApplianceSitePut.json
+// Generated from example definition: 2025-09-01/NetworkVirtualApplianceSitePut.json
 func ExampleVirtualApplianceSitesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleVirtualApplianceSitesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkVirtualApplianceSiteDelete.json
+// Generated from example definition: 2025-09-01/NetworkVirtualApplianceSiteDelete.json
 func ExampleVirtualApplianceSitesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleVirtualApplianceSitesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkVirtualApplianceSiteGet.json
+// Generated from example definition: 2025-09-01/NetworkVirtualApplianceSiteGet.json
 func ExampleVirtualApplianceSitesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleVirtualApplianceSitesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkVirtualApplianceSiteList.json
+// Generated from example definition: 2025-09-01/NetworkVirtualApplianceSiteList.json
 func ExampleVirtualApplianceSitesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -49,13 +49,13 @@ type ServiceGatewaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListAllPager func(options *armnetwork.ServiceGatewaysClientListAllOptions) (resp azfake.PagerResponder[armnetwork.ServiceGatewaysClientListAllResponse])
 
-	// BeginUpdateAddressLocations is the fake for method ServiceGatewaysClient.BeginUpdateAddressLocations
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginUpdateAddressLocations func(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters armnetwork.ServiceGatewayUpdateAddressLocationsRequest, options *armnetwork.ServiceGatewaysClientBeginUpdateAddressLocationsOptions) (resp azfake.PollerResponder[armnetwork.ServiceGatewaysClientUpdateAddressLocationsResponse], errResp azfake.ErrorResponder)
+	// UpdateAddressLocations is the fake for method ServiceGatewaysClient.UpdateAddressLocations
+	// HTTP status codes to indicate success: http.StatusOK
+	UpdateAddressLocations func(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters armnetwork.ServiceGatewayUpdateAddressLocationsRequest, options *armnetwork.ServiceGatewaysClientUpdateAddressLocationsOptions) (resp azfake.Responder[armnetwork.ServiceGatewaysClientUpdateAddressLocationsResponse], errResp azfake.ErrorResponder)
 
-	// BeginUpdateServices is the fake for method ServiceGatewaysClient.BeginUpdateServices
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginUpdateServices func(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters armnetwork.ServiceGatewayUpdateServicesRequest, options *armnetwork.ServiceGatewaysClientBeginUpdateServicesOptions) (resp azfake.PollerResponder[armnetwork.ServiceGatewaysClientUpdateServicesResponse], errResp azfake.ErrorResponder)
+	// UpdateServices is the fake for method ServiceGatewaysClient.UpdateServices
+	// HTTP status codes to indicate success: http.StatusOK
+	UpdateServices func(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters armnetwork.ServiceGatewayUpdateServicesRequest, options *armnetwork.ServiceGatewaysClientUpdateServicesOptions) (resp azfake.Responder[armnetwork.ServiceGatewaysClientUpdateServicesResponse], errResp azfake.ErrorResponder)
 
 	// UpdateTags is the fake for method ServiceGatewaysClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -74,8 +74,6 @@ func NewServiceGatewaysServerTransport(srv *ServiceGatewaysServer) *ServiceGatew
 		newGetServicesPager:         newTracker[azfake.PagerResponder[armnetwork.ServiceGatewaysClientGetServicesResponse]](),
 		newListPager:                newTracker[azfake.PagerResponder[armnetwork.ServiceGatewaysClientListResponse]](),
 		newListAllPager:             newTracker[azfake.PagerResponder[armnetwork.ServiceGatewaysClientListAllResponse]](),
-		beginUpdateAddressLocations: newTracker[azfake.PollerResponder[armnetwork.ServiceGatewaysClientUpdateAddressLocationsResponse]](),
-		beginUpdateServices:         newTracker[azfake.PollerResponder[armnetwork.ServiceGatewaysClientUpdateServicesResponse]](),
 	}
 }
 
@@ -89,8 +87,6 @@ type ServiceGatewaysServerTransport struct {
 	newGetServicesPager         *tracker[azfake.PagerResponder[armnetwork.ServiceGatewaysClientGetServicesResponse]]
 	newListPager                *tracker[azfake.PagerResponder[armnetwork.ServiceGatewaysClientListResponse]]
 	newListAllPager             *tracker[azfake.PagerResponder[armnetwork.ServiceGatewaysClientListAllResponse]]
-	beginUpdateAddressLocations *tracker[azfake.PollerResponder[armnetwork.ServiceGatewaysClientUpdateAddressLocationsResponse]]
-	beginUpdateServices         *tracker[azfake.PollerResponder[armnetwork.ServiceGatewaysClientUpdateServicesResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServiceGatewaysServerTransport.
@@ -128,10 +124,10 @@ func (s *ServiceGatewaysServerTransport) dispatchToMethodFake(req *http.Request,
 				res.resp, res.err = s.dispatchNewListPager(req)
 			case "ServiceGatewaysClient.NewListAllPager":
 				res.resp, res.err = s.dispatchNewListAllPager(req)
-			case "ServiceGatewaysClient.BeginUpdateAddressLocations":
-				res.resp, res.err = s.dispatchBeginUpdateAddressLocations(req)
-			case "ServiceGatewaysClient.BeginUpdateServices":
-				res.resp, res.err = s.dispatchBeginUpdateServices(req)
+			case "ServiceGatewaysClient.UpdateAddressLocations":
+				res.resp, res.err = s.dispatchUpdateAddressLocations(req)
+			case "ServiceGatewaysClient.UpdateServices":
+				res.resp, res.err = s.dispatchUpdateServices(req)
 			case "ServiceGatewaysClient.UpdateTags":
 				res.resp, res.err = s.dispatchUpdateTags(req)
 			default:
@@ -427,99 +423,77 @@ func (s *ServiceGatewaysServerTransport) dispatchNewListAllPager(req *http.Reque
 	return resp, nil
 }
 
-func (s *ServiceGatewaysServerTransport) dispatchBeginUpdateAddressLocations(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdateAddressLocations == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateAddressLocations not implemented")}
+func (s *ServiceGatewaysServerTransport) dispatchUpdateAddressLocations(req *http.Request) (*http.Response, error) {
+	if s.srv.UpdateAddressLocations == nil {
+		return nil, &nonRetriableError{errors.New("fake for method UpdateAddressLocations not implemented")}
 	}
-	beginUpdateAddressLocations := s.beginUpdateAddressLocations.get(req)
-	if beginUpdateAddressLocations == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateAddressLocations`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetwork.ServiceGatewayUpdateAddressLocationsRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serviceGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGatewayName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdateAddressLocations(req.Context(), resourceGroupNameParam, serviceGatewayNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateAddressLocations = &respr
-		s.beginUpdateAddressLocations.add(req, beginUpdateAddressLocations)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateAddressLocations`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-
-	resp, err := server.PollerResponderNext(beginUpdateAddressLocations, req)
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.ServiceGatewayUpdateAddressLocationsRequest](req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		s.beginUpdateAddressLocations.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PollerResponderMore(beginUpdateAddressLocations) {
-		s.beginUpdateAddressLocations.remove(req)
+	serviceGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGatewayName")])
+	if err != nil {
+		return nil, err
 	}
-
+	respr, errRespr := s.srv.UpdateAddressLocations(req.Context(), resourceGroupNameParam, serviceGatewayNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServiceGatewayActionOkResponseBody, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
-func (s *ServiceGatewaysServerTransport) dispatchBeginUpdateServices(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdateServices == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateServices not implemented")}
+func (s *ServiceGatewaysServerTransport) dispatchUpdateServices(req *http.Request) (*http.Response, error) {
+	if s.srv.UpdateServices == nil {
+		return nil, &nonRetriableError{errors.New("fake for method UpdateServices not implemented")}
 	}
-	beginUpdateServices := s.beginUpdateServices.get(req)
-	if beginUpdateServices == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateServices`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armnetwork.ServiceGatewayUpdateServicesRequest](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serviceGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGatewayName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdateServices(req.Context(), resourceGroupNameParam, serviceGatewayNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdateServices = &respr
-		s.beginUpdateServices.add(req, beginUpdateServices)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/serviceGateways/(?P<serviceGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateServices`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-
-	resp, err := server.PollerResponderNext(beginUpdateServices, req)
+	body, err := server.UnmarshalRequestAsJSON[armnetwork.ServiceGatewayUpdateServicesRequest](req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		s.beginUpdateServices.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PollerResponderMore(beginUpdateServices) {
-		s.beginUpdateServices.remove(req)
+	serviceGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGatewayName")])
+	if err != nil {
+		return nil, err
 	}
-
+	respr, errRespr := s.srv.UpdateServices(req.Context(), resourceGroupNameParam, serviceGatewayNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServiceGatewayActionOkResponseBody, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

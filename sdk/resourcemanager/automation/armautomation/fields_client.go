@@ -58,55 +58,69 @@ func (client *FieldsClient) NewListByTypePager(resourceGroupName string, automat
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByTypeCreateRequest(ctx, resourceGroupName, automationAccountName, moduleName, typeName, options)
-			}, nil)
+			req, err := client.listByTypeCreateRequest(ctx, resourceGroupName, automationAccountName, moduleName, typeName, nextLink, options)
 			if err != nil {
 				return FieldsClientListByTypeResponse{}, err
 			}
-			return client.listByTypeHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FieldsClientListByTypeResponse{}, err
+			}
+			return client.listByTypeHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByTypeCreateRequest creates the ListByType request.
-func (client *FieldsClient) listByTypeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, typeName string, _ *FieldsClientListByTypeOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/types/{typeName}/fields"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FieldsClient) listByTypeCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, moduleName string, typeName string, nextLink string, _ *FieldsClientListByTypeOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/modules/{moduleName}/types/{typeName}/fields"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if automationAccountName == "" {
+			return nil, errors.New("parameter automationAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+		if moduleName == "" {
+			return nil, errors.New("parameter moduleName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{moduleName}", url.PathEscape(moduleName))
+		if typeName == "" {
+			return nil, errors.New("parameter typeName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{typeName}", url.PathEscape(typeName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if automationAccountName == "" {
-		return nil, errors.New("parameter automationAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	if moduleName == "" {
-		return nil, errors.New("parameter moduleName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{moduleName}", url.PathEscape(moduleName))
-	if typeName == "" {
-		return nil, errors.New("parameter typeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{typeName}", url.PathEscape(typeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241023)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241023)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByTypeHandleResponse handles the ListByType response.
-func (client *FieldsClient) listByTypeHandleResponse(resp *http.Response) (FieldsClientListByTypeResponse, error) {
+func (client *FieldsClient) listByTypeHandleResponse(resp *http.Response, successCodes ...int) (FieldsClientListByTypeResponse, error) {
 	result := FieldsClientListByTypeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TypeFieldListResult); err != nil {
 		return FieldsClientListByTypeResponse{}, err
 	}

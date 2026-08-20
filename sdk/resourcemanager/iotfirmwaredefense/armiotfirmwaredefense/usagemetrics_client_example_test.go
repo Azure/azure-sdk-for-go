@@ -42,10 +42,10 @@ func ExampleUsageMetricsClient_Get() {
 	// 		SystemData: &armiotfirmwaredefense.SystemData{
 	// 			CreatedBy: to.Ptr("UserName"),
 	// 			CreatedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.June, 13, 15, 22, 45, 940000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserName"),
 	// 			LastModifiedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.June, 13, 15, 22, 45, 940000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -88,10 +88,10 @@ func ExampleUsageMetricsClient_NewListByWorkspacePager() {
 		// 				SystemData: &armiotfirmwaredefense.SystemData{
 		// 					CreatedBy: to.Ptr("UserName"),
 		// 					CreatedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.June, 13, 15, 22, 45, 940000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("UserName"),
 		// 					LastModifiedByType: to.Ptr(armiotfirmwaredefense.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-06-13T15:22:45.940Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.June, 13, 15, 22, 45, 940000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

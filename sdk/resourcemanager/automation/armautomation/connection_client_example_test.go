@@ -51,12 +51,12 @@ func ExampleConnectionClient_CreateOrUpdate() {
 	// 			ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 	// 				Name: to.Ptr("Azure"),
 	// 			},
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:29.29+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 29, 290000000, time.UTC)),
 	// 			FieldDefinitionValues: map[string]*string{
 	// 				"AutomationCertificateName": to.Ptr("mysCertificateName"),
 	// 				"SubscriptionID": to.Ptr("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"),
 	// 			},
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:29.29+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 29, 290000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -111,12 +111,12 @@ func ExampleConnectionClient_Get() {
 	// 			ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 	// 				Name: to.Ptr("Azure"),
 	// 			},
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:29.29+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 29, 290000000, time.UTC)),
 	// 			FieldDefinitionValues: map[string]*string{
 	// 				"AutomationCertificateName": to.Ptr("myCertificateName"),
 	// 				"SubscriptionID": to.Ptr("b5e4748c-f69a-467c-8749-e2f9c8cd3007"),
 	// 			},
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:33.617+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 33, 617000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -155,8 +155,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:29.29+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:33.617+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 29, 290000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 33, 617000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -166,8 +166,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:36.493+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:36.493+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 36, 493000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 36, 493000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -177,8 +177,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:36.76+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:36.76+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 36, 760000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 36, 760000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -188,8 +188,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:39.117+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:39.117+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 39, 117000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 39, 117000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -199,8 +199,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:04.527+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:04.527+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 4, 527000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 4, 527000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -210,8 +210,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:04.777+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:04.777+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 4, 777000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 4, 777000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -221,8 +221,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:05.027+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:05.027+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 5, 27000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 5, 27000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -232,8 +232,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:05.277+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:05.277+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 5, 277000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 5, 277000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -243,8 +243,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:05.527+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:05.527+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 5, 527000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 5, 527000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -254,8 +254,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:05.82+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:05.82+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 5, 820000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 5, 820000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -265,8 +265,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:06.07+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:06.07+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 6, 70000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 6, 70000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -276,8 +276,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:06.37+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:06.37+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 6, 370000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 6, 370000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -287,8 +287,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:06.62+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:06.62+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 6, 620000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 6, 620000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -298,8 +298,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:06.87+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:06.87+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 6, 870000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 6, 870000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -309,8 +309,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:39.367+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:39.367+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 39, 367000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 39, 367000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -320,8 +320,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:07.167+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:07.167+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 7, 167000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 7, 167000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -331,8 +331,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:07.463+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:07.463+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 7, 463000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 7, 463000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -342,8 +342,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:07.73+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:07.73+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 7, 730000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 7, 730000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -353,8 +353,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:07.963+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:07.963+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 7, 963000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 7, 963000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -364,8 +364,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:08.213+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:08.213+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 8, 213000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 8, 213000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -375,8 +375,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:08.527+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:08.527+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 8, 527000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 8, 527000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -386,8 +386,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:08.76+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:08.76+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 8, 760000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 8, 760000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -397,8 +397,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:09.103+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:09.103+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 9, 103000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 9, 103000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -408,8 +408,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:09.37+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:09.37+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 9, 370000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 9, 370000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -419,8 +419,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:09.65+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:09.65+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 9, 650000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 9, 650000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -430,8 +430,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:39.617+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:39.617+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 39, 617000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 39, 617000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -441,8 +441,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:09.883+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:09.883+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 9, 883000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 9, 883000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -452,8 +452,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:10.167+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:10.167+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 10, 167000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 10, 167000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -463,8 +463,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:10.43+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:10.43+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 10, 430000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 10, 430000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -474,8 +474,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:10.68+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:10.68+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 10, 680000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 10, 680000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -485,8 +485,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:10.93+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:10.93+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 10, 930000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 10, 930000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -496,8 +496,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:11.18+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:11.18+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 11, 180000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 11, 180000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -507,8 +507,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:11.43+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:11.43+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 11, 430000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 11, 430000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -518,8 +518,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:11.667+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:11.667+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 11, 667000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 11, 667000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -529,8 +529,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:11.917+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:11.917+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 11, 917000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 11, 917000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -540,8 +540,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:12.18+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:12.18+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 12, 180000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 12, 180000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -551,8 +551,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:39.883+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:39.883+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 39, 883000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 39, 883000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -562,8 +562,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:12.43+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:12.43+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 12, 430000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 12, 430000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -573,8 +573,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:12.667+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:12.667+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 12, 667000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 12, 667000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -584,8 +584,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:12.917+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:12.917+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 12, 917000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 12, 917000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -595,8 +595,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:13.213+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:13.213+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 13, 213000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 13, 213000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -606,8 +606,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:13.463+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:13.463+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 13, 463000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 13, 463000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -617,8 +617,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:13.73+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:13.73+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 13, 730000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 13, 730000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -628,8 +628,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:14.01+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:14.01+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 14, 10000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 14, 10000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -639,8 +639,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:14.29+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:14.29+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 14, 290000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 14, 290000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -650,8 +650,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:14.54+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:14.54+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 14, 540000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 14, 540000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -661,8 +661,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:14.807+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:14.807+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 14, 807000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 14, 807000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -672,8 +672,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:40.133+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:40.133+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 40, 133000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 40, 133000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -683,8 +683,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:15.057+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:15.057+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 15, 57000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 15, 57000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -694,8 +694,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:15.307+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:15.307+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 15, 307000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 15, 307000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -705,8 +705,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:15.603+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:15.603+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 15, 603000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 15, 603000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -716,8 +716,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:15.853+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:15.853+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 15, 853000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 15, 853000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -727,8 +727,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:16.12+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:16.12+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 16, 120000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 16, 120000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -738,8 +738,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:16.37+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:16.37+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 16, 370000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 16, 370000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -749,8 +749,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:16.633+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:16.633+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 16, 633000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 16, 633000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -760,8 +760,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:16.9+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:16.9+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 16, 900000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 16, 900000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -771,8 +771,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:17.167+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:17.167+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 17, 167000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 17, 167000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -782,8 +782,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:17.43+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:17.43+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 17, 430000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 17, 430000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -793,8 +793,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:40.37+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:40.37+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 40, 370000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 40, 370000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -804,8 +804,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:17.68+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:17.68+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 17, 680000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 17, 680000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -815,8 +815,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:17.963+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:17.963+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 17, 963000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 17, 963000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -826,8 +826,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:18.527+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:18.527+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 18, 527000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 18, 527000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -837,8 +837,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:18.79+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:18.79+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 18, 790000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 18, 790000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -848,8 +848,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:19.073+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:19.073+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 19, 73000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 19, 73000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -859,8 +859,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:19.353+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:19.353+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 19, 353000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 19, 353000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -870,8 +870,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:19.68+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:19.68+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 19, 680000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 19, 680000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -881,8 +881,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:19.93+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:19.93+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 19, 930000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 19, 930000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -892,8 +892,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:20.243+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:20.243+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 20, 243000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 20, 243000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -903,8 +903,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:20.557+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:20.557+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 20, 557000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 20, 557000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -914,8 +914,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:40.62+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:40.62+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 40, 620000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 40, 620000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -925,8 +925,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:20.823+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:20.823+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 20, 823000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 20, 823000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -936,8 +936,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:21.15+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:21.15+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 21, 150000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 21, 150000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -947,8 +947,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:21.417+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:21.417+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 21, 417000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 21, 417000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -958,8 +958,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:21.65+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:21.65+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 21, 650000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 21, 650000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -969,8 +969,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:21.993+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:21.993+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 21, 993000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 21, 993000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -980,8 +980,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:22.323+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:22.323+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 22, 323000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 22, 323000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -991,8 +991,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:22.68+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:22.68+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 22, 680000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 22, 680000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1002,8 +1002,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:23.057+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:23.057+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 23, 57000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 23, 57000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1013,8 +1013,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:23.417+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:23.417+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 23, 417000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 23, 417000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1024,8 +1024,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:23.697+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:23.697+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 23, 697000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 23, 697000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1035,8 +1035,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:40.87+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:40.87+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 40, 870000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 40, 870000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1046,8 +1046,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:23.963+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:23.963+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 23, 963000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 23, 963000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1057,8 +1057,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:24.243+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:24.243+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 24, 243000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 24, 243000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1068,8 +1068,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:24.51+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:24.51+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 24, 510000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 24, 510000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1079,8 +1079,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:24.777+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:24.777+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 24, 777000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 24, 777000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1090,8 +1090,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:25.057+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:25.057+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 25, 57000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 25, 57000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1101,8 +1101,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:25.34+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:25.34+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 25, 340000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 25, 340000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1112,8 +1112,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:41.197+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:41.197+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 41, 197000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 41, 197000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1123,8 +1123,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:41.57+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:41.57+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 41, 570000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 41, 570000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1134,8 +1134,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:37.01+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:37.01+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 37, 10000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 37, 10000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1145,8 +1145,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:41.913+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:41.913+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 41, 913000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 41, 913000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1156,8 +1156,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:42.273+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:42.273+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 42, 273000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 42, 273000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1167,8 +1167,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:42.663+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:42.663+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 42, 663000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 42, 663000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1178,8 +1178,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:42.993+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:42.993+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 42, 993000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 42, 993000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1189,8 +1189,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:43.26+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:43.26+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 43, 260000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 43, 260000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1200,8 +1200,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:43.587+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:43.587+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 43, 587000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 43, 587000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1211,8 +1211,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:43.87+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:43.87+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 43, 870000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 43, 870000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1222,8 +1222,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:44.227+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:44.227+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 44, 227000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 44, 227000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1233,8 +1233,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:44.557+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:44.557+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 44, 557000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 44, 557000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1244,8 +1244,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:44.807+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:44.807+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 44, 807000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 44, 807000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -1286,8 +1286,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:37.29+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:37.29+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 37, 290000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 37, 290000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1297,8 +1297,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:45.04+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:45.04+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 45, 40000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 45, 40000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1308,8 +1308,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:45.307+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:45.307+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 45, 307000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 45, 307000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1319,8 +1319,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:45.557+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:45.557+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 45, 557000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 45, 557000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1330,8 +1330,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:45.853+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:45.853+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 45, 853000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 45, 853000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1341,8 +1341,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:46.087+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:46.087+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 46, 87000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 46, 87000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1352,8 +1352,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:46.353+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:46.353+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 46, 353000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 46, 353000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1363,8 +1363,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:46.603+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:46.603+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 46, 603000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 46, 603000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1374,8 +1374,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:46.853+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:46.853+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 46, 853000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 46, 853000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1385,8 +1385,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:47.103+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:47.103+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 47, 103000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 47, 103000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1396,8 +1396,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:47.353+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:47.353+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 47, 353000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 47, 353000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1407,8 +1407,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:37.54+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:37.54+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 37, 540000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 37, 540000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1418,8 +1418,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:47.62+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:47.62+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 47, 620000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 47, 620000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1429,8 +1429,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:47.883+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:47.883+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 47, 883000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 47, 883000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1440,8 +1440,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:48.167+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:48.167+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 48, 167000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 48, 167000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1451,8 +1451,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:48.43+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:48.43+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 48, 430000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 48, 430000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1462,8 +1462,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:48.82+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:48.82+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 48, 820000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 48, 820000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1473,8 +1473,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:49.18+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:49.18+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 49, 180000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 49, 180000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1484,8 +1484,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:49.477+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:49.477+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 49, 477000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 49, 477000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1495,8 +1495,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:49.773+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:49.773+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 49, 773000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 49, 773000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1506,8 +1506,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:50.197+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:50.197+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 50, 197000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 50, 197000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1517,8 +1517,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:50.603+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:50.603+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 50, 603000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 50, 603000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1528,8 +1528,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:37.79+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:37.79+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 37, 790000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 37, 790000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1539,8 +1539,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:50.837+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:50.837+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 50, 837000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 50, 837000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1550,8 +1550,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:51.087+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:51.087+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 51, 87000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 51, 87000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1561,8 +1561,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:51.337+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:51.337+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 51, 337000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 51, 337000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1572,8 +1572,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:51.587+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:51.587+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 51, 587000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 51, 587000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1583,8 +1583,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:51.87+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:51.87+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 51, 870000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 51, 870000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1594,8 +1594,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:52.15+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:52.15+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 52, 150000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 52, 150000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1605,8 +1605,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:52.4+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:52.4+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 52, 400000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 52, 400000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1616,8 +1616,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:52.667+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:52.667+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 52, 667000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 52, 667000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1627,8 +1627,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:52.917+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:52.917+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 52, 917000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 52, 917000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1638,8 +1638,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:53.167+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:53.167+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 53, 167000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 53, 167000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1649,8 +1649,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:38.103+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:38.103+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 38, 103000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 38, 103000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1660,8 +1660,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:53.463+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:53.463+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 53, 463000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 53, 463000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1671,8 +1671,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:53.727+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:53.727+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 53, 727000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 53, 727000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1682,8 +1682,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:54.01+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:54.01+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 54, 10000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 54, 10000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1693,8 +1693,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:54.273+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:54.273+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 54, 273000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 54, 273000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1704,8 +1704,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:54.523+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:54.523+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 54, 523000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 54, 523000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1715,8 +1715,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:54.807+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:54.807+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 54, 807000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 54, 807000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1726,8 +1726,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:55.103+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:55.103+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 55, 103000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 55, 103000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1737,8 +1737,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:55.37+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:55.37+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 55, 370000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 55, 370000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1748,8 +1748,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:55.62+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:55.62+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 55, 620000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 55, 620000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1759,8 +1759,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:55.883+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:55.883+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 55, 883000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 55, 883000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1770,8 +1770,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:38.353+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:38.353+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 38, 353000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 38, 353000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1781,8 +1781,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:56.133+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:56.133+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 56, 133000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 56, 133000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1792,8 +1792,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:56.383+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:56.383+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 56, 383000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 56, 383000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1803,8 +1803,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:56.633+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:56.633+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 56, 633000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 56, 633000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1814,8 +1814,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:56.87+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:56.87+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 56, 870000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 56, 870000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1825,8 +1825,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:57.12+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:57.12+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 57, 120000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 57, 120000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1836,8 +1836,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:57.37+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:57.37+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 57, 370000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 57, 370000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1847,8 +1847,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:57.62+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:57.62+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 57, 620000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 57, 620000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1858,8 +1858,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:57.87+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:57.87+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 57, 870000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 57, 870000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1869,8 +1869,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:58.12+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:58.12+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 58, 120000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 58, 120000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1880,8 +1880,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:58.37+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:58.37+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 58, 370000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 58, 370000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1891,8 +1891,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:38.587+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:38.587+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 38, 587000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 38, 587000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1902,8 +1902,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:58.633+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:58.633+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 58, 633000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 58, 633000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1913,8 +1913,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:58.917+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:58.917+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 58, 917000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 58, 917000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1924,8 +1924,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:59.18+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:59.18+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 59, 180000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 59, 180000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1935,8 +1935,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:59.477+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:59.477+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 59, 477000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 59, 477000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1946,8 +1946,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:59.713+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:59.713+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 59, 713000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 59, 713000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1957,8 +1957,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:00.01+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:00.01+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 0, 10000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 0, 10000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1968,8 +1968,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:00.26+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:00.26+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 0, 260000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 0, 260000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1979,8 +1979,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:00.62+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:00.62+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 0, 620000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 0, 620000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -1990,8 +1990,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:00.98+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:00.98+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 0, 980000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 0, 980000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -2001,8 +2001,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:01.353+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:01.353+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 1, 353000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 1, 353000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -2012,8 +2012,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:38.867+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:52:38.867+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 38, 867000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 52, 38, 867000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -2023,8 +2023,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:01.697+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:01.697+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 1, 697000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 1, 697000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -2034,8 +2034,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:01.963+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:01.963+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 1, 963000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 1, 963000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -2045,8 +2045,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:02.29+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:02.29+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 2, 290000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 2, 290000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -2056,8 +2056,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:02.587+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:02.587+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 2, 587000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 2, 587000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -2067,8 +2067,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:02.87+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:02.87+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 2, 870000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 2, 870000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -2078,8 +2078,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:03.26+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:03.26+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 3, 260000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 3, 260000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -2089,8 +2089,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:03.51+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:03.51+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 3, 510000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 3, 510000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -2100,8 +2100,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:03.76+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:03.76+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 3, 760000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 3, 760000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -2111,8 +2111,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:04.027+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:04.027+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 4, 27000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 4, 27000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -2122,8 +2122,8 @@ func ExampleConnectionClient_NewListByAutomationAccountPager_listConnectionsByAu
 		// 					ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 		// 						Name: to.Ptr("Azure"),
 		// 					},
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:04.26+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T07:53:04.26+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 4, 260000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 7, 53, 4, 260000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -2168,12 +2168,12 @@ func ExampleConnectionClient_Update() {
 	// 			ConnectionType: &armautomation.ConnectionTypeAssociationProperty{
 	// 				Name: to.Ptr("Azure"),
 	// 			},
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T08:21:29.313+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.March, 27, 8, 21, 29, 313000000, time.UTC)),
 	// 			FieldDefinitionValues: map[string]*string{
 	// 				"AutomationCertificateName": to.Ptr("myCertificateName"),
 	// 				"SubscriptionID": to.Ptr("b5e4748c-f69a-467c-8749-e2f9c8cd3009"),
 	// 			},
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-27T08:21:30.093+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2017, time.March, 27, 8, 21, 30, 93000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

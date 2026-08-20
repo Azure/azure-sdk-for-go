@@ -63,12 +63,7 @@ func (client *ExportJobsOperationResultClient) Get(ctx context.Context, resource
 	if err != nil {
 		return ExportJobsOperationResultClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ExportJobsOperationResultClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getCreateRequest creates the Get request.
@@ -102,8 +97,11 @@ func (client *ExportJobsOperationResultClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExportJobsOperationResultClient) getHandleResponse(resp *http.Response) (ExportJobsOperationResultClientGetResponse, error) {
+func (client *ExportJobsOperationResultClient) getHandleResponse(resp *http.Response, successCodes ...int) (ExportJobsOperationResultClientGetResponse, error) {
 	result := ExportJobsOperationResultClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExportJobsResult); err != nil {
 		return ExportJobsOperationResultClientGetResponse{}, err
 	}

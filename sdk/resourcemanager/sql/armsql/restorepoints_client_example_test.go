@@ -43,7 +43,7 @@ func ExampleRestorePointsClient_BeginCreate() {
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/servers/testserver/databases/testDatabase/restorePoints/131546477590000000"),
 	// 		Location: to.Ptr("japaneast"),
 	// 		Properties: &armsql.RestorePointProperties{
-	// 			RestorePointCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+	// 			RestorePointCreationDate: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 	// 			RestorePointLabel: to.Ptr("mylabel"),
 	// 			RestorePointType: to.Ptr(armsql.RestorePointTypeDISCRETE),
 	// 		},
@@ -98,7 +98,7 @@ func ExampleRestorePointsClient_Get_getsADatawarehouseDatabaseRestorePoint() {
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/servers/testserver/databases/testDatabase/restorePoints/131546477590000000"),
 	// 		Location: to.Ptr("japaneast"),
 	// 		Properties: &armsql.RestorePointProperties{
-	// 			RestorePointCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+	// 			RestorePointCreationDate: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 	// 			RestorePointLabel: to.Ptr("mylabel"),
 	// 			RestorePointType: to.Ptr(armsql.RestorePointTypeDISCRETE),
 	// 		},
@@ -131,7 +131,7 @@ func ExampleRestorePointsClient_Get_getsADatabaseRestorePoint() {
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/servers/testserver/databases/testDatabase/restorePoints/ContinuousRestorePoint"),
 	// 		Location: to.Ptr("japaneast"),
 	// 		Properties: &armsql.RestorePointProperties{
-	// 			EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+	// 			EarliestRestoreDate: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 	// 			RestorePointType: to.Ptr(armsql.RestorePointTypeCONTINUOUS),
 	// 		},
 	// 	},
@@ -169,7 +169,7 @@ func ExampleRestorePointsClient_NewListByDatabasePager_listDatawarehouseDatabase
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/servers/testserver/databases/testDatabase/restorePoints/131546477590000000"),
 		// 				Location: to.Ptr("japaneast"),
 		// 				Properties: &armsql.RestorePointProperties{
-		// 					RestorePointCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-10T08:00:00Z"); return t}()),
+		// 					RestorePointCreationDate: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
 		// 					RestorePointLabel: to.Ptr("mylabel1"),
 		// 					RestorePointType: to.Ptr(armsql.RestorePointTypeDISCRETE),
 		// 				},
@@ -180,7 +180,7 @@ func ExampleRestorePointsClient_NewListByDatabasePager_listDatawarehouseDatabase
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/servers/testserver/databases/testDatabase/restorePoints/131553636140000000"),
 		// 				Location: to.Ptr("japaneast"),
 		// 				Properties: &armsql.RestorePointProperties{
-		// 					RestorePointCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-17T03:40:14Z"); return t}()),
+		// 					RestorePointCreationDate: to.Ptr(time.Date(2017, time.November, 17, 3, 40, 14, 0, time.UTC)),
 		// 					RestorePointLabel: to.Ptr("mylabel2"),
 		// 					RestorePointType: to.Ptr(armsql.RestorePointTypeDISCRETE),
 		// 				},
@@ -191,7 +191,7 @@ func ExampleRestorePointsClient_NewListByDatabasePager_listDatawarehouseDatabase
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/servers/testserver/databases/testDatabase/restorePoints/131553619750000000"),
 		// 				Location: to.Ptr("japaneast"),
 		// 				Properties: &armsql.RestorePointProperties{
-		// 					RestorePointCreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-17T03:12:55Z"); return t}()),
+		// 					RestorePointCreationDate: to.Ptr(time.Date(2017, time.November, 17, 3, 12, 55, 0, time.UTC)),
 		// 					RestorePointType: to.Ptr(armsql.RestorePointTypeDISCRETE),
 		// 				},
 		// 			},
@@ -232,7 +232,7 @@ func ExampleRestorePointsClient_NewListByDatabasePager_listDatabaseRestorePoints
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/sqlcrudtest-6730/providers/Microsoft.Sql/servers/sqlcrudtest-9007/databases/3481/restorepoints/ContinuousRestorePoint"),
 		// 				Location: to.Ptr("West US"),
 		// 				Properties: &armsql.RestorePointProperties{
-		// 					EarliestRestoreDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-12T00:00:00Z"); return t}()),
+		// 					EarliestRestoreDate: to.Ptr(time.Date(2017, time.June, 12, 0, 0, 0, 0, time.UTC)),
 		// 					RestorePointType: to.Ptr(armsql.RestorePointTypeCONTINUOUS),
 		// 				},
 		// 			},

@@ -88,8 +88,7 @@ func (client *ConnectionClient) createOrUpdateDeployment(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -181,8 +180,7 @@ func (client *ConnectionClient) deleteDeployment(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -244,12 +242,7 @@ func (client *ConnectionClient) GetAllModels(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ConnectionClientGetAllModelsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectionClientGetAllModelsResponse{}, err
-	}
-	resp, err := client.getAllModelsHandleResponse(httpResp)
-	return resp, err
+	return client.getAllModelsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAllModelsCreateRequest creates the GetAllModels request.
@@ -279,8 +272,11 @@ func (client *ConnectionClient) getAllModelsCreateRequest(ctx context.Context, r
 }
 
 // getAllModelsHandleResponse handles the GetAllModels response.
-func (client *ConnectionClient) getAllModelsHandleResponse(resp *http.Response) (ConnectionClientGetAllModelsResponse, error) {
+func (client *ConnectionClient) getAllModelsHandleResponse(resp *http.Response, successCodes ...int) (ConnectionClientGetAllModelsResponse, error) {
 	result := ConnectionClientGetAllModelsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointModels); err != nil {
 		return ConnectionClientGetAllModelsResponse{}, err
 	}
@@ -311,12 +307,7 @@ func (client *ConnectionClient) GetDeployment(ctx context.Context, resourceGroup
 	if err != nil {
 		return ConnectionClientGetDeploymentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectionClientGetDeploymentResponse{}, err
-	}
-	resp, err := client.getDeploymentHandleResponse(httpResp)
-	return resp, err
+	return client.getDeploymentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDeploymentCreateRequest creates the GetDeployment request.
@@ -354,8 +345,11 @@ func (client *ConnectionClient) getDeploymentCreateRequest(ctx context.Context, 
 }
 
 // getDeploymentHandleResponse handles the GetDeployment response.
-func (client *ConnectionClient) getDeploymentHandleResponse(resp *http.Response) (ConnectionClientGetDeploymentResponse, error) {
+func (client *ConnectionClient) getDeploymentHandleResponse(resp *http.Response, successCodes ...int) (ConnectionClientGetDeploymentResponse, error) {
 	result := ConnectionClientGetDeploymentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointDeploymentResourcePropertiesBasicResource); err != nil {
 		return ConnectionClientGetDeploymentResponse{}, err
 	}
@@ -381,54 +375,68 @@ func (client *ConnectionClient) NewGetModelsPager(resourceGroupName string, work
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getModelsCreateRequest(ctx, resourceGroupName, workspaceName, connectionName, options)
-			}, nil)
+			req, err := client.getModelsCreateRequest(ctx, resourceGroupName, workspaceName, connectionName, nextLink, options)
 			if err != nil {
 				return ConnectionClientGetModelsResponse{}, err
 			}
-			return client.getModelsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConnectionClientGetModelsResponse{}, err
+			}
+			return client.getModelsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getModelsCreateRequest creates the GetModels request.
-func (client *ConnectionClient) getModelsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, options *ConnectionClientGetModelsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/models"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConnectionClient) getModelsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, nextLink string, options *ConnectionClientGetModelsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/models"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		if connectionName == "" {
+			return nil, errors.New("parameter connectionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{connectionName}", url.PathEscape(connectionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if connectionName == "" {
-		return nil, errors.New("parameter connectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectionName}", url.PathEscape(connectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	if options != nil && options.ProxyAPIVersion != nil {
-		reqQP.Set("proxy-api-version", *options.ProxyAPIVersion)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315Preview)
+		if options != nil && options.ProxyAPIVersion != nil {
+			reqQP.Set("proxy-api-version", *options.ProxyAPIVersion)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getModelsHandleResponse handles the GetModels response.
-func (client *ConnectionClient) getModelsHandleResponse(resp *http.Response) (ConnectionClientGetModelsResponse, error) {
+func (client *ConnectionClient) getModelsHandleResponse(resp *http.Response, successCodes ...int) (ConnectionClientGetModelsResponse, error) {
 	result := ConnectionClientGetModelsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointModels); err != nil {
 		return ConnectionClientGetModelsResponse{}, err
 	}
@@ -454,54 +462,68 @@ func (client *ConnectionClient) NewListDeploymentsPager(resourceGroupName string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listDeploymentsCreateRequest(ctx, resourceGroupName, workspaceName, connectionName, options)
-			}, nil)
+			req, err := client.listDeploymentsCreateRequest(ctx, resourceGroupName, workspaceName, connectionName, nextLink, options)
 			if err != nil {
 				return ConnectionClientListDeploymentsResponse{}, err
 			}
-			return client.listDeploymentsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConnectionClientListDeploymentsResponse{}, err
+			}
+			return client.listDeploymentsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listDeploymentsCreateRequest creates the ListDeployments request.
-func (client *ConnectionClient) listDeploymentsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, options *ConnectionClientListDeploymentsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/deployments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConnectionClient) listDeploymentsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, nextLink string, options *ConnectionClientListDeploymentsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/deployments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		if connectionName == "" {
+			return nil, errors.New("parameter connectionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{connectionName}", url.PathEscape(connectionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if connectionName == "" {
-		return nil, errors.New("parameter connectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectionName}", url.PathEscape(connectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	if options != nil && options.ProxyAPIVersion != nil {
-		reqQP.Set("proxy-api-version", *options.ProxyAPIVersion)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315Preview)
+		if options != nil && options.ProxyAPIVersion != nil {
+			reqQP.Set("proxy-api-version", *options.ProxyAPIVersion)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listDeploymentsHandleResponse handles the ListDeployments response.
-func (client *ConnectionClient) listDeploymentsHandleResponse(resp *http.Response) (ConnectionClientListDeploymentsResponse, error) {
+func (client *ConnectionClient) listDeploymentsHandleResponse(resp *http.Response, successCodes ...int) (ConnectionClientListDeploymentsResponse, error) {
 	result := ConnectionClientListDeploymentsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointDeploymentResourcePropertiesBasicResourceArmPaginatedResult); err != nil {
 		return ConnectionClientListDeploymentsResponse{}, err
 	}

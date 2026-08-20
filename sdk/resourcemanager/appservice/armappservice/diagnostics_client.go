@@ -66,12 +66,7 @@ func (client *DiagnosticsClient) ExecuteSiteAnalysis(ctx context.Context, resour
 	if err != nil {
 		return DiagnosticsClientExecuteSiteAnalysisResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiagnosticsClientExecuteSiteAnalysisResponse{}, err
-	}
-	resp, err := client.executeSiteAnalysisHandleResponse(httpResp)
-	return resp, err
+	return client.executeSiteAnalysisHandleResponse(httpResp, http.StatusOK)
 }
 
 // executeSiteAnalysisCreateRequest creates the ExecuteSiteAnalysis request.
@@ -104,10 +99,10 @@ func (client *DiagnosticsClient) executeSiteAnalysisCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250501)
 	if options != nil && options.EndTime != nil {
-		reqQP.Set("endTime", datetime.RFC3339(*options.EndTime).String())
+		reqQP.Set("endTime", datetime.RFC3339((*options.EndTime).UTC()).String())
 	}
 	if options != nil && options.StartTime != nil {
-		reqQP.Set("startTime", datetime.RFC3339(*options.StartTime).String())
+		reqQP.Set("startTime", datetime.RFC3339((*options.StartTime).UTC()).String())
 	}
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
@@ -118,8 +113,11 @@ func (client *DiagnosticsClient) executeSiteAnalysisCreateRequest(ctx context.Co
 }
 
 // executeSiteAnalysisHandleResponse handles the ExecuteSiteAnalysis response.
-func (client *DiagnosticsClient) executeSiteAnalysisHandleResponse(resp *http.Response) (DiagnosticsClientExecuteSiteAnalysisResponse, error) {
+func (client *DiagnosticsClient) executeSiteAnalysisHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientExecuteSiteAnalysisResponse, error) {
 	result := DiagnosticsClientExecuteSiteAnalysisResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticAnalysis); err != nil {
 		return DiagnosticsClientExecuteSiteAnalysisResponse{}, err
 	}
@@ -147,12 +145,7 @@ func (client *DiagnosticsClient) ExecuteSiteAnalysisSlot(ctx context.Context, re
 	if err != nil {
 		return DiagnosticsClientExecuteSiteAnalysisSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiagnosticsClientExecuteSiteAnalysisSlotResponse{}, err
-	}
-	resp, err := client.executeSiteAnalysisSlotHandleResponse(httpResp)
-	return resp, err
+	return client.executeSiteAnalysisSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // executeSiteAnalysisSlotCreateRequest creates the ExecuteSiteAnalysisSlot request.
@@ -189,10 +182,10 @@ func (client *DiagnosticsClient) executeSiteAnalysisSlotCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250501)
 	if options != nil && options.EndTime != nil {
-		reqQP.Set("endTime", datetime.RFC3339(*options.EndTime).String())
+		reqQP.Set("endTime", datetime.RFC3339((*options.EndTime).UTC()).String())
 	}
 	if options != nil && options.StartTime != nil {
-		reqQP.Set("startTime", datetime.RFC3339(*options.StartTime).String())
+		reqQP.Set("startTime", datetime.RFC3339((*options.StartTime).UTC()).String())
 	}
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
@@ -203,8 +196,11 @@ func (client *DiagnosticsClient) executeSiteAnalysisSlotCreateRequest(ctx contex
 }
 
 // executeSiteAnalysisSlotHandleResponse handles the ExecuteSiteAnalysisSlot response.
-func (client *DiagnosticsClient) executeSiteAnalysisSlotHandleResponse(resp *http.Response) (DiagnosticsClientExecuteSiteAnalysisSlotResponse, error) {
+func (client *DiagnosticsClient) executeSiteAnalysisSlotHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientExecuteSiteAnalysisSlotResponse, error) {
 	result := DiagnosticsClientExecuteSiteAnalysisSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticAnalysis); err != nil {
 		return DiagnosticsClientExecuteSiteAnalysisSlotResponse{}, err
 	}
@@ -232,12 +228,7 @@ func (client *DiagnosticsClient) ExecuteSiteDetector(ctx context.Context, resour
 	if err != nil {
 		return DiagnosticsClientExecuteSiteDetectorResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiagnosticsClientExecuteSiteDetectorResponse{}, err
-	}
-	resp, err := client.executeSiteDetectorHandleResponse(httpResp)
-	return resp, err
+	return client.executeSiteDetectorHandleResponse(httpResp, http.StatusOK)
 }
 
 // executeSiteDetectorCreateRequest creates the ExecuteSiteDetector request.
@@ -270,10 +261,10 @@ func (client *DiagnosticsClient) executeSiteDetectorCreateRequest(ctx context.Co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250501)
 	if options != nil && options.EndTime != nil {
-		reqQP.Set("endTime", datetime.RFC3339(*options.EndTime).String())
+		reqQP.Set("endTime", datetime.RFC3339((*options.EndTime).UTC()).String())
 	}
 	if options != nil && options.StartTime != nil {
-		reqQP.Set("startTime", datetime.RFC3339(*options.StartTime).String())
+		reqQP.Set("startTime", datetime.RFC3339((*options.StartTime).UTC()).String())
 	}
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
@@ -284,8 +275,11 @@ func (client *DiagnosticsClient) executeSiteDetectorCreateRequest(ctx context.Co
 }
 
 // executeSiteDetectorHandleResponse handles the ExecuteSiteDetector response.
-func (client *DiagnosticsClient) executeSiteDetectorHandleResponse(resp *http.Response) (DiagnosticsClientExecuteSiteDetectorResponse, error) {
+func (client *DiagnosticsClient) executeSiteDetectorHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientExecuteSiteDetectorResponse, error) {
 	result := DiagnosticsClientExecuteSiteDetectorResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticDetectorResponse); err != nil {
 		return DiagnosticsClientExecuteSiteDetectorResponse{}, err
 	}
@@ -313,12 +307,7 @@ func (client *DiagnosticsClient) ExecuteSiteDetectorSlot(ctx context.Context, re
 	if err != nil {
 		return DiagnosticsClientExecuteSiteDetectorSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiagnosticsClientExecuteSiteDetectorSlotResponse{}, err
-	}
-	resp, err := client.executeSiteDetectorSlotHandleResponse(httpResp)
-	return resp, err
+	return client.executeSiteDetectorSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // executeSiteDetectorSlotCreateRequest creates the ExecuteSiteDetectorSlot request.
@@ -355,10 +344,10 @@ func (client *DiagnosticsClient) executeSiteDetectorSlotCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250501)
 	if options != nil && options.EndTime != nil {
-		reqQP.Set("endTime", datetime.RFC3339(*options.EndTime).String())
+		reqQP.Set("endTime", datetime.RFC3339((*options.EndTime).UTC()).String())
 	}
 	if options != nil && options.StartTime != nil {
-		reqQP.Set("startTime", datetime.RFC3339(*options.StartTime).String())
+		reqQP.Set("startTime", datetime.RFC3339((*options.StartTime).UTC()).String())
 	}
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
@@ -369,8 +358,11 @@ func (client *DiagnosticsClient) executeSiteDetectorSlotCreateRequest(ctx contex
 }
 
 // executeSiteDetectorSlotHandleResponse handles the ExecuteSiteDetectorSlot response.
-func (client *DiagnosticsClient) executeSiteDetectorSlotHandleResponse(resp *http.Response) (DiagnosticsClientExecuteSiteDetectorSlotResponse, error) {
+func (client *DiagnosticsClient) executeSiteDetectorSlotHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientExecuteSiteDetectorSlotResponse, error) {
 	result := DiagnosticsClientExecuteSiteDetectorSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticDetectorResponse); err != nil {
 		return DiagnosticsClientExecuteSiteDetectorSlotResponse{}, err
 	}
@@ -400,12 +392,7 @@ func (client *DiagnosticsClient) GetHostingEnvironmentDetectorResponse(ctx conte
 	if err != nil {
 		return DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{}, err
-	}
-	resp, err := client.getHostingEnvironmentDetectorResponseHandleResponse(httpResp)
-	return resp, err
+	return client.getHostingEnvironmentDetectorResponseHandleResponse(httpResp, http.StatusOK)
 }
 
 // getHostingEnvironmentDetectorResponseCreateRequest creates the GetHostingEnvironmentDetectorResponse request.
@@ -434,10 +421,10 @@ func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseCreateRequ
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250501)
 	if options != nil && options.EndTime != nil {
-		reqQP.Set("endTime", datetime.RFC3339(*options.EndTime).String())
+		reqQP.Set("endTime", datetime.RFC3339((*options.EndTime).UTC()).String())
 	}
 	if options != nil && options.StartTime != nil {
-		reqQP.Set("startTime", datetime.RFC3339(*options.StartTime).String())
+		reqQP.Set("startTime", datetime.RFC3339((*options.StartTime).UTC()).String())
 	}
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
@@ -448,8 +435,11 @@ func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseCreateRequ
 }
 
 // getHostingEnvironmentDetectorResponseHandleResponse handles the GetHostingEnvironmentDetectorResponse response.
-func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseHandleResponse(resp *http.Response) (DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse, error) {
+func (client *DiagnosticsClient) getHostingEnvironmentDetectorResponseHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse, error) {
 	result := DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponse); err != nil {
 		return DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{}, err
 	}
@@ -480,12 +470,7 @@ func (client *DiagnosticsClient) GetSiteAnalysis(ctx context.Context, resourceGr
 	if err != nil {
 		return DiagnosticsClientGetSiteAnalysisResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiagnosticsClientGetSiteAnalysisResponse{}, err
-	}
-	resp, err := client.getSiteAnalysisHandleResponse(httpResp)
-	return resp, err
+	return client.getSiteAnalysisHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSiteAnalysisCreateRequest creates the GetSiteAnalysis request.
@@ -523,8 +508,11 @@ func (client *DiagnosticsClient) getSiteAnalysisCreateRequest(ctx context.Contex
 }
 
 // getSiteAnalysisHandleResponse handles the GetSiteAnalysis response.
-func (client *DiagnosticsClient) getSiteAnalysisHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteAnalysisResponse, error) {
+func (client *DiagnosticsClient) getSiteAnalysisHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientGetSiteAnalysisResponse, error) {
 	result := DiagnosticsClientGetSiteAnalysisResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AnalysisDefinition); err != nil {
 		return DiagnosticsClientGetSiteAnalysisResponse{}, err
 	}
@@ -552,12 +540,7 @@ func (client *DiagnosticsClient) GetSiteAnalysisSlot(ctx context.Context, resour
 	if err != nil {
 		return DiagnosticsClientGetSiteAnalysisSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiagnosticsClientGetSiteAnalysisSlotResponse{}, err
-	}
-	resp, err := client.getSiteAnalysisSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getSiteAnalysisSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSiteAnalysisSlotCreateRequest creates the GetSiteAnalysisSlot request.
@@ -599,8 +582,11 @@ func (client *DiagnosticsClient) getSiteAnalysisSlotCreateRequest(ctx context.Co
 }
 
 // getSiteAnalysisSlotHandleResponse handles the GetSiteAnalysisSlot response.
-func (client *DiagnosticsClient) getSiteAnalysisSlotHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteAnalysisSlotResponse, error) {
+func (client *DiagnosticsClient) getSiteAnalysisSlotHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientGetSiteAnalysisSlotResponse, error) {
 	result := DiagnosticsClientGetSiteAnalysisSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AnalysisDefinition); err != nil {
 		return DiagnosticsClientGetSiteAnalysisSlotResponse{}, err
 	}
@@ -631,12 +617,7 @@ func (client *DiagnosticsClient) GetSiteDetector(ctx context.Context, resourceGr
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiagnosticsClientGetSiteDetectorResponse{}, err
-	}
-	resp, err := client.getSiteDetectorHandleResponse(httpResp)
-	return resp, err
+	return client.getSiteDetectorHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSiteDetectorCreateRequest creates the GetSiteDetector request.
@@ -674,8 +655,11 @@ func (client *DiagnosticsClient) getSiteDetectorCreateRequest(ctx context.Contex
 }
 
 // getSiteDetectorHandleResponse handles the GetSiteDetector response.
-func (client *DiagnosticsClient) getSiteDetectorHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDetectorResponse, error) {
+func (client *DiagnosticsClient) getSiteDetectorHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientGetSiteDetectorResponse, error) {
 	result := DiagnosticsClientGetSiteDetectorResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorDefinitionResource); err != nil {
 		return DiagnosticsClientGetSiteDetectorResponse{}, err
 	}
@@ -705,12 +689,7 @@ func (client *DiagnosticsClient) GetSiteDetectorResponse(ctx context.Context, re
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiagnosticsClientGetSiteDetectorResponseResponse{}, err
-	}
-	resp, err := client.getSiteDetectorResponseHandleResponse(httpResp)
-	return resp, err
+	return client.getSiteDetectorResponseHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSiteDetectorResponseCreateRequest creates the GetSiteDetectorResponse request.
@@ -739,10 +718,10 @@ func (client *DiagnosticsClient) getSiteDetectorResponseCreateRequest(ctx contex
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250501)
 	if options != nil && options.EndTime != nil {
-		reqQP.Set("endTime", datetime.RFC3339(*options.EndTime).String())
+		reqQP.Set("endTime", datetime.RFC3339((*options.EndTime).UTC()).String())
 	}
 	if options != nil && options.StartTime != nil {
-		reqQP.Set("startTime", datetime.RFC3339(*options.StartTime).String())
+		reqQP.Set("startTime", datetime.RFC3339((*options.StartTime).UTC()).String())
 	}
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
@@ -753,8 +732,11 @@ func (client *DiagnosticsClient) getSiteDetectorResponseCreateRequest(ctx contex
 }
 
 // getSiteDetectorResponseHandleResponse handles the GetSiteDetectorResponse response.
-func (client *DiagnosticsClient) getSiteDetectorResponseHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDetectorResponseResponse, error) {
+func (client *DiagnosticsClient) getSiteDetectorResponseHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientGetSiteDetectorResponseResponse, error) {
 	result := DiagnosticsClientGetSiteDetectorResponseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponse); err != nil {
 		return DiagnosticsClientGetSiteDetectorResponseResponse{}, err
 	}
@@ -782,12 +764,7 @@ func (client *DiagnosticsClient) GetSiteDetectorResponseSlot(ctx context.Context
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponseSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiagnosticsClientGetSiteDetectorResponseSlotResponse{}, err
-	}
-	resp, err := client.getSiteDetectorResponseSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getSiteDetectorResponseSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSiteDetectorResponseSlotCreateRequest creates the GetSiteDetectorResponseSlot request.
@@ -820,10 +797,10 @@ func (client *DiagnosticsClient) getSiteDetectorResponseSlotCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250501)
 	if options != nil && options.EndTime != nil {
-		reqQP.Set("endTime", datetime.RFC3339(*options.EndTime).String())
+		reqQP.Set("endTime", datetime.RFC3339((*options.EndTime).UTC()).String())
 	}
 	if options != nil && options.StartTime != nil {
-		reqQP.Set("startTime", datetime.RFC3339(*options.StartTime).String())
+		reqQP.Set("startTime", datetime.RFC3339((*options.StartTime).UTC()).String())
 	}
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
@@ -834,8 +811,11 @@ func (client *DiagnosticsClient) getSiteDetectorResponseSlotCreateRequest(ctx co
 }
 
 // getSiteDetectorResponseSlotHandleResponse handles the GetSiteDetectorResponseSlot response.
-func (client *DiagnosticsClient) getSiteDetectorResponseSlotHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDetectorResponseSlotResponse, error) {
+func (client *DiagnosticsClient) getSiteDetectorResponseSlotHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientGetSiteDetectorResponseSlotResponse, error) {
 	result := DiagnosticsClientGetSiteDetectorResponseSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponse); err != nil {
 		return DiagnosticsClientGetSiteDetectorResponseSlotResponse{}, err
 	}
@@ -863,12 +843,7 @@ func (client *DiagnosticsClient) GetSiteDetectorSlot(ctx context.Context, resour
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiagnosticsClientGetSiteDetectorSlotResponse{}, err
-	}
-	resp, err := client.getSiteDetectorSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getSiteDetectorSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSiteDetectorSlotCreateRequest creates the GetSiteDetectorSlot request.
@@ -910,8 +885,11 @@ func (client *DiagnosticsClient) getSiteDetectorSlotCreateRequest(ctx context.Co
 }
 
 // getSiteDetectorSlotHandleResponse handles the GetSiteDetectorSlot response.
-func (client *DiagnosticsClient) getSiteDetectorSlotHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDetectorSlotResponse, error) {
+func (client *DiagnosticsClient) getSiteDetectorSlotHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientGetSiteDetectorSlotResponse, error) {
 	result := DiagnosticsClientGetSiteDetectorSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorDefinitionResource); err != nil {
 		return DiagnosticsClientGetSiteDetectorSlotResponse{}, err
 	}
@@ -941,12 +919,7 @@ func (client *DiagnosticsClient) GetSiteDiagnosticCategory(ctx context.Context, 
 	if err != nil {
 		return DiagnosticsClientGetSiteDiagnosticCategoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiagnosticsClientGetSiteDiagnosticCategoryResponse{}, err
-	}
-	resp, err := client.getSiteDiagnosticCategoryHandleResponse(httpResp)
-	return resp, err
+	return client.getSiteDiagnosticCategoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSiteDiagnosticCategoryCreateRequest creates the GetSiteDiagnosticCategory request.
@@ -980,8 +953,11 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategoryCreateRequest(ctx cont
 }
 
 // getSiteDiagnosticCategoryHandleResponse handles the GetSiteDiagnosticCategory response.
-func (client *DiagnosticsClient) getSiteDiagnosticCategoryHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDiagnosticCategoryResponse, error) {
+func (client *DiagnosticsClient) getSiteDiagnosticCategoryHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientGetSiteDiagnosticCategoryResponse, error) {
 	result := DiagnosticsClientGetSiteDiagnosticCategoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCategory); err != nil {
 		return DiagnosticsClientGetSiteDiagnosticCategoryResponse{}, err
 	}
@@ -1009,12 +985,7 @@ func (client *DiagnosticsClient) GetSiteDiagnosticCategorySlot(ctx context.Conte
 	if err != nil {
 		return DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{}, err
-	}
-	resp, err := client.getSiteDiagnosticCategorySlotHandleResponse(httpResp)
-	return resp, err
+	return client.getSiteDiagnosticCategorySlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSiteDiagnosticCategorySlotCreateRequest creates the GetSiteDiagnosticCategorySlot request.
@@ -1052,8 +1023,11 @@ func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotCreateRequest(ctx 
 }
 
 // getSiteDiagnosticCategorySlotHandleResponse handles the GetSiteDiagnosticCategorySlot response.
-func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotHandleResponse(resp *http.Response) (DiagnosticsClientGetSiteDiagnosticCategorySlotResponse, error) {
+func (client *DiagnosticsClient) getSiteDiagnosticCategorySlotHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientGetSiteDiagnosticCategorySlotResponse, error) {
 	result := DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCategory); err != nil {
 		return DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{}, err
 	}
@@ -1078,47 +1052,61 @@ func (client *DiagnosticsClient) NewListHostingEnvironmentDetectorResponsesPager
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listHostingEnvironmentDetectorResponsesCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listHostingEnvironmentDetectorResponsesCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse{}, err
 			}
-			return client.listHostingEnvironmentDetectorResponsesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse{}, err
+			}
+			return client.listHostingEnvironmentDetectorResponsesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listHostingEnvironmentDetectorResponsesCreateRequest creates the ListHostingEnvironmentDetectorResponses request.
-func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/detectors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/detectors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHostingEnvironmentDetectorResponsesHandleResponse handles the ListHostingEnvironmentDetectorResponses response.
-func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesHandleResponse(resp *http.Response) (DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse, error) {
+func (client *DiagnosticsClient) listHostingEnvironmentDetectorResponsesHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse, error) {
 	result := DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponseCollection); err != nil {
 		return DiagnosticsClientListHostingEnvironmentDetectorResponsesResponse{}, err
 	}
@@ -1144,51 +1132,65 @@ func (client *DiagnosticsClient) NewListSiteAnalysesPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSiteAnalysesCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, options)
-			}, nil)
+			req, err := client.listSiteAnalysesCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, nextLink, options)
 			if err != nil {
 				return DiagnosticsClientListSiteAnalysesResponse{}, err
 			}
-			return client.listSiteAnalysesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiagnosticsClientListSiteAnalysesResponse{}, err
+			}
+			return client.listSiteAnalysesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSiteAnalysesCreateRequest creates the ListSiteAnalyses request.
-func (client *DiagnosticsClient) listSiteAnalysesCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, _ *DiagnosticsClientListSiteAnalysesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/analyses"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DiagnosticsClient) listSiteAnalysesCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, nextLink string, _ *DiagnosticsClientListSiteAnalysesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/analyses"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if siteName == "" {
+			return nil, errors.New("parameter siteName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
+		if diagnosticCategory == "" {
+			return nil, errors.New("parameter diagnosticCategory cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{diagnosticCategory}", url.PathEscape(diagnosticCategory))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if siteName == "" {
-		return nil, errors.New("parameter siteName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
-	if diagnosticCategory == "" {
-		return nil, errors.New("parameter diagnosticCategory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{diagnosticCategory}", url.PathEscape(diagnosticCategory))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSiteAnalysesHandleResponse handles the ListSiteAnalyses response.
-func (client *DiagnosticsClient) listSiteAnalysesHandleResponse(resp *http.Response) (DiagnosticsClientListSiteAnalysesResponse, error) {
+func (client *DiagnosticsClient) listSiteAnalysesHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientListSiteAnalysesResponse, error) {
 	result := DiagnosticsClientListSiteAnalysesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticAnalysisCollection); err != nil {
 		return DiagnosticsClientListSiteAnalysesResponse{}, err
 	}
@@ -1212,55 +1214,69 @@ func (client *DiagnosticsClient) NewListSiteAnalysesSlotPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSiteAnalysesSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, slot, options)
-			}, nil)
+			req, err := client.listSiteAnalysesSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, slot, nextLink, options)
 			if err != nil {
 				return DiagnosticsClientListSiteAnalysesSlotResponse{}, err
 			}
-			return client.listSiteAnalysesSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiagnosticsClientListSiteAnalysesSlotResponse{}, err
+			}
+			return client.listSiteAnalysesSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSiteAnalysesSlotCreateRequest creates the ListSiteAnalysesSlot request.
-func (client *DiagnosticsClient) listSiteAnalysesSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, _ *DiagnosticsClientListSiteAnalysesSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/analyses"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DiagnosticsClient) listSiteAnalysesSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, nextLink string, _ *DiagnosticsClientListSiteAnalysesSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/analyses"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if siteName == "" {
+			return nil, errors.New("parameter siteName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
+		if diagnosticCategory == "" {
+			return nil, errors.New("parameter diagnosticCategory cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{diagnosticCategory}", url.PathEscape(diagnosticCategory))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if siteName == "" {
-		return nil, errors.New("parameter siteName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
-	if diagnosticCategory == "" {
-		return nil, errors.New("parameter diagnosticCategory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{diagnosticCategory}", url.PathEscape(diagnosticCategory))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSiteAnalysesSlotHandleResponse handles the ListSiteAnalysesSlot response.
-func (client *DiagnosticsClient) listSiteAnalysesSlotHandleResponse(resp *http.Response) (DiagnosticsClientListSiteAnalysesSlotResponse, error) {
+func (client *DiagnosticsClient) listSiteAnalysesSlotHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientListSiteAnalysesSlotResponse, error) {
 	result := DiagnosticsClientListSiteAnalysesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticAnalysisCollection); err != nil {
 		return DiagnosticsClientListSiteAnalysesSlotResponse{}, err
 	}
@@ -1285,47 +1301,61 @@ func (client *DiagnosticsClient) NewListSiteDetectorResponsesPager(resourceGroup
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSiteDetectorResponsesCreateRequest(ctx, resourceGroupName, siteName, options)
-			}, nil)
+			req, err := client.listSiteDetectorResponsesCreateRequest(ctx, resourceGroupName, siteName, nextLink, options)
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorResponsesResponse{}, err
 			}
-			return client.listSiteDetectorResponsesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiagnosticsClientListSiteDetectorResponsesResponse{}, err
+			}
+			return client.listSiteDetectorResponsesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSiteDetectorResponsesCreateRequest creates the ListSiteDetectorResponses request.
-func (client *DiagnosticsClient) listSiteDetectorResponsesCreateRequest(ctx context.Context, resourceGroupName string, siteName string, _ *DiagnosticsClientListSiteDetectorResponsesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/detectors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DiagnosticsClient) listSiteDetectorResponsesCreateRequest(ctx context.Context, resourceGroupName string, siteName string, nextLink string, _ *DiagnosticsClientListSiteDetectorResponsesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/detectors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if siteName == "" {
+			return nil, errors.New("parameter siteName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if siteName == "" {
-		return nil, errors.New("parameter siteName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSiteDetectorResponsesHandleResponse handles the ListSiteDetectorResponses response.
-func (client *DiagnosticsClient) listSiteDetectorResponsesHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDetectorResponsesResponse, error) {
+func (client *DiagnosticsClient) listSiteDetectorResponsesHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientListSiteDetectorResponsesResponse, error) {
 	result := DiagnosticsClientListSiteDetectorResponsesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponseCollection); err != nil {
 		return DiagnosticsClientListSiteDetectorResponsesResponse{}, err
 	}
@@ -1351,51 +1381,65 @@ func (client *DiagnosticsClient) NewListSiteDetectorResponsesSlotPager(resourceG
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSiteDetectorResponsesSlotCreateRequest(ctx, resourceGroupName, siteName, slot, options)
-			}, nil)
+			req, err := client.listSiteDetectorResponsesSlotCreateRequest(ctx, resourceGroupName, siteName, slot, nextLink, options)
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorResponsesSlotResponse{}, err
 			}
-			return client.listSiteDetectorResponsesSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiagnosticsClientListSiteDetectorResponsesSlotResponse{}, err
+			}
+			return client.listSiteDetectorResponsesSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSiteDetectorResponsesSlotCreateRequest creates the ListSiteDetectorResponsesSlot request.
-func (client *DiagnosticsClient) listSiteDetectorResponsesSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, slot string, _ *DiagnosticsClientListSiteDetectorResponsesSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/detectors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DiagnosticsClient) listSiteDetectorResponsesSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, slot string, nextLink string, _ *DiagnosticsClientListSiteDetectorResponsesSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/detectors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if siteName == "" {
+			return nil, errors.New("parameter siteName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if siteName == "" {
-		return nil, errors.New("parameter siteName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSiteDetectorResponsesSlotHandleResponse handles the ListSiteDetectorResponsesSlot response.
-func (client *DiagnosticsClient) listSiteDetectorResponsesSlotHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDetectorResponsesSlotResponse, error) {
+func (client *DiagnosticsClient) listSiteDetectorResponsesSlotHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientListSiteDetectorResponsesSlotResponse, error) {
 	result := DiagnosticsClientListSiteDetectorResponsesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponseCollection); err != nil {
 		return DiagnosticsClientListSiteDetectorResponsesSlotResponse{}, err
 	}
@@ -1421,51 +1465,65 @@ func (client *DiagnosticsClient) NewListSiteDetectorsPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSiteDetectorsCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, options)
-			}, nil)
+			req, err := client.listSiteDetectorsCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, nextLink, options)
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorsResponse{}, err
 			}
-			return client.listSiteDetectorsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiagnosticsClientListSiteDetectorsResponse{}, err
+			}
+			return client.listSiteDetectorsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSiteDetectorsCreateRequest creates the ListSiteDetectors request.
-func (client *DiagnosticsClient) listSiteDetectorsCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, _ *DiagnosticsClientListSiteDetectorsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/detectors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DiagnosticsClient) listSiteDetectorsCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, nextLink string, _ *DiagnosticsClientListSiteDetectorsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/detectors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if siteName == "" {
+			return nil, errors.New("parameter siteName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
+		if diagnosticCategory == "" {
+			return nil, errors.New("parameter diagnosticCategory cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{diagnosticCategory}", url.PathEscape(diagnosticCategory))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if siteName == "" {
-		return nil, errors.New("parameter siteName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
-	if diagnosticCategory == "" {
-		return nil, errors.New("parameter diagnosticCategory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{diagnosticCategory}", url.PathEscape(diagnosticCategory))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSiteDetectorsHandleResponse handles the ListSiteDetectors response.
-func (client *DiagnosticsClient) listSiteDetectorsHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDetectorsResponse, error) {
+func (client *DiagnosticsClient) listSiteDetectorsHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientListSiteDetectorsResponse, error) {
 	result := DiagnosticsClientListSiteDetectorsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticDetectorCollection); err != nil {
 		return DiagnosticsClientListSiteDetectorsResponse{}, err
 	}
@@ -1489,55 +1547,69 @@ func (client *DiagnosticsClient) NewListSiteDetectorsSlotPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSiteDetectorsSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, slot, options)
-			}, nil)
+			req, err := client.listSiteDetectorsSlotCreateRequest(ctx, resourceGroupName, siteName, diagnosticCategory, slot, nextLink, options)
 			if err != nil {
 				return DiagnosticsClientListSiteDetectorsSlotResponse{}, err
 			}
-			return client.listSiteDetectorsSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiagnosticsClientListSiteDetectorsSlotResponse{}, err
+			}
+			return client.listSiteDetectorsSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSiteDetectorsSlotCreateRequest creates the ListSiteDetectorsSlot request.
-func (client *DiagnosticsClient) listSiteDetectorsSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, _ *DiagnosticsClientListSiteDetectorsSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/detectors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DiagnosticsClient) listSiteDetectorsSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, diagnosticCategory string, slot string, nextLink string, _ *DiagnosticsClientListSiteDetectorsSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/detectors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if siteName == "" {
+			return nil, errors.New("parameter siteName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
+		if diagnosticCategory == "" {
+			return nil, errors.New("parameter diagnosticCategory cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{diagnosticCategory}", url.PathEscape(diagnosticCategory))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if siteName == "" {
-		return nil, errors.New("parameter siteName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
-	if diagnosticCategory == "" {
-		return nil, errors.New("parameter diagnosticCategory cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{diagnosticCategory}", url.PathEscape(diagnosticCategory))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSiteDetectorsSlotHandleResponse handles the ListSiteDetectorsSlot response.
-func (client *DiagnosticsClient) listSiteDetectorsSlotHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDetectorsSlotResponse, error) {
+func (client *DiagnosticsClient) listSiteDetectorsSlotHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientListSiteDetectorsSlotResponse, error) {
 	result := DiagnosticsClientListSiteDetectorsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticDetectorCollection); err != nil {
 		return DiagnosticsClientListSiteDetectorsSlotResponse{}, err
 	}
@@ -1562,47 +1634,61 @@ func (client *DiagnosticsClient) NewListSiteDiagnosticCategoriesPager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSiteDiagnosticCategoriesCreateRequest(ctx, resourceGroupName, siteName, options)
-			}, nil)
+			req, err := client.listSiteDiagnosticCategoriesCreateRequest(ctx, resourceGroupName, siteName, nextLink, options)
 			if err != nil {
 				return DiagnosticsClientListSiteDiagnosticCategoriesResponse{}, err
 			}
-			return client.listSiteDiagnosticCategoriesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiagnosticsClientListSiteDiagnosticCategoriesResponse{}, err
+			}
+			return client.listSiteDiagnosticCategoriesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSiteDiagnosticCategoriesCreateRequest creates the ListSiteDiagnosticCategories request.
-func (client *DiagnosticsClient) listSiteDiagnosticCategoriesCreateRequest(ctx context.Context, resourceGroupName string, siteName string, _ *DiagnosticsClientListSiteDiagnosticCategoriesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DiagnosticsClient) listSiteDiagnosticCategoriesCreateRequest(ctx context.Context, resourceGroupName string, siteName string, nextLink string, _ *DiagnosticsClientListSiteDiagnosticCategoriesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if siteName == "" {
+			return nil, errors.New("parameter siteName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if siteName == "" {
-		return nil, errors.New("parameter siteName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSiteDiagnosticCategoriesHandleResponse handles the ListSiteDiagnosticCategories response.
-func (client *DiagnosticsClient) listSiteDiagnosticCategoriesHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDiagnosticCategoriesResponse, error) {
+func (client *DiagnosticsClient) listSiteDiagnosticCategoriesHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientListSiteDiagnosticCategoriesResponse, error) {
 	result := DiagnosticsClientListSiteDiagnosticCategoriesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCategoryCollection); err != nil {
 		return DiagnosticsClientListSiteDiagnosticCategoriesResponse{}, err
 	}
@@ -1628,51 +1714,65 @@ func (client *DiagnosticsClient) NewListSiteDiagnosticCategoriesSlotPager(resour
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSiteDiagnosticCategoriesSlotCreateRequest(ctx, resourceGroupName, siteName, slot, options)
-			}, nil)
+			req, err := client.listSiteDiagnosticCategoriesSlotCreateRequest(ctx, resourceGroupName, siteName, slot, nextLink, options)
 			if err != nil {
 				return DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse{}, err
 			}
-			return client.listSiteDiagnosticCategoriesSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse{}, err
+			}
+			return client.listSiteDiagnosticCategoriesSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSiteDiagnosticCategoriesSlotCreateRequest creates the ListSiteDiagnosticCategoriesSlot request.
-func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, slot string, _ *DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotCreateRequest(ctx context.Context, resourceGroupName string, siteName string, slot string, nextLink string, _ *DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if siteName == "" {
+			return nil, errors.New("parameter siteName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if siteName == "" {
-		return nil, errors.New("parameter siteName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSiteDiagnosticCategoriesSlotHandleResponse handles the ListSiteDiagnosticCategoriesSlot response.
-func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotHandleResponse(resp *http.Response) (DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse, error) {
+func (client *DiagnosticsClient) listSiteDiagnosticCategoriesSlotHandleResponse(resp *http.Response, successCodes ...int) (DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse, error) {
 	result := DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticCategoryCollection); err != nil {
 		return DiagnosticsClientListSiteDiagnosticCategoriesSlotResponse{}, err
 	}

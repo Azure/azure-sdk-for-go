@@ -62,12 +62,7 @@ func (client *JobStreamClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return JobStreamClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return JobStreamClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -108,8 +103,11 @@ func (client *JobStreamClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobStreamClient) getHandleResponse(resp *http.Response) (JobStreamClientGetResponse, error) {
+func (client *JobStreamClient) getHandleResponse(resp *http.Response, successCodes ...int) (JobStreamClientGetResponse, error) {
 	result := JobStreamClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStream); err != nil {
 		return JobStreamClientGetResponse{}, err
 	}
@@ -132,57 +130,71 @@ func (client *JobStreamClient) NewListByJobPager(resourceGroupName string, autom
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByJobCreateRequest(ctx, resourceGroupName, automationAccountName, jobName, options)
-			}, nil)
+			req, err := client.listByJobCreateRequest(ctx, resourceGroupName, automationAccountName, jobName, nextLink, options)
 			if err != nil {
 				return JobStreamClientListByJobResponse{}, err
 			}
-			return client.listByJobHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return JobStreamClientListByJobResponse{}, err
+			}
+			return client.listByJobHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByJobCreateRequest creates the ListByJob request.
-func (client *JobStreamClient) listByJobCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, options *JobStreamClientListByJobOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/jobs/{jobName}/streams"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *JobStreamClient) listByJobCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, jobName string, nextLink string, options *JobStreamClientListByJobOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/jobs/{jobName}/streams"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if automationAccountName == "" {
+			return nil, errors.New("parameter automationAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+		if jobName == "" {
+			return nil, errors.New("parameter jobName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if automationAccountName == "" {
-		return nil, errors.New("parameter automationAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	if jobName == "" {
-		return nil, errors.New("parameter jobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	reqQP.Set("api-version", version20241023)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20241023)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["clientRequestId"] = []string{*options.ClientRequestID}
+		}
 	}
 	return req, nil
 }
 
 // listByJobHandleResponse handles the ListByJob response.
-func (client *JobStreamClient) listByJobHandleResponse(resp *http.Response) (JobStreamClientListByJobResponse, error) {
+func (client *JobStreamClient) listByJobHandleResponse(resp *http.Response, successCodes ...int) (JobStreamClientListByJobResponse, error) {
 	result := JobStreamClientListByJobResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStreamListResult); err != nil {
 		return JobStreamClientListByJobResponse{}, err
 	}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-16-preview/gateway/Gateway_CreateOrUpdate.json
+// Generated from example definition: 2026-07-15/gateway/Gateway_CreateOrUpdate.json
 func ExampleGatewaysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleGatewaysClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/gateway/Gateway_Delete.json
+// Generated from example definition: 2026-07-15/gateway/Gateway_Delete.json
 func ExampleGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,7 @@ func ExampleGatewaysClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-16-preview/gateway/Gateway_Get.json
+// Generated from example definition: 2026-07-15/gateway/Gateway_Get.json
 func ExampleGatewaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleGatewaysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-16-preview/gateway/Gateway_ListByResourceGroup.json
+// Generated from example definition: 2026-07-15/gateway/Gateway_ListByResourceGroup.json
 func ExampleGatewaysClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleGatewaysClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-16-preview/gateway/Gateway_ListBySubscription.json
+// Generated from example definition: 2026-07-15/gateway/Gateway_ListBySubscription.json
 func ExampleGatewaysClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,7 +231,7 @@ func ExampleGatewaysClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-16-preview/gateway/Gateway_Update.json
+// Generated from example definition: 2026-07-15/gateway/Gateway_Update.json
 func ExampleGatewaysClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

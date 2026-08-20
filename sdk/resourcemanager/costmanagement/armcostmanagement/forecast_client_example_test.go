@@ -73,8 +73,8 @@ func ExampleForecastClient_ExternalCloudProviderUsage_externalBillingAccountFore
 			Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 		},
 		TimePeriod: &armcostmanagement.ForecastTimePeriod{
-			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
-			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+			From: to.Ptr(time.Date(2022, time.August, 1, 0, 0, 0, 0, time.UTC)),
+			To:   to.Ptr(time.Date(2022, time.August, 31, 23, 59, 59, 0, time.UTC)),
 		},
 		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, nil)
@@ -191,8 +191,8 @@ func ExampleForecastClient_ExternalCloudProviderUsage_externalSubscriptionForeca
 			Granularity: to.Ptr(armcostmanagement.GranularityTypeDaily),
 		},
 		TimePeriod: &armcostmanagement.ForecastTimePeriod{
-			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
-			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+			From: to.Ptr(time.Date(2022, time.August, 1, 0, 0, 0, 0, time.UTC)),
+			To:   to.Ptr(time.Date(2022, time.August, 31, 23, 59, 59, 0, time.UTC)),
 		},
 		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, nil)
@@ -295,8 +295,8 @@ func ExampleForecastClient_Usage_billingAccountForecast() {
 		IncludeActualCost:       to.Ptr(false),
 		IncludeFreshPartialCost: to.Ptr(false),
 		TimePeriod: &armcostmanagement.ForecastTimePeriod{
-			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
-			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+			From: to.Ptr(time.Date(2022, time.August, 1, 0, 0, 0, 0, time.UTC)),
+			To:   to.Ptr(time.Date(2022, time.August, 31, 23, 59, 59, 0, time.UTC)),
 		},
 		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, nil)
@@ -424,8 +424,8 @@ func ExampleForecastClient_Usage_billingProfileForecast() {
 		IncludeActualCost:       to.Ptr(false),
 		IncludeFreshPartialCost: to.Ptr(false),
 		TimePeriod: &armcostmanagement.ForecastTimePeriod{
-			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
-			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+			From: to.Ptr(time.Date(2022, time.August, 1, 0, 0, 0, 0, time.UTC)),
+			To:   to.Ptr(time.Date(2022, time.August, 31, 23, 59, 59, 0, time.UTC)),
 		},
 		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, nil)
@@ -553,8 +553,8 @@ func ExampleForecastClient_Usage_departmentForecast() {
 		IncludeActualCost:       to.Ptr(false),
 		IncludeFreshPartialCost: to.Ptr(false),
 		TimePeriod: &armcostmanagement.ForecastTimePeriod{
-			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
-			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+			From: to.Ptr(time.Date(2022, time.August, 1, 0, 0, 0, 0, time.UTC)),
+			To:   to.Ptr(time.Date(2022, time.August, 31, 23, 59, 59, 0, time.UTC)),
 		},
 		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, nil)
@@ -682,8 +682,8 @@ func ExampleForecastClient_Usage_enrollmentAccountForecast() {
 		IncludeActualCost:       to.Ptr(false),
 		IncludeFreshPartialCost: to.Ptr(false),
 		TimePeriod: &armcostmanagement.ForecastTimePeriod{
-			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
-			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+			From: to.Ptr(time.Date(2022, time.August, 1, 0, 0, 0, 0, time.UTC)),
+			To:   to.Ptr(time.Date(2022, time.August, 31, 23, 59, 59, 0, time.UTC)),
 		},
 		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, nil)
@@ -811,8 +811,8 @@ func ExampleForecastClient_Usage_invoiceSectionForecast() {
 		IncludeActualCost:       to.Ptr(false),
 		IncludeFreshPartialCost: to.Ptr(false),
 		TimePeriod: &armcostmanagement.ForecastTimePeriod{
-			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
-			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+			From: to.Ptr(time.Date(2022, time.August, 1, 0, 0, 0, 0, time.UTC)),
+			To:   to.Ptr(time.Date(2022, time.August, 31, 23, 59, 59, 0, time.UTC)),
 		},
 		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, nil)
@@ -940,8 +940,8 @@ func ExampleForecastClient_Usage_resourceGroupForecast() {
 		IncludeActualCost:       to.Ptr(false),
 		IncludeFreshPartialCost: to.Ptr(false),
 		TimePeriod: &armcostmanagement.ForecastTimePeriod{
-			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
-			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+			From: to.Ptr(time.Date(2022, time.August, 1, 0, 0, 0, 0, time.UTC)),
+			To:   to.Ptr(time.Date(2022, time.August, 31, 23, 59, 59, 0, time.UTC)),
 		},
 		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, nil)
@@ -1050,8 +1050,8 @@ func ExampleForecastClient_Usage_subscriptionForecast() {
 		IncludeActualCost:       to.Ptr(false),
 		IncludeFreshPartialCost: to.Ptr(false),
 		TimePeriod: &armcostmanagement.ForecastTimePeriod{
-			From: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-01T00:00:00+00:00"); return t }()),
-			To:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-08-31T23:59:59+00:00"); return t }()),
+			From: to.Ptr(time.Date(2022, time.August, 1, 0, 0, 0, 0, time.UTC)),
+			To:   to.Ptr(time.Date(2022, time.August, 31, 23, 59, 59, 0, time.UTC)),
 		},
 		Timeframe: to.Ptr(armcostmanagement.ForecastTimeframeCustom),
 	}, nil)

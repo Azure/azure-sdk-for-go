@@ -61,12 +61,7 @@ func (client *PrivateLinkResourcesClient) ListByStorageSyncService(ctx context.C
 	if err != nil {
 		return PrivateLinkResourcesClientListByStorageSyncServiceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateLinkResourcesClientListByStorageSyncServiceResponse{}, err
-	}
-	resp, err := client.listByStorageSyncServiceHandleResponse(httpResp)
-	return resp, err
+	return client.listByStorageSyncServiceHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByStorageSyncServiceCreateRequest creates the ListByStorageSyncService request.
@@ -96,8 +91,11 @@ func (client *PrivateLinkResourcesClient) listByStorageSyncServiceCreateRequest(
 }
 
 // listByStorageSyncServiceHandleResponse handles the ListByStorageSyncService response.
-func (client *PrivateLinkResourcesClient) listByStorageSyncServiceHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByStorageSyncServiceResponse, error) {
+func (client *PrivateLinkResourcesClient) listByStorageSyncServiceHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinkResourcesClientListByStorageSyncServiceResponse, error) {
 	result := PrivateLinkResourcesClientListByStorageSyncServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return PrivateLinkResourcesClientListByStorageSyncServiceResponse{}, err
 	}

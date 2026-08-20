@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/RouteMapPut.json
+// Generated from example definition: 2025-09-01/RouteMapPut.json
 func ExampleRouteMapsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleRouteMapsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/RouteMapDelete.json
+// Generated from example definition: 2025-09-01/RouteMapDelete.json
 func ExampleRouteMapsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleRouteMapsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/RouteMapGet.json
+// Generated from example definition: 2025-09-01/RouteMapGet.json
 func ExampleRouteMapsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +219,7 @@ func ExampleRouteMapsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/RouteMapList.json
+// Generated from example definition: 2025-09-01/RouteMapList.json
 func ExampleRouteMapsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

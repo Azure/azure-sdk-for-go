@@ -37,8 +37,8 @@ func ExampleGrantsClient_Get_grant() {
 	// 		Type: to.Ptr("Microsoft.Education/Grants"),
 	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Education/grants/default"),
 	// 		Properties: &armeducation.GrantDetailProperties{
-	// 			EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-09T09:08:05.505Z"); return t}()),
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-09T09:08:05.505Z"); return t}()),
+	// 			EffectiveDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
+	// 			ExpirationDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
 	// 			OfferCap: &armeducation.Amount{
 	// 				Currency: to.Ptr("USD"),
 	// 				Value: to.Ptr[float32](100),
@@ -79,8 +79,8 @@ func ExampleGrantsClient_Get_grantIncludeAllocatedBudget() {
 	// 				Currency: to.Ptr("USD"),
 	// 				Value: to.Ptr[float32](0),
 	// 			},
-	// 			EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-09T09:08:05.505Z"); return t}()),
-	// 			ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-09T09:08:05.505Z"); return t}()),
+	// 			EffectiveDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
+	// 			ExpirationDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
 	// 			OfferCap: &armeducation.Amount{
 	// 				Currency: to.Ptr("USD"),
 	// 				Value: to.Ptr[float32](100),
@@ -123,8 +123,8 @@ func ExampleGrantsClient_NewListPager_grantList() {
 		// 				Type: to.Ptr("Microsoft.Education/Grants"),
 		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Education/grants/default"),
 		// 				Properties: &armeducation.GrantDetailProperties{
-		// 					EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-09T09:08:05.505Z"); return t}()),
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-09T09:08:05.505Z"); return t}()),
+		// 					EffectiveDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
+		// 					ExpirationDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
 		// 					OfferCap: &armeducation.Amount{
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float32](1000),
@@ -174,8 +174,8 @@ func ExampleGrantsClient_NewListPager_grantListIncludeAllocatedBudget() {
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float32](0),
 		// 					},
-		// 					EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-09T09:08:05.505Z"); return t}()),
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-09T09:08:05.505Z"); return t}()),
+		// 					EffectiveDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
+		// 					ExpirationDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
 		// 					OfferCap: &armeducation.Amount{
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float32](1000),
@@ -225,9 +225,9 @@ func ExampleGrantsClient_NewListAllPager_grantList() {
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float32](1000),
 		// 					},
-		// 					EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-09T09:08:05.505Z"); return t}()),
+		// 					EffectiveDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
 		// 					OfferType: to.Ptr(armeducation.GrantTypeAcademic),
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-09T09:08:05.505Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
 		// 					Status: to.Ptr(armeducation.GrantStatusActive),
 		// 				},
 		// 			},
@@ -272,9 +272,9 @@ func ExampleGrantsClient_NewListAllPager_grantListIncludeAllocatedBudget() {
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float32](1000),
 		// 					},
-		// 					EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-09T09:08:05.505Z"); return t}()),
+		// 					EffectiveDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
 		// 					OfferType: to.Ptr(armeducation.GrantTypeAcademic),
-		// 					ExpirationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-09T09:08:05.505Z"); return t}()),
+		// 					ExpirationDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
 		// 					Status: to.Ptr(armeducation.GrantStatusActive),
 		// 					AllocatedBudget: &armeducation.Amount{
 		// 						Currency: to.Ptr("USD"),

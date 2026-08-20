@@ -19,7 +19,7 @@ import (
 // WatchersClient contains the methods for the Watchers group.
 // Don't use this type directly, use NewWatchersClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type WatchersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -84,8 +84,7 @@ func (client *WatchersClient) checkConnectivity(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -110,7 +109,7 @@ func (client *WatchersClient) checkConnectivityCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -118,6 +117,454 @@ func (client *WatchersClient) checkConnectivityCreateRequest(ctx context.Context
 		return nil, err
 	}
 	return req, nil
+}
+
+// BeginConnectionAnalyzersCreate - Creates or updates a connection analyzer in the specified network watcher.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkWatcherName - The name of the network watcher.
+//   - connectionAnalyzerName - The name of the connection analyzer.
+//   - body - Parameters that define the operation to create a connection analyzer.
+//   - options - WatchersClientBeginConnectionAnalyzersCreateOptions contains the optional parameters for the WatchersClient.BeginConnectionAnalyzersCreate
+//     method.
+func (client *WatchersClient) BeginConnectionAnalyzersCreate(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, body ConnectionAnalyzer, options *WatchersClientBeginConnectionAnalyzersCreateOptions) (*runtime.Poller[WatchersClientConnectionAnalyzersCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.connectionAnalyzersCreate(ctx, resourceGroupName, networkWatcherName, connectionAnalyzerName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchersClientConnectionAnalyzersCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WatchersClientConnectionAnalyzersCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ConnectionAnalyzersCreate - Creates or updates a connection analyzer in the specified network watcher.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WatchersClient) connectionAnalyzersCreate(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, body ConnectionAnalyzer, options *WatchersClientBeginConnectionAnalyzersCreateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WatchersClient.BeginConnectionAnalyzersCreate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.connectionAnalyzersCreateCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionAnalyzerName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// connectionAnalyzersCreateCreateRequest creates the ConnectionAnalyzersCreate request.
+func (client *WatchersClient) connectionAnalyzersCreateCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, body ConnectionAnalyzer, _ *WatchersClientBeginConnectionAnalyzersCreateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionAnalyzers/{connectionAnalyzerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkWatcherName == "" {
+		return nil, errors.New("parameter networkWatcherName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
+	if connectionAnalyzerName == "" {
+		return nil, errors.New("parameter connectionAnalyzerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectionAnalyzerName}", url.PathEscape(connectionAnalyzerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginConnectionAnalyzersDelete - Deletes the specified connection analyzer.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkWatcherName - The name of the network watcher.
+//   - connectionAnalyzerName - The name of the connection analyzer.
+//   - options - WatchersClientBeginConnectionAnalyzersDeleteOptions contains the optional parameters for the WatchersClient.BeginConnectionAnalyzersDelete
+//     method.
+func (client *WatchersClient) BeginConnectionAnalyzersDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, options *WatchersClientBeginConnectionAnalyzersDeleteOptions) (*runtime.Poller[WatchersClientConnectionAnalyzersDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.connectionAnalyzersDelete(ctx, resourceGroupName, networkWatcherName, connectionAnalyzerName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchersClientConnectionAnalyzersDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WatchersClientConnectionAnalyzersDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ConnectionAnalyzersDelete - Deletes the specified connection analyzer.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WatchersClient) connectionAnalyzersDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, options *WatchersClientBeginConnectionAnalyzersDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WatchersClient.BeginConnectionAnalyzersDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.connectionAnalyzersDeleteCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionAnalyzerName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// connectionAnalyzersDeleteCreateRequest creates the ConnectionAnalyzersDelete request.
+func (client *WatchersClient) connectionAnalyzersDeleteCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, _ *WatchersClientBeginConnectionAnalyzersDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionAnalyzers/{connectionAnalyzerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkWatcherName == "" {
+		return nil, errors.New("parameter networkWatcherName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
+	if connectionAnalyzerName == "" {
+		return nil, errors.New("parameter connectionAnalyzerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectionAnalyzerName}", url.PathEscape(connectionAnalyzerName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// ConnectionAnalyzersGet - Gets the specified connection analyzer by name.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkWatcherName - The name of the network watcher.
+//   - connectionAnalyzerName - The name of the connection analyzer.
+//   - options - WatchersClientConnectionAnalyzersGetOptions contains the optional parameters for the WatchersClient.ConnectionAnalyzersGet
+//     method.
+func (client *WatchersClient) ConnectionAnalyzersGet(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, options *WatchersClientConnectionAnalyzersGetOptions) (WatchersClientConnectionAnalyzersGetResponse, error) {
+	var err error
+	const operationName = "WatchersClient.ConnectionAnalyzersGet"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.connectionAnalyzersGetCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionAnalyzerName, options)
+	if err != nil {
+		return WatchersClientConnectionAnalyzersGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return WatchersClientConnectionAnalyzersGetResponse{}, err
+	}
+	return client.connectionAnalyzersGetHandleResponse(httpResp, http.StatusOK)
+}
+
+// connectionAnalyzersGetCreateRequest creates the ConnectionAnalyzersGet request.
+func (client *WatchersClient) connectionAnalyzersGetCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, _ *WatchersClientConnectionAnalyzersGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionAnalyzers/{connectionAnalyzerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkWatcherName == "" {
+		return nil, errors.New("parameter networkWatcherName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
+	if connectionAnalyzerName == "" {
+		return nil, errors.New("parameter connectionAnalyzerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectionAnalyzerName}", url.PathEscape(connectionAnalyzerName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// connectionAnalyzersGetHandleResponse handles the ConnectionAnalyzersGet response.
+func (client *WatchersClient) connectionAnalyzersGetHandleResponse(resp *http.Response, successCodes ...int) (WatchersClientConnectionAnalyzersGetResponse, error) {
+	result := WatchersClientConnectionAnalyzersGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionAnalyzer); err != nil {
+		return WatchersClientConnectionAnalyzersGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewConnectionAnalyzersListPager - Lists all connection analyzers in the specified network watcher.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkWatcherName - The name of the network watcher.
+//   - options - WatchersClientConnectionAnalyzersListOptions contains the optional parameters for the WatchersClient.NewConnectionAnalyzersListPager
+//     method.
+func (client *WatchersClient) NewConnectionAnalyzersListPager(resourceGroupName string, networkWatcherName string, options *WatchersClientConnectionAnalyzersListOptions) *runtime.Pager[WatchersClientConnectionAnalyzersListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WatchersClientConnectionAnalyzersListResponse]{
+		More: func(page WatchersClientConnectionAnalyzersListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *WatchersClientConnectionAnalyzersListResponse) (WatchersClientConnectionAnalyzersListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WatchersClient.NewConnectionAnalyzersListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.connectionAnalyzersListCreateRequest(ctx, resourceGroupName, networkWatcherName, nextLink, options)
+			if err != nil {
+				return WatchersClientConnectionAnalyzersListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WatchersClientConnectionAnalyzersListResponse{}, err
+			}
+			return client.connectionAnalyzersListHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// connectionAnalyzersListCreateRequest creates the ConnectionAnalyzersList request.
+func (client *WatchersClient) connectionAnalyzersListCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, nextLink string, _ *WatchersClientConnectionAnalyzersListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionAnalyzers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if networkWatcherName == "" {
+			return nil, errors.New("parameter networkWatcherName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// connectionAnalyzersListHandleResponse handles the ConnectionAnalyzersList response.
+func (client *WatchersClient) connectionAnalyzersListHandleResponse(resp *http.Response, successCodes ...int) (WatchersClientConnectionAnalyzersListResponse, error) {
+	result := WatchersClientConnectionAnalyzersListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionAnalyzerListResult); err != nil {
+		return WatchersClientConnectionAnalyzersListResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginConnectionAnalyzersQuery - Queries the specified connection analyzer for diagnostic results.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkWatcherName - The name of the network watcher.
+//   - connectionAnalyzerName - The name of the connection analyzer.
+//   - options - WatchersClientBeginConnectionAnalyzersQueryOptions contains the optional parameters for the WatchersClient.BeginConnectionAnalyzersQuery
+//     method.
+func (client *WatchersClient) BeginConnectionAnalyzersQuery(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, options *WatchersClientBeginConnectionAnalyzersQueryOptions) (*runtime.Poller[WatchersClientConnectionAnalyzersQueryResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.connectionAnalyzersQuery(ctx, resourceGroupName, networkWatcherName, connectionAnalyzerName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WatchersClientConnectionAnalyzersQueryResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WatchersClientConnectionAnalyzersQueryResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// ConnectionAnalyzersQuery - Queries the specified connection analyzer for diagnostic results.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WatchersClient) connectionAnalyzersQuery(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, options *WatchersClientBeginConnectionAnalyzersQueryOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WatchersClient.BeginConnectionAnalyzersQuery"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.connectionAnalyzersQueryCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionAnalyzerName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// connectionAnalyzersQueryCreateRequest creates the ConnectionAnalyzersQuery request.
+func (client *WatchersClient) connectionAnalyzersQueryCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, _ *WatchersClientBeginConnectionAnalyzersQueryOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionAnalyzers/{connectionAnalyzerName}/query"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkWatcherName == "" {
+		return nil, errors.New("parameter networkWatcherName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
+	if connectionAnalyzerName == "" {
+		return nil, errors.New("parameter connectionAnalyzerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectionAnalyzerName}", url.PathEscape(connectionAnalyzerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// ConnectionAnalyzersUpdateTags - Updates the tags of the specified connection analyzer.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkWatcherName - The name of the network watcher.
+//   - connectionAnalyzerName - The name of the connection analyzer.
+//   - body - Parameters supplied to update connection analyzer tags.
+//   - options - WatchersClientConnectionAnalyzersUpdateTagsOptions contains the optional parameters for the WatchersClient.ConnectionAnalyzersUpdateTags
+//     method.
+func (client *WatchersClient) ConnectionAnalyzersUpdateTags(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, body TagsObject, options *WatchersClientConnectionAnalyzersUpdateTagsOptions) (WatchersClientConnectionAnalyzersUpdateTagsResponse, error) {
+	var err error
+	const operationName = "WatchersClient.ConnectionAnalyzersUpdateTags"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.connectionAnalyzersUpdateTagsCreateRequest(ctx, resourceGroupName, networkWatcherName, connectionAnalyzerName, body, options)
+	if err != nil {
+		return WatchersClientConnectionAnalyzersUpdateTagsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return WatchersClientConnectionAnalyzersUpdateTagsResponse{}, err
+	}
+	return client.connectionAnalyzersUpdateTagsHandleResponse(httpResp, http.StatusOK)
+}
+
+// connectionAnalyzersUpdateTagsCreateRequest creates the ConnectionAnalyzersUpdateTags request.
+func (client *WatchersClient) connectionAnalyzersUpdateTagsCreateRequest(ctx context.Context, resourceGroupName string, networkWatcherName string, connectionAnalyzerName string, body TagsObject, _ *WatchersClientConnectionAnalyzersUpdateTagsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers/{networkWatcherName}/connectionAnalyzers/{connectionAnalyzerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkWatcherName == "" {
+		return nil, errors.New("parameter networkWatcherName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkWatcherName}", url.PathEscape(networkWatcherName))
+	if connectionAnalyzerName == "" {
+		return nil, errors.New("parameter connectionAnalyzerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectionAnalyzerName}", url.PathEscape(connectionAnalyzerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// connectionAnalyzersUpdateTagsHandleResponse handles the ConnectionAnalyzersUpdateTags response.
+func (client *WatchersClient) connectionAnalyzersUpdateTagsHandleResponse(resp *http.Response, successCodes ...int) (WatchersClientConnectionAnalyzersUpdateTagsResponse, error) {
+	result := WatchersClientConnectionAnalyzersUpdateTagsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionAnalyzer); err != nil {
+		return WatchersClientConnectionAnalyzersUpdateTagsResponse{}, err
+	}
+	return result, nil
 }
 
 // CreateOrUpdate - Creates or updates a network watcher in the specified resource group.
@@ -140,12 +587,7 @@ func (client *WatchersClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WatchersClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return WatchersClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -168,7 +610,7 @@ func (client *WatchersClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -179,8 +621,11 @@ func (client *WatchersClient) createOrUpdateCreateRequest(ctx context.Context, r
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *WatchersClient) createOrUpdateHandleResponse(resp *http.Response) (WatchersClientCreateOrUpdateResponse, error) {
+func (client *WatchersClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (WatchersClientCreateOrUpdateResponse, error) {
 	result := WatchersClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Watcher); err != nil {
 		return WatchersClientCreateOrUpdateResponse{}, err
 	}
@@ -226,8 +671,7 @@ func (client *WatchersClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -252,7 +696,7 @@ func (client *WatchersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -276,12 +720,7 @@ func (client *WatchersClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return WatchersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WatchersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -304,15 +743,18 @@ func (client *WatchersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *WatchersClient) getHandleResponse(resp *http.Response) (WatchersClientGetResponse, error) {
+func (client *WatchersClient) getHandleResponse(resp *http.Response, successCodes ...int) (WatchersClientGetResponse, error) {
 	result := WatchersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Watcher); err != nil {
 		return WatchersClientGetResponse{}, err
 	}
@@ -362,8 +804,7 @@ func (client *WatchersClient) getAzureReachabilityReport(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -388,7 +829,7 @@ func (client *WatchersClient) getAzureReachabilityReportCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -439,8 +880,7 @@ func (client *WatchersClient) getFlowLogStatus(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -465,7 +905,7 @@ func (client *WatchersClient) getFlowLogStatusCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -522,8 +962,7 @@ func (client *WatchersClient) getNetworkConfigurationDiagnostic(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -548,7 +987,7 @@ func (client *WatchersClient) getNetworkConfigurationDiagnosticCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -599,8 +1038,7 @@ func (client *WatchersClient) getNextHop(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -625,7 +1063,7 @@ func (client *WatchersClient) getNextHopCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -655,12 +1093,7 @@ func (client *WatchersClient) GetTopology(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WatchersClientGetTopologyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WatchersClientGetTopologyResponse{}, err
-	}
-	resp, err := client.getTopologyHandleResponse(httpResp)
-	return resp, err
+	return client.getTopologyHandleResponse(httpResp, http.StatusOK)
 }
 
 // getTopologyCreateRequest creates the GetTopology request.
@@ -683,7 +1116,7 @@ func (client *WatchersClient) getTopologyCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -694,8 +1127,11 @@ func (client *WatchersClient) getTopologyCreateRequest(ctx context.Context, reso
 }
 
 // getTopologyHandleResponse handles the GetTopology response.
-func (client *WatchersClient) getTopologyHandleResponse(resp *http.Response) (WatchersClientGetTopologyResponse, error) {
+func (client *WatchersClient) getTopologyHandleResponse(resp *http.Response, successCodes ...int) (WatchersClientGetTopologyResponse, error) {
 	result := WatchersClientGetTopologyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Topology); err != nil {
 		return WatchersClientGetTopologyResponse{}, err
 	}
@@ -743,8 +1179,7 @@ func (client *WatchersClient) getTroubleshooting(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -769,7 +1204,7 @@ func (client *WatchersClient) getTroubleshootingCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -820,8 +1255,7 @@ func (client *WatchersClient) getTroubleshootingResult(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -846,7 +1280,7 @@ func (client *WatchersClient) getTroubleshootingResultCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -897,8 +1331,7 @@ func (client *WatchersClient) getVMSecurityRules(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -923,7 +1356,7 @@ func (client *WatchersClient) getVMSecurityRulesCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -947,43 +1380,57 @@ func (client *WatchersClient) NewListPager(resourceGroupName string, options *Wa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return WatchersClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WatchersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *WatchersClient) listCreateRequest(ctx context.Context, resourceGroupName string, _ *WatchersClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WatchersClient) listCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *WatchersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkWatchers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *WatchersClient) listHandleResponse(resp *http.Response) (WatchersClientListResponse, error) {
+func (client *WatchersClient) listHandleResponse(resp *http.Response, successCodes ...int) (WatchersClientListResponse, error) {
 	result := WatchersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WatcherListResult); err != nil {
 		return WatchersClientListResponse{}, err
 	}
@@ -1003,39 +1450,53 @@ func (client *WatchersClient) NewListAllPager(options *WatchersClientListAllOpti
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return WatchersClientListAllResponse{}, err
 			}
-			return client.listAllHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WatchersClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *WatchersClient) listAllCreateRequest(ctx context.Context, _ *WatchersClientListAllOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkWatchers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WatchersClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *WatchersClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkWatchers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *WatchersClient) listAllHandleResponse(resp *http.Response) (WatchersClientListAllResponse, error) {
+func (client *WatchersClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (WatchersClientListAllResponse, error) {
 	result := WatchersClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WatcherListResult); err != nil {
 		return WatchersClientListAllResponse{}, err
 	}
@@ -1085,8 +1546,7 @@ func (client *WatchersClient) listAvailableProviders(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1111,7 +1571,7 @@ func (client *WatchersClient) listAvailableProvidersCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1162,8 +1622,7 @@ func (client *WatchersClient) setFlowLogConfiguration(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1188,7 +1647,7 @@ func (client *WatchersClient) setFlowLogConfigurationCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1218,12 +1677,7 @@ func (client *WatchersClient) UpdateTags(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return WatchersClientUpdateTagsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WatchersClientUpdateTagsResponse{}, err
-	}
-	resp, err := client.updateTagsHandleResponse(httpResp)
-	return resp, err
+	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -1246,7 +1700,7 @@ func (client *WatchersClient) updateTagsCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1257,8 +1711,11 @@ func (client *WatchersClient) updateTagsCreateRequest(ctx context.Context, resou
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *WatchersClient) updateTagsHandleResponse(resp *http.Response) (WatchersClientUpdateTagsResponse, error) {
+func (client *WatchersClient) updateTagsHandleResponse(resp *http.Response, successCodes ...int) (WatchersClientUpdateTagsResponse, error) {
 	result := WatchersClientUpdateTagsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Watcher); err != nil {
 		return WatchersClientUpdateTagsResponse{}, err
 	}
@@ -1306,8 +1763,7 @@ func (client *WatchersClient) verifyIPFlow(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1332,7 +1788,7 @@ func (client *WatchersClient) verifyIPFlowCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

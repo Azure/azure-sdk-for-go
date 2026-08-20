@@ -63,12 +63,7 @@ func (client *MonitorResourcesClient) LatestLinkedSaaS(ctx context.Context, reso
 	if err != nil {
 		return MonitorResourcesClientLatestLinkedSaaSResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitorResourcesClientLatestLinkedSaaSResponse{}, err
-	}
-	resp, err := client.latestLinkedSaaSHandleResponse(httpResp)
-	return resp, err
+	return client.latestLinkedSaaSHandleResponse(httpResp, http.StatusOK)
 }
 
 // latestLinkedSaaSCreateRequest creates the LatestLinkedSaaS request.
@@ -98,8 +93,11 @@ func (client *MonitorResourcesClient) latestLinkedSaaSCreateRequest(ctx context.
 }
 
 // latestLinkedSaaSHandleResponse handles the LatestLinkedSaaS response.
-func (client *MonitorResourcesClient) latestLinkedSaaSHandleResponse(resp *http.Response) (MonitorResourcesClientLatestLinkedSaaSResponse, error) {
+func (client *MonitorResourcesClient) latestLinkedSaaSHandleResponse(resp *http.Response, successCodes ...int) (MonitorResourcesClientLatestLinkedSaaSResponse, error) {
 	result := MonitorResourcesClientLatestLinkedSaaSResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LatestLinkedSaaSResponse); err != nil {
 		return MonitorResourcesClientLatestLinkedSaaSResponse{}, err
 	}
@@ -152,8 +150,7 @@ func (client *MonitorResourcesClient) linkSaaS(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

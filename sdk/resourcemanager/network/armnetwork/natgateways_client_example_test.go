@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/NatGatewayCreateOrUpdate.json
+// Generated from example definition: 2025-09-01/NatGatewayCreateOrUpdate.json
 func ExampleNatGatewaysClient_BeginCreateOrUpdate_createNatGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleNatGatewaysClient_BeginCreateOrUpdate_createNatGateway() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NatGatewayCreateOrUpdateStandardV2Sku.json
+// Generated from example definition: 2025-09-01/NatGatewayCreateOrUpdateStandardV2Sku.json
 func ExampleNatGatewaysClient_BeginCreateOrUpdate_createNatGatewayWithStandardV2Sku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleNatGatewaysClient_BeginCreateOrUpdate_createNatGatewayWithStandardV2
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NatGatewayWithNat64CreateOrUpdate.json
+// Generated from example definition: 2025-09-01/NatGatewayWithNat64CreateOrUpdate.json
 func ExampleNatGatewaysClient_BeginCreateOrUpdate_createNatGatewayWithNat64() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleNatGatewaysClient_BeginCreateOrUpdate_createNatGatewayWithNat64() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NatGatewayWithServiceGatewayCreateOrUpdate.json
+// Generated from example definition: 2025-09-01/NatGatewayWithServiceGatewayCreateOrUpdate.json
 func ExampleNatGatewaysClient_BeginCreateOrUpdate_createNatGatewayWithServiceGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,7 +302,7 @@ func ExampleNatGatewaysClient_BeginCreateOrUpdate_createNatGatewayWithServiceGat
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NatGatewayDelete.json
+// Generated from example definition: 2025-09-01/NatGatewayDelete.json
 func ExampleNatGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -328,7 +328,7 @@ func ExampleNatGatewaysClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NatGatewayGet.json
+// Generated from example definition: 2025-09-01/NatGatewayGet.json
 func ExampleNatGatewaysClient_Get_getNatGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -378,7 +378,7 @@ func ExampleNatGatewaysClient_Get_getNatGateway() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NatGatewayGetStandardV2Sku.json
+// Generated from example definition: 2025-09-01/NatGatewayGetStandardV2Sku.json
 func ExampleNatGatewaysClient_Get_getNatGatewayWithStandardV2Sku() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -441,7 +441,7 @@ func ExampleNatGatewaysClient_Get_getNatGatewayWithStandardV2Sku() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NatGatewayWithNat64Get.json
+// Generated from example definition: 2025-09-01/NatGatewayWithNat64Get.json
 func ExampleNatGatewaysClient_Get_getNatGatewayWithNat64() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -492,7 +492,7 @@ func ExampleNatGatewaysClient_Get_getNatGatewayWithNat64() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NatGatewayWithServiceGatewayGet.json
+// Generated from example definition: 2025-09-01/NatGatewayWithServiceGatewayGet.json
 func ExampleNatGatewaysClient_Get_getNatGatewayWithServiceGateway() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -540,7 +540,7 @@ func ExampleNatGatewaysClient_Get_getNatGatewayWithServiceGateway() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NatGatewayList.json
+// Generated from example definition: 2025-09-01/NatGatewayList.json
 func ExampleNatGatewaysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -668,7 +668,7 @@ func ExampleNatGatewaysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/NatGatewayListAll.json
+// Generated from example definition: 2025-09-01/NatGatewayListAll.json
 func ExampleNatGatewaysClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -796,7 +796,7 @@ func ExampleNatGatewaysClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/NatGatewayUpdateTags.json
+// Generated from example definition: 2025-09-01/NatGatewayUpdateTags.json
 func ExampleNatGatewaysClient_UpdateTags_updateNatGatewayTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -855,7 +855,7 @@ func ExampleNatGatewaysClient_UpdateTags_updateNatGatewayTags() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NatGatewayUpdateTagsStandardV2Sku.json
+// Generated from example definition: 2025-09-01/NatGatewayUpdateTagsStandardV2Sku.json
 func ExampleNatGatewaysClient_UpdateTags_updateNatGatewayWithStandardV2SkuTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

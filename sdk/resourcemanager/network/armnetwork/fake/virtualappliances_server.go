@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -22,6 +22,14 @@ import (
 
 // VirtualAppliancesServer is a fake server for instances of the armnetwork.VirtualAppliancesClient type.
 type VirtualAppliancesServer struct {
+	// BeginAbortMigration is the fake for method VirtualAppliancesClient.BeginAbortMigration
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginAbortMigration func(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *armnetwork.VirtualAppliancesClientBeginAbortMigrationOptions) (resp azfake.PollerResponder[armnetwork.VirtualAppliancesClientAbortMigrationResponse], errResp azfake.ErrorResponder)
+
+	// BeginCommitMigration is the fake for method VirtualAppliancesClient.BeginCommitMigration
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginCommitMigration func(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, body armnetwork.VirtualApplianceCommitMigrationRequest, options *armnetwork.VirtualAppliancesClientBeginCommitMigrationOptions) (resp azfake.PollerResponder[armnetwork.VirtualAppliancesClientCommitMigrationResponse], errResp azfake.ErrorResponder)
+
 	// BeginCreateOrUpdate is the fake for method VirtualAppliancesClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, parameters armnetwork.VirtualAppliance, options *armnetwork.VirtualAppliancesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armnetwork.VirtualAppliancesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -29,6 +37,10 @@ type VirtualAppliancesServer struct {
 	// BeginDelete is the fake for method VirtualAppliancesClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, options *armnetwork.VirtualAppliancesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.VirtualAppliancesClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginExecuteMigration is the fake for method VirtualAppliancesClient.BeginExecuteMigration
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginExecuteMigration func(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, body armnetwork.VirtualApplianceExecuteMigrationRequest, options *armnetwork.VirtualAppliancesClientBeginExecuteMigrationOptions) (resp azfake.PollerResponder[armnetwork.VirtualAppliancesClientExecuteMigrationResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method VirtualAppliancesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -45,6 +57,10 @@ type VirtualAppliancesServer struct {
 	// NewListByResourceGroupPager is the fake for method VirtualAppliancesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.VirtualAppliancesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.VirtualAppliancesClientListByResourceGroupResponse])
+
+	// BeginPrepareMigration is the fake for method VirtualAppliancesClient.BeginPrepareMigration
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginPrepareMigration func(ctx context.Context, resourceGroupName string, networkVirtualApplianceName string, body armnetwork.VirtualAppliancePrepareMigrationRequest, options *armnetwork.VirtualAppliancesClientBeginPrepareMigrationOptions) (resp azfake.PollerResponder[armnetwork.VirtualAppliancesClientPrepareMigrationResponse], errResp azfake.ErrorResponder)
 
 	// BeginReimage is the fake for method VirtualAppliancesClient.BeginReimage
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -65,11 +81,15 @@ type VirtualAppliancesServer struct {
 func NewVirtualAppliancesServerTransport(srv *VirtualAppliancesServer) *VirtualAppliancesServerTransport {
 	return &VirtualAppliancesServerTransport{
 		srv:                         srv,
+		beginAbortMigration:         newTracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientAbortMigrationResponse]](),
+		beginCommitMigration:        newTracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientCommitMigrationResponse]](),
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientDeleteResponse]](),
+		beginExecuteMigration:       newTracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientExecuteMigrationResponse]](),
 		beginGetBootDiagnosticLogs:  newTracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientGetBootDiagnosticLogsResponse]](),
 		newListPager:                newTracker[azfake.PagerResponder[armnetwork.VirtualAppliancesClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.VirtualAppliancesClientListByResourceGroupResponse]](),
+		beginPrepareMigration:       newTracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientPrepareMigrationResponse]](),
 		beginReimage:                newTracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientReimageResponse]](),
 		beginRestart:                newTracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientRestartResponse]](),
 	}
@@ -79,11 +99,15 @@ func NewVirtualAppliancesServerTransport(srv *VirtualAppliancesServer) *VirtualA
 // Don't use this type directly, use NewVirtualAppliancesServerTransport instead.
 type VirtualAppliancesServerTransport struct {
 	srv                         *VirtualAppliancesServer
+	beginAbortMigration         *tracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientAbortMigrationResponse]]
+	beginCommitMigration        *tracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientCommitMigrationResponse]]
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientDeleteResponse]]
+	beginExecuteMigration       *tracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientExecuteMigrationResponse]]
 	beginGetBootDiagnosticLogs  *tracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientGetBootDiagnosticLogsResponse]]
 	newListPager                *tracker[azfake.PagerResponder[armnetwork.VirtualAppliancesClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.VirtualAppliancesClientListByResourceGroupResponse]]
+	beginPrepareMigration       *tracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientPrepareMigrationResponse]]
 	beginReimage                *tracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientReimageResponse]]
 	beginRestart                *tracker[azfake.PollerResponder[armnetwork.VirtualAppliancesClientRestartResponse]]
 }
@@ -109,10 +133,16 @@ func (v *VirtualAppliancesServerTransport) dispatchToMethodFake(req *http.Reques
 		}
 		if !intercepted {
 			switch method {
+			case "VirtualAppliancesClient.BeginAbortMigration":
+				res.resp, res.err = v.dispatchBeginAbortMigration(req)
+			case "VirtualAppliancesClient.BeginCommitMigration":
+				res.resp, res.err = v.dispatchBeginCommitMigration(req)
 			case "VirtualAppliancesClient.BeginCreateOrUpdate":
 				res.resp, res.err = v.dispatchBeginCreateOrUpdate(req)
 			case "VirtualAppliancesClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
+			case "VirtualAppliancesClient.BeginExecuteMigration":
+				res.resp, res.err = v.dispatchBeginExecuteMigration(req)
 			case "VirtualAppliancesClient.Get":
 				res.resp, res.err = v.dispatchGet(req)
 			case "VirtualAppliancesClient.BeginGetBootDiagnosticLogs":
@@ -121,6 +151,8 @@ func (v *VirtualAppliancesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = v.dispatchNewListPager(req)
 			case "VirtualAppliancesClient.NewListByResourceGroupPager":
 				res.resp, res.err = v.dispatchNewListByResourceGroupPager(req)
+			case "VirtualAppliancesClient.BeginPrepareMigration":
+				res.resp, res.err = v.dispatchBeginPrepareMigration(req)
 			case "VirtualAppliancesClient.BeginReimage":
 				res.resp, res.err = v.dispatchBeginReimage(req)
 			case "VirtualAppliancesClient.BeginRestart":
@@ -141,6 +173,98 @@ func (v *VirtualAppliancesServerTransport) dispatchToMethodFake(req *http.Reques
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (v *VirtualAppliancesServerTransport) dispatchBeginAbortMigration(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginAbortMigration == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginAbortMigration not implemented")}
+	}
+	beginAbortMigration := v.beginAbortMigration.get(req)
+	if beginAbortMigration == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/abortMigration`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkVirtualApplianceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkVirtualApplianceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginAbortMigration(req.Context(), resourceGroupNameParam, networkVirtualApplianceNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginAbortMigration = &respr
+		v.beginAbortMigration.add(req, beginAbortMigration)
+	}
+
+	resp, err := server.PollerResponderNext(beginAbortMigration, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginAbortMigration.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginAbortMigration) {
+		v.beginAbortMigration.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (v *VirtualAppliancesServerTransport) dispatchBeginCommitMigration(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginCommitMigration == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCommitMigration not implemented")}
+	}
+	beginCommitMigration := v.beginCommitMigration.get(req)
+	if beginCommitMigration == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/commitMigration`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.VirtualApplianceCommitMigrationRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkVirtualApplianceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkVirtualApplianceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginCommitMigration(req.Context(), resourceGroupNameParam, networkVirtualApplianceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCommitMigration = &respr
+		v.beginCommitMigration.add(req, beginCommitMigration)
+	}
+
+	resp, err := server.PollerResponderNext(beginCommitMigration, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginCommitMigration.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCommitMigration) {
+		v.beginCommitMigration.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (v *VirtualAppliancesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -230,6 +354,54 @@ func (v *VirtualAppliancesServerTransport) dispatchBeginDelete(req *http.Request
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		v.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (v *VirtualAppliancesServerTransport) dispatchBeginExecuteMigration(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginExecuteMigration == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginExecuteMigration not implemented")}
+	}
+	beginExecuteMigration := v.beginExecuteMigration.get(req)
+	if beginExecuteMigration == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executeMigration`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.VirtualApplianceExecuteMigrationRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkVirtualApplianceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkVirtualApplianceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginExecuteMigration(req.Context(), resourceGroupNameParam, networkVirtualApplianceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginExecuteMigration = &respr
+		v.beginExecuteMigration.add(req, beginExecuteMigration)
+	}
+
+	resp, err := server.PollerResponderNext(beginExecuteMigration, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginExecuteMigration.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginExecuteMigration) {
+		v.beginExecuteMigration.remove(req)
 	}
 
 	return resp, nil
@@ -391,6 +563,54 @@ func (v *VirtualAppliancesServerTransport) dispatchNewListByResourceGroupPager(r
 	if !server.PagerResponderMore(newListByResourceGroupPager) {
 		v.newListByResourceGroupPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (v *VirtualAppliancesServerTransport) dispatchBeginPrepareMigration(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginPrepareMigration == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPrepareMigration not implemented")}
+	}
+	beginPrepareMigration := v.beginPrepareMigration.get(req)
+	if beginPrepareMigration == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/networkVirtualAppliances/(?P<networkVirtualApplianceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/prepareMigration`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armnetwork.VirtualAppliancePrepareMigrationRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		networkVirtualApplianceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkVirtualApplianceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginPrepareMigration(req.Context(), resourceGroupNameParam, networkVirtualApplianceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPrepareMigration = &respr
+		v.beginPrepareMigration.add(req, beginPrepareMigration)
+	}
+
+	resp, err := server.PollerResponderNext(beginPrepareMigration, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		v.beginPrepareMigration.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPrepareMigration) {
+		v.beginPrepareMigration.remove(req)
+	}
+
 	return resp, nil
 }
 

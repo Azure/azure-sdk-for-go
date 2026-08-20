@@ -63,12 +63,7 @@ func (client *HCRPAssignmentsClient) CreateOrUpdate(ctx context.Context, guestCo
 	if err != nil {
 		return HCRPAssignmentsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return HCRPAssignmentsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -106,8 +101,11 @@ func (client *HCRPAssignmentsClient) createOrUpdateCreateRequest(ctx context.Con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *HCRPAssignmentsClient) createOrUpdateHandleResponse(resp *http.Response) (HCRPAssignmentsClientCreateOrUpdateResponse, error) {
+func (client *HCRPAssignmentsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (HCRPAssignmentsClientCreateOrUpdateResponse, error) {
 	result := HCRPAssignmentsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return HCRPAssignmentsClientCreateOrUpdateResponse{}, err
 	}
@@ -135,8 +133,7 @@ func (client *HCRPAssignmentsClient) Delete(ctx context.Context, resourceGroupNa
 		return HCRPAssignmentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HCRPAssignmentsClientDeleteResponse{}, err
+		return HCRPAssignmentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return HCRPAssignmentsClientDeleteResponse{}, nil
 }
@@ -190,12 +187,7 @@ func (client *HCRPAssignmentsClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return HCRPAssignmentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HCRPAssignmentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -229,8 +221,11 @@ func (client *HCRPAssignmentsClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *HCRPAssignmentsClient) getHandleResponse(resp *http.Response) (HCRPAssignmentsClientGetResponse, error) {
+func (client *HCRPAssignmentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (HCRPAssignmentsClientGetResponse, error) {
 	result := HCRPAssignmentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return HCRPAssignmentsClientGetResponse{}, err
 	}
@@ -253,47 +248,61 @@ func (client *HCRPAssignmentsClient) NewListPager(resourceGroupName string, mach
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, machineName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, machineName, nextLink, options)
 			if err != nil {
 				return HCRPAssignmentsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return HCRPAssignmentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *HCRPAssignmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, machineName string, _ *HCRPAssignmentsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *HCRPAssignmentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, machineName string, nextLink string, _ *HCRPAssignmentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/machines/{machineName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if machineName == "" {
+			return nil, errors.New("parameter machineName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{machineName}", url.PathEscape(machineName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if machineName == "" {
-		return nil, errors.New("parameter machineName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{machineName}", url.PathEscape(machineName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240405)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240405)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *HCRPAssignmentsClient) listHandleResponse(resp *http.Response) (HCRPAssignmentsClientListResponse, error) {
+func (client *HCRPAssignmentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (HCRPAssignmentsClientListResponse, error) {
 	result := HCRPAssignmentsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentList); err != nil {
 		return HCRPAssignmentsClientListResponse{}, err
 	}

@@ -62,12 +62,7 @@ func (client *DeploymentWafPoliciesClient) Analysis(ctx context.Context, resourc
 	if err != nil {
 		return DeploymentWafPoliciesClientAnalysisResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeploymentWafPoliciesClientAnalysisResponse{}, err
-	}
-	resp, err := client.analysisHandleResponse(httpResp)
-	return resp, err
+	return client.analysisHandleResponse(httpResp, http.StatusOK)
 }
 
 // analysisCreateRequest creates the Analysis request.
@@ -108,8 +103,11 @@ func (client *DeploymentWafPoliciesClient) analysisCreateRequest(ctx context.Con
 }
 
 // analysisHandleResponse handles the Analysis response.
-func (client *DeploymentWafPoliciesClient) analysisHandleResponse(resp *http.Response) (DeploymentWafPoliciesClientAnalysisResponse, error) {
+func (client *DeploymentWafPoliciesClient) analysisHandleResponse(resp *http.Response, successCodes ...int) (DeploymentWafPoliciesClientAnalysisResponse, error) {
 	result := DeploymentWafPoliciesClientAnalysisResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentWafPolicyAnalysisResponse); err != nil {
 		return DeploymentWafPoliciesClientAnalysisResponse{}, err
 	}

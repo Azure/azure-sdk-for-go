@@ -12,11 +12,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"net/http"
 	"net/url"
 	"regexp"
 	"slices"
+	"strconv"
 )
 
 // FirewallPoliciesServer is a fake server for instances of the armnetwork.FirewallPoliciesClient type.
@@ -130,6 +131,7 @@ func (f *FirewallPoliciesServerTransport) dispatchBeginCreateOrUpdate(req *http.
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		qp := req.URL.Query()
 		body, err := server.UnmarshalRequestAsJSON[armnetwork.FirewallPolicy](req)
 		if err != nil {
 			return nil, err
@@ -142,7 +144,17 @@ func (f *FirewallPoliciesServerTransport) dispatchBeginCreateOrUpdate(req *http.
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := f.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, firewallPolicyNameParam, body, nil)
+		afcManagedSyncParam, err := parseOptional(qp.Get("afcManagedSync"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		var options *armnetwork.FirewallPoliciesClientBeginCreateOrUpdateOptions
+		if afcManagedSyncParam != nil {
+			options = &armnetwork.FirewallPoliciesClientBeginCreateOrUpdateOptions{
+				AfcManagedSync: afcManagedSyncParam,
+			}
+		}
+		respr, errRespr := f.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, firewallPolicyNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

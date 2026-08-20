@@ -66,12 +66,7 @@ func (client *DpsCertificateClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return DpsCertificateClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DpsCertificateClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -112,8 +107,11 @@ func (client *DpsCertificateClient) createOrUpdateCreateRequest(ctx context.Cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DpsCertificateClient) createOrUpdateHandleResponse(resp *http.Response) (DpsCertificateClientCreateOrUpdateResponse, error) {
+func (client *DpsCertificateClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DpsCertificateClientCreateOrUpdateResponse, error) {
 	result := DpsCertificateClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateResponse); err != nil {
 		return DpsCertificateClientCreateOrUpdateResponse{}, err
 	}
@@ -139,8 +137,7 @@ func (client *DpsCertificateClient) Delete(ctx context.Context, resourceGroupNam
 		return DpsCertificateClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DpsCertificateClientDeleteResponse{}, err
+		return DpsCertificateClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DpsCertificateClientDeleteResponse{}, nil
 }
@@ -171,7 +168,7 @@ func (client *DpsCertificateClient) deleteCreateRequest(ctx context.Context, res
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250201Preview)
 	if options != nil && options.CertificateCreated != nil {
-		reqQP.Set("certificate.created", datetime.RFC3339(*options.CertificateCreated).String())
+		reqQP.Set("certificate.created", datetime.RFC3339((*options.CertificateCreated).UTC()).String())
 	}
 	if options != nil && options.CertificateHasPrivateKey != nil {
 		reqQP.Set("certificate.hasPrivateKey", strconv.FormatBool(*options.CertificateHasPrivateKey))
@@ -180,7 +177,7 @@ func (client *DpsCertificateClient) deleteCreateRequest(ctx context.Context, res
 		reqQP.Set("certificate.isVerified", strconv.FormatBool(*options.CertificateIsVerified))
 	}
 	if options != nil && options.CertificateLastUpdated != nil {
-		reqQP.Set("certificate.lastUpdated", datetime.RFC3339(*options.CertificateLastUpdated).String())
+		reqQP.Set("certificate.lastUpdated", datetime.RFC3339((*options.CertificateLastUpdated).UTC()).String())
 	}
 	if options != nil && options.CertificateName1 != nil {
 		reqQP.Set("certificate.name", *options.CertificateName1)
@@ -218,12 +215,7 @@ func (client *DpsCertificateClient) GenerateVerificationCode(ctx context.Context
 	if err != nil {
 		return DpsCertificateClientGenerateVerificationCodeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DpsCertificateClientGenerateVerificationCodeResponse{}, err
-	}
-	resp, err := client.generateVerificationCodeHandleResponse(httpResp)
-	return resp, err
+	return client.generateVerificationCodeHandleResponse(httpResp, http.StatusOK)
 }
 
 // generateVerificationCodeCreateRequest creates the GenerateVerificationCode request.
@@ -252,7 +244,7 @@ func (client *DpsCertificateClient) generateVerificationCodeCreateRequest(ctx co
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250201Preview)
 	if options != nil && options.CertificateCreated != nil {
-		reqQP.Set("certificate.created", datetime.RFC3339(*options.CertificateCreated).String())
+		reqQP.Set("certificate.created", datetime.RFC3339((*options.CertificateCreated).UTC()).String())
 	}
 	if options != nil && options.CertificateHasPrivateKey != nil {
 		reqQP.Set("certificate.hasPrivateKey", strconv.FormatBool(*options.CertificateHasPrivateKey))
@@ -261,7 +253,7 @@ func (client *DpsCertificateClient) generateVerificationCodeCreateRequest(ctx co
 		reqQP.Set("certificate.isVerified", strconv.FormatBool(*options.CertificateIsVerified))
 	}
 	if options != nil && options.CertificateLastUpdated != nil {
-		reqQP.Set("certificate.lastUpdated", datetime.RFC3339(*options.CertificateLastUpdated).String())
+		reqQP.Set("certificate.lastUpdated", datetime.RFC3339((*options.CertificateLastUpdated).UTC()).String())
 	}
 	if options != nil && options.CertificateName1 != nil {
 		reqQP.Set("certificate.name", *options.CertificateName1)
@@ -282,8 +274,11 @@ func (client *DpsCertificateClient) generateVerificationCodeCreateRequest(ctx co
 }
 
 // generateVerificationCodeHandleResponse handles the GenerateVerificationCode response.
-func (client *DpsCertificateClient) generateVerificationCodeHandleResponse(resp *http.Response) (DpsCertificateClientGenerateVerificationCodeResponse, error) {
+func (client *DpsCertificateClient) generateVerificationCodeHandleResponse(resp *http.Response, successCodes ...int) (DpsCertificateClientGenerateVerificationCodeResponse, error) {
 	result := DpsCertificateClientGenerateVerificationCodeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VerificationCodeResponse); err != nil {
 		return DpsCertificateClientGenerateVerificationCodeResponse{}, err
 	}
@@ -308,12 +303,7 @@ func (client *DpsCertificateClient) Get(ctx context.Context, certificateName str
 	if err != nil {
 		return DpsCertificateClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DpsCertificateClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -350,8 +340,11 @@ func (client *DpsCertificateClient) getCreateRequest(ctx context.Context, certif
 }
 
 // getHandleResponse handles the Get response.
-func (client *DpsCertificateClient) getHandleResponse(resp *http.Response) (DpsCertificateClientGetResponse, error) {
+func (client *DpsCertificateClient) getHandleResponse(resp *http.Response, successCodes ...int) (DpsCertificateClientGetResponse, error) {
 	result := DpsCertificateClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateResponse); err != nil {
 		return DpsCertificateClientGetResponse{}, err
 	}
@@ -377,12 +370,7 @@ func (client *DpsCertificateClient) List(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return DpsCertificateClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DpsCertificateClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -412,8 +400,11 @@ func (client *DpsCertificateClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client *DpsCertificateClient) listHandleResponse(resp *http.Response) (DpsCertificateClientListResponse, error) {
+func (client *DpsCertificateClient) listHandleResponse(resp *http.Response, successCodes ...int) (DpsCertificateClientListResponse, error) {
 	result := DpsCertificateClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateListDescription); err != nil {
 		return DpsCertificateClientListResponse{}, err
 	}
@@ -440,12 +431,7 @@ func (client *DpsCertificateClient) VerifyCertificate(ctx context.Context, certi
 	if err != nil {
 		return DpsCertificateClientVerifyCertificateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DpsCertificateClientVerifyCertificateResponse{}, err
-	}
-	resp, err := client.verifyCertificateHandleResponse(httpResp)
-	return resp, err
+	return client.verifyCertificateHandleResponse(httpResp, http.StatusOK)
 }
 
 // verifyCertificateCreateRequest creates the VerifyCertificate request.
@@ -474,7 +460,7 @@ func (client *DpsCertificateClient) verifyCertificateCreateRequest(ctx context.C
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20250201Preview)
 	if options != nil && options.CertificateCreated != nil {
-		reqQP.Set("certificate.created", datetime.RFC3339(*options.CertificateCreated).String())
+		reqQP.Set("certificate.created", datetime.RFC3339((*options.CertificateCreated).UTC()).String())
 	}
 	if options != nil && options.CertificateHasPrivateKey != nil {
 		reqQP.Set("certificate.hasPrivateKey", strconv.FormatBool(*options.CertificateHasPrivateKey))
@@ -483,7 +469,7 @@ func (client *DpsCertificateClient) verifyCertificateCreateRequest(ctx context.C
 		reqQP.Set("certificate.isVerified", strconv.FormatBool(*options.CertificateIsVerified))
 	}
 	if options != nil && options.CertificateLastUpdated != nil {
-		reqQP.Set("certificate.lastUpdated", datetime.RFC3339(*options.CertificateLastUpdated).String())
+		reqQP.Set("certificate.lastUpdated", datetime.RFC3339((*options.CertificateLastUpdated).UTC()).String())
 	}
 	if options != nil && options.CertificateName1 != nil {
 		reqQP.Set("certificate.name", *options.CertificateName1)
@@ -508,8 +494,11 @@ func (client *DpsCertificateClient) verifyCertificateCreateRequest(ctx context.C
 }
 
 // verifyCertificateHandleResponse handles the VerifyCertificate response.
-func (client *DpsCertificateClient) verifyCertificateHandleResponse(resp *http.Response) (DpsCertificateClientVerifyCertificateResponse, error) {
+func (client *DpsCertificateClient) verifyCertificateHandleResponse(resp *http.Response, successCodes ...int) (DpsCertificateClientVerifyCertificateResponse, error) {
 	result := DpsCertificateClientVerifyCertificateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CertificateResponse); err != nil {
 		return DpsCertificateClientVerifyCertificateResponse{}, err
 	}

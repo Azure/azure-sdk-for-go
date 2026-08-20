@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/RouteFilterCreate.json
+// Generated from example definition: 2025-09-01/RouteFilterCreate.json
 func ExampleRouteFiltersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleRouteFiltersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/RouteFilterDelete.json
+// Generated from example definition: 2025-09-01/RouteFilterDelete.json
 func ExampleRouteFiltersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleRouteFiltersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/RouteFilterGet.json
+// Generated from example definition: 2025-09-01/RouteFilterGet.json
 func ExampleRouteFiltersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -168,7 +168,7 @@ func ExampleRouteFiltersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/RouteFilterList.json
+// Generated from example definition: 2025-09-01/RouteFilterList.json
 func ExampleRouteFiltersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleRouteFiltersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/RouteFilterListByResourceGroup.json
+// Generated from example definition: 2025-09-01/RouteFilterListByResourceGroup.json
 func ExampleRouteFiltersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +292,7 @@ func ExampleRouteFiltersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/RouteFilterUpdateTags.json
+// Generated from example definition: 2025-09-01/RouteFilterUpdateTags.json
 func ExampleRouteFiltersClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

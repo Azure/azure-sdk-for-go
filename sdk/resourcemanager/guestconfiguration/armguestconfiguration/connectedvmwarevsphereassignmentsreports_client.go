@@ -63,12 +63,7 @@ func (client *ConnectedVMwarevSphereAssignmentsReportsClient) Get(ctx context.Co
 	if err != nil {
 		return ConnectedVMwarevSphereAssignmentsReportsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectedVMwarevSphereAssignmentsReportsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -106,8 +101,11 @@ func (client *ConnectedVMwarevSphereAssignmentsReportsClient) getCreateRequest(c
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConnectedVMwarevSphereAssignmentsReportsClient) getHandleResponse(resp *http.Response) (ConnectedVMwarevSphereAssignmentsReportsClientGetResponse, error) {
+func (client *ConnectedVMwarevSphereAssignmentsReportsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConnectedVMwarevSphereAssignmentsReportsClientGetResponse, error) {
 	result := ConnectedVMwarevSphereAssignmentsReportsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentReport); err != nil {
 		return ConnectedVMwarevSphereAssignmentsReportsClientGetResponse{}, err
 	}
@@ -135,12 +133,7 @@ func (client *ConnectedVMwarevSphereAssignmentsReportsClient) List(ctx context.C
 	if err != nil {
 		return ConnectedVMwarevSphereAssignmentsReportsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectedVMwarevSphereAssignmentsReportsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -174,8 +167,11 @@ func (client *ConnectedVMwarevSphereAssignmentsReportsClient) listCreateRequest(
 }
 
 // listHandleResponse handles the List response.
-func (client *ConnectedVMwarevSphereAssignmentsReportsClient) listHandleResponse(resp *http.Response) (ConnectedVMwarevSphereAssignmentsReportsClientListResponse, error) {
+func (client *ConnectedVMwarevSphereAssignmentsReportsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ConnectedVMwarevSphereAssignmentsReportsClientListResponse, error) {
 	result := ConnectedVMwarevSphereAssignmentsReportsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentReportList); err != nil {
 		return ConnectedVMwarevSphereAssignmentsReportsClientListResponse{}, err
 	}

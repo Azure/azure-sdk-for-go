@@ -88,8 +88,7 @@ func (client *EndpointClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -150,12 +149,7 @@ func (client *EndpointClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return EndpointClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EndpointClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -189,8 +183,11 @@ func (client *EndpointClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *EndpointClient) getHandleResponse(resp *http.Response) (EndpointClientGetResponse, error) {
+func (client *EndpointClient) getHandleResponse(resp *http.Response, successCodes ...int) (EndpointClientGetResponse, error) {
 	result := EndpointClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointResourcePropertiesBasicResource); err != nil {
 		return EndpointClientGetResponse{}, err
 	}
@@ -215,51 +212,65 @@ func (client *EndpointClient) NewGetModelsPager(resourceGroupName string, worksp
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getModelsCreateRequest(ctx, resourceGroupName, workspaceName, endpointName, options)
-			}, nil)
+			req, err := client.getModelsCreateRequest(ctx, resourceGroupName, workspaceName, endpointName, nextLink, options)
 			if err != nil {
 				return EndpointClientGetModelsResponse{}, err
 			}
-			return client.getModelsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EndpointClientGetModelsResponse{}, err
+			}
+			return client.getModelsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getModelsCreateRequest creates the GetModels request.
-func (client *EndpointClient) getModelsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, _ *EndpointClientGetModelsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/endpoints/{endpointName}/models"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EndpointClient) getModelsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, nextLink string, _ *EndpointClientGetModelsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/endpoints/{endpointName}/models"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		if endpointName == "" {
+			return nil, errors.New("parameter endpointName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if endpointName == "" {
-		return nil, errors.New("parameter endpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // getModelsHandleResponse handles the GetModels response.
-func (client *EndpointClient) getModelsHandleResponse(resp *http.Response) (EndpointClientGetModelsResponse, error) {
+func (client *EndpointClient) getModelsHandleResponse(resp *http.Response, successCodes ...int) (EndpointClientGetModelsResponse, error) {
 	result := EndpointClientGetModelsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointModels); err != nil {
 		return EndpointClientGetModelsResponse{}, err
 	}
@@ -283,65 +294,79 @@ func (client *EndpointClient) NewListPager(resourceGroupName string, workspaceNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, nextLink, options)
 			if err != nil {
 				return EndpointClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EndpointClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *EndpointClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *EndpointClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/endpoints"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EndpointClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, nextLink string, options *EndpointClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/endpoints"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", *options.Skip)
+		}
+		reqQP.Set("api-version", version20260315Preview)
+		if options != nil && options.EndpointType != nil {
+			reqQP.Set("endpointType", string(*options.EndpointType))
+		}
+		if options != nil && options.IncludeConnections != nil {
+			reqQP.Set("includeConnections", strconv.FormatBool(*options.IncludeConnections))
+		}
+		if options != nil && options.IncludeOnlineEndpoints != nil {
+			reqQP.Set("includeOnlineEndpoints", strconv.FormatBool(*options.IncludeOnlineEndpoints))
+		}
+		if options != nil && options.IncludeServerlessEndpoints != nil {
+			reqQP.Set("includeServerlessEndpoints", strconv.FormatBool(*options.IncludeServerlessEndpoints))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", *options.Skip)
-	}
-	reqQP.Set("api-version", version20260315Preview)
-	if options != nil && options.EndpointType != nil {
-		reqQP.Set("endpointType", string(*options.EndpointType))
-	}
-	if options != nil && options.IncludeConnections != nil {
-		reqQP.Set("includeConnections", strconv.FormatBool(*options.IncludeConnections))
-	}
-	if options != nil && options.IncludeOnlineEndpoints != nil {
-		reqQP.Set("includeOnlineEndpoints", strconv.FormatBool(*options.IncludeOnlineEndpoints))
-	}
-	if options != nil && options.IncludeServerlessEndpoints != nil {
-		reqQP.Set("includeServerlessEndpoints", strconv.FormatBool(*options.IncludeServerlessEndpoints))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *EndpointClient) listHandleResponse(resp *http.Response) (EndpointClientListResponse, error) {
+func (client *EndpointClient) listHandleResponse(resp *http.Response, successCodes ...int) (EndpointClientListResponse, error) {
 	result := EndpointClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointResourcePropertiesBasicResourceArmPaginatedResult); err != nil {
 		return EndpointClientListResponse{}, err
 	}
@@ -370,12 +395,7 @@ func (client *EndpointClient) ListKeys(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return EndpointClientListKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EndpointClientListKeysResponse{}, err
-	}
-	resp, err := client.listKeysHandleResponse(httpResp)
-	return resp, err
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
@@ -409,8 +429,11 @@ func (client *EndpointClient) listKeysCreateRequest(ctx context.Context, resourc
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *EndpointClient) listKeysHandleResponse(resp *http.Response) (EndpointClientListKeysResponse, error) {
+func (client *EndpointClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (EndpointClientListKeysResponse, error) {
 	result := EndpointClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointKeys); err != nil {
 		return EndpointClientListKeysResponse{}, err
 	}
@@ -439,12 +462,7 @@ func (client *EndpointClient) RegenerateKeys(ctx context.Context, resourceGroupN
 	if err != nil {
 		return EndpointClientRegenerateKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EndpointClientRegenerateKeysResponse{}, err
-	}
-	resp, err := client.regenerateKeysHandleResponse(httpResp)
-	return resp, err
+	return client.regenerateKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.
@@ -482,8 +500,11 @@ func (client *EndpointClient) regenerateKeysCreateRequest(ctx context.Context, r
 }
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
-func (client *EndpointClient) regenerateKeysHandleResponse(resp *http.Response) (EndpointClientRegenerateKeysResponse, error) {
+func (client *EndpointClient) regenerateKeysHandleResponse(resp *http.Response, successCodes ...int) (EndpointClientRegenerateKeysResponse, error) {
 	result := EndpointClientRegenerateKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountAPIKeys); err != nil {
 		return EndpointClientRegenerateKeysResponse{}, err
 	}

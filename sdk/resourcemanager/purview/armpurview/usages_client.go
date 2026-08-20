@@ -61,12 +61,7 @@ func (client *UsagesClient) Get(ctx context.Context, location string, options *U
 	if err != nil {
 		return UsagesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UsagesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -95,8 +90,11 @@ func (client *UsagesClient) getCreateRequest(ctx context.Context, location strin
 }
 
 // getHandleResponse handles the Get response.
-func (client *UsagesClient) getHandleResponse(resp *http.Response) (UsagesClientGetResponse, error) {
+func (client *UsagesClient) getHandleResponse(resp *http.Response, successCodes ...int) (UsagesClientGetResponse, error) {
 	result := UsagesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsageList); err != nil {
 		return UsagesClientGetResponse{}, err
 	}

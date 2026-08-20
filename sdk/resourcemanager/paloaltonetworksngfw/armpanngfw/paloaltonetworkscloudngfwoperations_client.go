@@ -59,12 +59,7 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) CreateProductSerialNumb
 	if err != nil {
 		return PaloAltoNetworksCloudngfwOperationsClientCreateProductSerialNumberResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PaloAltoNetworksCloudngfwOperationsClientCreateProductSerialNumberResponse{}, err
-	}
-	resp, err := client.createProductSerialNumberHandleResponse(httpResp)
-	return resp, err
+	return client.createProductSerialNumberHandleResponse(httpResp, http.StatusOK)
 }
 
 // createProductSerialNumberCreateRequest creates the CreateProductSerialNumber request.
@@ -86,8 +81,11 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) createProductSerialNumb
 }
 
 // createProductSerialNumberHandleResponse handles the CreateProductSerialNumber response.
-func (client *PaloAltoNetworksCloudngfwOperationsClient) createProductSerialNumberHandleResponse(resp *http.Response) (PaloAltoNetworksCloudngfwOperationsClientCreateProductSerialNumberResponse, error) {
+func (client *PaloAltoNetworksCloudngfwOperationsClient) createProductSerialNumberHandleResponse(resp *http.Response, successCodes ...int) (PaloAltoNetworksCloudngfwOperationsClientCreateProductSerialNumberResponse, error) {
 	result := PaloAltoNetworksCloudngfwOperationsClientCreateProductSerialNumberResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductSerialNumberRequestStatus); err != nil {
 		return PaloAltoNetworksCloudngfwOperationsClientCreateProductSerialNumberResponse{}, err
 	}
@@ -112,12 +110,7 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) ListCloudManagerTenants
 	if err != nil {
 		return PaloAltoNetworksCloudngfwOperationsClientListCloudManagerTenantsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PaloAltoNetworksCloudngfwOperationsClientListCloudManagerTenantsResponse{}, err
-	}
-	resp, err := client.listCloudManagerTenantsHandleResponse(httpResp)
-	return resp, err
+	return client.listCloudManagerTenantsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCloudManagerTenantsCreateRequest creates the ListCloudManagerTenants request.
@@ -139,8 +132,11 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) listCloudManagerTenants
 }
 
 // listCloudManagerTenantsHandleResponse handles the ListCloudManagerTenants response.
-func (client *PaloAltoNetworksCloudngfwOperationsClient) listCloudManagerTenantsHandleResponse(resp *http.Response) (PaloAltoNetworksCloudngfwOperationsClientListCloudManagerTenantsResponse, error) {
+func (client *PaloAltoNetworksCloudngfwOperationsClient) listCloudManagerTenantsHandleResponse(resp *http.Response, successCodes ...int) (PaloAltoNetworksCloudngfwOperationsClientListCloudManagerTenantsResponse, error) {
 	result := PaloAltoNetworksCloudngfwOperationsClientListCloudManagerTenantsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CloudManagerTenantList); err != nil {
 		return PaloAltoNetworksCloudngfwOperationsClientListCloudManagerTenantsResponse{}, err
 	}
@@ -165,12 +161,7 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) ListProductSerialNumber
 	if err != nil {
 		return PaloAltoNetworksCloudngfwOperationsClientListProductSerialNumberStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNotFound) {
-		err = runtime.NewResponseError(httpResp)
-		return PaloAltoNetworksCloudngfwOperationsClientListProductSerialNumberStatusResponse{}, err
-	}
-	resp, err := client.listProductSerialNumberStatusHandleResponse(httpResp)
-	return resp, err
+	return client.listProductSerialNumberStatusHandleResponse(httpResp, http.StatusOK, http.StatusNotFound)
 }
 
 // listProductSerialNumberStatusCreateRequest creates the ListProductSerialNumberStatus request.
@@ -192,8 +183,11 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) listProductSerialNumber
 }
 
 // listProductSerialNumberStatusHandleResponse handles the ListProductSerialNumberStatus response.
-func (client *PaloAltoNetworksCloudngfwOperationsClient) listProductSerialNumberStatusHandleResponse(resp *http.Response) (PaloAltoNetworksCloudngfwOperationsClientListProductSerialNumberStatusResponse, error) {
+func (client *PaloAltoNetworksCloudngfwOperationsClient) listProductSerialNumberStatusHandleResponse(resp *http.Response, successCodes ...int) (PaloAltoNetworksCloudngfwOperationsClientListProductSerialNumberStatusResponse, error) {
 	result := PaloAltoNetworksCloudngfwOperationsClientListProductSerialNumberStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProductSerialNumberStatus); err != nil {
 		return PaloAltoNetworksCloudngfwOperationsClientListProductSerialNumberStatusResponse{}, err
 	}
@@ -218,12 +212,7 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) ListSupportInfo(ctx con
 	if err != nil {
 		return PaloAltoNetworksCloudngfwOperationsClientListSupportInfoResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PaloAltoNetworksCloudngfwOperationsClientListSupportInfoResponse{}, err
-	}
-	resp, err := client.listSupportInfoHandleResponse(httpResp)
-	return resp, err
+	return client.listSupportInfoHandleResponse(httpResp, http.StatusOK)
 }
 
 // listSupportInfoCreateRequest creates the ListSupportInfo request.
@@ -245,8 +234,11 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) listSupportInfoCreateRe
 }
 
 // listSupportInfoHandleResponse handles the ListSupportInfo response.
-func (client *PaloAltoNetworksCloudngfwOperationsClient) listSupportInfoHandleResponse(resp *http.Response) (PaloAltoNetworksCloudngfwOperationsClientListSupportInfoResponse, error) {
+func (client *PaloAltoNetworksCloudngfwOperationsClient) listSupportInfoHandleResponse(resp *http.Response, successCodes ...int) (PaloAltoNetworksCloudngfwOperationsClientListSupportInfoResponse, error) {
 	result := PaloAltoNetworksCloudngfwOperationsClientListSupportInfoResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SupportInfoModel); err != nil {
 		return PaloAltoNetworksCloudngfwOperationsClientListSupportInfoResponse{}, err
 	}

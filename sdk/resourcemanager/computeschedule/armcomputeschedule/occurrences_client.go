@@ -62,12 +62,7 @@ func (client *OccurrencesClient) Cancel(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return OccurrencesClientCancelResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OccurrencesClientCancelResponse{}, err
-	}
-	resp, err := client.cancelHandleResponse(httpResp)
-	return resp, err
+	return client.cancelHandleResponse(httpResp, http.StatusOK)
 }
 
 // cancelCreateRequest creates the Cancel request.
@@ -105,21 +100,22 @@ func (client *OccurrencesClient) cancelCreateRequest(ctx context.Context, resour
 }
 
 // cancelHandleResponse handles the Cancel response.
-func (client *OccurrencesClient) cancelHandleResponse(resp *http.Response) (OccurrencesClientCancelResponse, error) {
+func (client *OccurrencesClient) cancelHandleResponse(resp *http.Response, successCodes ...int) (OccurrencesClientCancelResponse, error) {
 	result := OccurrencesClientCancelResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecurringActionsResourceOperationResult); err != nil {
 		return OccurrencesClientCancelResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginDelay - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scheduledActionName - The name of the ScheduledAction
-//   - occurrenceID - The name of the Occurrence
-//   - body - The content of the action request
-//   - options - OccurrencesClientBeginDelayOptions contains the optional parameters for the OccurrencesClient.BeginDelay method.
+// - resourceGroupName - The name of the resource group. The name is case insensitive.
+// - scheduledActionName - The name of the ScheduledAction
+// - occurrenceID - The name of the Occurrence
+// - body - The content of the action request
+// - options - OccurrencesClientBeginDelayOptions contains the optional parameters for the OccurrencesClient.BeginDelay method.
 func (client *OccurrencesClient) BeginDelay(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, options *OccurrencesClientBeginDelayOptions) (*runtime.Poller[OccurrencesClientDelayResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.delay(ctx, resourceGroupName, scheduledActionName, occurrenceID, body, options)
@@ -137,7 +133,7 @@ func (client *OccurrencesClient) BeginDelay(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delay - A long-running resource action.
+// Delay -
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OccurrencesClient) delay(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, body DelayRequest, options *OccurrencesClientBeginDelayOptions) (*http.Response, error) {
 	var err error
@@ -154,8 +150,7 @@ func (client *OccurrencesClient) delay(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -214,12 +209,7 @@ func (client *OccurrencesClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return OccurrencesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OccurrencesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -253,8 +243,11 @@ func (client *OccurrencesClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *OccurrencesClient) getHandleResponse(resp *http.Response) (OccurrencesClientGetResponse, error) {
+func (client *OccurrencesClient) getHandleResponse(resp *http.Response, successCodes ...int) (OccurrencesClientGetResponse, error) {
 	result := OccurrencesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Occurrence); err != nil {
 		return OccurrencesClientGetResponse{}, err
 	}
@@ -277,47 +270,61 @@ func (client *OccurrencesClient) NewListByScheduledActionPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByScheduledActionCreateRequest(ctx, resourceGroupName, scheduledActionName, options)
-			}, nil)
+			req, err := client.listByScheduledActionCreateRequest(ctx, resourceGroupName, scheduledActionName, nextLink, options)
 			if err != nil {
 				return OccurrencesClientListByScheduledActionResponse{}, err
 			}
-			return client.listByScheduledActionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OccurrencesClientListByScheduledActionResponse{}, err
+			}
+			return client.listByScheduledActionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByScheduledActionCreateRequest creates the ListByScheduledAction request.
-func (client *OccurrencesClient) listByScheduledActionCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, _ *OccurrencesClientListByScheduledActionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/occurrences"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *OccurrencesClient) listByScheduledActionCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, nextLink string, _ *OccurrencesClientListByScheduledActionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/occurrences"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if scheduledActionName == "" {
+			return nil, errors.New("parameter scheduledActionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scheduledActionName}", url.PathEscape(scheduledActionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if scheduledActionName == "" {
-		return nil, errors.New("parameter scheduledActionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scheduledActionName}", url.PathEscape(scheduledActionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260415Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260415Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByScheduledActionHandleResponse handles the ListByScheduledAction response.
-func (client *OccurrencesClient) listByScheduledActionHandleResponse(resp *http.Response) (OccurrencesClientListByScheduledActionResponse, error) {
+func (client *OccurrencesClient) listByScheduledActionHandleResponse(resp *http.Response, successCodes ...int) (OccurrencesClientListByScheduledActionResponse, error) {
 	result := OccurrencesClientListByScheduledActionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OccurrenceListResult); err != nil {
 		return OccurrencesClientListByScheduledActionResponse{}, err
 	}
@@ -341,51 +348,65 @@ func (client *OccurrencesClient) NewListResourcesPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listResourcesCreateRequest(ctx, resourceGroupName, scheduledActionName, occurrenceID, options)
-			}, nil)
+			req, err := client.listResourcesCreateRequest(ctx, resourceGroupName, scheduledActionName, occurrenceID, nextLink, options)
 			if err != nil {
 				return OccurrencesClientListResourcesResponse{}, err
 			}
-			return client.listResourcesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OccurrencesClientListResourcesResponse{}, err
+			}
+			return client.listResourcesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listResourcesCreateRequest creates the ListResources request.
-func (client *OccurrencesClient) listResourcesCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, _ *OccurrencesClientListResourcesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/occurrences/{occurrenceId}/resources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *OccurrencesClient) listResourcesCreateRequest(ctx context.Context, resourceGroupName string, scheduledActionName string, occurrenceID string, nextLink string, _ *OccurrencesClientListResourcesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeSchedule/scheduledActions/{scheduledActionName}/occurrences/{occurrenceId}/resources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if scheduledActionName == "" {
+			return nil, errors.New("parameter scheduledActionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scheduledActionName}", url.PathEscape(scheduledActionName))
+		if occurrenceID == "" {
+			return nil, errors.New("parameter occurrenceID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{occurrenceId}", url.PathEscape(occurrenceID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if scheduledActionName == "" {
-		return nil, errors.New("parameter scheduledActionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scheduledActionName}", url.PathEscape(scheduledActionName))
-	if occurrenceID == "" {
-		return nil, errors.New("parameter occurrenceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{occurrenceId}", url.PathEscape(occurrenceID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260415Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260415Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listResourcesHandleResponse handles the ListResources response.
-func (client *OccurrencesClient) listResourcesHandleResponse(resp *http.Response) (OccurrencesClientListResourcesResponse, error) {
+func (client *OccurrencesClient) listResourcesHandleResponse(resp *http.Response, successCodes ...int) (OccurrencesClientListResourcesResponse, error) {
 	result := OccurrencesClientListResourcesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OccurrenceResourceListResponse); err != nil {
 		return OccurrencesClientListResourcesResponse{}, err
 	}

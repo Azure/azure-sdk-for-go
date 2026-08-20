@@ -32,7 +32,7 @@ func ExampleOperationsResultsClient_Get() {
 	// res = armkusto.OperationsResultsClientGetResponse{
 	// 	OperationResult: armkusto.OperationResult{
 	// 		Name: to.Ptr("30972f1b-b61d-4fd8-bd34-3dcfa24670f3"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-26T13:45:42.7025301Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2020, time.October, 26, 13, 45, 42, 702530100, time.UTC)),
 	// 		Error: &armkusto.OperationResultErrorProperties{
 	// 			Code: to.Ptr("CannotAlterFollowerDatabase"),
 	// 			Message: to.Ptr("[BadRequest] Cannot alter leader cluster 'test' for resource name 'adc'."),
@@ -43,7 +43,7 @@ func ExampleOperationsResultsClient_Get() {
 	// 			OperationKind: to.Ptr("FollowerDatabaseCreate"),
 	// 			OperationState: to.Ptr("BadInput"),
 	// 		},
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-10-26T13:45:39.6554616Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2020, time.October, 26, 13, 45, 39, 655461600, time.UTC)),
 	// 		Status: to.Ptr(armkusto.StatusFailed),
 	// 	},
 	// }

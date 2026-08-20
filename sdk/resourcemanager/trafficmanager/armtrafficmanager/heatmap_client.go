@@ -61,12 +61,7 @@ func (client *HeatMapClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return HeatMapClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HeatMapClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -103,8 +98,11 @@ func (client *HeatMapClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *HeatMapClient) getHandleResponse(resp *http.Response) (HeatMapClientGetResponse, error) {
+func (client *HeatMapClient) getHandleResponse(resp *http.Response, successCodes ...int) (HeatMapClientGetResponse, error) {
 	result := HeatMapClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HeatMapModel); err != nil {
 		return HeatMapClientGetResponse{}, err
 	}

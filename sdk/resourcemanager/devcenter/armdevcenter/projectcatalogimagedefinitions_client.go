@@ -84,8 +84,7 @@ func (client *ProjectCatalogImageDefinitionsClient) buildImage(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -145,12 +144,7 @@ func (client *ProjectCatalogImageDefinitionsClient) GetByProjectCatalog(ctx cont
 	if err != nil {
 		return ProjectCatalogImageDefinitionsClientGetByProjectCatalogResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProjectCatalogImageDefinitionsClientGetByProjectCatalogResponse{}, err
-	}
-	resp, err := client.getByProjectCatalogHandleResponse(httpResp)
-	return resp, err
+	return client.getByProjectCatalogHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByProjectCatalogCreateRequest creates the GetByProjectCatalog request.
@@ -188,8 +182,11 @@ func (client *ProjectCatalogImageDefinitionsClient) getByProjectCatalogCreateReq
 }
 
 // getByProjectCatalogHandleResponse handles the GetByProjectCatalog response.
-func (client *ProjectCatalogImageDefinitionsClient) getByProjectCatalogHandleResponse(resp *http.Response) (ProjectCatalogImageDefinitionsClientGetByProjectCatalogResponse, error) {
+func (client *ProjectCatalogImageDefinitionsClient) getByProjectCatalogHandleResponse(resp *http.Response, successCodes ...int) (ProjectCatalogImageDefinitionsClientGetByProjectCatalogResponse, error) {
 	result := ProjectCatalogImageDefinitionsClientGetByProjectCatalogResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageDefinition); err != nil {
 		return ProjectCatalogImageDefinitionsClientGetByProjectCatalogResponse{}, err
 	}
@@ -218,12 +215,7 @@ func (client *ProjectCatalogImageDefinitionsClient) GetErrorDetails(ctx context.
 	if err != nil {
 		return ProjectCatalogImageDefinitionsClientGetErrorDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProjectCatalogImageDefinitionsClientGetErrorDetailsResponse{}, err
-	}
-	resp, err := client.getErrorDetailsHandleResponse(httpResp)
-	return resp, err
+	return client.getErrorDetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getErrorDetailsCreateRequest creates the GetErrorDetails request.
@@ -261,8 +253,11 @@ func (client *ProjectCatalogImageDefinitionsClient) getErrorDetailsCreateRequest
 }
 
 // getErrorDetailsHandleResponse handles the GetErrorDetails response.
-func (client *ProjectCatalogImageDefinitionsClient) getErrorDetailsHandleResponse(resp *http.Response) (ProjectCatalogImageDefinitionsClientGetErrorDetailsResponse, error) {
+func (client *ProjectCatalogImageDefinitionsClient) getErrorDetailsHandleResponse(resp *http.Response, successCodes ...int) (ProjectCatalogImageDefinitionsClientGetErrorDetailsResponse, error) {
 	result := ProjectCatalogImageDefinitionsClientGetErrorDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CatalogResourceValidationErrorDetails); err != nil {
 		return ProjectCatalogImageDefinitionsClientGetErrorDetailsResponse{}, err
 	}
@@ -286,54 +281,68 @@ func (client *ProjectCatalogImageDefinitionsClient) NewListByProjectCatalogPager
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByProjectCatalogCreateRequest(ctx, resourceGroupName, projectName, catalogName, options)
-			}, nil)
+			req, err := client.listByProjectCatalogCreateRequest(ctx, resourceGroupName, projectName, catalogName, nextLink, options)
 			if err != nil {
 				return ProjectCatalogImageDefinitionsClientListByProjectCatalogResponse{}, err
 			}
-			return client.listByProjectCatalogHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProjectCatalogImageDefinitionsClientListByProjectCatalogResponse{}, err
+			}
+			return client.listByProjectCatalogHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByProjectCatalogCreateRequest creates the ListByProjectCatalog request.
-func (client *ProjectCatalogImageDefinitionsClient) listByProjectCatalogCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, options *ProjectCatalogImageDefinitionsClientListByProjectCatalogOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/imageDefinitions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ProjectCatalogImageDefinitionsClient) listByProjectCatalogCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, nextLink string, options *ProjectCatalogImageDefinitionsClientListByProjectCatalogOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/imageDefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if projectName == "" {
+			return nil, errors.New("parameter projectName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+		if catalogName == "" {
+			return nil, errors.New("parameter catalogName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	if catalogName == "" {
-		return nil, errors.New("parameter catalogName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByProjectCatalogHandleResponse handles the ListByProjectCatalog response.
-func (client *ProjectCatalogImageDefinitionsClient) listByProjectCatalogHandleResponse(resp *http.Response) (ProjectCatalogImageDefinitionsClientListByProjectCatalogResponse, error) {
+func (client *ProjectCatalogImageDefinitionsClient) listByProjectCatalogHandleResponse(resp *http.Response, successCodes ...int) (ProjectCatalogImageDefinitionsClientListByProjectCatalogResponse, error) {
 	result := ProjectCatalogImageDefinitionsClientListByProjectCatalogResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageDefinitionListResult); err != nil {
 		return ProjectCatalogImageDefinitionsClientListByProjectCatalogResponse{}, err
 	}

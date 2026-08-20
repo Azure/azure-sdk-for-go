@@ -62,12 +62,7 @@ func (client *FetchCrossRegionRestoreJobClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return FetchCrossRegionRestoreJobClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FetchCrossRegionRestoreJobClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -101,8 +96,11 @@ func (client *FetchCrossRegionRestoreJobClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *FetchCrossRegionRestoreJobClient) getHandleResponse(resp *http.Response) (FetchCrossRegionRestoreJobClientGetResponse, error) {
+func (client *FetchCrossRegionRestoreJobClient) getHandleResponse(resp *http.Response, successCodes ...int) (FetchCrossRegionRestoreJobClientGetResponse, error) {
 	result := FetchCrossRegionRestoreJobClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureBackupJobResource); err != nil {
 		return FetchCrossRegionRestoreJobClientGetResponse{}, err
 	}

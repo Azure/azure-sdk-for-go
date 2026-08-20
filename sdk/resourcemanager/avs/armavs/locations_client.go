@@ -60,12 +60,7 @@ func (client *LocationsClient) CheckQuotaAvailability(ctx context.Context, locat
 	if err != nil {
 		return LocationsClientCheckQuotaAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LocationsClientCheckQuotaAvailabilityResponse{}, err
-	}
-	resp, err := client.checkQuotaAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkQuotaAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkQuotaAvailabilityCreateRequest creates the CheckQuotaAvailability request.
@@ -91,8 +86,11 @@ func (client *LocationsClient) checkQuotaAvailabilityCreateRequest(ctx context.C
 }
 
 // checkQuotaAvailabilityHandleResponse handles the CheckQuotaAvailability response.
-func (client *LocationsClient) checkQuotaAvailabilityHandleResponse(resp *http.Response) (LocationsClientCheckQuotaAvailabilityResponse, error) {
+func (client *LocationsClient) checkQuotaAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (LocationsClientCheckQuotaAvailabilityResponse, error) {
 	result := LocationsClientCheckQuotaAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Quota); err != nil {
 		return LocationsClientCheckQuotaAvailabilityResponse{}, err
 	}
@@ -118,12 +116,7 @@ func (client *LocationsClient) CheckTrialAvailability(ctx context.Context, locat
 	if err != nil {
 		return LocationsClientCheckTrialAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LocationsClientCheckTrialAvailabilityResponse{}, err
-	}
-	resp, err := client.checkTrialAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkTrialAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkTrialAvailabilityCreateRequest creates the CheckTrialAvailability request.
@@ -156,8 +149,11 @@ func (client *LocationsClient) checkTrialAvailabilityCreateRequest(ctx context.C
 }
 
 // checkTrialAvailabilityHandleResponse handles the CheckTrialAvailability response.
-func (client *LocationsClient) checkTrialAvailabilityHandleResponse(resp *http.Response) (LocationsClientCheckTrialAvailabilityResponse, error) {
+func (client *LocationsClient) checkTrialAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (LocationsClientCheckTrialAvailabilityResponse, error) {
 	result := LocationsClientCheckTrialAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Trial); err != nil {
 		return LocationsClientCheckTrialAvailabilityResponse{}, err
 	}

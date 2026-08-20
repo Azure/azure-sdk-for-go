@@ -59,47 +59,61 @@ func (client *PrivateEndpointConnectionsClient) NewListByCloudHsmClusterPager(re
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByCloudHsmClusterCreateRequest(ctx, resourceGroupName, cloudHsmClusterName, options)
-			}, nil)
+			req, err := client.listByCloudHsmClusterCreateRequest(ctx, resourceGroupName, cloudHsmClusterName, nextLink, options)
 			if err != nil {
 				return PrivateEndpointConnectionsClientListByCloudHsmClusterResponse{}, err
 			}
-			return client.listByCloudHsmClusterHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrivateEndpointConnectionsClientListByCloudHsmClusterResponse{}, err
+			}
+			return client.listByCloudHsmClusterHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByCloudHsmClusterCreateRequest creates the ListByCloudHsmCluster request.
-func (client *PrivateEndpointConnectionsClient) listByCloudHsmClusterCreateRequest(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, _ *PrivateEndpointConnectionsClientListByCloudHsmClusterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/{cloudHsmClusterName}/privateEndpointConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PrivateEndpointConnectionsClient) listByCloudHsmClusterCreateRequest(ctx context.Context, resourceGroupName string, cloudHsmClusterName string, nextLink string, _ *PrivateEndpointConnectionsClientListByCloudHsmClusterOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/cloudHsmClusters/{cloudHsmClusterName}/privateEndpointConnections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if cloudHsmClusterName == "" {
+			return nil, errors.New("parameter cloudHsmClusterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{cloudHsmClusterName}", url.PathEscape(cloudHsmClusterName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudHsmClusterName == "" {
-		return nil, errors.New("parameter cloudHsmClusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudHsmClusterName}", url.PathEscape(cloudHsmClusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByCloudHsmClusterHandleResponse handles the ListByCloudHsmCluster response.
-func (client *PrivateEndpointConnectionsClient) listByCloudHsmClusterHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientListByCloudHsmClusterResponse, error) {
+func (client *PrivateEndpointConnectionsClient) listByCloudHsmClusterHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionsClientListByCloudHsmClusterResponse, error) {
 	result := PrivateEndpointConnectionsClientListByCloudHsmClusterResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResult); err != nil {
 		return PrivateEndpointConnectionsClientListByCloudHsmClusterResponse{}, err
 	}

@@ -64,12 +64,7 @@ func (client *EnvironmentTypesClient) CreateOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return EnvironmentTypesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return EnvironmentTypesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -107,8 +102,11 @@ func (client *EnvironmentTypesClient) createOrUpdateCreateRequest(ctx context.Co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *EnvironmentTypesClient) createOrUpdateHandleResponse(resp *http.Response) (EnvironmentTypesClientCreateOrUpdateResponse, error) {
+func (client *EnvironmentTypesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentTypesClientCreateOrUpdateResponse, error) {
 	result := EnvironmentTypesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentType); err != nil {
 		return EnvironmentTypesClientCreateOrUpdateResponse{}, err
 	}
@@ -136,8 +134,7 @@ func (client *EnvironmentTypesClient) Delete(ctx context.Context, resourceGroupN
 		return EnvironmentTypesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return EnvironmentTypesClientDeleteResponse{}, err
+		return EnvironmentTypesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return EnvironmentTypesClientDeleteResponse{}, nil
 }
@@ -191,12 +188,7 @@ func (client *EnvironmentTypesClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return EnvironmentTypesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnvironmentTypesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -230,8 +222,11 @@ func (client *EnvironmentTypesClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *EnvironmentTypesClient) getHandleResponse(resp *http.Response) (EnvironmentTypesClientGetResponse, error) {
+func (client *EnvironmentTypesClient) getHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentTypesClientGetResponse, error) {
 	result := EnvironmentTypesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentType); err != nil {
 		return EnvironmentTypesClientGetResponse{}, err
 	}
@@ -254,50 +249,64 @@ func (client *EnvironmentTypesClient) NewListByDevCenterPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, options)
-			}, nil)
+			req, err := client.listByDevCenterCreateRequest(ctx, resourceGroupName, devCenterName, nextLink, options)
 			if err != nil {
 				return EnvironmentTypesClientListByDevCenterResponse{}, err
 			}
-			return client.listByDevCenterHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnvironmentTypesClientListByDevCenterResponse{}, err
+			}
+			return client.listByDevCenterHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDevCenterCreateRequest creates the ListByDevCenter request.
-func (client *EnvironmentTypesClient) listByDevCenterCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, options *EnvironmentTypesClientListByDevCenterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/environmentTypes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EnvironmentTypesClient) listByDevCenterCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, nextLink string, options *EnvironmentTypesClientListByDevCenterOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/environmentTypes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if devCenterName == "" {
+			return nil, errors.New("parameter devCenterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if devCenterName == "" {
-		return nil, errors.New("parameter devCenterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByDevCenterHandleResponse handles the ListByDevCenter response.
-func (client *EnvironmentTypesClient) listByDevCenterHandleResponse(resp *http.Response) (EnvironmentTypesClientListByDevCenterResponse, error) {
+func (client *EnvironmentTypesClient) listByDevCenterHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentTypesClientListByDevCenterResponse, error) {
 	result := EnvironmentTypesClientListByDevCenterResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentTypeListResult); err != nil {
 		return EnvironmentTypesClientListByDevCenterResponse{}, err
 	}
@@ -325,12 +334,7 @@ func (client *EnvironmentTypesClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return EnvironmentTypesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnvironmentTypesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -368,8 +372,11 @@ func (client *EnvironmentTypesClient) updateCreateRequest(ctx context.Context, r
 }
 
 // updateHandleResponse handles the Update response.
-func (client *EnvironmentTypesClient) updateHandleResponse(resp *http.Response) (EnvironmentTypesClientUpdateResponse, error) {
+func (client *EnvironmentTypesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentTypesClientUpdateResponse, error) {
 	result := EnvironmentTypesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentType); err != nil {
 		return EnvironmentTypesClientUpdateResponse{}, err
 	}

@@ -18,6 +18,8 @@ import (
 
 // ManagementClient contains the methods for the Management group.
 // Don't use this type directly, use NewManagementClient() instead.
+//
+// Generated from API version 2025-05-01
 type ManagementClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewManagementClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CheckServiceProviderAvailability - Checks if the peering service provider is present within 1000 miles of customer's location
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - checkServiceProviderAvailabilityInput - The request body
 //   - options - ManagementClientCheckServiceProviderAvailabilityOptions contains the optional parameters for the ManagementClient.CheckServiceProviderAvailability
 //     method.
@@ -60,12 +60,7 @@ func (client *ManagementClient) CheckServiceProviderAvailability(ctx context.Con
 	if err != nil {
 		return ManagementClientCheckServiceProviderAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementClientCheckServiceProviderAvailabilityResponse{}, err
-	}
-	resp, err := client.checkServiceProviderAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkServiceProviderAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkServiceProviderAvailabilityCreateRequest creates the CheckServiceProviderAvailability request.
@@ -80,8 +75,8 @@ func (client *ManagementClient) checkServiceProviderAvailabilityCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, checkServiceProviderAvailabilityInput); err != nil {
@@ -91,10 +86,10 @@ func (client *ManagementClient) checkServiceProviderAvailabilityCreateRequest(ct
 }
 
 // checkServiceProviderAvailabilityHandleResponse handles the CheckServiceProviderAvailability response.
-func (client *ManagementClient) checkServiceProviderAvailabilityHandleResponse(resp *http.Response) (ManagementClientCheckServiceProviderAvailabilityResponse, error) {
+func (client *ManagementClient) checkServiceProviderAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientCheckServiceProviderAvailabilityResponse, error) {
 	result := ManagementClientCheckServiceProviderAvailabilityResponse{}
-	if val := resp.Header.Get("content-type"); val != "" {
-		result.ContentType = &val
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return ManagementClientCheckServiceProviderAvailabilityResponse{}, err

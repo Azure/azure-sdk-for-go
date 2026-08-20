@@ -63,12 +63,7 @@ func (client *MetricsContainersClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return MetricsContainersClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return MetricsContainersClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -106,8 +101,11 @@ func (client *MetricsContainersClient) createOrUpdateCreateRequest(ctx context.C
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *MetricsContainersClient) createOrUpdateHandleResponse(resp *http.Response) (MetricsContainersClientCreateOrUpdateResponse, error) {
+func (client *MetricsContainersClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (MetricsContainersClientCreateOrUpdateResponse, error) {
 	result := MetricsContainersClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricsContainerResource); err != nil {
 		return MetricsContainersClientCreateOrUpdateResponse{}, err
 	}
@@ -134,12 +132,7 @@ func (client *MetricsContainersClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return MetricsContainersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MetricsContainersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -173,8 +166,11 @@ func (client *MetricsContainersClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *MetricsContainersClient) getHandleResponse(resp *http.Response) (MetricsContainersClientGetResponse, error) {
+func (client *MetricsContainersClient) getHandleResponse(resp *http.Response, successCodes ...int) (MetricsContainersClientGetResponse, error) {
 	result := MetricsContainersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricsContainerResource); err != nil {
 		return MetricsContainersClientGetResponse{}, err
 	}
@@ -197,47 +193,61 @@ func (client *MetricsContainersClient) NewListByAzureMonitorWorkspacePager(resou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAzureMonitorWorkspaceCreateRequest(ctx, resourceGroupName, azureMonitorWorkspaceName, options)
-			}, nil)
+			req, err := client.listByAzureMonitorWorkspaceCreateRequest(ctx, resourceGroupName, azureMonitorWorkspaceName, nextLink, options)
 			if err != nil {
 				return MetricsContainersClientListByAzureMonitorWorkspaceResponse{}, err
 			}
-			return client.listByAzureMonitorWorkspaceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MetricsContainersClientListByAzureMonitorWorkspaceResponse{}, err
+			}
+			return client.listByAzureMonitorWorkspaceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAzureMonitorWorkspaceCreateRequest creates the ListByAzureMonitorWorkspace request.
-func (client *MetricsContainersClient) listByAzureMonitorWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, _ *MetricsContainersClientListByAzureMonitorWorkspaceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/metricsContainers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MetricsContainersClient) listByAzureMonitorWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, nextLink string, _ *MetricsContainersClientListByAzureMonitorWorkspaceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/metricsContainers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if azureMonitorWorkspaceName == "" {
+			return nil, errors.New("parameter azureMonitorWorkspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{azureMonitorWorkspaceName}", url.PathEscape(azureMonitorWorkspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if azureMonitorWorkspaceName == "" {
-		return nil, errors.New("parameter azureMonitorWorkspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{azureMonitorWorkspaceName}", url.PathEscape(azureMonitorWorkspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251003)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByAzureMonitorWorkspaceHandleResponse handles the ListByAzureMonitorWorkspace response.
-func (client *MetricsContainersClient) listByAzureMonitorWorkspaceHandleResponse(resp *http.Response) (MetricsContainersClientListByAzureMonitorWorkspaceResponse, error) {
+func (client *MetricsContainersClient) listByAzureMonitorWorkspaceHandleResponse(resp *http.Response, successCodes ...int) (MetricsContainersClientListByAzureMonitorWorkspaceResponse, error) {
 	result := MetricsContainersClientListByAzureMonitorWorkspaceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MetricsContainerResourceListResult); err != nil {
 		return MetricsContainersClientListByAzureMonitorWorkspaceResponse{}, err
 	}

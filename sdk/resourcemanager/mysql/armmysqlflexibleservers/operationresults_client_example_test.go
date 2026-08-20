@@ -32,7 +32,7 @@ func ExampleOperationResultsClient_Get() {
 	// res = armmysqlflexibleservers.OperationResultsClientGetResponse{
 	// 	OperationStatusExtendedResult: armmysqlflexibleservers.OperationStatusExtendedResult{
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-29T07:37:05.6406008Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2023, time.November, 29, 7, 37, 5, 640600800, time.UTC)),
 	// 		Error: &armmysqlflexibleservers.ErrorDetail{
 	// 			Code: to.Ptr("AggregateException"),
 	// 			Message: to.Ptr("System.AggregateException: One or more errors occurred. (Mismatch in count of number of Commited-Blocks from service.)"),
@@ -44,7 +44,7 @@ func ExampleOperationResultsClient_Get() {
 	// 			"dataTransferredInBytes": 0,
 	// 			"datasourceSizeInBytes": 1024,
 	// 		},
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-29T07:34:02.328326Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2023, time.November, 29, 7, 34, 2, 328326000, time.UTC)),
 	// 		Status: to.Ptr("Failed"),
 	// 	},
 	// }

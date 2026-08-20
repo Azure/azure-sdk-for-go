@@ -63,12 +63,7 @@ func (client *BackupVaultOperationResultsClient) Get(ctx context.Context, resour
 	if err != nil {
 		return BackupVaultOperationResultsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupVaultOperationResultsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getCreateRequest creates the Get request.
@@ -102,9 +97,12 @@ func (client *BackupVaultOperationResultsClient) getCreateRequest(ctx context.Co
 }
 
 // getHandleResponse handles the Get response.
-func (client *BackupVaultOperationResultsClient) getHandleResponse(resp *http.Response) (BackupVaultOperationResultsClientGetResponse, error) {
+func (client *BackupVaultOperationResultsClient) getHandleResponse(resp *http.Response, successCodes ...int) (BackupVaultOperationResultsClientGetResponse, error) {
 	result := BackupVaultOperationResultsClientGetResponse{}
-	if val := resp.Header.Get("Azure-AsyncOperation"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Azure-Asyncoperation"); val != "" {
 		result.AzureAsyncOperation = &val
 	}
 	if val := resp.Header.Get("Location"); val != "" {

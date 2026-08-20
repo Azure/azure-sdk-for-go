@@ -20,6 +20,8 @@ import (
 
 // JobStepExecutionsClient contains the methods for the JobStepExecutions group.
 // Don't use this type directly, use NewJobStepExecutionsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type JobStepExecutionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewJobStepExecutionsClient(subscriptionID string, credential azcore.TokenCr
 
 // Get - Gets a step execution of a job execution.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent.
@@ -66,12 +66,7 @@ func (client *JobStepExecutionsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return JobStepExecutionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return JobStepExecutionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -110,15 +105,18 @@ func (client *JobStepExecutionsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobStepExecutionsClient) getHandleResponse(resp *http.Response) (JobStepExecutionsClientGetResponse, error) {
+func (client *JobStepExecutionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (JobStepExecutionsClientGetResponse, error) {
 	result := JobStepExecutionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecution); err != nil {
 		return JobStepExecutionsClientGetResponse{}, err
 	}
@@ -126,8 +124,6 @@ func (client *JobStepExecutionsClient) getHandleResponse(resp *http.Response) (J
 }
 
 // NewListByJobExecutionPager - Lists the step executions of a job execution.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - serverName - The name of the server.
 //   - jobAgentName - The name of the job agent.
@@ -146,80 +142,94 @@ func (client *JobStepExecutionsClient) NewListByJobExecutionPager(resourceGroupN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByJobExecutionCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
-			}, nil)
+			req, err := client.listByJobExecutionCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, nextLink, options)
 			if err != nil {
 				return JobStepExecutionsClientListByJobExecutionResponse{}, err
 			}
-			return client.listByJobExecutionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return JobStepExecutionsClientListByJobExecutionResponse{}, err
+			}
+			return client.listByJobExecutionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByJobExecutionCreateRequest creates the ListByJobExecution request.
-func (client *JobStepExecutionsClient) listByJobExecutionCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobStepExecutionsClientListByJobExecutionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *JobStepExecutionsClient) listByJobExecutionCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, nextLink string, options *JobStepExecutionsClientListByJobExecutionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serverName == "" {
+			return nil, errors.New("parameter serverName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+		if jobAgentName == "" {
+			return nil, errors.New("parameter jobAgentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobAgentName}", url.PathEscape(jobAgentName))
+		if jobName == "" {
+			return nil, errors.New("parameter jobName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+		if jobExecutionID == "" {
+			return nil, errors.New("parameter jobExecutionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobExecutionId}", url.PathEscape(jobExecutionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if jobAgentName == "" {
-		return nil, errors.New("parameter jobAgentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobAgentName}", url.PathEscape(jobAgentName))
-	if jobName == "" {
-		return nil, errors.New("parameter jobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	if jobExecutionID == "" {
-		return nil, errors.New("parameter jobExecutionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobExecutionId}", url.PathEscape(jobExecutionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(*options.Skip, 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
+		}
+		reqQP.Set("api-version", version20250201Preview)
+		if options != nil && options.CreateTimeMax != nil {
+			reqQP.Set("createTimeMax", datetime.RFC3339((*options.CreateTimeMax).UTC()).String())
+		}
+		if options != nil && options.CreateTimeMin != nil {
+			reqQP.Set("createTimeMin", datetime.RFC3339((*options.CreateTimeMin).UTC()).String())
+		}
+		if options != nil && options.EndTimeMax != nil {
+			reqQP.Set("endTimeMax", datetime.RFC3339((*options.EndTimeMax).UTC()).String())
+		}
+		if options != nil && options.EndTimeMin != nil {
+			reqQP.Set("endTimeMin", datetime.RFC3339((*options.EndTimeMin).UTC()).String())
+		}
+		if options != nil && options.IsActive != nil {
+			reqQP.Set("isActive", strconv.FormatBool(*options.IsActive))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
-	}
-	reqQP.Set("api-version", "2025-02-01-preview")
-	if options != nil && options.CreateTimeMax != nil {
-		reqQP.Set("createTimeMax", datetime.RFC3339(*options.CreateTimeMax).String())
-	}
-	if options != nil && options.CreateTimeMin != nil {
-		reqQP.Set("createTimeMin", datetime.RFC3339(*options.CreateTimeMin).String())
-	}
-	if options != nil && options.EndTimeMax != nil {
-		reqQP.Set("endTimeMax", datetime.RFC3339(*options.EndTimeMax).String())
-	}
-	if options != nil && options.EndTimeMin != nil {
-		reqQP.Set("endTimeMin", datetime.RFC3339(*options.EndTimeMin).String())
-	}
-	if options != nil && options.IsActive != nil {
-		reqQP.Set("isActive", strconv.FormatBool(*options.IsActive))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByJobExecutionHandleResponse handles the ListByJobExecution response.
-func (client *JobStepExecutionsClient) listByJobExecutionHandleResponse(resp *http.Response) (JobStepExecutionsClientListByJobExecutionResponse, error) {
+func (client *JobStepExecutionsClient) listByJobExecutionHandleResponse(resp *http.Response, successCodes ...int) (JobStepExecutionsClientListByJobExecutionResponse, error) {
 	result := JobStepExecutionsClientListByJobExecutionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecutionListResult); err != nil {
 		return JobStepExecutionsClientListByJobExecutionResponse{}, err
 	}

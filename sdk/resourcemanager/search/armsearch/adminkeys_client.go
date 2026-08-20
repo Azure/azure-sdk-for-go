@@ -18,6 +18,8 @@ import (
 
 // AdminKeysClient contains the methods for the AdminKeys group.
 // Don't use this type directly, use NewAdminKeysClient() instead.
+//
+// Generated from API version 2026-03-01-preview
 type AdminKeysClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAdminKeysClient(subscriptionID string, credential azcore.TokenCredential
 
 // Get - Gets the primary and secondary admin API keys for the specified Azure AI Search service.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
 //   - options - AdminKeysClientGetOptions contains the optional parameters for the AdminKeysClient.Get method.
@@ -60,12 +60,7 @@ func (client *AdminKeysClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return AdminKeysClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AdminKeysClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -88,8 +83,8 @@ func (client *AdminKeysClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -98,8 +93,11 @@ func (client *AdminKeysClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *AdminKeysClient) getHandleResponse(resp *http.Response) (AdminKeysClientGetResponse, error) {
+func (client *AdminKeysClient) getHandleResponse(resp *http.Response, successCodes ...int) (AdminKeysClientGetResponse, error) {
 	result := AdminKeysClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdminKeyResult); err != nil {
 		return AdminKeysClientGetResponse{}, err
 	}
@@ -108,8 +106,6 @@ func (client *AdminKeysClient) getHandleResponse(resp *http.Response) (AdminKeys
 
 // Regenerate - Regenerates either the primary or secondary admin API key. You can only regenerate one key at a time.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
 //   - keyKind - Specifies which key to regenerate. Valid values include 'primary' and 'secondary'.
@@ -128,12 +124,7 @@ func (client *AdminKeysClient) Regenerate(ctx context.Context, resourceGroupName
 	if err != nil {
 		return AdminKeysClientRegenerateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AdminKeysClientRegenerateResponse{}, err
-	}
-	resp, err := client.regenerateHandleResponse(httpResp)
-	return resp, err
+	return client.regenerateHandleResponse(httpResp, http.StatusOK)
 }
 
 // regenerateCreateRequest creates the Regenerate request.
@@ -160,8 +151,8 @@ func (client *AdminKeysClient) regenerateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -170,8 +161,11 @@ func (client *AdminKeysClient) regenerateCreateRequest(ctx context.Context, reso
 }
 
 // regenerateHandleResponse handles the Regenerate response.
-func (client *AdminKeysClient) regenerateHandleResponse(resp *http.Response) (AdminKeysClientRegenerateResponse, error) {
+func (client *AdminKeysClient) regenerateHandleResponse(resp *http.Response, successCodes ...int) (AdminKeysClientRegenerateResponse, error) {
 	result := AdminKeysClientRegenerateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdminKeyResult); err != nil {
 		return AdminKeysClientRegenerateResponse{}, err
 	}

@@ -63,12 +63,7 @@ func (client *IssueClient) AddInvestigationResult(ctx context.Context, resourceG
 	if err != nil {
 		return IssueClientAddInvestigationResultResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IssueClientAddInvestigationResultResponse{}, err
-	}
-	resp, err := client.addInvestigationResultHandleResponse(httpResp)
-	return resp, err
+	return client.addInvestigationResultHandleResponse(httpResp, http.StatusOK)
 }
 
 // addInvestigationResultCreateRequest creates the AddInvestigationResult request.
@@ -106,8 +101,11 @@ func (client *IssueClient) addInvestigationResultCreateRequest(ctx context.Conte
 }
 
 // addInvestigationResultHandleResponse handles the AddInvestigationResult response.
-func (client *IssueClient) addInvestigationResultHandleResponse(resp *http.Response) (IssueClientAddInvestigationResultResponse, error) {
+func (client *IssueClient) addInvestigationResultHandleResponse(resp *http.Response, successCodes ...int) (IssueClientAddInvestigationResultResponse, error) {
 	result := IssueClientAddInvestigationResultResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InvestigationResult); err != nil {
 		return IssueClientAddInvestigationResultResponse{}, err
 	}
@@ -135,12 +133,7 @@ func (client *IssueClient) AddOrUpdateAlerts(ctx context.Context, resourceGroupN
 	if err != nil {
 		return IssueClientAddOrUpdateAlertsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IssueClientAddOrUpdateAlertsResponse{}, err
-	}
-	resp, err := client.addOrUpdateAlertsHandleResponse(httpResp)
-	return resp, err
+	return client.addOrUpdateAlertsHandleResponse(httpResp, http.StatusOK)
 }
 
 // addOrUpdateAlertsCreateRequest creates the AddOrUpdateAlerts request.
@@ -178,8 +171,11 @@ func (client *IssueClient) addOrUpdateAlertsCreateRequest(ctx context.Context, r
 }
 
 // addOrUpdateAlertsHandleResponse handles the AddOrUpdateAlerts response.
-func (client *IssueClient) addOrUpdateAlertsHandleResponse(resp *http.Response) (IssueClientAddOrUpdateAlertsResponse, error) {
+func (client *IssueClient) addOrUpdateAlertsHandleResponse(resp *http.Response, successCodes ...int) (IssueClientAddOrUpdateAlertsResponse, error) {
 	result := IssueClientAddOrUpdateAlertsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RelatedAlerts); err != nil {
 		return IssueClientAddOrUpdateAlertsResponse{}, err
 	}
@@ -208,12 +204,7 @@ func (client *IssueClient) AddOrUpdateResources(ctx context.Context, resourceGro
 	if err != nil {
 		return IssueClientAddOrUpdateResourcesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IssueClientAddOrUpdateResourcesResponse{}, err
-	}
-	resp, err := client.addOrUpdateResourcesHandleResponse(httpResp)
-	return resp, err
+	return client.addOrUpdateResourcesHandleResponse(httpResp, http.StatusOK)
 }
 
 // addOrUpdateResourcesCreateRequest creates the AddOrUpdateResources request.
@@ -251,8 +242,11 @@ func (client *IssueClient) addOrUpdateResourcesCreateRequest(ctx context.Context
 }
 
 // addOrUpdateResourcesHandleResponse handles the AddOrUpdateResources response.
-func (client *IssueClient) addOrUpdateResourcesHandleResponse(resp *http.Response) (IssueClientAddOrUpdateResourcesResponse, error) {
+func (client *IssueClient) addOrUpdateResourcesHandleResponse(resp *http.Response, successCodes ...int) (IssueClientAddOrUpdateResourcesResponse, error) {
 	result := IssueClientAddOrUpdateResourcesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RelatedResources); err != nil {
 		return IssueClientAddOrUpdateResourcesResponse{}, err
 	}
@@ -280,12 +274,7 @@ func (client *IssueClient) Create(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return IssueClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return IssueClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -326,8 +315,11 @@ func (client *IssueClient) createCreateRequest(ctx context.Context, resourceGrou
 }
 
 // createHandleResponse handles the Create response.
-func (client *IssueClient) createHandleResponse(resp *http.Response) (IssueClientCreateResponse, error) {
+func (client *IssueClient) createHandleResponse(resp *http.Response, successCodes ...int) (IssueClientCreateResponse, error) {
 	result := IssueClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IssueResource); err != nil {
 		return IssueClientCreateResponse{}, err
 	}
@@ -355,8 +347,7 @@ func (client *IssueClient) Delete(ctx context.Context, resourceGroupName string,
 		return IssueClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return IssueClientDeleteResponse{}, err
+		return IssueClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return IssueClientDeleteResponse{}, nil
 }
@@ -411,12 +402,7 @@ func (client *IssueClient) FetchBackgroundVisualization(ctx context.Context, res
 	if err != nil {
 		return IssueClientFetchBackgroundVisualizationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IssueClientFetchBackgroundVisualizationResponse{}, err
-	}
-	resp, err := client.fetchBackgroundVisualizationHandleResponse(httpResp)
-	return resp, err
+	return client.fetchBackgroundVisualizationHandleResponse(httpResp, http.StatusOK)
 }
 
 // fetchBackgroundVisualizationCreateRequest creates the FetchBackgroundVisualization request.
@@ -450,8 +436,11 @@ func (client *IssueClient) fetchBackgroundVisualizationCreateRequest(ctx context
 }
 
 // fetchBackgroundVisualizationHandleResponse handles the FetchBackgroundVisualization response.
-func (client *IssueClient) fetchBackgroundVisualizationHandleResponse(resp *http.Response) (IssueClientFetchBackgroundVisualizationResponse, error) {
+func (client *IssueClient) fetchBackgroundVisualizationHandleResponse(resp *http.Response, successCodes ...int) (IssueClientFetchBackgroundVisualizationResponse, error) {
 	result := IssueClientFetchBackgroundVisualizationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackgroundVisualization); err != nil {
 		return IssueClientFetchBackgroundVisualizationResponse{}, err
 	}
@@ -480,12 +469,7 @@ func (client *IssueClient) FetchInvestigationResult(ctx context.Context, resourc
 	if err != nil {
 		return IssueClientFetchInvestigationResultResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IssueClientFetchInvestigationResultResponse{}, err
-	}
-	resp, err := client.fetchInvestigationResultHandleResponse(httpResp)
-	return resp, err
+	return client.fetchInvestigationResultHandleResponse(httpResp, http.StatusOK)
 }
 
 // fetchInvestigationResultCreateRequest creates the FetchInvestigationResult request.
@@ -523,8 +507,11 @@ func (client *IssueClient) fetchInvestigationResultCreateRequest(ctx context.Con
 }
 
 // fetchInvestigationResultHandleResponse handles the FetchInvestigationResult response.
-func (client *IssueClient) fetchInvestigationResultHandleResponse(resp *http.Response) (IssueClientFetchInvestigationResultResponse, error) {
+func (client *IssueClient) fetchInvestigationResultHandleResponse(resp *http.Response, successCodes ...int) (IssueClientFetchInvestigationResultResponse, error) {
 	result := IssueClientFetchInvestigationResultResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InvestigationResult); err != nil {
 		return IssueClientFetchInvestigationResultResponse{}, err
 	}
@@ -551,12 +538,7 @@ func (client *IssueClient) Get(ctx context.Context, resourceGroupName string, az
 	if err != nil {
 		return IssueClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IssueClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -590,8 +572,11 @@ func (client *IssueClient) getCreateRequest(ctx context.Context, resourceGroupNa
 }
 
 // getHandleResponse handles the Get response.
-func (client *IssueClient) getHandleResponse(resp *http.Response) (IssueClientGetResponse, error) {
+func (client *IssueClient) getHandleResponse(resp *http.Response, successCodes ...int) (IssueClientGetResponse, error) {
 	result := IssueClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IssueResource); err != nil {
 		return IssueClientGetResponse{}, err
 	}
@@ -613,47 +598,61 @@ func (client *IssueClient) NewListPager(resourceGroupName string, azureMonitorWo
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, azureMonitorWorkspaceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, azureMonitorWorkspaceName, nextLink, options)
 			if err != nil {
 				return IssueClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return IssueClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *IssueClient) listCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, _ *IssueClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *IssueClient) listCreateRequest(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, nextLink string, _ *IssueClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Monitor/accounts/{azureMonitorWorkspaceName}/issues"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if azureMonitorWorkspaceName == "" {
+			return nil, errors.New("parameter azureMonitorWorkspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{azureMonitorWorkspaceName}", url.PathEscape(azureMonitorWorkspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if azureMonitorWorkspaceName == "" {
-		return nil, errors.New("parameter azureMonitorWorkspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{azureMonitorWorkspaceName}", url.PathEscape(azureMonitorWorkspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251003)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251003)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *IssueClient) listHandleResponse(resp *http.Response) (IssueClientListResponse, error) {
+func (client *IssueClient) listHandleResponse(resp *http.Response, successCodes ...int) (IssueClientListResponse, error) {
 	result := IssueClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IssueResourceListResult); err != nil {
 		return IssueClientListResponse{}, err
 	}
@@ -681,12 +680,7 @@ func (client *IssueClient) ListAlerts(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return IssueClientListAlertsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IssueClientListAlertsResponse{}, err
-	}
-	resp, err := client.listAlertsHandleResponse(httpResp)
-	return resp, err
+	return client.listAlertsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAlertsCreateRequest creates the ListAlerts request.
@@ -724,8 +718,11 @@ func (client *IssueClient) listAlertsCreateRequest(ctx context.Context, resource
 }
 
 // listAlertsHandleResponse handles the ListAlerts response.
-func (client *IssueClient) listAlertsHandleResponse(resp *http.Response) (IssueClientListAlertsResponse, error) {
+func (client *IssueClient) listAlertsHandleResponse(resp *http.Response, successCodes ...int) (IssueClientListAlertsResponse, error) {
 	result := IssueClientListAlertsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PagedRelatedAlert); err != nil {
 		return IssueClientListAlertsResponse{}, err
 	}
@@ -753,12 +750,7 @@ func (client *IssueClient) ListResources(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return IssueClientListResourcesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IssueClientListResourcesResponse{}, err
-	}
-	resp, err := client.listResourcesHandleResponse(httpResp)
-	return resp, err
+	return client.listResourcesHandleResponse(httpResp, http.StatusOK)
 }
 
 // listResourcesCreateRequest creates the ListResources request.
@@ -796,8 +788,11 @@ func (client *IssueClient) listResourcesCreateRequest(ctx context.Context, resou
 }
 
 // listResourcesHandleResponse handles the ListResources response.
-func (client *IssueClient) listResourcesHandleResponse(resp *http.Response) (IssueClientListResourcesResponse, error) {
+func (client *IssueClient) listResourcesHandleResponse(resp *http.Response, successCodes ...int) (IssueClientListResourcesResponse, error) {
 	result := IssueClientListResourcesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PagedRelatedResource); err != nil {
 		return IssueClientListResourcesResponse{}, err
 	}
@@ -827,8 +822,7 @@ func (client *IssueClient) SetBackgroundVisualization(ctx context.Context, resou
 		return IssueClientSetBackgroundVisualizationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return IssueClientSetBackgroundVisualizationResponse{}, err
+		return IssueClientSetBackgroundVisualizationResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return IssueClientSetBackgroundVisualizationResponse{}, nil
 }
@@ -887,12 +881,7 @@ func (client *IssueClient) Update(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return IssueClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IssueClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -930,8 +919,11 @@ func (client *IssueClient) updateCreateRequest(ctx context.Context, resourceGrou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *IssueClient) updateHandleResponse(resp *http.Response) (IssueClientUpdateResponse, error) {
+func (client *IssueClient) updateHandleResponse(resp *http.Response, successCodes ...int) (IssueClientUpdateResponse, error) {
 	result := IssueClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IssueResource); err != nil {
 		return IssueClientUpdateResponse{}, err
 	}

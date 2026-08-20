@@ -63,12 +63,7 @@ func (client *ReplicationEligibilityResultsClient) Get(ctx context.Context, reso
 	if err != nil {
 		return ReplicationEligibilityResultsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReplicationEligibilityResultsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -98,8 +93,11 @@ func (client *ReplicationEligibilityResultsClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReplicationEligibilityResultsClient) getHandleResponse(resp *http.Response) (ReplicationEligibilityResultsClientGetResponse, error) {
+func (client *ReplicationEligibilityResultsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ReplicationEligibilityResultsClientGetResponse, error) {
 	result := ReplicationEligibilityResultsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationEligibilityResults); err != nil {
 		return ReplicationEligibilityResultsClientGetResponse{}, err
 	}
@@ -128,12 +126,7 @@ func (client *ReplicationEligibilityResultsClient) List(ctx context.Context, res
 	if err != nil {
 		return ReplicationEligibilityResultsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReplicationEligibilityResultsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -163,8 +156,11 @@ func (client *ReplicationEligibilityResultsClient) listCreateRequest(ctx context
 }
 
 // listHandleResponse handles the List response.
-func (client *ReplicationEligibilityResultsClient) listHandleResponse(resp *http.Response) (ReplicationEligibilityResultsClientListResponse, error) {
+func (client *ReplicationEligibilityResultsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ReplicationEligibilityResultsClientListResponse, error) {
 	result := ReplicationEligibilityResultsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicationEligibilityResultsCollection); err != nil {
 		return ReplicationEligibilityResultsClientListResponse{}, err
 	}

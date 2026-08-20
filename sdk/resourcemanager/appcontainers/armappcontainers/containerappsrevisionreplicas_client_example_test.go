@@ -49,7 +49,7 @@ func ExampleContainerAppsRevisionReplicasClient_GetReplica() {
 	// 					Started: to.Ptr(true),
 	// 				},
 	// 			},
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-25T19:42:45Z"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2022, time.January, 25, 19, 42, 45, 0, time.UTC)),
 	// 			InitContainers: []*armappcontainers.ReplicaContainer{
 	// 			},
 	// 			RunningState: to.Ptr(armappcontainers.ContainerAppReplicaRunningStateRunning),
@@ -99,7 +99,7 @@ func ExampleContainerAppsRevisionReplicasClient_ListReplicas() {
 	// 							Started: to.Ptr(true),
 	// 						},
 	// 					},
-	// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-25T19:42:45Z"); return t}()),
+	// 					CreatedTime: to.Ptr(time.Date(2022, time.January, 25, 19, 42, 45, 0, time.UTC)),
 	// 					InitContainers: []*armappcontainers.ReplicaContainer{
 	// 					},
 	// 					RunningState: to.Ptr(armappcontainers.ContainerAppReplicaRunningStateRunning),

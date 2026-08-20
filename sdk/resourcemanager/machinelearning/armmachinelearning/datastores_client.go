@@ -66,12 +66,7 @@ func (client *DatastoresClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	if err != nil {
 		return DatastoresClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return DatastoresClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -112,8 +107,11 @@ func (client *DatastoresClient) createOrUpdateCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DatastoresClient) createOrUpdateHandleResponse(resp *http.Response) (DatastoresClientCreateOrUpdateResponse, error) {
+func (client *DatastoresClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DatastoresClientCreateOrUpdateResponse, error) {
 	result := DatastoresClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Datastore); err != nil {
 		return DatastoresClientCreateOrUpdateResponse{}, err
 	}
@@ -143,8 +141,7 @@ func (client *DatastoresClient) Delete(ctx context.Context, resourceGroupName st
 		return DatastoresClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DatastoresClientDeleteResponse{}, err
+		return DatastoresClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DatastoresClientDeleteResponse{}, nil
 }
@@ -200,12 +197,7 @@ func (client *DatastoresClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return DatastoresClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatastoresClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -239,8 +231,11 @@ func (client *DatastoresClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatastoresClient) getHandleResponse(resp *http.Response) (DatastoresClientGetResponse, error) {
+func (client *DatastoresClient) getHandleResponse(resp *http.Response, successCodes ...int) (DatastoresClientGetResponse, error) {
 	result := DatastoresClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Datastore); err != nil {
 		return DatastoresClientGetResponse{}, err
 	}
@@ -264,68 +259,82 @@ func (client *DatastoresClient) NewListPager(resourceGroupName string, workspace
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, nextLink, options)
 			if err != nil {
 				return DatastoresClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DatastoresClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DatastoresClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *DatastoresClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/datastores"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DatastoresClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, nextLink string, options *DatastoresClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/datastores"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", *options.Skip)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", *options.Skip)
+		}
+		reqQP.Set("api-version", version20260315Preview)
+		if options != nil && options.Count != nil {
+			reqQP.Set("count", strconv.FormatInt(int64(*options.Count), 10))
+		}
+		if options != nil && options.IsDefault != nil {
+			reqQP.Set("isDefault", strconv.FormatBool(*options.IsDefault))
+		}
+		if options != nil && options.Names != nil {
+			reqQP.Set("names", strings.Join(options.Names, ","))
+		}
+		if options != nil && options.OrderBy != nil {
+			reqQP.Set("orderBy", *options.OrderBy)
+		}
+		if options != nil && options.OrderByAsc != nil {
+			reqQP.Set("orderByAsc", strconv.FormatBool(*options.OrderByAsc))
+		}
+		if options != nil && options.SearchText != nil {
+			reqQP.Set("searchText", *options.SearchText)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260315Preview)
-	if options != nil && options.Count != nil {
-		reqQP.Set("count", strconv.FormatInt(int64(*options.Count), 10))
-	}
-	if options != nil && options.IsDefault != nil {
-		reqQP.Set("isDefault", strconv.FormatBool(*options.IsDefault))
-	}
-	if options != nil && options.Names != nil {
-		reqQP.Set("names", strings.Join(options.Names, ","))
-	}
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("orderBy", *options.OrderBy)
-	}
-	if options != nil && options.OrderByAsc != nil {
-		reqQP.Set("orderByAsc", strconv.FormatBool(*options.OrderByAsc))
-	}
-	if options != nil && options.SearchText != nil {
-		reqQP.Set("searchText", *options.SearchText)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DatastoresClient) listHandleResponse(resp *http.Response) (DatastoresClientListResponse, error) {
+func (client *DatastoresClient) listHandleResponse(resp *http.Response, successCodes ...int) (DatastoresClientListResponse, error) {
 	result := DatastoresClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatastoreResourceArmPaginatedResult); err != nil {
 		return DatastoresClientListResponse{}, err
 	}
@@ -354,12 +363,7 @@ func (client *DatastoresClient) ListSecrets(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return DatastoresClientListSecretsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatastoresClientListSecretsResponse{}, err
-	}
-	resp, err := client.listSecretsHandleResponse(httpResp)
-	return resp, err
+	return client.listSecretsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listSecretsCreateRequest creates the ListSecrets request.
@@ -400,8 +404,11 @@ func (client *DatastoresClient) listSecretsCreateRequest(ctx context.Context, re
 }
 
 // listSecretsHandleResponse handles the ListSecrets response.
-func (client *DatastoresClient) listSecretsHandleResponse(resp *http.Response) (DatastoresClientListSecretsResponse, error) {
+func (client *DatastoresClient) listSecretsHandleResponse(resp *http.Response, successCodes ...int) (DatastoresClientListSecretsResponse, error) {
 	result := DatastoresClientListSecretsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return DatastoresClientListSecretsResponse{}, err
 	}

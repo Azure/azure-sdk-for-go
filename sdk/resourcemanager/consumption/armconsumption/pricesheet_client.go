@@ -84,8 +84,7 @@ func (client *PriceSheetClient) downloadByBillingAccountPeriod(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -129,12 +128,7 @@ func (client *PriceSheetClient) Get(ctx context.Context, options *PriceSheetClie
 	if err != nil {
 		return PriceSheetClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PriceSheetClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -165,8 +159,11 @@ func (client *PriceSheetClient) getCreateRequest(ctx context.Context, options *P
 }
 
 // getHandleResponse handles the Get response.
-func (client *PriceSheetClient) getHandleResponse(resp *http.Response) (PriceSheetClientGetResponse, error) {
+func (client *PriceSheetClient) getHandleResponse(resp *http.Response, successCodes ...int) (PriceSheetClientGetResponse, error) {
 	result := PriceSheetClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PriceSheetResult); err != nil {
 		return PriceSheetClientGetResponse{}, err
 	}
@@ -193,12 +190,7 @@ func (client *PriceSheetClient) GetByBillingPeriod(ctx context.Context, billingP
 	if err != nil {
 		return PriceSheetClientGetByBillingPeriodResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PriceSheetClientGetByBillingPeriodResponse{}, err
-	}
-	resp, err := client.getByBillingPeriodHandleResponse(httpResp)
-	return resp, err
+	return client.getByBillingPeriodHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByBillingPeriodCreateRequest creates the GetByBillingPeriod request.
@@ -233,8 +225,11 @@ func (client *PriceSheetClient) getByBillingPeriodCreateRequest(ctx context.Cont
 }
 
 // getByBillingPeriodHandleResponse handles the GetByBillingPeriod response.
-func (client *PriceSheetClient) getByBillingPeriodHandleResponse(resp *http.Response) (PriceSheetClientGetByBillingPeriodResponse, error) {
+func (client *PriceSheetClient) getByBillingPeriodHandleResponse(resp *http.Response, successCodes ...int) (PriceSheetClientGetByBillingPeriodResponse, error) {
 	result := PriceSheetClientGetByBillingPeriodResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PriceSheetResult); err != nil {
 		return PriceSheetClientGetByBillingPeriodResponse{}, err
 	}

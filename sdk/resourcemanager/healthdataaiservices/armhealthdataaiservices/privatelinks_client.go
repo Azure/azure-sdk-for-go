@@ -57,47 +57,61 @@ func (client *PrivateLinksClient) NewListByDeidServicePager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDeidServiceCreateRequest(ctx, resourceGroupName, deidServiceName, options)
-			}, nil)
+			req, err := client.listByDeidServiceCreateRequest(ctx, resourceGroupName, deidServiceName, nextLink, options)
 			if err != nil {
 				return PrivateLinksClientListByDeidServiceResponse{}, err
 			}
-			return client.listByDeidServiceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrivateLinksClientListByDeidServiceResponse{}, err
+			}
+			return client.listByDeidServiceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDeidServiceCreateRequest creates the ListByDeidService request.
-func (client *PrivateLinksClient) listByDeidServiceCreateRequest(ctx context.Context, resourceGroupName string, deidServiceName string, _ *PrivateLinksClientListByDeidServiceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateLinkResources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PrivateLinksClient) listByDeidServiceCreateRequest(ctx context.Context, resourceGroupName string, deidServiceName string, nextLink string, _ *PrivateLinksClientListByDeidServiceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthDataAIServices/deidServices/{deidServiceName}/privateLinkResources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if deidServiceName == "" {
+			return nil, errors.New("parameter deidServiceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{deidServiceName}", url.PathEscape(deidServiceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if deidServiceName == "" {
-		return nil, errors.New("parameter deidServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deidServiceName}", url.PathEscape(deidServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240920)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240920)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByDeidServiceHandleResponse handles the ListByDeidService response.
-func (client *PrivateLinksClient) listByDeidServiceHandleResponse(resp *http.Response) (PrivateLinksClientListByDeidServiceResponse, error) {
+func (client *PrivateLinksClient) listByDeidServiceHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinksClientListByDeidServiceResponse, error) {
 	result := PrivateLinksClientListByDeidServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return PrivateLinksClientListByDeidServiceResponse{}, err
 	}

@@ -101,10 +101,10 @@ func ExampleOperatorAPIConnectionsClient_BeginCreate() {
 	// 		SystemData: &armprogrammableconnectivity.SystemData{
 	// 			CreatedBy: to.Ptr("kuprrapuolhnvju"),
 	// 			CreatedByType: to.Ptr(armprogrammableconnectivity.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T16:41:38.838Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 30, 16, 41, 38, 838000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("lsmrhxnvkpmrxncylgqpkr"),
 	// 			LastModifiedByType: to.Ptr(armprogrammableconnectivity.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T16:41:38.838Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 30, 16, 41, 38, 838000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -187,10 +187,10 @@ func ExampleOperatorAPIConnectionsClient_Get() {
 	// 		SystemData: &armprogrammableconnectivity.SystemData{
 	// 			CreatedBy: to.Ptr("kuprrapuolhnvju"),
 	// 			CreatedByType: to.Ptr(armprogrammableconnectivity.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T16:41:38.838Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 30, 16, 41, 38, 838000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("lsmrhxnvkpmrxncylgqpkr"),
 	// 			LastModifiedByType: to.Ptr(armprogrammableconnectivity.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T16:41:38.838Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 30, 16, 41, 38, 838000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -258,10 +258,10 @@ func ExampleOperatorAPIConnectionsClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armprogrammableconnectivity.SystemData{
 		// 					CreatedBy: to.Ptr("kuprrapuolhnvju"),
 		// 					CreatedByType: to.Ptr(armprogrammableconnectivity.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T16:41:38.838Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 30, 16, 41, 38, 838000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("lsmrhxnvkpmrxncylgqpkr"),
 		// 					LastModifiedByType: to.Ptr(armprogrammableconnectivity.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T16:41:38.838Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.January, 30, 16, 41, 38, 838000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -333,10 +333,10 @@ func ExampleOperatorAPIConnectionsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armprogrammableconnectivity.SystemData{
 		// 					CreatedBy: to.Ptr("kuprrapuolhnvju"),
 		// 					CreatedByType: to.Ptr(armprogrammableconnectivity.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T16:41:38.838Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 30, 16, 41, 38, 838000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("lsmrhxnvkpmrxncylgqpkr"),
 		// 					LastModifiedByType: to.Ptr(armprogrammableconnectivity.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T16:41:38.838Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.January, 30, 16, 41, 38, 838000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -428,10 +428,10 @@ func ExampleOperatorAPIConnectionsClient_BeginUpdate() {
 	// 		SystemData: &armprogrammableconnectivity.SystemData{
 	// 			CreatedBy: to.Ptr("kuprrapuolhnvju"),
 	// 			CreatedByType: to.Ptr(armprogrammableconnectivity.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T16:41:38.838Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 30, 16, 41, 38, 838000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("lsmrhxnvkpmrxncylgqpkr"),
 	// 			LastModifiedByType: to.Ptr(armprogrammableconnectivity.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-30T16:41:38.838Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 30, 16, 41, 38, 838000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

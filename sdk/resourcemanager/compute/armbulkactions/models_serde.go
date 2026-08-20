@@ -603,7 +603,7 @@ func (b BulkCreateCustomProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "capacity", b.Capacity)
 	populate(objectMap, "capacityType", b.CapacityType)
 	populate(objectMap, "computeProfile", b.ComputeProfile)
-	populateTime[datetime.RFC3339](objectMap, "createdTime", b.CreatedTime)
+	populateTime[datetime.RFC3339](objectMap, "createdTime", b.CreatedTime, true)
 	populate(objectMap, "executionParameters", b.ExecutionParameters)
 	populate(objectMap, "overridesProfile", b.OverridesProfile)
 	populate(objectMap, "priorityProfile", b.PriorityProfile)
@@ -1170,7 +1170,7 @@ func (d *DeallocateResourceOperationResponse) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DelayRequest.
 func (d DelayRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "delay", d.Delay)
+	populateTime[datetime.RFC3339](objectMap, "delay", d.Delay, false)
 	populate(objectMap, "resourceIds", d.ResourceIDs)
 	return json.Marshal(objectMap)
 }
@@ -2226,7 +2226,7 @@ func (l LaunchBulkInstancesOperationProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "capacity", l.Capacity)
 	populate(objectMap, "capacityType", l.CapacityType)
 	populate(objectMap, "computeProfile", l.ComputeProfile)
-	populateTime[datetime.RFC3339](objectMap, "createdTime", l.CreatedTime)
+	populateTime[datetime.RFC3339](objectMap, "createdTime", l.CreatedTime, true)
 	populate(objectMap, "priorityProfile", l.PriorityProfile)
 	populate(objectMap, "provisioningState", l.ProvisioningState)
 	populate(objectMap, "retryPolicy", l.RetryPolicy)
@@ -2998,7 +2998,7 @@ func (o OccurrenceExtensionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", o.ProvisioningState)
 	populate(objectMap, "resourceId", o.ResourceID)
 	populate(objectMap, "scheduledActionId", o.ScheduledActionID)
-	populateTime[datetime.RFC3339](objectMap, "scheduledTime", o.ScheduledTime)
+	populateTime[datetime.RFC3339](objectMap, "scheduledTime", o.ScheduledTime, true)
 	return json.Marshal(objectMap)
 }
 
@@ -3147,7 +3147,7 @@ func (o OccurrenceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "provisioningState", o.ProvisioningState)
 	populate(objectMap, "resultSummary", o.ResultSummary)
-	populateTime[datetime.RFC3339](objectMap, "scheduledTime", o.ScheduledTime)
+	populateTime[datetime.RFC3339](objectMap, "scheduledTime", o.ScheduledTime, true)
 	return json.Marshal(objectMap)
 }
 
@@ -3186,7 +3186,7 @@ func (o OccurrenceResource) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "notificationSettings", o.NotificationSettings)
 	populate(objectMap, "provisioningState", o.ProvisioningState)
 	populate(objectMap, "resourceId", o.ResourceID)
-	populateTime[datetime.RFC3339](objectMap, "scheduledTime", o.ScheduledTime)
+	populateTime[datetime.RFC3339](objectMap, "scheduledTime", o.ScheduledTime, true)
 	populate(objectMap, "type", o.Type)
 	return json.Marshal(objectMap)
 }
@@ -3410,14 +3410,14 @@ func (o *OperationListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type OperationStatusResult.
 func (o OperationStatusResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "endTime", o.EndTime)
+	populateTime[datetime.RFC3339](objectMap, "endTime", o.EndTime, true)
 	populate(objectMap, "error", o.Error)
 	populate(objectMap, "id", o.ID)
 	populate(objectMap, "name", o.Name)
 	populate(objectMap, "operations", o.Operations)
 	populate(objectMap, "percentComplete", o.PercentComplete)
 	populate(objectMap, "resourceId", o.ResourceID)
-	populateTime[datetime.RFC3339](objectMap, "startTime", o.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "startTime", o.StartTime, true)
 	populate(objectMap, "status", o.Status)
 	return json.Marshal(objectMap)
 }
@@ -3990,8 +3990,8 @@ func (r *ResourceOperation) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ResourceOperationDetails.
 func (r ResourceOperationDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "completedAt", r.CompletedAt)
-	populateTime[datetime.RFC3339](objectMap, "deadline", r.Deadline)
+	populateTime[datetime.RFC3339](objectMap, "completedAt", r.CompletedAt, false)
+	populateTime[datetime.RFC3339](objectMap, "deadline", r.Deadline, false)
 	populate(objectMap, "deadlineType", r.DeadlineType)
 	populate(objectMap, "fallbackOperationInfo", r.FallbackOperationInfo)
 	populate(objectMap, "opType", r.OpType)
@@ -4568,12 +4568,12 @@ func (s ScheduledActionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "actionType", s.ActionType)
 	populate(objectMap, "disabled", s.Disabled)
-	populateTime[datetime.RFC3339](objectMap, "endTime", s.EndTime)
+	populateTime[datetime.RFC3339](objectMap, "endTime", s.EndTime, false)
 	populate(objectMap, "notificationSettings", s.NotificationSettings)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
 	populate(objectMap, "resourceType", s.ResourceType)
 	populate(objectMap, "schedule", s.Schedule)
-	populateTime[datetime.RFC3339](objectMap, "startTime", s.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "startTime", s.StartTime, false)
 	return json.Marshal(objectMap)
 }
 
@@ -4802,11 +4802,11 @@ func (s ScheduledActionUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "actionType", s.ActionType)
 	populate(objectMap, "disabled", s.Disabled)
-	populateTime[datetime.RFC3339](objectMap, "endTime", s.EndTime)
+	populateTime[datetime.RFC3339](objectMap, "endTime", s.EndTime, false)
 	populate(objectMap, "notificationSettings", s.NotificationSettings)
 	populate(objectMap, "resourceType", s.ResourceType)
 	populate(objectMap, "schedule", s.Schedule)
-	populateTime[datetime.RFC3339](objectMap, "startTime", s.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "startTime", s.StartTime, false)
 	return json.Marshal(objectMap)
 }
 
@@ -4853,13 +4853,13 @@ func (s ScheduledActionsExtensionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "actionType", s.ActionType)
 	populate(objectMap, "disabled", s.Disabled)
-	populateTime[datetime.RFC3339](objectMap, "endTime", s.EndTime)
+	populateTime[datetime.RFC3339](objectMap, "endTime", s.EndTime, false)
 	populate(objectMap, "notificationSettings", s.NotificationSettings)
 	populate(objectMap, "provisioningState", s.ProvisioningState)
 	populate(objectMap, "resourceNotificationSettings", s.ResourceNotificationSettings)
 	populate(objectMap, "resourceType", s.ResourceType)
 	populate(objectMap, "schedule", s.Schedule)
-	populateTime[datetime.RFC3339](objectMap, "startTime", s.StartTime)
+	populateTime[datetime.RFC3339](objectMap, "startTime", s.StartTime, false)
 	return json.Marshal(objectMap)
 }
 
@@ -4915,7 +4915,7 @@ func (s ScheduledActionsSchedule) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "requestedDaysOfTheMonth", s.RequestedDaysOfTheMonth)
 	populate(objectMap, "requestedMonths", s.RequestedMonths)
 	populate(objectMap, "requestedWeekDays", s.RequestedWeekDays)
-	populateTime[datetime.PlainTime](objectMap, "scheduledTime", s.ScheduledTime)
+	populateTime[datetime.PlainTime](objectMap, "scheduledTime", s.ScheduledTime, false)
 	populate(objectMap, "timeZone", s.TimeZone)
 	return json.Marshal(objectMap)
 }
@@ -4966,7 +4966,7 @@ func (s ScheduledActionsScheduleUpdate) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "requestedDaysOfTheMonth", s.RequestedDaysOfTheMonth)
 	populate(objectMap, "requestedMonths", s.RequestedMonths)
 	populate(objectMap, "requestedWeekDays", s.RequestedWeekDays)
-	populateTime[datetime.PlainTime](objectMap, "scheduledTime", s.ScheduledTime)
+	populateTime[datetime.PlainTime](objectMap, "scheduledTime", s.ScheduledTime, false)
 	populate(objectMap, "timeZone", s.TimeZone)
 	return json.Marshal(objectMap)
 }
@@ -5257,10 +5257,10 @@ func (s *SubResource) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt, true)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt, true)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -6635,13 +6635,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time, utc bool) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
 		m[k] = nil
 	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
+		tt := *t
+		if utc {
+			tt = tt.UTC()
+		}
+		newTime := T(tt)
 		m[k] = (*T)(&newTime)
 	}
 }
@@ -6661,7 +6665,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }
@@ -6672,7 +6676,7 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 	}
 	var aux T
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	newTime := time.Time(aux)
 	*t = &newTime

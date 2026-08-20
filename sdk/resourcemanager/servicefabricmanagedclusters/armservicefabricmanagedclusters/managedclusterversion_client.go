@@ -63,12 +63,7 @@ func (client *ManagedClusterVersionClient) Get(ctx context.Context, location str
 	if err != nil {
 		return ManagedClusterVersionClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClusterVersionClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -98,8 +93,11 @@ func (client *ManagedClusterVersionClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedClusterVersionClient) getHandleResponse(resp *http.Response) (ManagedClusterVersionClientGetResponse, error) {
+func (client *ManagedClusterVersionClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedClusterVersionClientGetResponse, error) {
 	result := ManagedClusterVersionClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedClusterCodeVersionResult); err != nil {
 		return ManagedClusterVersionClientGetResponse{}, err
 	}
@@ -129,12 +127,7 @@ func (client *ManagedClusterVersionClient) GetByEnvironment(ctx context.Context,
 	if err != nil {
 		return ManagedClusterVersionClientGetByEnvironmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClusterVersionClientGetByEnvironmentResponse{}, err
-	}
-	resp, err := client.getByEnvironmentHandleResponse(httpResp)
-	return resp, err
+	return client.getByEnvironmentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByEnvironmentCreateRequest creates the GetByEnvironment request.
@@ -168,8 +161,11 @@ func (client *ManagedClusterVersionClient) getByEnvironmentCreateRequest(ctx con
 }
 
 // getByEnvironmentHandleResponse handles the GetByEnvironment response.
-func (client *ManagedClusterVersionClient) getByEnvironmentHandleResponse(resp *http.Response) (ManagedClusterVersionClientGetByEnvironmentResponse, error) {
+func (client *ManagedClusterVersionClient) getByEnvironmentHandleResponse(resp *http.Response, successCodes ...int) (ManagedClusterVersionClientGetByEnvironmentResponse, error) {
 	result := ManagedClusterVersionClientGetByEnvironmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedClusterCodeVersionResult); err != nil {
 		return ManagedClusterVersionClientGetByEnvironmentResponse{}, err
 	}
@@ -197,12 +193,7 @@ func (client *ManagedClusterVersionClient) List(ctx context.Context, location st
 	if err != nil {
 		return ManagedClusterVersionClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClusterVersionClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -228,8 +219,11 @@ func (client *ManagedClusterVersionClient) listCreateRequest(ctx context.Context
 }
 
 // listHandleResponse handles the List response.
-func (client *ManagedClusterVersionClient) listHandleResponse(resp *http.Response) (ManagedClusterVersionClientListResponse, error) {
+func (client *ManagedClusterVersionClient) listHandleResponse(resp *http.Response, successCodes ...int) (ManagedClusterVersionClientListResponse, error) {
 	result := ManagedClusterVersionClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedClusterCodeVersionResultArray); err != nil {
 		return ManagedClusterVersionClientListResponse{}, err
 	}
@@ -258,12 +252,7 @@ func (client *ManagedClusterVersionClient) ListByEnvironment(ctx context.Context
 	if err != nil {
 		return ManagedClusterVersionClientListByEnvironmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedClusterVersionClientListByEnvironmentResponse{}, err
-	}
-	resp, err := client.listByEnvironmentHandleResponse(httpResp)
-	return resp, err
+	return client.listByEnvironmentHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByEnvironmentCreateRequest creates the ListByEnvironment request.
@@ -293,8 +282,11 @@ func (client *ManagedClusterVersionClient) listByEnvironmentCreateRequest(ctx co
 }
 
 // listByEnvironmentHandleResponse handles the ListByEnvironment response.
-func (client *ManagedClusterVersionClient) listByEnvironmentHandleResponse(resp *http.Response) (ManagedClusterVersionClientListByEnvironmentResponse, error) {
+func (client *ManagedClusterVersionClient) listByEnvironmentHandleResponse(resp *http.Response, successCodes ...int) (ManagedClusterVersionClientListByEnvironmentResponse, error) {
 	result := ManagedClusterVersionClientListByEnvironmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedClusterCodeVersionResultArray); err != nil {
 		return ManagedClusterVersionClientListByEnvironmentResponse{}, err
 	}

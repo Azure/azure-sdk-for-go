@@ -66,12 +66,7 @@ func (client *CertificateOrdersDiagnosticsClient) GetAppServiceCertificateOrderD
 	if err != nil {
 		return CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse{}, err
-	}
-	resp, err := client.getAppServiceCertificateOrderDetectorResponseHandleResponse(httpResp)
-	return resp, err
+	return client.getAppServiceCertificateOrderDetectorResponseHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAppServiceCertificateOrderDetectorResponseCreateRequest creates the GetAppServiceCertificateOrderDetectorResponse request.
@@ -100,10 +95,10 @@ func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderD
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20241101)
 	if options != nil && options.EndTime != nil {
-		reqQP.Set("endTime", datetime.RFC3339(*options.EndTime).String())
+		reqQP.Set("endTime", datetime.RFC3339((*options.EndTime).UTC()).String())
 	}
 	if options != nil && options.StartTime != nil {
-		reqQP.Set("startTime", datetime.RFC3339(*options.StartTime).String())
+		reqQP.Set("startTime", datetime.RFC3339((*options.StartTime).UTC()).String())
 	}
 	if options != nil && options.TimeGrain != nil {
 		reqQP.Set("timeGrain", *options.TimeGrain)
@@ -114,8 +109,11 @@ func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderD
 }
 
 // getAppServiceCertificateOrderDetectorResponseHandleResponse handles the GetAppServiceCertificateOrderDetectorResponse response.
-func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderDetectorResponseHandleResponse(resp *http.Response) (CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse, error) {
+func (client *CertificateOrdersDiagnosticsClient) getAppServiceCertificateOrderDetectorResponseHandleResponse(resp *http.Response, successCodes ...int) (CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse, error) {
 	result := CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponse); err != nil {
 		return CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse{}, err
 	}
@@ -141,47 +139,61 @@ func (client *CertificateOrdersDiagnosticsClient) NewListAppServiceCertificateOr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAppServiceCertificateOrderDetectorResponseCreateRequest(ctx, resourceGroupName, certificateOrderName, options)
-			}, nil)
+			req, err := client.listAppServiceCertificateOrderDetectorResponseCreateRequest(ctx, resourceGroupName, certificateOrderName, nextLink, options)
 			if err != nil {
 				return CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse{}, err
 			}
-			return client.listAppServiceCertificateOrderDetectorResponseHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse{}, err
+			}
+			return client.listAppServiceCertificateOrderDetectorResponseHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAppServiceCertificateOrderDetectorResponseCreateRequest creates the ListAppServiceCertificateOrderDetectorResponse request.
-func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrderDetectorResponseCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, _ *CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/detectors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrderDetectorResponseCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, nextLink string, _ *CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/detectors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if certificateOrderName == "" {
+			return nil, errors.New("parameter certificateOrderName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{certificateOrderName}", url.PathEscape(certificateOrderName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if certificateOrderName == "" {
-		return nil, errors.New("parameter certificateOrderName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{certificateOrderName}", url.PathEscape(certificateOrderName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAppServiceCertificateOrderDetectorResponseHandleResponse handles the ListAppServiceCertificateOrderDetectorResponse response.
-func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrderDetectorResponseHandleResponse(resp *http.Response) (CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse, error) {
+func (client *CertificateOrdersDiagnosticsClient) listAppServiceCertificateOrderDetectorResponseHandleResponse(resp *http.Response, successCodes ...int) (CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse, error) {
 	result := CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DetectorResponseCollection); err != nil {
 		return CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseResponse{}, err
 	}

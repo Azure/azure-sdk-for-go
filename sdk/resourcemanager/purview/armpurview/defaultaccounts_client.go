@@ -57,12 +57,7 @@ func (client *DefaultAccountsClient) Get(ctx context.Context, scopeTenantID stri
 	if err != nil {
 		return DefaultAccountsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefaultAccountsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -85,8 +80,11 @@ func (client *DefaultAccountsClient) getCreateRequest(ctx context.Context, scope
 }
 
 // getHandleResponse handles the Get response.
-func (client *DefaultAccountsClient) getHandleResponse(resp *http.Response) (DefaultAccountsClientGetResponse, error) {
+func (client *DefaultAccountsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DefaultAccountsClientGetResponse, error) {
 	result := DefaultAccountsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefaultAccountPayload); err != nil {
 		return DefaultAccountsClientGetResponse{}, err
 	}
@@ -115,8 +113,7 @@ func (client *DefaultAccountsClient) Remove(ctx context.Context, scopeTenantID s
 		return DefaultAccountsClientRemoveResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DefaultAccountsClientRemoveResponse{}, err
+		return DefaultAccountsClientRemoveResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DefaultAccountsClientRemoveResponse{}, nil
 }
@@ -159,12 +156,7 @@ func (client *DefaultAccountsClient) Set(ctx context.Context, defaultAccountPayl
 	if err != nil {
 		return DefaultAccountsClientSetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefaultAccountsClientSetResponse{}, err
-	}
-	resp, err := client.setHandleResponse(httpResp)
-	return resp, err
+	return client.setHandleResponse(httpResp, http.StatusOK)
 }
 
 // setCreateRequest creates the Set request.
@@ -186,8 +178,11 @@ func (client *DefaultAccountsClient) setCreateRequest(ctx context.Context, defau
 }
 
 // setHandleResponse handles the Set response.
-func (client *DefaultAccountsClient) setHandleResponse(resp *http.Response) (DefaultAccountsClientSetResponse, error) {
+func (client *DefaultAccountsClient) setHandleResponse(resp *http.Response, successCodes ...int) (DefaultAccountsClientSetResponse, error) {
 	result := DefaultAccountsClientSetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefaultAccountPayload); err != nil {
 		return DefaultAccountsClientSetResponse{}, err
 	}

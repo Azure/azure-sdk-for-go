@@ -62,12 +62,7 @@ func (client *SyncGroupsClient) Create(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return SyncGroupsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SyncGroupsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK)
 }
 
 // createCreateRequest creates the Create request.
@@ -105,12 +100,15 @@ func (client *SyncGroupsClient) createCreateRequest(ctx context.Context, resourc
 }
 
 // createHandleResponse handles the Create response.
-func (client *SyncGroupsClient) createHandleResponse(resp *http.Response) (SyncGroupsClientCreateResponse, error) {
+func (client *SyncGroupsClient) createHandleResponse(resp *http.Response, successCodes ...int) (SyncGroupsClientCreateResponse, error) {
 	result := SyncGroupsClientCreateResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncGroup); err != nil {
@@ -139,12 +137,7 @@ func (client *SyncGroupsClient) Delete(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return SyncGroupsClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SyncGroupsClientDeleteResponse{}, err
-	}
-	resp, err := client.deleteHandleResponse(httpResp)
-	return resp, err
+	return client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -177,12 +170,15 @@ func (client *SyncGroupsClient) deleteCreateRequest(ctx context.Context, resourc
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *SyncGroupsClient) deleteHandleResponse(resp *http.Response) (SyncGroupsClientDeleteResponse, error) {
+func (client *SyncGroupsClient) deleteHandleResponse(resp *http.Response, successCodes ...int) (SyncGroupsClientDeleteResponse, error) {
 	result := SyncGroupsClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	return result, nil
@@ -208,12 +204,7 @@ func (client *SyncGroupsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return SyncGroupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SyncGroupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -247,12 +238,15 @@ func (client *SyncGroupsClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *SyncGroupsClient) getHandleResponse(resp *http.Response) (SyncGroupsClientGetResponse, error) {
+func (client *SyncGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SyncGroupsClientGetResponse, error) {
 	result := SyncGroupsClientGetResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncGroup); err != nil {
@@ -277,51 +271,65 @@ func (client *SyncGroupsClient) NewListByStorageSyncServicePager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByStorageSyncServiceCreateRequest(ctx, resourceGroupName, storageSyncServiceName, options)
-			}, nil)
+			req, err := client.listByStorageSyncServiceCreateRequest(ctx, resourceGroupName, storageSyncServiceName, nextLink, options)
 			if err != nil {
 				return SyncGroupsClientListByStorageSyncServiceResponse{}, err
 			}
-			return client.listByStorageSyncServiceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SyncGroupsClientListByStorageSyncServiceResponse{}, err
+			}
+			return client.listByStorageSyncServiceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByStorageSyncServiceCreateRequest creates the ListByStorageSyncService request.
-func (client *SyncGroupsClient) listByStorageSyncServiceCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, _ *SyncGroupsClientListByStorageSyncServiceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SyncGroupsClient) listByStorageSyncServiceCreateRequest(ctx context.Context, resourceGroupName string, storageSyncServiceName string, nextLink string, _ *SyncGroupsClientListByStorageSyncServiceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageSync/storageSyncServices/{storageSyncServiceName}/syncGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if storageSyncServiceName == "" {
+			return nil, errors.New("parameter storageSyncServiceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{storageSyncServiceName}", url.PathEscape(storageSyncServiceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storageSyncServiceName == "" {
-		return nil, errors.New("parameter storageSyncServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storageSyncServiceName}", url.PathEscape(storageSyncServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20220901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByStorageSyncServiceHandleResponse handles the ListByStorageSyncService response.
-func (client *SyncGroupsClient) listByStorageSyncServiceHandleResponse(resp *http.Response) (SyncGroupsClientListByStorageSyncServiceResponse, error) {
+func (client *SyncGroupsClient) listByStorageSyncServiceHandleResponse(resp *http.Response, successCodes ...int) (SyncGroupsClientListByStorageSyncServiceResponse, error) {
 	result := SyncGroupsClientListByStorageSyncServiceResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncGroupArray); err != nil {

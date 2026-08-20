@@ -65,12 +65,7 @@ func (client *AppResiliencyClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return AppResiliencyClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return AppResiliencyClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -108,8 +103,11 @@ func (client *AppResiliencyClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AppResiliencyClient) createOrUpdateHandleResponse(resp *http.Response) (AppResiliencyClientCreateOrUpdateResponse, error) {
+func (client *AppResiliencyClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (AppResiliencyClientCreateOrUpdateResponse, error) {
 	result := AppResiliencyClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppResiliency); err != nil {
 		return AppResiliencyClientCreateOrUpdateResponse{}, err
 	}
@@ -139,8 +137,7 @@ func (client *AppResiliencyClient) Delete(ctx context.Context, resourceGroupName
 		return AppResiliencyClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return AppResiliencyClientDeleteResponse{}, err
+		return AppResiliencyClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AppResiliencyClientDeleteResponse{}, nil
 }
@@ -196,12 +193,7 @@ func (client *AppResiliencyClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return AppResiliencyClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AppResiliencyClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -235,8 +227,11 @@ func (client *AppResiliencyClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *AppResiliencyClient) getHandleResponse(resp *http.Response) (AppResiliencyClientGetResponse, error) {
+func (client *AppResiliencyClient) getHandleResponse(resp *http.Response, successCodes ...int) (AppResiliencyClientGetResponse, error) {
 	result := AppResiliencyClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppResiliency); err != nil {
 		return AppResiliencyClientGetResponse{}, err
 	}
@@ -260,47 +255,61 @@ func (client *AppResiliencyClient) NewListPager(resourceGroupName string, appNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, appName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, appName, nextLink, options)
 			if err != nil {
 				return AppResiliencyClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AppResiliencyClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AppResiliencyClient) listCreateRequest(ctx context.Context, resourceGroupName string, appName string, _ *AppResiliencyClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{appName}/resiliencyPolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AppResiliencyClient) listCreateRequest(ctx context.Context, resourceGroupName string, appName string, nextLink string, _ *AppResiliencyClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{appName}/resiliencyPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if appName == "" {
+			return nil, errors.New("parameter appName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if appName == "" {
-		return nil, errors.New("parameter appName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251002Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AppResiliencyClient) listHandleResponse(resp *http.Response) (AppResiliencyClientListResponse, error) {
+func (client *AppResiliencyClient) listHandleResponse(resp *http.Response, successCodes ...int) (AppResiliencyClientListResponse, error) {
 	result := AppResiliencyClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppResiliencyCollection); err != nil {
 		return AppResiliencyClientListResponse{}, err
 	}
@@ -330,12 +339,7 @@ func (client *AppResiliencyClient) Update(ctx context.Context, resourceGroupName
 	if err != nil {
 		return AppResiliencyClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AppResiliencyClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -373,8 +377,11 @@ func (client *AppResiliencyClient) updateCreateRequest(ctx context.Context, reso
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AppResiliencyClient) updateHandleResponse(resp *http.Response) (AppResiliencyClientUpdateResponse, error) {
+func (client *AppResiliencyClient) updateHandleResponse(resp *http.Response, successCodes ...int) (AppResiliencyClientUpdateResponse, error) {
 	result := AppResiliencyClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppResiliency); err != nil {
 		return AppResiliencyClientUpdateResponse{}, err
 	}

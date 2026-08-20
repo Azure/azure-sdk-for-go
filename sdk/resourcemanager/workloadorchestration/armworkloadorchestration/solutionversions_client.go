@@ -84,8 +84,7 @@ func (client *SolutionVersionsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -170,8 +169,7 @@ func (client *SolutionVersionsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -230,12 +228,7 @@ func (client *SolutionVersionsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return SolutionVersionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SolutionVersionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -273,8 +266,11 @@ func (client *SolutionVersionsClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *SolutionVersionsClient) getHandleResponse(resp *http.Response) (SolutionVersionsClientGetResponse, error) {
+func (client *SolutionVersionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SolutionVersionsClientGetResponse, error) {
 	result := SolutionVersionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionVersion); err != nil {
 		return SolutionVersionsClientGetResponse{}, err
 	}
@@ -298,51 +294,65 @@ func (client *SolutionVersionsClient) NewListBySolutionPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySolutionCreateRequest(ctx, resourceGroupName, targetName, solutionName, options)
-			}, nil)
+			req, err := client.listBySolutionCreateRequest(ctx, resourceGroupName, targetName, solutionName, nextLink, options)
 			if err != nil {
 				return SolutionVersionsClientListBySolutionResponse{}, err
 			}
-			return client.listBySolutionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SolutionVersionsClientListBySolutionResponse{}, err
+			}
+			return client.listBySolutionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySolutionCreateRequest creates the ListBySolution request.
-func (client *SolutionVersionsClient) listBySolutionCreateRequest(ctx context.Context, resourceGroupName string, targetName string, solutionName string, _ *SolutionVersionsClientListBySolutionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SolutionVersionsClient) listBySolutionCreateRequest(ctx context.Context, resourceGroupName string, targetName string, solutionName string, nextLink string, _ *SolutionVersionsClientListBySolutionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if targetName == "" {
+			return nil, errors.New("parameter targetName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
+		if solutionName == "" {
+			return nil, errors.New("parameter solutionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if targetName == "" {
-		return nil, errors.New("parameter targetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
-	if solutionName == "" {
-		return nil, errors.New("parameter solutionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{solutionName}", url.PathEscape(solutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySolutionHandleResponse handles the ListBySolution response.
-func (client *SolutionVersionsClient) listBySolutionHandleResponse(resp *http.Response) (SolutionVersionsClientListBySolutionResponse, error) {
+func (client *SolutionVersionsClient) listBySolutionHandleResponse(resp *http.Response, successCodes ...int) (SolutionVersionsClientListBySolutionResponse, error) {
 	result := SolutionVersionsClientListBySolutionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SolutionVersionListResult); err != nil {
 		return SolutionVersionsClientListBySolutionResponse{}, err
 	}
@@ -392,8 +402,7 @@ func (client *SolutionVersionsClient) update(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

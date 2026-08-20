@@ -64,12 +64,7 @@ func (client *ContainerAppsDiagnosticsClient) GetDetector(ctx context.Context, r
 	if err != nil {
 		return ContainerAppsDiagnosticsClientGetDetectorResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerAppsDiagnosticsClientGetDetectorResponse{}, err
-	}
-	resp, err := client.getDetectorHandleResponse(httpResp)
-	return resp, err
+	return client.getDetectorHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDetectorCreateRequest creates the GetDetector request.
@@ -103,8 +98,11 @@ func (client *ContainerAppsDiagnosticsClient) getDetectorCreateRequest(ctx conte
 }
 
 // getDetectorHandleResponse handles the GetDetector response.
-func (client *ContainerAppsDiagnosticsClient) getDetectorHandleResponse(resp *http.Response) (ContainerAppsDiagnosticsClientGetDetectorResponse, error) {
+func (client *ContainerAppsDiagnosticsClient) getDetectorHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsDiagnosticsClientGetDetectorResponse, error) {
 	result := ContainerAppsDiagnosticsClientGetDetectorResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Diagnostics); err != nil {
 		return ContainerAppsDiagnosticsClientGetDetectorResponse{}, err
 	}
@@ -134,12 +132,7 @@ func (client *ContainerAppsDiagnosticsClient) GetRevision(ctx context.Context, r
 	if err != nil {
 		return ContainerAppsDiagnosticsClientGetRevisionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerAppsDiagnosticsClientGetRevisionResponse{}, err
-	}
-	resp, err := client.getRevisionHandleResponse(httpResp)
-	return resp, err
+	return client.getRevisionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getRevisionCreateRequest creates the GetRevision request.
@@ -173,8 +166,11 @@ func (client *ContainerAppsDiagnosticsClient) getRevisionCreateRequest(ctx conte
 }
 
 // getRevisionHandleResponse handles the GetRevision response.
-func (client *ContainerAppsDiagnosticsClient) getRevisionHandleResponse(resp *http.Response) (ContainerAppsDiagnosticsClientGetRevisionResponse, error) {
+func (client *ContainerAppsDiagnosticsClient) getRevisionHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsDiagnosticsClientGetRevisionResponse, error) {
 	result := ContainerAppsDiagnosticsClientGetRevisionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Revision); err != nil {
 		return ContainerAppsDiagnosticsClientGetRevisionResponse{}, err
 	}
@@ -203,12 +199,7 @@ func (client *ContainerAppsDiagnosticsClient) GetRoot(ctx context.Context, resou
 	if err != nil {
 		return ContainerAppsDiagnosticsClientGetRootResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerAppsDiagnosticsClientGetRootResponse{}, err
-	}
-	resp, err := client.getRootHandleResponse(httpResp)
-	return resp, err
+	return client.getRootHandleResponse(httpResp, http.StatusOK)
 }
 
 // getRootCreateRequest creates the GetRoot request.
@@ -238,8 +229,11 @@ func (client *ContainerAppsDiagnosticsClient) getRootCreateRequest(ctx context.C
 }
 
 // getRootHandleResponse handles the GetRoot response.
-func (client *ContainerAppsDiagnosticsClient) getRootHandleResponse(resp *http.Response) (ContainerAppsDiagnosticsClientGetRootResponse, error) {
+func (client *ContainerAppsDiagnosticsClient) getRootHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsDiagnosticsClientGetRootResponse, error) {
 	result := ContainerAppsDiagnosticsClientGetRootResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerApp); err != nil {
 		return ContainerAppsDiagnosticsClientGetRootResponse{}, err
 	}
@@ -264,47 +258,61 @@ func (client *ContainerAppsDiagnosticsClient) NewListDetectorsPager(resourceGrou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listDetectorsCreateRequest(ctx, resourceGroupName, containerAppName, options)
-			}, nil)
+			req, err := client.listDetectorsCreateRequest(ctx, resourceGroupName, containerAppName, nextLink, options)
 			if err != nil {
 				return ContainerAppsDiagnosticsClientListDetectorsResponse{}, err
 			}
-			return client.listDetectorsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ContainerAppsDiagnosticsClientListDetectorsResponse{}, err
+			}
+			return client.listDetectorsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listDetectorsCreateRequest creates the ListDetectors request.
-func (client *ContainerAppsDiagnosticsClient) listDetectorsCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, _ *ContainerAppsDiagnosticsClientListDetectorsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/detectors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ContainerAppsDiagnosticsClient) listDetectorsCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, nextLink string, _ *ContainerAppsDiagnosticsClientListDetectorsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/detectors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if containerAppName == "" {
+			return nil, errors.New("parameter containerAppName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerAppName == "" {
-		return nil, errors.New("parameter containerAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251002Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listDetectorsHandleResponse handles the ListDetectors response.
-func (client *ContainerAppsDiagnosticsClient) listDetectorsHandleResponse(resp *http.Response) (ContainerAppsDiagnosticsClientListDetectorsResponse, error) {
+func (client *ContainerAppsDiagnosticsClient) listDetectorsHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsDiagnosticsClientListDetectorsResponse, error) {
 	result := ContainerAppsDiagnosticsClientListDetectorsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticsCollection); err != nil {
 		return ContainerAppsDiagnosticsClientListDetectorsResponse{}, err
 	}
@@ -329,50 +337,64 @@ func (client *ContainerAppsDiagnosticsClient) NewListRevisionsPager(resourceGrou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listRevisionsCreateRequest(ctx, resourceGroupName, containerAppName, options)
-			}, nil)
+			req, err := client.listRevisionsCreateRequest(ctx, resourceGroupName, containerAppName, nextLink, options)
 			if err != nil {
 				return ContainerAppsDiagnosticsClientListRevisionsResponse{}, err
 			}
-			return client.listRevisionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ContainerAppsDiagnosticsClientListRevisionsResponse{}, err
+			}
+			return client.listRevisionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listRevisionsCreateRequest creates the ListRevisions request.
-func (client *ContainerAppsDiagnosticsClient) listRevisionsCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, options *ContainerAppsDiagnosticsClientListRevisionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/detectorProperties/revisionsApi/revisions/"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ContainerAppsDiagnosticsClient) listRevisionsCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, nextLink string, options *ContainerAppsDiagnosticsClientListRevisionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/detectorProperties/revisionsApi/revisions/"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if containerAppName == "" {
+			return nil, errors.New("parameter containerAppName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerAppName == "" {
-		return nil, errors.New("parameter containerAppName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerAppName}", url.PathEscape(containerAppName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20251002Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20251002Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listRevisionsHandleResponse handles the ListRevisions response.
-func (client *ContainerAppsDiagnosticsClient) listRevisionsHandleResponse(resp *http.Response) (ContainerAppsDiagnosticsClientListRevisionsResponse, error) {
+func (client *ContainerAppsDiagnosticsClient) listRevisionsHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsDiagnosticsClientListRevisionsResponse, error) {
 	result := ContainerAppsDiagnosticsClientListRevisionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RevisionCollection); err != nil {
 		return ContainerAppsDiagnosticsClientListRevisionsResponse{}, err
 	}

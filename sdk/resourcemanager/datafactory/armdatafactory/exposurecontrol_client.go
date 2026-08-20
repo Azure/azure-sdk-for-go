@@ -61,12 +61,7 @@ func (client *ExposureControlClient) GetFeatureValue(ctx context.Context, locati
 	if err != nil {
 		return ExposureControlClientGetFeatureValueResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExposureControlClientGetFeatureValueResponse{}, err
-	}
-	resp, err := client.getFeatureValueHandleResponse(httpResp)
-	return resp, err
+	return client.getFeatureValueHandleResponse(httpResp, http.StatusOK)
 }
 
 // getFeatureValueCreateRequest creates the GetFeatureValue request.
@@ -96,8 +91,11 @@ func (client *ExposureControlClient) getFeatureValueCreateRequest(ctx context.Co
 }
 
 // getFeatureValueHandleResponse handles the GetFeatureValue response.
-func (client *ExposureControlClient) getFeatureValueHandleResponse(resp *http.Response) (ExposureControlClientGetFeatureValueResponse, error) {
+func (client *ExposureControlClient) getFeatureValueHandleResponse(resp *http.Response, successCodes ...int) (ExposureControlClientGetFeatureValueResponse, error) {
 	result := ExposureControlClientGetFeatureValueResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExposureControlResponse); err != nil {
 		return ExposureControlClientGetFeatureValueResponse{}, err
 	}
@@ -125,12 +123,7 @@ func (client *ExposureControlClient) GetFeatureValueByFactory(ctx context.Contex
 	if err != nil {
 		return ExposureControlClientGetFeatureValueByFactoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExposureControlClientGetFeatureValueByFactoryResponse{}, err
-	}
-	resp, err := client.getFeatureValueByFactoryHandleResponse(httpResp)
-	return resp, err
+	return client.getFeatureValueByFactoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getFeatureValueByFactoryCreateRequest creates the GetFeatureValueByFactory request.
@@ -164,8 +157,11 @@ func (client *ExposureControlClient) getFeatureValueByFactoryCreateRequest(ctx c
 }
 
 // getFeatureValueByFactoryHandleResponse handles the GetFeatureValueByFactory response.
-func (client *ExposureControlClient) getFeatureValueByFactoryHandleResponse(resp *http.Response) (ExposureControlClientGetFeatureValueByFactoryResponse, error) {
+func (client *ExposureControlClient) getFeatureValueByFactoryHandleResponse(resp *http.Response, successCodes ...int) (ExposureControlClientGetFeatureValueByFactoryResponse, error) {
 	result := ExposureControlClientGetFeatureValueByFactoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExposureControlResponse); err != nil {
 		return ExposureControlClientGetFeatureValueByFactoryResponse{}, err
 	}
@@ -193,12 +189,7 @@ func (client *ExposureControlClient) QueryFeatureValuesByFactory(ctx context.Con
 	if err != nil {
 		return ExposureControlClientQueryFeatureValuesByFactoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExposureControlClientQueryFeatureValuesByFactoryResponse{}, err
-	}
-	resp, err := client.queryFeatureValuesByFactoryHandleResponse(httpResp)
-	return resp, err
+	return client.queryFeatureValuesByFactoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // queryFeatureValuesByFactoryCreateRequest creates the QueryFeatureValuesByFactory request.
@@ -232,8 +223,11 @@ func (client *ExposureControlClient) queryFeatureValuesByFactoryCreateRequest(ct
 }
 
 // queryFeatureValuesByFactoryHandleResponse handles the QueryFeatureValuesByFactory response.
-func (client *ExposureControlClient) queryFeatureValuesByFactoryHandleResponse(resp *http.Response) (ExposureControlClientQueryFeatureValuesByFactoryResponse, error) {
+func (client *ExposureControlClient) queryFeatureValuesByFactoryHandleResponse(resp *http.Response, successCodes ...int) (ExposureControlClientQueryFeatureValuesByFactoryResponse, error) {
 	result := ExposureControlClientQueryFeatureValuesByFactoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExposureControlBatchResponse); err != nil {
 		return ExposureControlClientQueryFeatureValuesByFactoryResponse{}, err
 	}

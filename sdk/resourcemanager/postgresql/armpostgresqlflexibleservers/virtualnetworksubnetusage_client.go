@@ -61,12 +61,7 @@ func (client *VirtualNetworkSubnetUsageClient) List(ctx context.Context, locatio
 	if err != nil {
 		return VirtualNetworkSubnetUsageClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualNetworkSubnetUsageClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -96,8 +91,11 @@ func (client *VirtualNetworkSubnetUsageClient) listCreateRequest(ctx context.Con
 }
 
 // listHandleResponse handles the List response.
-func (client *VirtualNetworkSubnetUsageClient) listHandleResponse(resp *http.Response) (VirtualNetworkSubnetUsageClientListResponse, error) {
+func (client *VirtualNetworkSubnetUsageClient) listHandleResponse(resp *http.Response, successCodes ...int) (VirtualNetworkSubnetUsageClientListResponse, error) {
 	result := VirtualNetworkSubnetUsageClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkSubnetUsageModel); err != nil {
 		return VirtualNetworkSubnetUsageClientListResponse{}, err
 	}

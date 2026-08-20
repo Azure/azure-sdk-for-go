@@ -33,7 +33,7 @@ func ExampleNamespacesClient_CheckNameAvailability() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: &armrelay.CheckNameAvailabilityResult{
+	// 	CheckNameAvailabilityResult: armrelay.CheckNameAvailabilityResult{
 	// 		Message: to.Ptr(""),
 	// 		NameAvailable: to.Ptr(true),
 	// 		Reason: to.Ptr(armrelay.UnavailableReasonNone),
@@ -68,13 +68,13 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientCreateOrUpdateResponse{
-	// 	Namespace: &armrelay.Namespace{
+	// 	Namespace: armrelay.Namespace{
 	// 		Name: to.Ptr("example-RelayNamespace-5849"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-5849"),
@@ -122,7 +122,7 @@ func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientCreateOrUpdateAuthorizationRuleResponse{
-	// 	AuthorizationRule: &armrelay.AuthorizationRule{
+	// 	AuthorizationRule: armrelay.AuthorizationRule{
 	// 		Name: to.Ptr("example-RelayAuthRules-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/AuthorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/AuthorizationRules/example-RelayAuthRules-01"),
@@ -182,7 +182,7 @@ func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientCreateOrUpdateNetworkRuleSetResponse{
-	// 	NetworkRuleSet: &armrelay.NetworkRuleSet{
+	// 	NetworkRuleSet: armrelay.NetworkRuleSet{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/NetworkRuleSet"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroupid/providers/Microsoft.Relay/namespaces/example-RelayNamespace-9659/networkruleset/default"),
@@ -233,7 +233,7 @@ func ExampleNamespacesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -283,17 +283,17 @@ func ExampleNamespacesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientGetResponse{
-	// 	Namespace: &armrelay.Namespace{
+	// 	Namespace: armrelay.Namespace{
 	// 		Name: to.Ptr("example-RelayRelayNamespace-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/example-RelayRelayNamespace-01"),
 	// 		Location: to.Ptr("West US"),
 	// 		Properties: &armrelay.NamespaceProperties{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:38:12.46Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 38, 12, 460000000, time.UTC)),
 	// 			MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-RelayRelayNamespace-01"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-01.servicebus.windows.net:443/"),
-	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:38:34.533Z"); return t}()),
+	// 			UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 38, 34, 533000000, time.UTC)),
 	// 		},
 	// 		SKU: &armrelay.SKU{
 	// 			Name: to.Ptr(armrelay.SKUNameStandard),
@@ -326,7 +326,7 @@ func ExampleNamespacesClient_GetAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientGetAuthorizationRuleResponse{
-	// 	AuthorizationRule: &armrelay.AuthorizationRule{
+	// 	AuthorizationRule: armrelay.AuthorizationRule{
 	// 		Name: to.Ptr("example-RelayAuthRules-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/AuthorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/AuthorizationRules/example-RelayAuthRules-01"),
@@ -358,7 +358,7 @@ func ExampleNamespacesClient_GetNetworkRuleSet() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientGetNetworkRuleSetResponse{
-	// 	NetworkRuleSet: &armrelay.NetworkRuleSet{
+	// 	NetworkRuleSet: armrelay.NetworkRuleSet{
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/NetworkRuleSet"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroupid/providers/Microsoft.Relay/namespaces/example-RelayNamespace-9659/networkruleset/default"),
@@ -423,11 +423,11 @@ func ExampleNamespacesClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/RG1-eg/providers/Microsoft.Relay/namespaces/example-RelayRelayNamespace-01"),
 		// 				Location: to.Ptr("West US"),
 		// 				Properties: &armrelay.NamespaceProperties{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:34:49.4131724Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 49, 413172400, time.UTC)),
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-RelayRelayNamespace-01"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-01.servicebus.windows.net:443/"),
-		// 					UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:34:59.4131724Z"); return t}()),
+		// 					UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 59, 413172400, time.UTC)),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -444,11 +444,11 @@ func ExampleNamespacesClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/RG1-eg/providers/Microsoft.Relay/namespaces/example-RelayRelayNamespace-02"),
 		// 				Location: to.Ptr("West US"),
 		// 				Properties: &armrelay.NamespaceProperties{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:34:39.4131724Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 39, 413172400, time.UTC)),
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-RelayRelayNamespace-02"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-02.servicebus.windows.net:443/"),
-		// 					UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:34:49.4131724Z"); return t}()),
+		// 					UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 49, 413172400, time.UTC)),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -809,7 +809,7 @@ func ExampleNamespacesClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientListKeysResponse{
-	// 	AccessKeys: &armrelay.AccessKeys{
+	// 	AccessKeys: armrelay.AccessKeys{
 	// 		KeyName: to.Ptr("example-RelayAuthRules-01"),
 	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
 	// 		PrimaryKey: to.Ptr("############################################"),
@@ -840,7 +840,7 @@ func ExampleNamespacesClient_RegenerateKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientRegenerateKeysResponse{
-	// 	AccessKeys: &armrelay.AccessKeys{
+	// 	AccessKeys: armrelay.AccessKeys{
 	// 		KeyName: to.Ptr("example-RelayAuthRules-01"),
 	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
 	// 		PrimaryKey: to.Ptr("############################################"),
@@ -876,7 +876,7 @@ func ExampleNamespacesClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.NamespacesClientUpdateResponse{
-	// 	Namespace: &armrelay.Namespace{
+	// 	Namespace: armrelay.Namespace{
 	// 		Name: to.Ptr("example-RelayRelayNamespace-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/example-RelayRelayNamespace-01"),

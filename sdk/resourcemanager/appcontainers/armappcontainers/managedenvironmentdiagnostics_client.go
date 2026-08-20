@@ -64,12 +64,7 @@ func (client *ManagedEnvironmentDiagnosticsClient) GetDetector(ctx context.Conte
 	if err != nil {
 		return ManagedEnvironmentDiagnosticsClientGetDetectorResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedEnvironmentDiagnosticsClientGetDetectorResponse{}, err
-	}
-	resp, err := client.getDetectorHandleResponse(httpResp)
-	return resp, err
+	return client.getDetectorHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDetectorCreateRequest creates the GetDetector request.
@@ -103,8 +98,11 @@ func (client *ManagedEnvironmentDiagnosticsClient) getDetectorCreateRequest(ctx 
 }
 
 // getDetectorHandleResponse handles the GetDetector response.
-func (client *ManagedEnvironmentDiagnosticsClient) getDetectorHandleResponse(resp *http.Response) (ManagedEnvironmentDiagnosticsClientGetDetectorResponse, error) {
+func (client *ManagedEnvironmentDiagnosticsClient) getDetectorHandleResponse(resp *http.Response, successCodes ...int) (ManagedEnvironmentDiagnosticsClientGetDetectorResponse, error) {
 	result := ManagedEnvironmentDiagnosticsClientGetDetectorResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Diagnostics); err != nil {
 		return ManagedEnvironmentDiagnosticsClientGetDetectorResponse{}, err
 	}
@@ -133,12 +131,7 @@ func (client *ManagedEnvironmentDiagnosticsClient) ListDetectors(ctx context.Con
 	if err != nil {
 		return ManagedEnvironmentDiagnosticsClientListDetectorsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedEnvironmentDiagnosticsClientListDetectorsResponse{}, err
-	}
-	resp, err := client.listDetectorsHandleResponse(httpResp)
-	return resp, err
+	return client.listDetectorsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listDetectorsCreateRequest creates the ListDetectors request.
@@ -168,8 +161,11 @@ func (client *ManagedEnvironmentDiagnosticsClient) listDetectorsCreateRequest(ct
 }
 
 // listDetectorsHandleResponse handles the ListDetectors response.
-func (client *ManagedEnvironmentDiagnosticsClient) listDetectorsHandleResponse(resp *http.Response) (ManagedEnvironmentDiagnosticsClientListDetectorsResponse, error) {
+func (client *ManagedEnvironmentDiagnosticsClient) listDetectorsHandleResponse(resp *http.Response, successCodes ...int) (ManagedEnvironmentDiagnosticsClientListDetectorsResponse, error) {
 	result := ManagedEnvironmentDiagnosticsClientListDetectorsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiagnosticsCollection); err != nil {
 		return ManagedEnvironmentDiagnosticsClientListDetectorsResponse{}, err
 	}

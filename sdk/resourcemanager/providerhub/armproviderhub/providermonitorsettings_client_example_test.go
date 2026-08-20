@@ -31,13 +31,13 @@ func ExampleProviderMonitorSettingsClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ProviderMonitorSettingsClientCreateResponse{
-	// 	ProviderMonitorSetting: &armproviderhub.ProviderMonitorSetting{
+	// 	ProviderMonitorSetting: armproviderhub.ProviderMonitorSetting{
 	// 		Name: to.Ptr("ContosoMonitorSetting"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerMonitorSettings"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/resourceGroups/default/providers/Microsoft.ProviderHub/providerMonitorSettings/ContosoMonitorSetting"),
@@ -46,10 +46,10 @@ func ExampleProviderMonitorSettingsClient_BeginCreate() {
 	// 			ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-01T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 	// 		},
@@ -98,7 +98,7 @@ func ExampleProviderMonitorSettingsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ProviderMonitorSettingsClientGetResponse{
-	// 	ProviderMonitorSetting: &armproviderhub.ProviderMonitorSetting{
+	// 	ProviderMonitorSetting: armproviderhub.ProviderMonitorSetting{
 	// 		Name: to.Ptr("ContosoMonitorSetting"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerMonitorSettings"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/resourceGroups/default/providers/Microsoft.ProviderHub/providerMonitorSettings/ContosoMonitorSetting"),
@@ -107,10 +107,10 @@ func ExampleProviderMonitorSettingsClient_Get() {
 	// 			ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-01T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 	// 		},
@@ -152,10 +152,10 @@ func ExampleProviderMonitorSettingsClient_NewListByResourceGroupPager() {
 		// 					ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armproviderhub.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-01T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 		// 				},
@@ -200,10 +200,10 @@ func ExampleProviderMonitorSettingsClient_NewListBySubscriptionPager() {
 		// 					ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armproviderhub.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-01T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 		// 				},
@@ -233,7 +233,7 @@ func ExampleProviderMonitorSettingsClient_Update() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.ProviderMonitorSettingsClientUpdateResponse{
-	// 	ProviderMonitorSetting: &armproviderhub.ProviderMonitorSetting{
+	// 	ProviderMonitorSetting: armproviderhub.ProviderMonitorSetting{
 	// 		Name: to.Ptr("ContosoMonitorSetting"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerMonitorSettings"),
 	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/resourceGroups/default/providers/Microsoft.ProviderHub/providerMonitorSettings/ContosoMonitorSetting"),
@@ -242,10 +242,10 @@ func ExampleProviderMonitorSettingsClient_Update() {
 	// 			ProvisioningState: to.Ptr(armproviderhub.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-01T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
 	// 		},

@@ -18,6 +18,8 @@ import (
 
 // SKUsClient contains the methods for the SKUs group.
 // Don't use this type directly, use NewSKUsClient() instead.
+//
+// Generated from API version 2024-09-01
 type SKUsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // CreateOrUpdate - Creates or updates the resource type skus in the given resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - sku - The SKU.
@@ -62,12 +62,7 @@ func (client *SKUsClient) CreateOrUpdate(ctx context.Context, providerNamespace 
 	if err != nil {
 		return SKUsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SKUsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -94,8 +89,8 @@ func (client *SKUsClient) createOrUpdateCreateRequest(ctx context.Context, provi
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -105,8 +100,11 @@ func (client *SKUsClient) createOrUpdateCreateRequest(ctx context.Context, provi
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SKUsClient) createOrUpdateHandleResponse(resp *http.Response) (SKUsClientCreateOrUpdateResponse, error) {
+func (client *SKUsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SKUsClientCreateOrUpdateResponse, error) {
 	result := SKUsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUResource); err != nil {
 		return SKUsClientCreateOrUpdateResponse{}, err
 	}
@@ -115,8 +113,6 @@ func (client *SKUsClient) createOrUpdateHandleResponse(resp *http.Response) (SKU
 
 // CreateOrUpdateNestedResourceTypeFirst - Creates or updates the resource type skus in the given resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -138,12 +134,7 @@ func (client *SKUsClient) CreateOrUpdateNestedResourceTypeFirst(ctx context.Cont
 	if err != nil {
 		return SKUsClientCreateOrUpdateNestedResourceTypeFirstResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SKUsClientCreateOrUpdateNestedResourceTypeFirstResponse{}, err
-	}
-	resp, err := client.createOrUpdateNestedResourceTypeFirstHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateNestedResourceTypeFirstHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateNestedResourceTypeFirstCreateRequest creates the CreateOrUpdateNestedResourceTypeFirst request.
@@ -174,8 +165,8 @@ func (client *SKUsClient) createOrUpdateNestedResourceTypeFirstCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -185,8 +176,11 @@ func (client *SKUsClient) createOrUpdateNestedResourceTypeFirstCreateRequest(ctx
 }
 
 // createOrUpdateNestedResourceTypeFirstHandleResponse handles the CreateOrUpdateNestedResourceTypeFirst response.
-func (client *SKUsClient) createOrUpdateNestedResourceTypeFirstHandleResponse(resp *http.Response) (SKUsClientCreateOrUpdateNestedResourceTypeFirstResponse, error) {
+func (client *SKUsClient) createOrUpdateNestedResourceTypeFirstHandleResponse(resp *http.Response, successCodes ...int) (SKUsClientCreateOrUpdateNestedResourceTypeFirstResponse, error) {
 	result := SKUsClientCreateOrUpdateNestedResourceTypeFirstResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUResource); err != nil {
 		return SKUsClientCreateOrUpdateNestedResourceTypeFirstResponse{}, err
 	}
@@ -195,8 +189,6 @@ func (client *SKUsClient) createOrUpdateNestedResourceTypeFirstHandleResponse(re
 
 // CreateOrUpdateNestedResourceTypeSecond - Creates or updates the resource type skus in the given resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -219,12 +211,7 @@ func (client *SKUsClient) CreateOrUpdateNestedResourceTypeSecond(ctx context.Con
 	if err != nil {
 		return SKUsClientCreateOrUpdateNestedResourceTypeSecondResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SKUsClientCreateOrUpdateNestedResourceTypeSecondResponse{}, err
-	}
-	resp, err := client.createOrUpdateNestedResourceTypeSecondHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateNestedResourceTypeSecondHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateNestedResourceTypeSecondCreateRequest creates the CreateOrUpdateNestedResourceTypeSecond request.
@@ -259,8 +246,8 @@ func (client *SKUsClient) createOrUpdateNestedResourceTypeSecondCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -270,8 +257,11 @@ func (client *SKUsClient) createOrUpdateNestedResourceTypeSecondCreateRequest(ct
 }
 
 // createOrUpdateNestedResourceTypeSecondHandleResponse handles the CreateOrUpdateNestedResourceTypeSecond response.
-func (client *SKUsClient) createOrUpdateNestedResourceTypeSecondHandleResponse(resp *http.Response) (SKUsClientCreateOrUpdateNestedResourceTypeSecondResponse, error) {
+func (client *SKUsClient) createOrUpdateNestedResourceTypeSecondHandleResponse(resp *http.Response, successCodes ...int) (SKUsClientCreateOrUpdateNestedResourceTypeSecondResponse, error) {
 	result := SKUsClientCreateOrUpdateNestedResourceTypeSecondResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUResource); err != nil {
 		return SKUsClientCreateOrUpdateNestedResourceTypeSecondResponse{}, err
 	}
@@ -280,8 +270,6 @@ func (client *SKUsClient) createOrUpdateNestedResourceTypeSecondHandleResponse(r
 
 // CreateOrUpdateNestedResourceTypeThird - Creates or updates the resource type skus in the given resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -305,12 +293,7 @@ func (client *SKUsClient) CreateOrUpdateNestedResourceTypeThird(ctx context.Cont
 	if err != nil {
 		return SKUsClientCreateOrUpdateNestedResourceTypeThirdResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SKUsClientCreateOrUpdateNestedResourceTypeThirdResponse{}, err
-	}
-	resp, err := client.createOrUpdateNestedResourceTypeThirdHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateNestedResourceTypeThirdHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateNestedResourceTypeThirdCreateRequest creates the CreateOrUpdateNestedResourceTypeThird request.
@@ -349,8 +332,8 @@ func (client *SKUsClient) createOrUpdateNestedResourceTypeThirdCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -360,8 +343,11 @@ func (client *SKUsClient) createOrUpdateNestedResourceTypeThirdCreateRequest(ctx
 }
 
 // createOrUpdateNestedResourceTypeThirdHandleResponse handles the CreateOrUpdateNestedResourceTypeThird response.
-func (client *SKUsClient) createOrUpdateNestedResourceTypeThirdHandleResponse(resp *http.Response) (SKUsClientCreateOrUpdateNestedResourceTypeThirdResponse, error) {
+func (client *SKUsClient) createOrUpdateNestedResourceTypeThirdHandleResponse(resp *http.Response, successCodes ...int) (SKUsClientCreateOrUpdateNestedResourceTypeThirdResponse, error) {
 	result := SKUsClientCreateOrUpdateNestedResourceTypeThirdResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUResource); err != nil {
 		return SKUsClientCreateOrUpdateNestedResourceTypeThirdResponse{}, err
 	}
@@ -370,8 +356,6 @@ func (client *SKUsClient) createOrUpdateNestedResourceTypeThirdHandleResponse(re
 
 // Delete - Deletes a resource type sku.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - sku - The SKU.
@@ -391,8 +375,7 @@ func (client *SKUsClient) Delete(ctx context.Context, providerNamespace string, 
 		return SKUsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SKUsClientDeleteResponse{}, err
+		return SKUsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SKUsClientDeleteResponse{}, nil
 }
@@ -421,15 +404,13 @@ func (client *SKUsClient) deleteCreateRequest(ctx context.Context, providerNames
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // DeleteNestedResourceTypeFirst - Deletes a resource type sku.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -451,8 +432,7 @@ func (client *SKUsClient) DeleteNestedResourceTypeFirst(ctx context.Context, pro
 		return SKUsClientDeleteNestedResourceTypeFirstResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SKUsClientDeleteNestedResourceTypeFirstResponse{}, err
+		return SKUsClientDeleteNestedResourceTypeFirstResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SKUsClientDeleteNestedResourceTypeFirstResponse{}, nil
 }
@@ -485,15 +465,13 @@ func (client *SKUsClient) deleteNestedResourceTypeFirstCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // DeleteNestedResourceTypeSecond - Deletes a resource type sku.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -516,8 +494,7 @@ func (client *SKUsClient) DeleteNestedResourceTypeSecond(ctx context.Context, pr
 		return SKUsClientDeleteNestedResourceTypeSecondResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SKUsClientDeleteNestedResourceTypeSecondResponse{}, err
+		return SKUsClientDeleteNestedResourceTypeSecondResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SKUsClientDeleteNestedResourceTypeSecondResponse{}, nil
 }
@@ -554,15 +531,13 @@ func (client *SKUsClient) deleteNestedResourceTypeSecondCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // DeleteNestedResourceTypeThird - Deletes a resource type sku.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -586,8 +561,7 @@ func (client *SKUsClient) DeleteNestedResourceTypeThird(ctx context.Context, pro
 		return SKUsClientDeleteNestedResourceTypeThirdResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SKUsClientDeleteNestedResourceTypeThirdResponse{}, err
+		return SKUsClientDeleteNestedResourceTypeThirdResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SKUsClientDeleteNestedResourceTypeThirdResponse{}, nil
 }
@@ -628,15 +602,13 @@ func (client *SKUsClient) deleteNestedResourceTypeThirdCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the sku details for the given resource type and sku name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - sku - The SKU.
@@ -655,12 +627,7 @@ func (client *SKUsClient) Get(ctx context.Context, providerNamespace string, res
 	if err != nil {
 		return SKUsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SKUsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -687,15 +654,18 @@ func (client *SKUsClient) getCreateRequest(ctx context.Context, providerNamespac
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SKUsClient) getHandleResponse(resp *http.Response) (SKUsClientGetResponse, error) {
+func (client *SKUsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SKUsClientGetResponse, error) {
 	result := SKUsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUResource); err != nil {
 		return SKUsClientGetResponse{}, err
 	}
@@ -704,8 +674,6 @@ func (client *SKUsClient) getHandleResponse(resp *http.Response) (SKUsClientGetR
 
 // GetNestedResourceTypeFirst - Gets the sku details for the given resource type and sku name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -726,12 +694,7 @@ func (client *SKUsClient) GetNestedResourceTypeFirst(ctx context.Context, provid
 	if err != nil {
 		return SKUsClientGetNestedResourceTypeFirstResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SKUsClientGetNestedResourceTypeFirstResponse{}, err
-	}
-	resp, err := client.getNestedResourceTypeFirstHandleResponse(httpResp)
-	return resp, err
+	return client.getNestedResourceTypeFirstHandleResponse(httpResp, http.StatusOK)
 }
 
 // getNestedResourceTypeFirstCreateRequest creates the GetNestedResourceTypeFirst request.
@@ -762,15 +725,18 @@ func (client *SKUsClient) getNestedResourceTypeFirstCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getNestedResourceTypeFirstHandleResponse handles the GetNestedResourceTypeFirst response.
-func (client *SKUsClient) getNestedResourceTypeFirstHandleResponse(resp *http.Response) (SKUsClientGetNestedResourceTypeFirstResponse, error) {
+func (client *SKUsClient) getNestedResourceTypeFirstHandleResponse(resp *http.Response, successCodes ...int) (SKUsClientGetNestedResourceTypeFirstResponse, error) {
 	result := SKUsClientGetNestedResourceTypeFirstResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUResource); err != nil {
 		return SKUsClientGetNestedResourceTypeFirstResponse{}, err
 	}
@@ -779,8 +745,6 @@ func (client *SKUsClient) getNestedResourceTypeFirstHandleResponse(resp *http.Re
 
 // GetNestedResourceTypeSecond - Gets the sku details for the given resource type and sku name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -802,12 +766,7 @@ func (client *SKUsClient) GetNestedResourceTypeSecond(ctx context.Context, provi
 	if err != nil {
 		return SKUsClientGetNestedResourceTypeSecondResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SKUsClientGetNestedResourceTypeSecondResponse{}, err
-	}
-	resp, err := client.getNestedResourceTypeSecondHandleResponse(httpResp)
-	return resp, err
+	return client.getNestedResourceTypeSecondHandleResponse(httpResp, http.StatusOK)
 }
 
 // getNestedResourceTypeSecondCreateRequest creates the GetNestedResourceTypeSecond request.
@@ -842,15 +801,18 @@ func (client *SKUsClient) getNestedResourceTypeSecondCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getNestedResourceTypeSecondHandleResponse handles the GetNestedResourceTypeSecond response.
-func (client *SKUsClient) getNestedResourceTypeSecondHandleResponse(resp *http.Response) (SKUsClientGetNestedResourceTypeSecondResponse, error) {
+func (client *SKUsClient) getNestedResourceTypeSecondHandleResponse(resp *http.Response, successCodes ...int) (SKUsClientGetNestedResourceTypeSecondResponse, error) {
 	result := SKUsClientGetNestedResourceTypeSecondResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUResource); err != nil {
 		return SKUsClientGetNestedResourceTypeSecondResponse{}, err
 	}
@@ -859,8 +821,6 @@ func (client *SKUsClient) getNestedResourceTypeSecondHandleResponse(resp *http.R
 
 // GetNestedResourceTypeThird - Gets the sku details for the given resource type and sku name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -883,12 +843,7 @@ func (client *SKUsClient) GetNestedResourceTypeThird(ctx context.Context, provid
 	if err != nil {
 		return SKUsClientGetNestedResourceTypeThirdResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SKUsClientGetNestedResourceTypeThirdResponse{}, err
-	}
-	resp, err := client.getNestedResourceTypeThirdHandleResponse(httpResp)
-	return resp, err
+	return client.getNestedResourceTypeThirdHandleResponse(httpResp, http.StatusOK)
 }
 
 // getNestedResourceTypeThirdCreateRequest creates the GetNestedResourceTypeThird request.
@@ -927,15 +882,18 @@ func (client *SKUsClient) getNestedResourceTypeThirdCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getNestedResourceTypeThirdHandleResponse handles the GetNestedResourceTypeThird response.
-func (client *SKUsClient) getNestedResourceTypeThirdHandleResponse(resp *http.Response) (SKUsClientGetNestedResourceTypeThirdResponse, error) {
+func (client *SKUsClient) getNestedResourceTypeThirdHandleResponse(resp *http.Response, successCodes ...int) (SKUsClientGetNestedResourceTypeThirdResponse, error) {
 	result := SKUsClientGetNestedResourceTypeThirdResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUResource); err != nil {
 		return SKUsClientGetNestedResourceTypeThirdResponse{}, err
 	}
@@ -943,8 +901,6 @@ func (client *SKUsClient) getNestedResourceTypeThirdHandleResponse(resp *http.Re
 }
 
 // NewListByResourceTypeRegistrationsPager - Gets the list of skus for the given resource type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - options - SKUsClientListByResourceTypeRegistrationsOptions contains the optional parameters for the SKUsClient.NewListByResourceTypeRegistrationsPager
@@ -960,47 +916,61 @@ func (client *SKUsClient) NewListByResourceTypeRegistrationsPager(providerNamesp
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceTypeRegistrationsCreateRequest(ctx, providerNamespace, resourceType, options)
-			}, nil)
+			req, err := client.listByResourceTypeRegistrationsCreateRequest(ctx, providerNamespace, resourceType, nextLink, options)
 			if err != nil {
 				return SKUsClientListByResourceTypeRegistrationsResponse{}, err
 			}
-			return client.listByResourceTypeRegistrationsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SKUsClientListByResourceTypeRegistrationsResponse{}, err
+			}
+			return client.listByResourceTypeRegistrationsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceTypeRegistrationsCreateRequest creates the ListByResourceTypeRegistrations request.
-func (client *SKUsClient) listByResourceTypeRegistrationsCreateRequest(ctx context.Context, providerNamespace string, resourceType string, _ *SKUsClientListByResourceTypeRegistrationsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SKUsClient) listByResourceTypeRegistrationsCreateRequest(ctx context.Context, providerNamespace string, resourceType string, nextLink string, _ *SKUsClientListByResourceTypeRegistrationsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/skus"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if providerNamespace == "" {
+			return nil, errors.New("parameter providerNamespace cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
+		if resourceType == "" {
+			return nil, errors.New("parameter resourceType cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if providerNamespace == "" {
-		return nil, errors.New("parameter providerNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceTypeRegistrationsHandleResponse handles the ListByResourceTypeRegistrations response.
-func (client *SKUsClient) listByResourceTypeRegistrationsHandleResponse(resp *http.Response) (SKUsClientListByResourceTypeRegistrationsResponse, error) {
+func (client *SKUsClient) listByResourceTypeRegistrationsHandleResponse(resp *http.Response, successCodes ...int) (SKUsClientListByResourceTypeRegistrationsResponse, error) {
 	result := SKUsClientListByResourceTypeRegistrationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUResourceArrayResponseWithContinuation); err != nil {
 		return SKUsClientListByResourceTypeRegistrationsResponse{}, err
 	}
@@ -1008,8 +978,6 @@ func (client *SKUsClient) listByResourceTypeRegistrationsHandleResponse(resp *ht
 }
 
 // NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager - Gets the list of skus for the given resource type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -1026,51 +994,65 @@ func (client *SKUsClient) NewListByResourceTypeRegistrationsNestedResourceTypeFi
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceTypeRegistrationsNestedResourceTypeFirstCreateRequest(ctx, providerNamespace, resourceType, nestedResourceTypeFirst, options)
-			}, nil)
+			req, err := client.listByResourceTypeRegistrationsNestedResourceTypeFirstCreateRequest(ctx, providerNamespace, resourceType, nestedResourceTypeFirst, nextLink, options)
 			if err != nil {
 				return SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse{}, err
 			}
-			return client.listByResourceTypeRegistrationsNestedResourceTypeFirstHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse{}, err
+			}
+			return client.listByResourceTypeRegistrationsNestedResourceTypeFirstHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceTypeRegistrationsNestedResourceTypeFirstCreateRequest creates the ListByResourceTypeRegistrationsNestedResourceTypeFirst request.
-func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeFirstCreateRequest(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, _ *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeFirstCreateRequest(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, nextLink string, _ *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/skus"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if providerNamespace == "" {
+			return nil, errors.New("parameter providerNamespace cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
+		if resourceType == "" {
+			return nil, errors.New("parameter resourceType cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
+		if nestedResourceTypeFirst == "" {
+			return nil, errors.New("parameter nestedResourceTypeFirst cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{nestedResourceTypeFirst}", url.PathEscape(nestedResourceTypeFirst))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if providerNamespace == "" {
-		return nil, errors.New("parameter providerNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
-	if nestedResourceTypeFirst == "" {
-		return nil, errors.New("parameter nestedResourceTypeFirst cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{nestedResourceTypeFirst}", url.PathEscape(nestedResourceTypeFirst))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceTypeRegistrationsNestedResourceTypeFirstHandleResponse handles the ListByResourceTypeRegistrationsNestedResourceTypeFirst response.
-func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeFirstHandleResponse(resp *http.Response) (SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse, error) {
+func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeFirstHandleResponse(resp *http.Response, successCodes ...int) (SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse, error) {
 	result := SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUResourceArrayResponseWithContinuation); err != nil {
 		return SKUsClientListByResourceTypeRegistrationsNestedResourceTypeFirstResponse{}, err
 	}
@@ -1078,8 +1060,6 @@ func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeFirst
 }
 
 // NewListByResourceTypeRegistrationsNestedResourceTypeSecondPager - Gets the list of skus for the given resource type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -1097,55 +1077,69 @@ func (client *SKUsClient) NewListByResourceTypeRegistrationsNestedResourceTypeSe
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceTypeRegistrationsNestedResourceTypeSecondCreateRequest(ctx, providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, options)
-			}, nil)
+			req, err := client.listByResourceTypeRegistrationsNestedResourceTypeSecondCreateRequest(ctx, providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, nextLink, options)
 			if err != nil {
 				return SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse{}, err
 			}
-			return client.listByResourceTypeRegistrationsNestedResourceTypeSecondHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse{}, err
+			}
+			return client.listByResourceTypeRegistrationsNestedResourceTypeSecondHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceTypeRegistrationsNestedResourceTypeSecondCreateRequest creates the ListByResourceTypeRegistrationsNestedResourceTypeSecond request.
-func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeSecondCreateRequest(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, _ *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeSecondCreateRequest(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, nextLink string, _ *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/resourcetypeRegistrations/{nestedResourceTypeSecond}/skus"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if providerNamespace == "" {
+			return nil, errors.New("parameter providerNamespace cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
+		if resourceType == "" {
+			return nil, errors.New("parameter resourceType cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
+		if nestedResourceTypeFirst == "" {
+			return nil, errors.New("parameter nestedResourceTypeFirst cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{nestedResourceTypeFirst}", url.PathEscape(nestedResourceTypeFirst))
+		if nestedResourceTypeSecond == "" {
+			return nil, errors.New("parameter nestedResourceTypeSecond cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{nestedResourceTypeSecond}", url.PathEscape(nestedResourceTypeSecond))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if providerNamespace == "" {
-		return nil, errors.New("parameter providerNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
-	if nestedResourceTypeFirst == "" {
-		return nil, errors.New("parameter nestedResourceTypeFirst cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{nestedResourceTypeFirst}", url.PathEscape(nestedResourceTypeFirst))
-	if nestedResourceTypeSecond == "" {
-		return nil, errors.New("parameter nestedResourceTypeSecond cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{nestedResourceTypeSecond}", url.PathEscape(nestedResourceTypeSecond))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceTypeRegistrationsNestedResourceTypeSecondHandleResponse handles the ListByResourceTypeRegistrationsNestedResourceTypeSecond response.
-func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeSecondHandleResponse(resp *http.Response) (SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse, error) {
+func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeSecondHandleResponse(resp *http.Response, successCodes ...int) (SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse, error) {
 	result := SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUResourceArrayResponseWithContinuation); err != nil {
 		return SKUsClientListByResourceTypeRegistrationsNestedResourceTypeSecondResponse{}, err
 	}
@@ -1153,8 +1147,6 @@ func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeSecon
 }
 
 // NewListByResourceTypeRegistrationsNestedResourceTypeThirdPager - Gets the list of skus for the given resource type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - nestedResourceTypeFirst - The first child resource type.
@@ -1173,59 +1165,73 @@ func (client *SKUsClient) NewListByResourceTypeRegistrationsNestedResourceTypeTh
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceTypeRegistrationsNestedResourceTypeThirdCreateRequest(ctx, providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird, options)
-			}, nil)
+			req, err := client.listByResourceTypeRegistrationsNestedResourceTypeThirdCreateRequest(ctx, providerNamespace, resourceType, nestedResourceTypeFirst, nestedResourceTypeSecond, nestedResourceTypeThird, nextLink, options)
 			if err != nil {
 				return SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse{}, err
 			}
-			return client.listByResourceTypeRegistrationsNestedResourceTypeThirdHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse{}, err
+			}
+			return client.listByResourceTypeRegistrationsNestedResourceTypeThirdHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceTypeRegistrationsNestedResourceTypeThirdCreateRequest creates the ListByResourceTypeRegistrationsNestedResourceTypeThird request.
-func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeThirdCreateRequest(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, nestedResourceTypeThird string, _ *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations/{nestedResourceTypeThird}/skus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeThirdCreateRequest(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, nestedResourceTypeSecond string, nestedResourceTypeThird string, nextLink string, _ *SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}/resourcetypeRegistrations/{nestedResourceTypeFirst}/resourcetypeRegistrations/{nestedResourceTypeSecond}/resourcetypeRegistrations/{nestedResourceTypeThird}/skus"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if providerNamespace == "" {
+			return nil, errors.New("parameter providerNamespace cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
+		if resourceType == "" {
+			return nil, errors.New("parameter resourceType cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
+		if nestedResourceTypeFirst == "" {
+			return nil, errors.New("parameter nestedResourceTypeFirst cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{nestedResourceTypeFirst}", url.PathEscape(nestedResourceTypeFirst))
+		if nestedResourceTypeSecond == "" {
+			return nil, errors.New("parameter nestedResourceTypeSecond cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{nestedResourceTypeSecond}", url.PathEscape(nestedResourceTypeSecond))
+		if nestedResourceTypeThird == "" {
+			return nil, errors.New("parameter nestedResourceTypeThird cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{nestedResourceTypeThird}", url.PathEscape(nestedResourceTypeThird))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if providerNamespace == "" {
-		return nil, errors.New("parameter providerNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", url.PathEscape(resourceType))
-	if nestedResourceTypeFirst == "" {
-		return nil, errors.New("parameter nestedResourceTypeFirst cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{nestedResourceTypeFirst}", url.PathEscape(nestedResourceTypeFirst))
-	if nestedResourceTypeSecond == "" {
-		return nil, errors.New("parameter nestedResourceTypeSecond cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{nestedResourceTypeSecond}", url.PathEscape(nestedResourceTypeSecond))
-	if nestedResourceTypeThird == "" {
-		return nil, errors.New("parameter nestedResourceTypeThird cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{nestedResourceTypeThird}", url.PathEscape(nestedResourceTypeThird))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceTypeRegistrationsNestedResourceTypeThirdHandleResponse handles the ListByResourceTypeRegistrationsNestedResourceTypeThird response.
-func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeThirdHandleResponse(resp *http.Response) (SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse, error) {
+func (client *SKUsClient) listByResourceTypeRegistrationsNestedResourceTypeThirdHandleResponse(resp *http.Response, successCodes ...int) (SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse, error) {
 	result := SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUResourceArrayResponseWithContinuation); err != nil {
 		return SKUsClientListByResourceTypeRegistrationsNestedResourceTypeThirdResponse{}, err
 	}

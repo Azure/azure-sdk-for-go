@@ -60,12 +60,7 @@ func (client *CheckScopedNameAvailabilityClient) Execute(ctx context.Context, na
 	if err != nil {
 		return CheckScopedNameAvailabilityClientExecuteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CheckScopedNameAvailabilityClientExecuteResponse{}, err
-	}
-	resp, err := client.executeHandleResponse(httpResp)
-	return resp, err
+	return client.executeHandleResponse(httpResp, http.StatusOK)
 }
 
 // executeCreateRequest creates the Execute request.
@@ -91,8 +86,11 @@ func (client *CheckScopedNameAvailabilityClient) executeCreateRequest(ctx contex
 }
 
 // executeHandleResponse handles the Execute response.
-func (client *CheckScopedNameAvailabilityClient) executeHandleResponse(resp *http.Response) (CheckScopedNameAvailabilityClientExecuteResponse, error) {
+func (client *CheckScopedNameAvailabilityClient) executeHandleResponse(resp *http.Response, successCodes ...int) (CheckScopedNameAvailabilityClientExecuteResponse, error) {
 	result := CheckScopedNameAvailabilityClientExecuteResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResponse); err != nil {
 		return CheckScopedNameAvailabilityClientExecuteResponse{}, err
 	}

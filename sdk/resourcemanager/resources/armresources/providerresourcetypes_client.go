@@ -60,12 +60,7 @@ func (client *ProviderResourceTypesClient) List(ctx context.Context, resourcePro
 	if err != nil {
 		return ProviderResourceTypesClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProviderResourceTypesClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -94,8 +89,11 @@ func (client *ProviderResourceTypesClient) listCreateRequest(ctx context.Context
 }
 
 // listHandleResponse handles the List response.
-func (client *ProviderResourceTypesClient) listHandleResponse(resp *http.Response) (ProviderResourceTypesClientListResponse, error) {
+func (client *ProviderResourceTypesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ProviderResourceTypesClientListResponse, error) {
 	result := ProviderResourceTypesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderResourceTypeListResult); err != nil {
 		return ProviderResourceTypesClientListResponse{}, err
 	}

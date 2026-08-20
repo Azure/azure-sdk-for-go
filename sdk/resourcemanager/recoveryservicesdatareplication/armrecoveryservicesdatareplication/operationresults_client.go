@@ -62,12 +62,7 @@ func (client *OperationResultsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return OperationResultsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationResultsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -97,8 +92,11 @@ func (client *OperationResultsClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *OperationResultsClient) getHandleResponse(resp *http.Response) (OperationResultsClientGetResponse, error) {
+func (client *OperationResultsClient) getHandleResponse(resp *http.Response, successCodes ...int) (OperationResultsClientGetResponse, error) {
 	result := OperationResultsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
 		return OperationResultsClientGetResponse{}, err
 	}

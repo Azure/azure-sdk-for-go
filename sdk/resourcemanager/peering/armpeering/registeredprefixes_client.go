@@ -18,6 +18,8 @@ import (
 
 // RegisteredPrefixesClient contains the methods for the RegisteredPrefixes group.
 // Don't use this type directly, use NewRegisteredPrefixesClient() instead.
+//
+// Generated from API version 2025-05-01
 type RegisteredPrefixesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewRegisteredPrefixesClient(subscriptionID string, credential azcore.TokenC
 // CreateOrUpdate - Creates a new registered prefix with the specified name under the given subscription, resource group and
 // peering.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringName - The name of the peering.
 //   - registeredPrefixName - The name of the registered prefix.
@@ -64,12 +64,7 @@ func (client *RegisteredPrefixesClient) CreateOrUpdate(ctx context.Context, reso
 	if err != nil {
 		return RegisteredPrefixesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return RegisteredPrefixesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -96,8 +91,8 @@ func (client *RegisteredPrefixesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, registeredPrefix); err != nil {
@@ -107,8 +102,11 @@ func (client *RegisteredPrefixesClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RegisteredPrefixesClient) createOrUpdateHandleResponse(resp *http.Response) (RegisteredPrefixesClientCreateOrUpdateResponse, error) {
+func (client *RegisteredPrefixesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (RegisteredPrefixesClientCreateOrUpdateResponse, error) {
 	result := RegisteredPrefixesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegisteredPrefix); err != nil {
 		return RegisteredPrefixesClientCreateOrUpdateResponse{}, err
 	}
@@ -118,8 +116,6 @@ func (client *RegisteredPrefixesClient) createOrUpdateHandleResponse(resp *http.
 // Delete - Deletes an existing registered prefix with the specified name under the given subscription, resource group and
 // peering.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringName - The name of the peering.
 //   - registeredPrefixName - The name of the registered prefix.
@@ -140,8 +136,7 @@ func (client *RegisteredPrefixesClient) Delete(ctx context.Context, resourceGrou
 		return RegisteredPrefixesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return RegisteredPrefixesClientDeleteResponse{}, err
+		return RegisteredPrefixesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return RegisteredPrefixesClientDeleteResponse{}, nil
 }
@@ -170,15 +165,13 @@ func (client *RegisteredPrefixesClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an existing registered prefix with the specified name under the given subscription, resource group and peering.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringName - The name of the peering.
 //   - registeredPrefixName - The name of the registered prefix.
@@ -197,12 +190,7 @@ func (client *RegisteredPrefixesClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return RegisteredPrefixesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegisteredPrefixesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -229,15 +217,18 @@ func (client *RegisteredPrefixesClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RegisteredPrefixesClient) getHandleResponse(resp *http.Response) (RegisteredPrefixesClientGetResponse, error) {
+func (client *RegisteredPrefixesClient) getHandleResponse(resp *http.Response, successCodes ...int) (RegisteredPrefixesClientGetResponse, error) {
 	result := RegisteredPrefixesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegisteredPrefix); err != nil {
 		return RegisteredPrefixesClientGetResponse{}, err
 	}
@@ -245,8 +236,6 @@ func (client *RegisteredPrefixesClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListByPeeringPager - Lists all registered prefixes under the given subscription, resource group and peering.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringName - The name of the peering.
 //   - options - RegisteredPrefixesClientListByPeeringOptions contains the optional parameters for the RegisteredPrefixesClient.NewListByPeeringPager
@@ -262,47 +251,61 @@ func (client *RegisteredPrefixesClient) NewListByPeeringPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByPeeringCreateRequest(ctx, resourceGroupName, peeringName, options)
-			}, nil)
+			req, err := client.listByPeeringCreateRequest(ctx, resourceGroupName, peeringName, nextLink, options)
 			if err != nil {
 				return RegisteredPrefixesClientListByPeeringResponse{}, err
 			}
-			return client.listByPeeringHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RegisteredPrefixesClientListByPeeringResponse{}, err
+			}
+			return client.listByPeeringHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByPeeringCreateRequest creates the ListByPeering request.
-func (client *RegisteredPrefixesClient) listByPeeringCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, _ *RegisteredPrefixesClientListByPeeringOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}/registeredPrefixes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RegisteredPrefixesClient) listByPeeringCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, nextLink string, _ *RegisteredPrefixesClientListByPeeringOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}/registeredPrefixes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if peeringName == "" {
+			return nil, errors.New("parameter peeringName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{peeringName}", url.PathEscape(peeringName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if peeringName == "" {
-		return nil, errors.New("parameter peeringName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{peeringName}", url.PathEscape(peeringName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByPeeringHandleResponse handles the ListByPeering response.
-func (client *RegisteredPrefixesClient) listByPeeringHandleResponse(resp *http.Response) (RegisteredPrefixesClientListByPeeringResponse, error) {
+func (client *RegisteredPrefixesClient) listByPeeringHandleResponse(resp *http.Response, successCodes ...int) (RegisteredPrefixesClientListByPeeringResponse, error) {
 	result := RegisteredPrefixesClientListByPeeringResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegisteredPrefixListResult); err != nil {
 		return RegisteredPrefixesClientListByPeeringResponse{}, err
 	}
@@ -312,8 +315,6 @@ func (client *RegisteredPrefixesClient) listByPeeringHandleResponse(resp *http.R
 // Validate - Validates an existing registered prefix with the specified name under the given subscription, resource group
 // and peering.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringName - The name of the peering.
 //   - registeredPrefixName - The name of the registered prefix.
@@ -333,12 +334,7 @@ func (client *RegisteredPrefixesClient) Validate(ctx context.Context, resourceGr
 	if err != nil {
 		return RegisteredPrefixesClientValidateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegisteredPrefixesClientValidateResponse{}, err
-	}
-	resp, err := client.validateHandleResponse(httpResp)
-	return resp, err
+	return client.validateHandleResponse(httpResp, http.StatusOK)
 }
 
 // validateCreateRequest creates the Validate request.
@@ -365,15 +361,18 @@ func (client *RegisteredPrefixesClient) validateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // validateHandleResponse handles the Validate response.
-func (client *RegisteredPrefixesClient) validateHandleResponse(resp *http.Response) (RegisteredPrefixesClientValidateResponse, error) {
+func (client *RegisteredPrefixesClient) validateHandleResponse(resp *http.Response, successCodes ...int) (RegisteredPrefixesClientValidateResponse, error) {
 	result := RegisteredPrefixesClientValidateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegisteredPrefix); err != nil {
 		return RegisteredPrefixesClientValidateResponse{}, err
 	}

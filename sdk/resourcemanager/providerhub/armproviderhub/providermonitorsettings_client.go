@@ -18,6 +18,8 @@ import (
 
 // ProviderMonitorSettingsClient contains the methods for the ProviderMonitorSettings group.
 // Don't use this type directly, use NewProviderMonitorSettingsClient() instead.
+//
+// Generated from API version 2024-09-01
 type ProviderMonitorSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewProviderMonitorSettingsClient(subscriptionID string, credential azcore.T
 
 // BeginCreate - Creates the provider monitor setting.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerMonitorSettingName - The name of the provider monitor setting.
 //   - properties - The provider monitor setting properties supplied to the create operation.
@@ -67,8 +67,6 @@ func (client *ProviderMonitorSettingsClient) BeginCreate(ctx context.Context, re
 
 // Create - Creates the provider monitor setting.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *ProviderMonitorSettingsClient) create(ctx context.Context, resourceGroupName string, providerMonitorSettingName string, properties ProviderMonitorSetting, options *ProviderMonitorSettingsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProviderMonitorSettingsClient.BeginCreate"
@@ -84,8 +82,7 @@ func (client *ProviderMonitorSettingsClient) create(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -110,8 +107,8 @@ func (client *ProviderMonitorSettingsClient) createCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -122,8 +119,6 @@ func (client *ProviderMonitorSettingsClient) createCreateRequest(ctx context.Con
 
 // Delete - Deletes a provider monitor setting.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerMonitorSettingName - The name of the provider monitor setting.
 //   - options - ProviderMonitorSettingsClientDeleteOptions contains the optional parameters for the ProviderMonitorSettingsClient.Delete
@@ -143,8 +138,7 @@ func (client *ProviderMonitorSettingsClient) Delete(ctx context.Context, resourc
 		return ProviderMonitorSettingsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ProviderMonitorSettingsClientDeleteResponse{}, err
+		return ProviderMonitorSettingsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ProviderMonitorSettingsClientDeleteResponse{}, nil
 }
@@ -169,15 +163,13 @@ func (client *ProviderMonitorSettingsClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the provider monitor setting details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerMonitorSettingName - The name of the provider monitor setting.
 //   - options - ProviderMonitorSettingsClientGetOptions contains the optional parameters for the ProviderMonitorSettingsClient.Get
@@ -196,12 +188,7 @@ func (client *ProviderMonitorSettingsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return ProviderMonitorSettingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProviderMonitorSettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -224,15 +211,18 @@ func (client *ProviderMonitorSettingsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProviderMonitorSettingsClient) getHandleResponse(resp *http.Response) (ProviderMonitorSettingsClientGetResponse, error) {
+func (client *ProviderMonitorSettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProviderMonitorSettingsClientGetResponse, error) {
 	result := ProviderMonitorSettingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderMonitorSetting); err != nil {
 		return ProviderMonitorSettingsClientGetResponse{}, err
 	}
@@ -240,8 +230,6 @@ func (client *ProviderMonitorSettingsClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListByResourceGroupPager - Gets the list of the provider monitor settings in the resource group.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProviderMonitorSettingsClientListByResourceGroupOptions contains the optional parameters for the ProviderMonitorSettingsClient.NewListByResourceGroupPager
 //     method.
@@ -256,43 +244,57 @@ func (client *ProviderMonitorSettingsClient) NewListByResourceGroupPager(resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return ProviderMonitorSettingsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProviderMonitorSettingsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ProviderMonitorSettingsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ProviderMonitorSettingsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProviderHub/providerMonitorSettings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ProviderMonitorSettingsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ProviderMonitorSettingsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProviderHub/providerMonitorSettings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ProviderMonitorSettingsClient) listByResourceGroupHandleResponse(resp *http.Response) (ProviderMonitorSettingsClientListByResourceGroupResponse, error) {
+func (client *ProviderMonitorSettingsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ProviderMonitorSettingsClientListByResourceGroupResponse, error) {
 	result := ProviderMonitorSettingsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderMonitorSettingArrayResponseWithContinuation); err != nil {
 		return ProviderMonitorSettingsClientListByResourceGroupResponse{}, err
 	}
@@ -300,8 +302,6 @@ func (client *ProviderMonitorSettingsClient) listByResourceGroupHandleResponse(r
 }
 
 // NewListBySubscriptionPager - Gets the list of the provider monitor settings in the subscription.
-//
-// Generated from API version 2024-09-01
 //   - options - ProviderMonitorSettingsClientListBySubscriptionOptions contains the optional parameters for the ProviderMonitorSettingsClient.NewListBySubscriptionPager
 //     method.
 func (client *ProviderMonitorSettingsClient) NewListBySubscriptionPager(options *ProviderMonitorSettingsClientListBySubscriptionOptions) *runtime.Pager[ProviderMonitorSettingsClientListBySubscriptionResponse] {
@@ -315,39 +315,53 @@ func (client *ProviderMonitorSettingsClient) NewListBySubscriptionPager(options 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ProviderMonitorSettingsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProviderMonitorSettingsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ProviderMonitorSettingsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *ProviderMonitorSettingsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerMonitorSettings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ProviderMonitorSettingsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *ProviderMonitorSettingsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerMonitorSettings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ProviderMonitorSettingsClient) listBySubscriptionHandleResponse(resp *http.Response) (ProviderMonitorSettingsClientListBySubscriptionResponse, error) {
+func (client *ProviderMonitorSettingsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (ProviderMonitorSettingsClientListBySubscriptionResponse, error) {
 	result := ProviderMonitorSettingsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderMonitorSettingArrayResponseWithContinuation); err != nil {
 		return ProviderMonitorSettingsClientListBySubscriptionResponse{}, err
 	}
@@ -357,8 +371,6 @@ func (client *ProviderMonitorSettingsClient) listBySubscriptionHandleResponse(re
 // Update - Updates the provider monitor setting properties as specified in the request body. Update fails if the specified
 // provider monitor setting does not already exist.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - providerMonitorSettingName - The name of the provider monitor setting.
 //   - options - ProviderMonitorSettingsClientUpdateOptions contains the optional parameters for the ProviderMonitorSettingsClient.Update
@@ -377,12 +389,7 @@ func (client *ProviderMonitorSettingsClient) Update(ctx context.Context, resourc
 	if err != nil {
 		return ProviderMonitorSettingsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProviderMonitorSettingsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -405,15 +412,18 @@ func (client *ProviderMonitorSettingsClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ProviderMonitorSettingsClient) updateHandleResponse(resp *http.Response) (ProviderMonitorSettingsClientUpdateResponse, error) {
+func (client *ProviderMonitorSettingsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ProviderMonitorSettingsClientUpdateResponse, error) {
 	result := ProviderMonitorSettingsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProviderMonitorSetting); err != nil {
 		return ProviderMonitorSettingsClientUpdateResponse{}, err
 	}

@@ -35,7 +35,7 @@ func ExampleMigrationRecoveryPointsClient_Get() {
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationMigrationItems/migrationRecoveryPoints"),
 	// 		ID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationFabrics/vmwarefabric1/replicationProtectionContainers/vmwareContainer1/replicationMigrationItems/virtualmachine1/migrationRecoveryPoints/b22134ea-620c-474b-9fa5-3c1cb47708e3"),
 	// 		Properties: &armrecoveryservicessiterecovery.MigrationRecoveryPointProperties{
-	// 			RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.8082715Z"); return t}()),
+	// 			RecoveryPointTime: to.Ptr(time.Date(2017, time.April, 26, 6, 37, 50, 808271500, time.UTC)),
 	// 			RecoveryPointType: to.Ptr(armrecoveryservicessiterecovery.MigrationRecoveryPointTypeCrashConsistent),
 	// 		},
 	// 	},
@@ -72,7 +72,7 @@ func ExampleMigrationRecoveryPointsClient_NewListByReplicationMigrationItemsPage
 		// 				Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationMigrationItems/migrationRecoveryPoints"),
 		// 				ID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationFabrics/vmwarefabric1/replicationProtectionContainers/vmwareContainer1/replicationMigrationItems/virtualmachine1/migrationRecoveryPoints/648336ef-2d70-4d98-b100-8c299f97cd41"),
 		// 				Properties: &armrecoveryservicessiterecovery.MigrationRecoveryPointProperties{
-		// 					RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T06:37:50.8082715Z"); return t}()),
+		// 					RecoveryPointTime: to.Ptr(time.Date(2017, time.April, 26, 6, 37, 50, 808271500, time.UTC)),
 		// 					RecoveryPointType: to.Ptr(armrecoveryservicessiterecovery.MigrationRecoveryPointTypeCrashConsistent),
 		// 				},
 		// 			},
@@ -81,7 +81,7 @@ func ExampleMigrationRecoveryPointsClient_NewListByReplicationMigrationItemsPage
 		// 				Type: to.Ptr("Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationMigrationItems/migrationRecoveryPoints"),
 		// 				ID: to.Ptr("/Subscriptions/cb53d0c3-bd59-4721-89bc-06916a9147ef/resourceGroups/resourcegroup1/providers/Microsoft.RecoveryServices/vaults/migrationvault/replicationFabrics/vmwarefabric1/replicationProtectionContainers/vmwareContainer1/replicationMigrationItems/virtualmachine1/migrationRecoveryPoints/34cb2d05-e730-4d3f-b96b-a60a5e92acb2"),
 		// 				Properties: &armrecoveryservicessiterecovery.MigrationRecoveryPointProperties{
-		// 					RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-04-26T07:37:30.9722019Z"); return t}()),
+		// 					RecoveryPointTime: to.Ptr(time.Date(2017, time.April, 26, 7, 37, 30, 972201900, time.UTC)),
 		// 					RecoveryPointType: to.Ptr(armrecoveryservicessiterecovery.MigrationRecoveryPointTypeCrashConsistent),
 		// 				},
 		// 			},

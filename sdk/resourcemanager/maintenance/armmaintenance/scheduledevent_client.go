@@ -65,12 +65,7 @@ func (client *ScheduledEventClient) Acknowledge(ctx context.Context, resourceGro
 	if err != nil {
 		return ScheduledEventClientAcknowledgeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ScheduledEventClientAcknowledgeResponse{}, err
-	}
-	resp, err := client.acknowledgeHandleResponse(httpResp)
-	return resp, err
+	return client.acknowledgeHandleResponse(httpResp, http.StatusOK)
 }
 
 // acknowledgeCreateRequest creates the Acknowledge request.
@@ -108,8 +103,11 @@ func (client *ScheduledEventClient) acknowledgeCreateRequest(ctx context.Context
 }
 
 // acknowledgeHandleResponse handles the Acknowledge response.
-func (client *ScheduledEventClient) acknowledgeHandleResponse(resp *http.Response) (ScheduledEventClientAcknowledgeResponse, error) {
+func (client *ScheduledEventClient) acknowledgeHandleResponse(resp *http.Response, successCodes ...int) (ScheduledEventClientAcknowledgeResponse, error) {
 	result := ScheduledEventClientAcknowledgeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScheduledEventApproveResponse); err != nil {
 		return ScheduledEventClientAcknowledgeResponse{}, err
 	}

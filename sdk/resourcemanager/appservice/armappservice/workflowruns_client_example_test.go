@@ -60,10 +60,10 @@ func ExampleWorkflowRunsClient_Get() {
 	// 			Correlation: &armappservice.Correlation{
 	// 				ClientTrackingID: to.Ptr("08586676746934337772206998657CU22"),
 	// 			},
-	// 			EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.5779999Z"); return t}()),
+	// 			EndTime: to.Ptr(time.Date(2018, time.August, 10, 20, 16, 32, 577999900, time.UTC)),
 	// 			Outputs: map[string]*armappservice.WorkflowOutputParameter{
 	// 			},
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.044238Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2018, time.August, 10, 20, 16, 32, 44238000, time.UTC)),
 	// 			Status: to.Ptr(armappservice.WorkflowStatusSucceeded),
 	// 			Trigger: &armappservice.WorkflowRunTrigger{
 	// 				Name: to.Ptr("Recurrence"),
@@ -71,12 +71,12 @@ func ExampleWorkflowRunsClient_Get() {
 	// 				Correlation: &armappservice.Correlation{
 	// 					ClientTrackingID: to.Ptr("08586676746934337772206998657CU22"),
 	// 				},
-	// 				EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.0387927Z"); return t}()),
-	// 				ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:31.6344174Z"); return t}()),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.0387927Z"); return t}()),
+	// 				EndTime: to.Ptr(time.Date(2018, time.August, 10, 20, 16, 32, 38792700, time.UTC)),
+	// 				ScheduledTime: to.Ptr(time.Date(2018, time.August, 10, 20, 16, 31, 634417400, time.UTC)),
+	// 				StartTime: to.Ptr(time.Date(2018, time.August, 10, 20, 16, 32, 38792700, time.UTC)),
 	// 				Status: to.Ptr(armappservice.WorkflowStatusSucceeded),
 	// 			},
-	// 			WaitEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.044238Z"); return t}()),
+	// 			WaitEndTime: to.Ptr(time.Date(2018, time.August, 10, 20, 16, 32, 44238000, time.UTC)),
 	// 			Workflow: &armappservice.ResourceReference{
 	// 				Name: to.Ptr("08586676754160363885"),
 	// 				Type: to.Ptr("Microsoft.Web/workflows/versions"),
@@ -120,10 +120,10 @@ func ExampleWorkflowRunsClient_NewListPager() {
 		// 					Correlation: &armappservice.Correlation{
 		// 						ClientTrackingID: to.Ptr("08586676746934337772206998657CU22"),
 		// 					},
-		// 					EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.5779999Z"); return t}()),
+		// 					EndTime: to.Ptr(time.Date(2018, time.August, 10, 20, 16, 32, 577999900, time.UTC)),
 		// 					Outputs: map[string]*armappservice.WorkflowOutputParameter{
 		// 					},
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.044238Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2018, time.August, 10, 20, 16, 32, 44238000, time.UTC)),
 		// 					Status: to.Ptr(armappservice.WorkflowStatusSucceeded),
 		// 					Trigger: &armappservice.WorkflowRunTrigger{
 		// 						Name: to.Ptr("Recurrence"),
@@ -131,12 +131,12 @@ func ExampleWorkflowRunsClient_NewListPager() {
 		// 						Correlation: &armappservice.Correlation{
 		// 							ClientTrackingID: to.Ptr("08586676746934337772206998657CU22"),
 		// 						},
-		// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.0387927Z"); return t}()),
-		// 						ScheduledTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:31.6344174Z"); return t}()),
-		// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.0387927Z"); return t}()),
+		// 						EndTime: to.Ptr(time.Date(2018, time.August, 10, 20, 16, 32, 38792700, time.UTC)),
+		// 						ScheduledTime: to.Ptr(time.Date(2018, time.August, 10, 20, 16, 31, 634417400, time.UTC)),
+		// 						StartTime: to.Ptr(time.Date(2018, time.August, 10, 20, 16, 32, 38792700, time.UTC)),
 		// 						Status: to.Ptr(armappservice.WorkflowStatusSucceeded),
 		// 					},
-		// 					WaitEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-10T20:16:32.044238Z"); return t}()),
+		// 					WaitEndTime: to.Ptr(time.Date(2018, time.August, 10, 20, 16, 32, 44238000, time.UTC)),
 		// 					Workflow: &armappservice.ResourceReference{
 		// 						Name: to.Ptr("08586676754160363885"),
 		// 						Type: to.Ptr("Microsoft.Web/workflows/versions"),

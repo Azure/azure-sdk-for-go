@@ -82,8 +82,7 @@ func (client *FirewallsClient) createOrUpdate(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -157,8 +156,7 @@ func (client *FirewallsClient) deleteOperation(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -207,12 +205,7 @@ func (client *FirewallsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return FirewallsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FirewallsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -242,8 +235,11 @@ func (client *FirewallsClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *FirewallsClient) getHandleResponse(resp *http.Response) (FirewallsClientGetResponse, error) {
+func (client *FirewallsClient) getHandleResponse(resp *http.Response, successCodes ...int) (FirewallsClientGetResponse, error) {
 	result := FirewallsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallResource); err != nil {
 		return FirewallsClientGetResponse{}, err
 	}
@@ -270,12 +266,7 @@ func (client *FirewallsClient) GetGlobalRulestack(ctx context.Context, resourceG
 	if err != nil {
 		return FirewallsClientGetGlobalRulestackResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FirewallsClientGetGlobalRulestackResponse{}, err
-	}
-	resp, err := client.getGlobalRulestackHandleResponse(httpResp)
-	return resp, err
+	return client.getGlobalRulestackHandleResponse(httpResp, http.StatusOK)
 }
 
 // getGlobalRulestackCreateRequest creates the GetGlobalRulestack request.
@@ -305,8 +296,11 @@ func (client *FirewallsClient) getGlobalRulestackCreateRequest(ctx context.Conte
 }
 
 // getGlobalRulestackHandleResponse handles the GetGlobalRulestack response.
-func (client *FirewallsClient) getGlobalRulestackHandleResponse(resp *http.Response) (FirewallsClientGetGlobalRulestackResponse, error) {
+func (client *FirewallsClient) getGlobalRulestackHandleResponse(resp *http.Response, successCodes ...int) (FirewallsClientGetGlobalRulestackResponse, error) {
 	result := FirewallsClientGetGlobalRulestackResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GlobalRulestackInfo); err != nil {
 		return FirewallsClientGetGlobalRulestackResponse{}, err
 	}
@@ -332,12 +326,7 @@ func (client *FirewallsClient) GetLogProfile(ctx context.Context, resourceGroupN
 	if err != nil {
 		return FirewallsClientGetLogProfileResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FirewallsClientGetLogProfileResponse{}, err
-	}
-	resp, err := client.getLogProfileHandleResponse(httpResp)
-	return resp, err
+	return client.getLogProfileHandleResponse(httpResp, http.StatusOK)
 }
 
 // getLogProfileCreateRequest creates the GetLogProfile request.
@@ -367,8 +356,11 @@ func (client *FirewallsClient) getLogProfileCreateRequest(ctx context.Context, r
 }
 
 // getLogProfileHandleResponse handles the GetLogProfile response.
-func (client *FirewallsClient) getLogProfileHandleResponse(resp *http.Response) (FirewallsClientGetLogProfileResponse, error) {
+func (client *FirewallsClient) getLogProfileHandleResponse(resp *http.Response, successCodes ...int) (FirewallsClientGetLogProfileResponse, error) {
 	result := FirewallsClientGetLogProfileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogSettings); err != nil {
 		return FirewallsClientGetLogProfileResponse{}, err
 	}
@@ -395,12 +387,7 @@ func (client *FirewallsClient) GetSupportInfo(ctx context.Context, resourceGroup
 	if err != nil {
 		return FirewallsClientGetSupportInfoResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FirewallsClientGetSupportInfoResponse{}, err
-	}
-	resp, err := client.getSupportInfoHandleResponse(httpResp)
-	return resp, err
+	return client.getSupportInfoHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSupportInfoCreateRequest creates the GetSupportInfo request.
@@ -433,8 +420,11 @@ func (client *FirewallsClient) getSupportInfoCreateRequest(ctx context.Context, 
 }
 
 // getSupportInfoHandleResponse handles the GetSupportInfo response.
-func (client *FirewallsClient) getSupportInfoHandleResponse(resp *http.Response) (FirewallsClientGetSupportInfoResponse, error) {
+func (client *FirewallsClient) getSupportInfoHandleResponse(resp *http.Response, successCodes ...int) (FirewallsClientGetSupportInfoResponse, error) {
 	result := FirewallsClientGetSupportInfoResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SupportInfo); err != nil {
 		return FirewallsClientGetSupportInfoResponse{}, err
 	}
@@ -456,43 +446,57 @@ func (client *FirewallsClient) NewListByResourceGroupPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return FirewallsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FirewallsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *FirewallsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *FirewallsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FirewallsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *FirewallsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251008)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *FirewallsClient) listByResourceGroupHandleResponse(resp *http.Response) (FirewallsClientListByResourceGroupResponse, error) {
+func (client *FirewallsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (FirewallsClientListByResourceGroupResponse, error) {
 	result := FirewallsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallResourceListResult); err != nil {
 		return FirewallsClientListByResourceGroupResponse{}, err
 	}
@@ -513,39 +517,53 @@ func (client *FirewallsClient) NewListBySubscriptionPager(options *FirewallsClie
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return FirewallsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FirewallsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *FirewallsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *FirewallsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/PaloAltoNetworks.Cloudngfw/firewalls"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FirewallsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *FirewallsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/PaloAltoNetworks.Cloudngfw/firewalls"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251008)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *FirewallsClient) listBySubscriptionHandleResponse(resp *http.Response) (FirewallsClientListBySubscriptionResponse, error) {
+func (client *FirewallsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (FirewallsClientListBySubscriptionResponse, error) {
 	result := FirewallsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallResourceListResult); err != nil {
 		return FirewallsClientListBySubscriptionResponse{}, err
 	}
@@ -573,8 +591,7 @@ func (client *FirewallsClient) SaveLogProfile(ctx context.Context, resourceGroup
 		return FirewallsClientSaveLogProfileResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return FirewallsClientSaveLogProfileResponse{}, err
+		return FirewallsClientSaveLogProfileResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return FirewallsClientSaveLogProfileResponse{}, nil
 }
@@ -631,12 +648,7 @@ func (client *FirewallsClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return FirewallsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FirewallsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -670,8 +682,11 @@ func (client *FirewallsClient) updateCreateRequest(ctx context.Context, resource
 }
 
 // updateHandleResponse handles the Update response.
-func (client *FirewallsClient) updateHandleResponse(resp *http.Response) (FirewallsClientUpdateResponse, error) {
+func (client *FirewallsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (FirewallsClientUpdateResponse, error) {
 	result := FirewallsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallResource); err != nil {
 		return FirewallsClientUpdateResponse{}, err
 	}

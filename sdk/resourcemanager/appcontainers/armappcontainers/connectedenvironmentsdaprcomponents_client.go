@@ -87,8 +87,7 @@ func (client *ConnectedEnvironmentsDaprComponentsClient) createOrUpdate(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -172,8 +171,7 @@ func (client *ConnectedEnvironmentsDaprComponentsClient) deleteOperation(ctx con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -230,12 +228,7 @@ func (client *ConnectedEnvironmentsDaprComponentsClient) Get(ctx context.Context
 	if err != nil {
 		return ConnectedEnvironmentsDaprComponentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectedEnvironmentsDaprComponentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -269,8 +262,11 @@ func (client *ConnectedEnvironmentsDaprComponentsClient) getCreateRequest(ctx co
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConnectedEnvironmentsDaprComponentsClient) getHandleResponse(resp *http.Response) (ConnectedEnvironmentsDaprComponentsClientGetResponse, error) {
+func (client *ConnectedEnvironmentsDaprComponentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConnectedEnvironmentsDaprComponentsClientGetResponse, error) {
 	result := ConnectedEnvironmentsDaprComponentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DaprComponent); err != nil {
 		return ConnectedEnvironmentsDaprComponentsClientGetResponse{}, err
 	}
@@ -295,47 +291,61 @@ func (client *ConnectedEnvironmentsDaprComponentsClient) NewListPager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, connectedEnvironmentName, nextLink, options)
 			if err != nil {
 				return ConnectedEnvironmentsDaprComponentsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConnectedEnvironmentsDaprComponentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ConnectedEnvironmentsDaprComponentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, _ *ConnectedEnvironmentsDaprComponentsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConnectedEnvironmentsDaprComponentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, connectedEnvironmentName string, nextLink string, _ *ConnectedEnvironmentsDaprComponentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/daprComponents"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if connectedEnvironmentName == "" {
+			return nil, errors.New("parameter connectedEnvironmentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{connectedEnvironmentName}", url.PathEscape(connectedEnvironmentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if connectedEnvironmentName == "" {
-		return nil, errors.New("parameter connectedEnvironmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectedEnvironmentName}", url.PathEscape(connectedEnvironmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251002Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ConnectedEnvironmentsDaprComponentsClient) listHandleResponse(resp *http.Response) (ConnectedEnvironmentsDaprComponentsClientListResponse, error) {
+func (client *ConnectedEnvironmentsDaprComponentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ConnectedEnvironmentsDaprComponentsClientListResponse, error) {
 	result := ConnectedEnvironmentsDaprComponentsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DaprComponentsCollection); err != nil {
 		return ConnectedEnvironmentsDaprComponentsClientListResponse{}, err
 	}
@@ -365,12 +375,7 @@ func (client *ConnectedEnvironmentsDaprComponentsClient) ListSecrets(ctx context
 	if err != nil {
 		return ConnectedEnvironmentsDaprComponentsClientListSecretsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectedEnvironmentsDaprComponentsClientListSecretsResponse{}, err
-	}
-	resp, err := client.listSecretsHandleResponse(httpResp)
-	return resp, err
+	return client.listSecretsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listSecretsCreateRequest creates the ListSecrets request.
@@ -404,8 +409,11 @@ func (client *ConnectedEnvironmentsDaprComponentsClient) listSecretsCreateReques
 }
 
 // listSecretsHandleResponse handles the ListSecrets response.
-func (client *ConnectedEnvironmentsDaprComponentsClient) listSecretsHandleResponse(resp *http.Response) (ConnectedEnvironmentsDaprComponentsClientListSecretsResponse, error) {
+func (client *ConnectedEnvironmentsDaprComponentsClient) listSecretsHandleResponse(resp *http.Response, successCodes ...int) (ConnectedEnvironmentsDaprComponentsClientListSecretsResponse, error) {
 	result := ConnectedEnvironmentsDaprComponentsClientListSecretsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DaprSecretsCollection); err != nil {
 		return ConnectedEnvironmentsDaprComponentsClientListSecretsResponse{}, err
 	}

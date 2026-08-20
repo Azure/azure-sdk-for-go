@@ -61,12 +61,7 @@ func (client *NameAvailabilityClient) CheckGlobally(ctx context.Context, paramet
 	if err != nil {
 		return NameAvailabilityClientCheckGloballyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NameAvailabilityClientCheckGloballyResponse{}, err
-	}
-	resp, err := client.checkGloballyHandleResponse(httpResp)
-	return resp, err
+	return client.checkGloballyHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkGloballyCreateRequest creates the CheckGlobally request.
@@ -92,8 +87,11 @@ func (client *NameAvailabilityClient) checkGloballyCreateRequest(ctx context.Con
 }
 
 // checkGloballyHandleResponse handles the CheckGlobally response.
-func (client *NameAvailabilityClient) checkGloballyHandleResponse(resp *http.Response) (NameAvailabilityClientCheckGloballyResponse, error) {
+func (client *NameAvailabilityClient) checkGloballyHandleResponse(resp *http.Response, successCodes ...int) (NameAvailabilityClientCheckGloballyResponse, error) {
 	result := NameAvailabilityClientCheckGloballyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailabilityModel); err != nil {
 		return NameAvailabilityClientCheckGloballyResponse{}, err
 	}
@@ -120,12 +118,7 @@ func (client *NameAvailabilityClient) CheckWithLocation(ctx context.Context, loc
 	if err != nil {
 		return NameAvailabilityClientCheckWithLocationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NameAvailabilityClientCheckWithLocationResponse{}, err
-	}
-	resp, err := client.checkWithLocationHandleResponse(httpResp)
-	return resp, err
+	return client.checkWithLocationHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkWithLocationCreateRequest creates the CheckWithLocation request.
@@ -155,8 +148,11 @@ func (client *NameAvailabilityClient) checkWithLocationCreateRequest(ctx context
 }
 
 // checkWithLocationHandleResponse handles the CheckWithLocation response.
-func (client *NameAvailabilityClient) checkWithLocationHandleResponse(resp *http.Response) (NameAvailabilityClientCheckWithLocationResponse, error) {
+func (client *NameAvailabilityClient) checkWithLocationHandleResponse(resp *http.Response, successCodes ...int) (NameAvailabilityClientCheckWithLocationResponse, error) {
 	result := NameAvailabilityClientCheckWithLocationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailabilityModel); err != nil {
 		return NameAvailabilityClientCheckWithLocationResponse{}, err
 	}

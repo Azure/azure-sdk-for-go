@@ -82,8 +82,7 @@ func (client *ReservationsClient) create(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -158,8 +157,7 @@ func (client *ReservationsClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -208,12 +206,7 @@ func (client *ReservationsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ReservationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReservationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -243,8 +236,11 @@ func (client *ReservationsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *ReservationsClient) getHandleResponse(resp *http.Response) (ReservationsClientGetResponse, error) {
+func (client *ReservationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ReservationsClientGetResponse, error) {
 	result := ReservationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Reservation); err != nil {
 		return ReservationsClientGetResponse{}, err
 	}
@@ -271,12 +267,7 @@ func (client *ReservationsClient) GetBillingReport(ctx context.Context, resource
 	if err != nil {
 		return ReservationsClientGetBillingReportResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReservationsClientGetBillingReportResponse{}, err
-	}
-	resp, err := client.getBillingReportHandleResponse(httpResp)
-	return resp, err
+	return client.getBillingReportHandleResponse(httpResp, http.StatusOK)
 }
 
 // getBillingReportCreateRequest creates the GetBillingReport request.
@@ -306,8 +297,11 @@ func (client *ReservationsClient) getBillingReportCreateRequest(ctx context.Cont
 }
 
 // getBillingReportHandleResponse handles the GetBillingReport response.
-func (client *ReservationsClient) getBillingReportHandleResponse(resp *http.Response) (ReservationsClientGetBillingReportResponse, error) {
+func (client *ReservationsClient) getBillingReportHandleResponse(resp *http.Response, successCodes ...int) (ReservationsClientGetBillingReportResponse, error) {
 	result := ReservationsClientGetBillingReportResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationBillingUsageReport); err != nil {
 		return ReservationsClientGetBillingReportResponse{}, err
 	}
@@ -334,12 +328,7 @@ func (client *ReservationsClient) GetBillingStatus(ctx context.Context, resource
 	if err != nil {
 		return ReservationsClientGetBillingStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReservationsClientGetBillingStatusResponse{}, err
-	}
-	resp, err := client.getBillingStatusHandleResponse(httpResp)
-	return resp, err
+	return client.getBillingStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // getBillingStatusCreateRequest creates the GetBillingStatus request.
@@ -369,8 +358,11 @@ func (client *ReservationsClient) getBillingStatusCreateRequest(ctx context.Cont
 }
 
 // getBillingStatusHandleResponse handles the GetBillingStatus response.
-func (client *ReservationsClient) getBillingStatusHandleResponse(resp *http.Response) (ReservationsClientGetBillingStatusResponse, error) {
+func (client *ReservationsClient) getBillingStatusHandleResponse(resp *http.Response, successCodes ...int) (ReservationsClientGetBillingStatusResponse, error) {
 	result := ReservationsClientGetBillingStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationBillingStatus); err != nil {
 		return ReservationsClientGetBillingStatusResponse{}, err
 	}
@@ -397,12 +389,7 @@ func (client *ReservationsClient) GetResourceLimits(ctx context.Context, resourc
 	if err != nil {
 		return ReservationsClientGetResourceLimitsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ReservationsClientGetResourceLimitsResponse{}, err
-	}
-	resp, err := client.getResourceLimitsHandleResponse(httpResp)
-	return resp, err
+	return client.getResourceLimitsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getResourceLimitsCreateRequest creates the GetResourceLimits request.
@@ -432,8 +419,11 @@ func (client *ReservationsClient) getResourceLimitsCreateRequest(ctx context.Con
 }
 
 // getResourceLimitsHandleResponse handles the GetResourceLimits response.
-func (client *ReservationsClient) getResourceLimitsHandleResponse(resp *http.Response) (ReservationsClientGetResourceLimitsResponse, error) {
+func (client *ReservationsClient) getResourceLimitsHandleResponse(resp *http.Response, successCodes ...int) (ReservationsClientGetResourceLimitsResponse, error) {
 	result := ReservationsClientGetResourceLimitsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LimitDetails); err != nil {
 		return ReservationsClientGetResourceLimitsResponse{}, err
 	}
@@ -455,43 +445,57 @@ func (client *ReservationsClient) NewListByResourceGroupPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return ReservationsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReservationsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ReservationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ReservationsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ReservationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ReservationsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ReservationsClient) listByResourceGroupHandleResponse(resp *http.Response) (ReservationsClientListByResourceGroupResponse, error) {
+func (client *ReservationsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ReservationsClientListByResourceGroupResponse, error) {
 	result := ReservationsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationListResult); err != nil {
 		return ReservationsClientListByResourceGroupResponse{}, err
 	}
@@ -512,39 +516,53 @@ func (client *ReservationsClient) NewListBySubscriptionPager(options *Reservatio
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ReservationsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ReservationsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ReservationsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *ReservationsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/PureStorage.Block/reservations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ReservationsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *ReservationsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/PureStorage.Block/reservations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ReservationsClient) listBySubscriptionHandleResponse(resp *http.Response) (ReservationsClientListBySubscriptionResponse, error) {
+func (client *ReservationsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (ReservationsClientListBySubscriptionResponse, error) {
 	result := ReservationsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReservationListResult); err != nil {
 		return ReservationsClientListBySubscriptionResponse{}, err
 	}
@@ -592,8 +610,7 @@ func (client *ReservationsClient) update(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

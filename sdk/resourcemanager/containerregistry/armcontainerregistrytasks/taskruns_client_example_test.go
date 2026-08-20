@@ -78,9 +78,9 @@ func ExampleTaskRunsClient_BeginCreate() {
 	// 					AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 						CPU: to.Ptr[int32](2),
 	// 					},
-	// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:21.9261521+00:00"); return t}()),
+	// 					CreateTime: to.Ptr(time.Date(2019, time.September, 6, 17, 23, 21, 926152100, time.UTC)),
 	// 					IsArchiveEnabled: to.Ptr(true),
-	// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:21+00:00"); return t}()),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2019, time.September, 6, 17, 23, 21, 0, time.UTC)),
 	// 					Platform: &armcontainerregistrytasks.PlatformProperties{
 	// 						Architecture: to.Ptr(armcontainerregistrytasks.ArchitectureAmd64),
 	// 						OS: to.Ptr(armcontainerregistrytasks.OSLinux),
@@ -165,10 +165,10 @@ func ExampleTaskRunsClient_Get() {
 	// 					AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 						CPU: to.Ptr[int32](2),
 	// 					},
-	// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:21.9261521+00:00"); return t}()),
-	// 					FinishTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:29.8792157+00:00"); return t}()),
+	// 					CreateTime: to.Ptr(time.Date(2019, time.September, 6, 17, 23, 21, 926152100, time.UTC)),
+	// 					FinishTime: to.Ptr(time.Date(2019, time.September, 6, 17, 23, 29, 879215700, time.UTC)),
 	// 					IsArchiveEnabled: to.Ptr(true),
-	// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:29+00:00"); return t}()),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2019, time.September, 6, 17, 23, 29, 0, time.UTC)),
 	// 					Platform: &armcontainerregistrytasks.PlatformProperties{
 	// 						Architecture: to.Ptr(armcontainerregistrytasks.ArchitectureAmd64),
 	// 						OS: to.Ptr(armcontainerregistrytasks.OSLinux),
@@ -176,7 +176,7 @@ func ExampleTaskRunsClient_Get() {
 	// 					ProvisioningState: to.Ptr(armcontainerregistrytasks.ProvisioningStateSucceeded),
 	// 					RunID: to.Ptr("yd5"),
 	// 					RunType: to.Ptr(armcontainerregistrytasks.RunTypeQuickRun),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:22.1348714+00:00"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2019, time.September, 6, 17, 23, 22, 134871400, time.UTC)),
 	// 					Status: to.Ptr(armcontainerregistrytasks.RunStatusSucceeded),
 	// 				},
 	// 			},
@@ -232,10 +232,10 @@ func ExampleTaskRunsClient_GetDetails() {
 	// 					AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 						CPU: to.Ptr[int32](2),
 	// 					},
-	// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:21.9261521+00:00"); return t}()),
-	// 					FinishTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:29.8792157+00:00"); return t}()),
+	// 					CreateTime: to.Ptr(time.Date(2019, time.September, 6, 17, 23, 21, 926152100, time.UTC)),
+	// 					FinishTime: to.Ptr(time.Date(2019, time.September, 6, 17, 23, 29, 879215700, time.UTC)),
 	// 					IsArchiveEnabled: to.Ptr(true),
-	// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:29+00:00"); return t}()),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2019, time.September, 6, 17, 23, 29, 0, time.UTC)),
 	// 					Platform: &armcontainerregistrytasks.PlatformProperties{
 	// 						Architecture: to.Ptr(armcontainerregistrytasks.ArchitectureAmd64),
 	// 						OS: to.Ptr(armcontainerregistrytasks.OSLinux),
@@ -243,7 +243,7 @@ func ExampleTaskRunsClient_GetDetails() {
 	// 					ProvisioningState: to.Ptr(armcontainerregistrytasks.ProvisioningStateSucceeded),
 	// 					RunID: to.Ptr("yd5"),
 	// 					RunType: to.Ptr(armcontainerregistrytasks.RunTypeQuickRun),
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:23:22.1348714+00:00"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2019, time.September, 6, 17, 23, 22, 134871400, time.UTC)),
 	// 					Status: to.Ptr(armcontainerregistrytasks.RunStatusSucceeded),
 	// 				},
 	// 			},
@@ -305,10 +305,10 @@ func ExampleTaskRunsClient_NewListPager() {
 		// 							AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 		// 								CPU: to.Ptr[int32](2),
 		// 							},
-		// 							CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T17:15:29.2278794+00:00"); return t}()),
-		// 							FinishTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T17:15:37.0349516+00:00"); return t}()),
+		// 							CreateTime: to.Ptr(time.Date(2019, time.September, 4, 17, 15, 29, 227879400, time.UTC)),
+		// 							FinishTime: to.Ptr(time.Date(2019, time.September, 4, 17, 15, 37, 34951600, time.UTC)),
 		// 							IsArchiveEnabled: to.Ptr(true),
-		// 							LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T17:15:37+00:00"); return t}()),
+		// 							LastUpdatedTime: to.Ptr(time.Date(2019, time.September, 4, 17, 15, 37, 0, time.UTC)),
 		// 							Platform: &armcontainerregistrytasks.PlatformProperties{
 		// 								Architecture: to.Ptr(armcontainerregistrytasks.ArchitectureAmd64),
 		// 								OS: to.Ptr(armcontainerregistrytasks.OSLinux),
@@ -316,7 +316,7 @@ func ExampleTaskRunsClient_NewListPager() {
 		// 							ProvisioningState: to.Ptr(armcontainerregistrytasks.ProvisioningStateSucceeded),
 		// 							RunID: to.Ptr("yd4"),
 		// 							RunType: to.Ptr(armcontainerregistrytasks.RunTypeQuickRun),
-		// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-04T17:15:29.4589616+00:00"); return t}()),
+		// 							StartTime: to.Ptr(time.Date(2019, time.September, 4, 17, 15, 29, 458961600, time.UTC)),
 		// 							Status: to.Ptr(armcontainerregistrytasks.RunStatusSucceeded),
 		// 						},
 		// 					},
@@ -395,9 +395,9 @@ func ExampleTaskRunsClient_BeginUpdate() {
 	// 					AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 						CPU: to.Ptr[int32](2),
 	// 					},
-	// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:31:34.1184031+00:00"); return t}()),
+	// 					CreateTime: to.Ptr(time.Date(2019, time.September, 6, 17, 31, 34, 118403100, time.UTC)),
 	// 					IsArchiveEnabled: to.Ptr(true),
-	// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-09-06T17:31:34+00:00"); return t}()),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2019, time.September, 6, 17, 31, 34, 0, time.UTC)),
 	// 					Platform: &armcontainerregistrytasks.PlatformProperties{
 	// 						Architecture: to.Ptr(armcontainerregistrytasks.ArchitectureAmd64),
 	// 						OS: to.Ptr(armcontainerregistrytasks.OSLinux),

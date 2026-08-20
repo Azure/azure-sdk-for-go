@@ -67,12 +67,7 @@ func (client *ClusterRecoveryPointClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return ClusterRecoveryPointClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClusterRecoveryPointClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -118,8 +113,11 @@ func (client *ClusterRecoveryPointClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *ClusterRecoveryPointClient) getHandleResponse(resp *http.Response) (ClusterRecoveryPointClientGetResponse, error) {
+func (client *ClusterRecoveryPointClient) getHandleResponse(resp *http.Response, successCodes ...int) (ClusterRecoveryPointClientGetResponse, error) {
 	result := ClusterRecoveryPointClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterRecoveryPoint); err != nil {
 		return ClusterRecoveryPointClientGetResponse{}, err
 	}

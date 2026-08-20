@@ -35,7 +35,7 @@ func ExampleMajorVersionUpgradePrecheckClient_Get() {
 	// 		Name: to.Ptr("pppppppp-pppp-pppp-pppp-pppppppppppp"),
 	// 		Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/majorVersionUpgradePrecheck"),
 	// 		Properties: &armpostgresqlflexibleservers.MajorVersionUpgradePrecheckResourceProperties{
-	// 			CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-10T00:55:46.0983792Z"); return t}()),
+	// 			CreateTime: to.Ptr(time.Date(2026, time.April, 10, 0, 55, 46, 98379200, time.UTC)),
 	// 			Status: to.Ptr(armpostgresqlflexibleservers.MajorVersionUpgradePrecheckStatusFailed),
 	// 			PrecheckResult: &armpostgresqlflexibleservers.PrecheckResult{
 	// 				Action: to.Ptr("Precheck"),
@@ -173,7 +173,7 @@ func ExampleMajorVersionUpgradePrecheckClient_NewListPager() {
 		// 				Name: to.Ptr("cccccccc-cccc-cccc-cccc-cccccccccccc"),
 		// 				Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/majorVersionUpgradePrecheck"),
 		// 				Properties: &armpostgresqlflexibleservers.MajorVersionUpgradePrecheckResourceProperties{
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-09T15:22:33.1234567Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2026, time.April, 9, 15, 22, 33, 123456700, time.UTC)),
 		// 					Status: to.Ptr(armpostgresqlflexibleservers.MajorVersionUpgradePrecheckStatusSucceeded),
 		// 					PrecheckResult: &armpostgresqlflexibleservers.PrecheckResult{
 		// 						Action: to.Ptr("Precheck"),
@@ -204,7 +204,7 @@ func ExampleMajorVersionUpgradePrecheckClient_NewListPager() {
 		// 				Name: to.Ptr("pppppppp-pppp-pppp-pppp-pppppppppppp"),
 		// 				Type: to.Ptr("Microsoft.DBforPostgreSQL/flexibleServers/majorVersionUpgradePrecheck"),
 		// 				Properties: &armpostgresqlflexibleservers.MajorVersionUpgradePrecheckResourceProperties{
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-04-10T00:55:46.0983792Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2026, time.April, 10, 0, 55, 46, 98379200, time.UTC)),
 		// 					Status: to.Ptr(armpostgresqlflexibleservers.MajorVersionUpgradePrecheckStatusFailed),
 		// 					PrecheckResult: &armpostgresqlflexibleservers.PrecheckResult{
 		// 						Action: to.Ptr("Precheck"),

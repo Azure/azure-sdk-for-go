@@ -67,7 +67,7 @@ func ExampleBucketsClient_BeginCreateOrUpdate_bucketsCreateOrUpdate() {
 	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
 	// 			Server: &armnetapp.BucketServerProperties{
 	// 				CertificateCommonName: to.Ptr("www.example.com"),
-	// 				CertificateExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-08-15T13:23:32Z"); return t}()),
+	// 				CertificateExpiryDate: to.Ptr(time.Date(2027, time.August, 15, 13, 23, 32, 0, time.UTC)),
 	// 				Fqdn: to.Ptr("fullyqualified.domainname.com"),
 	// 				IPAddress: to.Ptr("1.2.3.4"),
 	// 				OnCertificateConflictAction: to.Ptr(armnetapp.OnCertificateConflictActionUpdate),
@@ -145,7 +145,7 @@ func ExampleBucketsClient_BeginCreateOrUpdate_bucketsCreateOrUpdateWithAkv() {
 	// 			Server: &armnetapp.BucketServerProperties{
 	// 				Fqdn: to.Ptr("fullyqualified.domainname.com"),
 	// 				CertificateCommonName: to.Ptr("www.example.com"),
-	// 				CertificateExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-08-15T13:23:32Z"); return t}()),
+	// 				CertificateExpiryDate: to.Ptr(time.Date(2027, time.August, 15, 13, 23, 32, 0, time.UTC)),
 	// 				IPAddress: to.Ptr("1.2.3.4"),
 	// 			},
 	// 			AkvDetails: &armnetapp.AzureKeyVaultDetails{
@@ -233,7 +233,7 @@ func ExampleBucketsClient_GenerateCredentials() {
 	// res = armnetapp.BucketsClientGenerateCredentialsResponse{
 	// 	BucketGenerateCredentials: armnetapp.BucketGenerateCredentials{
 	// 		AccessKey: to.Ptr("<REDACTED>"),
-	// 		KeyPairExpiry: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-08-15T13:23:33Z"); return t}()),
+	// 		KeyPairExpiry: to.Ptr(time.Date(2027, time.August, 15, 13, 23, 33, 0, time.UTC)),
 	// 		SecretKey: to.Ptr("<REDACTED>"),
 	// 	},
 	// }
@@ -275,7 +275,7 @@ func ExampleBucketsClient_Get() {
 	// 			Server: &armnetapp.BucketServerProperties{
 	// 				Fqdn: to.Ptr("fullyqualified.domainname.com"),
 	// 				CertificateCommonName: to.Ptr("www.example.com"),
-	// 				CertificateExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-08-15T13:23:32Z"); return t}()),
+	// 				CertificateExpiryDate: to.Ptr(time.Date(2027, time.August, 15, 13, 23, 32, 0, time.UTC)),
 	// 				IPAddress: to.Ptr("1.2.3.4"),
 	// 			},
 	// 			AkvDetails: &armnetapp.AzureKeyVaultDetails{
@@ -336,7 +336,7 @@ func ExampleBucketsClient_NewListPager() {
 		// 					Server: &armnetapp.BucketServerProperties{
 		// 						Fqdn: to.Ptr("fullyqualified.domainname.com"),
 		// 						CertificateCommonName: to.Ptr("www.example.com"),
-		// 						CertificateExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-08-15T13:23:32Z"); return t}()),
+		// 						CertificateExpiryDate: to.Ptr(time.Date(2027, time.August, 15, 13, 23, 32, 0, time.UTC)),
 		// 						IPAddress: to.Ptr("1.2.3.4"),
 		// 					},
 		// 					AkvDetails: &armnetapp.AzureKeyVaultDetails{
@@ -428,7 +428,7 @@ func ExampleBucketsClient_BeginUpdate_bucketsUpdate() {
 	// 			Server: &armnetapp.BucketServerProperties{
 	// 				Fqdn: to.Ptr("fullyqualified.domainname.com"),
 	// 				CertificateCommonName: to.Ptr("www.example.com"),
-	// 				CertificateExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-08-15T13:23:32Z"); return t}()),
+	// 				CertificateExpiryDate: to.Ptr(time.Date(2027, time.August, 15, 13, 23, 32, 0, time.UTC)),
 	// 				IPAddress: to.Ptr("1.2.3.4"),
 	// 			},
 	// 			Permissions: to.Ptr(armnetapp.BucketPermissionsReadWrite),
@@ -497,7 +497,7 @@ func ExampleBucketsClient_BeginUpdate_bucketsUpdateWithAkv() {
 	// 			Server: &armnetapp.BucketServerProperties{
 	// 				Fqdn: to.Ptr("fullyqualified.domainname.com"),
 	// 				CertificateCommonName: to.Ptr("www.example.com"),
-	// 				CertificateExpiryDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2027-08-15T13:23:32Z"); return t}()),
+	// 				CertificateExpiryDate: to.Ptr(time.Date(2027, time.August, 15, 13, 23, 32, 0, time.UTC)),
 	// 				IPAddress: to.Ptr("1.2.3.4"),
 	// 			},
 	// 			AkvDetails: &armnetapp.AzureKeyVaultDetails{

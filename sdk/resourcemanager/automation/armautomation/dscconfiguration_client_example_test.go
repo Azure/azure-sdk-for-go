@@ -52,9 +52,9 @@ func ExampleDscConfigurationClient_CreateOrUpdate() {
 	// 		Location: to.Ptr("East US 2"),
 	// 		Properties: &armautomation.DscConfigurationProperties{
 	// 			Description: to.Ptr("sample configuration"),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			JobCount: to.Ptr[int32](0),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LogVerbose: to.Ptr(false),
 	// 			Parameters: map[string]*armautomation.DscConfigurationParameter{
 	// 			},
@@ -115,9 +115,9 @@ func ExampleDscConfigurationClient_Get() {
 	// 		Location: to.Ptr("East US 2"),
 	// 		Properties: &armautomation.DscConfigurationProperties{
 	// 			Description: to.Ptr("sample configuration"),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T23:14:23.56+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.March, 28, 23, 14, 23, 560000000, time.UTC)),
 	// 			JobCount: to.Ptr[int32](0),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T23:14:23.56+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2017, time.March, 28, 23, 14, 23, 560000000, time.UTC)),
 	// 			LogVerbose: to.Ptr(false),
 	// 			Parameters: map[string]*armautomation.DscConfigurationParameter{
 	// 			},
@@ -183,8 +183,8 @@ func ExampleDscConfigurationClient_NewListByAutomationAccountPager_getDscConfigu
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/configurations/SetupServer"),
 		// 				Location: to.Ptr("East US 2"),
 		// 				Properties: &armautomation.DscConfigurationProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T18:53:24.997+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T18:53:24.997+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 28, 18, 53, 24, 997000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 28, 18, 53, 24, 997000000, time.UTC)),
 		// 					State: to.Ptr(armautomation.DscConfigurationStatePublished),
 		// 				},
 		// 			},
@@ -229,8 +229,8 @@ func ExampleDscConfigurationClient_NewListByAutomationAccountPager_listPagedDscC
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/configurations/SqlServerBig"),
 		// 				Location: to.Ptr("East US 2"),
 		// 				Properties: &armautomation.DscConfigurationProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T18:53:24.997+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T18:53:24.997+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 28, 18, 53, 24, 997000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 28, 18, 53, 24, 997000000, time.UTC)),
 		// 					NodeConfigurationCount: to.Ptr[int32](1),
 		// 					State: to.Ptr(armautomation.DscConfigurationStatePublished),
 		// 				},
@@ -241,8 +241,8 @@ func ExampleDscConfigurationClient_NewListByAutomationAccountPager_listPagedDscC
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/configurations/SqlServerLittle"),
 		// 				Location: to.Ptr("East US 2"),
 		// 				Properties: &armautomation.DscConfigurationProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T18:53:24.997+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T18:53:24.997+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 28, 18, 53, 24, 997000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 28, 18, 53, 24, 997000000, time.UTC)),
 		// 					NodeConfigurationCount: to.Ptr[int32](1),
 		// 					State: to.Ptr(armautomation.DscConfigurationStatePublished),
 		// 				},
@@ -253,8 +253,8 @@ func ExampleDscConfigurationClient_NewListByAutomationAccountPager_listPagedDscC
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/configurations/SetupServer"),
 		// 				Location: to.Ptr("East US 2"),
 		// 				Properties: &armautomation.DscConfigurationProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T18:53:24.997+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T18:53:24.997+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 28, 18, 53, 24, 997000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 28, 18, 53, 24, 997000000, time.UTC)),
 		// 					NodeConfigurationCount: to.Ptr[int32](1),
 		// 					State: to.Ptr(armautomation.DscConfigurationStatePublished),
 		// 				},
@@ -301,8 +301,8 @@ func ExampleDscConfigurationClient_NewListByAutomationAccountPager_listPagedDscC
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/configurations/SqlServerBig"),
 		// 				Location: to.Ptr("East US 2"),
 		// 				Properties: &armautomation.DscConfigurationProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T18:53:24.997+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T18:53:24.997+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 28, 18, 53, 24, 997000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 28, 18, 53, 24, 997000000, time.UTC)),
 		// 					NodeConfigurationCount: to.Ptr[int32](1),
 		// 					State: to.Ptr(armautomation.DscConfigurationStatePublished),
 		// 				},
@@ -313,8 +313,8 @@ func ExampleDscConfigurationClient_NewListByAutomationAccountPager_listPagedDscC
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/configurations/SqlServerLittle"),
 		// 				Location: to.Ptr("East US 2"),
 		// 				Properties: &armautomation.DscConfigurationProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T18:53:24.997+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-28T18:53:24.997+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 28, 18, 53, 24, 997000000, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 28, 18, 53, 24, 997000000, time.UTC)),
 		// 					NodeConfigurationCount: to.Ptr[int32](1),
 		// 					State: to.Ptr(armautomation.DscConfigurationStatePublished),
 		// 				},
@@ -357,9 +357,9 @@ func ExampleDscConfigurationClient_Update() {
 	// 		Location: to.Ptr("eastus2"),
 	// 		Properties: &armautomation.DscConfigurationProperties{
 	// 			Description: to.Ptr("sample configuration"),
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			JobCount: to.Ptr[int32](0),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LogVerbose: to.Ptr(false),
 	// 			Parameters: map[string]*armautomation.DscConfigurationParameter{
 	// 			},

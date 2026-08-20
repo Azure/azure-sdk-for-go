@@ -27,7 +27,7 @@ func ExampleWebhookClient_CreateOrUpdate() {
 	res, err := clientFactory.NewWebhookClient().CreateOrUpdate(ctx, "rg", "myAutomationAccount33", "TestWebhook", armautomation.WebhookCreateOrUpdateParameters{
 		Name: to.Ptr("TestWebhook"),
 		Properties: &armautomation.WebhookCreateOrUpdateProperties{
-			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-29T22:18:13.7002872Z"); return t }()),
+			ExpiryTime: to.Ptr(time.Date(2018, time.March, 29, 22, 18, 13, 700287200, time.UTC)),
 			IsEnabled:  to.Ptr(true),
 			Runbook: &armautomation.RunbookAssociationProperty{
 				Name: to.Ptr("TestRunbook"),
@@ -47,12 +47,12 @@ func ExampleWebhookClient_CreateOrUpdate() {
 	// 		Type: to.Ptr("Microsoft.Automation/AutomationAccounts/Webhooks"),
 	// 		ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/webhooks/TestWebhook"),
 	// 		Properties: &armautomation.WebhookProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T22:18:14.6651862+00:00"); return t}()),
-	// 			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-29T22:18:13.7002872+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.March, 29, 22, 18, 14, 665186200, time.UTC)),
+	// 			ExpiryTime: to.Ptr(time.Date(2018, time.March, 29, 22, 18, 13, 700287200, time.UTC)),
 	// 			IsEnabled: to.Ptr(true),
 	// 			LastInvokedTime: nil,
 	// 			LastModifiedBy: to.Ptr(""),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T22:18:14.6651862+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2017, time.March, 29, 22, 18, 14, 665186200, time.UTC)),
 	// 			Runbook: &armautomation.RunbookAssociationProperty{
 	// 				Name: to.Ptr("TestRunbook"),
 	// 			},
@@ -130,12 +130,12 @@ func ExampleWebhookClient_Get() {
 	// 		Name: to.Ptr("TestWebhook"),
 	// 		ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/webhooks/TestWebhook"),
 	// 		Properties: &armautomation.WebhookProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T22:18:14.6651862+00:00"); return t}()),
-	// 			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-29T22:18:13.7002872+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.March, 29, 22, 18, 14, 665186200, time.UTC)),
+	// 			ExpiryTime: to.Ptr(time.Date(2018, time.March, 29, 22, 18, 13, 700287200, time.UTC)),
 	// 			IsEnabled: to.Ptr(true),
 	// 			LastInvokedTime: nil,
 	// 			LastModifiedBy: to.Ptr(""),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T22:18:14.6651862+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2017, time.March, 29, 22, 18, 14, 665186200, time.UTC)),
 	// 			Runbook: &armautomation.RunbookAssociationProperty{
 	// 				Name: to.Ptr("TestRunbook"),
 	// 			},
@@ -174,12 +174,12 @@ func ExampleWebhookClient_NewListByAutomationAccountPager() {
 		// 				Name: to.Ptr("TestWebhook"),
 		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/webhooks/TestWebhook"),
 		// 				Properties: &armautomation.WebhookProperties{
-		// 					CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T22:18:14.6651862+00:00"); return t}()),
-		// 					ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-29T22:18:13.7002872+00:00"); return t}()),
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 29, 22, 18, 14, 665186200, time.UTC)),
+		// 					ExpiryTime: to.Ptr(time.Date(2018, time.March, 29, 22, 18, 13, 700287200, time.UTC)),
 		// 					IsEnabled: to.Ptr(true),
 		// 					LastInvokedTime: nil,
 		// 					LastModifiedBy: to.Ptr(""),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-29T22:18:14.6651862+00:00"); return t}()),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 29, 22, 18, 14, 665186200, time.UTC)),
 		// 					Runbook: &armautomation.RunbookAssociationProperty{
 		// 						Name: to.Ptr("TestRunbook"),
 		// 					},
@@ -220,12 +220,12 @@ func ExampleWebhookClient_Update() {
 	// 		Name: to.Ptr("TestWebhook"),
 	// 		ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount33/webhooks/TestWebhook"),
 	// 		Properties: &armautomation.WebhookProperties{
-	// 			CreationTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-30T21:52:01.272378+00:00"); return t}()),
-	// 			ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-30T23:03:14.5752078+00:00"); return t}()),
+	// 			CreationTime: to.Ptr(time.Date(2017, time.March, 30, 21, 52, 1, 272378000, time.UTC)),
+	// 			ExpiryTime: to.Ptr(time.Date(2018, time.March, 30, 23, 3, 14, 575207800, time.UTC)),
 	// 			IsEnabled: to.Ptr(false),
 	// 			LastInvokedTime: nil,
 	// 			LastModifiedBy: to.Ptr(""),
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-30T23:03:14.9069441+00:00"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2017, time.March, 30, 23, 3, 14, 906944100, time.UTC)),
 	// 			Runbook: &armautomation.RunbookAssociationProperty{
 	// 				Name: to.Ptr("TestRunbook"),
 	// 			},

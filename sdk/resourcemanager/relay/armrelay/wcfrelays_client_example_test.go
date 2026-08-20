@@ -37,17 +37,17 @@ func ExampleWCFRelaysClient_CreateOrUpdate() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientCreateOrUpdateResponse{
-	// 	WcfRelay: &armrelay.WcfRelay{
+	// 	WcfRelay: armrelay.WcfRelay{
 	// 		Name: to.Ptr("example-Relay-Wcf-1194"),
 	// 		Type: to.Ptr("Microsoft.Relay/WcfRelays"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-9953/WcfRelays/example-Relay-Wcf-1194"),
 	// 		Properties: &armrelay.WcfRelayProperties{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-16T00:26:17.5014661Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2017, time.March, 16, 0, 26, 17, 501466100, time.UTC)),
 	// 			IsDynamic: to.Ptr(false),
 	// 			RelayType: to.Ptr(armrelay.RelaytypeNetTCP),
 	// 			RequiresClientAuthorization: to.Ptr(true),
 	// 			RequiresTransportSecurity: to.Ptr(true),
-	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-16T00:26:17.5014661Z"); return t}()),
+	// 			UpdatedAt: to.Ptr(time.Date(2017, time.March, 16, 0, 26, 17, 501466100, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -79,7 +79,7 @@ func ExampleWCFRelaysClient_CreateOrUpdateAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientCreateOrUpdateAuthorizationRuleResponse{
-	// 	AuthorizationRule: &armrelay.AuthorizationRule{
+	// 	AuthorizationRule: armrelay.AuthorizationRule{
 	// 		Name: to.Ptr("example-RelayAuthRules-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/WcfRelay/AuthorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/WcfRelays/example-Relay-Wcf-01/AuthorizationRules/example-RelayAuthRules-01"),
@@ -156,18 +156,18 @@ func ExampleWCFRelaysClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientGetResponse{
-	// 	WcfRelay: &armrelay.WcfRelay{
+	// 	WcfRelay: armrelay.WcfRelay{
 	// 		Name: to.Ptr("example-Relay-Wcf-1194"),
 	// 		Type: to.Ptr("Microsoft.Relay/WcfRelays"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/Default-ServiceBus-WestUS/providers/Microsoft.Relay/namespaces/example-RelayNamespace-9953/WcfRelays/example-Relay-Wcf-1194"),
 	// 		Properties: &armrelay.WcfRelayProperties{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-16T00:26:17.5014661Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2017, time.March, 16, 0, 26, 17, 501466100, time.UTC)),
 	// 			IsDynamic: to.Ptr(false),
 	// 			ListenerCount: to.Ptr[int32](0),
 	// 			RelayType: to.Ptr(armrelay.RelaytypeNetTCP),
 	// 			RequiresClientAuthorization: to.Ptr(true),
 	// 			RequiresTransportSecurity: to.Ptr(true),
-	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-16T00:26:17.5014661Z"); return t}()),
+	// 			UpdatedAt: to.Ptr(time.Date(2017, time.March, 16, 0, 26, 17, 501466100, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -192,7 +192,7 @@ func ExampleWCFRelaysClient_GetAuthorizationRule() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientGetAuthorizationRuleResponse{
-	// 	AuthorizationRule: &armrelay.AuthorizationRule{
+	// 	AuthorizationRule: armrelay.AuthorizationRule{
 	// 		Name: to.Ptr("example-RelayAuthRules-01"),
 	// 		Type: to.Ptr("Microsoft.Relay/Namespaces/WcfRelay/AuthorizationRules"),
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/resourcegroup/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/WcfRelays/example-Relay-Wcf-01/AuthorizationRules/example-RelayAuthRules-01"),
@@ -277,12 +277,12 @@ func ExampleWCFRelaysClient_NewListByNamespacePager() {
 		// 				Type: to.Ptr("Microsoft.Relay/Namespaces/WcfRelays"),
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/RG1-eg/providers/Microsoft.Relay/namespaces/example-RelayNamespace-01/WcfRelays/example-Relay-Wcf-01"),
 		// 				Properties: &armrelay.WcfRelayProperties{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-24T00:46:27.0049983Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2017, time.January, 24, 0, 46, 27, 4998300, time.UTC)),
 		// 					IsDynamic: to.Ptr(false),
 		// 					RelayType: to.Ptr(armrelay.RelaytypeNetTCP),
 		// 					RequiresClientAuthorization: to.Ptr(true),
 		// 					RequiresTransportSecurity: to.Ptr(true),
-		// 					UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-24T00:46:27.0049983Z"); return t}()),
+		// 					UpdatedAt: to.Ptr(time.Date(2017, time.January, 24, 0, 46, 27, 4998300, time.UTC)),
 		// 					UserMetadata: to.Ptr("usermetadata is a placeholder to store user-defined string data for the HybridConnection endpoint.e.g. it can be used to store  descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored"),
 		// 				},
 		// 			},
@@ -311,7 +311,7 @@ func ExampleWCFRelaysClient_ListKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientListKeysResponse{
-	// 	AccessKeys: &armrelay.AccessKeys{
+	// 	AccessKeys: armrelay.AccessKeys{
 	// 		KeyName: to.Ptr("example-RelayAuthRules-01"),
 	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
 	// 		PrimaryKey: to.Ptr("############################################"),
@@ -342,7 +342,7 @@ func ExampleWCFRelaysClient_RegenerateKeys() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrelay.WCFRelaysClientRegenerateKeysResponse{
-	// 	AccessKeys: &armrelay.AccessKeys{
+	// 	AccessKeys: armrelay.AccessKeys{
 	// 		KeyName: to.Ptr("example-RelayAuthRules-01"),
 	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
 	// 		PrimaryKey: to.Ptr("############################################"),

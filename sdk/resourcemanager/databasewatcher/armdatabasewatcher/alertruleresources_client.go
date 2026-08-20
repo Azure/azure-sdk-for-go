@@ -63,12 +63,7 @@ func (client *AlertRuleResourcesClient) CreateOrUpdate(ctx context.Context, reso
 	if err != nil {
 		return AlertRuleResourcesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertRuleResourcesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -106,8 +101,11 @@ func (client *AlertRuleResourcesClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AlertRuleResourcesClient) createOrUpdateHandleResponse(resp *http.Response) (AlertRuleResourcesClientCreateOrUpdateResponse, error) {
+func (client *AlertRuleResourcesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (AlertRuleResourcesClientCreateOrUpdateResponse, error) {
 	result := AlertRuleResourcesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleResource); err != nil {
 		return AlertRuleResourcesClientCreateOrUpdateResponse{}, err
 	}
@@ -136,8 +134,7 @@ func (client *AlertRuleResourcesClient) Delete(ctx context.Context, resourceGrou
 		return AlertRuleResourcesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertRuleResourcesClientDeleteResponse{}, err
+		return AlertRuleResourcesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AlertRuleResourcesClientDeleteResponse{}, nil
 }
@@ -191,12 +188,7 @@ func (client *AlertRuleResourcesClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AlertRuleResourcesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertRuleResourcesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -230,8 +222,11 @@ func (client *AlertRuleResourcesClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *AlertRuleResourcesClient) getHandleResponse(resp *http.Response) (AlertRuleResourcesClientGetResponse, error) {
+func (client *AlertRuleResourcesClient) getHandleResponse(resp *http.Response, successCodes ...int) (AlertRuleResourcesClientGetResponse, error) {
 	result := AlertRuleResourcesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleResource); err != nil {
 		return AlertRuleResourcesClientGetResponse{}, err
 	}
@@ -254,47 +249,61 @@ func (client *AlertRuleResourcesClient) NewListByParentPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByParentCreateRequest(ctx, resourceGroupName, watcherName, options)
-			}, nil)
+			req, err := client.listByParentCreateRequest(ctx, resourceGroupName, watcherName, nextLink, options)
 			if err != nil {
 				return AlertRuleResourcesClientListByParentResponse{}, err
 			}
-			return client.listByParentHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AlertRuleResourcesClientListByParentResponse{}, err
+			}
+			return client.listByParentHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByParentCreateRequest creates the ListByParent request.
-func (client *AlertRuleResourcesClient) listByParentCreateRequest(ctx context.Context, resourceGroupName string, watcherName string, _ *AlertRuleResourcesClientListByParentOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/alertRuleResources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AlertRuleResourcesClient) listByParentCreateRequest(ctx context.Context, resourceGroupName string, watcherName string, nextLink string, _ *AlertRuleResourcesClientListByParentOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/alertRuleResources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if watcherName == "" {
+			return nil, errors.New("parameter watcherName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{watcherName}", url.PathEscape(watcherName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if watcherName == "" {
-		return nil, errors.New("parameter watcherName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{watcherName}", url.PathEscape(watcherName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250102)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250102)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByParentHandleResponse handles the ListByParent response.
-func (client *AlertRuleResourcesClient) listByParentHandleResponse(resp *http.Response) (AlertRuleResourcesClientListByParentResponse, error) {
+func (client *AlertRuleResourcesClient) listByParentHandleResponse(resp *http.Response, successCodes ...int) (AlertRuleResourcesClientListByParentResponse, error) {
 	result := AlertRuleResourcesClientListByParentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertRuleResourceListResult); err != nil {
 		return AlertRuleResourcesClientListByParentResponse{}, err
 	}

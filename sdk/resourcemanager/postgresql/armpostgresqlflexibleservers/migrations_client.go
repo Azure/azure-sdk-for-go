@@ -61,12 +61,7 @@ func (client *MigrationsClient) Cancel(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return MigrationsClientCancelResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return MigrationsClientCancelResponse{}, err
-	}
-	resp, err := client.cancelHandleResponse(httpResp)
-	return resp, err
+	return client.cancelHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
 }
 
 // cancelCreateRequest creates the Cancel request.
@@ -100,8 +95,11 @@ func (client *MigrationsClient) cancelCreateRequest(ctx context.Context, resourc
 }
 
 // cancelHandleResponse handles the Cancel response.
-func (client *MigrationsClient) cancelHandleResponse(resp *http.Response) (MigrationsClientCancelResponse, error) {
+func (client *MigrationsClient) cancelHandleResponse(resp *http.Response, successCodes ...int) (MigrationsClientCancelResponse, error) {
 	result := MigrationsClientCancelResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Migration); err != nil {
 		return MigrationsClientCancelResponse{}, err
 	}
@@ -131,12 +129,7 @@ func (client *MigrationsClient) CheckNameAvailability(ctx context.Context, resou
 	if err != nil {
 		return MigrationsClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MigrationsClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -170,8 +163,11 @@ func (client *MigrationsClient) checkNameAvailabilityCreateRequest(ctx context.C
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *MigrationsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (MigrationsClientCheckNameAvailabilityResponse, error) {
+func (client *MigrationsClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (MigrationsClientCheckNameAvailabilityResponse, error) {
 	result := MigrationsClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationNameAvailability); err != nil {
 		return MigrationsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -199,12 +195,7 @@ func (client *MigrationsClient) Create(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return MigrationsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return MigrationsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -242,8 +233,11 @@ func (client *MigrationsClient) createCreateRequest(ctx context.Context, resourc
 }
 
 // createHandleResponse handles the Create response.
-func (client *MigrationsClient) createHandleResponse(resp *http.Response) (MigrationsClientCreateResponse, error) {
+func (client *MigrationsClient) createHandleResponse(resp *http.Response, successCodes ...int) (MigrationsClientCreateResponse, error) {
 	result := MigrationsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Migration); err != nil {
 		return MigrationsClientCreateResponse{}, err
 	}
@@ -270,12 +264,7 @@ func (client *MigrationsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return MigrationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MigrationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -309,8 +298,11 @@ func (client *MigrationsClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *MigrationsClient) getHandleResponse(resp *http.Response) (MigrationsClientGetResponse, error) {
+func (client *MigrationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (MigrationsClientGetResponse, error) {
 	result := MigrationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Migration); err != nil {
 		return MigrationsClientGetResponse{}, err
 	}
@@ -333,50 +325,64 @@ func (client *MigrationsClient) NewListByTargetServerPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByTargetServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			}, nil)
+			req, err := client.listByTargetServerCreateRequest(ctx, resourceGroupName, serverName, nextLink, options)
 			if err != nil {
 				return MigrationsClientListByTargetServerResponse{}, err
 			}
-			return client.listByTargetServerHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MigrationsClientListByTargetServerResponse{}, err
+			}
+			return client.listByTargetServerHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByTargetServerCreateRequest creates the ListByTargetServer request.
-func (client *MigrationsClient) listByTargetServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, options *MigrationsClientListByTargetServerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/migrations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MigrationsClient) listByTargetServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, nextLink string, options *MigrationsClientListByTargetServerOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/migrations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serverName == "" {
+			return nil, errors.New("parameter serverName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	if options != nil && options.MigrationListFilter != nil {
-		reqQP.Set("migrationListFilter", string(*options.MigrationListFilter))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401Preview)
+		if options != nil && options.MigrationListFilter != nil {
+			reqQP.Set("migrationListFilter", string(*options.MigrationListFilter))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByTargetServerHandleResponse handles the ListByTargetServer response.
-func (client *MigrationsClient) listByTargetServerHandleResponse(resp *http.Response) (MigrationsClientListByTargetServerResponse, error) {
+func (client *MigrationsClient) listByTargetServerHandleResponse(resp *http.Response, successCodes ...int) (MigrationsClientListByTargetServerResponse, error) {
 	result := MigrationsClientListByTargetServerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrationList); err != nil {
 		return MigrationsClientListByTargetServerResponse{}, err
 	}
@@ -405,12 +411,7 @@ func (client *MigrationsClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return MigrationsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MigrationsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -448,8 +449,11 @@ func (client *MigrationsClient) updateCreateRequest(ctx context.Context, resourc
 }
 
 // updateHandleResponse handles the Update response.
-func (client *MigrationsClient) updateHandleResponse(resp *http.Response) (MigrationsClientUpdateResponse, error) {
+func (client *MigrationsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (MigrationsClientUpdateResponse, error) {
 	result := MigrationsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Migration); err != nil {
 		return MigrationsClientUpdateResponse{}, err
 	}

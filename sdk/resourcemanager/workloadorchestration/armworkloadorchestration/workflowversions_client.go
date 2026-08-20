@@ -84,8 +84,7 @@ func (client *WorkflowVersionsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -170,8 +169,7 @@ func (client *WorkflowVersionsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -230,12 +228,7 @@ func (client *WorkflowVersionsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WorkflowVersionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkflowVersionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -273,8 +266,11 @@ func (client *WorkflowVersionsClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkflowVersionsClient) getHandleResponse(resp *http.Response) (WorkflowVersionsClientGetResponse, error) {
+func (client *WorkflowVersionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (WorkflowVersionsClientGetResponse, error) {
 	result := WorkflowVersionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowVersion); err != nil {
 		return WorkflowVersionsClientGetResponse{}, err
 	}
@@ -298,51 +294,65 @@ func (client *WorkflowVersionsClient) NewListByWorkflowPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByWorkflowCreateRequest(ctx, resourceGroupName, contextName, workflowName, options)
-			}, nil)
+			req, err := client.listByWorkflowCreateRequest(ctx, resourceGroupName, contextName, workflowName, nextLink, options)
 			if err != nil {
 				return WorkflowVersionsClientListByWorkflowResponse{}, err
 			}
-			return client.listByWorkflowHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkflowVersionsClientListByWorkflowResponse{}, err
+			}
+			return client.listByWorkflowHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByWorkflowCreateRequest creates the ListByWorkflow request.
-func (client *WorkflowVersionsClient) listByWorkflowCreateRequest(ctx context.Context, resourceGroupName string, contextName string, workflowName string, _ *WorkflowVersionsClientListByWorkflowOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkflowVersionsClient) listByWorkflowCreateRequest(ctx context.Context, resourceGroupName string, contextName string, workflowName string, nextLink string, _ *WorkflowVersionsClientListByWorkflowOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/contexts/{contextName}/workflows/{workflowName}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if contextName == "" {
+			return nil, errors.New("parameter contextName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{contextName}", url.PathEscape(contextName))
+		if workflowName == "" {
+			return nil, errors.New("parameter workflowName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if contextName == "" {
-		return nil, errors.New("parameter contextName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{contextName}", url.PathEscape(contextName))
-	if workflowName == "" {
-		return nil, errors.New("parameter workflowName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByWorkflowHandleResponse handles the ListByWorkflow response.
-func (client *WorkflowVersionsClient) listByWorkflowHandleResponse(resp *http.Response) (WorkflowVersionsClientListByWorkflowResponse, error) {
+func (client *WorkflowVersionsClient) listByWorkflowHandleResponse(resp *http.Response, successCodes ...int) (WorkflowVersionsClientListByWorkflowResponse, error) {
 	result := WorkflowVersionsClientListByWorkflowResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowVersionListResult); err != nil {
 		return WorkflowVersionsClientListByWorkflowResponse{}, err
 	}
@@ -392,8 +402,7 @@ func (client *WorkflowVersionsClient) update(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

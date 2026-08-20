@@ -52,13 +52,13 @@ func ExampleAddressesClient_BeginCreate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armedgeorder.AddressesClientCreateResponse{
-	// 	AddressResource: &armedgeorder.AddressResource{
+	// 	AddressResource: armedgeorder.AddressResource{
 	// 		Name: to.Ptr("TestAddressName2"),
 	// 		Type: to.Ptr("Microsoft.EdgeOrder/addresses"),
 	// 		ID: to.Ptr("/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/addresses/TestAddressName2"),
@@ -86,8 +86,8 @@ func ExampleAddressesClient_BeginCreate() {
 	// 			},
 	// 		},
 	// 		SystemData: &armedgeorder.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -112,7 +112,7 @@ func ExampleAddressesClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -135,7 +135,7 @@ func ExampleAddressesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armedgeorder.AddressesClientGetResponse{
-	// 	AddressResource: &armedgeorder.AddressResource{
+	// 	AddressResource: armedgeorder.AddressResource{
 	// 		Name: to.Ptr("TestAddressName1"),
 	// 		Type: to.Ptr("Microsoft.EdgeOrder/addresses"),
 	// 		ID: to.Ptr("/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/addresses/TestAddressName1"),
@@ -163,8 +163,8 @@ func ExampleAddressesClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armedgeorder.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -225,8 +225,8 @@ func ExampleAddressesClient_NewListByResourceGroupPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armedgeorder.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -259,8 +259,8 @@ func ExampleAddressesClient_NewListByResourceGroupPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armedgeorder.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"tag1": to.Ptr("value1"),
@@ -326,8 +326,8 @@ func ExampleAddressesClient_NewListBySubscriptionPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armedgeorder.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -360,8 +360,8 @@ func ExampleAddressesClient_NewListBySubscriptionPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armedgeorder.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -414,13 +414,13 @@ func ExampleAddressesClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armedgeorder.AddressesClientUpdateResponse{
-	// 	AddressResource: &armedgeorder.AddressResource{
+	// 	AddressResource: armedgeorder.AddressResource{
 	// 		Name: to.Ptr("TestAddressName2"),
 	// 		Type: to.Ptr("Microsoft.EdgeOrder/addresses"),
 	// 		ID: to.Ptr("/subscriptions/eb5dc900-6186-49d8-b7d7-febd866fdc1d/resourceGroups/YourResourceGroupName/providers/Microsoft.EdgeOrder/addresses/TestAddressName2"),
@@ -447,8 +447,8 @@ func ExampleAddressesClient_BeginUpdate() {
 	// 			},
 	// 		},
 	// 		SystemData: &armedgeorder.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T05:30:00+05:30"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(1901, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"tag1": to.Ptr("value1"),

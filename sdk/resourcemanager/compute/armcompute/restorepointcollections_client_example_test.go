@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/restorePointExamples/RestorePointCollection_CreateOrUpdate.json
 func ExampleRestorePointCollectionsClient_CreateOrUpdate_createOrUpdateARestorePointCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleRestorePointCollectionsClient_CreateOrUpdate_createOrUpdateARestoreP
 	// }
 }
 
-// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_CreateOrUpdate_ForCrossRegionCopy.json
+// Generated from example definition: 2026-04-01/restorePointExamples/RestorePointCollection_CreateOrUpdate_ForCrossRegionCopy.json
 func ExampleRestorePointCollectionsClient_CreateOrUpdate_createOrUpdateARestorePointCollectionForCrossRegionCopy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleRestorePointCollectionsClient_CreateOrUpdate_createOrUpdateARestoreP
 	// }
 }
 
-// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/restorePointExamples/RestorePointCollection_Delete_MaximumSet_Gen.json
 func ExampleRestorePointCollectionsClient_BeginDelete_restorePointCollectionDeleteMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleRestorePointCollectionsClient_BeginDelete_restorePointCollectionDele
 	// }
 }
 
-// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/restorePointExamples/RestorePointCollection_Delete_MinimumSet_Gen.json
 func ExampleRestorePointCollectionsClient_BeginDelete_restorePointCollectionDeleteMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +164,7 @@ func ExampleRestorePointCollectionsClient_BeginDelete_restorePointCollectionDele
 	// }
 }
 
-// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_Get.json
+// Generated from example definition: 2026-04-01/restorePointExamples/RestorePointCollection_Get.json
 func ExampleRestorePointCollectionsClient_Get_getARestorePointCollectionButNotTheRestorePointsContainedInTheRestorePointCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,7 +204,7 @@ func ExampleRestorePointCollectionsClient_Get_getARestorePointCollectionButNotTh
 	// }
 }
 
-// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_Get_WithContainedRestorePoints.json
+// Generated from example definition: 2026-04-01/restorePointExamples/RestorePointCollection_Get_WithContainedRestorePoints.json
 func ExampleRestorePointCollectionsClient_Get_getARestorePointCollectionIncludingTheRestorePointsContainedInTheRestorePointCollection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -305,7 +305,7 @@ func ExampleRestorePointCollectionsClient_Get_getARestorePointCollectionIncludin
 	// 						InstantAccessDurationMinutes: to.Ptr[int32](120),
 	// 						ProvisioningState: to.Ptr("Succeeded"),
 	// 						ConsistencyMode: to.Ptr(armcompute.ConsistencyModeTypesApplicationConsistent),
-	// 						TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-27T20:35:05.8401519+00:00"); return t}()),
+	// 						TimeCreated: to.Ptr(time.Date(2021, time.January, 27, 20, 35, 5, 840151900, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -314,7 +314,7 @@ func ExampleRestorePointCollectionsClient_Get_getARestorePointCollectionIncludin
 	// }
 }
 
-// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_ListByResourceGroup.json
+// Generated from example definition: 2026-04-01/restorePointExamples/RestorePointCollection_ListByResourceGroup.json
 func ExampleRestorePointCollectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -380,7 +380,7 @@ func ExampleRestorePointCollectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_ListBySubscription.json
+// Generated from example definition: 2026-04-01/restorePointExamples/RestorePointCollection_ListBySubscription.json
 func ExampleRestorePointCollectionsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -446,7 +446,7 @@ func ExampleRestorePointCollectionsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/restorePointExamples/RestorePointCollection_Update_MaximumSet_Gen.json
 func ExampleRestorePointCollectionsClient_Update_restorePointCollectionUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -635,7 +635,7 @@ func ExampleRestorePointCollectionsClient_Update_restorePointCollectionUpdateMax
 	// 						},
 	// 						ProvisioningState: to.Ptr("aaaaaaaaaaaaaaaaa"),
 	// 						ConsistencyMode: to.Ptr(armcompute.ConsistencyModeTypesCrashConsistent),
-	// 						TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-11-30T12:58:26.593Z"); return t}()),
+	// 						TimeCreated: to.Ptr(time.Date(2021, time.November, 30, 12, 58, 26, 593000000, time.UTC)),
 	// 					},
 	// 					ID: to.Ptr("aaaaaaaaaaa"),
 	// 					Name: to.Ptr("aaaaaaaaaaaaaaaaaa"),
@@ -652,7 +652,7 @@ func ExampleRestorePointCollectionsClient_Update_restorePointCollectionUpdateMax
 	// }
 }
 
-// Generated from example definition: 2026-03-01/restorePointExamples/RestorePointCollection_Update_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/restorePointExamples/RestorePointCollection_Update_MinimumSet_Gen.json
 func ExampleRestorePointCollectionsClient_Update_restorePointCollectionUpdateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

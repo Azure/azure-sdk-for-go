@@ -5491,7 +5491,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 			UpgradeSettings: &armcontainerservice.ClusterUpgradeSettings{
 				OverrideSettings: &armcontainerservice.UpgradeOverrideSettings{
 					ForceUpgrade: to.Ptr(true),
-					Until:        to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T13:00:00Z"); return t }()),
+					Until:        to.Ptr(time.Date(2022, time.November, 1, 13, 0, 0, 0, time.UTC)),
 				},
 			},
 			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
@@ -5621,7 +5621,7 @@ func ExampleManagedClustersClient_BeginCreateOrUpdate_createUpdateManagedCluster
 	// 			UpgradeSettings: &armcontainerservice.ClusterUpgradeSettings{
 	// 				OverrideSettings: &armcontainerservice.UpgradeOverrideSettings{
 	// 					ForceUpgrade: to.Ptr(false),
-	// 					Until: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T13:00:00Z"); return t}()),
+	// 					Until: to.Ptr(time.Date(2022, time.November, 1, 13, 0, 0, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 			WindowsProfile: &armcontainerservice.ManagedClusterWindowsProfile{
@@ -6852,7 +6852,7 @@ func ExampleManagedClustersClient_Get() {
 	// 			UpgradeSettings: &armcontainerservice.ClusterUpgradeSettings{
 	// 				OverrideSettings: &armcontainerservice.UpgradeOverrideSettings{
 	// 					ForceUpgrade: to.Ptr(true),
-	// 					Until: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-01T13:00:00Z"); return t}()),
+	// 					Until: to.Ptr(time.Date(2022, time.November, 1, 13, 0, 0, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 		},
@@ -6947,10 +6947,10 @@ func ExampleManagedClustersClient_GetCommandResult_commandSucceedResult() {
 	// 		ID: to.Ptr("def7b3ea71bd4f7e9d226ddbc0f00ad9"),
 	// 		Properties: &armcontainerservice.CommandResultProperties{
 	// 			ExitCode: to.Ptr[int32](0),
-	// 			FinishedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-17T00:28:33Z"); return t}()),
+	// 			FinishedAt: to.Ptr(time.Date(2021, time.February, 17, 0, 28, 33, 0, time.UTC)),
 	// 			Logs: to.Ptr("namespace dummy created"),
 	// 			ProvisioningState: to.Ptr("succeeded"),
-	// 			StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-17T00:28:20Z"); return t}()),
+	// 			StartedAt: to.Ptr(time.Date(2021, time.February, 17, 0, 28, 20, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -8171,10 +8171,10 @@ func ExampleManagedClustersClient_BeginRunCommand() {
 	// 		ID: to.Ptr("def7b3ea71bd4f7e9d226ddbc0f00ad9"),
 	// 		Properties: &armcontainerservice.CommandResultProperties{
 	// 			ExitCode: to.Ptr[int32](0),
-	// 			FinishedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-17T00:28:33Z"); return t}()),
+	// 			FinishedAt: to.Ptr(time.Date(2021, time.February, 17, 0, 28, 33, 0, time.UTC)),
 	// 			Logs: to.Ptr("namespace dummy created"),
 	// 			ProvisioningState: to.Ptr("succeeded"),
-	// 			StartedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-17T00:28:20Z"); return t}()),
+	// 			StartedAt: to.Ptr(time.Date(2021, time.February, 17, 0, 28, 20, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }

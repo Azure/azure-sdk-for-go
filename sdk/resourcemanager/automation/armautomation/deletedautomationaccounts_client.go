@@ -59,12 +59,7 @@ func (client *DeletedAutomationAccountsClient) ListBySubscription(ctx context.Co
 	if err != nil {
 		return DeletedAutomationAccountsClientListBySubscriptionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeletedAutomationAccountsClientListBySubscriptionResponse{}, err
-	}
-	resp, err := client.listBySubscriptionHandleResponse(httpResp)
-	return resp, err
+	return client.listBySubscriptionHandleResponse(httpResp, http.StatusOK)
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
@@ -86,8 +81,11 @@ func (client *DeletedAutomationAccountsClient) listBySubscriptionCreateRequest(c
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *DeletedAutomationAccountsClient) listBySubscriptionHandleResponse(resp *http.Response) (DeletedAutomationAccountsClientListBySubscriptionResponse, error) {
+func (client *DeletedAutomationAccountsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (DeletedAutomationAccountsClientListBySubscriptionResponse, error) {
 	result := DeletedAutomationAccountsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeletedAutomationAccountListResult); err != nil {
 		return DeletedAutomationAccountsClientListBySubscriptionResponse{}, err
 	}

@@ -12,6 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/structuredmsg"
 )
 
 // TransferValidationType abstracts the various mechanisms used to verify a transfer.
@@ -81,8 +82,8 @@ func (t *transferValidationTypeSMCRC64) Apply(rsc io.ReadSeekCloser, cfg generat
 		return nil, err
 	}
 
-	encoder := shared.NewSMEncoder(rsc, contentLen, t.segmentSize)
-	cfg.SetStructuredBody(shared.SMHeaderValue, encoder.OriginalContentLength())
+	encoder := structuredmsg.NewSMEncoder(rsc, contentLen, t.segmentSize)
+	cfg.SetStructuredBody(structuredmsg.SMHeaderValue, encoder.OriginalContentLength())
 	return encoder, nil
 }
 
@@ -90,7 +91,7 @@ func (*transferValidationTypeSMCRC64) notPubliclyImplementable() {}
 func (*transferValidationTypeSMCRC64) supportsMultiBlock() bool  { return true }
 
 func (t *transferValidationTypeSMCRC64) StructuredBodyHeaderValue() string {
-	return shared.SMHeaderValue
+	return structuredmsg.SMHeaderValue
 }
 
 // GetStructuredBodyType returns the structured body header value if the given TransferValidationType

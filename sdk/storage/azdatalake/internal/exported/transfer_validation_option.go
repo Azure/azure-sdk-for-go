@@ -6,11 +6,13 @@ package exported
 import (
 	"bytes"
 	"encoding/binary"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/shared"
 	"hash/crc64"
 	"io"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/structuredmsg"
 )
 
 // TransferValidationType abstracts the various mechanisms used to verify a transfer.
@@ -46,7 +48,7 @@ func TransferValidationTypeComputeCRC64() TransferValidationType {
 			return nil, err
 		}
 
-		crc := crc64.Checksum(buf, shared.CRC64Table)
+		crc := crc64.Checksum(buf, structuredmsg.CRC64Table)
 		return TransferValidationTypeCRC64(crc).Apply(streaming.NopCloser(bytes.NewReader(buf)), cfg)
 	})
 }
@@ -64,13 +66,13 @@ type transferValidationTypeSMCRC64 struct {
 }
 
 func (t *transferValidationTypeSMCRC64) Apply(rsc io.ReadSeekCloser, cfg generated.TransactionalContentSetter) (io.ReadSeekCloser, error) {
-	contentLen, err := shared.ValidateSeekableStreamAt0AndGetCount(rsc)
+	contentLen, err := internal.ValidateSeekableStreamAt0AndGetCount(rsc)
 	if err != nil {
 		return nil, err
 	}
 
-	encoder := shared.NewSMEncoder(rsc, contentLen, t.segmentSize)
-	cfg.SetStructuredBody(shared.SMHeaderValue, encoder.OriginalContentLength())
+	encoder := structuredmsg.NewSMEncoder(rsc, contentLen, t.segmentSize)
+	cfg.SetStructuredBody(structuredmsg.SMHeaderValue, encoder.OriginalContentLength())
 	return encoder, nil
 }
 
@@ -78,7 +80,7 @@ func (*transferValidationTypeSMCRC64) notPubliclyImplementable() {}
 func (*transferValidationTypeSMCRC64) supportsMultiBlock() bool  { return true }
 
 func (t *transferValidationTypeSMCRC64) StructuredBodyHeaderValue() string {
-	return shared.SMHeaderValue
+	return structuredmsg.SMHeaderValue
 }
 
 // GetStructuredBodyType returns the structured body header value if the given TransferValidationType

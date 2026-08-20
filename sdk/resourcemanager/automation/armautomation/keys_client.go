@@ -61,12 +61,7 @@ func (client *KeysClient) ListByAutomationAccount(ctx context.Context, resourceG
 	if err != nil {
 		return KeysClientListByAutomationAccountResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return KeysClientListByAutomationAccountResponse{}, err
-	}
-	resp, err := client.listByAutomationAccountHandleResponse(httpResp)
-	return resp, err
+	return client.listByAutomationAccountHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
@@ -96,8 +91,11 @@ func (client *KeysClient) listByAutomationAccountCreateRequest(ctx context.Conte
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *KeysClient) listByAutomationAccountHandleResponse(resp *http.Response) (KeysClientListByAutomationAccountResponse, error) {
+func (client *KeysClient) listByAutomationAccountHandleResponse(resp *http.Response, successCodes ...int) (KeysClientListByAutomationAccountResponse, error) {
 	result := KeysClientListByAutomationAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
 		return KeysClientListByAutomationAccountResponse{}, err
 	}

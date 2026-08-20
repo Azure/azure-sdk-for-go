@@ -18,6 +18,8 @@ import (
 
 // ValidateOperationStatusesClient contains the methods for the ValidateOperationStatuses group.
 // Don't use this type directly, use NewValidateOperationStatusesClient() instead.
+//
+// Generated from API version 2026-07-01
 type ValidateOperationStatusesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewValidateOperationStatusesClient(subscriptionID string, credential azcore
 // or failed. You can refer to the OperationStatus enum for all the possible states of the operation.
 // If operation has completed, this method returns the list of errors obtained while validating the operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - operationID - OperationID represents the operation whose status needs to be fetched.
@@ -64,12 +64,7 @@ func (client *ValidateOperationStatusesClient) Get(ctx context.Context, vaultNam
 	if err != nil {
 		return ValidateOperationStatusesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ValidateOperationStatusesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -96,15 +91,18 @@ func (client *ValidateOperationStatusesClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ValidateOperationStatusesClient) getHandleResponse(resp *http.Response) (ValidateOperationStatusesClientGetResponse, error) {
+func (client *ValidateOperationStatusesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ValidateOperationStatusesClientGetResponse, error) {
 	result := ValidateOperationStatusesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
 		return ValidateOperationStatusesClientGetResponse{}, err
 	}

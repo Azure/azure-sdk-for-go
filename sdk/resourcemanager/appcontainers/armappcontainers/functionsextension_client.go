@@ -65,12 +65,7 @@ func (client *FunctionsExtensionClient) InvokeFunctionsHost(ctx context.Context,
 	if err != nil {
 		return FunctionsExtensionClientInvokeFunctionsHostResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FunctionsExtensionClientInvokeFunctionsHostResponse{}, err
-	}
-	resp, err := client.invokeFunctionsHostHandleResponse(httpResp)
-	return resp, err
+	return client.invokeFunctionsHostHandleResponse(httpResp, http.StatusOK)
 }
 
 // invokeFunctionsHostCreateRequest creates the InvokeFunctionsHost request.
@@ -108,8 +103,11 @@ func (client *FunctionsExtensionClient) invokeFunctionsHostCreateRequest(ctx con
 }
 
 // invokeFunctionsHostHandleResponse handles the InvokeFunctionsHost response.
-func (client *FunctionsExtensionClient) invokeFunctionsHostHandleResponse(resp *http.Response) (FunctionsExtensionClientInvokeFunctionsHostResponse, error) {
+func (client *FunctionsExtensionClient) invokeFunctionsHostHandleResponse(resp *http.Response, successCodes ...int) (FunctionsExtensionClientInvokeFunctionsHostResponse, error) {
 	result := FunctionsExtensionClientInvokeFunctionsHostResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return FunctionsExtensionClientInvokeFunctionsHostResponse{}, err

@@ -62,12 +62,7 @@ func (client *EnterprisePoliciesClient) CreateOrUpdate(ctx context.Context, ente
 	if err != nil {
 		return EnterprisePoliciesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return EnterprisePoliciesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -101,8 +96,11 @@ func (client *EnterprisePoliciesClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *EnterprisePoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (EnterprisePoliciesClientCreateOrUpdateResponse, error) {
+func (client *EnterprisePoliciesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (EnterprisePoliciesClientCreateOrUpdateResponse, error) {
 	result := EnterprisePoliciesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnterprisePolicy); err != nil {
 		return EnterprisePoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -130,8 +128,7 @@ func (client *EnterprisePoliciesClient) Delete(ctx context.Context, resourceGrou
 		return EnterprisePoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return EnterprisePoliciesClientDeleteResponse{}, err
+		return EnterprisePoliciesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return EnterprisePoliciesClientDeleteResponse{}, nil
 }
@@ -180,12 +177,7 @@ func (client *EnterprisePoliciesClient) Get(ctx context.Context, enterprisePolic
 	if err != nil {
 		return EnterprisePoliciesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnterprisePoliciesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -215,8 +207,11 @@ func (client *EnterprisePoliciesClient) getCreateRequest(ctx context.Context, en
 }
 
 // getHandleResponse handles the Get response.
-func (client *EnterprisePoliciesClient) getHandleResponse(resp *http.Response) (EnterprisePoliciesClientGetResponse, error) {
+func (client *EnterprisePoliciesClient) getHandleResponse(resp *http.Response, successCodes ...int) (EnterprisePoliciesClientGetResponse, error) {
 	result := EnterprisePoliciesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnterprisePolicy); err != nil {
 		return EnterprisePoliciesClientGetResponse{}, err
 	}
@@ -238,43 +233,57 @@ func (client *EnterprisePoliciesClient) NewListByResourceGroupPager(resourceGrou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return EnterprisePoliciesClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnterprisePoliciesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *EnterprisePoliciesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *EnterprisePoliciesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerPlatform/enterprisePolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EnterprisePoliciesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *EnterprisePoliciesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerPlatform/enterprisePolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20201030Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20201030Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *EnterprisePoliciesClient) listByResourceGroupHandleResponse(resp *http.Response) (EnterprisePoliciesClientListByResourceGroupResponse, error) {
+func (client *EnterprisePoliciesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (EnterprisePoliciesClientListByResourceGroupResponse, error) {
 	result := EnterprisePoliciesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnterprisePolicyList); err != nil {
 		return EnterprisePoliciesClientListByResourceGroupResponse{}, err
 	}
@@ -295,39 +304,53 @@ func (client *EnterprisePoliciesClient) NewListBySubscriptionPager(options *Ente
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return EnterprisePoliciesClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnterprisePoliciesClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *EnterprisePoliciesClient) listBySubscriptionCreateRequest(ctx context.Context, _ *EnterprisePoliciesClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PowerPlatform/enterprisePolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EnterprisePoliciesClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *EnterprisePoliciesClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PowerPlatform/enterprisePolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20201030Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20201030Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *EnterprisePoliciesClient) listBySubscriptionHandleResponse(resp *http.Response) (EnterprisePoliciesClientListBySubscriptionResponse, error) {
+func (client *EnterprisePoliciesClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (EnterprisePoliciesClientListBySubscriptionResponse, error) {
 	result := EnterprisePoliciesClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnterprisePolicyList); err != nil {
 		return EnterprisePoliciesClientListBySubscriptionResponse{}, err
 	}
@@ -355,12 +378,7 @@ func (client *EnterprisePoliciesClient) Update(ctx context.Context, enterprisePo
 	if err != nil {
 		return EnterprisePoliciesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnterprisePoliciesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -394,8 +412,11 @@ func (client *EnterprisePoliciesClient) updateCreateRequest(ctx context.Context,
 }
 
 // updateHandleResponse handles the Update response.
-func (client *EnterprisePoliciesClient) updateHandleResponse(resp *http.Response) (EnterprisePoliciesClientUpdateResponse, error) {
+func (client *EnterprisePoliciesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (EnterprisePoliciesClientUpdateResponse, error) {
 	result := EnterprisePoliciesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnterprisePolicy); err != nil {
 		return EnterprisePoliciesClientUpdateResponse{}, err
 	}

@@ -62,12 +62,7 @@ func (client *ImagesClient) Get(ctx context.Context, resourceGroupName string, n
 	if err != nil {
 		return ImagesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ImagesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -101,8 +96,11 @@ func (client *ImagesClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *ImagesClient) getHandleResponse(resp *http.Response) (ImagesClientGetResponse, error) {
+func (client *ImagesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ImagesClientGetResponse, error) {
 	result := ImagesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Image); err != nil {
 		return ImagesClientGetResponse{}, err
 	}
@@ -125,56 +123,70 @@ func (client *ImagesClient) NewListByDisconnectedOperationPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDisconnectedOperationCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listByDisconnectedOperationCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return ImagesClientListByDisconnectedOperationResponse{}, err
 			}
-			return client.listByDisconnectedOperationHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ImagesClientListByDisconnectedOperationResponse{}, err
+			}
+			return client.listByDisconnectedOperationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDisconnectedOperationCreateRequest creates the ListByDisconnectedOperation request.
-func (client *ImagesClient) listByDisconnectedOperationCreateRequest(ctx context.Context, resourceGroupName string, name string, options *ImagesClientListByDisconnectedOperationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}/images"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ImagesClient) listByDisconnectedOperationCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, options *ImagesClientListByDisconnectedOperationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/disconnectedOperations/{name}/images"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByDisconnectedOperationHandleResponse handles the ListByDisconnectedOperation response.
-func (client *ImagesClient) listByDisconnectedOperationHandleResponse(resp *http.Response) (ImagesClientListByDisconnectedOperationResponse, error) {
+func (client *ImagesClient) listByDisconnectedOperationHandleResponse(resp *http.Response, successCodes ...int) (ImagesClientListByDisconnectedOperationResponse, error) {
 	result := ImagesClientListByDisconnectedOperationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageListResult); err != nil {
 		return ImagesClientListByDisconnectedOperationResponse{}, err
 	}
@@ -201,12 +213,7 @@ func (client *ImagesClient) ListDownloadURI(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ImagesClientListDownloadURIResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ImagesClientListDownloadURIResponse{}, err
-	}
-	resp, err := client.listDownloadURIHandleResponse(httpResp)
-	return resp, err
+	return client.listDownloadURIHandleResponse(httpResp, http.StatusOK)
 }
 
 // listDownloadURICreateRequest creates the ListDownloadURI request.
@@ -240,8 +247,11 @@ func (client *ImagesClient) listDownloadURICreateRequest(ctx context.Context, re
 }
 
 // listDownloadURIHandleResponse handles the ListDownloadURI response.
-func (client *ImagesClient) listDownloadURIHandleResponse(resp *http.Response) (ImagesClientListDownloadURIResponse, error) {
+func (client *ImagesClient) listDownloadURIHandleResponse(resp *http.Response, successCodes ...int) (ImagesClientListDownloadURIResponse, error) {
 	result := ImagesClientListDownloadURIResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageDownloadResult); err != nil {
 		return ImagesClientListDownloadURIResponse{}, err
 	}

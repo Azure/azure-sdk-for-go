@@ -60,12 +60,7 @@ func (client *InformationalOperationsClient) GetLimits(ctx context.Context, loca
 	if err != nil {
 		return InformationalOperationsClientGetLimitsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InformationalOperationsClientGetLimitsResponse{}, err
-	}
-	resp, err := client.getLimitsHandleResponse(httpResp)
-	return resp, err
+	return client.getLimitsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getLimitsCreateRequest creates the GetLimits request.
@@ -91,8 +86,11 @@ func (client *InformationalOperationsClient) getLimitsCreateRequest(ctx context.
 }
 
 // getLimitsHandleResponse handles the GetLimits response.
-func (client *InformationalOperationsClient) getLimitsHandleResponse(resp *http.Response) (InformationalOperationsClientGetLimitsResponse, error) {
+func (client *InformationalOperationsClient) getLimitsHandleResponse(resp *http.Response, successCodes ...int) (InformationalOperationsClientGetLimitsResponse, error) {
 	result := InformationalOperationsClientGetLimitsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileShareLimitsResponse); err != nil {
 		return InformationalOperationsClientGetLimitsResponse{}, err
 	}
@@ -119,12 +117,7 @@ func (client *InformationalOperationsClient) GetProvisioningRecommendation(ctx c
 	if err != nil {
 		return InformationalOperationsClientGetProvisioningRecommendationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InformationalOperationsClientGetProvisioningRecommendationResponse{}, err
-	}
-	resp, err := client.getProvisioningRecommendationHandleResponse(httpResp)
-	return resp, err
+	return client.getProvisioningRecommendationHandleResponse(httpResp, http.StatusOK)
 }
 
 // getProvisioningRecommendationCreateRequest creates the GetProvisioningRecommendation request.
@@ -154,8 +147,11 @@ func (client *InformationalOperationsClient) getProvisioningRecommendationCreate
 }
 
 // getProvisioningRecommendationHandleResponse handles the GetProvisioningRecommendation response.
-func (client *InformationalOperationsClient) getProvisioningRecommendationHandleResponse(resp *http.Response) (InformationalOperationsClientGetProvisioningRecommendationResponse, error) {
+func (client *InformationalOperationsClient) getProvisioningRecommendationHandleResponse(resp *http.Response, successCodes ...int) (InformationalOperationsClientGetProvisioningRecommendationResponse, error) {
 	result := InformationalOperationsClientGetProvisioningRecommendationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileShareProvisioningRecommendationResponse); err != nil {
 		return InformationalOperationsClientGetProvisioningRecommendationResponse{}, err
 	}
@@ -181,12 +177,7 @@ func (client *InformationalOperationsClient) GetUsageData(ctx context.Context, l
 	if err != nil {
 		return InformationalOperationsClientGetUsageDataResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InformationalOperationsClientGetUsageDataResponse{}, err
-	}
-	resp, err := client.getUsageDataHandleResponse(httpResp)
-	return resp, err
+	return client.getUsageDataHandleResponse(httpResp, http.StatusOK)
 }
 
 // getUsageDataCreateRequest creates the GetUsageData request.
@@ -212,8 +203,11 @@ func (client *InformationalOperationsClient) getUsageDataCreateRequest(ctx conte
 }
 
 // getUsageDataHandleResponse handles the GetUsageData response.
-func (client *InformationalOperationsClient) getUsageDataHandleResponse(resp *http.Response) (InformationalOperationsClientGetUsageDataResponse, error) {
+func (client *InformationalOperationsClient) getUsageDataHandleResponse(resp *http.Response, successCodes ...int) (InformationalOperationsClientGetUsageDataResponse, error) {
 	result := InformationalOperationsClientGetUsageDataResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileShareUsageDataResponse); err != nil {
 		return InformationalOperationsClientGetUsageDataResponse{}, err
 	}

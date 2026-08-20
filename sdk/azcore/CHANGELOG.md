@@ -1,18 +1,24 @@
 # Release History
 
-## 1.22.1 (Unreleased)
+## 1.23.1-beta.1 (Unreleased)
 
 ### Features Added
-
-* `runtime.FetcherForNextLinkOptions` has a new field `Endpoint`, the service endpoint used to resolve a relative next link.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
-* Fixed an issue where `runtime.Pager[T].More` could return `true` indefinitely after `NextPage` failed to retrieve the first page, causing `for pager.More()` loops to spin. After a page fetch returns an error the `Pager` now enters a terminal state: `More` returns `false` and subsequent `NextPage` calls return the same error without invoking the fetcher again.
-
 ### Other Changes
+
+## 1.23.0 (2026-08-11)
+
+### Features Added
+
+* Helper method `runtime.NewRequestForNextLink` for creating requests for pageable operations that uses a next link.  It handles absolute and relative next links.
+
+### Bugs Fixed
+
+* Fixed an issue where `runtime.Pager[T].More` could return `true` indefinitely after `NextPage` failed to retrieve the first page, causing `for pager.More()` loops to spin. After a page fetch returns an error the `Pager` now enters a terminal state: `More` returns `false` and subsequent `NextPage` calls return the same error without invoking the fetcher again.
 
 ## 1.22.0 (2026-06-04)
 

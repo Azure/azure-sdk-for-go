@@ -64,12 +64,7 @@ func (client *TriageResourcesClient) Get(ctx context.Context, reviewID string, r
 	if err != nil {
 		return TriageResourcesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TriageResourcesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -103,8 +98,11 @@ func (client *TriageResourcesClient) getCreateRequest(ctx context.Context, revie
 }
 
 // getHandleResponse handles the Get response.
-func (client *TriageResourcesClient) getHandleResponse(resp *http.Response) (TriageResourcesClientGetResponse, error) {
+func (client *TriageResourcesClient) getHandleResponse(resp *http.Response, successCodes ...int) (TriageResourcesClientGetResponse, error) {
 	result := TriageResourcesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriageResource); err != nil {
 		return TriageResourcesClientGetResponse{}, err
 	}
@@ -129,47 +127,61 @@ func (client *TriageResourcesClient) NewListPager(reviewID string, recommendatio
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, reviewID, recommendationID, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, reviewID, recommendationID, nextLink, options)
 			if err != nil {
 				return TriageResourcesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TriageResourcesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *TriageResourcesClient) listCreateRequest(ctx context.Context, reviewID string, recommendationID string, _ *TriageResourcesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/resiliencyReviews/{reviewId}/providers/Microsoft.Advisor/triageRecommendations/{recommendationId}/providers/Microsoft.Advisor/triageResources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TriageResourcesClient) listCreateRequest(ctx context.Context, reviewID string, recommendationID string, nextLink string, _ *TriageResourcesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/resiliencyReviews/{reviewId}/providers/Microsoft.Advisor/triageRecommendations/{recommendationId}/providers/Microsoft.Advisor/triageResources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if reviewID == "" {
+			return nil, errors.New("parameter reviewID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{reviewId}", url.PathEscape(reviewID))
+		if recommendationID == "" {
+			return nil, errors.New("parameter recommendationID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{recommendationId}", url.PathEscape(recommendationID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if reviewID == "" {
-		return nil, errors.New("parameter reviewID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{reviewId}", url.PathEscape(reviewID))
-	if recommendationID == "" {
-		return nil, errors.New("parameter recommendationID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{recommendationId}", url.PathEscape(recommendationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *TriageResourcesClient) listHandleResponse(resp *http.Response) (TriageResourcesClientListResponse, error) {
+func (client *TriageResourcesClient) listHandleResponse(resp *http.Response, successCodes ...int) (TriageResourcesClientListResponse, error) {
 	result := TriageResourcesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriageResourceCollection); err != nil {
 		return TriageResourcesClientListResponse{}, err
 	}

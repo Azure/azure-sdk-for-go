@@ -84,8 +84,7 @@ func (client *CatalogImageDefinitionBuildClient) cancel(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -150,12 +149,7 @@ func (client *CatalogImageDefinitionBuildClient) Get(ctx context.Context, resour
 	if err != nil {
 		return CatalogImageDefinitionBuildClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CatalogImageDefinitionBuildClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -197,8 +191,11 @@ func (client *CatalogImageDefinitionBuildClient) getCreateRequest(ctx context.Co
 }
 
 // getHandleResponse handles the Get response.
-func (client *CatalogImageDefinitionBuildClient) getHandleResponse(resp *http.Response) (CatalogImageDefinitionBuildClientGetResponse, error) {
+func (client *CatalogImageDefinitionBuildClient) getHandleResponse(resp *http.Response, successCodes ...int) (CatalogImageDefinitionBuildClientGetResponse, error) {
 	result := CatalogImageDefinitionBuildClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageDefinitionBuild); err != nil {
 		return CatalogImageDefinitionBuildClientGetResponse{}, err
 	}
@@ -228,12 +225,7 @@ func (client *CatalogImageDefinitionBuildClient) GetBuildDetails(ctx context.Con
 	if err != nil {
 		return CatalogImageDefinitionBuildClientGetBuildDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CatalogImageDefinitionBuildClientGetBuildDetailsResponse{}, err
-	}
-	resp, err := client.getBuildDetailsHandleResponse(httpResp)
-	return resp, err
+	return client.getBuildDetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getBuildDetailsCreateRequest creates the GetBuildDetails request.
@@ -275,8 +267,11 @@ func (client *CatalogImageDefinitionBuildClient) getBuildDetailsCreateRequest(ct
 }
 
 // getBuildDetailsHandleResponse handles the GetBuildDetails response.
-func (client *CatalogImageDefinitionBuildClient) getBuildDetailsHandleResponse(resp *http.Response) (CatalogImageDefinitionBuildClientGetBuildDetailsResponse, error) {
+func (client *CatalogImageDefinitionBuildClient) getBuildDetailsHandleResponse(resp *http.Response, successCodes ...int) (CatalogImageDefinitionBuildClientGetBuildDetailsResponse, error) {
 	result := CatalogImageDefinitionBuildClientGetBuildDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImageDefinitionBuildDetails); err != nil {
 		return CatalogImageDefinitionBuildClientGetBuildDetailsResponse{}, err
 	}

@@ -47,7 +47,7 @@ func ExamplePlansClient_NewListPager_plansListMaximumSetGen() {
 		// 					OrgCreationSource: to.Ptr(armnewrelicobservability.OrgCreationSourceLIFTR),
 		// 					PlanData: &armnewrelicobservability.PlanData{
 		// 						BillingCycle: to.Ptr("Yearly"),
-		// 						EffectiveDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-12-05T14:11:37.786Z"); return t}()),
+		// 						EffectiveDate: to.Ptr(time.Date(2022, time.December, 5, 14, 11, 37, 786000000, time.UTC)),
 		// 						PlanDetails: to.Ptr("tbbiaga"),
 		// 						UsageType: to.Ptr(armnewrelicobservability.UsageTypePAYG),
 		// 					},

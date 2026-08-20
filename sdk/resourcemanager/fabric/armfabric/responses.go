@@ -51,6 +51,12 @@ type CapacitiesClientListSKUsResponse struct {
 	RpSKUEnumerationForNewResourceResult
 }
 
+// CapacitiesClientListUsagesResponse contains the response from method CapacitiesClient.NewListUsagesPager.
+type CapacitiesClientListUsagesResponse struct {
+	// Paged collection of Quota items
+	PagedQuota
+}
+
 // CapacitiesClientResumeResponse contains the response from method CapacitiesClient.BeginResume.
 type CapacitiesClientResumeResponse struct {
 	// placeholder for future response values

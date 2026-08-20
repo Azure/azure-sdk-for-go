@@ -59,12 +59,7 @@ func (client *SaaSClient) ActivateResource(ctx context.Context, request Activate
 	if err != nil {
 		return SaaSClientActivateResourceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SaaSClientActivateResourceResponse{}, err
-	}
-	resp, err := client.activateResourceHandleResponse(httpResp)
-	return resp, err
+	return client.activateResourceHandleResponse(httpResp, http.StatusOK)
 }
 
 // activateResourceCreateRequest creates the ActivateResource request.
@@ -90,8 +85,11 @@ func (client *SaaSClient) activateResourceCreateRequest(ctx context.Context, req
 }
 
 // activateResourceHandleResponse handles the ActivateResource response.
-func (client *SaaSClient) activateResourceHandleResponse(resp *http.Response) (SaaSClientActivateResourceResponse, error) {
+func (client *SaaSClient) activateResourceHandleResponse(resp *http.Response, successCodes ...int) (SaaSClientActivateResourceResponse, error) {
 	result := SaaSClientActivateResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SaaSResourceDetailsResponse); err != nil {
 		return SaaSClientActivateResourceResponse{}, err
 	}

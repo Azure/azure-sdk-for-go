@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/ExpressRouteGatewayCreate.json
+// Generated from example definition: 2025-09-01/ExpressRouteGatewayCreate.json
 func ExampleExpressRouteGatewaysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleExpressRouteGatewaysClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteGatewayDelete.json
+// Generated from example definition: 2025-09-01/ExpressRouteGatewayDelete.json
 func ExampleExpressRouteGatewaysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleExpressRouteGatewaysClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteGatewayGet.json
+// Generated from example definition: 2025-09-01/ExpressRouteGatewayGet.json
 func ExampleExpressRouteGatewaysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleExpressRouteGatewaysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteGatewayGetFailoverAllTestsDetails.json
+// Generated from example definition: 2025-09-01/ExpressRouteGatewayGetFailoverAllTestsDetails.json
 func ExampleExpressRouteGatewaysClient_BeginGetFailoverAllTestsDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExampleExpressRouteGatewaysClient_BeginGetFailoverAllTestsDetails() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteGatewayGetFailoverSingleTestDetails.json
+// Generated from example definition: 2025-09-01/ExpressRouteGatewayGetFailoverSingleTestDetails.json
 func ExampleExpressRouteGatewaysClient_BeginGetFailoverSingleTestDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +268,7 @@ func ExampleExpressRouteGatewaysClient_BeginGetFailoverSingleTestDetails() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteGatewayGetResiliencyInformation.json
+// Generated from example definition: 2025-09-01/ExpressRouteGatewayGetResiliencyInformation.json
 func ExampleExpressRouteGatewaysClient_BeginGetResiliencyInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,8 +297,8 @@ func ExampleExpressRouteGatewaysClient_BeginGetResiliencyInformation() {
 	// 		ScoreChange: to.Ptr("5"),
 	// 		MinScoreFromRecommendations: to.Ptr("2"),
 	// 		MaxScoreFromRecommendations: to.Ptr("10"),
-	// 		LastComputedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00Z"); return t}()),
-	// 		NextEligibleComputeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T01:00:00Z"); return t}()),
+	// 		LastComputedTime: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 		NextEligibleComputeTime: to.Ptr(time.Date(2025, time.January, 1, 1, 0, 0, 0, time.UTC)),
 	// 		Components: []*armnetwork.ResiliencyRecommendationComponents{
 	// 			{
 	// 				Name: to.Ptr("Disaster Recovery"),
@@ -320,7 +320,7 @@ func ExampleExpressRouteGatewaysClient_BeginGetResiliencyInformation() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteGatewayGetRoutesInformation.json
+// Generated from example definition: 2025-09-01/ExpressRouteGatewayGetRoutesInformation.json
 func ExampleExpressRouteGatewaysClient_BeginGetRoutesInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,8 +345,8 @@ func ExampleExpressRouteGatewaysClient_BeginGetRoutesInformation() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armnetwork.ExpressRouteGatewaysClientGetRoutesInformationResponse{
 	// 	GatewayRouteSetsInformation: armnetwork.GatewayRouteSetsInformation{
-	// 		LastComputedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00Z"); return t}()),
-	// 		NextEligibleComputeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T01:00:00Z"); return t}()),
+	// 		LastComputedTime: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 		NextEligibleComputeTime: to.Ptr(time.Date(2025, time.January, 1, 1, 0, 0, 0, time.UTC)),
 	// 		RouteSetVersion: to.Ptr("1"),
 	// 		RouteSets: []*armnetwork.GatewayRouteSet{
 	// 			{
@@ -394,7 +394,7 @@ func ExampleExpressRouteGatewaysClient_BeginGetRoutesInformation() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteGatewayListByResourceGroup.json
+// Generated from example definition: 2025-09-01/ExpressRouteGatewayListByResourceGroup.json
 func ExampleExpressRouteGatewaysClient_ListByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -480,7 +480,7 @@ func ExampleExpressRouteGatewaysClient_ListByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteGatewayListBySubscription.json
+// Generated from example definition: 2025-09-01/ExpressRouteGatewayListBySubscription.json
 func ExampleExpressRouteGatewaysClient_ListBySubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -566,7 +566,7 @@ func ExampleExpressRouteGatewaysClient_ListBySubscription() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteGatewayStartSiteFailoverTest.json
+// Generated from example definition: 2025-09-01/ExpressRouteGatewayStartSiteFailoverTest.json
 func ExampleExpressRouteGatewaysClient_BeginStartSiteFailoverTest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -593,7 +593,7 @@ func ExampleExpressRouteGatewaysClient_BeginStartSiteFailoverTest() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteGatewayStopSiteFailoverTest.json
+// Generated from example definition: 2025-09-01/ExpressRouteGatewayStopSiteFailoverTest.json
 func ExampleExpressRouteGatewaysClient_BeginStopSiteFailoverTest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -630,7 +630,7 @@ func ExampleExpressRouteGatewaysClient_BeginStopSiteFailoverTest() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteGatewayUpdateTags.json
+// Generated from example definition: 2025-09-01/ExpressRouteGatewayUpdateTags.json
 func ExampleExpressRouteGatewaysClient_BeginUpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

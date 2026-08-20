@@ -83,8 +83,7 @@ func (client *MongoMIResourcesClient) createUpdateMongoMIRoleAssignment(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -165,8 +164,7 @@ func (client *MongoMIResourcesClient) createUpdateMongoMIRoleDefinition(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -246,8 +244,7 @@ func (client *MongoMIResourcesClient) deleteMongoMIRoleAssignment(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -322,8 +319,7 @@ func (client *MongoMIResourcesClient) deleteMongoMIRoleDefinition(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -379,12 +375,7 @@ func (client *MongoMIResourcesClient) GetMongoMIRoleAssignment(ctx context.Conte
 	if err != nil {
 		return MongoMIResourcesClientGetMongoMIRoleAssignmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MongoMIResourcesClientGetMongoMIRoleAssignmentResponse{}, err
-	}
-	resp, err := client.getMongoMIRoleAssignmentHandleResponse(httpResp)
-	return resp, err
+	return client.getMongoMIRoleAssignmentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMongoMIRoleAssignmentCreateRequest creates the GetMongoMIRoleAssignment request.
@@ -418,8 +409,11 @@ func (client *MongoMIResourcesClient) getMongoMIRoleAssignmentCreateRequest(ctx 
 }
 
 // getMongoMIRoleAssignmentHandleResponse handles the GetMongoMIRoleAssignment response.
-func (client *MongoMIResourcesClient) getMongoMIRoleAssignmentHandleResponse(resp *http.Response) (MongoMIResourcesClientGetMongoMIRoleAssignmentResponse, error) {
+func (client *MongoMIResourcesClient) getMongoMIRoleAssignmentHandleResponse(resp *http.Response, successCodes ...int) (MongoMIResourcesClientGetMongoMIRoleAssignmentResponse, error) {
 	result := MongoMIResourcesClientGetMongoMIRoleAssignmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MongoMIRoleAssignmentResource); err != nil {
 		return MongoMIResourcesClientGetMongoMIRoleAssignmentResponse{}, err
 	}
@@ -448,12 +442,7 @@ func (client *MongoMIResourcesClient) GetMongoMIRoleDefinition(ctx context.Conte
 	if err != nil {
 		return MongoMIResourcesClientGetMongoMIRoleDefinitionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MongoMIResourcesClientGetMongoMIRoleDefinitionResponse{}, err
-	}
-	resp, err := client.getMongoMIRoleDefinitionHandleResponse(httpResp)
-	return resp, err
+	return client.getMongoMIRoleDefinitionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMongoMIRoleDefinitionCreateRequest creates the GetMongoMIRoleDefinition request.
@@ -487,8 +476,11 @@ func (client *MongoMIResourcesClient) getMongoMIRoleDefinitionCreateRequest(ctx 
 }
 
 // getMongoMIRoleDefinitionHandleResponse handles the GetMongoMIRoleDefinition response.
-func (client *MongoMIResourcesClient) getMongoMIRoleDefinitionHandleResponse(resp *http.Response) (MongoMIResourcesClientGetMongoMIRoleDefinitionResponse, error) {
+func (client *MongoMIResourcesClient) getMongoMIRoleDefinitionHandleResponse(resp *http.Response, successCodes ...int) (MongoMIResourcesClientGetMongoMIRoleDefinitionResponse, error) {
 	result := MongoMIResourcesClientGetMongoMIRoleDefinitionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MongoMIRoleDefinitionResource); err != nil {
 		return MongoMIResourcesClientGetMongoMIRoleDefinitionResponse{}, err
 	}
@@ -511,47 +503,61 @@ func (client *MongoMIResourcesClient) NewListMongoMIRoleAssignmentsPager(resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listMongoMIRoleAssignmentsCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listMongoMIRoleAssignmentsCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return MongoMIResourcesClientListMongoMIRoleAssignmentsResponse{}, err
 			}
-			return client.listMongoMIRoleAssignmentsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MongoMIResourcesClientListMongoMIRoleAssignmentsResponse{}, err
+			}
+			return client.listMongoMIRoleAssignmentsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listMongoMIRoleAssignmentsCreateRequest creates the ListMongoMIRoleAssignments request.
-func (client *MongoMIResourcesClient) listMongoMIRoleAssignmentsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *MongoMIResourcesClientListMongoMIRoleAssignmentsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongoMIRoleAssignments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MongoMIResourcesClient) listMongoMIRoleAssignmentsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *MongoMIResourcesClientListMongoMIRoleAssignmentsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongoMIRoleAssignments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listMongoMIRoleAssignmentsHandleResponse handles the ListMongoMIRoleAssignments response.
-func (client *MongoMIResourcesClient) listMongoMIRoleAssignmentsHandleResponse(resp *http.Response) (MongoMIResourcesClientListMongoMIRoleAssignmentsResponse, error) {
+func (client *MongoMIResourcesClient) listMongoMIRoleAssignmentsHandleResponse(resp *http.Response, successCodes ...int) (MongoMIResourcesClientListMongoMIRoleAssignmentsResponse, error) {
 	result := MongoMIResourcesClientListMongoMIRoleAssignmentsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MongoMIRoleAssignmentListResult); err != nil {
 		return MongoMIResourcesClientListMongoMIRoleAssignmentsResponse{}, err
 	}
@@ -574,47 +580,61 @@ func (client *MongoMIResourcesClient) NewListMongoMIRoleDefinitionsPager(resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listMongoMIRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listMongoMIRoleDefinitionsCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return MongoMIResourcesClientListMongoMIRoleDefinitionsResponse{}, err
 			}
-			return client.listMongoMIRoleDefinitionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MongoMIResourcesClientListMongoMIRoleDefinitionsResponse{}, err
+			}
+			return client.listMongoMIRoleDefinitionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listMongoMIRoleDefinitionsCreateRequest creates the ListMongoMIRoleDefinitions request.
-func (client *MongoMIResourcesClient) listMongoMIRoleDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *MongoMIResourcesClientListMongoMIRoleDefinitionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongoMIRoleDefinitions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MongoMIResourcesClient) listMongoMIRoleDefinitionsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *MongoMIResourcesClientListMongoMIRoleDefinitionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongoMIRoleDefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listMongoMIRoleDefinitionsHandleResponse handles the ListMongoMIRoleDefinitions response.
-func (client *MongoMIResourcesClient) listMongoMIRoleDefinitionsHandleResponse(resp *http.Response) (MongoMIResourcesClientListMongoMIRoleDefinitionsResponse, error) {
+func (client *MongoMIResourcesClient) listMongoMIRoleDefinitionsHandleResponse(resp *http.Response, successCodes ...int) (MongoMIResourcesClientListMongoMIRoleDefinitionsResponse, error) {
 	result := MongoMIResourcesClientListMongoMIRoleDefinitionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MongoMIRoleDefinitionListResult); err != nil {
 		return MongoMIResourcesClientListMongoMIRoleDefinitionsResponse{}, err
 	}

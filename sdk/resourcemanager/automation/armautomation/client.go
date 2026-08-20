@@ -62,12 +62,7 @@ func (client *Client) ConvertGraphRunbookContent(ctx context.Context, resourceGr
 	if err != nil {
 		return ClientConvertGraphRunbookContentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientConvertGraphRunbookContentResponse{}, err
-	}
-	resp, err := client.convertGraphRunbookContentHandleResponse(httpResp)
-	return resp, err
+	return client.convertGraphRunbookContentHandleResponse(httpResp, http.StatusOK)
 }
 
 // convertGraphRunbookContentCreateRequest creates the ConvertGraphRunbookContent request.
@@ -101,8 +96,11 @@ func (client *Client) convertGraphRunbookContentCreateRequest(ctx context.Contex
 }
 
 // convertGraphRunbookContentHandleResponse handles the ConvertGraphRunbookContent response.
-func (client *Client) convertGraphRunbookContentHandleResponse(resp *http.Response) (ClientConvertGraphRunbookContentResponse, error) {
+func (client *Client) convertGraphRunbookContentHandleResponse(resp *http.Response, successCodes ...int) (ClientConvertGraphRunbookContentResponse, error) {
 	result := ClientConvertGraphRunbookContentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GraphicalRunbookContent); err != nil {
 		return ClientConvertGraphRunbookContentResponse{}, err
 	}

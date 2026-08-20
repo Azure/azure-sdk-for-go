@@ -18,6 +18,8 @@ import (
 
 // JobDetailsClient contains the methods for the JobDetails group.
 // Don't use this type directly, use NewJobDetailsClient() instead.
+//
+// Generated from API version 2026-07-01
 type JobDetailsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewJobDetailsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // Get - Gets extended information associated with the job.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - JobDetailsClientGetOptions contains the optional parameters for the JobDetailsClient.Get method.
 func (client *JobDetailsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, jobName string, options *JobDetailsClientGetOptions) (JobDetailsClientGetResponse, error) {
@@ -59,12 +59,7 @@ func (client *JobDetailsClient) Get(ctx context.Context, vaultName string, resou
 	if err != nil {
 		return JobDetailsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return JobDetailsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -91,15 +86,18 @@ func (client *JobDetailsClient) getCreateRequest(ctx context.Context, vaultName 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobDetailsClient) getHandleResponse(resp *http.Response) (JobDetailsClientGetResponse, error) {
+func (client *JobDetailsClient) getHandleResponse(resp *http.Response, successCodes ...int) (JobDetailsClientGetResponse, error) {
 	result := JobDetailsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobResource); err != nil {
 		return JobDetailsClientGetResponse{}, err
 	}

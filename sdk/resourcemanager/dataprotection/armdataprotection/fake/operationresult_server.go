@@ -109,7 +109,7 @@ func (o *OperationResultServerTransport) dispatchGet(req *http.Request) (*http.R
 		return nil, err
 	}
 	if val := server.GetResponse(respr).AzureAsyncOperation; val != nil {
-		resp.Header.Set("Azure-AsyncOperation", *val)
+		resp.Header.Set("Azure-Asyncoperation", *val)
 	}
 	if val := server.GetResponse(respr).Location; val != nil {
 		resp.Header.Set("Location", *val)

@@ -94,10 +94,10 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 		},
 	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
@@ -279,10 +279,10 @@ func ExampleUpdateRunsClient_Get() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 		},
 	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
@@ -443,10 +443,10 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 				SystemData: &armcontainerservicefleet.SystemData{
 		// 					CreatedBy: to.Ptr("@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 		// 				},
 		// 				Properties: &armcontainerservicefleet.UpdateRunProperties{
 		// 					ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
@@ -620,10 +620,10 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:09:08.395Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 9, 8, 395000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 		},
 	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
@@ -657,13 +657,13 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 			},
 	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
 	// 				Status: &armcontainerservicefleet.UpdateStatus{
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 				},
 	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
 	// 					{
 	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 							StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
@@ -671,7 +671,7 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
 	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 									StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateSkipped),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
@@ -688,7 +688,7 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 							},
 	// 							{
 	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 									StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 								},
 	// 								Name: to.Ptr("group-b"),
@@ -749,10 +749,10 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:09:08.395Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 9, 8, 395000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 		},
 	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
@@ -782,13 +782,13 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// 			},
 	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
 	// 				Status: &armcontainerservicefleet.UpdateStatus{
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 				},
 	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
 	// 					{
 	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 							StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
@@ -796,7 +796,7 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
 	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 									StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
@@ -857,10 +857,10 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:09:08.395Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 9, 8, 395000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 		},
 	// 		Properties: &armcontainerservicefleet.UpdateRunProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.UpdateRunProvisioningStateSucceeded),
@@ -890,13 +890,13 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// 			},
 	// 			Status: &armcontainerservicefleet.UpdateRunStatus{
 	// 				Status: &armcontainerservicefleet.UpdateStatus{
-	// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 					StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 					State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
 	// 				},
 	// 				Stages: []*armcontainerservicefleet.UpdateStageStatus{
 	// 					{
 	// 						Status: &armcontainerservicefleet.UpdateStatus{
-	// 							StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 							StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
@@ -904,7 +904,7 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
 	// 								Status: &armcontainerservicefleet.UpdateStatus{
-	// 									StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 									StartTime: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
 	// 								},
 	// 								Name: to.Ptr("group-a"),

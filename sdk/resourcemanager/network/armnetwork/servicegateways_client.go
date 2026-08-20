@@ -19,7 +19,7 @@ import (
 // ServiceGatewaysClient contains the methods for the ServiceGateways group.
 // Don't use this type directly, use NewServiceGatewaysClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type ServiceGatewaysClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -82,8 +82,7 @@ func (client *ServiceGatewaysClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -108,7 +107,7 @@ func (client *ServiceGatewaysClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -158,8 +157,7 @@ func (client *ServiceGatewaysClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -184,7 +182,7 @@ func (client *ServiceGatewaysClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -208,12 +206,7 @@ func (client *ServiceGatewaysClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ServiceGatewaysClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceGatewaysClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -236,15 +229,18 @@ func (client *ServiceGatewaysClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServiceGatewaysClient) getHandleResponse(resp *http.Response) (ServiceGatewaysClientGetResponse, error) {
+func (client *ServiceGatewaysClient) getHandleResponse(resp *http.Response, successCodes ...int) (ServiceGatewaysClientGetResponse, error) {
 	result := ServiceGatewaysClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGateway); err != nil {
 		return ServiceGatewaysClientGetResponse{}, err
 	}
@@ -267,47 +263,61 @@ func (client *ServiceGatewaysClient) NewGetAddressLocationsPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getAddressLocationsCreateRequest(ctx, resourceGroupName, serviceGatewayName, options)
-			}, nil)
+			req, err := client.getAddressLocationsCreateRequest(ctx, resourceGroupName, serviceGatewayName, nextLink, options)
 			if err != nil {
 				return ServiceGatewaysClientGetAddressLocationsResponse{}, err
 			}
-			return client.getAddressLocationsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServiceGatewaysClientGetAddressLocationsResponse{}, err
+			}
+			return client.getAddressLocationsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getAddressLocationsCreateRequest creates the GetAddressLocations request.
-func (client *ServiceGatewaysClient) getAddressLocationsCreateRequest(ctx context.Context, resourceGroupName string, serviceGatewayName string, _ *ServiceGatewaysClientGetAddressLocationsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceGateways/{serviceGatewayName}/addressLocations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ServiceGatewaysClient) getAddressLocationsCreateRequest(ctx context.Context, resourceGroupName string, serviceGatewayName string, nextLink string, _ *ServiceGatewaysClientGetAddressLocationsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceGateways/{serviceGatewayName}/addressLocations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serviceGatewayName == "" {
+			return nil, errors.New("parameter serviceGatewayName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceGatewayName}", url.PathEscape(serviceGatewayName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceGatewayName == "" {
-		return nil, errors.New("parameter serviceGatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceGatewayName}", url.PathEscape(serviceGatewayName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // getAddressLocationsHandleResponse handles the GetAddressLocations response.
-func (client *ServiceGatewaysClient) getAddressLocationsHandleResponse(resp *http.Response) (ServiceGatewaysClientGetAddressLocationsResponse, error) {
+func (client *ServiceGatewaysClient) getAddressLocationsHandleResponse(resp *http.Response, successCodes ...int) (ServiceGatewaysClientGetAddressLocationsResponse, error) {
 	result := ServiceGatewaysClientGetAddressLocationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetServiceGatewayAddressLocationsResult); err != nil {
 		return ServiceGatewaysClientGetAddressLocationsResponse{}, err
 	}
@@ -330,47 +340,61 @@ func (client *ServiceGatewaysClient) NewGetServicesPager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getServicesCreateRequest(ctx, resourceGroupName, serviceGatewayName, options)
-			}, nil)
+			req, err := client.getServicesCreateRequest(ctx, resourceGroupName, serviceGatewayName, nextLink, options)
 			if err != nil {
 				return ServiceGatewaysClientGetServicesResponse{}, err
 			}
-			return client.getServicesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServiceGatewaysClientGetServicesResponse{}, err
+			}
+			return client.getServicesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getServicesCreateRequest creates the GetServices request.
-func (client *ServiceGatewaysClient) getServicesCreateRequest(ctx context.Context, resourceGroupName string, serviceGatewayName string, _ *ServiceGatewaysClientGetServicesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceGateways/{serviceGatewayName}/services"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ServiceGatewaysClient) getServicesCreateRequest(ctx context.Context, resourceGroupName string, serviceGatewayName string, nextLink string, _ *ServiceGatewaysClientGetServicesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceGateways/{serviceGatewayName}/services"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serviceGatewayName == "" {
+			return nil, errors.New("parameter serviceGatewayName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceGatewayName}", url.PathEscape(serviceGatewayName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serviceGatewayName == "" {
-		return nil, errors.New("parameter serviceGatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceGatewayName}", url.PathEscape(serviceGatewayName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // getServicesHandleResponse handles the GetServices response.
-func (client *ServiceGatewaysClient) getServicesHandleResponse(resp *http.Response) (ServiceGatewaysClientGetServicesResponse, error) {
+func (client *ServiceGatewaysClient) getServicesHandleResponse(resp *http.Response, successCodes ...int) (ServiceGatewaysClientGetServicesResponse, error) {
 	result := ServiceGatewaysClientGetServicesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetServiceGatewayServicesResult); err != nil {
 		return ServiceGatewaysClientGetServicesResponse{}, err
 	}
@@ -392,43 +416,57 @@ func (client *ServiceGatewaysClient) NewListPager(resourceGroupName string, opti
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return ServiceGatewaysClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServiceGatewaysClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ServiceGatewaysClient) listCreateRequest(ctx context.Context, resourceGroupName string, _ *ServiceGatewaysClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceGateways"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ServiceGatewaysClient) listCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ServiceGatewaysClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceGateways"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ServiceGatewaysClient) listHandleResponse(resp *http.Response) (ServiceGatewaysClientListResponse, error) {
+func (client *ServiceGatewaysClient) listHandleResponse(resp *http.Response, successCodes ...int) (ServiceGatewaysClientListResponse, error) {
 	result := ServiceGatewaysClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGatewayListResult); err != nil {
 		return ServiceGatewaysClientListResponse{}, err
 	}
@@ -449,72 +487,57 @@ func (client *ServiceGatewaysClient) NewListAllPager(options *ServiceGatewaysCli
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ServiceGatewaysClientListAllResponse{}, err
 			}
-			return client.listAllHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServiceGatewaysClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *ServiceGatewaysClient) listAllCreateRequest(ctx context.Context, _ *ServiceGatewaysClientListAllOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/serviceGateways"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ServiceGatewaysClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *ServiceGatewaysClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/serviceGateways"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *ServiceGatewaysClient) listAllHandleResponse(resp *http.Response) (ServiceGatewaysClientListAllResponse, error) {
+func (client *ServiceGatewaysClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (ServiceGatewaysClientListAllResponse, error) {
 	result := ServiceGatewaysClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGatewayListResult); err != nil {
 		return ServiceGatewaysClientListAllResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdateAddressLocations - Creates or updates address locations within the service gateway.
-// The request supports both full and partial update modes at two levels: location and address.
-// Full update replaces all existing data.
-// Partial update modifies only the specified entries:
-// For location-level partial updates, if no address is provided, the existing address will be deleted.
-// For address-level partial updates, if no services are provided, the existing services will be considered for deletion.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serviceGatewayName - The name of the service gateway.
-//   - parameters - Parameters supplied to the create or updates address locations in service gateway operation.
-//   - options - ServiceGatewaysClientBeginUpdateAddressLocationsOptions contains the optional parameters for the ServiceGatewaysClient.BeginUpdateAddressLocations
-//     method.
-func (client *ServiceGatewaysClient) BeginUpdateAddressLocations(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGatewayUpdateAddressLocationsRequest, options *ServiceGatewaysClientBeginUpdateAddressLocationsOptions) (*runtime.Poller[ServiceGatewaysClientUpdateAddressLocationsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateAddressLocations(ctx, resourceGroupName, serviceGatewayName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServiceGatewaysClientUpdateAddressLocationsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServiceGatewaysClientUpdateAddressLocationsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
 }
 
 // UpdateAddressLocations - Creates or updates address locations within the service gateway.
@@ -524,29 +547,30 @@ func (client *ServiceGatewaysClient) BeginUpdateAddressLocations(ctx context.Con
 // For location-level partial updates, if no address is provided, the existing address will be deleted.
 // For address-level partial updates, if no services are provided, the existing services will be considered for deletion.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ServiceGatewaysClient) updateAddressLocations(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGatewayUpdateAddressLocationsRequest, options *ServiceGatewaysClientBeginUpdateAddressLocationsOptions) (*http.Response, error) {
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serviceGatewayName - The name of the service gateway.
+//   - parameters - Parameters supplied to create or update address locations in service gateway operation.
+//   - options - ServiceGatewaysClientUpdateAddressLocationsOptions contains the optional parameters for the ServiceGatewaysClient.UpdateAddressLocations
+//     method.
+func (client *ServiceGatewaysClient) UpdateAddressLocations(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGatewayUpdateAddressLocationsRequest, options *ServiceGatewaysClientUpdateAddressLocationsOptions) (ServiceGatewaysClientUpdateAddressLocationsResponse, error) {
 	var err error
-	const operationName = "ServiceGatewaysClient.BeginUpdateAddressLocations"
+	const operationName = "ServiceGatewaysClient.UpdateAddressLocations"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.updateAddressLocationsCreateRequest(ctx, resourceGroupName, serviceGatewayName, parameters, options)
 	if err != nil {
-		return nil, err
+		return ServiceGatewaysClientUpdateAddressLocationsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ServiceGatewaysClientUpdateAddressLocationsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
+	return client.updateAddressLocationsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateAddressLocationsCreateRequest creates the UpdateAddressLocations request.
-func (client *ServiceGatewaysClient) updateAddressLocationsCreateRequest(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGatewayUpdateAddressLocationsRequest, _ *ServiceGatewaysClientBeginUpdateAddressLocationsOptions) (*policy.Request, error) {
+func (client *ServiceGatewaysClient) updateAddressLocationsCreateRequest(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGatewayUpdateAddressLocationsRequest, _ *ServiceGatewaysClientUpdateAddressLocationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceGateways/{serviceGatewayName}/updateAddressLocations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -565,8 +589,9 @@ func (client *ServiceGatewaysClient) updateAddressLocationsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -574,31 +599,16 @@ func (client *ServiceGatewaysClient) updateAddressLocationsCreateRequest(ctx con
 	return req, nil
 }
 
-// BeginUpdateServices - Creates, updates, or deletes services within the service gateway.
-// The request supports both full and partial update modes at the service level.
-// Full update replaces all existing services with the new list provided in the request.
-// Partial update modifies only the specified services.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serviceGatewayName - The name of the service gateway.
-//   - parameters - Parameters supplied to the create or updates services in service gateway operation.
-//   - options - ServiceGatewaysClientBeginUpdateServicesOptions contains the optional parameters for the ServiceGatewaysClient.BeginUpdateServices
-//     method.
-func (client *ServiceGatewaysClient) BeginUpdateServices(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGatewayUpdateServicesRequest, options *ServiceGatewaysClientBeginUpdateServicesOptions) (*runtime.Poller[ServiceGatewaysClientUpdateServicesResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.updateServices(ctx, resourceGroupName, serviceGatewayName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServiceGatewaysClientUpdateServicesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServiceGatewaysClientUpdateServicesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
+// updateAddressLocationsHandleResponse handles the UpdateAddressLocations response.
+func (client *ServiceGatewaysClient) updateAddressLocationsHandleResponse(resp *http.Response, successCodes ...int) (ServiceGatewaysClientUpdateAddressLocationsResponse, error) {
+	result := ServiceGatewaysClientUpdateAddressLocationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
 	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGatewayActionOkResponseBody); err != nil {
+		return ServiceGatewaysClientUpdateAddressLocationsResponse{}, err
+	}
+	return result, nil
 }
 
 // UpdateServices - Creates, updates, or deletes services within the service gateway.
@@ -606,29 +616,30 @@ func (client *ServiceGatewaysClient) BeginUpdateServices(ctx context.Context, re
 // Full update replaces all existing services with the new list provided in the request.
 // Partial update modifies only the specified services.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ServiceGatewaysClient) updateServices(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGatewayUpdateServicesRequest, options *ServiceGatewaysClientBeginUpdateServicesOptions) (*http.Response, error) {
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serviceGatewayName - The name of the service gateway.
+//   - parameters - Parameters supplied to create or update services in service gateway operation.
+//   - options - ServiceGatewaysClientUpdateServicesOptions contains the optional parameters for the ServiceGatewaysClient.UpdateServices
+//     method.
+func (client *ServiceGatewaysClient) UpdateServices(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGatewayUpdateServicesRequest, options *ServiceGatewaysClientUpdateServicesOptions) (ServiceGatewaysClientUpdateServicesResponse, error) {
 	var err error
-	const operationName = "ServiceGatewaysClient.BeginUpdateServices"
+	const operationName = "ServiceGatewaysClient.UpdateServices"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.updateServicesCreateRequest(ctx, resourceGroupName, serviceGatewayName, parameters, options)
 	if err != nil {
-		return nil, err
+		return ServiceGatewaysClientUpdateServicesResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return ServiceGatewaysClientUpdateServicesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
+	return client.updateServicesHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateServicesCreateRequest creates the UpdateServices request.
-func (client *ServiceGatewaysClient) updateServicesCreateRequest(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGatewayUpdateServicesRequest, _ *ServiceGatewaysClientBeginUpdateServicesOptions) (*policy.Request, error) {
+func (client *ServiceGatewaysClient) updateServicesCreateRequest(ctx context.Context, resourceGroupName string, serviceGatewayName string, parameters ServiceGatewayUpdateServicesRequest, _ *ServiceGatewaysClientUpdateServicesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/serviceGateways/{serviceGatewayName}/updateServices"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -647,13 +658,26 @@ func (client *ServiceGatewaysClient) updateServicesCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
 	return req, nil
+}
+
+// updateServicesHandleResponse handles the UpdateServices response.
+func (client *ServiceGatewaysClient) updateServicesHandleResponse(resp *http.Response, successCodes ...int) (ServiceGatewaysClientUpdateServicesResponse, error) {
+	result := ServiceGatewaysClientUpdateServicesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGatewayActionOkResponseBody); err != nil {
+		return ServiceGatewaysClientUpdateServicesResponse{}, err
+	}
+	return result, nil
 }
 
 // UpdateTags - Updates a service gateway tags.
@@ -677,12 +701,7 @@ func (client *ServiceGatewaysClient) UpdateTags(ctx context.Context, resourceGro
 	if err != nil {
 		return ServiceGatewaysClientUpdateTagsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceGatewaysClientUpdateTagsResponse{}, err
-	}
-	resp, err := client.updateTagsHandleResponse(httpResp)
-	return resp, err
+	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -705,7 +724,7 @@ func (client *ServiceGatewaysClient) updateTagsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -716,8 +735,11 @@ func (client *ServiceGatewaysClient) updateTagsCreateRequest(ctx context.Context
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *ServiceGatewaysClient) updateTagsHandleResponse(resp *http.Response) (ServiceGatewaysClientUpdateTagsResponse, error) {
+func (client *ServiceGatewaysClient) updateTagsHandleResponse(resp *http.Response, successCodes ...int) (ServiceGatewaysClientUpdateTagsResponse, error) {
 	result := ServiceGatewaysClientUpdateTagsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGateway); err != nil {
 		return ServiceGatewaysClientUpdateTagsResponse{}, err
 	}

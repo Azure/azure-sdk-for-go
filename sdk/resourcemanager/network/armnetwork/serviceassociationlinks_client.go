@@ -19,7 +19,7 @@ import (
 // ServiceAssociationLinksClient contains the methods for the ServiceAssociationLinks group.
 // Don't use this type directly, use NewServiceAssociationLinksClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type ServiceAssociationLinksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -62,12 +62,7 @@ func (client *ServiceAssociationLinksClient) List(ctx context.Context, resourceG
 	if err != nil {
 		return ServiceAssociationLinksClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceAssociationLinksClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -94,15 +89,18 @@ func (client *ServiceAssociationLinksClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ServiceAssociationLinksClient) listHandleResponse(resp *http.Response) (ServiceAssociationLinksClientListResponse, error) {
+func (client *ServiceAssociationLinksClient) listHandleResponse(resp *http.Response, successCodes ...int) (ServiceAssociationLinksClientListResponse, error) {
 	result := ServiceAssociationLinksClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceAssociationLinksListResult); err != nil {
 		return ServiceAssociationLinksClientListResponse{}, err
 	}

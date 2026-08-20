@@ -6,14 +6,12 @@ package armrecoveryservicesbackup_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v5"
 	"log"
-	"time"
 )
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/RecoveryPoints_Get.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/RecoveryPoints_Get.json
 func ExampleRecoveryPointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,6 +35,18 @@ func ExampleRecoveryPointsClient_Get() {
 	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rshhtestmdvmrg/providers/Microsoft.RecoveryServices/vaults/rshvault/backupFabrics/Azure/protectionContainers/IaasVMContainer;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall/protectedItems/VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall/recoveryPoints/26083826328862"),
 	// 		Properties: &armrecoveryservicesbackup.IaasVMRecoveryPoint{
+	// 			DataDiskMetadata: &armrecoveryservicesbackup.DataDiskDetails{
+	// 				EncryptedDataDisks: []*armrecoveryservicesbackup.DiskDetails{
+	// 					{
+	// 						Lun: to.Ptr[int32](0),
+	// 						DiskName: to.Ptr("cvm-06170038-DataDisk-0"),
+	// 					},
+	// 					{
+	// 						Lun: to.Ptr[int32](1),
+	// 						DiskName: to.Ptr("cvm-06170038-DataDisk-1"),
+	// 					},
+	// 				},
+	// 			},
 	// 			IsInstantIlrSessionActive: to.Ptr(false),
 	// 			IsManagedVirtualMachine: to.Ptr(true),
 	// 			IsPrivateAccessEnabledOnAnyDisk: to.Ptr(true),
@@ -55,19 +65,40 @@ func ExampleRecoveryPointsClient_Get() {
 	// 					Status: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierStatusValid),
 	// 				},
 	// 			},
-	// 			RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-11-22T22:32:46.6088472Z"); return t}()),
+	// 			RecoveryPointTime: to.Ptr(time.Date(2017, time.November, 22, 22, 32, 46, 608847200, time.UTC)),
 	// 			RecoveryPointType: to.Ptr("CrashConsistent"),
 	// 			SourceVMStorageType: to.Ptr("NormalStorage"),
 	// 			VirtualMachineSize: to.Ptr("Standard_D1"),
+	// 			RecoveryPointProperties: &armrecoveryservicesbackup.RecoveryPointProperties{
+	// 				ExpiryTime: to.Ptr("2020-11-22T22:32:46.6088472Z"),
+	// 				RuleName: to.Ptr("DefaultRule"),
+	// 				ImmutabilityProperties: &armrecoveryservicesbackup.RecoveryPointImmutabilityProperties{
+	// 					IsImmutable: to.Ptr(true),
+	// 					ExpiryTime: to.Ptr(time.Date(2020, time.November, 22, 22, 32, 46, 608847200, time.UTC)),
+	// 				},
+	// 			},
 	// 			Zones: []*string{
 	// 				to.Ptr("1"),
+	// 			},
+	// 			ThreatStatus: to.Ptr(armrecoveryservicesbackup.ThreatStatusHealthy),
+	// 			ThreatInfo: []*armrecoveryservicesbackup.ThreatInfo{
+	// 				{
+	// 					ThreatTitle: to.Ptr("MDC threat title"),
+	// 					ThreatDescription: to.Ptr("Threat description"),
+	// 					LastUpdatedTime: to.Ptr(time.Date(2025, time.January, 22, 22, 32, 46, 608847200, time.UTC)),
+	// 					ThreatState: to.Ptr(armrecoveryservicesbackup.ThreatStateActive),
+	// 					ThreatStartTime: to.Ptr(time.Date(2024, time.November, 22, 22, 32, 46, 608847200, time.UTC)),
+	// 					ThreatEndTime: to.Ptr(time.Date(2024, time.November, 23, 17, 13, 23, 604547200, time.UTC)),
+	// 					ThreatURI: to.Ptr("https://portal.azure.com/#blade/Microsoft_Azure_Security_AzureDefenderForData/AlertBlade/alertId/00000000-0000-0000-0000-000000000000/subscriptionId/00000000-0000-0000-0000-000000000000/resourceGroup/Sample-RG/referencedFrom/alertDeepLink/location/centralus"),
+	// 					ThreatSeverity: to.Ptr(armrecoveryservicesbackup.ThreatSeverityInformational),
+	// 				},
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/RecoveryPoints_List.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/RecoveryPoints_List.json
 func ExampleRecoveryPointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +149,7 @@ func ExampleRecoveryPointsClient_NewListPager() {
 		// 							Status: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierStatusValid),
 		// 						},
 		// 					},
-		// 					RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-21T22:48:25.4353958Z"); return t}()),
+		// 					RecoveryPointTime: to.Ptr(time.Date(2017, time.December, 21, 22, 48, 25, 435395800, time.UTC)),
 		// 					RecoveryPointType: to.Ptr("CrashConsistent"),
 		// 					SourceVMStorageType: to.Ptr("NormalStorage"),
 		// 					VirtualMachineSize: to.Ptr("Standard_D1"),
@@ -159,7 +190,7 @@ func ExampleRecoveryPointsClient_NewListPager() {
 		// 							Status: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierStatusRehydrated),
 		// 						},
 		// 					},
-		// 					RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-20T22:49:44.3317945Z"); return t}()),
+		// 					RecoveryPointTime: to.Ptr(time.Date(2017, time.December, 20, 22, 49, 44, 331794500, time.UTC)),
 		// 					RecoveryPointType: to.Ptr("CrashConsistent"),
 		// 					SourceVMStorageType: to.Ptr("NormalStorage"),
 		// 					VirtualMachineSize: to.Ptr("Standard_D1"),
@@ -201,7 +232,7 @@ func ExampleRecoveryPointsClient_NewListPager() {
 		// 							Status: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierStatusValid),
 		// 						},
 		// 					},
-		// 					RecoveryPointTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-09-22T20:02:00.1225746Z"); return t}()),
+		// 					RecoveryPointTime: to.Ptr(time.Date(2023, time.September, 22, 20, 2, 0, 122574600, time.UTC)),
 		// 					RecoveryPointType: to.Ptr("CrashConsistent"),
 		// 					SecurityType: to.Ptr("None"),
 		// 					SourceVMStorageType: to.Ptr("PremiumVMOnPartialPremiumStorage"),
@@ -212,53 +243,4 @@ func ExampleRecoveryPointsClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-01-31-preview/Common/RecoveryPoints_Update.json
-func ExampleRecoveryPointsClient_Update() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewRecoveryPointsClient().Update(ctx, "hanasnapshottesting", "HanaSnapshotTest", "Azure", "VMAppContainer;compute;hanasnapshottesting;hana-eacan-2", "SAPHanaDatabase;hye;hye", "2265668074516978193", armrecoveryservicesbackup.UpdateRecoveryPointRequest{
-		Properties: &armrecoveryservicesbackup.PatchRecoveryPointInput{
-			RecoveryPointProperties: &armrecoveryservicesbackup.PatchRecoveryPointPropertiesInput{
-				ExpiryTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-02T00:00:00.0000000Z"); return t }()),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicesbackup.RecoveryPointsClientUpdateResponse{
-	// 	RecoveryPointResource: armrecoveryservicesbackup.RecoveryPointResource{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/hanasnapshottesting/providers/Microsoft.RecoveryServices/vaults/HanaSnapshotTest/backupFabrics/Azure/protectionContainers/VMAppContainer;compute;hanasnapshottesting;hana-eacan-2/protectedItems/SAPHanaDatabase;hye;hye/recoveryPoints/2265668074516978193"),
-	// 		Name: to.Ptr("2265668074516978193"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems/recoveryPoints"),
-	// 		Properties: &armrecoveryservicesbackup.AzureWorkloadSAPHanaRecoveryPoint{
-	// 			ObjectType: to.Ptr("AzureWorkloadSAPHanaRecoveryPoint"),
-	// 			RecoveryPointProperties: &armrecoveryservicesbackup.RecoveryPointProperties{
-	// 				ExpiryTime: to.Ptr("2025-01-02T00:00:00.0000000Z"),
-	// 				IsSoftDeleted: to.Ptr(false),
-	// 				RuleName: to.Ptr("On-Demand"),
-	// 			},
-	// 			RecoveryPointTierDetails: []*armrecoveryservicesbackup.RecoveryPointTierInformationV2{
-	// 				{
-	// 					Status: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierStatusValid),
-	// 					Type: to.Ptr(armrecoveryservicesbackup.RecoveryPointTierTypeHardenedRP),
-	// 				},
-	// 			},
-	// 			RecoveryPointTimeInUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-18T06:26:36.922Z"); return t}()),
-	// 			Type: to.Ptr(armrecoveryservicesbackup.RestorePointTypeFull),
-	// 		},
-	// 	},
-	// }
 }

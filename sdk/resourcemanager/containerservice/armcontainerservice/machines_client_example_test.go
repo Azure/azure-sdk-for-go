@@ -93,7 +93,7 @@ func ExampleMachinesClient_BeginCreateOrUpdate() {
 	// 			Priority: to.Ptr(armcontainerservice.ScaleSetPrioritySpot),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			Status: &armcontainerservice.MachineStatus{
-	// 				CreationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-02T12:00:00Z"); return t}()),
+	// 				CreationTimestamp: to.Ptr(time.Date(2025, time.April, 2, 12, 0, 0, 0, time.UTC)),
 	// 				DriftAction: to.Ptr(armcontainerservice.DriftActionSynced),
 	// 				VMState: to.Ptr(armcontainerservice.VMStateRunning),
 	// 			},

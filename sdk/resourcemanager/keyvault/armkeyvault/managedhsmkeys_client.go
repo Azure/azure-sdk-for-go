@@ -66,12 +66,7 @@ func (client *ManagedHsmKeysClient) CreateIfNotExist(ctx context.Context, resour
 	if err != nil {
 		return ManagedHsmKeysClientCreateIfNotExistResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedHsmKeysClientCreateIfNotExistResponse{}, err
-	}
-	resp, err := client.createIfNotExistHandleResponse(httpResp)
-	return resp, err
+	return client.createIfNotExistHandleResponse(httpResp, http.StatusOK)
 }
 
 // createIfNotExistCreateRequest creates the CreateIfNotExist request.
@@ -109,8 +104,11 @@ func (client *ManagedHsmKeysClient) createIfNotExistCreateRequest(ctx context.Co
 }
 
 // createIfNotExistHandleResponse handles the CreateIfNotExist response.
-func (client *ManagedHsmKeysClient) createIfNotExistHandleResponse(resp *http.Response) (ManagedHsmKeysClientCreateIfNotExistResponse, error) {
+func (client *ManagedHsmKeysClient) createIfNotExistHandleResponse(resp *http.Response, successCodes ...int) (ManagedHsmKeysClientCreateIfNotExistResponse, error) {
 	result := ManagedHsmKeysClientCreateIfNotExistResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedHsmKey); err != nil {
 		return ManagedHsmKeysClientCreateIfNotExistResponse{}, err
 	}
@@ -138,12 +136,7 @@ func (client *ManagedHsmKeysClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ManagedHsmKeysClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedHsmKeysClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -177,8 +170,11 @@ func (client *ManagedHsmKeysClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedHsmKeysClient) getHandleResponse(resp *http.Response) (ManagedHsmKeysClientGetResponse, error) {
+func (client *ManagedHsmKeysClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedHsmKeysClientGetResponse, error) {
 	result := ManagedHsmKeysClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedHsmKey); err != nil {
 		return ManagedHsmKeysClientGetResponse{}, err
 	}
@@ -208,12 +204,7 @@ func (client *ManagedHsmKeysClient) GetVersion(ctx context.Context, resourceGrou
 	if err != nil {
 		return ManagedHsmKeysClientGetVersionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedHsmKeysClientGetVersionResponse{}, err
-	}
-	resp, err := client.getVersionHandleResponse(httpResp)
-	return resp, err
+	return client.getVersionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getVersionCreateRequest creates the GetVersion request.
@@ -251,8 +242,11 @@ func (client *ManagedHsmKeysClient) getVersionCreateRequest(ctx context.Context,
 }
 
 // getVersionHandleResponse handles the GetVersion response.
-func (client *ManagedHsmKeysClient) getVersionHandleResponse(resp *http.Response) (ManagedHsmKeysClientGetVersionResponse, error) {
+func (client *ManagedHsmKeysClient) getVersionHandleResponse(resp *http.Response, successCodes ...int) (ManagedHsmKeysClientGetVersionResponse, error) {
 	result := ManagedHsmKeysClientGetVersionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedHsmKey); err != nil {
 		return ManagedHsmKeysClientGetVersionResponse{}, err
 	}
@@ -274,47 +268,61 @@ func (client *ManagedHsmKeysClient) NewListPager(resourceGroupName string, name 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return ManagedHsmKeysClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedHsmKeysClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ManagedHsmKeysClient) listCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *ManagedHsmKeysClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/keys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedHsmKeysClient) listCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *ManagedHsmKeysClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/keys"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ManagedHsmKeysClient) listHandleResponse(resp *http.Response) (ManagedHsmKeysClientListResponse, error) {
+func (client *ManagedHsmKeysClient) listHandleResponse(resp *http.Response, successCodes ...int) (ManagedHsmKeysClientListResponse, error) {
 	result := ManagedHsmKeysClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedHsmKeyListResult); err != nil {
 		return ManagedHsmKeysClientListResponse{}, err
 	}
@@ -339,51 +347,65 @@ func (client *ManagedHsmKeysClient) NewListVersionsPager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listVersionsCreateRequest(ctx, resourceGroupName, name, keyName, options)
-			}, nil)
+			req, err := client.listVersionsCreateRequest(ctx, resourceGroupName, name, keyName, nextLink, options)
 			if err != nil {
 				return ManagedHsmKeysClientListVersionsResponse{}, err
 			}
-			return client.listVersionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedHsmKeysClientListVersionsResponse{}, err
+			}
+			return client.listVersionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listVersionsCreateRequest creates the ListVersions request.
-func (client *ManagedHsmKeysClient) listVersionsCreateRequest(ctx context.Context, resourceGroupName string, name string, keyName string, _ *ManagedHsmKeysClientListVersionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/keys/{keyName}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedHsmKeysClient) listVersionsCreateRequest(ctx context.Context, resourceGroupName string, name string, keyName string, nextLink string, _ *ManagedHsmKeysClientListVersionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/managedHSMs/{name}/keys/{keyName}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if keyName == "" {
+			return nil, errors.New("parameter keyName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{keyName}", url.PathEscape(keyName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if keyName == "" {
-		return nil, errors.New("parameter keyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{keyName}", url.PathEscape(keyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listVersionsHandleResponse handles the ListVersions response.
-func (client *ManagedHsmKeysClient) listVersionsHandleResponse(resp *http.Response) (ManagedHsmKeysClientListVersionsResponse, error) {
+func (client *ManagedHsmKeysClient) listVersionsHandleResponse(resp *http.Response, successCodes ...int) (ManagedHsmKeysClientListVersionsResponse, error) {
 	result := ManagedHsmKeysClientListVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedHsmKeyListResult); err != nil {
 		return ManagedHsmKeysClientListVersionsResponse{}, err
 	}

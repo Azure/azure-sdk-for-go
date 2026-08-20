@@ -62,12 +62,7 @@ func (client *ResolvePrivateLinkServiceIDClient) POST(ctx context.Context, resou
 	if err != nil {
 		return ResolvePrivateLinkServiceIDClientPOSTResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResolvePrivateLinkServiceIDClientPOSTResponse{}, err
-	}
-	resp, err := client.postHandleResponse(httpResp)
-	return resp, err
+	return client.postHandleResponse(httpResp, http.StatusOK)
 }
 
 // postCreateRequest creates the POST request.
@@ -101,8 +96,11 @@ func (client *ResolvePrivateLinkServiceIDClient) postCreateRequest(ctx context.C
 }
 
 // postHandleResponse handles the POST response.
-func (client *ResolvePrivateLinkServiceIDClient) postHandleResponse(resp *http.Response) (ResolvePrivateLinkServiceIDClientPOSTResponse, error) {
+func (client *ResolvePrivateLinkServiceIDClient) postHandleResponse(resp *http.Response, successCodes ...int) (ResolvePrivateLinkServiceIDClientPOSTResponse, error) {
 	result := ResolvePrivateLinkServiceIDClientPOSTResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
 		return ResolvePrivateLinkServiceIDClientPOSTResponse{}, err
 	}

@@ -61,12 +61,7 @@ func (client *CheckVirtualNetworkSubnetUsageClient) Execute(ctx context.Context,
 	if err != nil {
 		return CheckVirtualNetworkSubnetUsageClientExecuteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CheckVirtualNetworkSubnetUsageClientExecuteResponse{}, err
-	}
-	resp, err := client.executeHandleResponse(httpResp)
-	return resp, err
+	return client.executeHandleResponse(httpResp, http.StatusOK)
 }
 
 // executeCreateRequest creates the Execute request.
@@ -96,8 +91,11 @@ func (client *CheckVirtualNetworkSubnetUsageClient) executeCreateRequest(ctx con
 }
 
 // executeHandleResponse handles the Execute response.
-func (client *CheckVirtualNetworkSubnetUsageClient) executeHandleResponse(resp *http.Response) (CheckVirtualNetworkSubnetUsageClientExecuteResponse, error) {
+func (client *CheckVirtualNetworkSubnetUsageClient) executeHandleResponse(resp *http.Response, successCodes ...int) (CheckVirtualNetworkSubnetUsageClientExecuteResponse, error) {
 	result := CheckVirtualNetworkSubnetUsageClientExecuteResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkSubnetUsageResult); err != nil {
 		return CheckVirtualNetworkSubnetUsageClientExecuteResponse{}, err
 	}

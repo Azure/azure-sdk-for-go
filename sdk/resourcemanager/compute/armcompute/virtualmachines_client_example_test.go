@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_AssessPatches.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_AssessPatches.json
 func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	// 		RebootPending: to.Ptr(true),
 	// 		CriticalAndSecurityPatchCount: to.Ptr[int32](1),
 	// 		OtherPatchCount: to.Ptr[int32](2),
-	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T21:02:04.2556154Z"); return t}()),
+	// 		StartDateTime: to.Ptr(time.Date(2020, time.April, 24, 21, 2, 4, 255615400, time.UTC)),
 	// 		AvailablePatches: []*armcompute.VirtualMachineSoftwarePatchProperties{
 	// 			{
 	// 				PatchID: to.Ptr("35428702-5784-4ba4-a6e0-5222258b5411"),
@@ -54,8 +54,8 @@ func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	// 				},
 	// 				RebootBehavior: to.Ptr(armcompute.VMGuestPatchRebootBehaviorNeverReboots),
 	// 				ActivityID: to.Ptr("68f8b292-dfc2-4646-9781-33cc88631968"),
-	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-07T00:00:00Z"); return t}()),
-	// 				LastModifiedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T21:18:45.2830263Z"); return t}()),
+	// 				PublishedDate: to.Ptr(time.Date(2018, time.November, 7, 0, 0, 0, 0, time.UTC)),
+	// 				LastModifiedDateTime: to.Ptr(time.Date(2020, time.April, 24, 21, 18, 45, 283026300, time.UTC)),
 	// 				AssessmentState: to.Ptr(armcompute.PatchAssessmentStateAvailable),
 	// 			},
 	// 			{
@@ -68,8 +68,8 @@ func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	// 				},
 	// 				RebootBehavior: to.Ptr(armcompute.VMGuestPatchRebootBehaviorCanRequestReboot),
 	// 				ActivityID: to.Ptr("68f8b292-dfc2-4646-9781-33cc88631968"),
-	// 				PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-11-07T00:00:00Z"); return t}()),
-	// 				LastModifiedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T21:18:45.2830263Z"); return t}()),
+	// 				PublishedDate: to.Ptr(time.Date(2018, time.November, 7, 0, 0, 0, 0, time.UTC)),
+	// 				LastModifiedDateTime: to.Ptr(time.Date(2020, time.April, 24, 21, 18, 45, 283026300, time.UTC)),
 	// 				AssessmentState: to.Ptr(armcompute.PatchAssessmentStateAvailable),
 	// 			},
 	// 		},
@@ -77,7 +77,7 @@ func ExampleVirtualMachinesClient_BeginAssessPatches() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_AttachDetachDataDisks_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_AttachDetachDataDisks_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginAttachDetachDataDisks_virtualMachineAttachDetachDataDisksMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +189,7 @@ func ExampleVirtualMachinesClient_BeginAttachDetachDataDisks_virtualMachineAttac
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_AttachDetachDataDisks_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_AttachDetachDataDisks_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginAttachDetachDataDisks_virtualMachineAttachDetachDataDisksMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,7 +258,7 @@ func ExampleVirtualMachinesClient_BeginAttachDetachDataDisks_virtualMachineAttac
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Capture_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Capture_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginCapture_virtualMachineCaptureMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -299,7 +299,7 @@ func ExampleVirtualMachinesClient_BeginCapture_virtualMachineCaptureMaximumSetGe
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Capture_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Capture_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginCapture_virtualMachineCaptureMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -331,7 +331,7 @@ func ExampleVirtualMachinesClient_BeginCapture_virtualMachineCaptureMinimumSetGe
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachineConvertToManagedDisksMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,7 +357,7 @@ func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachineConve
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_ConvertToManagedDisks_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachineConvertToManagedDisksMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,7 +383,7 @@ func ExampleVirtualMachinesClient_BeginConvertToManagedDisks_virtualMachineConve
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_CustomImageVmFromAnUnmanagedGeneralizedOsImage.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_CustomImageVmFromAnUnmanagedGeneralizedOsImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createACustomImageVMFromAnUnmanagedGeneralizedOSImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -486,9 +486,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createACustomImageVMFromAn
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -497,7 +494,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createACustomImageVMFromAn
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_FromACommunityGalleryImage.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_FromACommunityGalleryImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromACommunityGalleryImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -599,9 +596,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromACommunityGal
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -610,7 +604,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromACommunityGal
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_FromACustomImage.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_FromACustomImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromACustomImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -712,9 +706,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromACustomImage(
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -723,7 +714,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromACustomImage(
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_FromAGeneralizedSharedImage.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_FromAGeneralizedSharedImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromAGeneralizedSharedImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -825,9 +816,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromAGeneralizedS
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -836,7 +824,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromAGeneralizedS
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_FromASharedGalleryImage.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_FromASharedGalleryImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromASharedGalleryImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -938,9 +926,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromASharedGaller
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -949,7 +934,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromASharedGaller
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_FromASpecializedSharedImage.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_FromASpecializedSharedImage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromASpecializedSharedImage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1037,9 +1022,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromASpecializedS
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -1048,7 +1030,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMFromASpecializedS
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_InAVmssWithCustomerAssignedPlatformFaultDomain.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_InAVmssWithCustomerAssignedPlatformFaultDomain.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMInAVirtualMachineScaleSetWithCustomerAssignedPlatformFaultDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1164,9 +1146,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMInAVirtualMachine
 	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/myExistingFlexVmss"),
 	// 			},
 	// 			PlatformFaultDomain: to.Ptr[int32](1),
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -1175,7 +1154,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMInAVirtualMachine
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_InAnAvailabilitySet.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_InAnAvailabilitySet.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMInAnAvailabilitySet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1289,9 +1268,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMInAnAvailabilityS
 	// 			AvailabilitySet: &armcompute.SubResource{
 	// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/availabilitySets/NSGEXISTINGAS"),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -1300,7 +1276,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMInAnAvailabilityS
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithAutomaticByPlatformSettings.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithAutomaticByPlatformSettings.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSettingPatchModeOfAutomaticByPlatformAndAutomaticByPlatformSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1426,9 +1402,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSe
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2SV3),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -1437,7 +1410,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSe
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingAssessmentModeOfImageDefault.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSettingAssessmentModeOfImageDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1553,9 +1526,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSe
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2SV3),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -1564,7 +1534,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSe
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModeOfImageDefault.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModeOfImageDefault.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSettingPatchModeOfImageDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1680,9 +1650,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSe
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2SV3),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -1691,7 +1658,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSe
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModesOfAutomaticByPlatform.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_LinuxVmWithPatchSettingModesOfAutomaticByPlatform.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSettingsPatchModeAndAssessmentModeSetToAutomaticByPlatform() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1809,9 +1776,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSe
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2SV3),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -1820,7 +1784,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createALinuxVMWithAPatchSe
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_PlatformImageVmWithUnmanagedOsAndDataDisks.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_PlatformImageVmWithUnmanagedOsAndDataDisks.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAPlatformImageVMWithUnmanagedOSAndDataDisks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1966,9 +1930,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAPlatformImageVMWith
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -1977,7 +1938,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAPlatformImageVMWith
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithAutomaticByPlatformSettings.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithAutomaticByPlatformSettings.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatchSettingPatchModeOfAutomaticByPlatformAndAutomaticByPlatformSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2105,9 +2066,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -2116,7 +2074,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingAssessmentModeOfImageDefault.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingAssessmentModeOfImageDefault.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatchSettingAssessmentModeOfImageDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2234,9 +2192,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -2245,7 +2200,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByOS.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByOS.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatchSettingPatchModeOfAutomaticByOS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2363,9 +2318,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -2374,7 +2326,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByPlatformAndEnableHotPatchingTrue.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfAutomaticByPlatformAndEnableHotPatchingTrue.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatchSettingPatchModeOfAutomaticByPlatformAndEnableHotpatchingSetToTrue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2494,9 +2446,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -2505,7 +2454,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfManual.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModeOfManual.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatchSettingPatchModeOfManual() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2623,9 +2572,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -2634,7 +2580,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithAPatch
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModesOfAutomaticByPlatform.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WindowsVmWithPatchSettingModesOfAutomaticByPlatform.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithPatchSettingsPatchModeAndAssessmentModeSetToAutomaticByPlatform() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2754,9 +2700,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithPatchS
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -2765,7 +2708,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAWindowsVMWithPatchS
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDisk.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDisk.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2883,9 +2826,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Plan: &armcompute.Plan{
@@ -2900,144 +2840,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskAndFullCachingEnabled.json
-func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDiskAndEnableFullCachingSetToTrue() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualMachinesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
-		Location: to.Ptr("westus"),
-		Plan: &armcompute.Plan{
-			Publisher: to.Ptr("microsoft-ads"),
-			Product:   to.Ptr("windows-data-science-vm"),
-			Name:      to.Ptr("windows2016"),
-		},
-		Properties: &armcompute.VirtualMachineProperties{
-			HardwareProfile: &armcompute.HardwareProfile{
-				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
-			},
-			StorageProfile: &armcompute.StorageProfile{
-				ImageReference: &armcompute.ImageReference{
-					SKU:       to.Ptr("windows2016"),
-					Publisher: to.Ptr("microsoft-ads"),
-					Version:   to.Ptr("latest"),
-					Offer:     to.Ptr("windows-data-science-vm"),
-				},
-				OSDisk: &armcompute.OSDisk{
-					Caching: to.Ptr(armcompute.CachingTypesReadOnly),
-					DiffDiskSettings: &armcompute.DiffDiskSettings{
-						Option:            to.Ptr(armcompute.DiffDiskOptionsLocal),
-						Placement:         to.Ptr(armcompute.DiffDiskPlacement("TempDisk")),
-						EnableFullCaching: to.Ptr(true),
-					},
-					ManagedDisk: &armcompute.ManagedDiskParameters{
-						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-					},
-					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-					Name:         to.Ptr("myVMosdisk"),
-				},
-			},
-			OSProfile: &armcompute.OSProfile{
-				AdminUsername: to.Ptr("{your-username}"),
-				ComputerName:  to.Ptr("myVM"),
-				AdminPassword: to.Ptr("{your-password}"),
-			},
-			NetworkProfile: &armcompute.NetworkProfile{
-				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
-					{
-						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
-						Properties: &armcompute.NetworkInterfaceReferenceProperties{
-							Primary: to.Ptr(true),
-						},
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: armcompute.VirtualMachine{
-	// 		Name: to.Ptr("myVM"),
-	// 		Properties: &armcompute.VirtualMachineProperties{
-	// 			OSProfile: &armcompute.OSProfile{
-	// 				AdminUsername: to.Ptr("{your-username}"),
-	// 				Secrets: []*armcompute.VaultSecretGroup{
-	// 				},
-	// 				ComputerName: to.Ptr("myVM"),
-	// 				WindowsConfiguration: &armcompute.WindowsConfiguration{
-	// 					ProvisionVMAgent: to.Ptr(true),
-	// 					EnableAutomaticUpdates: to.Ptr(true),
-	// 				},
-	// 			},
-	// 			NetworkProfile: &armcompute.NetworkProfile{
-	// 				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
-	// 					{
-	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/nsgExistingNic"),
-	// 						Properties: &armcompute.NetworkInterfaceReferenceProperties{
-	// 							Primary: to.Ptr(true),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			StorageProfile: &armcompute.StorageProfile{
-	// 				ImageReference: &armcompute.ImageReference{
-	// 					SKU: to.Ptr("standard-data-science-vm"),
-	// 					Publisher: to.Ptr("microsoft-ads"),
-	// 					Version: to.Ptr("latest"),
-	// 					Offer: to.Ptr("standard-data-science-vm"),
-	// 				},
-	// 				OSDisk: &armcompute.OSDisk{
-	// 					OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
-	// 					Caching: to.Ptr(armcompute.CachingTypesReadOnly),
-	// 					DiffDiskSettings: &armcompute.DiffDiskSettings{
-	// 						Option: to.Ptr(armcompute.DiffDiskOptionsLocal),
-	// 					},
-	// 					ManagedDisk: &armcompute.ManagedDiskParameters{
-	// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
-	// 					},
-	// 					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-	// 					Name: to.Ptr("myVMosdisk"),
-	// 				},
-	// 				DataDisks: []*armcompute.DataDisk{
-	// 				},
-	// 			},
-	// 			VMID: to.Ptr("5c0d55a7-c407-4ed6-bf7d-ddb810267c85"),
-	// 			HardwareProfile: &armcompute.HardwareProfile{
-	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
-	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
-	// 			ProvisioningState: to.Ptr("Creating"),
-	// 		},
-	// 		Plan: &armcompute.Plan{
-	// 			Publisher: to.Ptr("microsoft-ads"),
-	// 			Product: to.Ptr("standard-data-science-vm"),
-	// 			Name: to.Ptr("standard-data-science-vm"),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
-	// 		Location: to.Ptr("westus"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsCacheDisk.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsCacheDisk.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDiskProvisioningInCacheDiskUsingPlacementProperty() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3157,9 +2960,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Plan: &armcompute.Plan{
@@ -3174,7 +2974,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsNvmeDisk.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsNvmeDisk.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDiskProvisioningInNvmeDiskUsingPlacementProperty() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3294,9 +3094,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Plan: &armcompute.Plan{
@@ -3311,7 +3108,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsResourceDisk.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithADiffOsDiskUsingDiffDiskPlacementAsResourceDisk.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDiskProvisioningInResourceDiskUsingPlacementProperty() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3431,9 +3228,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Plan: &armcompute.Plan{
@@ -3448,7 +3242,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEphemeralOSDi
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithAMarketplaceImagePlan.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithAMarketplaceImagePlan.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAMarketplaceImagePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3560,9 +3354,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAMarketplaceI
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Plan: &armcompute.Plan{
@@ -3577,7 +3368,173 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAMarketplaceI
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithApplicationProfile.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithAdditionalDiskProperties.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAdditionalDiskPropertiesNetworkAccessPolicyAndTier() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualMachinesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD4SV3),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					SKU:       to.Ptr("2022-datacenter-azure-edition"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					Version:   to.Ptr("latest"),
+					Offer:     to.Ptr("WindowsServer"),
+				},
+				DiskAPIVersion: to.Ptr(armcompute.DiskAPIVersion20260302),
+				OSDisk: &armcompute.OSDisk{
+					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+						AdditionalDiskProperties: &armcompute.AdditionalDiskProperties{
+							ManagedDiskProperties: &armcompute.VirtualMachineDiskProperties{
+								NetworkAccessPolicy: to.Ptr(armcompute.VirtualMachineDiskNetworkAccessPolicyAllowPrivate),
+								DiskAccessID:        to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess"),
+							},
+						},
+					},
+					Name:         to.Ptr("myVMosdisk"),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+				},
+				DataDisks: []*armcompute.DataDisk{
+					{
+						Lun:          to.Ptr[int32](0),
+						Name:         to.Ptr("myDataDisk"),
+						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesEmpty),
+						DiskSizeGB:   to.Ptr[int32](1024),
+						ManagedDisk: &armcompute.ManagedDiskParameters{
+							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+							AdditionalDiskProperties: &armcompute.AdditionalDiskProperties{
+								ManagedDiskProperties: &armcompute.VirtualMachineDiskProperties{
+									NetworkAccessPolicy: to.Ptr(armcompute.VirtualMachineDiskNetworkAccessPolicyAllowPrivate),
+									DiskAccessID:        to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess"),
+									Tier:                to.Ptr("P30"),
+								},
+							},
+						},
+					},
+				},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				AdminPassword: to.Ptr("{your-password}"),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
+	// 	VirtualMachine: armcompute.VirtualMachine{
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
+	// 		Properties: &armcompute.VirtualMachineProperties{
+	// 			OSProfile: &armcompute.OSProfile{
+	// 				AdminUsername: to.Ptr("{your-username}"),
+	// 				Secrets: []*armcompute.VaultSecretGroup{
+	// 				},
+	// 				ComputerName: to.Ptr("myVM"),
+	// 				WindowsConfiguration: &armcompute.WindowsConfiguration{
+	// 					ProvisionVMAgent: to.Ptr(true),
+	// 					EnableAutomaticUpdates: to.Ptr(true),
+	// 				},
+	// 			},
+	// 			NetworkProfile: &armcompute.NetworkProfile{
+	// 				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+	// 						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+	// 							Primary: to.Ptr(true),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			StorageProfile: &armcompute.StorageProfile{
+	// 				ImageReference: &armcompute.ImageReference{
+	// 					SKU: to.Ptr("2022-datacenter-azure-edition"),
+	// 					Publisher: to.Ptr("MicrosoftWindowsServer"),
+	// 					Version: to.Ptr("latest"),
+	// 					Offer: to.Ptr("WindowsServer"),
+	// 				},
+	// 				DiskAPIVersion: to.Ptr(armcompute.DiskAPIVersion20260302),
+	// 				OSDisk: &armcompute.OSDisk{
+	// 					OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+	// 					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+	// 					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+	// 					Name: to.Ptr("myVMosdisk"),
+	// 					ManagedDisk: &armcompute.ManagedDiskParameters{
+	// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+	// 						AdditionalDiskProperties: &armcompute.AdditionalDiskProperties{
+	// 							ManagedDiskProperties: &armcompute.VirtualMachineDiskProperties{
+	// 								NetworkAccessPolicy: to.Ptr(armcompute.VirtualMachineDiskNetworkAccessPolicyAllowPrivate),
+	// 								DiskAccessID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess"),
+	// 								Tier: to.Ptr("P10"),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				DataDisks: []*armcompute.DataDisk{
+	// 					{
+	// 						Lun: to.Ptr[int32](0),
+	// 						Name: to.Ptr("myDataDisk"),
+	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesEmpty),
+	// 						DiskSizeGB: to.Ptr[int32](1024),
+	// 						ToBeDetached: to.Ptr(false),
+	// 						ManagedDisk: &armcompute.ManagedDiskParameters{
+	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+	// 							AdditionalDiskProperties: &armcompute.AdditionalDiskProperties{
+	// 								ManagedDiskProperties: &armcompute.VirtualMachineDiskProperties{
+	// 									NetworkAccessPolicy: to.Ptr(armcompute.VirtualMachineDiskNetworkAccessPolicyAllowPrivate),
+	// 									DiskAccessID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskAccesses/myDiskAccess"),
+	// 									Tier: to.Ptr("P30"),
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
+	// 			HardwareProfile: &armcompute.HardwareProfile{
+	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD4SV3),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Creating"),
+	// 		},
+	// 		Name: to.Ptr("myVM"),
+	// 		Location: to.Ptr("westus"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithApplicationProfile.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithApplicationProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3720,9 +3677,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithApplicationPr
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -3731,7 +3685,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithApplicationPr
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithBootDiagnostics.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithBootDiagnostics.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithBootDiagnostics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3851,9 +3805,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithBootDiagnosti
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -3862,7 +3813,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithBootDiagnosti
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithCapacityReservation.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithCapacityReservation.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createOrUpdateAVMWithCapacityReservation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3984,9 +3935,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createOrUpdateAVMWithCapac
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Plan: &armcompute.Plan{
@@ -4001,7 +3949,129 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createOrUpdateAVMWithCapac
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithDataDisksFromSourceResource.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithCapacityReservationAssignmentDisabled.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithCapacityReservationAssignmentDisabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualMachinesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					SKU:       to.Ptr("2016-Datacenter"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					Version:   to.Ptr("latest"),
+					Offer:     to.Ptr("WindowsServer"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+					Name:         to.Ptr("myVMosdisk"),
+				},
+			},
+			CapacityReservation: &armcompute.CapacityReservationProfile{
+				DisableCapacityReservationAssignment: to.Ptr(true),
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				AdminPassword: to.Ptr("{your-password}"),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
+	// 	VirtualMachine: armcompute.VirtualMachine{
+	// 		Name: to.Ptr("myVM"),
+	// 		Properties: &armcompute.VirtualMachineProperties{
+	// 			OSProfile: &armcompute.OSProfile{
+	// 				AdminUsername: to.Ptr("{your-username}"),
+	// 				Secrets: []*armcompute.VaultSecretGroup{
+	// 				},
+	// 				ComputerName: to.Ptr("myVM"),
+	// 				WindowsConfiguration: &armcompute.WindowsConfiguration{
+	// 					ProvisionVMAgent: to.Ptr(true),
+	// 					EnableAutomaticUpdates: to.Ptr(true),
+	// 				},
+	// 			},
+	// 			CapacityReservation: &armcompute.CapacityReservationProfile{
+	// 				DisableCapacityReservationAssignment: to.Ptr(true),
+	// 			},
+	// 			NetworkProfile: &armcompute.NetworkProfile{
+	// 				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/nsgExistingNic"),
+	// 						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+	// 							Primary: to.Ptr(true),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			StorageProfile: &armcompute.StorageProfile{
+	// 				ImageReference: &armcompute.ImageReference{
+	// 					SKU: to.Ptr("2016-Datacenter"),
+	// 					Publisher: to.Ptr("MicrosoftWindowsServer"),
+	// 					Version: to.Ptr("latest"),
+	// 					Offer: to.Ptr("WindowsServer"),
+	// 				},
+	// 				OSDisk: &armcompute.OSDisk{
+	// 					OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+	// 					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+	// 					ManagedDisk: &armcompute.ManagedDiskParameters{
+	// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+	// 					},
+	// 					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+	// 					Name: to.Ptr("myVMosdisk"),
+	// 				},
+	// 				DataDisks: []*armcompute.DataDisk{
+	// 				},
+	// 			},
+	// 			VMID: to.Ptr("5c0d55a7-c407-4ed6-bf7d-ddb810267c85"),
+	// 			HardwareProfile: &armcompute.HardwareProfile{
+	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Creating"),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+	// 		Location: to.Ptr("westus"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithDataDisksFromSourceResource.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDataDisksUsingCopyAndRestoreOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4171,9 +4241,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDataDisksUsin
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -4182,7 +4249,124 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDataDisksUsin
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithDiskControllerType.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithDeterministicProcessorMode.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDeterministicProcessorMode() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualMachinesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize:        to.Ptr(armcompute.VirtualMachineSizeTypes("Standard_E2pds_v8")),
+				ProcessorMode: to.Ptr(armcompute.ProcessorModeDeterministic),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					SKU:       to.Ptr("2019-Datacenter"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					Version:   to.Ptr("latest"),
+					Offer:     to.Ptr("WindowsServer"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+					},
+					Name:         to.Ptr("myVMosdisk"),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+				},
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					},
+				},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				AdminPassword: to.Ptr("{your-password}"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
+	// 	VirtualMachine: armcompute.VirtualMachine{
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
+	// 		Properties: &armcompute.VirtualMachineProperties{
+	// 			OSProfile: &armcompute.OSProfile{
+	// 				AdminUsername: to.Ptr("{your-username}"),
+	// 				Secrets: []*armcompute.VaultSecretGroup{
+	// 				},
+	// 				ComputerName: to.Ptr("myVM"),
+	// 				WindowsConfiguration: &armcompute.WindowsConfiguration{
+	// 					ProvisionVMAgent: to.Ptr(true),
+	// 					EnableAutomaticUpdates: to.Ptr(true),
+	// 				},
+	// 			},
+	// 			NetworkProfile: &armcompute.NetworkProfile{
+	// 				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+	// 						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+	// 							Primary: to.Ptr(true),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			StorageProfile: &armcompute.StorageProfile{
+	// 				ImageReference: &armcompute.ImageReference{
+	// 					SKU: to.Ptr("2019-Datacenter"),
+	// 					Publisher: to.Ptr("MicrosoftWindowsServer"),
+	// 					Version: to.Ptr("latest"),
+	// 					Offer: to.Ptr("WindowsServer"),
+	// 				},
+	// 				OSDisk: &armcompute.OSDisk{
+	// 					OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+	// 					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+	// 					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+	// 					Name: to.Ptr("myVMosdisk"),
+	// 					ManagedDisk: &armcompute.ManagedDiskParameters{
+	// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+	// 					},
+	// 				},
+	// 				DataDisks: []*armcompute.DataDisk{
+	// 				},
+	// 			},
+	// 			HardwareProfile: &armcompute.HardwareProfile{
+	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypes("Standard_E2pds_v8")),
+	// 				ProcessorMode: to.Ptr(armcompute.ProcessorModeDeterministic),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Updating"),
+	// 		},
+	// 		Name: to.Ptr("myVM"),
+	// 		Location: to.Ptr("westus"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithDiskControllerType.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDiskControllerType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4339,9 +4523,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDiskControlle
 	// 					AutomaticallyApprove: to.Ptr(true),
 	// 				},
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Updating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -4350,7 +4531,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDiskControlle
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithDiskEncryptionSetResource.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithDiskEncryptionSetResource.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDiskEncryptionSetResourceIdInTheOSDiskAndDataDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4510,9 +4691,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDiskEncryptio
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -4521,7 +4699,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithDiskEncryptio
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithEmptyDataDisks.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithEmptyDataDisks.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEmptyDataDisks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4659,9 +4837,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEmptyDataDisk
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -4670,7 +4845,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEmptyDataDisk
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithEncryptionAtHost.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithEncryptionAtHost.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithHostEncryptionUsingEncryptionAtHostProperty() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4783,7 +4958,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithHostEncryptio
 	// 			},
 	// 			SecurityProfile: &armcompute.SecurityProfile{
 	// 				EncryptionAtHost: to.Ptr(true),
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
 	// 			},
 	// 			VMID: to.Ptr("5c0d55a7-c407-4ed6-bf7d-ddb810267c85"),
 	// 			HardwareProfile: &armcompute.HardwareProfile{
@@ -4803,7 +4977,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithHostEncryptio
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithEncryptionIdentity.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithEncryptionIdentity.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEncryptionIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4928,7 +5102,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEncryptionIde
 	// 				EncryptionIdentity: &armcompute.EncryptionIdentity{
 	// 					UserAssignedIdentityResourceID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myIdentity"),
 	// 				},
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
 	// 			},
 	// 			VMID: to.Ptr("5c0d55a7-c407-4ed6-bf7d-ddb810267c85"),
 	// 			HardwareProfile: &armcompute.HardwareProfile{
@@ -4943,7 +5116,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithEncryptionIde
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithExtensionsTimeBudget.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithExtensionsTimeBudget.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAnExtensionsTimeBudget() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5065,9 +5238,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAnExtensionsT
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
 	// 			ExtensionsTimeBudget: to.Ptr("PT30M"),
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -5076,7 +5246,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAnExtensionsT
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithFips1403Enabled.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithFips1403Enabled.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithFips1403Enabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5202,9 +5372,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithFips1403Enabl
 	// 			AdditionalCapabilities: &armcompute.AdditionalCapabilities{
 	// 				EnableFips1403Encryption: to.Ptr(true),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Updating"),
 	// 		},
 	// 		Name: to.Ptr("{vm-name}"),
@@ -5213,7 +5380,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithFips1403Enabl
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithHibernationEnabled.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithHibernationEnabled.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithHibernationEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5339,9 +5506,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithHibernationEn
 	// 			AdditionalCapabilities: &armcompute.AdditionalCapabilities{
 	// 				HibernationEnabled: to.Ptr(true),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Updating"),
 	// 		},
 	// 		Name: to.Ptr("{vm-name}"),
@@ -5350,165 +5514,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithHibernationEn
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithInterconnectBlock.json
-func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createOrUpdateAVMWithInterconnectBlock() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualMachinesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
-		Location: to.Ptr("westus"),
-		Properties: &armcompute.VirtualMachineProperties{
-			HardwareProfile: &armcompute.HardwareProfile{
-				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypes("Standard_ND128isr_GB300_v6")),
-			},
-			StorageProfile: &armcompute.StorageProfile{
-				ImageReference: &armcompute.ImageReference{
-					Publisher: to.Ptr("microsoft-dsvm"),
-					Offer:     to.Ptr("ubuntu-hpc"),
-					SKU:       to.Ptr("2404-gb"),
-					Version:   to.Ptr("latest"),
-				},
-				OSDisk: &armcompute.OSDisk{
-					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-					ManagedDisk: &armcompute.ManagedDiskParameters{
-						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
-					},
-					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-					Name:         to.Ptr("myVMosdisk"),
-				},
-			},
-			InterconnectBlockProfile: &armcompute.InterconnectBlockProfile{
-				InterconnectBlock: &armcompute.APIEntityReference{
-					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/interconnectBlocks/myInterconnectBlock"),
-				},
-			},
-			OSProfile: &armcompute.OSProfile{
-				AdminUsername: to.Ptr("{your-username}"),
-				ComputerName:  to.Ptr("myVM"),
-				AdminPassword: to.Ptr("{your-password}"),
-				LinuxConfiguration: &armcompute.LinuxConfiguration{
-					DisablePasswordAuthentication: to.Ptr(false),
-				},
-			},
-			NetworkProfile: &armcompute.NetworkProfile{
-				InterconnectGroupProfile: &armcompute.InterconnectGroupProfile{
-					InterconnectGroup: &armcompute.SubResource{
-						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
-					},
-					Subgroups: []*armcompute.SubResource{
-						{
-							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup/subgroups/subgroup0"),
-						},
-					},
-				},
-				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
-					{
-						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
-						Properties: &armcompute.NetworkInterfaceReferenceProperties{
-							Primary: to.Ptr(true),
-						},
-					},
-				},
-			},
-		},
-		Zones: []*string{
-			to.Ptr("1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: armcompute.VirtualMachine{
-	// 		Name: to.Ptr("myVM"),
-	// 		Properties: &armcompute.VirtualMachineProperties{
-	// 			OSProfile: &armcompute.OSProfile{
-	// 				AdminUsername: to.Ptr("{your-username}"),
-	// 				Secrets: []*armcompute.VaultSecretGroup{
-	// 				},
-	// 				ComputerName: to.Ptr("myVM"),
-	// 				LinuxConfiguration: &armcompute.LinuxConfiguration{
-	// 					DisablePasswordAuthentication: to.Ptr(false),
-	// 					ProvisionVMAgent: to.Ptr(true),
-	// 				},
-	// 			},
-	// 			InterconnectBlockProfile: &armcompute.InterconnectBlockProfile{
-	// 				InterconnectBlock: &armcompute.APIEntityReference{
-	// 					ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/interconnectBlocks/myInterconnectBlock"),
-	// 				},
-	// 			},
-	// 			NetworkProfile: &armcompute.NetworkProfile{
-	// 				InterconnectGroupProfile: &armcompute.InterconnectGroupProfile{
-	// 					InterconnectGroup: &armcompute.SubResource{
-	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup"),
-	// 					},
-	// 					Subgroups: []*armcompute.SubResource{
-	// 						{
-	// 							ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/interconnectGroups/myInterconnectGroup/subgroups/subgroup0"),
-	// 						},
-	// 					},
-	// 				},
-	// 				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
-	// 					{
-	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/nsgExistingNic"),
-	// 						Properties: &armcompute.NetworkInterfaceReferenceProperties{
-	// 							Primary: to.Ptr(true),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			StorageProfile: &armcompute.StorageProfile{
-	// 				ImageReference: &armcompute.ImageReference{
-	// 					Publisher: to.Ptr("microsoft-dsvm"),
-	// 					Offer: to.Ptr("ubuntu-hpc"),
-	// 					SKU: to.Ptr("2404-gb"),
-	// 					Version: to.Ptr("latest"),
-	// 				},
-	// 				OSDisk: &armcompute.OSDisk{
-	// 					OSType: to.Ptr(armcompute.OperatingSystemTypesLinux),
-	// 					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-	// 					ManagedDisk: &armcompute.ManagedDiskParameters{
-	// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
-	// 					},
-	// 					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-	// 					Name: to.Ptr("myVMosdisk"),
-	// 				},
-	// 				DataDisks: []*armcompute.DataDisk{
-	// 				},
-	// 			},
-	// 			VMID: to.Ptr("5c0d55a7-c407-4ed6-bf7d-ddb810267c85"),
-	// 			HardwareProfile: &armcompute.HardwareProfile{
-	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypes("Standard_ND128isr_GB300_v6")),
-	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
-	// 			ProvisioningState: to.Ptr("Creating"),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
-	// 		Location: to.Ptr("westus"),
-	// 		Zones: []*string{
-	// 			to.Ptr("1"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithManagedBootDiagnostics.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithManagedBootDiagnostics.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithManagedBootDiagnostics() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5626,9 +5632,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithManagedBootDi
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -5637,7 +5640,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithManagedBootDi
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfiguration.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfiguration.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithNetworkInterfaceConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5772,9 +5775,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithNetworkInterf
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -5783,7 +5783,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithNetworkInterf
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfigurationDnsSettings.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithNetworkInterfaceConfigurationDnsSettings.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithNetworkInterfaceConfigurationWithPublicIPAddressDnsSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -5916,9 +5916,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithNetworkInterf
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -5927,7 +5924,124 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithNetworkInterf
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithPasswordAuthentication.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithOpportunisticProcessorMode.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithOpportunisticProcessorMode() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualMachinesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize:        to.Ptr(armcompute.VirtualMachineSizeTypes("Standard_D2s_v5")),
+				ProcessorMode: to.Ptr(armcompute.ProcessorModeOpportunistic),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					SKU:       to.Ptr("2019-Datacenter"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					Version:   to.Ptr("latest"),
+					Offer:     to.Ptr("WindowsServer"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+					},
+					Name:         to.Ptr("myVMosdisk"),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+				},
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					},
+				},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				AdminPassword: to.Ptr("{your-password}"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
+	// 	VirtualMachine: armcompute.VirtualMachine{
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
+	// 		Properties: &armcompute.VirtualMachineProperties{
+	// 			OSProfile: &armcompute.OSProfile{
+	// 				AdminUsername: to.Ptr("{your-username}"),
+	// 				Secrets: []*armcompute.VaultSecretGroup{
+	// 				},
+	// 				ComputerName: to.Ptr("myVM"),
+	// 				WindowsConfiguration: &armcompute.WindowsConfiguration{
+	// 					ProvisionVMAgent: to.Ptr(true),
+	// 					EnableAutomaticUpdates: to.Ptr(true),
+	// 				},
+	// 			},
+	// 			NetworkProfile: &armcompute.NetworkProfile{
+	// 				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+	// 						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+	// 							Primary: to.Ptr(true),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			StorageProfile: &armcompute.StorageProfile{
+	// 				ImageReference: &armcompute.ImageReference{
+	// 					SKU: to.Ptr("2019-Datacenter"),
+	// 					Publisher: to.Ptr("MicrosoftWindowsServer"),
+	// 					Version: to.Ptr("latest"),
+	// 					Offer: to.Ptr("WindowsServer"),
+	// 				},
+	// 				OSDisk: &armcompute.OSDisk{
+	// 					OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+	// 					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+	// 					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+	// 					Name: to.Ptr("myVMosdisk"),
+	// 					ManagedDisk: &armcompute.ManagedDiskParameters{
+	// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+	// 					},
+	// 				},
+	// 				DataDisks: []*armcompute.DataDisk{
+	// 				},
+	// 			},
+	// 			HardwareProfile: &armcompute.HardwareProfile{
+	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypes("Standard_D2s_v5")),
+	// 				ProcessorMode: to.Ptr(armcompute.ProcessorModeOpportunistic),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Updating"),
+	// 		},
+	// 		Name: to.Ptr("myVM"),
+	// 		Location: to.Ptr("westus"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithPasswordAuthentication.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithPasswordAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6035,9 +6149,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithPasswordAuthe
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -6046,7 +6157,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithPasswordAuthe
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithPlacement.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithPlacement.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAutomaticZonePlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6165,9 +6276,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAutomaticZone
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Zones: []*string{
@@ -6192,7 +6300,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithAutomaticZone
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithPremiumStorage.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithPremiumStorage.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithPremiumStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6300,9 +6408,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithPremiumStorag
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardDS1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -6311,7 +6416,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithPremiumStorag
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithProxyAgentSettings.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithProxyAgentSettings.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithProxyAgentSettingsOfEnabledAndMode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6435,7 +6540,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithProxyAgentSet
 	// 						Mode: to.Ptr(armcompute.ModesAudit),
 	// 					},
 	// 				},
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
 	// 			},
 	// 			VMID: to.Ptr("5c0d55a7-c407-4ed6-bf7d-ddb810267c85"),
 	// 			HardwareProfile: &armcompute.HardwareProfile{
@@ -6450,7 +6554,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithProxyAgentSet
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithScheduledEventsProfile.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithScheduledEventsProfile.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithScheduledEventsProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6632,7 +6736,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithScheduledEven
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVM.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVM.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSecurityTypeConfidentialVMWithPlatformManagedKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6767,7 +6871,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSecurityTypeC
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithCustomerManagedKeys.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithCustomerManagedKeys.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSecurityTypeConfidentialVMWithCustomerManagedKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -6908,7 +7012,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSecurityTypeC
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithNonPersistedTPM.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithSecurityTypeConfidentialVMWithNonPersistedTPM.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSecurityTypeConfidentialVMWithNonPersistedTpmSecurityEncryptionType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7043,7 +7147,133 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSecurityTypeC
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithSshAuthentication.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithSpotPlusPriority.json
+func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSpotPlusPriority() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVirtualMachinesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
+		Location: to.Ptr("westus"),
+		Properties: &armcompute.VirtualMachineProperties{
+			HardwareProfile: &armcompute.HardwareProfile{
+				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypes("Standard_D2s_v5")),
+			},
+			StorageProfile: &armcompute.StorageProfile{
+				ImageReference: &armcompute.ImageReference{
+					SKU:       to.Ptr("2016-Datacenter"),
+					Publisher: to.Ptr("MicrosoftWindowsServer"),
+					Version:   to.Ptr("latest"),
+					Offer:     to.Ptr("WindowsServer"),
+				},
+				OSDisk: &armcompute.OSDisk{
+					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+					ManagedDisk: &armcompute.ManagedDiskParameters{
+						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+					},
+					Name:         to.Ptr("myVMosdisk"),
+					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+				},
+			},
+			OSProfile: &armcompute.OSProfile{
+				AdminUsername: to.Ptr("{your-username}"),
+				ComputerName:  to.Ptr("myVM"),
+				AdminPassword: to.Ptr("{your-password}"),
+			},
+			NetworkProfile: &armcompute.NetworkProfile{
+				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+					{
+						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+							Primary: to.Ptr(true),
+						},
+					},
+				},
+			},
+			Priority:       to.Ptr(armcompute.VirtualMachinePriorityTypesSpotPlus),
+			EvictionPolicy: to.Ptr(armcompute.VirtualMachineEvictionPolicyTypesDeallocate),
+			BillingProfile: &armcompute.BillingProfile{
+				MaxPrice: to.Ptr[float64](-1),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
+	// 	VirtualMachine: armcompute.VirtualMachine{
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
+	// 		Properties: &armcompute.VirtualMachineProperties{
+	// 			OSProfile: &armcompute.OSProfile{
+	// 				AdminUsername: to.Ptr("{your-username}"),
+	// 				Secrets: []*armcompute.VaultSecretGroup{
+	// 				},
+	// 				ComputerName: to.Ptr("myVM"),
+	// 				WindowsConfiguration: &armcompute.WindowsConfiguration{
+	// 					ProvisionVMAgent: to.Ptr(true),
+	// 					EnableAutomaticUpdates: to.Ptr(true),
+	// 				},
+	// 			},
+	// 			NetworkProfile: &armcompute.NetworkProfile{
+	// 				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/nsgExistingNic"),
+	// 						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+	// 							Primary: to.Ptr(true),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			StorageProfile: &armcompute.StorageProfile{
+	// 				ImageReference: &armcompute.ImageReference{
+	// 					SKU: to.Ptr("2016-Datacenter"),
+	// 					Publisher: to.Ptr("MicrosoftWindowsServer"),
+	// 					Version: to.Ptr("latest"),
+	// 					Offer: to.Ptr("WindowsServer"),
+	// 				},
+	// 				OSDisk: &armcompute.OSDisk{
+	// 					OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+	// 					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+	// 					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+	// 					Name: to.Ptr("myVMosdisk"),
+	// 					ManagedDisk: &armcompute.ManagedDiskParameters{
+	// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesStandardLRS),
+	// 					},
+	// 				},
+	// 				DataDisks: []*armcompute.DataDisk{
+	// 				},
+	// 			},
+	// 			VMID: to.Ptr("a9b2c3d4-e5f6-7890-abcd-ef1234567890"),
+	// 			HardwareProfile: &armcompute.HardwareProfile{
+	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypes("Standard_D2s_v5")),
+	// 			},
+	// 			Priority: to.Ptr(armcompute.VirtualMachinePriorityTypesSpotPlus),
+	// 			EvictionPolicy: to.Ptr(armcompute.VirtualMachineEvictionPolicyTypesDeallocate),
+	// 			BillingProfile: &armcompute.BillingProfile{
+	// 				MaxPrice: to.Ptr[float64](-1),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Creating"),
+	// 		},
+	// 		Name: to.Ptr("myVM"),
+	// 		Location: to.Ptr("westus"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithSshAuthentication.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSshAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7168,9 +7398,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSshAuthentica
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -7179,7 +7406,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithSshAuthentica
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithUefiSettings.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithUefiSettings.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithUefiSettingsOfSecureBootAndVTpm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7309,7 +7536,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithUefiSettingsO
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithUserData.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithUserData.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithUserData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7430,9 +7657,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithUserData() {
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD1V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Creating"),
 	// 		},
 	// 		Name: to.Ptr("{vm-name}"),
@@ -7441,7 +7665,7 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithUserData() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithVMSizeProperties.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Create_WithVMSizeProperties.json
 func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithVMSizeProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7570,9 +7794,6 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithVMSizePropert
 	// 					VCPUsPerCore: to.Ptr[int32](1),
 	// 				},
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Updating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -7581,8 +7802,8 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithVMSizePropert
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Create_WithZoneMovementEnabled.json
-func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithResiliencyProfileAndZoneMovementEnabled() {
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Deallocate_MaximumSet_Gen.json
+func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachineDeallocateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -7592,62 +7813,8 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithResiliencyPro
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewVirtualMachinesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myVM", armcompute.VirtualMachine{
-		Location: to.Ptr("westus"),
-		Properties: &armcompute.VirtualMachineProperties{
-			HardwareProfile: &armcompute.HardwareProfile{
-				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2SV3),
-			},
-			StorageProfile: &armcompute.StorageProfile{
-				ImageReference: &armcompute.ImageReference{
-					SKU:       to.Ptr("2016-Datacenter"),
-					Publisher: to.Ptr("MicrosoftWindowsServer"),
-					Version:   to.Ptr("latest"),
-					Offer:     to.Ptr("WindowsServer"),
-				},
-				OSDisk: &armcompute.OSDisk{
-					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-					ManagedDisk: &armcompute.ManagedDiskParameters{
-						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumZRS),
-					},
-					Name:         to.Ptr("myVMosdisk"),
-					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-				},
-				DataDisks: []*armcompute.DataDisk{
-					{
-						DiskSizeGB:   to.Ptr[int32](128),
-						Lun:          to.Ptr[int32](0),
-						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesEmpty),
-						ManagedDisk: &armcompute.ManagedDiskParameters{
-							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumZRS),
-						},
-						Name:    to.Ptr("myVMdatadisk1"),
-						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-					},
-				},
-			},
-			OSProfile: &armcompute.OSProfile{
-				AdminUsername: to.Ptr("{your-username}"),
-				ComputerName:  to.Ptr("myVM"),
-				AdminPassword: to.Ptr("{your-password}"),
-			},
-			NetworkProfile: &armcompute.NetworkProfile{
-				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
-					{
-						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
-						Properties: &armcompute.NetworkInterfaceReferenceProperties{
-							Primary: to.Ptr(true),
-						},
-					},
-				},
-			},
-			ResiliencyProfile: &armcompute.ResiliencyProfile{
-				ZoneMovement: &armcompute.ZoneMovement{
-					IsEnabled: to.Ptr(true),
-				},
-			},
-		},
-	}, nil)
+	poller, err := clientFactory.NewVirtualMachinesClient().BeginDeallocate(ctx, "rgcompute", "aaaaaaaaaa", &armcompute.VirtualMachinesClientBeginDeallocateOptions{
+		Hibernate: to.Ptr(true)})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -7658,81 +7825,11 @@ func ExampleVirtualMachinesClient_BeginCreateOrUpdate_createAVMWithResiliencyPro
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachinesClientCreateOrUpdateResponse{
-	// 	VirtualMachine: armcompute.VirtualMachine{
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
-	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
-	// 		Properties: &armcompute.VirtualMachineProperties{
-	// 			OSProfile: &armcompute.OSProfile{
-	// 				AdminUsername: to.Ptr("{your-username}"),
-	// 				Secrets: []*armcompute.VaultSecretGroup{
-	// 				},
-	// 				ComputerName: to.Ptr("myVM"),
-	// 				WindowsConfiguration: &armcompute.WindowsConfiguration{
-	// 					ProvisionVMAgent: to.Ptr(true),
-	// 					EnableAutomaticUpdates: to.Ptr(true),
-	// 				},
-	// 			},
-	// 			NetworkProfile: &armcompute.NetworkProfile{
-	// 				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
-	// 					{
-	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/nsgExistingNic"),
-	// 						Properties: &armcompute.NetworkInterfaceReferenceProperties{
-	// 							Primary: to.Ptr(true),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			StorageProfile: &armcompute.StorageProfile{
-	// 				ImageReference: &armcompute.ImageReference{
-	// 					SKU: to.Ptr("2016-Datacenter"),
-	// 					Publisher: to.Ptr("MicrosoftWindowsServer"),
-	// 					Version: to.Ptr("latest"),
-	// 					Offer: to.Ptr("WindowsServer"),
-	// 				},
-	// 				OSDisk: &armcompute.OSDisk{
-	// 					OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
-	// 					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-	// 					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
-	// 					Name: to.Ptr("myVMosdisk"),
-	// 					ManagedDisk: &armcompute.ManagedDiskParameters{
-	// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumZRS),
-	// 					},
-	// 				},
-	// 				DataDisks: []*armcompute.DataDisk{
-	// 					{
-	// 						DiskSizeGB: to.Ptr[int32](128),
-	// 						Lun: to.Ptr[int32](0),
-	// 						CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesEmpty),
-	// 						ManagedDisk: &armcompute.ManagedDiskParameters{
-	// 							StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumZRS),
-	// 						},
-	// 						Name: to.Ptr("myVMdatadisk1"),
-	// 						Caching: to.Ptr(armcompute.CachingTypesReadWrite),
-	// 					},
-	// 				},
-	// 			},
-	// 			VMID: to.Ptr("a149cd25-409f-41af-8088-275f5486bc93"),
-	// 			HardwareProfile: &armcompute.HardwareProfile{
-	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2SV3),
-	// 			},
-	// 			ResiliencyProfile: &armcompute.ResiliencyProfile{
-	// 				ZoneMovement: &armcompute.ZoneMovement{
-	// 					IsEnabled: to.Ptr(true),
-	// 				},
-	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
-	// 			ProvisioningState: to.Ptr("Creating"),
-	// 		},
-	// 		Name: to.Ptr("myVM"),
-	// 		Location: to.Ptr("westus"),
-	// 	},
+	// res = armcompute.VirtualMachinesClientDeallocateResponse{
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Deallocate_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Deallocate_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachineDeallocateMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7758,61 +7855,7 @@ func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachineDeallocateMinimu
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Deallocate_WithForceDeallocate.json
-func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachineDeallocateWithForceDeallocate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualMachinesClient().BeginDeallocate(ctx, "rgcompute", "aaaaaaaaaaaaaaaa", &armcompute.VirtualMachinesClientBeginDeallocateOptions{
-		ForceDeallocate: to.Ptr(true)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachinesClientDeallocateResponse{
-	// }
-}
-
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Deallocate_WithHibernation.json
-func ExampleVirtualMachinesClient_BeginDeallocate_virtualMachineDeallocateWithHibernation() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVirtualMachinesClient().BeginDeallocate(ctx, "rgcompute", "aaaaaaaaaaaaaaaa", &armcompute.VirtualMachinesClientBeginDeallocateOptions{
-		Hibernate: to.Ptr(true)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachinesClientDeallocateResponse{
-	// }
-}
-
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Delete_Force.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Delete_Force.json
 func ExampleVirtualMachinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7839,7 +7882,7 @@ func ExampleVirtualMachinesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Generalize.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Generalize.json
 func ExampleVirtualMachinesClient_Generalize() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7861,7 +7904,7 @@ func ExampleVirtualMachinesClient_Generalize() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Get.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Get.json
 func ExampleVirtualMachinesClient_Get_getAVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -7968,9 +8011,6 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachine() {
 	// 				Secrets: []*armcompute.VaultSecretGroup{
 	// 				},
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			NetworkProfile: &armcompute.NetworkProfile{
 	// 				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
 	// 					{
@@ -7986,7 +8026,7 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachine() {
 	// 			},
 	// 			ExtensionsTimeBudget: to.Ptr("PT50M"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-27T01:02:38.3138469+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2021, time.June, 27, 1, 2, 38, 313846900, time.UTC)),
 	// 		},
 	// 		Resources: []*armcompute.VirtualMachineExtension{
 	// 			{
@@ -8013,7 +8053,7 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachine() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_AutoPlacedOnDedicatedHostGroup.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Get_AutoPlacedOnDedicatedHostGroup.json
 func ExampleVirtualMachinesClient_Get_getAVirtualMachinePlacedOnADedicatedHostGroupThroughAutomaticPlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8079,9 +8119,6 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachinePlacedOnADedicatedHostGr
 	// 				Secrets: []*armcompute.VaultSecretGroup{
 	// 				},
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			NetworkProfile: &armcompute.NetworkProfile{
 	// 				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
 	// 					{
@@ -8095,7 +8132,85 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachinePlacedOnADedicatedHostGr
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_WithDiskControllerType.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Get_WithDeterministicProcessorMode.json
+func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithDeterministicProcessorMode() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachinesClient().Get(ctx, "myResourceGroup", "myVM", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachinesClientGetResponse{
+	// 	VirtualMachine: armcompute.VirtualMachine{
+	// 		Name: to.Ptr("myVM"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armcompute.VirtualMachineProperties{
+	// 			VMID: to.Ptr("0f47b100-583c-48e3-a4c0-aefc2c9bbcc1"),
+	// 			HardwareProfile: &armcompute.HardwareProfile{
+	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypes("Standard_E2pds_v8")),
+	// 				ProcessorMode: to.Ptr(armcompute.ProcessorModeDeterministic),
+	// 			},
+	// 			StorageProfile: &armcompute.StorageProfile{
+	// 				ImageReference: &armcompute.ImageReference{
+	// 					Publisher: to.Ptr("MicrosoftWindowsServer"),
+	// 					Offer: to.Ptr("WindowsServer"),
+	// 					SKU: to.Ptr("2019-Datacenter"),
+	// 					Version: to.Ptr("latest"),
+	// 				},
+	// 				OSDisk: &armcompute.OSDisk{
+	// 					OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+	// 					Name: to.Ptr("myVMosdisk"),
+	// 					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+	// 					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+	// 					ManagedDisk: &armcompute.ManagedDiskParameters{
+	// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myVMosdisk"),
+	// 					},
+	// 					DiskSizeGB: to.Ptr[int32](127),
+	// 				},
+	// 				DataDisks: []*armcompute.DataDisk{
+	// 				},
+	// 			},
+	// 			OSProfile: &armcompute.OSProfile{
+	// 				ComputerName: to.Ptr("myVM"),
+	// 				AdminUsername: to.Ptr("{your-username}"),
+	// 				WindowsConfiguration: &armcompute.WindowsConfiguration{
+	// 					ProvisionVMAgent: to.Ptr(true),
+	// 					EnableAutomaticUpdates: to.Ptr(true),
+	// 				},
+	// 				Secrets: []*armcompute.VaultSecretGroup{
+	// 				},
+	// 				AllowExtensionOperations: to.Ptr(true),
+	// 			},
+	// 			NetworkProfile: &armcompute.NetworkProfile{
+	// 				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+	// 						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+	// 							Primary: to.Ptr(true),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Get_WithDiskControllerType.json
 func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithDiskControllerTypeProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8203,9 +8318,6 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithDiskControllerTypePr
 	// 				Secrets: []*armcompute.VaultSecretGroup{
 	// 				},
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			NetworkProfile: &armcompute.NetworkProfile{
 	// 				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
 	// 					{
@@ -8246,7 +8358,85 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithDiskControllerTypePr
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_WithVMSizeProperties.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Get_WithOpportunisticProcessorMode.json
+func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithOpportunisticProcessorMode() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachinesClient().Get(ctx, "myResourceGroup", "myVM", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcompute.VirtualMachinesClientGetResponse{
+	// 	VirtualMachine: armcompute.VirtualMachine{
+	// 		Name: to.Ptr("myVM"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"),
+	// 		Type: to.Ptr("Microsoft.Compute/virtualMachines"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armcompute.VirtualMachineProperties{
+	// 			VMID: to.Ptr("1a58b200-694d-59f4-b5c1-bfdd3dcced2"),
+	// 			HardwareProfile: &armcompute.HardwareProfile{
+	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypes("Standard_D2s_v5")),
+	// 				ProcessorMode: to.Ptr(armcompute.ProcessorModeOpportunistic),
+	// 			},
+	// 			StorageProfile: &armcompute.StorageProfile{
+	// 				ImageReference: &armcompute.ImageReference{
+	// 					Publisher: to.Ptr("MicrosoftWindowsServer"),
+	// 					Offer: to.Ptr("WindowsServer"),
+	// 					SKU: to.Ptr("2019-Datacenter"),
+	// 					Version: to.Ptr("latest"),
+	// 				},
+	// 				OSDisk: &armcompute.OSDisk{
+	// 					OSType: to.Ptr(armcompute.OperatingSystemTypesWindows),
+	// 					Name: to.Ptr("myVMosdisk"),
+	// 					CreateOption: to.Ptr(armcompute.DiskCreateOptionTypesFromImage),
+	// 					Caching: to.Ptr(armcompute.CachingTypesReadWrite),
+	// 					ManagedDisk: &armcompute.ManagedDiskParameters{
+	// 						StorageAccountType: to.Ptr(armcompute.StorageAccountTypesPremiumLRS),
+	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/disks/myVMosdisk"),
+	// 					},
+	// 					DiskSizeGB: to.Ptr[int32](127),
+	// 				},
+	// 				DataDisks: []*armcompute.DataDisk{
+	// 				},
+	// 			},
+	// 			OSProfile: &armcompute.OSProfile{
+	// 				ComputerName: to.Ptr("myVM"),
+	// 				AdminUsername: to.Ptr("{your-username}"),
+	// 				WindowsConfiguration: &armcompute.WindowsConfiguration{
+	// 					ProvisionVMAgent: to.Ptr(true),
+	// 					EnableAutomaticUpdates: to.Ptr(true),
+	// 				},
+	// 				Secrets: []*armcompute.VaultSecretGroup{
+	// 				},
+	// 				AllowExtensionOperations: to.Ptr(true),
+	// 			},
+	// 			NetworkProfile: &armcompute.NetworkProfile{
+	// 				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
+	// 					{
+	// 						ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Network/networkInterfaces/{existing-nic-name}"),
+	// 						Properties: &armcompute.NetworkInterfaceReferenceProperties{
+	// 							Primary: to.Ptr(true),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Get_WithVMSizeProperties.json
 func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithVMSizeProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8352,9 +8542,6 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithVMSizeProperties() {
 	// 				Secrets: []*armcompute.VaultSecretGroup{
 	// 				},
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			NetworkProfile: &armcompute.NetworkProfile{
 	// 				NetworkInterfaces: []*armcompute.NetworkInterfaceReference{
 	// 					{
@@ -8395,7 +8582,7 @@ func ExampleVirtualMachinesClient_Get_getAVirtualMachineWithVMSizeProperties() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_InstallPatches.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_InstallPatches.json
 func ExampleVirtualMachinesClient_BeginInstallPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8414,7 +8601,7 @@ func ExampleVirtualMachinesClient_BeginInstallPatches() {
 				to.Ptr(armcompute.VMGuestPatchClassificationWindowsCritical),
 				to.Ptr(armcompute.VMGuestPatchClassificationWindowsSecurity),
 			},
-			MaxPatchPublishDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-11-19T02:36:43.0539904+00:00"); return t }()),
+			MaxPatchPublishDate: to.Ptr(time.Date(2020, time.November, 19, 2, 36, 43, 53990400, time.UTC)),
 			PatchNameMasksToInclude: []*string{
 				to.Ptr("*SQL*"),
 			},
@@ -8444,7 +8631,7 @@ func ExampleVirtualMachinesClient_BeginInstallPatches() {
 	// 		PendingPatchCount: to.Ptr[int32](2),
 	// 		InstalledPatchCount: to.Ptr[int32](3),
 	// 		FailedPatchCount: to.Ptr[int32](0),
-	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T21:02:04.2556154Z"); return t}()),
+	// 		StartDateTime: to.Ptr(time.Date(2020, time.April, 24, 21, 2, 4, 255615400, time.UTC)),
 	// 		Patches: []*armcompute.PatchInstallationDetail{
 	// 			{
 	// 				PatchID: to.Ptr("35428702-5784-4ba4-a6e0-5222258b5411"),
@@ -8471,7 +8658,7 @@ func ExampleVirtualMachinesClient_BeginInstallPatches() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_InstanceView.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Get_InstanceView.json
 func ExampleVirtualMachinesClient_InstanceView_getVirtualMachineInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8504,7 +8691,7 @@ func ExampleVirtualMachinesClient_InstanceView_getVirtualMachineInstanceView() {
 	// 					Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 					DisplayStatus: to.Ptr("Ready"),
 	// 					Message: to.Ptr("GuestAgent is running and accepting new configurations."),
-	// 					Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-14T23:11:22+00:00"); return t}()),
+	// 					Time: to.Ptr(time.Date(2019, time.October, 14, 23, 11, 22, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 			ExtensionHandlers: []*armcompute.VirtualMachineExtensionHandlerInstanceView{
@@ -8527,7 +8714,7 @@ func ExampleVirtualMachinesClient_InstanceView_getVirtualMachineInstanceView() {
 	// 						Code: to.Ptr("ProvisioningState/succeeded"),
 	// 						Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 						DisplayStatus: to.Ptr("Provisioning succeeded"),
-	// 						Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-14T21:29:47.477089+00:00"); return t}()),
+	// 						Time: to.Ptr(time.Date(2019, time.October, 14, 21, 29, 47, 477089000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -8538,7 +8725,7 @@ func ExampleVirtualMachinesClient_InstanceView_getVirtualMachineInstanceView() {
 	// 						Code: to.Ptr("ProvisioningState/succeeded"),
 	// 						Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 						DisplayStatus: to.Ptr("Provisioning succeeded"),
-	// 						Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-14T21:29:47.461517+00:00"); return t}()),
+	// 						Time: to.Ptr(time.Date(2019, time.October, 14, 21, 29, 47, 461517000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -8570,8 +8757,8 @@ func ExampleVirtualMachinesClient_InstanceView_getVirtualMachineInstanceView() {
 	// 				RebootPending: to.Ptr(true),
 	// 				CriticalAndSecurityPatchCount: to.Ptr[int32](1),
 	// 				OtherPatchCount: to.Ptr[int32](2),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T21:02:04.2556154Z"); return t}()),
-	// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T21:02:04.2556154Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2020, time.April, 24, 21, 2, 4, 255615400, time.UTC)),
+	// 				LastModifiedTime: to.Ptr(time.Date(2020, time.April, 24, 21, 2, 4, 255615400, time.UTC)),
 	// 			},
 	// 			LastPatchInstallationSummary: &armcompute.LastPatchInstallationSummary{
 	// 				Status: to.Ptr(armcompute.PatchOperationStatusSucceeded),
@@ -8582,31 +8769,32 @@ func ExampleVirtualMachinesClient_InstanceView_getVirtualMachineInstanceView() {
 	// 				PendingPatchCount: to.Ptr[int32](1),
 	// 				InstalledPatchCount: to.Ptr[int32](1),
 	// 				FailedPatchCount: to.Ptr[int32](1),
-	// 				StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T21:02:04.2556154Z"); return t}()),
-	// 				LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T21:02:04.2556154Z"); return t}()),
+	// 				StartTime: to.Ptr(time.Date(2020, time.April, 24, 21, 2, 4, 255615400, time.UTC)),
+	// 				LastModifiedTime: to.Ptr(time.Date(2020, time.April, 24, 21, 2, 4, 255615400, time.UTC)),
 	// 			},
 	// 			ConfigurationStatuses: []*armcompute.InstanceViewStatus{
 	// 				{
 	// 					Code: to.Ptr("PatchModeConfigurationState/Ready"),
 	// 					Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 					DisplayStatus: to.Ptr("Status_PatchModeConfigurationState_Ready"),
-	// 					Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T21:02:04.2556154Z"); return t}()),
+	// 					Time: to.Ptr(time.Date(2020, time.April, 24, 21, 2, 4, 255615400, time.UTC)),
 	// 				},
 	// 				{
 	// 					Code: to.Ptr("AssessmentModeConfigurationState/Pending"),
 	// 					Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 					DisplayStatus: to.Ptr("Status_AssessmentModeConfigurationState_Pending"),
-	// 					Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T21:02:04.2556154Z"); return t}()),
+	// 					Time: to.Ptr(time.Date(2020, time.April, 24, 21, 2, 4, 255615400, time.UTC)),
 	// 				},
 	// 			},
 	// 		},
 	// 		IsVMInStandbyPool: to.Ptr(false),
+	// 		CapacityReservationType: to.Ptr(armcompute.CapacityReservationTypeOpen),
 	// 		Statuses: []*armcompute.InstanceViewStatus{
 	// 			{
 	// 				Code: to.Ptr("ProvisioningState/succeeded"),
 	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 				DisplayStatus: to.Ptr("Provisioning succeeded"),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-10-14T21:30:12.8051917+00:00"); return t}()),
+	// 				Time: to.Ptr(time.Date(2019, time.October, 14, 21, 30, 12, 805191700, time.UTC)),
 	// 			},
 	// 			{
 	// 				Code: to.Ptr("PowerState/running"),
@@ -8618,7 +8806,7 @@ func ExampleVirtualMachinesClient_InstanceView_getVirtualMachineInstanceView() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_InstanceViewAutoPlacedOnDedicatedHostGroup.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Get_InstanceViewAutoPlacedOnDedicatedHostGroup.json
 func ExampleVirtualMachinesClient_InstanceView_getInstanceViewOfAVirtualMachinePlacedOnADedicatedHostGroupThroughAutomaticPlacement() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8649,7 +8837,7 @@ func ExampleVirtualMachinesClient_InstanceView_getInstanceViewOfAVirtualMachineP
 	// 					Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 					DisplayStatus: to.Ptr("Ready"),
 	// 					Message: to.Ptr("GuestAgent is running and accepting new configurations."),
-	// 					Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-01T23:11:22+00:00"); return t}()),
+	// 					Time: to.Ptr(time.Date(2026, time.April, 1, 23, 11, 22, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 		},
@@ -8661,7 +8849,7 @@ func ExampleVirtualMachinesClient_InstanceView_getInstanceViewOfAVirtualMachineP
 	// 						Code: to.Ptr("ProvisioningState/succeeded"),
 	// 						Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 						DisplayStatus: to.Ptr("Provisioning succeeded"),
-	// 						Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-01T21:29:47.477089+00:00"); return t}()),
+	// 						Time: to.Ptr(time.Date(2026, time.April, 1, 21, 29, 47, 477089000, time.UTC)),
 	// 					},
 	// 				},
 	// 			},
@@ -8673,7 +8861,7 @@ func ExampleVirtualMachinesClient_InstanceView_getInstanceViewOfAVirtualMachineP
 	// 				Code: to.Ptr("ProvisioningState/succeeded"),
 	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 	// 				DisplayStatus: to.Ptr("Provisioning succeeded"),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-01T21:30:12.8051917+00:00"); return t}()),
+	// 				Time: to.Ptr(time.Date(2026, time.April, 1, 21, 30, 12, 805191700, time.UTC)),
 	// 			},
 	// 			{
 	// 				Code: to.Ptr("PowerState/running"),
@@ -8685,76 +8873,7 @@ func ExampleVirtualMachinesClient_InstanceView_getInstanceViewOfAVirtualMachineP
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Get_InstanceView_WithInterconnectBlock.json
-func ExampleVirtualMachinesClient_InstanceView_getInstanceViewOfAVirtualMachineAssociatedWithAnInterconnectBlock() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcompute.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachinesClient().InstanceView(ctx, "myResourceGroup", "myVM", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcompute.VirtualMachinesClientInstanceViewResponse{
-	// 	VirtualMachineInstanceView: armcompute.VirtualMachineInstanceView{
-	// 		ComputerName: to.Ptr("myVM"),
-	// 		OSName: to.Ptr("Windows Server 2016 Datacenter"),
-	// 		OSVersion: to.Ptr("Microsoft Windows NT 10.0.14393.0"),
-	// 		VMAgent: &armcompute.VirtualMachineAgentInstanceView{
-	// 			VMAgentVersion: to.Ptr("2.7.41491.949"),
-	// 			Statuses: []*armcompute.InstanceViewStatus{
-	// 				{
-	// 					Code: to.Ptr("ProvisioningState/succeeded"),
-	// 					Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-	// 					DisplayStatus: to.Ptr("Ready"),
-	// 					Message: to.Ptr("GuestAgent is running and accepting new configurations."),
-	// 					Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T23:11:22+00:00"); return t}()),
-	// 				},
-	// 			},
-	// 		},
-	// 		Disks: []*armcompute.DiskInstanceView{
-	// 			{
-	// 				Name: to.Ptr("myOsDisk"),
-	// 				Statuses: []*armcompute.InstanceViewStatus{
-	// 					{
-	// 						Code: to.Ptr("ProvisioningState/succeeded"),
-	// 						Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-	// 						DisplayStatus: to.Ptr("Provisioning succeeded"),
-	// 						Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T21:29:47.477089+00:00"); return t}()),
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 		HyperVGeneration: to.Ptr(armcompute.HyperVGenerationTypeV1),
-	// 		InterconnectInstanceView: &armcompute.InterconnectInstanceView{
-	// 			InterconnectSubgroupID: to.Ptr("{GUID}"),
-	// 		},
-	// 		Statuses: []*armcompute.InstanceViewStatus{
-	// 			{
-	// 				Code: to.Ptr("ProvisioningState/succeeded"),
-	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-	// 				DisplayStatus: to.Ptr("Provisioning succeeded"),
-	// 				Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T21:30:12.8051917+00:00"); return t}()),
-	// 			},
-	// 			{
-	// 				Code: to.Ptr("PowerState/running"),
-	// 				Level: to.Ptr(armcompute.StatusLevelTypesInfo),
-	// 				DisplayStatus: to.Ptr("VM running"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_List_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -8954,6 +9073,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 															{
 		// 																IPTagType: to.Ptr("aaaaa"),
 		// 																Tag: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaa"),
+		// 																FirstPartyServiceTagID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firstPartyServiceTags/{firstPartyServiceTagName}"),
 		// 															},
 		// 														},
 		// 														PublicIPPrefix: &armcompute.SubResource{
@@ -9058,7 +9178,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 							},
 		// 						},
 		// 					},
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.683Z"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 683000000, time.UTC)),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 		// 				Location: to.Ptr("eastus"),
@@ -9096,7 +9216,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 										Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 		// 										DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 										Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 										Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
+		// 										Time: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 657000000, time.UTC)),
 		// 									},
 		// 								},
 		// 								Statuses: []*armcompute.InstanceViewStatus{
@@ -9105,7 +9225,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 										Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 		// 										DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 										Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 										Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
+		// 										Time: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 657000000, time.UTC)),
 		// 									},
 		// 								},
 		// 							},
@@ -9413,7 +9533,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 										Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 		// 										DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 										Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 										Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
+		// 										Time: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 657000000, time.UTC)),
 		// 									},
 		// 								},
 		// 							},
@@ -9423,16 +9543,16 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 									Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 		// 									DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 									Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 									Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
+		// 									Time: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 657000000, time.UTC)),
 		// 								},
 		// 							},
 		// 						},
 		// 						MaintenanceRedeployStatus: &armcompute.MaintenanceRedeployStatus{
 		// 							IsCustomerInitiatedMaintenanceAllowed: to.Ptr(true),
-		// 							PreMaintenanceWindowStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.682Z"); return t}()),
-		// 							PreMaintenanceWindowEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.682Z"); return t}()),
-		// 							MaintenanceWindowStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.682Z"); return t}()),
-		// 							MaintenanceWindowEndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.682Z"); return t}()),
+		// 							PreMaintenanceWindowStartTime: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 682000000, time.UTC)),
+		// 							PreMaintenanceWindowEndTime: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 682000000, time.UTC)),
+		// 							MaintenanceWindowStartTime: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 682000000, time.UTC)),
+		// 							MaintenanceWindowEndTime: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 682000000, time.UTC)),
 		// 							LastOperationResultCode: to.Ptr(armcompute.MaintenanceOperationResultCodeTypesNone),
 		// 							LastOperationMessage: to.Ptr("aa"),
 		// 						},
@@ -9462,7 +9582,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 										Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 		// 										DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 										Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 										Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
+		// 										Time: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 657000000, time.UTC)),
 		// 									},
 		// 								},
 		// 							},
@@ -9478,7 +9598,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 										Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 		// 										DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 										Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 										Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
+		// 										Time: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 657000000, time.UTC)),
 		// 									},
 		// 								},
 		// 								Statuses: []*armcompute.InstanceViewStatus{
@@ -9487,7 +9607,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 										Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 		// 										DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 										Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 										Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
+		// 										Time: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 657000000, time.UTC)),
 		// 									},
 		// 								},
 		// 							},
@@ -9498,7 +9618,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 								Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 		// 								DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 								Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 								Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
+		// 								Time: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 657000000, time.UTC)),
 		// 							},
 		// 						},
 		// 						BootDiagnostics: &armcompute.BootDiagnosticsInstanceView{
@@ -9509,7 +9629,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 								Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 		// 								DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 								Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 								Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
+		// 								Time: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 657000000, time.UTC)),
 		// 							},
 		// 						},
 		// 						AssignedHost: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
@@ -9519,7 +9639,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 								Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 		// 								DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 								Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 								Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
+		// 								Time: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 657000000, time.UTC)),
 		// 							},
 		// 						},
 		// 						PatchStatus: &armcompute.VirtualMachinePatchStatus{
@@ -9529,8 +9649,8 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 								RebootPending: to.Ptr(true),
 		// 								CriticalAndSecurityPatchCount: to.Ptr[int32](22),
 		// 								OtherPatchCount: to.Ptr[int32](25),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.682Z"); return t}()),
-		// 								LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.683Z"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 682000000, time.UTC)),
+		// 								LastModifiedTime: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 683000000, time.UTC)),
 		// 								Error: &armcompute.APIError{
 		// 									Details: []*armcompute.APIErrorBase{
 		// 										{
@@ -9557,8 +9677,8 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 								PendingPatchCount: to.Ptr[int32](2),
 		// 								InstalledPatchCount: to.Ptr[int32](28),
 		// 								FailedPatchCount: to.Ptr[int32](30),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.683Z"); return t}()),
-		// 								LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.683Z"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 683000000, time.UTC)),
+		// 								LastModifiedTime: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 683000000, time.UTC)),
 		// 								Error: &armcompute.APIError{
 		// 									Details: []*armcompute.APIErrorBase{
 		// 										{
@@ -9582,7 +9702,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 									Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 		// 									DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 									Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 									Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
+		// 									Time: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 657000000, time.UTC)),
 		// 								},
 		// 							},
 		// 						},
@@ -9617,7 +9737,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 							},
 		// 						},
 		// 					},
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.685Z"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 685000000, time.UTC)),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 		// 				Location: to.Ptr("eastus"),
@@ -9655,7 +9775,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 										Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 		// 										DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 										Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 										Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
+		// 										Time: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 657000000, time.UTC)),
 		// 									},
 		// 								},
 		// 								Statuses: []*armcompute.InstanceViewStatus{
@@ -9664,7 +9784,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 		// 										Level: to.Ptr(armcompute.StatusLevelTypesInfo),
 		// 										DisplayStatus: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaa"),
 		// 										Message: to.Ptr("aaaaaaaaaaaaaaaaaaa"),
-		// 										Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.657Z"); return t}()),
+		// 										Time: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 657000000, time.UTC)),
 		// 									},
 		// 								},
 		// 							},
@@ -9711,7 +9831,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMaximumSetGen()
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_List_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -9750,7 +9870,7 @@ func ExampleVirtualMachinesClient_NewListPager_virtualMachineListMinimumSetGen()
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_ListAll_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_ListAll_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_NewListAllPager_virtualMachineListAllMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10056,7 +10176,7 @@ func ExampleVirtualMachinesClient_NewListAllPager_virtualMachineListAllMaximumSe
 		// 							},
 		// 						},
 		// 					},
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.683Z"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 683000000, time.UTC)),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 		// 				Location: to.Ptr("eastus"),
@@ -10399,7 +10519,7 @@ func ExampleVirtualMachinesClient_NewListAllPager_virtualMachineListAllMaximumSe
 		// 							},
 		// 						},
 		// 					},
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-01-14T16:43:41.685Z"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2022, time.January, 14, 16, 43, 41, 685000000, time.UTC)),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
 		// 				Location: to.Ptr("eastus"),
@@ -10470,7 +10590,7 @@ func ExampleVirtualMachinesClient_NewListAllPager_virtualMachineListAllMaximumSe
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_ListAll_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_ListAll_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_NewListAllPager_virtualMachineListAllMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10509,7 +10629,7 @@ func ExampleVirtualMachinesClient_NewListAllPager_virtualMachineListAllMinimumSe
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_ListAvailableVmSizes.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_ListAvailableVmSizes.json
 func ExampleVirtualMachinesClient_NewListAvailableSizesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10556,7 +10676,7 @@ func ExampleVirtualMachinesClient_NewListAvailableSizesPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_ListBySubscription_ByLocation.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_ListBySubscription_ByLocation.json
 func ExampleVirtualMachinesClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10628,9 +10748,6 @@ func ExampleVirtualMachinesClient_NewListByLocationPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					SecurityProfile: &armcompute.SecurityProfile{
-		// 						SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-		// 					},
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
@@ -10689,9 +10806,6 @@ func ExampleVirtualMachinesClient_NewListByLocationPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					SecurityProfile: &armcompute.SecurityProfile{
-		// 						SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-		// 					},
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 				},
 		// 				Type: to.Ptr("Microsoft.Compute/virtualMachines"),
@@ -10709,7 +10823,7 @@ func ExampleVirtualMachinesClient_NewListByLocationPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_MigrateToVirtualMachineScaleSet.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_MigrateToVirtualMachineScaleSet.json
 func ExampleVirtualMachinesClient_BeginMigrateToVMScaleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10734,7 +10848,7 @@ func ExampleVirtualMachinesClient_BeginMigrateToVMScaleSet() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_PerformMaintenance_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_PerformMaintenance_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinePerformMaintenanceMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10760,7 +10874,7 @@ func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinePerformM
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_PerformMaintenance_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_PerformMaintenance_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinePerformMaintenanceMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10786,7 +10900,7 @@ func ExampleVirtualMachinesClient_BeginPerformMaintenance_virtualMachinePerformM
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_PowerOff_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_PowerOff_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinePowerOffMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10813,7 +10927,7 @@ func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinePowerOffMaximumSet
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_PowerOff_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_PowerOff_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinePowerOffMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10839,7 +10953,7 @@ func ExampleVirtualMachinesClient_BeginPowerOff_virtualMachinePowerOffMinimumSet
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Reapply.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Reapply.json
 func ExampleVirtualMachinesClient_BeginReapply() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10865,7 +10979,7 @@ func ExampleVirtualMachinesClient_BeginReapply() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Redeploy_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Redeploy_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachineRedeployMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10891,7 +11005,7 @@ func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachineRedeployMaximumSet
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Redeploy_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Redeploy_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachineRedeployMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10917,7 +11031,7 @@ func ExampleVirtualMachinesClient_BeginRedeploy_virtualMachineRedeployMinimumSet
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Reimage.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Reimage.json
 func ExampleVirtualMachinesClient_BeginReimage_reimageAVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10946,7 +11060,7 @@ func ExampleVirtualMachinesClient_BeginReimage_reimageAVirtualMachine() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Reimage_NonEphemeralVMs.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Reimage_NonEphemeralVMs.json
 func ExampleVirtualMachinesClient_BeginReimage_reimageANonEphemeralVirtualMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -10980,7 +11094,7 @@ func ExampleVirtualMachinesClient_BeginReimage_reimageANonEphemeralVirtualMachin
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Restart_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Restart_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginRestart_virtualMachineRestartMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11006,7 +11120,7 @@ func ExampleVirtualMachinesClient_BeginRestart_virtualMachineRestartMaximumSetGe
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Restart_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Restart_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginRestart_virtualMachineRestartMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11032,7 +11146,7 @@ func ExampleVirtualMachinesClient_BeginRestart_virtualMachineRestartMinimumSetGe
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_RetrieveBootDiagnosticsData.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_RetrieveBootDiagnosticsData.json
 func ExampleVirtualMachinesClient_RetrieveBootDiagnosticsData() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11059,7 +11173,7 @@ func ExampleVirtualMachinesClient_RetrieveBootDiagnosticsData() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/runCommandExamples/VirtualMachineRunCommand.json
+// Generated from example definition: 2026-04-01/runCommandExamples/VirtualMachineRunCommand.json
 func ExampleVirtualMachinesClient_BeginRunCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11103,7 +11217,7 @@ func ExampleVirtualMachinesClient_BeginRunCommand() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_SimulateEviction.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_SimulateEviction.json
 func ExampleVirtualMachinesClient_SimulateEviction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11120,7 +11234,7 @@ func ExampleVirtualMachinesClient_SimulateEviction() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Start_MaximumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Start_MaximumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginStart_virtualMachineStartMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11146,7 +11260,7 @@ func ExampleVirtualMachinesClient_BeginStart_virtualMachineStartMaximumSetGen() 
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Start_MinimumSet_Gen.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Start_MinimumSet_Gen.json
 func ExampleVirtualMachinesClient_BeginStart_virtualMachineStartMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11172,7 +11286,7 @@ func ExampleVirtualMachinesClient_BeginStart_virtualMachineStartMinimumSetGen() 
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Update_DetachDataDiskUsingToBeDetachedProperty.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Update_DetachDataDiskUsingToBeDetachedProperty.json
 func ExampleVirtualMachinesClient_BeginUpdate_updateAVMByDetachingDataDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11313,9 +11427,6 @@ func ExampleVirtualMachinesClient_BeginUpdate_updateAVMByDetachingDataDisk() {
 	// 			HardwareProfile: &armcompute.HardwareProfile{
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2V2),
 	// 			},
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 			ProvisioningState: to.Ptr("Updating"),
 	// 		},
 	// 		Name: to.Ptr("myVM"),
@@ -11324,7 +11435,7 @@ func ExampleVirtualMachinesClient_BeginUpdate_updateAVMByDetachingDataDisk() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/virtualMachineExamples/VirtualMachine_Update_ForceDetachDataDisk.json
+// Generated from example definition: 2026-04-01/virtualMachineExamples/VirtualMachine_Update_ForceDetachDataDisk.json
 func ExampleVirtualMachinesClient_BeginUpdate_updateAVMByForceDetachingDataDisk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -11468,9 +11579,6 @@ func ExampleVirtualMachinesClient_BeginUpdate_updateAVMByForceDetachingDataDisk(
 	// 				VMSize: to.Ptr(armcompute.VirtualMachineSizeTypesStandardD2V2),
 	// 			},
 	// 			ProvisioningState: to.Ptr("Updating"),
-	// 			SecurityProfile: &armcompute.SecurityProfile{
-	// 				SecurityType: to.Ptr(armcompute.SecurityTypesStandard),
-	// 			},
 	// 		},
 	// 		Name: to.Ptr("myVM"),
 	// 		Location: to.Ptr("westus"),

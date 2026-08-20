@@ -59,12 +59,7 @@ func (client *PropertyClient) Get(ctx context.Context, options *PropertyClientGe
 	if err != nil {
 		return PropertyClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PropertyClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -92,8 +87,11 @@ func (client *PropertyClient) getCreateRequest(ctx context.Context, options *Pro
 }
 
 // getHandleResponse handles the Get response.
-func (client *PropertyClient) getHandleResponse(resp *http.Response) (PropertyClientGetResponse, error) {
+func (client *PropertyClient) getHandleResponse(resp *http.Response, successCodes ...int) (PropertyClientGetResponse, error) {
 	result := PropertyClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Property); err != nil {
 		return PropertyClientGetResponse{}, err
 	}
@@ -120,12 +118,7 @@ func (client *PropertyClient) Update(ctx context.Context, parameters Property, o
 	if err != nil {
 		return PropertyClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PropertyClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -151,8 +144,11 @@ func (client *PropertyClient) updateCreateRequest(ctx context.Context, parameter
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PropertyClient) updateHandleResponse(resp *http.Response) (PropertyClientUpdateResponse, error) {
+func (client *PropertyClient) updateHandleResponse(resp *http.Response, successCodes ...int) (PropertyClientUpdateResponse, error) {
 	result := PropertyClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Property); err != nil {
 		return PropertyClientUpdateResponse{}, err
 	}

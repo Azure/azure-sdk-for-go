@@ -40,7 +40,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdate(
 			VcfLicense: &armavs.Vcf5License{
 				Kind:                   to.Ptr(armavs.VcfLicenseKindVcf5),
 				LicenseKey:             to.Ptr("12345-12345-12345-12345-12345"),
-				EndDate:                to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t }()),
+				EndDate:                to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 				Cores:                  to.Ptr[int32](16),
 				BroadcomSiteID:         to.Ptr("123456"),
 				BroadcomContractNumber: to.Ptr("123456"),
@@ -110,7 +110,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdate(
 	// 			Internet: to.Ptr(armavs.InternetEnumDisabled),
 	// 			VcfLicense: &armavs.Vcf5License{
 	// 				Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 				Cores: to.Ptr[int32](16),
 	// 				BroadcomSiteID: to.Ptr("123456"),
 	// 				BroadcomContractNumber: to.Ptr("123456"),
@@ -151,7 +151,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateF
 			VcfLicense: &armavs.Vcf5License{
 				Kind:                   to.Ptr(armavs.VcfLicenseKindVcf5),
 				LicenseKey:             to.Ptr("12345-12345-12345-12345-12345"),
-				EndDate:                to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t }()),
+				EndDate:                to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 				Cores:                  to.Ptr[int32](16),
 				BroadcomSiteID:         to.Ptr("123456"),
 				BroadcomContractNumber: to.Ptr("123456"),
@@ -215,7 +215,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateF
 	// 			VmotionNetwork: to.Ptr("10.31.2.0/24"),
 	// 			VcfLicense: &armavs.Vcf5License{
 	// 				Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 				Cores: to.Ptr[int32](16),
 	// 				BroadcomSiteID: to.Ptr("123456"),
 	// 				BroadcomContractNumber: to.Ptr("123456"),
@@ -261,7 +261,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateS
 			VcfLicense: &armavs.Vcf5License{
 				Kind:                   to.Ptr(armavs.VcfLicenseKindVcf5),
 				LicenseKey:             to.Ptr("12345-12345-12345-12345-12345"),
-				EndDate:                to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t }()),
+				EndDate:                to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 				Cores:                  to.Ptr[int32](16),
 				BroadcomSiteID:         to.Ptr("123456"),
 				BroadcomContractNumber: to.Ptr("123456"),
@@ -344,7 +344,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateS
 	// 			Internet: to.Ptr(armavs.InternetEnumDisabled),
 	// 			VcfLicense: &armavs.Vcf5License{
 	// 				Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 				Cores: to.Ptr[int32](16),
 	// 				BroadcomSiteID: to.Ptr("123456"),
 	// 				BroadcomContractNumber: to.Ptr("123456"),
@@ -386,7 +386,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateS
 			VcfLicense: &armavs.Vcf5License{
 				Kind:                   to.Ptr(armavs.VcfLicenseKindVcf5),
 				LicenseKey:             to.Ptr("12345-12345-12345-12345-12345"),
-				EndDate:                to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t }()),
+				EndDate:                to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 				Cores:                  to.Ptr[int32](16),
 				BroadcomSiteID:         to.Ptr("123456"),
 				BroadcomContractNumber: to.Ptr("123456"),
@@ -469,7 +469,7 @@ func ExamplePrivateCloudsClient_BeginCreateOrUpdate_privateCloudsCreateOrUpdateS
 	// 			Internet: to.Ptr(armavs.InternetEnumDisabled),
 	// 			VcfLicense: &armavs.Vcf5License{
 	// 				Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 				Cores: to.Ptr[int32](16),
 	// 				BroadcomSiteID: to.Ptr("123456"),
 	// 				BroadcomContractNumber: to.Ptr("123456"),
@@ -599,7 +599,7 @@ func ExamplePrivateCloudsClient_Get_privateCloudsGet() {
 	// 			Internet: to.Ptr(armavs.InternetEnumDisabled),
 	// 			VcfLicense: &armavs.Vcf5License{
 	// 				Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 				Cores: to.Ptr[int32](16),
 	// 				BroadcomSiteID: to.Ptr("123456"),
 	// 				BroadcomContractNumber: to.Ptr("123456"),
@@ -696,7 +696,7 @@ func ExamplePrivateCloudsClient_Get_privateCloudsGetStretched() {
 	// 			Internet: to.Ptr(armavs.InternetEnumDisabled),
 	// 			VcfLicense: &armavs.Vcf5License{
 	// 				Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-	// 				EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 				EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 				Cores: to.Ptr[int32](16),
 	// 				BroadcomSiteID: to.Ptr("123456"),
 	// 				BroadcomContractNumber: to.Ptr("123456"),
@@ -733,7 +733,7 @@ func ExamplePrivateCloudsClient_GetVcfLicense() {
 	// 	VcfLicenseClassification: &armavs.Vcf5License{
 	// 		Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
 	// 		LicenseKey: to.Ptr("12345-12345-12345-12345-12345"),
-	// 		EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+	// 		EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 	// 		Cores: to.Ptr[int32](16),
 	// 		BroadcomSiteID: to.Ptr("123456"),
 	// 		BroadcomContractNumber: to.Ptr("123456"),
@@ -823,7 +823,7 @@ func ExamplePrivateCloudsClient_NewListPager_privateCloudsList() {
 		// 					Internet: to.Ptr(armavs.InternetEnumDisabled),
 		// 					VcfLicense: &armavs.Vcf5License{
 		// 						Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-		// 						EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 						EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 						Cores: to.Ptr[int32](16),
 		// 						BroadcomSiteID: to.Ptr("123456"),
 		// 						BroadcomContractNumber: to.Ptr("123456"),
@@ -928,7 +928,7 @@ func ExamplePrivateCloudsClient_NewListPager_privateCloudsListStretched() {
 		// 					Internet: to.Ptr(armavs.InternetEnumDisabled),
 		// 					VcfLicense: &armavs.Vcf5License{
 		// 						Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-		// 						EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 						EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 						Cores: to.Ptr[int32](16),
 		// 						BroadcomSiteID: to.Ptr("123456"),
 		// 						BroadcomContractNumber: to.Ptr("123456"),
@@ -1052,7 +1052,7 @@ func ExamplePrivateCloudsClient_NewListInSubscriptionPager_privateCloudsListInSu
 		// 					Internet: to.Ptr(armavs.InternetEnumDisabled),
 		// 					VcfLicense: &armavs.Vcf5License{
 		// 						Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-		// 						EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 						EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 						Cores: to.Ptr[int32](16),
 		// 						BroadcomSiteID: to.Ptr("123456"),
 		// 						BroadcomContractNumber: to.Ptr("123456"),
@@ -1155,7 +1155,7 @@ func ExamplePrivateCloudsClient_NewListInSubscriptionPager_privateCloudsListInSu
 		// 					Internet: to.Ptr(armavs.InternetEnumDisabled),
 		// 					VcfLicense: &armavs.Vcf5License{
 		// 						Kind: to.Ptr(armavs.VcfLicenseKindVcf5),
-		// 						EndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-12-31T23:59:59Z"); return t}()),
+		// 						EndDate: to.Ptr(time.Date(2025, time.December, 31, 23, 59, 59, 0, time.UTC)),
 		// 						Cores: to.Ptr[int32](16),
 		// 						BroadcomSiteID: to.Ptr("123456"),
 		// 						BroadcomContractNumber: to.Ptr("123456"),

@@ -82,8 +82,7 @@ func (client *BackupAndExportClient) create(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -138,12 +137,7 @@ func (client *BackupAndExportClient) ValidateBackup(ctx context.Context, resourc
 	if err != nil {
 		return BackupAndExportClientValidateBackupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupAndExportClientValidateBackupResponse{}, err
-	}
-	resp, err := client.validateBackupHandleResponse(httpResp)
-	return resp, err
+	return client.validateBackupHandleResponse(httpResp, http.StatusOK)
 }
 
 // validateBackupCreateRequest creates the ValidateBackup request.
@@ -173,8 +167,11 @@ func (client *BackupAndExportClient) validateBackupCreateRequest(ctx context.Con
 }
 
 // validateBackupHandleResponse handles the ValidateBackup response.
-func (client *BackupAndExportClient) validateBackupHandleResponse(resp *http.Response) (BackupAndExportClientValidateBackupResponse, error) {
+func (client *BackupAndExportClient) validateBackupHandleResponse(resp *http.Response, successCodes ...int) (BackupAndExportClientValidateBackupResponse, error) {
 	result := BackupAndExportClientValidateBackupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateBackupResponse); err != nil {
 		return BackupAndExportClientValidateBackupResponse{}, err
 	}

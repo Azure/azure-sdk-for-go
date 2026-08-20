@@ -62,12 +62,7 @@ func (client *NodeCountInformationClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return NodeCountInformationClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NodeCountInformationClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -101,8 +96,11 @@ func (client *NodeCountInformationClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *NodeCountInformationClient) getHandleResponse(resp *http.Response) (NodeCountInformationClientGetResponse, error) {
+func (client *NodeCountInformationClient) getHandleResponse(resp *http.Response, successCodes ...int) (NodeCountInformationClientGetResponse, error) {
 	result := NodeCountInformationClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NodeCounts); err != nil {
 		return NodeCountInformationClientGetResponse{}, err
 	}

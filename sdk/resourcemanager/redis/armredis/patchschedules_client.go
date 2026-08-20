@@ -18,6 +18,8 @@ import (
 
 // PatchSchedulesClient contains the methods for the PatchSchedules group.
 // Don't use this type directly, use NewPatchSchedulesClient() instead.
+//
+// Generated from API version 2024-11-01
 type PatchSchedulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPatchSchedulesClient(subscriptionID string, credential azcore.TokenCrede
 
 // CreateOrUpdate - Create or replace the patching schedule for Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the redis cache.
 //   - defaultParam - The name of the RedisPatchSchedule
@@ -63,12 +63,7 @@ func (client *PatchSchedulesClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return PatchSchedulesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return PatchSchedulesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -95,8 +90,8 @@ func (client *PatchSchedulesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -106,8 +101,11 @@ func (client *PatchSchedulesClient) createOrUpdateCreateRequest(ctx context.Cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *PatchSchedulesClient) createOrUpdateHandleResponse(resp *http.Response) (PatchSchedulesClientCreateOrUpdateResponse, error) {
+func (client *PatchSchedulesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (PatchSchedulesClientCreateOrUpdateResponse, error) {
 	result := PatchSchedulesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PatchSchedule); err != nil {
 		return PatchSchedulesClientCreateOrUpdateResponse{}, err
 	}
@@ -116,8 +114,6 @@ func (client *PatchSchedulesClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Deletes the patching schedule of a redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the redis cache.
 //   - defaultParam - The name of the RedisPatchSchedule
@@ -137,8 +133,7 @@ func (client *PatchSchedulesClient) Delete(ctx context.Context, resourceGroupNam
 		return PatchSchedulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return PatchSchedulesClientDeleteResponse{}, err
+		return PatchSchedulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return PatchSchedulesClientDeleteResponse{}, nil
 }
@@ -167,15 +162,13 @@ func (client *PatchSchedulesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the patching schedule of a redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the redis cache.
 //   - defaultParam - The name of the RedisPatchSchedule
@@ -194,12 +187,7 @@ func (client *PatchSchedulesClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return PatchSchedulesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PatchSchedulesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -226,15 +214,18 @@ func (client *PatchSchedulesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PatchSchedulesClient) getHandleResponse(resp *http.Response) (PatchSchedulesClientGetResponse, error) {
+func (client *PatchSchedulesClient) getHandleResponse(resp *http.Response, successCodes ...int) (PatchSchedulesClientGetResponse, error) {
 	result := PatchSchedulesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PatchSchedule); err != nil {
 		return PatchSchedulesClientGetResponse{}, err
 	}
@@ -242,8 +233,6 @@ func (client *PatchSchedulesClient) getHandleResponse(resp *http.Response) (Patc
 }
 
 // NewListByRedisResourcePager - Gets all patch schedules in the specified redis cache (there is only one).
-//
-// Generated from API version 2024-11-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - cacheName - The name of the Redis cache.
 //   - options - PatchSchedulesClientListByRedisResourceOptions contains the optional parameters for the PatchSchedulesClient.NewListByRedisResourcePager
@@ -259,47 +248,61 @@ func (client *PatchSchedulesClient) NewListByRedisResourcePager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByRedisResourceCreateRequest(ctx, resourceGroupName, cacheName, options)
-			}, nil)
+			req, err := client.listByRedisResourceCreateRequest(ctx, resourceGroupName, cacheName, nextLink, options)
 			if err != nil {
 				return PatchSchedulesClientListByRedisResourceResponse{}, err
 			}
-			return client.listByRedisResourceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PatchSchedulesClientListByRedisResourceResponse{}, err
+			}
+			return client.listByRedisResourceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByRedisResourceCreateRequest creates the ListByRedisResource request.
-func (client *PatchSchedulesClient) listByRedisResourceCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, _ *PatchSchedulesClientListByRedisResourceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/patchSchedules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PatchSchedulesClient) listByRedisResourceCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, nextLink string, _ *PatchSchedulesClientListByRedisResourceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/patchSchedules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if cacheName == "" {
+			return nil, errors.New("parameter cacheName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cacheName == "" {
-		return nil, errors.New("parameter cacheName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-11-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByRedisResourceHandleResponse handles the ListByRedisResource response.
-func (client *PatchSchedulesClient) listByRedisResourceHandleResponse(resp *http.Response) (PatchSchedulesClientListByRedisResourceResponse, error) {
+func (client *PatchSchedulesClient) listByRedisResourceHandleResponse(resp *http.Response, successCodes ...int) (PatchSchedulesClientListByRedisResourceResponse, error) {
 	result := PatchSchedulesClientListByRedisResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PatchScheduleListResult); err != nil {
 		return PatchSchedulesClientListByRedisResourceResponse{}, err
 	}

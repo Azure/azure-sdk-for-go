@@ -59,10 +59,10 @@ func ExampleNamespacesClient_BeginCreateOrReplace() {
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-25T23:41:41.8591157Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 25, 23, 41, 41, 859115700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-01T21:03:33.5993192Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.October, 1, 21, 3, 33, 599319200, time.UTC)),
 	// 		},
 	// 		Identity: &armdeviceregistry.SystemAssignedServiceIdentity{
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-9d20-8a5570c3eb6e"),
@@ -136,10 +136,10 @@ func ExampleNamespacesClient_Get() {
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-01T21:39:27.7050447Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.October, 1, 21, 39, 27, 705044700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-01T21:39:27.7050447Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.October, 1, 21, 39, 27, 705044700, time.UTC)),
 	// 		},
 	// 		Identity: &armdeviceregistry.SystemAssignedServiceIdentity{
 	// 			PrincipalID: to.Ptr("4a06b859-8c07-4d9f-822d-3348a09f72c2"),
@@ -199,10 +199,10 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armdeviceregistry.SystemData{
 		// 					CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 		// 					CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T19:38:09.5283958Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 9, 528395800, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 		// 					LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T19:38:16.6634263Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 16, 663426300, time.UTC)),
 		// 				},
 		// 				Properties: &armdeviceregistry.NamespaceProperties{
 		// 					ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
@@ -216,10 +216,10 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armdeviceregistry.SystemData{
 		// 					CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 		// 					CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T20:22:49.5920101Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.September, 13, 20, 22, 49, 592010100, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 		// 					LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T20:22:49.5920101Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.September, 13, 20, 22, 49, 592010100, time.UTC)),
 		// 				},
 		// 				Properties: &armdeviceregistry.NamespaceProperties{
 		// 					ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
@@ -265,10 +265,10 @@ func ExampleNamespacesClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armdeviceregistry.SystemData{
 		// 					CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 		// 					CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T19:38:09.5283958Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 9, 528395800, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 		// 					LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T19:38:16.6634263Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.September, 13, 19, 38, 16, 663426300, time.UTC)),
 		// 				},
 		// 				Properties: &armdeviceregistry.NamespaceProperties{
 		// 					ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
@@ -283,10 +283,10 @@ func ExampleNamespacesClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armdeviceregistry.SystemData{
 		// 					CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 		// 					CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T20:22:49.5920101Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.September, 13, 20, 22, 49, 592010100, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 		// 					LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-13T20:22:49.5920101Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.September, 13, 20, 22, 49, 592010100, time.UTC)),
 		// 				},
 		// 				Properties: &armdeviceregistry.NamespaceProperties{
 		// 					ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
@@ -374,10 +374,10 @@ func ExampleNamespacesClient_BeginUpdate() {
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-09-25T23:41:41.8591157Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.September, 25, 23, 41, 41, 859115700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-01T21:03:33.5993192Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.October, 1, 21, 3, 33, 599319200, time.UTC)),
 	// 		},
 	// 		Identity: &armdeviceregistry.SystemAssignedServiceIdentity{
 	// 			PrincipalID: to.Ptr("00000000-0000-0000-9d20-8a5570c3eb6e"),

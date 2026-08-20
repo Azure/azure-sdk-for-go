@@ -59,12 +59,7 @@ func (client *ManagementClient) Predict(ctx context.Context, predictionRequest P
 	if err != nil {
 		return ManagementClientPredictResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementClientPredictResponse{}, err
-	}
-	resp, err := client.predictHandleResponse(httpResp)
-	return resp, err
+	return client.predictHandleResponse(httpResp, http.StatusOK)
 }
 
 // predictCreateRequest creates the Predict request.
@@ -90,8 +85,11 @@ func (client *ManagementClient) predictCreateRequest(ctx context.Context, predic
 }
 
 // predictHandleResponse handles the Predict response.
-func (client *ManagementClient) predictHandleResponse(resp *http.Response) (ManagementClientPredictResponse, error) {
+func (client *ManagementClient) predictHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientPredictResponse, error) {
 	result := ManagementClientPredictResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PredictionResponse); err != nil {
 		return ManagementClientPredictResponse{}, err
 	}

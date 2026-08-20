@@ -62,12 +62,7 @@ func (client *TestJobStreamsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return TestJobStreamsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TestJobStreamsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -105,8 +100,11 @@ func (client *TestJobStreamsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *TestJobStreamsClient) getHandleResponse(resp *http.Response) (TestJobStreamsClientGetResponse, error) {
+func (client *TestJobStreamsClient) getHandleResponse(resp *http.Response, successCodes ...int) (TestJobStreamsClientGetResponse, error) {
 	result := TestJobStreamsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStream); err != nil {
 		return TestJobStreamsClientGetResponse{}, err
 	}
@@ -130,54 +128,68 @@ func (client *TestJobStreamsClient) NewListByTestJobPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByTestJobCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, options)
-			}, nil)
+			req, err := client.listByTestJobCreateRequest(ctx, resourceGroupName, automationAccountName, runbookName, nextLink, options)
 			if err != nil {
 				return TestJobStreamsClientListByTestJobResponse{}, err
 			}
-			return client.listByTestJobHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TestJobStreamsClientListByTestJobResponse{}, err
+			}
+			return client.listByTestJobHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByTestJobCreateRequest creates the ListByTestJob request.
-func (client *TestJobStreamsClient) listByTestJobCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, options *TestJobStreamsClientListByTestJobOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob/streams"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TestJobStreamsClient) listByTestJobCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runbookName string, nextLink string, options *TestJobStreamsClientListByTestJobOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runbooks/{runbookName}/draft/testJob/streams"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if automationAccountName == "" {
+			return nil, errors.New("parameter automationAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+		if runbookName == "" {
+			return nil, errors.New("parameter runbookName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if automationAccountName == "" {
-		return nil, errors.New("parameter automationAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	if runbookName == "" {
-		return nil, errors.New("parameter runbookName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{runbookName}", url.PathEscape(runbookName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20241023)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20241023)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByTestJobHandleResponse handles the ListByTestJob response.
-func (client *TestJobStreamsClient) listByTestJobHandleResponse(resp *http.Response) (TestJobStreamsClientListByTestJobResponse, error) {
+func (client *TestJobStreamsClient) listByTestJobHandleResponse(resp *http.Response, successCodes ...int) (TestJobStreamsClientListByTestJobResponse, error) {
 	result := TestJobStreamsClientListByTestJobResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobStreamListResult); err != nil {
 		return TestJobStreamsClientListByTestJobResponse{}, err
 	}

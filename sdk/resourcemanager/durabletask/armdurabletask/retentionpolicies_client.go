@@ -82,8 +82,7 @@ func (client *RetentionPoliciesClient) createOrReplace(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -158,8 +157,7 @@ func (client *RetentionPoliciesClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -208,12 +206,7 @@ func (client *RetentionPoliciesClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return RetentionPoliciesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RetentionPoliciesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -243,8 +236,11 @@ func (client *RetentionPoliciesClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *RetentionPoliciesClient) getHandleResponse(resp *http.Response) (RetentionPoliciesClientGetResponse, error) {
+func (client *RetentionPoliciesClient) getHandleResponse(resp *http.Response, successCodes ...int) (RetentionPoliciesClientGetResponse, error) {
 	result := RetentionPoliciesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RetentionPolicy); err != nil {
 		return RetentionPoliciesClientGetResponse{}, err
 	}
@@ -267,47 +263,61 @@ func (client *RetentionPoliciesClient) NewListBySchedulerPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySchedulerCreateRequest(ctx, resourceGroupName, schedulerName, options)
-			}, nil)
+			req, err := client.listBySchedulerCreateRequest(ctx, resourceGroupName, schedulerName, nextLink, options)
 			if err != nil {
 				return RetentionPoliciesClientListBySchedulerResponse{}, err
 			}
-			return client.listBySchedulerHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RetentionPoliciesClientListBySchedulerResponse{}, err
+			}
+			return client.listBySchedulerHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySchedulerCreateRequest creates the ListByScheduler request.
-func (client *RetentionPoliciesClient) listBySchedulerCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, _ *RetentionPoliciesClientListBySchedulerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/retentionPolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RetentionPoliciesClient) listBySchedulerCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, nextLink string, _ *RetentionPoliciesClientListBySchedulerOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/retentionPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if schedulerName == "" {
+			return nil, errors.New("parameter schedulerName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{schedulerName}", url.PathEscape(schedulerName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if schedulerName == "" {
-		return nil, errors.New("parameter schedulerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{schedulerName}", url.PathEscape(schedulerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySchedulerHandleResponse handles the ListByScheduler response.
-func (client *RetentionPoliciesClient) listBySchedulerHandleResponse(resp *http.Response) (RetentionPoliciesClientListBySchedulerResponse, error) {
+func (client *RetentionPoliciesClient) listBySchedulerHandleResponse(resp *http.Response, successCodes ...int) (RetentionPoliciesClientListBySchedulerResponse, error) {
 	result := RetentionPoliciesClientListBySchedulerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RetentionPolicyListResult); err != nil {
 		return RetentionPoliciesClientListBySchedulerResponse{}, err
 	}
@@ -355,8 +365,7 @@ func (client *RetentionPoliciesClient) update(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

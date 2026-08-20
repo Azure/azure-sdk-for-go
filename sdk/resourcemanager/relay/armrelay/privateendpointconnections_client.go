@@ -18,6 +18,8 @@ import (
 
 // PrivateEndpointConnectionsClient contains the methods for the PrivateEndpointConnections group.
 // Don't use this type directly, use NewPrivateEndpointConnectionsClient() instead.
+//
+// Generated from API version 2024-01-01
 type PrivateEndpointConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 
 // CreateOrUpdate - Creates or updates PrivateEndpointConnections of service namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - privateEndpointConnectionName - The PrivateEndpointConnection name
@@ -63,12 +63,7 @@ func (client *PrivateEndpointConnectionsClient) CreateOrUpdate(ctx context.Conte
 	if err != nil {
 		return PrivateEndpointConnectionsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateEndpointConnectionsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -95,8 +90,8 @@ func (client *PrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -106,8 +101,11 @@ func (client *PrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *PrivateEndpointConnectionsClient) createOrUpdateHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientCreateOrUpdateResponse, error) {
+func (client *PrivateEndpointConnectionsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionsClientCreateOrUpdateResponse, error) {
 	result := PrivateEndpointConnectionsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
 		return PrivateEndpointConnectionsClientCreateOrUpdateResponse{}, err
 	}
@@ -116,8 +114,6 @@ func (client *PrivateEndpointConnectionsClient) createOrUpdateHandleResponse(res
 
 // BeginDelete - Deletes an existing namespace. This operation also removes all associated resources under the namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - privateEndpointConnectionName - The PrivateEndpointConnection name
@@ -142,8 +138,6 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 
 // Delete - Deletes an existing namespace. This operation also removes all associated resources under the namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-01
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
@@ -159,8 +153,7 @@ func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -189,15 +182,13 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a description for the specified Private Endpoint Connection name.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - privateEndpointConnectionName - The PrivateEndpointConnection name
@@ -217,12 +208,7 @@ func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return PrivateEndpointConnectionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateEndpointConnectionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -249,15 +235,18 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientGetResponse, error) {
+func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionsClientGetResponse, error) {
 	result := PrivateEndpointConnectionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
 		return PrivateEndpointConnectionsClientGetResponse{}, err
 	}
@@ -265,8 +254,6 @@ func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Res
 }
 
 // NewListPager - Gets the available PrivateEndpointConnections within a namespace.
-//
-// Generated from API version 2024-01-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - namespaceName - The namespace name
 //   - options - PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
@@ -282,47 +269,61 @@ func (client *PrivateEndpointConnectionsClient) NewListPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, namespaceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
 			if err != nil {
 				return PrivateEndpointConnectionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrivateEndpointConnectionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, _ *PrivateEndpointConnectionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/privateEndpointConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, _ *PrivateEndpointConnectionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/privateEndpointConnections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-01-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PrivateEndpointConnectionsClient) listHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientListResponse, error) {
+func (client *PrivateEndpointConnectionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionsClientListResponse, error) {
 	result := PrivateEndpointConnectionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionListResult); err != nil {
 		return PrivateEndpointConnectionsClientListResponse{}, err
 	}

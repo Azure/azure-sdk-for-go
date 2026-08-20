@@ -88,8 +88,7 @@ func (client *ConnectionRaiBlocklistItemClient) addBulk(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -179,8 +178,7 @@ func (client *ConnectionRaiBlocklistItemClient) create(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -277,8 +275,7 @@ func (client *ConnectionRaiBlocklistItemClient) deleteOperation(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -370,8 +367,7 @@ func (client *ConnectionRaiBlocklistItemClient) deleteBulk(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -438,12 +434,7 @@ func (client *ConnectionRaiBlocklistItemClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return ConnectionRaiBlocklistItemClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectionRaiBlocklistItemClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -485,8 +476,11 @@ func (client *ConnectionRaiBlocklistItemClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConnectionRaiBlocklistItemClient) getHandleResponse(resp *http.Response) (ConnectionRaiBlocklistItemClientGetResponse, error) {
+func (client *ConnectionRaiBlocklistItemClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConnectionRaiBlocklistItemClientGetResponse, error) {
 	result := ConnectionRaiBlocklistItemClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiBlocklistItemPropertiesBasicResource); err != nil {
 		return ConnectionRaiBlocklistItemClientGetResponse{}, err
 	}

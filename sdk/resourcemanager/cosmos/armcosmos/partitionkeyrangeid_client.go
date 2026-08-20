@@ -19,7 +19,7 @@ import (
 // PartitionKeyRangeIDClient contains the methods for the PartitionKeyRangeID group.
 // Don't use this type directly, use NewPartitionKeyRangeIDClient() instead.
 //
-// Generated from API version 2026-03-15
+// Generated from API version 2026-04-01-preview
 type PartitionKeyRangeIDClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -118,7 +118,7 @@ func (client *PartitionKeyRangeIDClient) listMetricsCreateRequest(ctx context.Co
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
 		reqQP.Set("$filter", filter)
-		reqQP.Set("api-version", version20260315)
+		reqQP.Set("api-version", version20260401Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

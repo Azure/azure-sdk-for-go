@@ -19,6 +19,8 @@ import (
 
 // AddressesClient contains the methods for the Addresses group.
 // Don't use this type directly, use NewAddressesClient() instead.
+//
+// Generated from API version 2024-02-01
 type AddressesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,8 +46,6 @@ func NewAddressesClient(subscriptionID string, credential azcore.TokenCredential
 // should
 // instead be updated with the Update address API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - addressName - The name of the address Resource within the specified resource group. address names must be between 3 and
 //     24 characters in length and use any alphanumeric and underscore only.
@@ -71,8 +71,6 @@ func (client *AddressesClient) BeginCreate(ctx context.Context, resourceGroupNam
 // Create - Create a new address with the specified parameters. Existing address cannot be updated with this API and should
 // instead be updated with the Update address API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 func (client *AddressesClient) create(ctx context.Context, resourceGroupName string, addressName string, addressResource AddressResource, options *AddressesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AddressesClient.BeginCreate"
@@ -88,8 +86,7 @@ func (client *AddressesClient) create(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -114,8 +111,8 @@ func (client *AddressesClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, addressResource); err != nil {
@@ -126,8 +123,6 @@ func (client *AddressesClient) createCreateRequest(ctx context.Context, resource
 
 // BeginDelete - Delete an address.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - addressName - The name of the address Resource within the specified resource group. address names must be between 3 and
 //     24 characters in length and use any alphanumeric and underscore only.
@@ -151,8 +146,6 @@ func (client *AddressesClient) BeginDelete(ctx context.Context, resourceGroupNam
 
 // Delete - Delete an address.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 func (client *AddressesClient) deleteOperation(ctx context.Context, resourceGroupName string, addressName string, options *AddressesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AddressesClient.BeginDelete"
@@ -168,8 +161,7 @@ func (client *AddressesClient) deleteOperation(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -194,15 +186,13 @@ func (client *AddressesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get information about the specified address.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - addressName - The name of the address Resource within the specified resource group. address names must be between 3 and
 //     24 characters in length and use any alphanumeric and underscore only.
@@ -221,12 +211,7 @@ func (client *AddressesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return AddressesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AddressesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -249,15 +234,18 @@ func (client *AddressesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AddressesClient) getHandleResponse(resp *http.Response) (AddressesClientGetResponse, error) {
+func (client *AddressesClient) getHandleResponse(resp *http.Response, successCodes ...int) (AddressesClientGetResponse, error) {
 	result := AddressesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AddressResource); err != nil {
 		return AddressesClientGetResponse{}, err
 	}
@@ -265,8 +253,6 @@ func (client *AddressesClient) getHandleResponse(resp *http.Response) (Addresses
 }
 
 // NewListByResourceGroupPager - List all the addresses available under the given resource group.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - AddressesClientListByResourceGroupOptions contains the optional parameters for the AddressesClient.NewListByResourceGroupPager
 //     method.
@@ -281,52 +267,66 @@ func (client *AddressesClient) NewListByResourceGroupPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return AddressesClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AddressesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AddressesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *AddressesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/addresses"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AddressesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, options *AddressesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EdgeOrder/addresses"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20240201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AddressesClient) listByResourceGroupHandleResponse(resp *http.Response) (AddressesClientListByResourceGroupResponse, error) {
+func (client *AddressesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (AddressesClientListByResourceGroupResponse, error) {
 	result := AddressesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AddressResourceList); err != nil {
 		return AddressesClientListByResourceGroupResponse{}, err
 	}
@@ -334,8 +334,6 @@ func (client *AddressesClient) listByResourceGroupHandleResponse(resp *http.Resp
 }
 
 // NewListBySubscriptionPager - List all the addresses available under the subscription.
-//
-// Generated from API version 2024-02-01
 //   - options - AddressesClientListBySubscriptionOptions contains the optional parameters for the AddressesClient.NewListBySubscriptionPager
 //     method.
 func (client *AddressesClient) NewListBySubscriptionPager(options *AddressesClientListBySubscriptionOptions) *runtime.Pager[AddressesClientListBySubscriptionResponse] {
@@ -349,48 +347,62 @@ func (client *AddressesClient) NewListBySubscriptionPager(options *AddressesClie
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return AddressesClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AddressesClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AddressesClient) listBySubscriptionCreateRequest(ctx context.Context, options *AddressesClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/addresses"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AddressesClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, options *AddressesClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeOrder/addresses"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20240201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *AddressesClient) listBySubscriptionHandleResponse(resp *http.Response) (AddressesClientListBySubscriptionResponse, error) {
+func (client *AddressesClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (AddressesClientListBySubscriptionResponse, error) {
 	result := AddressesClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AddressResourceList); err != nil {
 		return AddressesClientListBySubscriptionResponse{}, err
 	}
@@ -399,8 +411,6 @@ func (client *AddressesClient) listBySubscriptionHandleResponse(resp *http.Respo
 
 // BeginUpdate - Update the properties of an existing address.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - addressName - The name of the address Resource within the specified resource group. address names must be between 3 and
 //     24 characters in length and use any alphanumeric and underscore only.
@@ -425,8 +435,6 @@ func (client *AddressesClient) BeginUpdate(ctx context.Context, resourceGroupNam
 
 // Update - Update the properties of an existing address.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-02-01
 func (client *AddressesClient) update(ctx context.Context, resourceGroupName string, addressName string, addressUpdateParameter AddressUpdateParameter, options *AddressesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AddressesClient.BeginUpdate"
@@ -442,8 +450,7 @@ func (client *AddressesClient) update(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -468,8 +475,8 @@ func (client *AddressesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-02-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240201)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}

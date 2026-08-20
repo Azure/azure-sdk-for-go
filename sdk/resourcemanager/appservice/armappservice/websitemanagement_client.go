@@ -63,12 +63,7 @@ func (client *WebSiteManagementClient) CheckNameAvailability(ctx context.Context
 	if err != nil {
 		return WebSiteManagementClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebSiteManagementClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -94,8 +89,11 @@ func (client *WebSiteManagementClient) checkNameAvailabilityCreateRequest(ctx co
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *WebSiteManagementClient) checkNameAvailabilityHandleResponse(resp *http.Response) (WebSiteManagementClientCheckNameAvailabilityResponse, error) {
+func (client *WebSiteManagementClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientCheckNameAvailabilityResponse, error) {
 	result := WebSiteManagementClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceNameAvailability); err != nil {
 		return WebSiteManagementClientCheckNameAvailabilityResponse{}, err
 	}
@@ -122,12 +120,7 @@ func (client *WebSiteManagementClient) GetPublishingUser(ctx context.Context, op
 	if err != nil {
 		return WebSiteManagementClientGetPublishingUserResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebSiteManagementClientGetPublishingUserResponse{}, err
-	}
-	resp, err := client.getPublishingUserHandleResponse(httpResp)
-	return resp, err
+	return client.getPublishingUserHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPublishingUserCreateRequest creates the GetPublishingUser request.
@@ -145,8 +138,11 @@ func (client *WebSiteManagementClient) getPublishingUserCreateRequest(ctx contex
 }
 
 // getPublishingUserHandleResponse handles the GetPublishingUser response.
-func (client *WebSiteManagementClient) getPublishingUserHandleResponse(resp *http.Response) (WebSiteManagementClientGetPublishingUserResponse, error) {
+func (client *WebSiteManagementClient) getPublishingUserHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientGetPublishingUserResponse, error) {
 	result := WebSiteManagementClientGetPublishingUserResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.User); err != nil {
 		return WebSiteManagementClientGetPublishingUserResponse{}, err
 	}
@@ -174,12 +170,7 @@ func (client *WebSiteManagementClient) GetSourceControl(ctx context.Context, sou
 	if err != nil {
 		return WebSiteManagementClientGetSourceControlResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebSiteManagementClientGetSourceControlResponse{}, err
-	}
-	resp, err := client.getSourceControlHandleResponse(httpResp)
-	return resp, err
+	return client.getSourceControlHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSourceControlCreateRequest creates the GetSourceControl request.
@@ -201,8 +192,11 @@ func (client *WebSiteManagementClient) getSourceControlCreateRequest(ctx context
 }
 
 // getSourceControlHandleResponse handles the GetSourceControl response.
-func (client *WebSiteManagementClient) getSourceControlHandleResponse(resp *http.Response) (WebSiteManagementClientGetSourceControlResponse, error) {
+func (client *WebSiteManagementClient) getSourceControlHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientGetSourceControlResponse, error) {
 	result := WebSiteManagementClientGetSourceControlResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
 		return WebSiteManagementClientGetSourceControlResponse{}, err
 	}
@@ -229,12 +223,7 @@ func (client *WebSiteManagementClient) GetSubscriptionDeploymentLocations(ctx co
 	if err != nil {
 		return WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, err
-	}
-	resp, err := client.getSubscriptionDeploymentLocationsHandleResponse(httpResp)
-	return resp, err
+	return client.getSubscriptionDeploymentLocationsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSubscriptionDeploymentLocationsCreateRequest creates the GetSubscriptionDeploymentLocations request.
@@ -256,8 +245,11 @@ func (client *WebSiteManagementClient) getSubscriptionDeploymentLocationsCreateR
 }
 
 // getSubscriptionDeploymentLocationsHandleResponse handles the GetSubscriptionDeploymentLocations response.
-func (client *WebSiteManagementClient) getSubscriptionDeploymentLocationsHandleResponse(resp *http.Response) (WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse, error) {
+func (client *WebSiteManagementClient) getSubscriptionDeploymentLocationsHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse, error) {
 	result := WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentLocations); err != nil {
 		return WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, err
 	}
@@ -280,39 +272,53 @@ func (client *WebSiteManagementClient) NewListAseRegionsPager(options *WebSiteMa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAseRegionsCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listAseRegionsCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return WebSiteManagementClientListAseRegionsResponse{}, err
 			}
-			return client.listAseRegionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebSiteManagementClientListAseRegionsResponse{}, err
+			}
+			return client.listAseRegionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAseRegionsCreateRequest creates the ListAseRegions request.
-func (client *WebSiteManagementClient) listAseRegionsCreateRequest(ctx context.Context, _ *WebSiteManagementClientListAseRegionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/aseRegions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebSiteManagementClient) listAseRegionsCreateRequest(ctx context.Context, nextLink string, _ *WebSiteManagementClientListAseRegionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/aseRegions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAseRegionsHandleResponse handles the ListAseRegions response.
-func (client *WebSiteManagementClient) listAseRegionsHandleResponse(resp *http.Response) (WebSiteManagementClientListAseRegionsResponse, error) {
+func (client *WebSiteManagementClient) listAseRegionsHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientListAseRegionsResponse, error) {
 	result := WebSiteManagementClientListAseRegionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AseRegionCollection); err != nil {
 		return WebSiteManagementClientListAseRegionsResponse{}, err
 	}
@@ -335,45 +341,59 @@ func (client *WebSiteManagementClient) NewListBillingMetersPager(options *WebSit
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBillingMetersCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBillingMetersCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return WebSiteManagementClientListBillingMetersResponse{}, err
 			}
-			return client.listBillingMetersHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebSiteManagementClientListBillingMetersResponse{}, err
+			}
+			return client.listBillingMetersHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBillingMetersCreateRequest creates the ListBillingMeters request.
-func (client *WebSiteManagementClient) listBillingMetersCreateRequest(ctx context.Context, options *WebSiteManagementClientListBillingMetersOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/billingMeters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebSiteManagementClient) listBillingMetersCreateRequest(ctx context.Context, nextLink string, options *WebSiteManagementClientListBillingMetersOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/billingMeters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	if options != nil && options.BillingLocation != nil {
-		reqQP.Set("billingLocation", *options.BillingLocation)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		if options != nil && options.BillingLocation != nil {
+			reqQP.Set("billingLocation", *options.BillingLocation)
+		}
+		if options != nil && options.OSType != nil {
+			reqQP.Set("osType", *options.OSType)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.OSType != nil {
-		reqQP.Set("osType", *options.OSType)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBillingMetersHandleResponse handles the ListBillingMeters response.
-func (client *WebSiteManagementClient) listBillingMetersHandleResponse(resp *http.Response) (WebSiteManagementClientListBillingMetersResponse, error) {
+func (client *WebSiteManagementClient) listBillingMetersHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientListBillingMetersResponse, error) {
 	result := WebSiteManagementClientListBillingMetersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BillingMeterCollection); err != nil {
 		return WebSiteManagementClientListBillingMetersResponse{}, err
 	}
@@ -396,42 +416,56 @@ func (client *WebSiteManagementClient) NewListCustomHostNameSitesPager(options *
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCustomHostNameSitesCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCustomHostNameSitesCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return WebSiteManagementClientListCustomHostNameSitesResponse{}, err
 			}
-			return client.listCustomHostNameSitesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebSiteManagementClientListCustomHostNameSitesResponse{}, err
+			}
+			return client.listCustomHostNameSitesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCustomHostNameSitesCreateRequest creates the ListCustomHostNameSites request.
-func (client *WebSiteManagementClient) listCustomHostNameSitesCreateRequest(ctx context.Context, options *WebSiteManagementClientListCustomHostNameSitesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/customhostnameSites"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebSiteManagementClient) listCustomHostNameSitesCreateRequest(ctx context.Context, nextLink string, options *WebSiteManagementClientListCustomHostNameSitesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/customhostnameSites"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	if options != nil && options.Hostname != nil {
-		reqQP.Set("hostname", *options.Hostname)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		if options != nil && options.Hostname != nil {
+			reqQP.Set("hostname", *options.Hostname)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listCustomHostNameSitesHandleResponse handles the ListCustomHostNameSites response.
-func (client *WebSiteManagementClient) listCustomHostNameSitesHandleResponse(resp *http.Response) (WebSiteManagementClientListCustomHostNameSitesResponse, error) {
+func (client *WebSiteManagementClient) listCustomHostNameSitesHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientListCustomHostNameSitesResponse, error) {
 	result := WebSiteManagementClientListCustomHostNameSitesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomHostnameSitesCollection); err != nil {
 		return WebSiteManagementClientListCustomHostNameSitesResponse{}, err
 	}
@@ -454,54 +488,68 @@ func (client *WebSiteManagementClient) NewListGeoRegionsPager(options *WebSiteMa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listGeoRegionsCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listGeoRegionsCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return WebSiteManagementClientListGeoRegionsResponse{}, err
 			}
-			return client.listGeoRegionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebSiteManagementClientListGeoRegionsResponse{}, err
+			}
+			return client.listGeoRegionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listGeoRegionsCreateRequest creates the ListGeoRegions request.
-func (client *WebSiteManagementClient) listGeoRegionsCreateRequest(ctx context.Context, options *WebSiteManagementClientListGeoRegionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/geoRegions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebSiteManagementClient) listGeoRegionsCreateRequest(ctx context.Context, nextLink string, options *WebSiteManagementClientListGeoRegionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/geoRegions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	if options != nil && options.CustomModeWorkersEnabled != nil {
-		reqQP.Set("customModeWorkersEnabled", strconv.FormatBool(*options.CustomModeWorkersEnabled))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		if options != nil && options.CustomModeWorkersEnabled != nil {
+			reqQP.Set("customModeWorkersEnabled", strconv.FormatBool(*options.CustomModeWorkersEnabled))
+		}
+		if options != nil && options.LinuxDynamicWorkersEnabled != nil {
+			reqQP.Set("linuxDynamicWorkersEnabled", strconv.FormatBool(*options.LinuxDynamicWorkersEnabled))
+		}
+		if options != nil && options.LinuxWorkersEnabled != nil {
+			reqQP.Set("linuxWorkersEnabled", strconv.FormatBool(*options.LinuxWorkersEnabled))
+		}
+		if options != nil && options.SKU != nil {
+			reqQP.Set("sku", string(*options.SKU))
+		}
+		if options != nil && options.XenonWorkersEnabled != nil {
+			reqQP.Set("xenonWorkersEnabled", strconv.FormatBool(*options.XenonWorkersEnabled))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.LinuxDynamicWorkersEnabled != nil {
-		reqQP.Set("linuxDynamicWorkersEnabled", strconv.FormatBool(*options.LinuxDynamicWorkersEnabled))
-	}
-	if options != nil && options.LinuxWorkersEnabled != nil {
-		reqQP.Set("linuxWorkersEnabled", strconv.FormatBool(*options.LinuxWorkersEnabled))
-	}
-	if options != nil && options.SKU != nil {
-		reqQP.Set("sku", string(*options.SKU))
-	}
-	if options != nil && options.XenonWorkersEnabled != nil {
-		reqQP.Set("xenonWorkersEnabled", strconv.FormatBool(*options.XenonWorkersEnabled))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listGeoRegionsHandleResponse handles the ListGeoRegions response.
-func (client *WebSiteManagementClient) listGeoRegionsHandleResponse(resp *http.Response) (WebSiteManagementClientListGeoRegionsResponse, error) {
+func (client *WebSiteManagementClient) listGeoRegionsHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientListGeoRegionsResponse, error) {
 	result := WebSiteManagementClientListGeoRegionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GeoRegionCollection); err != nil {
 		return WebSiteManagementClientListGeoRegionsResponse{}, err
 	}
@@ -524,39 +572,53 @@ func (client *WebSiteManagementClient) NewListPremierAddOnOffersPager(options *W
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listPremierAddOnOffersCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listPremierAddOnOffersCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return WebSiteManagementClientListPremierAddOnOffersResponse{}, err
 			}
-			return client.listPremierAddOnOffersHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebSiteManagementClientListPremierAddOnOffersResponse{}, err
+			}
+			return client.listPremierAddOnOffersHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listPremierAddOnOffersCreateRequest creates the ListPremierAddOnOffers request.
-func (client *WebSiteManagementClient) listPremierAddOnOffersCreateRequest(ctx context.Context, _ *WebSiteManagementClientListPremierAddOnOffersOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/premieraddonoffers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebSiteManagementClient) listPremierAddOnOffersCreateRequest(ctx context.Context, nextLink string, _ *WebSiteManagementClientListPremierAddOnOffersOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/premieraddonoffers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listPremierAddOnOffersHandleResponse handles the ListPremierAddOnOffers response.
-func (client *WebSiteManagementClient) listPremierAddOnOffersHandleResponse(resp *http.Response) (WebSiteManagementClientListPremierAddOnOffersResponse, error) {
+func (client *WebSiteManagementClient) listPremierAddOnOffersHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientListPremierAddOnOffersResponse, error) {
 	result := WebSiteManagementClientListPremierAddOnOffersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PremierAddOnOfferCollection); err != nil {
 		return WebSiteManagementClientListPremierAddOnOffersResponse{}, err
 	}
@@ -583,12 +645,7 @@ func (client *WebSiteManagementClient) ListSKUs(ctx context.Context, options *We
 	if err != nil {
 		return WebSiteManagementClientListSKUsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebSiteManagementClientListSKUsResponse{}, err
-	}
-	resp, err := client.listSKUsHandleResponse(httpResp)
-	return resp, err
+	return client.listSKUsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listSKUsCreateRequest creates the ListSKUs request.
@@ -610,8 +667,11 @@ func (client *WebSiteManagementClient) listSKUsCreateRequest(ctx context.Context
 }
 
 // listSKUsHandleResponse handles the ListSKUs response.
-func (client *WebSiteManagementClient) listSKUsHandleResponse(resp *http.Response) (WebSiteManagementClientListSKUsResponse, error) {
+func (client *WebSiteManagementClient) listSKUsHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientListSKUsResponse, error) {
 	result := WebSiteManagementClientListSKUsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUInfos); err != nil {
 		return WebSiteManagementClientListSKUsResponse{}, err
 	}
@@ -635,43 +695,57 @@ func (client *WebSiteManagementClient) NewListSiteIdentifiersAssignedToHostNameP
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSiteIdentifiersAssignedToHostNameCreateRequest(ctx, nameIdentifier, options)
-			}, nil)
+			req, err := client.listSiteIdentifiersAssignedToHostNameCreateRequest(ctx, nameIdentifier, nextLink, options)
 			if err != nil {
 				return WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}, err
 			}
-			return client.listSiteIdentifiersAssignedToHostNameHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}, err
+			}
+			return client.listSiteIdentifiersAssignedToHostNameHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSiteIdentifiersAssignedToHostNameCreateRequest creates the ListSiteIdentifiersAssignedToHostName request.
-func (client *WebSiteManagementClient) listSiteIdentifiersAssignedToHostNameCreateRequest(ctx context.Context, nameIdentifier NameIdentifier, _ *WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/listSitesAssignedToHostName"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebSiteManagementClient) listSiteIdentifiersAssignedToHostNameCreateRequest(ctx context.Context, nameIdentifier NameIdentifier, nextLink string, _ *WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/listSitesAssignedToHostName"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, nameIdentifier); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, nameIdentifier); err != nil {
+			return nil, err
+		}
 	}
 	return req, nil
 }
 
 // listSiteIdentifiersAssignedToHostNameHandleResponse handles the ListSiteIdentifiersAssignedToHostName response.
-func (client *WebSiteManagementClient) listSiteIdentifiersAssignedToHostNameHandleResponse(resp *http.Response) (WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse, error) {
+func (client *WebSiteManagementClient) listSiteIdentifiersAssignedToHostNameHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse, error) {
 	result := WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IdentifierCollection); err != nil {
 		return WebSiteManagementClientListSiteIdentifiersAssignedToHostNameResponse{}, err
 	}
@@ -694,35 +768,49 @@ func (client *WebSiteManagementClient) NewListSourceControlsPager(options *WebSi
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSourceControlsCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listSourceControlsCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return WebSiteManagementClientListSourceControlsResponse{}, err
 			}
-			return client.listSourceControlsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebSiteManagementClientListSourceControlsResponse{}, err
+			}
+			return client.listSourceControlsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSourceControlsCreateRequest creates the ListSourceControls request.
-func (client *WebSiteManagementClient) listSourceControlsCreateRequest(ctx context.Context, _ *WebSiteManagementClientListSourceControlsOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Web/sourcecontrols"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *WebSiteManagementClient) listSourceControlsCreateRequest(ctx context.Context, nextLink string, _ *WebSiteManagementClientListSourceControlsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Web/sourcecontrols"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSourceControlsHandleResponse handles the ListSourceControls response.
-func (client *WebSiteManagementClient) listSourceControlsHandleResponse(resp *http.Response) (WebSiteManagementClientListSourceControlsResponse, error) {
+func (client *WebSiteManagementClient) listSourceControlsHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientListSourceControlsResponse, error) {
 	result := WebSiteManagementClientListSourceControlsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlCollection); err != nil {
 		return WebSiteManagementClientListSourceControlsResponse{}, err
 	}
@@ -751,8 +839,7 @@ func (client *WebSiteManagementClient) Move(ctx context.Context, resourceGroupNa
 		return WebSiteManagementClientMoveResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebSiteManagementClientMoveResponse{}, err
+		return WebSiteManagementClientMoveResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebSiteManagementClientMoveResponse{}, nil
 }
@@ -804,12 +891,7 @@ func (client *WebSiteManagementClient) RegionalCheckNameAvailability(ctx context
 	if err != nil {
 		return WebSiteManagementClientRegionalCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebSiteManagementClientRegionalCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.regionalCheckNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.regionalCheckNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // regionalCheckNameAvailabilityCreateRequest creates the RegionalCheckNameAvailability request.
@@ -839,8 +921,11 @@ func (client *WebSiteManagementClient) regionalCheckNameAvailabilityCreateReques
 }
 
 // regionalCheckNameAvailabilityHandleResponse handles the RegionalCheckNameAvailability response.
-func (client *WebSiteManagementClient) regionalCheckNameAvailabilityHandleResponse(resp *http.Response) (WebSiteManagementClientRegionalCheckNameAvailabilityResponse, error) {
+func (client *WebSiteManagementClient) regionalCheckNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientRegionalCheckNameAvailabilityResponse, error) {
 	result := WebSiteManagementClientRegionalCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DnlResourceNameAvailability); err != nil {
 		return WebSiteManagementClientRegionalCheckNameAvailabilityResponse{}, err
 	}
@@ -868,12 +953,7 @@ func (client *WebSiteManagementClient) UpdatePublishingUser(ctx context.Context,
 	if err != nil {
 		return WebSiteManagementClientUpdatePublishingUserResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebSiteManagementClientUpdatePublishingUserResponse{}, err
-	}
-	resp, err := client.updatePublishingUserHandleResponse(httpResp)
-	return resp, err
+	return client.updatePublishingUserHandleResponse(httpResp, http.StatusOK)
 }
 
 // updatePublishingUserCreateRequest creates the UpdatePublishingUser request.
@@ -895,8 +975,11 @@ func (client *WebSiteManagementClient) updatePublishingUserCreateRequest(ctx con
 }
 
 // updatePublishingUserHandleResponse handles the UpdatePublishingUser response.
-func (client *WebSiteManagementClient) updatePublishingUserHandleResponse(resp *http.Response) (WebSiteManagementClientUpdatePublishingUserResponse, error) {
+func (client *WebSiteManagementClient) updatePublishingUserHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientUpdatePublishingUserResponse, error) {
 	result := WebSiteManagementClientUpdatePublishingUserResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.User); err != nil {
 		return WebSiteManagementClientUpdatePublishingUserResponse{}, err
 	}
@@ -925,12 +1008,7 @@ func (client *WebSiteManagementClient) UpdateSourceControl(ctx context.Context, 
 	if err != nil {
 		return WebSiteManagementClientUpdateSourceControlResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebSiteManagementClientUpdateSourceControlResponse{}, err
-	}
-	resp, err := client.updateSourceControlHandleResponse(httpResp)
-	return resp, err
+	return client.updateSourceControlHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateSourceControlCreateRequest creates the UpdateSourceControl request.
@@ -956,8 +1034,11 @@ func (client *WebSiteManagementClient) updateSourceControlCreateRequest(ctx cont
 }
 
 // updateSourceControlHandleResponse handles the UpdateSourceControl response.
-func (client *WebSiteManagementClient) updateSourceControlHandleResponse(resp *http.Response) (WebSiteManagementClientUpdateSourceControlResponse, error) {
+func (client *WebSiteManagementClient) updateSourceControlHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientUpdateSourceControlResponse, error) {
 	result := WebSiteManagementClientUpdateSourceControlResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControl); err != nil {
 		return WebSiteManagementClientUpdateSourceControlResponse{}, err
 	}
@@ -986,12 +1067,7 @@ func (client *WebSiteManagementClient) Validate(ctx context.Context, resourceGro
 	if err != nil {
 		return WebSiteManagementClientValidateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebSiteManagementClientValidateResponse{}, err
-	}
-	resp, err := client.validateHandleResponse(httpResp)
-	return resp, err
+	return client.validateHandleResponse(httpResp, http.StatusOK)
 }
 
 // validateCreateRequest creates the Validate request.
@@ -1021,8 +1097,11 @@ func (client *WebSiteManagementClient) validateCreateRequest(ctx context.Context
 }
 
 // validateHandleResponse handles the Validate response.
-func (client *WebSiteManagementClient) validateHandleResponse(resp *http.Response) (WebSiteManagementClientValidateResponse, error) {
+func (client *WebSiteManagementClient) validateHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientValidateResponse, error) {
 	result := WebSiteManagementClientValidateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidateResponse); err != nil {
 		return WebSiteManagementClientValidateResponse{}, err
 	}
@@ -1052,8 +1131,7 @@ func (client *WebSiteManagementClient) ValidateMove(ctx context.Context, resourc
 		return WebSiteManagementClientValidateMoveResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebSiteManagementClientValidateMoveResponse{}, err
+		return WebSiteManagementClientValidateMoveResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebSiteManagementClientValidateMoveResponse{}, nil
 }
@@ -1106,12 +1184,7 @@ func (client *WebSiteManagementClient) VerifyHostingEnvironmentVnet(ctx context.
 	if err != nil {
 		return WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}, err
-	}
-	resp, err := client.verifyHostingEnvironmentVnetHandleResponse(httpResp)
-	return resp, err
+	return client.verifyHostingEnvironmentVnetHandleResponse(httpResp, http.StatusOK)
 }
 
 // verifyHostingEnvironmentVnetCreateRequest creates the VerifyHostingEnvironmentVnet request.
@@ -1137,8 +1210,11 @@ func (client *WebSiteManagementClient) verifyHostingEnvironmentVnetCreateRequest
 }
 
 // verifyHostingEnvironmentVnetHandleResponse handles the VerifyHostingEnvironmentVnet response.
-func (client *WebSiteManagementClient) verifyHostingEnvironmentVnetHandleResponse(resp *http.Response) (WebSiteManagementClientVerifyHostingEnvironmentVnetResponse, error) {
+func (client *WebSiteManagementClient) verifyHostingEnvironmentVnetHandleResponse(resp *http.Response, successCodes ...int) (WebSiteManagementClientVerifyHostingEnvironmentVnetResponse, error) {
 	result := WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetValidationFailureDetails); err != nil {
 		return WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}, err
 	}

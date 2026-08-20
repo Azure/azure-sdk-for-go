@@ -59,43 +59,57 @@ func (client *Client) NewListNodeImageVersionsPager(location string, options *Cl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listNodeImageVersionsCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listNodeImageVersionsCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return ClientListNodeImageVersionsResponse{}, err
 			}
-			return client.listNodeImageVersionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ClientListNodeImageVersionsResponse{}, err
+			}
+			return client.listNodeImageVersionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listNodeImageVersionsCreateRequest creates the ListNodeImageVersions request.
-func (client *Client) listNodeImageVersionsCreateRequest(ctx context.Context, location string, _ *ClientListNodeImageVersionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/nodeImageVersions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *Client) listNodeImageVersionsCreateRequest(ctx context.Context, location string, nextLink string, _ *ClientListNodeImageVersionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/nodeImageVersions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260502Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listNodeImageVersionsHandleResponse handles the ListNodeImageVersions response.
-func (client *Client) listNodeImageVersionsHandleResponse(resp *http.Response) (ClientListNodeImageVersionsResponse, error) {
+func (client *Client) listNodeImageVersionsHandleResponse(resp *http.Response, successCodes ...int) (ClientListNodeImageVersionsResponse, error) {
 	result := ClientListNodeImageVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NodeImageVersionsListResult); err != nil {
 		return ClientListNodeImageVersionsResponse{}, err
 	}

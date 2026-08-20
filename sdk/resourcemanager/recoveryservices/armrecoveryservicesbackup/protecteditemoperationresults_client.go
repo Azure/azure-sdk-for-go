@@ -18,6 +18,8 @@ import (
 
 // ProtectedItemOperationResultsClient contains the methods for the ProtectedItemOperationResults group.
 // Don't use this type directly, use NewProtectedItemOperationResultsClient() instead.
+//
+// Generated from API version 2026-07-01
 type ProtectedItemOperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewProtectedItemOperationResultsClient(subscriptionID string, credential az
 
 // Get - Fetches the result of any operation on the backup item.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectedItemOperationResultsClientGetOptions contains the optional parameters for the ProtectedItemOperationResultsClient.Get
 //     method.
@@ -60,12 +60,7 @@ func (client *ProtectedItemOperationResultsClient) Get(ctx context.Context, vaul
 	if err != nil {
 		return ProtectedItemOperationResultsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectedItemOperationResultsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent)
 }
 
 // getCreateRequest creates the Get request.
@@ -104,15 +99,18 @@ func (client *ProtectedItemOperationResultsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProtectedItemOperationResultsClient) getHandleResponse(resp *http.Response) (ProtectedItemOperationResultsClientGetResponse, error) {
+func (client *ProtectedItemOperationResultsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProtectedItemOperationResultsClientGetResponse, error) {
 	result := ProtectedItemOperationResultsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectedItemResource); err != nil {
 		return ProtectedItemOperationResultsClientGetResponse{}, err
 	}

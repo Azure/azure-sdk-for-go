@@ -64,12 +64,7 @@ func (client *LinkedStorageAccountsClient) CreateOrUpdate(ctx context.Context, r
 	if err != nil {
 		return LinkedStorageAccountsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LinkedStorageAccountsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -107,8 +102,11 @@ func (client *LinkedStorageAccountsClient) createOrUpdateCreateRequest(ctx conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *LinkedStorageAccountsClient) createOrUpdateHandleResponse(resp *http.Response) (LinkedStorageAccountsClientCreateOrUpdateResponse, error) {
+func (client *LinkedStorageAccountsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (LinkedStorageAccountsClientCreateOrUpdateResponse, error) {
 	result := LinkedStorageAccountsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedStorageAccountsResource); err != nil {
 		return LinkedStorageAccountsClientCreateOrUpdateResponse{}, err
 	}
@@ -137,8 +135,7 @@ func (client *LinkedStorageAccountsClient) Delete(ctx context.Context, resourceG
 		return LinkedStorageAccountsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LinkedStorageAccountsClientDeleteResponse{}, err
+		return LinkedStorageAccountsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return LinkedStorageAccountsClientDeleteResponse{}, nil
 }
@@ -193,12 +190,7 @@ func (client *LinkedStorageAccountsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return LinkedStorageAccountsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LinkedStorageAccountsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -232,8 +224,11 @@ func (client *LinkedStorageAccountsClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *LinkedStorageAccountsClient) getHandleResponse(resp *http.Response) (LinkedStorageAccountsClientGetResponse, error) {
+func (client *LinkedStorageAccountsClient) getHandleResponse(resp *http.Response, successCodes ...int) (LinkedStorageAccountsClientGetResponse, error) {
 	result := LinkedStorageAccountsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedStorageAccountsResource); err != nil {
 		return LinkedStorageAccountsClientGetResponse{}, err
 	}
@@ -257,47 +252,61 @@ func (client *LinkedStorageAccountsClient) NewListByWorkspacePager(resourceGroup
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			}, nil)
+			req, err := client.listByWorkspaceCreateRequest(ctx, resourceGroupName, workspaceName, nextLink, options)
 			if err != nil {
 				return LinkedStorageAccountsClientListByWorkspaceResponse{}, err
 			}
-			return client.listByWorkspaceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LinkedStorageAccountsClientListByWorkspaceResponse{}, err
+			}
+			return client.listByWorkspaceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
-func (client *LinkedStorageAccountsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *LinkedStorageAccountsClientListByWorkspaceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LinkedStorageAccountsClient) listByWorkspaceCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, nextLink string, _ *LinkedStorageAccountsClientListByWorkspaceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/linkedStorageAccounts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *LinkedStorageAccountsClient) listByWorkspaceHandleResponse(resp *http.Response) (LinkedStorageAccountsClientListByWorkspaceResponse, error) {
+func (client *LinkedStorageAccountsClient) listByWorkspaceHandleResponse(resp *http.Response, successCodes ...int) (LinkedStorageAccountsClientListByWorkspaceResponse, error) {
 	result := LinkedStorageAccountsClientListByWorkspaceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LinkedStorageAccountsListResult); err != nil {
 		return LinkedStorageAccountsClientListByWorkspaceResponse{}, err
 	}

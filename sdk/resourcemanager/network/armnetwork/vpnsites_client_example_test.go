@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/VpnSitePut.json
+// Generated from example definition: 2025-09-01/VpnSitePut.json
 func ExampleVPNSitesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleVPNSitesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VpnSiteDelete.json
+// Generated from example definition: 2025-09-01/VpnSiteDelete.json
 func ExampleVPNSitesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleVPNSitesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VpnSiteGet.json
+// Generated from example definition: 2025-09-01/VpnSiteGet.json
 func ExampleVPNSitesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleVPNSitesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VpnSiteList.json
+// Generated from example definition: 2025-09-01/VpnSiteList.json
 func ExampleVPNSitesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,7 +323,7 @@ func ExampleVPNSitesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VpnSiteListByResourceGroup.json
+// Generated from example definition: 2025-09-01/VpnSiteListByResourceGroup.json
 func ExampleVPNSitesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -429,7 +429,7 @@ func ExampleVPNSitesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VpnSiteUpdateTags.json
+// Generated from example definition: 2025-09-01/VpnSiteUpdateTags.json
 func ExampleVPNSitesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

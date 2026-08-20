@@ -63,12 +63,7 @@ func (client *TopicsClient) CreateOrUpdate(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return TopicsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TopicsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -106,8 +101,11 @@ func (client *TopicsClient) createOrUpdateCreateRequest(ctx context.Context, res
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *TopicsClient) createOrUpdateHandleResponse(resp *http.Response) (TopicsClientCreateOrUpdateResponse, error) {
+func (client *TopicsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (TopicsClientCreateOrUpdateResponse, error) {
 	result := TopicsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBTopic); err != nil {
 		return TopicsClientCreateOrUpdateResponse{}, err
 	}
@@ -137,12 +135,7 @@ func (client *TopicsClient) CreateOrUpdateAuthorizationRule(ctx context.Context,
 	if err != nil {
 		return TopicsClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TopicsClientCreateOrUpdateAuthorizationRuleResponse{}, err
-	}
-	resp, err := client.createOrUpdateAuthorizationRuleHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateAuthorizationRuleCreateRequest creates the CreateOrUpdateAuthorizationRule request.
@@ -184,8 +177,11 @@ func (client *TopicsClient) createOrUpdateAuthorizationRuleCreateRequest(ctx con
 }
 
 // createOrUpdateAuthorizationRuleHandleResponse handles the CreateOrUpdateAuthorizationRule response.
-func (client *TopicsClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response) (TopicsClientCreateOrUpdateAuthorizationRuleResponse, error) {
+func (client *TopicsClient) createOrUpdateAuthorizationRuleHandleResponse(resp *http.Response, successCodes ...int) (TopicsClientCreateOrUpdateAuthorizationRuleResponse, error) {
 	result := TopicsClientCreateOrUpdateAuthorizationRuleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRule); err != nil {
 		return TopicsClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
@@ -213,8 +209,7 @@ func (client *TopicsClient) Delete(ctx context.Context, resourceGroupName string
 		return TopicsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return TopicsClientDeleteResponse{}, err
+		return TopicsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TopicsClientDeleteResponse{}, nil
 }
@@ -271,8 +266,7 @@ func (client *TopicsClient) DeleteAuthorizationRule(ctx context.Context, resourc
 		return TopicsClientDeleteAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return TopicsClientDeleteAuthorizationRuleResponse{}, err
+		return TopicsClientDeleteAuthorizationRuleResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TopicsClientDeleteAuthorizationRuleResponse{}, nil
 }
@@ -330,12 +324,7 @@ func (client *TopicsClient) Get(ctx context.Context, resourceGroupName string, n
 	if err != nil {
 		return TopicsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TopicsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -369,8 +358,11 @@ func (client *TopicsClient) getCreateRequest(ctx context.Context, resourceGroupN
 }
 
 // getHandleResponse handles the Get response.
-func (client *TopicsClient) getHandleResponse(resp *http.Response) (TopicsClientGetResponse, error) {
+func (client *TopicsClient) getHandleResponse(resp *http.Response, successCodes ...int) (TopicsClientGetResponse, error) {
 	result := TopicsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBTopic); err != nil {
 		return TopicsClientGetResponse{}, err
 	}
@@ -399,12 +391,7 @@ func (client *TopicsClient) GetAuthorizationRule(ctx context.Context, resourceGr
 	if err != nil {
 		return TopicsClientGetAuthorizationRuleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TopicsClientGetAuthorizationRuleResponse{}, err
-	}
-	resp, err := client.getAuthorizationRuleHandleResponse(httpResp)
-	return resp, err
+	return client.getAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
@@ -442,8 +429,11 @@ func (client *TopicsClient) getAuthorizationRuleCreateRequest(ctx context.Contex
 }
 
 // getAuthorizationRuleHandleResponse handles the GetAuthorizationRule response.
-func (client *TopicsClient) getAuthorizationRuleHandleResponse(resp *http.Response) (TopicsClientGetAuthorizationRuleResponse, error) {
+func (client *TopicsClient) getAuthorizationRuleHandleResponse(resp *http.Response, successCodes ...int) (TopicsClientGetAuthorizationRuleResponse, error) {
 	result := TopicsClientGetAuthorizationRuleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRule); err != nil {
 		return TopicsClientGetAuthorizationRuleResponse{}, err
 	}
@@ -467,51 +457,65 @@ func (client *TopicsClient) NewListAuthorizationRulesPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, topicName, options)
-			}, nil)
+			req, err := client.listAuthorizationRulesCreateRequest(ctx, resourceGroupName, namespaceName, topicName, nextLink, options)
 			if err != nil {
 				return TopicsClientListAuthorizationRulesResponse{}, err
 			}
-			return client.listAuthorizationRulesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TopicsClientListAuthorizationRulesResponse{}, err
+			}
+			return client.listAuthorizationRulesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAuthorizationRulesCreateRequest creates the ListAuthorizationRules request.
-func (client *TopicsClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, _ *TopicsClientListAuthorizationRulesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/authorizationRules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TopicsClient) listAuthorizationRulesCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, nextLink string, _ *TopicsClientListAuthorizationRulesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/authorizationRules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		if topicName == "" {
+			return nil, errors.New("parameter topicName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if topicName == "" {
-		return nil, errors.New("parameter topicName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAuthorizationRulesHandleResponse handles the ListAuthorizationRules response.
-func (client *TopicsClient) listAuthorizationRulesHandleResponse(resp *http.Response) (TopicsClientListAuthorizationRulesResponse, error) {
+func (client *TopicsClient) listAuthorizationRulesHandleResponse(resp *http.Response, successCodes ...int) (TopicsClientListAuthorizationRulesResponse, error) {
 	result := TopicsClientListAuthorizationRulesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRuleListResult); err != nil {
 		return TopicsClientListAuthorizationRulesResponse{}, err
 	}
@@ -534,53 +538,67 @@ func (client *TopicsClient) NewListByNamespacePager(resourceGroupName string, na
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, options)
-			}, nil)
+			req, err := client.listByNamespaceCreateRequest(ctx, resourceGroupName, namespaceName, nextLink, options)
 			if err != nil {
 				return TopicsClientListByNamespaceResponse{}, err
 			}
-			return client.listByNamespaceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TopicsClientListByNamespaceResponse{}, err
+			}
+			return client.listByNamespaceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByNamespaceCreateRequest creates the ListByNamespace request.
-func (client *TopicsClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, options *TopicsClientListByNamespaceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TopicsClient) listByNamespaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, nextLink string, options *TopicsClientListByNamespaceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByNamespaceHandleResponse handles the ListByNamespace response.
-func (client *TopicsClient) listByNamespaceHandleResponse(resp *http.Response) (TopicsClientListByNamespaceResponse, error) {
+func (client *TopicsClient) listByNamespaceHandleResponse(resp *http.Response, successCodes ...int) (TopicsClientListByNamespaceResponse, error) {
 	result := TopicsClientListByNamespaceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBTopicListResult); err != nil {
 		return TopicsClientListByNamespaceResponse{}, err
 	}
@@ -608,12 +626,7 @@ func (client *TopicsClient) ListKeys(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return TopicsClientListKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TopicsClientListKeysResponse{}, err
-	}
-	resp, err := client.listKeysHandleResponse(httpResp)
-	return resp, err
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
@@ -651,8 +664,11 @@ func (client *TopicsClient) listKeysCreateRequest(ctx context.Context, resourceG
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *TopicsClient) listKeysHandleResponse(resp *http.Response) (TopicsClientListKeysResponse, error) {
+func (client *TopicsClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (TopicsClientListKeysResponse, error) {
 	result := TopicsClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return TopicsClientListKeysResponse{}, err
 	}
@@ -681,12 +697,7 @@ func (client *TopicsClient) RegenerateKeys(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return TopicsClientRegenerateKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TopicsClientRegenerateKeysResponse{}, err
-	}
-	resp, err := client.regenerateKeysHandleResponse(httpResp)
-	return resp, err
+	return client.regenerateKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.
@@ -728,8 +739,11 @@ func (client *TopicsClient) regenerateKeysCreateRequest(ctx context.Context, res
 }
 
 // regenerateKeysHandleResponse handles the RegenerateKeys response.
-func (client *TopicsClient) regenerateKeysHandleResponse(resp *http.Response) (TopicsClientRegenerateKeysResponse, error) {
+func (client *TopicsClient) regenerateKeysHandleResponse(resp *http.Response, successCodes ...int) (TopicsClientRegenerateKeysResponse, error) {
 	result := TopicsClientRegenerateKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
 		return TopicsClientRegenerateKeysResponse{}, err
 	}

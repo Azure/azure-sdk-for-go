@@ -52,39 +52,53 @@ func (client *OccurrenceExtensionClient) NewListOccurrenceByVMsPager(resourceURI
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listOccurrenceByVMsCreateRequest(ctx, resourceURI, options)
-			}, nil)
+			req, err := client.listOccurrenceByVMsCreateRequest(ctx, resourceURI, nextLink, options)
 			if err != nil {
 				return OccurrenceExtensionClientListOccurrenceByVMsResponse{}, err
 			}
-			return client.listOccurrenceByVMsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OccurrenceExtensionClientListOccurrenceByVMsResponse{}, err
+			}
+			return client.listOccurrenceByVMsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listOccurrenceByVMsCreateRequest creates the ListOccurrenceByVMs request.
-func (client *OccurrenceExtensionClient) listOccurrenceByVMsCreateRequest(ctx context.Context, resourceURI string, _ *OccurrenceExtensionClientListOccurrenceByVMsOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.Compute/associatedOccurrences"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
+func (client *OccurrenceExtensionClient) listOccurrenceByVMsCreateRequest(ctx context.Context, resourceURI string, nextLink string, _ *OccurrenceExtensionClientListOccurrenceByVMsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.Compute/associatedOccurrences"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260706Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listOccurrenceByVMsHandleResponse handles the ListOccurrenceByVMs response.
-func (client *OccurrenceExtensionClient) listOccurrenceByVMsHandleResponse(resp *http.Response) (OccurrenceExtensionClientListOccurrenceByVMsResponse, error) {
+func (client *OccurrenceExtensionClient) listOccurrenceByVMsHandleResponse(resp *http.Response, successCodes ...int) (OccurrenceExtensionClientListOccurrenceByVMsResponse, error) {
 	result := OccurrenceExtensionClientListOccurrenceByVMsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OccurrenceExtensionResourceListResult); err != nil {
 		return OccurrenceExtensionClientListOccurrenceByVMsResponse{}, err
 	}

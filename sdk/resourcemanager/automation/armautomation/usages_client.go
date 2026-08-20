@@ -57,47 +57,61 @@ func (client *UsagesClient) NewListByAutomationAccountPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
-			}, nil)
+			req, err := client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, nextLink, options)
 			if err != nil {
 				return UsagesClientListByAutomationAccountResponse{}, err
 			}
-			return client.listByAutomationAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return UsagesClientListByAutomationAccountResponse{}, err
+			}
+			return client.listByAutomationAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *UsagesClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, _ *UsagesClientListByAutomationAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/usages"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *UsagesClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nextLink string, _ *UsagesClientListByAutomationAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/usages"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if automationAccountName == "" {
+			return nil, errors.New("parameter automationAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if automationAccountName == "" {
-		return nil, errors.New("parameter automationAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241023)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241023)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *UsagesClient) listByAutomationAccountHandleResponse(resp *http.Response) (UsagesClientListByAutomationAccountResponse, error) {
+func (client *UsagesClient) listByAutomationAccountHandleResponse(resp *http.Response, successCodes ...int) (UsagesClientListByAutomationAccountResponse, error) {
 	result := UsagesClientListByAutomationAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsageListResult); err != nil {
 		return UsagesClientListByAutomationAccountResponse{}, err
 	}

@@ -61,12 +61,7 @@ func (client *OperationsResultsLocationClient) Get(ctx context.Context, location
 	if err != nil {
 		return OperationsResultsLocationClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationsResultsLocationClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getCreateRequest creates the Get request.
@@ -96,9 +91,12 @@ func (client *OperationsResultsLocationClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *OperationsResultsLocationClient) getHandleResponse(resp *http.Response) (OperationsResultsLocationClientGetResponse, error) {
+func (client *OperationsResultsLocationClient) getHandleResponse(resp *http.Response, successCodes ...int) (OperationsResultsLocationClientGetResponse, error) {
 	result := OperationsResultsLocationClientGetResponse{}
-	if val := resp.Header.Get("Azure-AsyncOperation"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Azure-Asyncoperation"); val != "" {
 		result.AzureAsyncOperation = &val
 	}
 	return result, nil

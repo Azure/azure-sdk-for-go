@@ -19,6 +19,8 @@ import (
 
 // LocationClient contains the methods for the Location group.
 // Don't use this type directly, use NewLocationClient() instead.
+//
+// Generated from API version 2025-06-01
 type LocationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewLocationClient(subscriptionID string, credential azcore.TokenCredential,
 
 // CheckNameAvailability - Checks whether the Batch account name is available in the specified region.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - locationName - The desired region for the name check.
 //   - parameters - Properties needed to check the availability of a name.
 //   - options - LocationClientCheckNameAvailabilityOptions contains the optional parameters for the LocationClient.CheckNameAvailability
@@ -62,12 +62,7 @@ func (client *LocationClient) CheckNameAvailability(ctx context.Context, locatio
 	if err != nil {
 		return LocationClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LocationClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -86,8 +81,8 @@ func (client *LocationClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -97,8 +92,11 @@ func (client *LocationClient) checkNameAvailabilityCreateRequest(ctx context.Con
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *LocationClient) checkNameAvailabilityHandleResponse(resp *http.Response) (LocationClientCheckNameAvailabilityResponse, error) {
+func (client *LocationClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (LocationClientCheckNameAvailabilityResponse, error) {
 	result := LocationClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResult); err != nil {
 		return LocationClientCheckNameAvailabilityResponse{}, err
 	}
@@ -107,8 +105,6 @@ func (client *LocationClient) checkNameAvailabilityHandleResponse(resp *http.Res
 
 // GetQuotas - Gets the Batch service quotas for the specified subscription at the given location.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - locationName - The region for which to retrieve Batch service quotas.
 //   - options - LocationClientGetQuotasOptions contains the optional parameters for the LocationClient.GetQuotas method.
 func (client *LocationClient) GetQuotas(ctx context.Context, locationName string, options *LocationClientGetQuotasOptions) (LocationClientGetQuotasResponse, error) {
@@ -125,12 +121,7 @@ func (client *LocationClient) GetQuotas(ctx context.Context, locationName string
 	if err != nil {
 		return LocationClientGetQuotasResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LocationClientGetQuotasResponse{}, err
-	}
-	resp, err := client.getQuotasHandleResponse(httpResp)
-	return resp, err
+	return client.getQuotasHandleResponse(httpResp, http.StatusOK)
 }
 
 // getQuotasCreateRequest creates the GetQuotas request.
@@ -149,15 +140,18 @@ func (client *LocationClient) getQuotasCreateRequest(ctx context.Context, locati
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getQuotasHandleResponse handles the GetQuotas response.
-func (client *LocationClient) getQuotasHandleResponse(resp *http.Response) (LocationClientGetQuotasResponse, error) {
+func (client *LocationClient) getQuotasHandleResponse(resp *http.Response, successCodes ...int) (LocationClientGetQuotasResponse, error) {
 	result := LocationClientGetQuotasResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocationQuota); err != nil {
 		return LocationClientGetQuotasResponse{}, err
 	}
@@ -166,8 +160,6 @@ func (client *LocationClient) getQuotasHandleResponse(resp *http.Response) (Loca
 
 // NewListSupportedVirtualMachineSKUsPager - Gets the list of Batch supported Virtual Machine VM sizes available at the given
 // location.
-//
-// Generated from API version 2025-06-01
 //   - locationName - The region for which to retrieve Batch service supported SKUs.
 //   - options - LocationClientListSupportedVirtualMachineSKUsOptions contains the optional parameters for the LocationClient.NewListSupportedVirtualMachineSKUsPager
 //     method.
@@ -182,49 +174,63 @@ func (client *LocationClient) NewListSupportedVirtualMachineSKUsPager(locationNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSupportedVirtualMachineSKUsCreateRequest(ctx, locationName, options)
-			}, nil)
+			req, err := client.listSupportedVirtualMachineSKUsCreateRequest(ctx, locationName, nextLink, options)
 			if err != nil {
 				return LocationClientListSupportedVirtualMachineSKUsResponse{}, err
 			}
-			return client.listSupportedVirtualMachineSKUsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LocationClientListSupportedVirtualMachineSKUsResponse{}, err
+			}
+			return client.listSupportedVirtualMachineSKUsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSupportedVirtualMachineSKUsCreateRequest creates the ListSupportedVirtualMachineSKUs request.
-func (client *LocationClient) listSupportedVirtualMachineSKUsCreateRequest(ctx context.Context, locationName string, options *LocationClientListSupportedVirtualMachineSKUsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/locations/{locationName}/virtualMachineSkus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LocationClient) listSupportedVirtualMachineSKUsCreateRequest(ctx context.Context, locationName string, nextLink string, options *LocationClientListSupportedVirtualMachineSKUsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/locations/{locationName}/virtualMachineSkus"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if locationName == "" {
+			return nil, errors.New("parameter locationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250601)
+		if options != nil && options.Maxresults != nil {
+			reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", "2025-06-01")
-	if options != nil && options.Maxresults != nil {
-		reqQP.Set("maxresults", strconv.FormatInt(int64(*options.Maxresults), 10))
-	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listSupportedVirtualMachineSKUsHandleResponse handles the ListSupportedVirtualMachineSKUs response.
-func (client *LocationClient) listSupportedVirtualMachineSKUsHandleResponse(resp *http.Response) (LocationClientListSupportedVirtualMachineSKUsResponse, error) {
+func (client *LocationClient) listSupportedVirtualMachineSKUsHandleResponse(resp *http.Response, successCodes ...int) (LocationClientListSupportedVirtualMachineSKUsResponse, error) {
 	result := LocationClientListSupportedVirtualMachineSKUsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SupportedSKUsResult); err != nil {
 		return LocationClientListSupportedVirtualMachineSKUsResponse{}, err
 	}

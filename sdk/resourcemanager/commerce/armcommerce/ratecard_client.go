@@ -64,12 +64,7 @@ func (client *RateCardClient) Get(ctx context.Context, filter string, options *R
 	if err != nil {
 		return RateCardClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RateCardClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -92,8 +87,11 @@ func (client *RateCardClient) getCreateRequest(ctx context.Context, filter strin
 }
 
 // getHandleResponse handles the Get response.
-func (client *RateCardClient) getHandleResponse(resp *http.Response) (RateCardClientGetResponse, error) {
+func (client *RateCardClient) getHandleResponse(resp *http.Response, successCodes ...int) (RateCardClientGetResponse, error) {
 	result := RateCardClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRateCardInfo); err != nil {
 		return RateCardClientGetResponse{}, err
 	}

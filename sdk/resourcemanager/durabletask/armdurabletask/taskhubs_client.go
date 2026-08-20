@@ -83,8 +83,7 @@ func (client *TaskHubsClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -163,8 +162,7 @@ func (client *TaskHubsClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -218,12 +216,7 @@ func (client *TaskHubsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return TaskHubsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TaskHubsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -257,8 +250,11 @@ func (client *TaskHubsClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *TaskHubsClient) getHandleResponse(resp *http.Response) (TaskHubsClientGetResponse, error) {
+func (client *TaskHubsClient) getHandleResponse(resp *http.Response, successCodes ...int) (TaskHubsClientGetResponse, error) {
 	result := TaskHubsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskHub); err != nil {
 		return TaskHubsClientGetResponse{}, err
 	}
@@ -281,47 +277,61 @@ func (client *TaskHubsClient) NewListBySchedulerPager(resourceGroupName string, 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySchedulerCreateRequest(ctx, resourceGroupName, schedulerName, options)
-			}, nil)
+			req, err := client.listBySchedulerCreateRequest(ctx, resourceGroupName, schedulerName, nextLink, options)
 			if err != nil {
 				return TaskHubsClientListBySchedulerResponse{}, err
 			}
-			return client.listBySchedulerHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TaskHubsClientListBySchedulerResponse{}, err
+			}
+			return client.listBySchedulerHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySchedulerCreateRequest creates the ListByScheduler request.
-func (client *TaskHubsClient) listBySchedulerCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, _ *TaskHubsClientListBySchedulerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TaskHubsClient) listBySchedulerCreateRequest(ctx context.Context, resourceGroupName string, schedulerName string, nextLink string, _ *TaskHubsClientListBySchedulerOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DurableTask/schedulers/{schedulerName}/taskHubs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if schedulerName == "" {
+			return nil, errors.New("parameter schedulerName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{schedulerName}", url.PathEscape(schedulerName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if schedulerName == "" {
-		return nil, errors.New("parameter schedulerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{schedulerName}", url.PathEscape(schedulerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySchedulerHandleResponse handles the ListByScheduler response.
-func (client *TaskHubsClient) listBySchedulerHandleResponse(resp *http.Response) (TaskHubsClientListBySchedulerResponse, error) {
+func (client *TaskHubsClient) listBySchedulerHandleResponse(resp *http.Response, successCodes ...int) (TaskHubsClientListBySchedulerResponse, error) {
 	result := TaskHubsClientListBySchedulerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskHubListResult); err != nil {
 		return TaskHubsClientListBySchedulerResponse{}, err
 	}

@@ -62,12 +62,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) GetResourceAssociati
 	if err != nil {
 		return NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse{}, err
-	}
-	resp, err := client.getResourceAssociationNameHandleResponse(httpResp)
-	return resp, err
+	return client.getResourceAssociationNameHandleResponse(httpResp, http.StatusOK)
 }
 
 // getResourceAssociationNameCreateRequest creates the GetResourceAssociationName request.
@@ -101,8 +96,11 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getResourceAssociati
 }
 
 // getResourceAssociationNameHandleResponse handles the GetResourceAssociationName response.
-func (client *NetworkSecurityPerimeterConfigurationsClient) getResourceAssociationNameHandleResponse(resp *http.Response) (NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse, error) {
+func (client *NetworkSecurityPerimeterConfigurationsClient) getResourceAssociationNameHandleResponse(resp *http.Response, successCodes ...int) (NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse, error) {
 	result := NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfiguration); err != nil {
 		return NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse{}, err
 	}
@@ -131,8 +129,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) Reconcile(ctx contex
 		return NetworkSecurityPerimeterConfigurationsClientReconcileResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkSecurityPerimeterConfigurationsClientReconcileResponse{}, err
+		return NetworkSecurityPerimeterConfigurationsClientReconcileResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return NetworkSecurityPerimeterConfigurationsClientReconcileResponse{}, nil
 }

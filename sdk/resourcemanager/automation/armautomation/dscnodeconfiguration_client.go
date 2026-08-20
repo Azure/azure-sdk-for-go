@@ -84,8 +84,7 @@ func (client *DscNodeConfigurationClient) createOrUpdate(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -146,8 +145,7 @@ func (client *DscNodeConfigurationClient) Delete(ctx context.Context, resourceGr
 		return DscNodeConfigurationClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DscNodeConfigurationClientDeleteResponse{}, err
+		return DscNodeConfigurationClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DscNodeConfigurationClientDeleteResponse{}, nil
 }
@@ -202,12 +200,7 @@ func (client *DscNodeConfigurationClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return DscNodeConfigurationClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DscNodeConfigurationClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -241,8 +234,11 @@ func (client *DscNodeConfigurationClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *DscNodeConfigurationClient) getHandleResponse(resp *http.Response) (DscNodeConfigurationClientGetResponse, error) {
+func (client *DscNodeConfigurationClient) getHandleResponse(resp *http.Response, successCodes ...int) (DscNodeConfigurationClientGetResponse, error) {
 	result := DscNodeConfigurationClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscNodeConfiguration); err != nil {
 		return DscNodeConfigurationClientGetResponse{}, err
 	}
@@ -265,59 +261,73 @@ func (client *DscNodeConfigurationClient) NewListByAutomationAccountPager(resour
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
-			}, nil)
+			req, err := client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, nextLink, options)
 			if err != nil {
 				return DscNodeConfigurationClientListByAutomationAccountResponse{}, err
 			}
-			return client.listByAutomationAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DscNodeConfigurationClientListByAutomationAccountResponse{}, err
+			}
+			return client.listByAutomationAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *DscNodeConfigurationClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *DscNodeConfigurationClientListByAutomationAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodeConfigurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DscNodeConfigurationClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nextLink string, options *DscNodeConfigurationClientListByAutomationAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodeConfigurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if automationAccountName == "" {
+			return nil, errors.New("parameter automationAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if automationAccountName == "" {
-		return nil, errors.New("parameter automationAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Inlinecount != nil {
+			reqQP.Set("$inlinecount", *options.Inlinecount)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20241023)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Inlinecount != nil {
-		reqQP.Set("$inlinecount", *options.Inlinecount)
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20241023)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *DscNodeConfigurationClient) listByAutomationAccountHandleResponse(resp *http.Response) (DscNodeConfigurationClientListByAutomationAccountResponse, error) {
+func (client *DscNodeConfigurationClient) listByAutomationAccountHandleResponse(resp *http.Response, successCodes ...int) (DscNodeConfigurationClientListByAutomationAccountResponse, error) {
 	result := DscNodeConfigurationClientListByAutomationAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DscNodeConfigurationListResult); err != nil {
 		return DscNodeConfigurationClientListByAutomationAccountResponse{}, err
 	}

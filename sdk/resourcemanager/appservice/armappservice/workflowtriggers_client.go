@@ -63,12 +63,7 @@ func (client *WorkflowTriggersClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WorkflowTriggersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkflowTriggersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -106,8 +101,11 @@ func (client *WorkflowTriggersClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *WorkflowTriggersClient) getHandleResponse(resp *http.Response) (WorkflowTriggersClientGetResponse, error) {
+func (client *WorkflowTriggersClient) getHandleResponse(resp *http.Response, successCodes ...int) (WorkflowTriggersClientGetResponse, error) {
 	result := WorkflowTriggersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTrigger); err != nil {
 		return WorkflowTriggersClientGetResponse{}, err
 	}
@@ -136,12 +134,7 @@ func (client *WorkflowTriggersClient) GetSchemaJSON(ctx context.Context, resourc
 	if err != nil {
 		return WorkflowTriggersClientGetSchemaJSONResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkflowTriggersClientGetSchemaJSONResponse{}, err
-	}
-	resp, err := client.getSchemaJSONHandleResponse(httpResp)
-	return resp, err
+	return client.getSchemaJSONHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSchemaJSONCreateRequest creates the GetSchemaJSON request.
@@ -179,8 +172,11 @@ func (client *WorkflowTriggersClient) getSchemaJSONCreateRequest(ctx context.Con
 }
 
 // getSchemaJSONHandleResponse handles the GetSchemaJSON response.
-func (client *WorkflowTriggersClient) getSchemaJSONHandleResponse(resp *http.Response) (WorkflowTriggersClientGetSchemaJSONResponse, error) {
+func (client *WorkflowTriggersClient) getSchemaJSONHandleResponse(resp *http.Response, successCodes ...int) (WorkflowTriggersClientGetSchemaJSONResponse, error) {
 	result := WorkflowTriggersClientGetSchemaJSONResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JSONSchema); err != nil {
 		return WorkflowTriggersClientGetSchemaJSONResponse{}, err
 	}
@@ -204,57 +200,71 @@ func (client *WorkflowTriggersClient) NewListPager(resourceGroupName string, nam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, name, workflowName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, name, workflowName, nextLink, options)
 			if err != nil {
 				return WorkflowTriggersClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkflowTriggersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *WorkflowTriggersClient) listCreateRequest(ctx context.Context, resourceGroupName string, name string, workflowName string, options *WorkflowTriggersClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WorkflowTriggersClient) listCreateRequest(ctx context.Context, resourceGroupName string, name string, workflowName string, nextLink string, options *WorkflowTriggersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/triggers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if workflowName == "" {
+			return nil, errors.New("parameter workflowName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if workflowName == "" {
-		return nil, errors.New("parameter workflowName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *WorkflowTriggersClient) listHandleResponse(resp *http.Response) (WorkflowTriggersClientListResponse, error) {
+func (client *WorkflowTriggersClient) listHandleResponse(resp *http.Response, successCodes ...int) (WorkflowTriggersClientListResponse, error) {
 	result := WorkflowTriggersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerListResult); err != nil {
 		return WorkflowTriggersClientListResponse{}, err
 	}
@@ -283,12 +293,7 @@ func (client *WorkflowTriggersClient) ListCallbackURL(ctx context.Context, resou
 	if err != nil {
 		return WorkflowTriggersClientListCallbackURLResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WorkflowTriggersClientListCallbackURLResponse{}, err
-	}
-	resp, err := client.listCallbackURLHandleResponse(httpResp)
-	return resp, err
+	return client.listCallbackURLHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCallbackURLCreateRequest creates the ListCallbackURL request.
@@ -326,8 +331,11 @@ func (client *WorkflowTriggersClient) listCallbackURLCreateRequest(ctx context.C
 }
 
 // listCallbackURLHandleResponse handles the ListCallbackURL response.
-func (client *WorkflowTriggersClient) listCallbackURLHandleResponse(resp *http.Response) (WorkflowTriggersClientListCallbackURLResponse, error) {
+func (client *WorkflowTriggersClient) listCallbackURLHandleResponse(resp *http.Response, successCodes ...int) (WorkflowTriggersClientListCallbackURLResponse, error) {
 	result := WorkflowTriggersClientListCallbackURLResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowTriggerCallbackURL); err != nil {
 		return WorkflowTriggersClientListCallbackURLResponse{}, err
 	}
@@ -376,8 +384,7 @@ func (client *WorkflowTriggersClient) run(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

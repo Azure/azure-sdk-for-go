@@ -63,12 +63,7 @@ func (client *ChangeDataCaptureClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return ChangeDataCaptureClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ChangeDataCaptureClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -109,8 +104,11 @@ func (client *ChangeDataCaptureClient) createOrUpdateCreateRequest(ctx context.C
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ChangeDataCaptureClient) createOrUpdateHandleResponse(resp *http.Response) (ChangeDataCaptureClientCreateOrUpdateResponse, error) {
+func (client *ChangeDataCaptureClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ChangeDataCaptureClientCreateOrUpdateResponse, error) {
 	result := ChangeDataCaptureClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChangeDataCaptureResource); err != nil {
 		return ChangeDataCaptureClientCreateOrUpdateResponse{}, err
 	}
@@ -139,8 +137,7 @@ func (client *ChangeDataCaptureClient) Delete(ctx context.Context, resourceGroup
 		return ChangeDataCaptureClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ChangeDataCaptureClientDeleteResponse{}, err
+		return ChangeDataCaptureClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ChangeDataCaptureClientDeleteResponse{}, nil
 }
@@ -194,12 +191,7 @@ func (client *ChangeDataCaptureClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ChangeDataCaptureClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ChangeDataCaptureClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -236,8 +228,11 @@ func (client *ChangeDataCaptureClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *ChangeDataCaptureClient) getHandleResponse(resp *http.Response) (ChangeDataCaptureClientGetResponse, error) {
+func (client *ChangeDataCaptureClient) getHandleResponse(resp *http.Response, successCodes ...int) (ChangeDataCaptureClientGetResponse, error) {
 	result := ChangeDataCaptureClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChangeDataCaptureResource); err != nil {
 		return ChangeDataCaptureClientGetResponse{}, err
 	}
@@ -260,47 +255,61 @@ func (client *ChangeDataCaptureClient) NewListByFactoryPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
-			}, nil)
+			req, err := client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, nextLink, options)
 			if err != nil {
 				return ChangeDataCaptureClientListByFactoryResponse{}, err
 			}
-			return client.listByFactoryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ChangeDataCaptureClientListByFactoryResponse{}, err
+			}
+			return client.listByFactoryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
-func (client *ChangeDataCaptureClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, _ *ChangeDataCaptureClientListByFactoryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ChangeDataCaptureClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, nextLink string, _ *ChangeDataCaptureClientListByFactoryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/adfcdcs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if factoryName == "" {
+			return nil, errors.New("parameter factoryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if factoryName == "" {
-		return nil, errors.New("parameter factoryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20180601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByFactoryHandleResponse handles the ListByFactory response.
-func (client *ChangeDataCaptureClient) listByFactoryHandleResponse(resp *http.Response) (ChangeDataCaptureClientListByFactoryResponse, error) {
+func (client *ChangeDataCaptureClient) listByFactoryHandleResponse(resp *http.Response, successCodes ...int) (ChangeDataCaptureClientListByFactoryResponse, error) {
 	result := ChangeDataCaptureClientListByFactoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ChangeDataCaptureListResponse); err != nil {
 		return ChangeDataCaptureClientListByFactoryResponse{}, err
 	}
@@ -328,8 +337,7 @@ func (client *ChangeDataCaptureClient) Start(ctx context.Context, resourceGroupN
 		return ChangeDataCaptureClientStartResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ChangeDataCaptureClientStartResponse{}, err
+		return ChangeDataCaptureClientStartResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ChangeDataCaptureClientStartResponse{}, nil
 }
@@ -384,12 +392,7 @@ func (client *ChangeDataCaptureClient) Status(ctx context.Context, resourceGroup
 	if err != nil {
 		return ChangeDataCaptureClientStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ChangeDataCaptureClientStatusResponse{}, err
-	}
-	resp, err := client.statusHandleResponse(httpResp)
-	return resp, err
+	return client.statusHandleResponse(httpResp, http.StatusOK)
 }
 
 // statusCreateRequest creates the Status request.
@@ -423,8 +426,11 @@ func (client *ChangeDataCaptureClient) statusCreateRequest(ctx context.Context, 
 }
 
 // statusHandleResponse handles the Status response.
-func (client *ChangeDataCaptureClient) statusHandleResponse(resp *http.Response) (ChangeDataCaptureClientStatusResponse, error) {
+func (client *ChangeDataCaptureClient) statusHandleResponse(resp *http.Response, successCodes ...int) (ChangeDataCaptureClientStatusResponse, error) {
 	result := ChangeDataCaptureClientStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return ChangeDataCaptureClientStatusResponse{}, err
 	}
@@ -452,8 +458,7 @@ func (client *ChangeDataCaptureClient) Stop(ctx context.Context, resourceGroupNa
 		return ChangeDataCaptureClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ChangeDataCaptureClientStopResponse{}, err
+		return ChangeDataCaptureClientStopResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ChangeDataCaptureClientStopResponse{}, nil
 }

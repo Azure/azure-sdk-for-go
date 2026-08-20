@@ -61,8 +61,8 @@ func ExampleRunsClient_Get() {
 	// 			AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 				CPU: to.Ptr[int32](2),
 	// 			},
-	// 			CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:13:51.618Z"); return t}()),
-	// 			FinishTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:13:51.618Z"); return t}()),
+	// 			CreateTime: to.Ptr(time.Date(2018, time.January, 25, 5, 13, 51, 618000000, time.UTC)),
+	// 			FinishTime: to.Ptr(time.Date(2018, time.January, 25, 6, 13, 51, 618000000, time.UTC)),
 	// 			ImageUpdateTrigger: &armcontainerregistrytasks.ImageUpdateTrigger{
 	// 				ID: to.Ptr("c0c43143-da5d-41ef-b9e1-e7d749272e88"),
 	// 				Images: []*armcontainerregistrytasks.ImageDescriptor{
@@ -73,10 +73,10 @@ func ExampleRunsClient_Get() {
 	// 						Tag: to.Ptr("latest"),
 	// 					},
 	// 				},
-	// 				Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:13:51.618Z"); return t}()),
+	// 				Timestamp: to.Ptr(time.Date(2018, time.January, 25, 5, 13, 51, 618000000, time.UTC)),
 	// 			},
 	// 			IsArchiveEnabled: to.Ptr(true),
-	// 			LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:13:51.617Z"); return t}()),
+	// 			LastUpdatedTime: to.Ptr(time.Date(2018, time.January, 25, 5, 13, 51, 617000000, time.UTC)),
 	// 			LogArtifact: &armcontainerregistrytasks.ImageDescriptor{
 	// 				Digest: to.Ptr("sha256:cbbf2f9a99b47fc460d422812b6a5adff7dfee951d8fa2e4a98caa0"),
 	// 				Registry: to.Ptr("myregistry"),
@@ -98,7 +98,7 @@ func ExampleRunsClient_Get() {
 	// 			ProvisioningState: to.Ptr(armcontainerregistrytasks.ProvisioningStateSucceeded),
 	// 			RunID: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 			RunType: to.Ptr(armcontainerregistrytasks.RunTypeAutoBuild),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:50:51.618Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2018, time.January, 25, 5, 50, 51, 618000000, time.UTC)),
 	// 			Status: to.Ptr(armcontainerregistrytasks.RunStatusSucceeded),
 	// 			Task: to.Ptr("myTask"),
 	// 		},
@@ -166,8 +166,8 @@ func ExampleRunsClient_NewListPager() {
 		// 					AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 		// 						CPU: to.Ptr[int32](2),
 		// 					},
-		// 					CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:13:51.618Z"); return t}()),
-		// 					FinishTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:13:51.618Z"); return t}()),
+		// 					CreateTime: to.Ptr(time.Date(2018, time.January, 25, 5, 13, 51, 618000000, time.UTC)),
+		// 					FinishTime: to.Ptr(time.Date(2018, time.January, 25, 6, 13, 51, 618000000, time.UTC)),
 		// 					ImageUpdateTrigger: &armcontainerregistrytasks.ImageUpdateTrigger{
 		// 						ID: to.Ptr("c0c43143-da5d-41ef-b9e1-e7d749272e88"),
 		// 						Images: []*armcontainerregistrytasks.ImageDescriptor{
@@ -178,10 +178,10 @@ func ExampleRunsClient_NewListPager() {
 		// 								Tag: to.Ptr("latest"),
 		// 							},
 		// 						},
-		// 						Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:13:51.618Z"); return t}()),
+		// 						Timestamp: to.Ptr(time.Date(2018, time.January, 25, 5, 13, 51, 618000000, time.UTC)),
 		// 					},
 		// 					IsArchiveEnabled: to.Ptr(true),
-		// 					LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:13:51.617Z"); return t}()),
+		// 					LastUpdatedTime: to.Ptr(time.Date(2018, time.January, 25, 5, 13, 51, 617000000, time.UTC)),
 		// 					LogArtifact: &armcontainerregistrytasks.ImageDescriptor{
 		// 						Digest: to.Ptr("sha256:cbbf2f9a99b47fc460d422812b6a5adff7dfee951d8fa2e4a98caa0"),
 		// 						Registry: to.Ptr("myregistry"),
@@ -203,7 +203,7 @@ func ExampleRunsClient_NewListPager() {
 		// 					ProvisioningState: to.Ptr(armcontainerregistrytasks.ProvisioningStateSucceeded),
 		// 					RunID: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 		// 					RunType: to.Ptr(armcontainerregistrytasks.RunTypeAutoBuild),
-		// 					StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:50:51.618Z"); return t}()),
+		// 					StartTime: to.Ptr(time.Date(2018, time.January, 25, 5, 50, 51, 618000000, time.UTC)),
 		// 					Status: to.Ptr(armcontainerregistrytasks.RunStatusSucceeded),
 		// 					Task: to.Ptr("myTask"),
 		// 				},
@@ -243,8 +243,8 @@ func ExampleRunsClient_Update() {
 	// 			AgentConfiguration: &armcontainerregistrytasks.AgentProperties{
 	// 				CPU: to.Ptr[int32](2),
 	// 			},
-	// 			CreateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:13:51.618Z"); return t}()),
-	// 			FinishTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T06:13:51.618Z"); return t}()),
+	// 			CreateTime: to.Ptr(time.Date(2018, time.January, 25, 5, 13, 51, 618000000, time.UTC)),
+	// 			FinishTime: to.Ptr(time.Date(2018, time.January, 25, 6, 13, 51, 618000000, time.UTC)),
 	// 			ImageUpdateTrigger: &armcontainerregistrytasks.ImageUpdateTrigger{
 	// 				ID: to.Ptr("c0c43143-da5d-41ef-b9e1-e7d749272e88"),
 	// 				Images: []*armcontainerregistrytasks.ImageDescriptor{
@@ -255,10 +255,10 @@ func ExampleRunsClient_Update() {
 	// 						Tag: to.Ptr("latest"),
 	// 					},
 	// 				},
-	// 				Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:13:51.618Z"); return t}()),
+	// 				Timestamp: to.Ptr(time.Date(2018, time.January, 25, 5, 13, 51, 618000000, time.UTC)),
 	// 			},
 	// 			IsArchiveEnabled: to.Ptr(true),
-	// 			LastUpdatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:13:51.617Z"); return t}()),
+	// 			LastUpdatedTime: to.Ptr(time.Date(2018, time.January, 25, 5, 13, 51, 617000000, time.UTC)),
 	// 			LogArtifact: &armcontainerregistrytasks.ImageDescriptor{
 	// 				Digest: to.Ptr("sha256:cbbf2f9a99b47fc460d422812b6a5adff7dfee951d8fa2e4a98caa0"),
 	// 				Registry: to.Ptr("myregistry"),
@@ -280,7 +280,7 @@ func ExampleRunsClient_Update() {
 	// 			ProvisioningState: to.Ptr(armcontainerregistrytasks.ProvisioningStateSucceeded),
 	// 			RunID: to.Ptr("0accec26-d6de-4757-8e74-d080f38eaaab"),
 	// 			RunType: to.Ptr(armcontainerregistrytasks.RunTypeAutoBuild),
-	// 			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-01-25T05:50:51.618Z"); return t}()),
+	// 			StartTime: to.Ptr(time.Date(2018, time.January, 25, 5, 50, 51, 618000000, time.UTC)),
 	// 			Status: to.Ptr(armcontainerregistrytasks.RunStatusSucceeded),
 	// 			Task: to.Ptr("myTask"),
 	// 		},

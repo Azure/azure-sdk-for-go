@@ -60,12 +60,7 @@ func (client *GenerateAwsTemplateClient) Post(ctx context.Context, generateAwsTe
 	if err != nil {
 		return GenerateAwsTemplateClientPostResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GenerateAwsTemplateClientPostResponse{}, err
-	}
-	resp, err := client.postHandleResponse(httpResp)
-	return resp, err
+	return client.postHandleResponse(httpResp, http.StatusOK)
 }
 
 // postCreateRequest creates the Post request.
@@ -91,8 +86,11 @@ func (client *GenerateAwsTemplateClient) postCreateRequest(ctx context.Context, 
 }
 
 // postHandleResponse handles the Post response.
-func (client *GenerateAwsTemplateClient) postHandleResponse(resp *http.Response) (GenerateAwsTemplateClientPostResponse, error) {
+func (client *GenerateAwsTemplateClient) postHandleResponse(resp *http.Response, successCodes ...int) (GenerateAwsTemplateClientPostResponse, error) {
 	result := GenerateAwsTemplateClientPostResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GenerateAwsTemplateResponse); err != nil {
 		return GenerateAwsTemplateClientPostResponse{}, err
 	}

@@ -20,7 +20,7 @@ import (
 // group.
 // Don't use this type directly, use NewApplicationGatewayWafDynamicManifestsDefaultClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type ApplicationGatewayWafDynamicManifestsDefaultClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -61,12 +61,7 @@ func (client *ApplicationGatewayWafDynamicManifestsDefaultClient) Get(ctx contex
 	if err != nil {
 		return ApplicationGatewayWafDynamicManifestsDefaultClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ApplicationGatewayWafDynamicManifestsDefaultClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -85,15 +80,18 @@ func (client *ApplicationGatewayWafDynamicManifestsDefaultClient) getCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ApplicationGatewayWafDynamicManifestsDefaultClient) getHandleResponse(resp *http.Response) (ApplicationGatewayWafDynamicManifestsDefaultClientGetResponse, error) {
+func (client *ApplicationGatewayWafDynamicManifestsDefaultClient) getHandleResponse(resp *http.Response, successCodes ...int) (ApplicationGatewayWafDynamicManifestsDefaultClientGetResponse, error) {
 	result := ApplicationGatewayWafDynamicManifestsDefaultClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationGatewayWafDynamicManifestResult); err != nil {
 		return ApplicationGatewayWafDynamicManifestsDefaultClientGetResponse{}, err
 	}

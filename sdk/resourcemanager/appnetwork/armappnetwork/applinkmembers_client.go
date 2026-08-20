@@ -83,8 +83,7 @@ func (client *AppLinkMembersClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -164,8 +163,7 @@ func (client *AppLinkMembersClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -219,12 +217,7 @@ func (client *AppLinkMembersClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return AppLinkMembersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AppLinkMembersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -258,8 +251,11 @@ func (client *AppLinkMembersClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *AppLinkMembersClient) getHandleResponse(resp *http.Response) (AppLinkMembersClientGetResponse, error) {
+func (client *AppLinkMembersClient) getHandleResponse(resp *http.Response, successCodes ...int) (AppLinkMembersClientGetResponse, error) {
 	result := AppLinkMembersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppLinkMember); err != nil {
 		return AppLinkMembersClientGetResponse{}, err
 	}
@@ -282,47 +278,61 @@ func (client *AppLinkMembersClient) NewListByAppLinkPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAppLinkCreateRequest(ctx, resourceGroupName, appLinkName, options)
-			}, nil)
+			req, err := client.listByAppLinkCreateRequest(ctx, resourceGroupName, appLinkName, nextLink, options)
 			if err != nil {
 				return AppLinkMembersClientListByAppLinkResponse{}, err
 			}
-			return client.listByAppLinkHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AppLinkMembersClientListByAppLinkResponse{}, err
+			}
+			return client.listByAppLinkHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAppLinkCreateRequest creates the ListByAppLink request.
-func (client *AppLinkMembersClient) listByAppLinkCreateRequest(ctx context.Context, resourceGroupName string, appLinkName string, _ *AppLinkMembersClientListByAppLinkOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AppLinkMembersClient) listByAppLinkCreateRequest(ctx context.Context, resourceGroupName string, appLinkName string, nextLink string, _ *AppLinkMembersClientListByAppLinkOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppLink/appLinks/{appLinkName}/appLinkMembers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if appLinkName == "" {
+			return nil, errors.New("parameter appLinkName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{appLinkName}", url.PathEscape(appLinkName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if appLinkName == "" {
-		return nil, errors.New("parameter appLinkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{appLinkName}", url.PathEscape(appLinkName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByAppLinkHandleResponse handles the ListByAppLink response.
-func (client *AppLinkMembersClient) listByAppLinkHandleResponse(resp *http.Response) (AppLinkMembersClientListByAppLinkResponse, error) {
+func (client *AppLinkMembersClient) listByAppLinkHandleResponse(resp *http.Response, successCodes ...int) (AppLinkMembersClientListByAppLinkResponse, error) {
 	result := AppLinkMembersClientListByAppLinkResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppLinkMemberListResult); err != nil {
 		return AppLinkMembersClientListByAppLinkResponse{}, err
 	}
@@ -372,8 +382,7 @@ func (client *AppLinkMembersClient) update(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

@@ -19,7 +19,7 @@ import (
 // InterconnectGroupsClient contains the methods for the InterconnectGroups group.
 // Don't use this type directly, use NewInterconnectGroupsClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type InterconnectGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -62,12 +62,7 @@ func (client *InterconnectGroupsClient) CreateOrUpdate(ctx context.Context, reso
 	if err != nil {
 		return InterconnectGroupsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return InterconnectGroupsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -90,7 +85,7 @@ func (client *InterconnectGroupsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -101,8 +96,11 @@ func (client *InterconnectGroupsClient) createOrUpdateCreateRequest(ctx context.
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *InterconnectGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (InterconnectGroupsClientCreateOrUpdateResponse, error) {
+func (client *InterconnectGroupsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (InterconnectGroupsClientCreateOrUpdateResponse, error) {
 	result := InterconnectGroupsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InterconnectGroup); err != nil {
 		return InterconnectGroupsClientCreateOrUpdateResponse{}, err
 	}
@@ -130,8 +128,7 @@ func (client *InterconnectGroupsClient) Delete(ctx context.Context, resourceGrou
 		return InterconnectGroupsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return InterconnectGroupsClientDeleteResponse{}, err
+		return InterconnectGroupsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return InterconnectGroupsClientDeleteResponse{}, nil
 }
@@ -156,7 +153,7 @@ func (client *InterconnectGroupsClient) deleteCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -180,12 +177,7 @@ func (client *InterconnectGroupsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return InterconnectGroupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InterconnectGroupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -208,15 +200,18 @@ func (client *InterconnectGroupsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *InterconnectGroupsClient) getHandleResponse(resp *http.Response) (InterconnectGroupsClientGetResponse, error) {
+func (client *InterconnectGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (InterconnectGroupsClientGetResponse, error) {
 	result := InterconnectGroupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InterconnectGroup); err != nil {
 		return InterconnectGroupsClientGetResponse{}, err
 	}
@@ -263,8 +258,7 @@ func (client *InterconnectGroupsClient) getNodeAvailability(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -289,7 +283,7 @@ func (client *InterconnectGroupsClient) getNodeAvailabilityCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -310,43 +304,57 @@ func (client *InterconnectGroupsClient) NewListPager(resourceGroupName string, o
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return InterconnectGroupsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InterconnectGroupsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *InterconnectGroupsClient) listCreateRequest(ctx context.Context, resourceGroupName string, _ *InterconnectGroupsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/interconnectGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *InterconnectGroupsClient) listCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *InterconnectGroupsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/interconnectGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *InterconnectGroupsClient) listHandleResponse(resp *http.Response) (InterconnectGroupsClientListResponse, error) {
+func (client *InterconnectGroupsClient) listHandleResponse(resp *http.Response, successCodes ...int) (InterconnectGroupsClientListResponse, error) {
 	result := InterconnectGroupsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InterconnectGroupListResult); err != nil {
 		return InterconnectGroupsClientListResponse{}, err
 	}
@@ -367,39 +375,53 @@ func (client *InterconnectGroupsClient) NewListAllPager(options *InterconnectGro
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return InterconnectGroupsClientListAllResponse{}, err
 			}
-			return client.listAllHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InterconnectGroupsClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *InterconnectGroupsClient) listAllCreateRequest(ctx context.Context, _ *InterconnectGroupsClientListAllOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/interconnectGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *InterconnectGroupsClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *InterconnectGroupsClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/interconnectGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *InterconnectGroupsClient) listAllHandleResponse(resp *http.Response) (InterconnectGroupsClientListAllResponse, error) {
+func (client *InterconnectGroupsClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (InterconnectGroupsClientListAllResponse, error) {
 	result := InterconnectGroupsClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InterconnectGroupListResult); err != nil {
 		return InterconnectGroupsClientListAllResponse{}, err
 	}
@@ -427,12 +449,7 @@ func (client *InterconnectGroupsClient) UpdateTags(ctx context.Context, resource
 	if err != nil {
 		return InterconnectGroupsClientUpdateTagsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InterconnectGroupsClientUpdateTagsResponse{}, err
-	}
-	resp, err := client.updateTagsHandleResponse(httpResp)
-	return resp, err
+	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -455,7 +472,7 @@ func (client *InterconnectGroupsClient) updateTagsCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -466,8 +483,11 @@ func (client *InterconnectGroupsClient) updateTagsCreateRequest(ctx context.Cont
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *InterconnectGroupsClient) updateTagsHandleResponse(resp *http.Response) (InterconnectGroupsClientUpdateTagsResponse, error) {
+func (client *InterconnectGroupsClient) updateTagsHandleResponse(resp *http.Response, successCodes ...int) (InterconnectGroupsClientUpdateTagsResponse, error) {
 	result := InterconnectGroupsClientUpdateTagsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InterconnectGroup); err != nil {
 		return InterconnectGroupsClientUpdateTagsResponse{}, err
 	}

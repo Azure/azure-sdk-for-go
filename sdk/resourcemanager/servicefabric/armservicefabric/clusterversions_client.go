@@ -62,12 +62,7 @@ func (client *ClusterVersionsClient) Get(ctx context.Context, location string, c
 	if err != nil {
 		return ClusterVersionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClusterVersionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -97,8 +92,11 @@ func (client *ClusterVersionsClient) getCreateRequest(ctx context.Context, locat
 }
 
 // getHandleResponse handles the Get response.
-func (client *ClusterVersionsClient) getHandleResponse(resp *http.Response) (ClusterVersionsClientGetResponse, error) {
+func (client *ClusterVersionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ClusterVersionsClientGetResponse, error) {
 	result := ClusterVersionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
 		return ClusterVersionsClientGetResponse{}, err
 	}
@@ -128,12 +126,7 @@ func (client *ClusterVersionsClient) GetByEnvironment(ctx context.Context, locat
 	if err != nil {
 		return ClusterVersionsClientGetByEnvironmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClusterVersionsClientGetByEnvironmentResponse{}, err
-	}
-	resp, err := client.getByEnvironmentHandleResponse(httpResp)
-	return resp, err
+	return client.getByEnvironmentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByEnvironmentCreateRequest creates the GetByEnvironment request.
@@ -167,8 +160,11 @@ func (client *ClusterVersionsClient) getByEnvironmentCreateRequest(ctx context.C
 }
 
 // getByEnvironmentHandleResponse handles the GetByEnvironment response.
-func (client *ClusterVersionsClient) getByEnvironmentHandleResponse(resp *http.Response) (ClusterVersionsClientGetByEnvironmentResponse, error) {
+func (client *ClusterVersionsClient) getByEnvironmentHandleResponse(resp *http.Response, successCodes ...int) (ClusterVersionsClientGetByEnvironmentResponse, error) {
 	result := ClusterVersionsClientGetByEnvironmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
 		return ClusterVersionsClientGetByEnvironmentResponse{}, err
 	}
@@ -195,12 +191,7 @@ func (client *ClusterVersionsClient) List(ctx context.Context, location string, 
 	if err != nil {
 		return ClusterVersionsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClusterVersionsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -226,8 +217,11 @@ func (client *ClusterVersionsClient) listCreateRequest(ctx context.Context, loca
 }
 
 // listHandleResponse handles the List response.
-func (client *ClusterVersionsClient) listHandleResponse(resp *http.Response) (ClusterVersionsClientListResponse, error) {
+func (client *ClusterVersionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ClusterVersionsClientListResponse, error) {
 	result := ClusterVersionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
 		return ClusterVersionsClientListResponse{}, err
 	}
@@ -256,12 +250,7 @@ func (client *ClusterVersionsClient) ListByEnvironment(ctx context.Context, loca
 	if err != nil {
 		return ClusterVersionsClientListByEnvironmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClusterVersionsClientListByEnvironmentResponse{}, err
-	}
-	resp, err := client.listByEnvironmentHandleResponse(httpResp)
-	return resp, err
+	return client.listByEnvironmentHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByEnvironmentCreateRequest creates the ListByEnvironment request.
@@ -291,8 +280,11 @@ func (client *ClusterVersionsClient) listByEnvironmentCreateRequest(ctx context.
 }
 
 // listByEnvironmentHandleResponse handles the ListByEnvironment response.
-func (client *ClusterVersionsClient) listByEnvironmentHandleResponse(resp *http.Response) (ClusterVersionsClientListByEnvironmentResponse, error) {
+func (client *ClusterVersionsClient) listByEnvironmentHandleResponse(resp *http.Response, successCodes ...int) (ClusterVersionsClientListByEnvironmentResponse, error) {
 	result := ClusterVersionsClientListByEnvironmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterCodeVersionsListResult); err != nil {
 		return ClusterVersionsClientListByEnvironmentResponse{}, err
 	}

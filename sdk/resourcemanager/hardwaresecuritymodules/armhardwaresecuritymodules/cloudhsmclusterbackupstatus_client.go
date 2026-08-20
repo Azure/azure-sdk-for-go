@@ -19,7 +19,7 @@ import (
 // CloudHsmClusterBackupStatusClient contains the methods for the CloudHsmClusterBackupStatus group.
 // Don't use this type directly, use NewCloudHsmClusterBackupStatusClient() instead.
 //
-// Generated from API version 2025-03-31
+// Generated from API version 2025-12-01-preview
 type CloudHsmClusterBackupStatusClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,12 +63,7 @@ func (client *CloudHsmClusterBackupStatusClient) Get(ctx context.Context, resour
 	if err != nil {
 		return CloudHsmClusterBackupStatusClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return CloudHsmClusterBackupStatusClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getCreateRequest creates the Get request.
@@ -95,19 +90,22 @@ func (client *CloudHsmClusterBackupStatusClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250331)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *CloudHsmClusterBackupStatusClient) getHandleResponse(resp *http.Response) (CloudHsmClusterBackupStatusClientGetResponse, error) {
+func (client *CloudHsmClusterBackupStatusClient) getHandleResponse(resp *http.Response, successCodes ...int) (CloudHsmClusterBackupStatusClientGetResponse, error) {
 	result := CloudHsmClusterBackupStatusClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupResult); err != nil {

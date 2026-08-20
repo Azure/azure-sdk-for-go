@@ -62,12 +62,7 @@ func (client *ContributorsClient) GetFromPrimary(ctx context.Context, resourceGr
 	if err != nil {
 		return ContributorsClientGetFromPrimaryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContributorsClientGetFromPrimaryResponse{}, err
-	}
-	resp, err := client.getFromPrimaryHandleResponse(httpResp)
-	return resp, err
+	return client.getFromPrimaryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getFromPrimaryCreateRequest creates the GetFromPrimary request.
@@ -101,8 +96,11 @@ func (client *ContributorsClient) getFromPrimaryCreateRequest(ctx context.Contex
 }
 
 // getFromPrimaryHandleResponse handles the GetFromPrimary response.
-func (client *ContributorsClient) getFromPrimaryHandleResponse(resp *http.Response) (ContributorsClientGetFromPrimaryResponse, error) {
+func (client *ContributorsClient) getFromPrimaryHandleResponse(resp *http.Response, successCodes ...int) (ContributorsClientGetFromPrimaryResponse, error) {
 	result := ContributorsClientGetFromPrimaryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Contributor); err != nil {
 		return ContributorsClientGetFromPrimaryResponse{}, err
 	}
@@ -125,43 +123,57 @@ func (client *ContributorsClient) NewListFromApplicableMaccPager(billingAccountI
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listFromApplicableMaccCreateRequest(ctx, billingAccountID, systemID, options)
-			}, nil)
+			req, err := client.listFromApplicableMaccCreateRequest(ctx, billingAccountID, systemID, nextLink, options)
 			if err != nil {
 				return ContributorsClientListFromApplicableMaccResponse{}, err
 			}
-			return client.listFromApplicableMaccHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ContributorsClientListFromApplicableMaccResponse{}, err
+			}
+			return client.listFromApplicableMaccHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listFromApplicableMaccCreateRequest creates the ListFromApplicableMacc request.
-func (client *ContributorsClient) listFromApplicableMaccCreateRequest(ctx context.Context, billingAccountID string, systemID string, _ *ContributorsClientListFromApplicableMaccOptions) (*policy.Request, error) {
-	urlPath := "/providers/microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.BillingBenefits/applicableMaccs/{systemId}/providers/microsoft.BillingBenefits/applicableContributors"
-	if billingAccountID == "" {
-		return nil, errors.New("parameter billingAccountID cannot be empty")
+func (client *ContributorsClient) listFromApplicableMaccCreateRequest(ctx context.Context, billingAccountID string, systemID string, nextLink string, _ *ContributorsClientListFromApplicableMaccOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.BillingBenefits/applicableMaccs/{systemId}/providers/microsoft.BillingBenefits/applicableContributors"
+		if billingAccountID == "" {
+			return nil, errors.New("parameter billingAccountID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
+		if systemID == "" {
+			return nil, errors.New("parameter systemID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{systemId}", url.PathEscape(systemID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
-	if systemID == "" {
-		return nil, errors.New("parameter systemID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{systemId}", url.PathEscape(systemID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listFromApplicableMaccHandleResponse handles the ListFromApplicableMacc response.
-func (client *ContributorsClient) listFromApplicableMaccHandleResponse(resp *http.Response) (ContributorsClientListFromApplicableMaccResponse, error) {
+func (client *ContributorsClient) listFromApplicableMaccHandleResponse(resp *http.Response, successCodes ...int) (ContributorsClientListFromApplicableMaccResponse, error) {
 	result := ContributorsClientListFromApplicableMaccResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContributorList); err != nil {
 		return ContributorsClientListFromApplicableMaccResponse{}, err
 	}
@@ -184,47 +196,61 @@ func (client *ContributorsClient) NewListFromPrimaryPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listFromPrimaryCreateRequest(ctx, resourceGroupName, maccName, options)
-			}, nil)
+			req, err := client.listFromPrimaryCreateRequest(ctx, resourceGroupName, maccName, nextLink, options)
 			if err != nil {
 				return ContributorsClientListFromPrimaryResponse{}, err
 			}
-			return client.listFromPrimaryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ContributorsClientListFromPrimaryResponse{}, err
+			}
+			return client.listFromPrimaryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listFromPrimaryCreateRequest creates the ListFromPrimary request.
-func (client *ContributorsClient) listFromPrimaryCreateRequest(ctx context.Context, resourceGroupName string, maccName string, _ *ContributorsClientListFromPrimaryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}/contributors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ContributorsClient) listFromPrimaryCreateRequest(ctx context.Context, resourceGroupName string, maccName string, nextLink string, _ *ContributorsClientListFromPrimaryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}/contributors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if maccName == "" {
+			return nil, errors.New("parameter maccName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{maccName}", url.PathEscape(maccName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if maccName == "" {
-		return nil, errors.New("parameter maccName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{maccName}", url.PathEscape(maccName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listFromPrimaryHandleResponse handles the ListFromPrimary response.
-func (client *ContributorsClient) listFromPrimaryHandleResponse(resp *http.Response) (ContributorsClientListFromPrimaryResponse, error) {
+func (client *ContributorsClient) listFromPrimaryHandleResponse(resp *http.Response, successCodes ...int) (ContributorsClientListFromPrimaryResponse, error) {
 	result := ContributorsClientListFromPrimaryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContributorList); err != nil {
 		return ContributorsClientListFromPrimaryResponse{}, err
 	}

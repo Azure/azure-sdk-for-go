@@ -57,38 +57,52 @@ func (client *ProviderClient) NewGetAvailableStacksPager(options *ProviderClient
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getAvailableStacksCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.getAvailableStacksCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ProviderClientGetAvailableStacksResponse{}, err
 			}
-			return client.getAvailableStacksHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProviderClientGetAvailableStacksResponse{}, err
+			}
+			return client.getAvailableStacksHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getAvailableStacksCreateRequest creates the GetAvailableStacks request.
-func (client *ProviderClient) getAvailableStacksCreateRequest(ctx context.Context, options *ProviderClientGetAvailableStacksOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Web/availableStacks"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *ProviderClient) getAvailableStacksCreateRequest(ctx context.Context, nextLink string, options *ProviderClientGetAvailableStacksOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Web/availableStacks"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	if options != nil && options.OSTypeSelected != nil {
-		reqQP.Set("osTypeSelected", string(*options.OSTypeSelected))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		if options != nil && options.OSTypeSelected != nil {
+			reqQP.Set("osTypeSelected", string(*options.OSTypeSelected))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getAvailableStacksHandleResponse handles the GetAvailableStacks response.
-func (client *ProviderClient) getAvailableStacksHandleResponse(resp *http.Response) (ProviderClientGetAvailableStacksResponse, error) {
+func (client *ProviderClient) getAvailableStacksHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientGetAvailableStacksResponse, error) {
 	result := ProviderClientGetAvailableStacksResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationStackCollection); err != nil {
 		return ProviderClientGetAvailableStacksResponse{}, err
 	}
@@ -111,42 +125,56 @@ func (client *ProviderClient) NewGetAvailableStacksOnPremPager(options *Provider
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getAvailableStacksOnPremCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.getAvailableStacksOnPremCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ProviderClientGetAvailableStacksOnPremResponse{}, err
 			}
-			return client.getAvailableStacksOnPremHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProviderClientGetAvailableStacksOnPremResponse{}, err
+			}
+			return client.getAvailableStacksOnPremHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getAvailableStacksOnPremCreateRequest creates the GetAvailableStacksOnPrem request.
-func (client *ProviderClient) getAvailableStacksOnPremCreateRequest(ctx context.Context, options *ProviderClientGetAvailableStacksOnPremOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/availableStacks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ProviderClient) getAvailableStacksOnPremCreateRequest(ctx context.Context, nextLink string, options *ProviderClientGetAvailableStacksOnPremOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/availableStacks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	if options != nil && options.OSTypeSelected != nil {
-		reqQP.Set("osTypeSelected", string(*options.OSTypeSelected))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		if options != nil && options.OSTypeSelected != nil {
+			reqQP.Set("osTypeSelected", string(*options.OSTypeSelected))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getAvailableStacksOnPremHandleResponse handles the GetAvailableStacksOnPrem response.
-func (client *ProviderClient) getAvailableStacksOnPremHandleResponse(resp *http.Response) (ProviderClientGetAvailableStacksOnPremResponse, error) {
+func (client *ProviderClient) getAvailableStacksOnPremHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientGetAvailableStacksOnPremResponse, error) {
 	result := ProviderClientGetAvailableStacksOnPremResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationStackCollection); err != nil {
 		return ProviderClientGetAvailableStacksOnPremResponse{}, err
 	}
@@ -169,38 +197,52 @@ func (client *ProviderClient) NewGetFunctionAppStacksPager(options *ProviderClie
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getFunctionAppStacksCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.getFunctionAppStacksCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ProviderClientGetFunctionAppStacksResponse{}, err
 			}
-			return client.getFunctionAppStacksHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProviderClientGetFunctionAppStacksResponse{}, err
+			}
+			return client.getFunctionAppStacksHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getFunctionAppStacksCreateRequest creates the GetFunctionAppStacks request.
-func (client *ProviderClient) getFunctionAppStacksCreateRequest(ctx context.Context, options *ProviderClientGetFunctionAppStacksOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Web/functionAppStacks"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *ProviderClient) getFunctionAppStacksCreateRequest(ctx context.Context, nextLink string, options *ProviderClientGetFunctionAppStacksOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Web/functionAppStacks"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	if options != nil && options.StackOsType != nil {
-		reqQP.Set("stackOsType", string(*options.StackOsType))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		if options != nil && options.StackOsType != nil {
+			reqQP.Set("stackOsType", string(*options.StackOsType))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getFunctionAppStacksHandleResponse handles the GetFunctionAppStacks response.
-func (client *ProviderClient) getFunctionAppStacksHandleResponse(resp *http.Response) (ProviderClientGetFunctionAppStacksResponse, error) {
+func (client *ProviderClient) getFunctionAppStacksHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientGetFunctionAppStacksResponse, error) {
 	result := ProviderClientGetFunctionAppStacksResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionAppStackCollection); err != nil {
 		return ProviderClientGetFunctionAppStacksResponse{}, err
 	}
@@ -224,42 +266,56 @@ func (client *ProviderClient) NewGetFunctionAppStacksForLocationPager(location s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getFunctionAppStacksForLocationCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.getFunctionAppStacksForLocationCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return ProviderClientGetFunctionAppStacksForLocationResponse{}, err
 			}
-			return client.getFunctionAppStacksForLocationHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProviderClientGetFunctionAppStacksForLocationResponse{}, err
+			}
+			return client.getFunctionAppStacksForLocationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getFunctionAppStacksForLocationCreateRequest creates the GetFunctionAppStacksForLocation request.
-func (client *ProviderClient) getFunctionAppStacksForLocationCreateRequest(ctx context.Context, location string, options *ProviderClientGetFunctionAppStacksForLocationOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Web/locations/{location}/functionAppStacks"
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
+func (client *ProviderClient) getFunctionAppStacksForLocationCreateRequest(ctx context.Context, location string, nextLink string, options *ProviderClientGetFunctionAppStacksForLocationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Web/locations/{location}/functionAppStacks"
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	if options != nil && options.StackOsType != nil {
-		reqQP.Set("stackOsType", string(*options.StackOsType))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		if options != nil && options.StackOsType != nil {
+			reqQP.Set("stackOsType", string(*options.StackOsType))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getFunctionAppStacksForLocationHandleResponse handles the GetFunctionAppStacksForLocation response.
-func (client *ProviderClient) getFunctionAppStacksForLocationHandleResponse(resp *http.Response) (ProviderClientGetFunctionAppStacksForLocationResponse, error) {
+func (client *ProviderClient) getFunctionAppStacksForLocationHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientGetFunctionAppStacksForLocationResponse, error) {
 	result := ProviderClientGetFunctionAppStacksForLocationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionAppStackCollection); err != nil {
 		return ProviderClientGetFunctionAppStacksForLocationResponse{}, err
 	}
@@ -282,38 +338,52 @@ func (client *ProviderClient) NewGetWebAppStacksPager(options *ProviderClientGet
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getWebAppStacksCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.getWebAppStacksCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ProviderClientGetWebAppStacksResponse{}, err
 			}
-			return client.getWebAppStacksHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProviderClientGetWebAppStacksResponse{}, err
+			}
+			return client.getWebAppStacksHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getWebAppStacksCreateRequest creates the GetWebAppStacks request.
-func (client *ProviderClient) getWebAppStacksCreateRequest(ctx context.Context, options *ProviderClientGetWebAppStacksOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Web/webAppStacks"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *ProviderClient) getWebAppStacksCreateRequest(ctx context.Context, nextLink string, options *ProviderClientGetWebAppStacksOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Web/webAppStacks"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	if options != nil && options.StackOsType != nil {
-		reqQP.Set("stackOsType", string(*options.StackOsType))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		if options != nil && options.StackOsType != nil {
+			reqQP.Set("stackOsType", string(*options.StackOsType))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getWebAppStacksHandleResponse handles the GetWebAppStacks response.
-func (client *ProviderClient) getWebAppStacksHandleResponse(resp *http.Response) (ProviderClientGetWebAppStacksResponse, error) {
+func (client *ProviderClient) getWebAppStacksHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientGetWebAppStacksResponse, error) {
 	result := ProviderClientGetWebAppStacksResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppStackCollection); err != nil {
 		return ProviderClientGetWebAppStacksResponse{}, err
 	}
@@ -337,42 +407,56 @@ func (client *ProviderClient) NewGetWebAppStacksForLocationPager(location string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getWebAppStacksForLocationCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.getWebAppStacksForLocationCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return ProviderClientGetWebAppStacksForLocationResponse{}, err
 			}
-			return client.getWebAppStacksForLocationHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProviderClientGetWebAppStacksForLocationResponse{}, err
+			}
+			return client.getWebAppStacksForLocationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getWebAppStacksForLocationCreateRequest creates the GetWebAppStacksForLocation request.
-func (client *ProviderClient) getWebAppStacksForLocationCreateRequest(ctx context.Context, location string, options *ProviderClientGetWebAppStacksForLocationOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Web/locations/{location}/webAppStacks"
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
+func (client *ProviderClient) getWebAppStacksForLocationCreateRequest(ctx context.Context, location string, nextLink string, options *ProviderClientGetWebAppStacksForLocationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Web/locations/{location}/webAppStacks"
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	if options != nil && options.StackOsType != nil {
-		reqQP.Set("stackOsType", string(*options.StackOsType))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		if options != nil && options.StackOsType != nil {
+			reqQP.Set("stackOsType", string(*options.StackOsType))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getWebAppStacksForLocationHandleResponse handles the GetWebAppStacksForLocation response.
-func (client *ProviderClient) getWebAppStacksForLocationHandleResponse(resp *http.Response) (ProviderClientGetWebAppStacksForLocationResponse, error) {
+func (client *ProviderClient) getWebAppStacksForLocationHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientGetWebAppStacksForLocationResponse, error) {
 	result := ProviderClientGetWebAppStacksForLocationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppStackCollection); err != nil {
 		return ProviderClientGetWebAppStacksForLocationResponse{}, err
 	}
@@ -396,35 +480,49 @@ func (client *ProviderClient) NewListOperationsPager(options *ProviderClientList
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listOperationsCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listOperationsCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ProviderClientListOperationsResponse{}, err
 			}
-			return client.listOperationsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ProviderClientListOperationsResponse{}, err
+			}
+			return client.listOperationsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listOperationsCreateRequest creates the ListOperations request.
-func (client *ProviderClient) listOperationsCreateRequest(ctx context.Context, _ *ProviderClientListOperationsOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Web/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *ProviderClient) listOperationsCreateRequest(ctx context.Context, nextLink string, _ *ProviderClientListOperationsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Web/operations"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listOperationsHandleResponse handles the ListOperations response.
-func (client *ProviderClient) listOperationsHandleResponse(resp *http.Response) (ProviderClientListOperationsResponse, error) {
+func (client *ProviderClient) listOperationsHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientListOperationsResponse, error) {
 	result := ProviderClientListOperationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmOperationCollection); err != nil {
 		return ProviderClientListOperationsResponse{}, err
 	}

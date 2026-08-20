@@ -18,6 +18,8 @@ import (
 
 // BackupUsageSummariesClient contains the methods for the BackupUsageSummaries group.
 // Don't use this type directly, use NewBackupUsageSummariesClient() instead.
+//
+// Generated from API version 2026-07-01
 type BackupUsageSummariesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -40,8 +42,6 @@ func NewBackupUsageSummariesClient(subscriptionID string, credential azcore.Toke
 }
 
 // NewListPager - Fetches the backup management usage summaries of the vault.
-//
-// Generated from API version 2026-01-31-preview
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupUsageSummariesClientListOptions contains the optional parameters for the BackupUsageSummariesClient.NewListPager
@@ -57,53 +57,67 @@ func (client *BackupUsageSummariesClient) NewListPager(vaultName string, resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, vaultName, resourceGroupName, nextLink, options)
 			if err != nil {
 				return BackupUsageSummariesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BackupUsageSummariesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *BackupUsageSummariesClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *BackupUsageSummariesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupUsageSummaries"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *BackupUsageSummariesClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, nextLink string, options *BackupUsageSummariesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupUsageSummaries"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if vaultName == "" {
+			return nil, errors.New("parameter vaultName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		reqQP.Set("api-version", version20260701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *BackupUsageSummariesClient) listHandleResponse(resp *http.Response) (BackupUsageSummariesClientListResponse, error) {
+func (client *BackupUsageSummariesClient) listHandleResponse(resp *http.Response, successCodes ...int) (BackupUsageSummariesClientListResponse, error) {
 	result := BackupUsageSummariesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupManagementUsageList); err != nil {
 		return BackupUsageSummariesClientListResponse{}, err
 	}

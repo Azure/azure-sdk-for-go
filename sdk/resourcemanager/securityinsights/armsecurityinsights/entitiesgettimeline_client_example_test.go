@@ -25,9 +25,9 @@ func ExampleEntitiesGetTimelineClient_List() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewEntitiesGetTimelineClient().List(ctx, "myRg", "myWorkspace", "e1d3d618-e11f-478b-98e3-bb381539a8e1", armsecurityinsights.EntityTimelineParameters{
-		EndTime:        to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-01T00:00:00.000Z"); return t }()),
+		EndTime:        to.Ptr(time.Date(2021, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		NumberOfBucket: to.Ptr[int32](4),
-		StartTime:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T00:00:00.000Z"); return t }()),
+		StartTime:      to.Ptr(time.Date(2021, time.September, 1, 0, 0, 0, 0, time.UTC)),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -71,20 +71,20 @@ func ExampleEntitiesGetTimelineClient_List() {
 	// 				AlertType: to.Ptr("4467341f-fb73-4f99-a9b3-29473532cf5a_c93bf33e-055e-4972-9e7d-f84fe3fb61ae"),
 	// 				AzureResourceID: to.Ptr("4467341f-fb73-4f99-a9b3-29473532cf5a_bf7c3a2f-b743-6410-3ff0-ec64b5995d50"),
 	// 				DisplayName: to.Ptr("Alert display name"),
-	// 				EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T23:31:28.02Z"); return t}()),
+	// 				EndTimeUTC: to.Ptr(time.Date(2021, time.September, 1, 23, 31, 28, 20000000, time.UTC)),
 	// 				Kind: to.Ptr(armsecurityinsights.EntityTimelineKindSecurityAlert),
 	// 				ProductName: to.Ptr("Azure Sentinel"),
 	// 				Severity: to.Ptr(armsecurityinsights.AlertSeverityMedium),
-	// 				StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T23:32:28.01Z"); return t}()),
-	// 				TimeGenerated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T23:37:25.8136594Z"); return t}()),
+	// 				StartTimeUTC: to.Ptr(time.Date(2021, time.September, 1, 23, 32, 28, 10000000, time.UTC)),
+	// 				TimeGenerated: to.Ptr(time.Date(2021, time.September, 1, 23, 37, 25, 813659400, time.UTC)),
 	// 			},
 	// 			&armsecurityinsights.ActivityTimelineItem{
-	// 				BucketEndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T23:31:28.02Z"); return t}()),
-	// 				BucketStartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T21:31:28.02Z"); return t}()),
+	// 				BucketEndTimeUTC: to.Ptr(time.Date(2021, time.September, 1, 23, 31, 28, 20000000, time.UTC)),
+	// 				BucketStartTimeUTC: to.Ptr(time.Date(2021, time.September, 1, 21, 31, 28, 20000000, time.UTC)),
 	// 				Content: to.Ptr("he user has deleted the account 3 time(s)"),
-	// 				FirstActivityTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T21:35:28.02Z"); return t}()),
+	// 				FirstActivityTimeUTC: to.Ptr(time.Date(2021, time.September, 1, 21, 35, 28, 20000000, time.UTC)),
 	// 				Kind: to.Ptr(armsecurityinsights.EntityTimelineKindActivity),
-	// 				LastActivityTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T21:35:28.02Z"); return t}()),
+	// 				LastActivityTimeUTC: to.Ptr(time.Date(2021, time.September, 1, 21, 35, 28, 20000000, time.UTC)),
 	// 				QueryID: to.Ptr("e0459780-ac9d-4b72-8bd4-fecf6b46a0a1"),
 	// 				Title: to.Ptr("The user has deleted an account"),
 	// 			},
@@ -92,7 +92,7 @@ func ExampleEntitiesGetTimelineClient_List() {
 	// 				Description: to.Ptr("Anomalous private to public port scanning activity with high destination port count along with low port ratio. The ratios are normalized by multiplying them by 10,000 to get them to a more usable value between 0.0 and 1.0."),
 	// 				AzureResourceID: to.Ptr("4467341f-fb73-4f99-a9b3-29473532cf5a_d56430ef-f421-2c9c-0b7d-d082285843c6"),
 	// 				DisplayName: to.Ptr("(Preview) Anomalous scanning activity"),
-	// 				EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T23:31:28.02Z"); return t}()),
+	// 				EndTimeUTC: to.Ptr(time.Date(2021, time.September, 1, 23, 31, 28, 20000000, time.UTC)),
 	// 				Intent: to.Ptr("Discovery"),
 	// 				Kind: to.Ptr(armsecurityinsights.EntityTimelineKindAnomaly),
 	// 				ProductName: to.Ptr("Azure Sentinel"),
@@ -100,11 +100,11 @@ func ExampleEntitiesGetTimelineClient_List() {
 	// 					to.Ptr("High destination port count"),
 	// 					to.Ptr("Low port ratio"),
 	// 				},
-	// 				StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T23:32:28.01Z"); return t}()),
+	// 				StartTimeUTC: to.Ptr(time.Date(2021, time.September, 1, 23, 32, 28, 10000000, time.UTC)),
 	// 				Techniques: []*string{
 	// 					to.Ptr("T1046"),
 	// 				},
-	// 				TimeGenerated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-09-01T23:37:25.8136594Z"); return t}()),
+	// 				TimeGenerated: to.Ptr(time.Date(2021, time.September, 1, 23, 37, 25, 813659400, time.UTC)),
 	// 				Vendor: to.Ptr("Microsoft"),
 	// 			},
 	// 		},

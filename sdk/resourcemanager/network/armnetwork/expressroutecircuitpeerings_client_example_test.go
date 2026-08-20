@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitPeeringCreate.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitPeeringCreate.json
 func ExampleExpressRouteCircuitPeeringsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleExpressRouteCircuitPeeringsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitPeeringDelete.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitPeeringDelete.json
 func ExampleExpressRouteCircuitPeeringsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleExpressRouteCircuitPeeringsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitPeeringGet.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitPeeringGet.json
 func ExampleExpressRouteCircuitPeeringsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +167,7 @@ func ExampleExpressRouteCircuitPeeringsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitPeeringList.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitPeeringList.json
 func ExampleExpressRouteCircuitPeeringsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

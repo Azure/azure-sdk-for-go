@@ -19,7 +19,7 @@ import (
 // VirtualNetworkGatewayNatRulesClient contains the methods for the VirtualNetworkGatewayNatRules group.
 // Don't use this type directly, use NewVirtualNetworkGatewayNatRulesClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type VirtualNetworkGatewayNatRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -85,8 +85,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdate(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -115,7 +114,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) createOrUpdateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -166,8 +165,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) deleteOperation(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -196,7 +194,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) deleteCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -222,12 +220,7 @@ func (client *VirtualNetworkGatewayNatRulesClient) Get(ctx context.Context, reso
 	if err != nil {
 		return VirtualNetworkGatewayNatRulesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualNetworkGatewayNatRulesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -254,15 +247,18 @@ func (client *VirtualNetworkGatewayNatRulesClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *VirtualNetworkGatewayNatRulesClient) getHandleResponse(resp *http.Response) (VirtualNetworkGatewayNatRulesClientGetResponse, error) {
+func (client *VirtualNetworkGatewayNatRulesClient) getHandleResponse(resp *http.Response, successCodes ...int) (VirtualNetworkGatewayNatRulesClientGetResponse, error) {
 	result := VirtualNetworkGatewayNatRulesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualNetworkGatewayNatRule); err != nil {
 		return VirtualNetworkGatewayNatRulesClientGetResponse{}, err
 	}
@@ -285,47 +281,61 @@ func (client *VirtualNetworkGatewayNatRulesClient) NewListByVirtualNetworkGatewa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByVirtualNetworkGatewayCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, options)
-			}, nil)
+			req, err := client.listByVirtualNetworkGatewayCreateRequest(ctx, resourceGroupName, virtualNetworkGatewayName, nextLink, options)
 			if err != nil {
 				return VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse{}, err
 			}
-			return client.listByVirtualNetworkGatewayHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse{}, err
+			}
+			return client.listByVirtualNetworkGatewayHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByVirtualNetworkGatewayCreateRequest creates the ListByVirtualNetworkGateway request.
-func (client *VirtualNetworkGatewayNatRulesClient) listByVirtualNetworkGatewayCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, _ *VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/natRules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *VirtualNetworkGatewayNatRulesClient) listByVirtualNetworkGatewayCreateRequest(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, nextLink string, _ *VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworkGateways/{virtualNetworkGatewayName}/natRules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if virtualNetworkGatewayName == "" {
+			return nil, errors.New("parameter virtualNetworkGatewayName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkGatewayName}", url.PathEscape(virtualNetworkGatewayName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualNetworkGatewayName == "" {
-		return nil, errors.New("parameter virtualNetworkGatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualNetworkGatewayName}", url.PathEscape(virtualNetworkGatewayName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByVirtualNetworkGatewayHandleResponse handles the ListByVirtualNetworkGateway response.
-func (client *VirtualNetworkGatewayNatRulesClient) listByVirtualNetworkGatewayHandleResponse(resp *http.Response) (VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse, error) {
+func (client *VirtualNetworkGatewayNatRulesClient) listByVirtualNetworkGatewayHandleResponse(resp *http.Response, successCodes ...int) (VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse, error) {
 	result := VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListVirtualNetworkGatewayNatRulesResult); err != nil {
 		return VirtualNetworkGatewayNatRulesClientListByVirtualNetworkGatewayResponse{}, err
 	}

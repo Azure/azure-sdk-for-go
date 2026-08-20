@@ -162,13 +162,13 @@ func ExampleAccessControlListsClient_BeginCreate_accessControlListsCreateMaximum
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.AccessControlListsClientCreateResponse{
-	// 	AccessControlList: &armmanagednetworkfabric.AccessControlList{
+	// 	AccessControlList: armmanagednetworkfabric.AccessControlList{
 	// 		Properties: &armmanagednetworkfabric.AccessControlListProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			ConfigurationType: to.Ptr(armmanagednetworkfabric.ConfigurationTypeFile),
@@ -291,7 +291,7 @@ func ExampleAccessControlListsClient_BeginCreate_accessControlListsCreateMaximum
 	// 					},
 	// 				},
 	// 			},
-	// 			LastSyncedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-17T08:56:23.203Z"); return t}()),
+	// 			LastSyncedTime: to.Ptr(time.Date(2023, time.June, 17, 8, 56, 23, 203000000, time.UTC)),
 	// 			ACLType: to.Ptr(armmanagednetworkfabric.ACLTypeCp),
 	// 			DeviceRole: to.Ptr(armmanagednetworkfabric.DeviceRoleCE),
 	// 			GlobalAccessControlListActions: &armmanagednetworkfabric.GlobalAccessControlListActionProperties{
@@ -314,10 +314,10 @@ func ExampleAccessControlListsClient_BeginCreate_accessControlListsCreateMaximum
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -402,19 +402,19 @@ func ExampleAccessControlListsClient_BeginCreate_accessControlListsCreateMaximum
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.AccessControlListsClientCreateResponse{
-	// 	AccessControlList: &armmanagednetworkfabric.AccessControlList{
+	// 	AccessControlList: armmanagednetworkfabric.AccessControlList{
 	// 		Properties: &armmanagednetworkfabric.AccessControlListProperties{
 	// 			Annotation: to.Ptr("ttbh"),
 	// 			ConfigurationType: to.Ptr(armmanagednetworkfabric.ConfigurationTypeInline),
 	// 			ACLsURL: to.Ptr("https://microsoft.com/a"),
 	// 			DefaultAction: to.Ptr(armmanagednetworkfabric.CommunityActionTypesPermit),
-	// 			LastSyncedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-27T08:49:55.426Z"); return t}()),
+	// 			LastSyncedTime: to.Ptr(time.Date(2025, time.June, 27, 8, 49, 55, 426000000, time.UTC)),
 	// 			ACLType: to.Ptr(armmanagednetworkfabric.ACLTypeCp),
 	// 			DeviceRole: to.Ptr(armmanagednetworkfabric.DeviceRoleCE),
 	// 			ControlPlaneACLConfiguration: []*armmanagednetworkfabric.ControlPlaneACLProperties{
@@ -479,10 +479,10 @@ func ExampleAccessControlListsClient_BeginCreate_accessControlListsCreateMaximum
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -505,7 +505,7 @@ func ExampleAccessControlListsClient_BeginDelete() {
 	}
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 
@@ -528,7 +528,7 @@ func ExampleAccessControlListsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.AccessControlListsClientGetResponse{
-	// 	AccessControlList: &armmanagednetworkfabric.AccessControlList{
+	// 	AccessControlList: armmanagednetworkfabric.AccessControlList{
 	// 		Properties: &armmanagednetworkfabric.AccessControlListProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			ConfigurationType: to.Ptr(armmanagednetworkfabric.ConfigurationTypeFile),
@@ -654,7 +654,7 @@ func ExampleAccessControlListsClient_Get() {
 	// 					},
 	// 				},
 	// 			},
-	// 			LastSyncedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-17T08:56:23.203Z"); return t}()),
+	// 			LastSyncedTime: to.Ptr(time.Date(2023, time.June, 17, 8, 56, 23, 203000000, time.UTC)),
 	// 			ACLType: to.Ptr(armmanagednetworkfabric.ACLTypeCp),
 	// 			DeviceRole: to.Ptr(armmanagednetworkfabric.DeviceRoleCE),
 	// 			GlobalAccessControlListActions: &armmanagednetworkfabric.GlobalAccessControlListActionProperties{
@@ -677,10 +677,10 @@ func ExampleAccessControlListsClient_Get() {
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -837,7 +837,7 @@ func ExampleAccessControlListsClient_NewListByResourceGroupPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					LastSyncedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-17T08:56:23.203Z"); return t}()),
+		// 					LastSyncedTime: to.Ptr(time.Date(2023, time.June, 17, 8, 56, 23, 203000000, time.UTC)),
 		// 					ACLType: to.Ptr(armmanagednetworkfabric.ACLTypeCp),
 		// 					DeviceRole: to.Ptr(armmanagednetworkfabric.DeviceRoleCE),
 		// 					GlobalAccessControlListActions: &armmanagednetworkfabric.GlobalAccessControlListActionProperties{
@@ -860,10 +860,10 @@ func ExampleAccessControlListsClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armmanagednetworkfabric.SystemData{
 		// 					CreatedBy: to.Ptr("email@address.com"),
 		// 					CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("UserId"),
 		// 					LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -1024,7 +1024,7 @@ func ExampleAccessControlListsClient_NewListBySubscriptionPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					LastSyncedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-17T08:56:23.203Z"); return t}()),
+		// 					LastSyncedTime: to.Ptr(time.Date(2023, time.June, 17, 8, 56, 23, 203000000, time.UTC)),
 		// 					ACLType: to.Ptr(armmanagednetworkfabric.ACLTypeCp),
 		// 					DeviceRole: to.Ptr(armmanagednetworkfabric.DeviceRoleCE),
 		// 					GlobalAccessControlListActions: &armmanagednetworkfabric.GlobalAccessControlListActionProperties{
@@ -1047,10 +1047,10 @@ func ExampleAccessControlListsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armmanagednetworkfabric.SystemData{
 		// 					CreatedBy: to.Ptr("email@address.com"),
 		// 					CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("UserId"),
 		// 					LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -1077,13 +1077,13 @@ func ExampleAccessControlListsClient_BeginResync() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.AccessControlListsClientResyncResponse{
-	// 	CommonPostActionResponseForStateUpdate: &armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
+	// 	CommonPostActionResponseForStateUpdate: armmanagednetworkfabric.CommonPostActionResponseForStateUpdate{
 	// 		ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
@@ -1250,13 +1250,13 @@ func ExampleAccessControlListsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.AccessControlListsClientUpdateResponse{
-	// 	AccessControlList: &armmanagednetworkfabric.AccessControlList{
+	// 	AccessControlList: armmanagednetworkfabric.AccessControlList{
 	// 		Properties: &armmanagednetworkfabric.AccessControlListProperties{
 	// 			Annotation: to.Ptr("annotation"),
 	// 			ConfigurationType: to.Ptr(armmanagednetworkfabric.ConfigurationTypeFile),
@@ -1377,7 +1377,7 @@ func ExampleAccessControlListsClient_BeginUpdate() {
 	// 					},
 	// 				},
 	// 			},
-	// 			LastSyncedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-17T08:56:23.203Z"); return t}()),
+	// 			LastSyncedTime: to.Ptr(time.Date(2023, time.June, 17, 8, 56, 23, 203000000, time.UTC)),
 	// 			ACLType: to.Ptr(armmanagednetworkfabric.ACLTypeCp),
 	// 			DeviceRole: to.Ptr(armmanagednetworkfabric.DeviceRoleCE),
 	// 			GlobalAccessControlListActions: &armmanagednetworkfabric.GlobalAccessControlListActionProperties{
@@ -1400,10 +1400,10 @@ func ExampleAccessControlListsClient_BeginUpdate() {
 	// 		SystemData: &armmanagednetworkfabric.SystemData{
 	// 			CreatedBy: to.Ptr("email@address.com"),
 	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("UserId"),
 	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-06-09T04:51:41.251Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -1431,13 +1431,13 @@ func ExampleAccessControlListsClient_BeginUpdateAdministrativeState() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.AccessControlListsClientUpdateAdministrativeStateResponse{
-	// 	UpdateAdministrativeStateResponse: &armmanagednetworkfabric.UpdateAdministrativeStateResponse{
+	// 	UpdateAdministrativeStateResponse: armmanagednetworkfabric.UpdateAdministrativeStateResponse{
 	// 		Status: to.Ptr("Failed"),
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
@@ -1474,13 +1474,13 @@ func ExampleAccessControlListsClient_BeginValidateConfiguration() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmanagednetworkfabric.AccessControlListsClientValidateConfigurationResponse{
-	// 	ValidateConfigurationResponse: &armmanagednetworkfabric.ValidateConfigurationResponse{
+	// 	ValidateConfigurationResponse: armmanagednetworkfabric.ValidateConfigurationResponse{
 	// 		Error: &armmanagednetworkfabric.ErrorDetail{
 	// 			Code: to.Ptr(""),
 	// 			Message: to.Ptr(""),

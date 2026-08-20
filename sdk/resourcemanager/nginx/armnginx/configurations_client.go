@@ -61,12 +61,7 @@ func (client *ConfigurationsClient) Analysis(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ConfigurationsClientAnalysisResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationsClientAnalysisResponse{}, err
-	}
-	resp, err := client.analysisHandleResponse(httpResp)
-	return resp, err
+	return client.analysisHandleResponse(httpResp, http.StatusOK)
 }
 
 // analysisCreateRequest creates the Analysis request.
@@ -107,8 +102,11 @@ func (client *ConfigurationsClient) analysisCreateRequest(ctx context.Context, r
 }
 
 // analysisHandleResponse handles the Analysis response.
-func (client *ConfigurationsClient) analysisHandleResponse(resp *http.Response) (ConfigurationsClientAnalysisResponse, error) {
+func (client *ConfigurationsClient) analysisHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationsClientAnalysisResponse, error) {
 	result := ConfigurationsClientAnalysisResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AnalysisResult); err != nil {
 		return ConfigurationsClientAnalysisResponse{}, err
 	}
@@ -157,8 +155,7 @@ func (client *ConfigurationsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -238,8 +235,7 @@ func (client *ConfigurationsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -293,12 +289,7 @@ func (client *ConfigurationsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ConfigurationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConfigurationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -332,8 +323,11 @@ func (client *ConfigurationsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConfigurationsClient) getHandleResponse(resp *http.Response) (ConfigurationsClientGetResponse, error) {
+func (client *ConfigurationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationsClientGetResponse, error) {
 	result := ConfigurationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Configuration); err != nil {
 		return ConfigurationsClientGetResponse{}, err
 	}
@@ -355,47 +349,61 @@ func (client *ConfigurationsClient) NewListPager(resourceGroupName string, deplo
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, deploymentName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, deploymentName, nextLink, options)
 			if err != nil {
 				return ConfigurationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConfigurationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, _ *ConfigurationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/configurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, nextLink string, _ *ConfigurationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/configurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if deploymentName == "" {
+			return nil, errors.New("parameter deploymentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if deploymentName == "" {
-		return nil, errors.New("parameter deploymentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ConfigurationsClient) listHandleResponse(resp *http.Response) (ConfigurationsClientListResponse, error) {
+func (client *ConfigurationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ConfigurationsClientListResponse, error) {
 	result := ConfigurationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConfigurationListResponse); err != nil {
 		return ConfigurationsClientListResponse{}, err
 	}

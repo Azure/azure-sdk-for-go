@@ -16,8 +16,6 @@ import (
 	"strings"
 )
 
-const defaultEntityQueryTemplatesClientVersion string = "2025-07-01-preview"
-
 // EntityQueryTemplatesClient contains the methods for the EntityQueryTemplates group.
 // Don't use this type directly, use NewEntityQueryTemplatesClient() instead.
 //
@@ -64,12 +62,7 @@ func (client *EntityQueryTemplatesClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return EntityQueryTemplatesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EntityQueryTemplatesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -96,15 +89,18 @@ func (client *EntityQueryTemplatesClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultEntityQueryTemplatesClientVersion)
+	reqQP.Set("api-version", version20250701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *EntityQueryTemplatesClient) getHandleResponse(resp *http.Response) (EntityQueryTemplatesClientGetResponse, error) {
+func (client *EntityQueryTemplatesClient) getHandleResponse(resp *http.Response, successCodes ...int) (EntityQueryTemplatesClientGetResponse, error) {
 	result := EntityQueryTemplatesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return EntityQueryTemplatesClientGetResponse{}, err
 	}
@@ -127,50 +123,64 @@ func (client *EntityQueryTemplatesClient) NewListPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, nextLink, options)
 			if err != nil {
 				return EntityQueryTemplatesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EntityQueryTemplatesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *EntityQueryTemplatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *EntityQueryTemplatesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/entityQueryTemplates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EntityQueryTemplatesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, nextLink string, options *EntityQueryTemplatesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/entityQueryTemplates"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", defaultEntityQueryTemplatesClientVersion)
-	if options != nil && options.Kind != nil {
-		reqQP.Set("kind", string(*options.Kind))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250701Preview)
+		if options != nil && options.Kind != nil {
+			reqQP.Set("kind", string(*options.Kind))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *EntityQueryTemplatesClient) listHandleResponse(resp *http.Response) (EntityQueryTemplatesClientListResponse, error) {
+func (client *EntityQueryTemplatesClient) listHandleResponse(resp *http.Response, successCodes ...int) (EntityQueryTemplatesClientListResponse, error) {
 	result := EntityQueryTemplatesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EntityQueryTemplateList); err != nil {
 		return EntityQueryTemplatesClientListResponse{}, err
 	}

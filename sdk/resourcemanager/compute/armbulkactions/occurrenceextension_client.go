@@ -18,7 +18,7 @@ import (
 // OccurrenceExtensionClient contains the methods for the OccurrenceExtension group.
 // Don't use this type directly, use NewOccurrenceExtensionClient() instead.
 //
-// Generated from API version 2026-07-06-preview
+// Generated from API version 2026-08-06-preview
 type OccurrenceExtensionClient struct {
 	internal *arm.Client
 }
@@ -86,7 +86,7 @@ func (client *OccurrenceExtensionClient) listOccurrenceByVMsCreateRequest(ctx co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260706Preview)
+		reqQP.Set("api-version", version20260806Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-06-preview/LaunchBulkInstancesOperation_Cancel_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/LaunchBulkInstancesOperation_Cancel_MaximumSet_Gen.json
 func ExampleLaunchBulkInstancesOperationClient_BeginCancel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleLaunchBulkInstancesOperationClient_BeginCancel() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/LaunchBulkInstancesOperation_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/LaunchBulkInstancesOperation_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleLaunchBulkInstancesOperationClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1153,7 +1153,7 @@ func ExampleLaunchBulkInstancesOperationClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/LaunchBulkInstancesOperation_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/LaunchBulkInstancesOperation_Delete_MaximumSet_Gen.json
 func ExampleLaunchBulkInstancesOperationClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1175,7 +1175,7 @@ func ExampleLaunchBulkInstancesOperationClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/LaunchBulkInstancesOperation_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/LaunchBulkInstancesOperation_Get_MaximumSet_Gen.json
 func ExampleLaunchBulkInstancesOperationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1753,7 +1753,7 @@ func ExampleLaunchBulkInstancesOperationClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/LaunchBulkInstancesOperation_GetOperationStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/LaunchBulkInstancesOperation_GetOperationStatus_MaximumSet_Gen.json
 func ExampleLaunchBulkInstancesOperationClient_GetOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1781,7 +1781,7 @@ func ExampleLaunchBulkInstancesOperationClient_GetOperationStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/LaunchBulkInstancesOperation_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/LaunchBulkInstancesOperation_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleLaunchBulkInstancesOperationClient_NewListByResourceGroupPager_launchBulkInstancesOperationListByResourceGroupExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2369,7 +2369,7 @@ func ExampleLaunchBulkInstancesOperationClient_NewListByResourceGroupPager_launc
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/LaunchBulkInstancesOperation_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/LaunchBulkInstancesOperation_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleLaunchBulkInstancesOperationClient_NewListByResourceGroupPager_launchBulkInstancesOperationListByResourceGroupExampleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2405,7 +2405,7 @@ func ExampleLaunchBulkInstancesOperationClient_NewListByResourceGroupPager_launc
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/LaunchBulkInstancesOperation_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/LaunchBulkInstancesOperation_ListBySubscription_MaximumSet_Gen.json
 func ExampleLaunchBulkInstancesOperationClient_NewListBySubscriptionPager_launchBulkInstancesOperationListBySubscriptionExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2993,7 +2993,7 @@ func ExampleLaunchBulkInstancesOperationClient_NewListBySubscriptionPager_launch
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/LaunchBulkInstancesOperation_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/LaunchBulkInstancesOperation_ListBySubscription_MinimumSet_Gen.json
 func ExampleLaunchBulkInstancesOperationClient_NewListBySubscriptionPager_launchBulkInstancesOperationListBySubscriptionExampleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3029,7 +3029,7 @@ func ExampleLaunchBulkInstancesOperationClient_NewListBySubscriptionPager_launch
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/LaunchBulkInstancesOperation_ListVirtualMachines_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/LaunchBulkInstancesOperation_ListVirtualMachines_MaximumSet_Gen.json
 func ExampleLaunchBulkInstancesOperationClient_NewListVirtualMachinesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

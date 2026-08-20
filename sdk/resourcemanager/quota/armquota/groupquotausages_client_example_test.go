@@ -7,11 +7,11 @@ package armquota_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/GroupQuotaUsages/GetGroupQuotaUsages.json
+// Generated from example definition: 2026-09-01-preview/GroupQuotaUsages/GetGroupQuotaUsages.json
 func ExampleGroupQuotaUsagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

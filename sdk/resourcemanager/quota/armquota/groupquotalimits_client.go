@@ -18,6 +18,8 @@ import (
 
 // GroupQuotaLimitsClient contains the methods for the GroupQuotaLimits group.
 // Don't use this type directly, use NewGroupQuotaLimitsClient() instead.
+//
+// Generated from API version 2026-09-01-preview
 type GroupQuotaLimitsClient struct {
 	internal *arm.Client
 }
@@ -39,8 +41,6 @@ func NewGroupQuotaLimitsClient(credential azcore.TokenCredential, options *arm.C
 // List - Gets the GroupQuotaLimits for the specified resource provider and location for resource names passed in $filter=resourceName
 // eq {SKU}.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - managementGroupID - The management group ID.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
@@ -61,12 +61,7 @@ func (client *GroupQuotaLimitsClient) List(ctx context.Context, managementGroupI
 	if err != nil {
 		return GroupQuotaLimitsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GroupQuotaLimitsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -93,15 +88,18 @@ func (client *GroupQuotaLimitsClient) listCreateRequest(ctx context.Context, man
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *GroupQuotaLimitsClient) listHandleResponse(resp *http.Response) (GroupQuotaLimitsClientListResponse, error) {
+func (client *GroupQuotaLimitsClient) listHandleResponse(resp *http.Response, successCodes ...int) (GroupQuotaLimitsClientListResponse, error) {
 	result := GroupQuotaLimitsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GroupQuotaLimitList); err != nil {
 		return GroupQuotaLimitsClientListResponse{}, err
 	}

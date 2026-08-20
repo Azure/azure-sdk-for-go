@@ -18,6 +18,8 @@ import (
 
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
+//
+// Generated from API version 2026-09-01-preview
 type Client struct {
 	internal *arm.Client
 }
@@ -38,17 +40,30 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 
 // BeginCreateOrUpdate - Create or update the quota limit for the specified resource with the requested value. To update the
 // quota, follow these steps:
-// 1. Use the GET operation for quotas and usages to determine how much quota remains for the specific resource and to calculate
-// the new quota limit. These steps are detailed in [this example](https://techcommunity.microsoft.com/t5/azure-governance-and-management/using-the-new-quota-rest-api/ba-p/2183670).
-// 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed status of
-// the request.
+//
+//  1. Use the GET operation for quotas and usages to determine how much quota remains for the specific resource and to calculate
+//     the new quota limit. These steps are detailed in [this example](https://techcommunity.microsoft.com/t5/azure-governance-and-management/using-the-new-quota-rest-api/ba-p/2183670).
+//  2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed status of the
+//     request.
+//
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+//   - scope - The fully qualified Azure Resource manager identifier of the resource.
+//
+//   - resourceName - Resource name for a given resource provider. For example:
+//
+//   - SKU name for Microsoft.Compute
+//
+//   - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
+//
+//     For Microsoft.Network PublicIPAddresses.
+//
+//   - createQuotaRequest - Quota request payload.
+//
 //   - options - ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
-func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceName string, scope string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClientCreateOrUpdateResponse], error) {
+func (client *Client) BeginCreateOrUpdate(ctx context.Context, scope string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceName, scope, createQuotaRequest, options)
+		resp, err := client.createOrUpdate(ctx, scope, resourceName, createQuotaRequest, options)
 		if err != nil {
 			return nil, err
 		}
@@ -66,20 +81,20 @@ func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceName stri
 
 // CreateOrUpdate - Create or update the quota limit for the specified resource with the requested value. To update the quota,
 // follow these steps:
-// 1. Use the GET operation for quotas and usages to determine how much quota remains for the specific resource and to calculate
-// the new quota limit. These steps are detailed in [this example](https://techcommunity.microsoft.com/t5/azure-governance-and-management/using-the-new-quota-rest-api/ba-p/2183670).
-// 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed status of
-// the request.
-// If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
-func (client *Client) createOrUpdate(ctx context.Context, resourceName string, scope string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+//  1. Use the GET operation for quotas and usages to determine how much quota remains for the specific resource and to calculate
+//     the new quota limit. These steps are detailed in [this example](https://techcommunity.microsoft.com/t5/azure-governance-and-management/using-the-new-quota-rest-api/ba-p/2183670).
+//  2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed status of the
+//     request.
+//
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) createOrUpdate(ctx context.Context, scope string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceName, scope, createQuotaRequest, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, scope, resourceName, createQuotaRequest, options)
 	if err != nil {
 		return nil, err
 	}
@@ -88,30 +103,29 @@ func (client *Client) createOrUpdate(ctx context.Context, resourceName string, s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceName string, scope string, createQuotaRequest CurrentQuotaLimitBase, _ *ClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *Client) createOrUpdateCreateRequest(ctx context.Context, scope string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, _ *ClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}"
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createQuotaRequest); err != nil {
@@ -124,15 +138,24 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceN
 // limit that can be submitted with a PUT request.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+//   - scope - The fully qualified Azure Resource manager identifier of the resource.
+//
+//   - resourceName - Resource name for a given resource provider. For example:
+//
+//   - SKU name for Microsoft.Compute
+//
+//   - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
+//
+//     For Microsoft.Network PublicIPAddresses.
+//
 //   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
-func (client *Client) Get(ctx context.Context, resourceName string, scope string, options *ClientGetOptions) (ClientGetResponse, error) {
+func (client *Client) Get(ctx context.Context, scope string, resourceName string, options *ClientGetOptions) (ClientGetResponse, error) {
 	var err error
 	const operationName = "Client.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceName, scope, options)
+	req, err := client.getCreateRequest(ctx, scope, resourceName, options)
 	if err != nil {
 		return ClientGetResponse{}, err
 	}
@@ -140,40 +163,38 @@ func (client *Client) Get(ctx context.Context, resourceName string, scope string
 	if err != nil {
 		return ClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
-func (client *Client) getCreateRequest(ctx context.Context, resourceName string, scope string, _ *ClientGetOptions) (*policy.Request, error) {
+func (client *Client) getCreateRequest(ctx context.Context, scope string, resourceName string, _ *ClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}"
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse, error) {
+func (client *Client) getHandleResponse(resp *http.Response, successCodes ...int) (ClientGetResponse, error) {
 	result := ClientGetResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CurrentQuotaLimitBase); err != nil {
@@ -184,8 +205,6 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 
 // NewListPager - Get a list of current quota limits of all resources for the specified scope. The response from this GET
 // operation can be leveraged to submit requests to update a quota.
-//
-// Generated from API version 2025-09-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - ClientListOptions contains the optional parameters for the Client.NewListPager method.
 func (client *Client) NewListPager(scope string, options *ClientListOptions) *runtime.Pager[ClientListResponse] {
@@ -199,40 +218,54 @@ func (client *Client) NewListPager(scope string, options *ClientListOptions) *ru
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, scope, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, scope, nextLink, options)
 			if err != nil {
 				return ClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *Client) listCreateRequest(ctx context.Context, scope string, _ *ClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Quota/quotas"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
+func (client *Client) listCreateRequest(ctx context.Context, scope string, nextLink string, _ *ClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.Quota/quotas"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *Client) listHandleResponse(resp *http.Response) (ClientListResponse, error) {
+func (client *Client) listHandleResponse(resp *http.Response, successCodes ...int) (ClientListResponse, error) {
 	result := ClientListResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Limits); err != nil {
@@ -242,17 +275,30 @@ func (client *Client) listHandleResponse(resp *http.Response) (ClientListRespons
 }
 
 // BeginUpdate - Update the quota limit for a specific resource to the specified value:
-// 1. Use the Usages-GET and Quota-GET operations to determine the remaining quota for the specific resource and to calculate
-// the new quota limit. These steps are detailed in [this example](https://techcommunity.microsoft.com/t5/azure-governance-and-management/using-the-new-quota-rest-api/ba-p/2183670).
-// 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed status of
-// the request.
+//
+//  1. Use the Usages-GET and Quota-GET operations to determine the remaining quota for the specific resource and to calculate
+//     the new quota limit. These steps are detailed in [this example](https://techcommunity.microsoft.com/t5/azure-governance-and-management/using-the-new-quota-rest-api/ba-p/2183670).
+//  2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed status of the
+//     request.
+//
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+//   - scope - The fully qualified Azure Resource manager identifier of the resource.
+//
+//   - resourceName - Resource name for a given resource provider. For example:
+//
+//   - SKU name for Microsoft.Compute
+//
+//   - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
+//
+//     For Microsoft.Network PublicIPAddresses.
+//
+//   - createQuotaRequest - Quota requests payload.
+//
 //   - options - ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
-func (client *Client) BeginUpdate(ctx context.Context, resourceName string, scope string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error) {
+func (client *Client) BeginUpdate(ctx context.Context, scope string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceName, scope, createQuotaRequest, options)
+		resp, err := client.update(ctx, scope, resourceName, createQuotaRequest, options)
 		if err != nil {
 			return nil, err
 		}
@@ -268,20 +314,20 @@ func (client *Client) BeginUpdate(ctx context.Context, resourceName string, scop
 }
 
 // Update - Update the quota limit for a specific resource to the specified value:
-// 1. Use the Usages-GET and Quota-GET operations to determine the remaining quota for the specific resource and to calculate
-// the new quota limit. These steps are detailed in [this example](https://techcommunity.microsoft.com/t5/azure-governance-and-management/using-the-new-quota-rest-api/ba-p/2183670).
-// 2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed status of
-// the request.
-// If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
-func (client *Client) update(ctx context.Context, resourceName string, scope string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginUpdateOptions) (*http.Response, error) {
+//  1. Use the Usages-GET and Quota-GET operations to determine the remaining quota for the specific resource and to calculate
+//     the new quota limit. These steps are detailed in [this example](https://techcommunity.microsoft.com/t5/azure-governance-and-management/using-the-new-quota-rest-api/ba-p/2183670).
+//  2. Use this PUT operation to update the quota limit. Please check the URI in location header for the detailed status of the
+//     request.
+//
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *Client) update(ctx context.Context, scope string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceName, scope, createQuotaRequest, options)
+	req, err := client.updateCreateRequest(ctx, scope, resourceName, createQuotaRequest, options)
 	if err != nil {
 		return nil, err
 	}
@@ -290,30 +336,29 @@ func (client *Client) update(ctx context.Context, resourceName string, scope str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
 // updateCreateRequest creates the Update request.
-func (client *Client) updateCreateRequest(ctx context.Context, resourceName string, scope string, createQuotaRequest CurrentQuotaLimitBase, _ *ClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *Client) updateCreateRequest(ctx context.Context, scope string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, _ *ClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}"
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, createQuotaRequest); err != nil {

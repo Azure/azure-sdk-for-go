@@ -12,17 +12,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v3"
 	"net/http"
 	"net/url"
 	"regexp"
+	"slices"
 )
 
 // UsagesServer is a fake server for instances of the armquota.UsagesClient type.
 type UsagesServer struct {
 	// Get is the fake for method UsagesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceName string, scope string, options *armquota.UsagesClientGetOptions) (resp azfake.Responder[armquota.UsagesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, scope string, resourceName string, options *armquota.UsagesClientGetOptions) (resp azfake.Responder[armquota.UsagesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method UsagesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -58,9 +59,7 @@ func (u *UsagesServerTransport) Do(req *http.Request) (*http.Response, error) {
 }
 
 func (u *UsagesServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
-	resultChan := make(chan result)
-	defer close(resultChan)
-
+	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
 		var res result
@@ -78,10 +77,7 @@ func (u *UsagesServerTransport) dispatchToMethodFake(req *http.Request, method s
 			}
 
 		}
-		select {
-		case resultChan <- res:
-		case <-req.Context().Done():
-		}
+		resultChan <- res
 	}()
 
 	select {
@@ -102,20 +98,20 @@ func (u *UsagesServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
 	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := u.srv.Get(req.Context(), resourceNameParam, scopeParam, nil)
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := u.srv.Get(req.Context(), scopeParam, resourceNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
 	respContent := server.GetResponseContent(respr)
-	if !contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CurrentUsagesBase, req)
@@ -123,7 +119,7 @@ func (u *UsagesServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 		return nil, err
 	}
 	if val := server.GetResponse(respr).ETag; val != nil {
-		resp.Header.Set("ETag", *val)
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -155,7 +151,7 @@ func (u *UsagesServerTransport) dispatchNewListPager(req *http.Request) (*http.R
 	if err != nil {
 		return nil, err
 	}
-	if !contains([]int{http.StatusOK}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
 		u.newListPager.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
 	}

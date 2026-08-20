@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/SubscriptionQuotaAllocationRequests/SubscriptionQuotaAllocationRequests_Get-Compute.json
+// Generated from example definition: 2026-09-01-preview/SubscriptionQuotaAllocationRequests/SubscriptionQuotaAllocationRequests_Get-Compute.json
 func ExampleGroupQuotaSubscriptionAllocationRequestClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,14 +31,14 @@ func ExampleGroupQuotaSubscriptionAllocationRequestClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.GroupQuotaSubscriptionAllocationRequestClientGetResponse{
-	// 	AllocationRequestStatus: &armquota.AllocationRequestStatus{
+	// 	AllocationRequestStatus: armquota.AllocationRequestStatus{
 	// 		Name: to.Ptr("AE000000-0000-0000-0000-00000000000A"),
 	// 		Type: to.Ptr("Microsoft.Quota/groupQuotas/quotaAllocationRequests"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/E7EC67B3-7657-4966-BFFC-41EFD36BAA09/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Quota/groupQuotas/groupquota1/quotaAllocationRequests/AE000000-0000-0000-0000-00000000000A"),
 	// 		Properties: &armquota.AllocationRequestStatusProperties{
 	// 			FaultCode: to.Ptr("ContactSupport"),
 	// 			ProvisioningState: to.Ptr(armquota.RequestStateFailed),
-	// 			RequestSubmitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-17T01:06:02.191Z"); return t}()),
+	// 			RequestSubmitTime: to.Ptr(time.Date(2023, time.November, 17, 1, 6, 2, 191000000, time.UTC)),
 	// 			RequestedResource: &armquota.AllocationRequestBase{
 	// 				Properties: &armquota.AllocationRequestBaseProperties{
 	// 					Name: &armquota.AllocationRequestBasePropertiesName{
@@ -54,7 +54,7 @@ func ExampleGroupQuotaSubscriptionAllocationRequestClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/SubscriptionQuotaAllocationRequests/SubscriptionQuotaAllocationRequests_List-Compute.json
+// Generated from example definition: 2026-09-01-preview/SubscriptionQuotaAllocationRequests/SubscriptionQuotaAllocationRequests_List-Compute.json
 func ExampleGroupQuotaSubscriptionAllocationRequestClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleGroupQuotaSubscriptionAllocationRequestClient_NewListPager() {
 		// 				Properties: &armquota.AllocationRequestStatusProperties{
 		// 					FaultCode: to.Ptr("ContactSupport"),
 		// 					ProvisioningState: to.Ptr(armquota.RequestStateFailed),
-		// 					RequestSubmitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-20T06:18:59.913Z"); return t}()),
+		// 					RequestSubmitTime: to.Ptr(time.Date(2024, time.March, 20, 6, 18, 59, 913000000, time.UTC)),
 		// 					RequestedResource: &armquota.AllocationRequestBase{
 		// 						Properties: &armquota.AllocationRequestBaseProperties{
 		// 							Name: &armquota.AllocationRequestBasePropertiesName{
@@ -106,7 +106,7 @@ func ExampleGroupQuotaSubscriptionAllocationRequestClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/SubscriptionQuotaAllocationRequests/PatchSubscriptionQuotaAllocationRequest-Compute.json
+// Generated from example definition: 2026-09-01-preview/SubscriptionQuotaAllocationRequests/PatchSubscriptionQuotaAllocationRequest-Compute.json
 func ExampleGroupQuotaSubscriptionAllocationRequestClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,13 +140,13 @@ func ExampleGroupQuotaSubscriptionAllocationRequestClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.GroupQuotaSubscriptionAllocationRequestClientUpdateResponse{
-	// 	SubscriptionQuotaAllocationsList: &armquota.SubscriptionQuotaAllocationsList{
+	// 	SubscriptionQuotaAllocationsList: armquota.SubscriptionQuotaAllocationsList{
 	// 		Name: to.Ptr("westus"),
 	// 		Type: to.Ptr("Microsoft.Quota/groupQuotas/quotaAllocations"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/E7EC67B3-7657-4966-BFFC-41EFD36BAA09/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Quota/groupQuotas/groupquota1/resourceProviders/Microsoft.Compute/quotaAllocations/westus"),

@@ -7,11 +7,11 @@ package armquota_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/getQuotaRequestStatusById.json
+// Generated from example definition: 2026-09-01-preview/getQuotaRequestStatusById.json
 func ExampleRequestStatusClient_Get_quotaRequestStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExampleRequestStatusClient_Get_quotaRequestStatus() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewRequestStatusClient().Get(ctx, "2B5C8515-37D8-4B6A-879B-CD641A2CF605", "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus", nil)
+	res, err := clientFactory.NewRequestStatusClient().Get(ctx, "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus", "2B5C8515-37D8-4B6A-879B-CD641A2CF605", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -30,14 +30,14 @@ func ExampleRequestStatusClient_Get_quotaRequestStatus() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.RequestStatusClientGetResponse{
-	// 	RequestDetails: &armquota.RequestDetails{
+	// 	RequestDetails: armquota.RequestDetails{
 	// 		Name: to.Ptr("2B5C8515-37D8-4B6A-879B-CD641A2CF605"),
 	// 		Type: to.Ptr("Microsoft.Quota/quotaRequests"),
 	// 		ID: to.Ptr("/subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus/providers/Microsoft.Quota/quotaRequests/2B5C8515-37D8-4B6A-879B-CD641A2CF605"),
 	// 		Properties: &armquota.RequestProperties{
 	// 			Message: to.Ptr("Request completed"),
 	// 			ProvisioningState: to.Ptr(armquota.QuotaRequestStateSucceeded),
-	// 			RequestSubmitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-19T19:23:17.904Z"); return t}()),
+	// 			RequestSubmitTime: to.Ptr(time.Date(2019, time.August, 19, 19, 23, 17, 904000000, time.UTC)),
 	// 			Value: []*armquota.SubRequest{
 	// 				{
 	// 					Name: &armquota.ResourceName{
@@ -58,7 +58,7 @@ func ExampleRequestStatusClient_Get_quotaRequestStatus() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/getQuotaRequestStatusFailed.json
+// Generated from example definition: 2026-09-01-preview/getQuotaRequestStatusFailed.json
 func ExampleRequestStatusClient_Get_quotaRequestFailed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleRequestStatusClient_Get_quotaRequestFailed() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewRequestStatusClient().Get(ctx, "2B5C8515-37D8-4B6A-879B-CD641A2CF605", "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus", nil)
+	res, err := clientFactory.NewRequestStatusClient().Get(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus", "2B5C8515-37D8-4B6A-879B-CD641A2CF605", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -77,7 +77,7 @@ func ExampleRequestStatusClient_Get_quotaRequestFailed() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.RequestStatusClientGetResponse{
-	// 	RequestDetails: &armquota.RequestDetails{
+	// 	RequestDetails: armquota.RequestDetails{
 	// 		Name: to.Ptr("2B5C8515-37D8-4B6A-879B-CD641A2CF605"),
 	// 		Type: to.Ptr("Microsoft.Quota/quotaRequests"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/providers/Microsoft.Quota/quotaRequests/2B5C8515-37D8-4B6A-879B-CD641A2CF605"),
@@ -88,7 +88,7 @@ func ExampleRequestStatusClient_Get_quotaRequestFailed() {
 	// 			},
 	// 			Message: to.Ptr("Request failed, please contact support."),
 	// 			ProvisioningState: to.Ptr(armquota.QuotaRequestStateFailed),
-	// 			RequestSubmitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-19T19:23:17.904Z"); return t}()),
+	// 			RequestSubmitTime: to.Ptr(time.Date(2019, time.August, 19, 19, 23, 17, 904000000, time.UTC)),
 	// 			Value: []*armquota.SubRequest{
 	// 				{
 	// 					Name: &armquota.ResourceName{
@@ -109,7 +109,7 @@ func ExampleRequestStatusClient_Get_quotaRequestFailed() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/getQuotaRequestStatusInProgress.json
+// Generated from example definition: 2026-09-01-preview/getQuotaRequestStatusInProgress.json
 func ExampleRequestStatusClient_Get_quotaRequestInProgress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleRequestStatusClient_Get_quotaRequestInProgress() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewRequestStatusClient().Get(ctx, "2B5C8515-37D8-4B6A-879B-CD641A2CF605", "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus", nil)
+	res, err := clientFactory.NewRequestStatusClient().Get(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus", "2B5C8515-37D8-4B6A-879B-CD641A2CF605", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -128,14 +128,14 @@ func ExampleRequestStatusClient_Get_quotaRequestInProgress() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.RequestStatusClientGetResponse{
-	// 	RequestDetails: &armquota.RequestDetails{
+	// 	RequestDetails: armquota.RequestDetails{
 	// 		Name: to.Ptr("2B5C8515-37D8-4B6A-879B-CD641A2CF605"),
 	// 		Type: to.Ptr("Microsoft.Quota/quotaRequests"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus/providers/Microsoft.Quota/quotaRequests/2B5C8515-37D8-4B6A-879B-CD641A2CF605"),
 	// 		Properties: &armquota.RequestProperties{
 	// 			Message: to.Ptr("Request processing"),
 	// 			ProvisioningState: to.Ptr(armquota.QuotaRequestStateInProgress),
-	// 			RequestSubmitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-19T19:23:17.904Z"); return t}()),
+	// 			RequestSubmitTime: to.Ptr(time.Date(2019, time.August, 19, 19, 23, 17, 904000000, time.UTC)),
 	// 			Value: []*armquota.SubRequest{
 	// 				{
 	// 					Name: &armquota.ResourceName{
@@ -169,7 +169,7 @@ func ExampleRequestStatusClient_Get_quotaRequestInProgress() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/getQuotaRequestsHistory.json
+// Generated from example definition: 2026-09-01-preview/getQuotaRequestsHistory.json
 func ExampleRequestStatusClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +202,7 @@ func ExampleRequestStatusClient_NewListPager() {
 		// 				Properties: &armquota.RequestProperties{
 		// 					Message: to.Ptr("Request completed"),
 		// 					ProvisioningState: to.Ptr(armquota.QuotaRequestState("Success")),
-		// 					RequestSubmitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-19T19:23:17.904Z"); return t}()),
+		// 					RequestSubmitTime: to.Ptr(time.Date(2019, time.August, 19, 19, 23, 17, 904000000, time.UTC)),
 		// 					Value: []*armquota.SubRequest{
 		// 						{
 		// 							Name: &armquota.ResourceName{
@@ -227,7 +227,7 @@ func ExampleRequestStatusClient_NewListPager() {
 		// 				Properties: &armquota.RequestProperties{
 		// 					Message: to.Ptr("Request completed"),
 		// 					ProvisioningState: to.Ptr(armquota.QuotaRequestStateSucceeded),
-		// 					RequestSubmitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-18T19:23:17.904Z"); return t}()),
+		// 					RequestSubmitTime: to.Ptr(time.Date(2019, time.August, 18, 19, 23, 17, 904000000, time.UTC)),
 		// 					Value: []*armquota.SubRequest{
 		// 						{
 		// 							Name: &armquota.ResourceName{
@@ -256,7 +256,7 @@ func ExampleRequestStatusClient_NewListPager() {
 		// 					},
 		// 					Message: to.Ptr("The resource is currently unavailable in the location for the offer type."),
 		// 					ProvisioningState: to.Ptr(armquota.QuotaRequestStateFailed),
-		// 					RequestSubmitTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-17T19:23:17.904Z"); return t}()),
+		// 					RequestSubmitTime: to.Ptr(time.Date(2019, time.August, 17, 19, 23, 17, 904000000, time.UTC)),
 		// 					Value: []*armquota.SubRequest{
 		// 						{
 		// 							Name: &armquota.ResourceName{

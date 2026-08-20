@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/GroupQuotasEnforcement/PutGroupQuotaEnforcement.json
+// Generated from example definition: 2026-09-01-preview/GroupQuotasEnforcement/PutGroupQuotaEnforcement.json
 func ExampleGroupQuotaLocationSettingsClient_BeginCreateOrUpdate_groupQuotaLocationSettingsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,13 +33,13 @@ func ExampleGroupQuotaLocationSettingsClient_BeginCreateOrUpdate_groupQuotaLocat
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.GroupQuotaLocationSettingsClientCreateOrUpdateResponse{
-	// 	GroupQuotasEnforcementStatus: &armquota.GroupQuotasEnforcementStatus{
+	// 	GroupQuotasEnforcementStatus: armquota.GroupQuotasEnforcementStatus{
 	// 		Name: to.Ptr("eastus"),
 	// 		Type: to.Ptr("Microsoft.Quota/groupQuotas/locationSettings"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/E7EC67B3-7657-4966-BFFC-41EFD36BAA09/providers/Microsoft.Quota/groupQuotas/groupquota1/resourceProviders/Microsoft.Compute/locationSettings/eastus"),
@@ -52,7 +52,7 @@ func ExampleGroupQuotaLocationSettingsClient_BeginCreateOrUpdate_groupQuotaLocat
 	// }
 }
 
-// Generated from example definition: 2025-09-01/GroupQuotasEnforcement/PutGroupQuotaEnforcementFailed.json
+// Generated from example definition: 2026-09-01-preview/GroupQuotasEnforcement/PutGroupQuotaEnforcementFailed.json
 func ExampleGroupQuotaLocationSettingsClient_BeginCreateOrUpdate_groupQuotaLocationSettingsCreateOrUpdateFailed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,13 +73,13 @@ func ExampleGroupQuotaLocationSettingsClient_BeginCreateOrUpdate_groupQuotaLocat
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.GroupQuotaLocationSettingsClientCreateOrUpdateResponse{
-	// 	GroupQuotasEnforcementStatus: &armquota.GroupQuotasEnforcementStatus{
+	// 	GroupQuotasEnforcementStatus: armquota.GroupQuotasEnforcementStatus{
 	// 		Name: to.Ptr("eastus"),
 	// 		Type: to.Ptr("Microsoft.Quota/groupQuotas/locationSettings"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/E7EC67B3-7657-4966-BFFC-41EFD36BAA09/providers/Microsoft.Quota/groupQuotas/groupquota1/resourceProviders/Microsoft.Compute/locationSettings/eastus"),
@@ -93,7 +93,7 @@ func ExampleGroupQuotaLocationSettingsClient_BeginCreateOrUpdate_groupQuotaLocat
 	// }
 }
 
-// Generated from example definition: 2025-09-01/GroupQuotasEnforcement/GetGroupQuotaEnforcement.json
+// Generated from example definition: 2026-09-01-preview/GroupQuotasEnforcement/GetGroupQuotaEnforcement.json
 func ExampleGroupQuotaLocationSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleGroupQuotaLocationSettingsClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.GroupQuotaLocationSettingsClientGetResponse{
-	// 	GroupQuotasEnforcementStatus: &armquota.GroupQuotasEnforcementStatus{
+	// 	GroupQuotasEnforcementStatus: armquota.GroupQuotasEnforcementStatus{
 	// 		Name: to.Ptr("eastus"),
 	// 		Type: to.Ptr("Microsoft.Quota/groupQuotas/locationSettings"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/E7EC67B3-7657-4966-BFFC-41EFD36BAA09/providers/Microsoft.Quota/groupQuotas/groupquota1/resourceProviders/Microsoft.Compute/locationSettings/eastus"),
@@ -125,7 +125,7 @@ func ExampleGroupQuotaLocationSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/GroupQuotasEnforcement/PatchGroupQuotaEnforcement.json
+// Generated from example definition: 2026-09-01-preview/GroupQuotasEnforcement/PatchGroupQuotaEnforcement.json
 func ExampleGroupQuotaLocationSettingsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,13 +146,13 @@ func ExampleGroupQuotaLocationSettingsClient_BeginUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armquota.GroupQuotaLocationSettingsClientUpdateResponse{
-	// 	GroupQuotasEnforcementStatus: &armquota.GroupQuotasEnforcementStatus{
+	// 	GroupQuotasEnforcementStatus: armquota.GroupQuotasEnforcementStatus{
 	// 		Name: to.Ptr("eastus"),
 	// 		Type: to.Ptr("Microsoft.Quota/groupQuotas/locationSettings"),
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/E7EC67B3-7657-4966-BFFC-41EFD36BAA09/providers/Microsoft.Quota/groupQuotas/groupquota1/resourceProviders/Microsoft.Compute/locationSettings/eastus"),

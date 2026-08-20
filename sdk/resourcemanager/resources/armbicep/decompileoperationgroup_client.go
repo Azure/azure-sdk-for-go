@@ -60,12 +60,7 @@ func (client *DecompileOperationGroupClient) Bicep(ctx context.Context, decompil
 	if err != nil {
 		return DecompileOperationGroupClientBicepResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DecompileOperationGroupClientBicepResponse{}, err
-	}
-	resp, err := client.bicepHandleResponse(httpResp)
-	return resp, err
+	return client.bicepHandleResponse(httpResp, http.StatusOK)
 }
 
 // bicepCreateRequest creates the Bicep request.
@@ -91,8 +86,11 @@ func (client *DecompileOperationGroupClient) bicepCreateRequest(ctx context.Cont
 }
 
 // bicepHandleResponse handles the Bicep response.
-func (client *DecompileOperationGroupClient) bicepHandleResponse(resp *http.Response) (DecompileOperationGroupClientBicepResponse, error) {
+func (client *DecompileOperationGroupClient) bicepHandleResponse(resp *http.Response, successCodes ...int) (DecompileOperationGroupClientBicepResponse, error) {
 	result := DecompileOperationGroupClientBicepResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DecompileOperationSuccessResponse); err != nil {
 		return DecompileOperationGroupClientBicepResponse{}, err
 	}

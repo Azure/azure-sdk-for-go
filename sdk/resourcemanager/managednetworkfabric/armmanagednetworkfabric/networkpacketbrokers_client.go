@@ -18,6 +18,8 @@ import (
 
 // NetworkPacketBrokersClient contains the methods for the NetworkPacketBrokers group.
 // Don't use this type directly, use NewNetworkPacketBrokersClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkPacketBrokersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkPacketBrokersClient(subscriptionID string, credential azcore.Toke
 
 // BeginCreate - Creates a Network Packet Broker.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkPacketBrokerName - Name of the Network Packet Broker.
 //   - body - Request payload.
@@ -67,8 +67,6 @@ func (client *NetworkPacketBrokersClient) BeginCreate(ctx context.Context, resou
 
 // Create - Creates a Network Packet Broker.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkPacketBrokersClient) create(ctx context.Context, resourceGroupName string, networkPacketBrokerName string, body NetworkPacketBroker, options *NetworkPacketBrokersClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkPacketBrokersClient.BeginCreate"
@@ -84,8 +82,7 @@ func (client *NetworkPacketBrokersClient) create(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -110,8 +107,8 @@ func (client *NetworkPacketBrokersClient) createCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -122,8 +119,6 @@ func (client *NetworkPacketBrokersClient) createCreateRequest(ctx context.Contex
 
 // BeginDelete - Deletes Network Packet Broker.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkPacketBrokerName - Name of the Network Packet Broker.
 //   - options - NetworkPacketBrokersClientBeginDeleteOptions contains the optional parameters for the NetworkPacketBrokersClient.BeginDelete
@@ -147,8 +142,6 @@ func (client *NetworkPacketBrokersClient) BeginDelete(ctx context.Context, resou
 
 // Delete - Deletes Network Packet Broker.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkPacketBrokersClient) deleteOperation(ctx context.Context, resourceGroupName string, networkPacketBrokerName string, options *NetworkPacketBrokersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkPacketBrokersClient.BeginDelete"
@@ -164,8 +157,7 @@ func (client *NetworkPacketBrokersClient) deleteOperation(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -190,15 +182,13 @@ func (client *NetworkPacketBrokersClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Retrieves details of this Network Packet Broker.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkPacketBrokerName - Name of the Network Packet Broker.
 //   - options - NetworkPacketBrokersClientGetOptions contains the optional parameters for the NetworkPacketBrokersClient.Get
@@ -217,12 +207,7 @@ func (client *NetworkPacketBrokersClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return NetworkPacketBrokersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkPacketBrokersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -245,15 +230,18 @@ func (client *NetworkPacketBrokersClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *NetworkPacketBrokersClient) getHandleResponse(resp *http.Response) (NetworkPacketBrokersClientGetResponse, error) {
+func (client *NetworkPacketBrokersClient) getHandleResponse(resp *http.Response, successCodes ...int) (NetworkPacketBrokersClientGetResponse, error) {
 	result := NetworkPacketBrokersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkPacketBroker); err != nil {
 		return NetworkPacketBrokersClientGetResponse{}, err
 	}
@@ -261,8 +249,6 @@ func (client *NetworkPacketBrokersClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListByResourceGroupPager - Displays NetworkPacketBrokers list by resource group GET method.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - NetworkPacketBrokersClientListByResourceGroupOptions contains the optional parameters for the NetworkPacketBrokersClient.NewListByResourceGroupPager
 //     method.
@@ -277,43 +263,57 @@ func (client *NetworkPacketBrokersClient) NewListByResourceGroupPager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return NetworkPacketBrokersClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkPacketBrokersClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NetworkPacketBrokersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *NetworkPacketBrokersClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NetworkPacketBrokersClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *NetworkPacketBrokersClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *NetworkPacketBrokersClient) listByResourceGroupHandleResponse(resp *http.Response) (NetworkPacketBrokersClientListByResourceGroupResponse, error) {
+func (client *NetworkPacketBrokersClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (NetworkPacketBrokersClientListByResourceGroupResponse, error) {
 	result := NetworkPacketBrokersClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkPacketBrokersListResult); err != nil {
 		return NetworkPacketBrokersClientListByResourceGroupResponse{}, err
 	}
@@ -321,8 +321,6 @@ func (client *NetworkPacketBrokersClient) listByResourceGroupHandleResponse(resp
 }
 
 // NewListBySubscriptionPager - Displays Network Packet Brokers list by subscription GET method.
-//
-// Generated from API version 2025-07-15
 //   - options - NetworkPacketBrokersClientListBySubscriptionOptions contains the optional parameters for the NetworkPacketBrokersClient.NewListBySubscriptionPager
 //     method.
 func (client *NetworkPacketBrokersClient) NewListBySubscriptionPager(options *NetworkPacketBrokersClientListBySubscriptionOptions) *runtime.Pager[NetworkPacketBrokersClientListBySubscriptionResponse] {
@@ -336,39 +334,53 @@ func (client *NetworkPacketBrokersClient) NewListBySubscriptionPager(options *Ne
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return NetworkPacketBrokersClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkPacketBrokersClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *NetworkPacketBrokersClient) listBySubscriptionCreateRequest(ctx context.Context, _ *NetworkPacketBrokersClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NetworkPacketBrokersClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *NetworkPacketBrokersClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *NetworkPacketBrokersClient) listBySubscriptionHandleResponse(resp *http.Response) (NetworkPacketBrokersClientListBySubscriptionResponse, error) {
+func (client *NetworkPacketBrokersClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (NetworkPacketBrokersClientListBySubscriptionResponse, error) {
 	result := NetworkPacketBrokersClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkPacketBrokersListResult); err != nil {
 		return NetworkPacketBrokersClientListBySubscriptionResponse{}, err
 	}
@@ -377,8 +389,6 @@ func (client *NetworkPacketBrokersClient) listBySubscriptionHandleResponse(resp 
 
 // BeginUpdate - API to update certain properties of the Network Packet Broker resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkPacketBrokerName - Name of the Network Packet Broker.
 //   - body - Network Packet Broker properties to update.
@@ -403,8 +413,6 @@ func (client *NetworkPacketBrokersClient) BeginUpdate(ctx context.Context, resou
 
 // Update - API to update certain properties of the Network Packet Broker resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkPacketBrokersClient) update(ctx context.Context, resourceGroupName string, networkPacketBrokerName string, body NetworkPacketBrokerPatch, options *NetworkPacketBrokersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkPacketBrokersClient.BeginUpdate"
@@ -420,8 +428,7 @@ func (client *NetworkPacketBrokersClient) update(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -446,8 +453,8 @@ func (client *NetworkPacketBrokersClient) updateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

@@ -61,12 +61,7 @@ func (client *BuildAuthTokenClient) List(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return BuildAuthTokenClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BuildAuthTokenClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -100,8 +95,11 @@ func (client *BuildAuthTokenClient) listCreateRequest(ctx context.Context, resou
 }
 
 // listHandleResponse handles the List response.
-func (client *BuildAuthTokenClient) listHandleResponse(resp *http.Response) (BuildAuthTokenClientListResponse, error) {
+func (client *BuildAuthTokenClient) listHandleResponse(resp *http.Response, successCodes ...int) (BuildAuthTokenClientListResponse, error) {
 	result := BuildAuthTokenClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BuildToken); err != nil {
 		return BuildAuthTokenClientListResponse{}, err
 	}

@@ -64,12 +64,7 @@ func (client *AlertsClient) ChangeState(ctx context.Context, alertID string, new
 	if err != nil {
 		return AlertsClientChangeStateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertsClientChangeStateResponse{}, err
-	}
-	resp, err := client.changeStateHandleResponse(httpResp)
-	return resp, err
+	return client.changeStateHandleResponse(httpResp, http.StatusOK)
 }
 
 // changeStateCreateRequest creates the ChangeState request.
@@ -103,8 +98,11 @@ func (client *AlertsClient) changeStateCreateRequest(ctx context.Context, alertI
 }
 
 // changeStateHandleResponse handles the ChangeState response.
-func (client *AlertsClient) changeStateHandleResponse(resp *http.Response) (AlertsClientChangeStateResponse, error) {
+func (client *AlertsClient) changeStateHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientChangeStateResponse, error) {
 	result := AlertsClientChangeStateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
 		return AlertsClientChangeStateResponse{}, err
 	}
@@ -131,12 +129,7 @@ func (client *AlertsClient) ChangeStateTenant(ctx context.Context, alertID strin
 	if err != nil {
 		return AlertsClientChangeStateTenantResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertsClientChangeStateTenantResponse{}, err
-	}
-	resp, err := client.changeStateTenantHandleResponse(httpResp)
-	return resp, err
+	return client.changeStateTenantHandleResponse(httpResp, http.StatusOK)
 }
 
 // changeStateTenantCreateRequest creates the ChangeStateTenant request.
@@ -166,8 +159,11 @@ func (client *AlertsClient) changeStateTenantCreateRequest(ctx context.Context, 
 }
 
 // changeStateTenantHandleResponse handles the ChangeStateTenant response.
-func (client *AlertsClient) changeStateTenantHandleResponse(resp *http.Response) (AlertsClientChangeStateTenantResponse, error) {
+func (client *AlertsClient) changeStateTenantHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientChangeStateTenantResponse, error) {
 	result := AlertsClientChangeStateTenantResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
 		return AlertsClientChangeStateTenantResponse{}, err
 	}
@@ -188,90 +184,104 @@ func (client *AlertsClient) NewGetAllPager(options *AlertsClientGetAllOptions) *
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getAllCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.getAllCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return AlertsClientGetAllResponse{}, err
 			}
-			return client.getAllHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AlertsClientGetAllResponse{}, err
+			}
+			return client.getAllHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getAllCreateRequest creates the GetAll request.
-func (client *AlertsClient) getAllCreateRequest(ctx context.Context, options *AlertsClientGetAllOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.AlertsManagement/alerts"
-	if client.scope == "" {
-		return nil, errors.New("parameter client.scope cannot be empty")
+func (client *AlertsClient) getAllCreateRequest(ctx context.Context, nextLink string, options *AlertsClientGetAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.AlertsManagement/alerts"
+		if client.scope == "" {
+			return nil, errors.New("parameter client.scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(client.scope))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(client.scope))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.AlertRule != nil {
-		reqQP.Set("alertRule", *options.AlertRule)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.AlertRule != nil {
+			reqQP.Set("alertRule", *options.AlertRule)
+		}
+		if options != nil && options.AlertState != nil {
+			reqQP.Set("alertState", string(*options.AlertState))
+		}
+		reqQP.Set("api-version", version20250525Preview)
+		if options != nil && options.CustomTimeRange != nil {
+			reqQP.Set("customTimeRange", *options.CustomTimeRange)
+		}
+		if options != nil && options.IncludeContext != nil {
+			reqQP.Set("includeContext", strconv.FormatBool(*options.IncludeContext))
+		}
+		if options != nil && options.IncludeEgressConfig != nil {
+			reqQP.Set("includeEgressConfig", strconv.FormatBool(*options.IncludeEgressConfig))
+		}
+		if options != nil && options.MonitorCondition != nil {
+			reqQP.Set("monitorCondition", string(*options.MonitorCondition))
+		}
+		if options != nil && options.MonitorService != nil {
+			reqQP.Set("monitorService", string(*options.MonitorService))
+		}
+		if options != nil && options.PageCount != nil {
+			reqQP.Set("pageCount", strconv.FormatInt(*options.PageCount, 10))
+		}
+		if options != nil && options.Select != nil {
+			reqQP.Set("select", *options.Select)
+		}
+		if options != nil && options.Severity != nil {
+			reqQP.Set("severity", string(*options.Severity))
+		}
+		if options != nil && options.SmartGroupID != nil {
+			reqQP.Set("smartGroupId", *options.SmartGroupID)
+		}
+		if options != nil && options.SortBy != nil {
+			reqQP.Set("sortBy", string(*options.SortBy))
+		}
+		if options != nil && options.SortOrder != nil {
+			reqQP.Set("sortOrder", string(*options.SortOrder))
+		}
+		if options != nil && options.TargetResource != nil {
+			reqQP.Set("targetResource", *options.TargetResource)
+		}
+		if options != nil && options.TargetResourceGroup != nil {
+			reqQP.Set("targetResourceGroup", *options.TargetResourceGroup)
+		}
+		if options != nil && options.TargetResourceType != nil {
+			reqQP.Set("targetResourceType", *options.TargetResourceType)
+		}
+		if options != nil && options.TimeRange != nil {
+			reqQP.Set("timeRange", string(*options.TimeRange))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.AlertState != nil {
-		reqQP.Set("alertState", string(*options.AlertState))
-	}
-	reqQP.Set("api-version", version20250525Preview)
-	if options != nil && options.CustomTimeRange != nil {
-		reqQP.Set("customTimeRange", *options.CustomTimeRange)
-	}
-	if options != nil && options.IncludeContext != nil {
-		reqQP.Set("includeContext", strconv.FormatBool(*options.IncludeContext))
-	}
-	if options != nil && options.IncludeEgressConfig != nil {
-		reqQP.Set("includeEgressConfig", strconv.FormatBool(*options.IncludeEgressConfig))
-	}
-	if options != nil && options.MonitorCondition != nil {
-		reqQP.Set("monitorCondition", string(*options.MonitorCondition))
-	}
-	if options != nil && options.MonitorService != nil {
-		reqQP.Set("monitorService", string(*options.MonitorService))
-	}
-	if options != nil && options.PageCount != nil {
-		reqQP.Set("pageCount", strconv.FormatInt(*options.PageCount, 10))
-	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("select", *options.Select)
-	}
-	if options != nil && options.Severity != nil {
-		reqQP.Set("severity", string(*options.Severity))
-	}
-	if options != nil && options.SmartGroupID != nil {
-		reqQP.Set("smartGroupId", *options.SmartGroupID)
-	}
-	if options != nil && options.SortBy != nil {
-		reqQP.Set("sortBy", string(*options.SortBy))
-	}
-	if options != nil && options.SortOrder != nil {
-		reqQP.Set("sortOrder", string(*options.SortOrder))
-	}
-	if options != nil && options.TargetResource != nil {
-		reqQP.Set("targetResource", *options.TargetResource)
-	}
-	if options != nil && options.TargetResourceGroup != nil {
-		reqQP.Set("targetResourceGroup", *options.TargetResourceGroup)
-	}
-	if options != nil && options.TargetResourceType != nil {
-		reqQP.Set("targetResourceType", *options.TargetResourceType)
-	}
-	if options != nil && options.TimeRange != nil {
-		reqQP.Set("timeRange", string(*options.TimeRange))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getAllHandleResponse handles the GetAll response.
-func (client *AlertsClient) getAllHandleResponse(resp *http.Response) (AlertsClientGetAllResponse, error) {
+func (client *AlertsClient) getAllHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetAllResponse, error) {
 	result := AlertsClientGetAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsList); err != nil {
 		return AlertsClientGetAllResponse{}, err
 	}
@@ -292,86 +302,100 @@ func (client *AlertsClient) NewGetAllTenantPager(options *AlertsClientGetAllTena
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getAllTenantCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.getAllTenantCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return AlertsClientGetAllTenantResponse{}, err
 			}
-			return client.getAllTenantHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AlertsClientGetAllTenantResponse{}, err
+			}
+			return client.getAllTenantHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getAllTenantCreateRequest creates the GetAllTenant request.
-func (client *AlertsClient) getAllTenantCreateRequest(ctx context.Context, options *AlertsClientGetAllTenantOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.AlertsManagement/alerts"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *AlertsClient) getAllTenantCreateRequest(ctx context.Context, nextLink string, options *AlertsClientGetAllTenantOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.AlertsManagement/alerts"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.AlertRule != nil {
-		reqQP.Set("alertRule", *options.AlertRule)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.AlertRule != nil {
+			reqQP.Set("alertRule", *options.AlertRule)
+		}
+		if options != nil && options.AlertState != nil {
+			reqQP.Set("alertState", string(*options.AlertState))
+		}
+		reqQP.Set("api-version", version20250525Preview)
+		if options != nil && options.CustomTimeRange != nil {
+			reqQP.Set("customTimeRange", *options.CustomTimeRange)
+		}
+		if options != nil && options.IncludeContext != nil {
+			reqQP.Set("includeContext", strconv.FormatBool(*options.IncludeContext))
+		}
+		if options != nil && options.IncludeEgressConfig != nil {
+			reqQP.Set("includeEgressConfig", strconv.FormatBool(*options.IncludeEgressConfig))
+		}
+		if options != nil && options.MonitorCondition != nil {
+			reqQP.Set("monitorCondition", string(*options.MonitorCondition))
+		}
+		if options != nil && options.MonitorService != nil {
+			reqQP.Set("monitorService", string(*options.MonitorService))
+		}
+		if options != nil && options.PageCount != nil {
+			reqQP.Set("pageCount", strconv.FormatInt(*options.PageCount, 10))
+		}
+		if options != nil && options.Select != nil {
+			reqQP.Set("select", *options.Select)
+		}
+		if options != nil && options.Severity != nil {
+			reqQP.Set("severity", string(*options.Severity))
+		}
+		if options != nil && options.SmartGroupID != nil {
+			reqQP.Set("smartGroupId", *options.SmartGroupID)
+		}
+		if options != nil && options.SortBy != nil {
+			reqQP.Set("sortBy", string(*options.SortBy))
+		}
+		if options != nil && options.SortOrder != nil {
+			reqQP.Set("sortOrder", string(*options.SortOrder))
+		}
+		if options != nil && options.TargetResource != nil {
+			reqQP.Set("targetResource", *options.TargetResource)
+		}
+		if options != nil && options.TargetResourceGroup != nil {
+			reqQP.Set("targetResourceGroup", *options.TargetResourceGroup)
+		}
+		if options != nil && options.TargetResourceType != nil {
+			reqQP.Set("targetResourceType", *options.TargetResourceType)
+		}
+		if options != nil && options.TimeRange != nil {
+			reqQP.Set("timeRange", string(*options.TimeRange))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.AlertState != nil {
-		reqQP.Set("alertState", string(*options.AlertState))
-	}
-	reqQP.Set("api-version", version20250525Preview)
-	if options != nil && options.CustomTimeRange != nil {
-		reqQP.Set("customTimeRange", *options.CustomTimeRange)
-	}
-	if options != nil && options.IncludeContext != nil {
-		reqQP.Set("includeContext", strconv.FormatBool(*options.IncludeContext))
-	}
-	if options != nil && options.IncludeEgressConfig != nil {
-		reqQP.Set("includeEgressConfig", strconv.FormatBool(*options.IncludeEgressConfig))
-	}
-	if options != nil && options.MonitorCondition != nil {
-		reqQP.Set("monitorCondition", string(*options.MonitorCondition))
-	}
-	if options != nil && options.MonitorService != nil {
-		reqQP.Set("monitorService", string(*options.MonitorService))
-	}
-	if options != nil && options.PageCount != nil {
-		reqQP.Set("pageCount", strconv.FormatInt(*options.PageCount, 10))
-	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("select", *options.Select)
-	}
-	if options != nil && options.Severity != nil {
-		reqQP.Set("severity", string(*options.Severity))
-	}
-	if options != nil && options.SmartGroupID != nil {
-		reqQP.Set("smartGroupId", *options.SmartGroupID)
-	}
-	if options != nil && options.SortBy != nil {
-		reqQP.Set("sortBy", string(*options.SortBy))
-	}
-	if options != nil && options.SortOrder != nil {
-		reqQP.Set("sortOrder", string(*options.SortOrder))
-	}
-	if options != nil && options.TargetResource != nil {
-		reqQP.Set("targetResource", *options.TargetResource)
-	}
-	if options != nil && options.TargetResourceGroup != nil {
-		reqQP.Set("targetResourceGroup", *options.TargetResourceGroup)
-	}
-	if options != nil && options.TargetResourceType != nil {
-		reqQP.Set("targetResourceType", *options.TargetResourceType)
-	}
-	if options != nil && options.TimeRange != nil {
-		reqQP.Set("timeRange", string(*options.TimeRange))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getAllTenantHandleResponse handles the GetAllTenant response.
-func (client *AlertsClient) getAllTenantHandleResponse(resp *http.Response) (AlertsClientGetAllTenantResponse, error) {
+func (client *AlertsClient) getAllTenantHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetAllTenantResponse, error) {
 	result := AlertsClientGetAllTenantResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsList); err != nil {
 		return AlertsClientGetAllTenantResponse{}, err
 	}
@@ -401,12 +425,7 @@ func (client *AlertsClient) GetByID(ctx context.Context, alertID string, options
 	if err != nil {
 		return AlertsClientGetByIDResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertsClientGetByIDResponse{}, err
-	}
-	resp, err := client.getByIDHandleResponse(httpResp)
-	return resp, err
+	return client.getByIDHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByIDCreateRequest creates the GetByID request.
@@ -432,8 +451,11 @@ func (client *AlertsClient) getByIDCreateRequest(ctx context.Context, alertID st
 }
 
 // getByIDHandleResponse handles the GetByID response.
-func (client *AlertsClient) getByIDHandleResponse(resp *http.Response) (AlertsClientGetByIDResponse, error) {
+func (client *AlertsClient) getByIDHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetByIDResponse, error) {
 	result := AlertsClientGetByIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
 		return AlertsClientGetByIDResponse{}, err
 	}
@@ -460,12 +482,7 @@ func (client *AlertsClient) GetByIDTenant(ctx context.Context, alertID string, o
 	if err != nil {
 		return AlertsClientGetByIDTenantResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertsClientGetByIDTenantResponse{}, err
-	}
-	resp, err := client.getByIDTenantHandleResponse(httpResp)
-	return resp, err
+	return client.getByIDTenantHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByIDTenantCreateRequest creates the GetByIDTenant request.
@@ -487,8 +504,11 @@ func (client *AlertsClient) getByIDTenantCreateRequest(ctx context.Context, aler
 }
 
 // getByIDTenantHandleResponse handles the GetByIDTenant response.
-func (client *AlertsClient) getByIDTenantHandleResponse(resp *http.Response) (AlertsClientGetByIDTenantResponse, error) {
+func (client *AlertsClient) getByIDTenantHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetByIDTenantResponse, error) {
 	result := AlertsClientGetByIDTenantResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
 		return AlertsClientGetByIDTenantResponse{}, err
 	}
@@ -510,43 +530,57 @@ func (client *AlertsClient) NewGetEnrichmentsPager(alertID string, options *Aler
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getEnrichmentsCreateRequest(ctx, alertID, options)
-			}, nil)
+			req, err := client.getEnrichmentsCreateRequest(ctx, alertID, nextLink, options)
 			if err != nil {
 				return AlertsClientGetEnrichmentsResponse{}, err
 			}
-			return client.getEnrichmentsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AlertsClientGetEnrichmentsResponse{}, err
+			}
+			return client.getEnrichmentsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getEnrichmentsCreateRequest creates the GetEnrichments request.
-func (client *AlertsClient) getEnrichmentsCreateRequest(ctx context.Context, alertID string, _ *AlertsClientGetEnrichmentsOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.AlertsManagement/alerts/{alertId}/enrichments"
-	if client.scope == "" {
-		return nil, errors.New("parameter client.scope cannot be empty")
+func (client *AlertsClient) getEnrichmentsCreateRequest(ctx context.Context, alertID string, nextLink string, _ *AlertsClientGetEnrichmentsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.AlertsManagement/alerts/{alertId}/enrichments"
+		if client.scope == "" {
+			return nil, errors.New("parameter client.scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(client.scope))
+		if alertID == "" {
+			return nil, errors.New("parameter alertID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{alertId}", url.PathEscape(alertID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(client.scope))
-	if alertID == "" {
-		return nil, errors.New("parameter alertID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{alertId}", url.PathEscape(alertID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250525Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250525Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // getEnrichmentsHandleResponse handles the GetEnrichments response.
-func (client *AlertsClient) getEnrichmentsHandleResponse(resp *http.Response) (AlertsClientGetEnrichmentsResponse, error) {
+func (client *AlertsClient) getEnrichmentsHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetEnrichmentsResponse, error) {
 	result := AlertsClientGetEnrichmentsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertEnrichmentsList); err != nil {
 		return AlertsClientGetEnrichmentsResponse{}, err
 	}
@@ -575,12 +609,7 @@ func (client *AlertsClient) GetHistory(ctx context.Context, alertID string, opti
 	if err != nil {
 		return AlertsClientGetHistoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertsClientGetHistoryResponse{}, err
-	}
-	resp, err := client.getHistoryHandleResponse(httpResp)
-	return resp, err
+	return client.getHistoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getHistoryCreateRequest creates the GetHistory request.
@@ -606,8 +635,11 @@ func (client *AlertsClient) getHistoryCreateRequest(ctx context.Context, alertID
 }
 
 // getHistoryHandleResponse handles the GetHistory response.
-func (client *AlertsClient) getHistoryHandleResponse(resp *http.Response) (AlertsClientGetHistoryResponse, error) {
+func (client *AlertsClient) getHistoryHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetHistoryResponse, error) {
 	result := AlertsClientGetHistoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertModification); err != nil {
 		return AlertsClientGetHistoryResponse{}, err
 	}
@@ -633,12 +665,7 @@ func (client *AlertsClient) GetHistoryTenant(ctx context.Context, alertID string
 	if err != nil {
 		return AlertsClientGetHistoryTenantResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertsClientGetHistoryTenantResponse{}, err
-	}
-	resp, err := client.getHistoryTenantHandleResponse(httpResp)
-	return resp, err
+	return client.getHistoryTenantHandleResponse(httpResp, http.StatusOK)
 }
 
 // getHistoryTenantCreateRequest creates the GetHistoryTenant request.
@@ -660,8 +687,11 @@ func (client *AlertsClient) getHistoryTenantCreateRequest(ctx context.Context, a
 }
 
 // getHistoryTenantHandleResponse handles the GetHistoryTenant response.
-func (client *AlertsClient) getHistoryTenantHandleResponse(resp *http.Response) (AlertsClientGetHistoryTenantResponse, error) {
+func (client *AlertsClient) getHistoryTenantHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetHistoryTenantResponse, error) {
 	result := AlertsClientGetHistoryTenantResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertModification); err != nil {
 		return AlertsClientGetHistoryTenantResponse{}, err
 	}
@@ -687,12 +717,7 @@ func (client *AlertsClient) GetSummary(ctx context.Context, groupby AlertsSummar
 	if err != nil {
 		return AlertsClientGetSummaryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertsClientGetSummaryResponse{}, err
-	}
-	resp, err := client.getSummaryHandleResponse(httpResp)
-	return resp, err
+	return client.getSummaryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSummaryCreateRequest creates the GetSummary request.
@@ -748,8 +773,11 @@ func (client *AlertsClient) getSummaryCreateRequest(ctx context.Context, groupby
 }
 
 // getSummaryHandleResponse handles the GetSummary response.
-func (client *AlertsClient) getSummaryHandleResponse(resp *http.Response) (AlertsClientGetSummaryResponse, error) {
+func (client *AlertsClient) getSummaryHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetSummaryResponse, error) {
 	result := AlertsClientGetSummaryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsSummary); err != nil {
 		return AlertsClientGetSummaryResponse{}, err
 	}
@@ -774,12 +802,7 @@ func (client *AlertsClient) MetaData(ctx context.Context, identifier Identifier,
 	if err != nil {
 		return AlertsClientMetaDataResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertsClientMetaDataResponse{}, err
-	}
-	resp, err := client.metaDataHandleResponse(httpResp)
-	return resp, err
+	return client.metaDataHandleResponse(httpResp, http.StatusOK)
 }
 
 // metaDataCreateRequest creates the MetaData request.
@@ -798,8 +821,11 @@ func (client *AlertsClient) metaDataCreateRequest(ctx context.Context, identifie
 }
 
 // metaDataHandleResponse handles the MetaData response.
-func (client *AlertsClient) metaDataHandleResponse(resp *http.Response) (AlertsClientMetaDataResponse, error) {
+func (client *AlertsClient) metaDataHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientMetaDataResponse, error) {
 	result := AlertsClientMetaDataResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsMetaData); err != nil {
 		return AlertsClientMetaDataResponse{}, err
 	}

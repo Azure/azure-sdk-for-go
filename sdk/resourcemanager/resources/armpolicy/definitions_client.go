@@ -62,12 +62,7 @@ func (client *DefinitionsClient) CreateOrUpdate(ctx context.Context, policyDefin
 	if err != nil {
 		return DefinitionsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -97,8 +92,11 @@ func (client *DefinitionsClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DefinitionsClient) createOrUpdateHandleResponse(resp *http.Response) (DefinitionsClientCreateOrUpdateResponse, error) {
+func (client *DefinitionsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DefinitionsClientCreateOrUpdateResponse, error) {
 	result := DefinitionsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Definition); err != nil {
 		return DefinitionsClientCreateOrUpdateResponse{}, err
 	}
@@ -127,12 +125,7 @@ func (client *DefinitionsClient) CreateOrUpdateAtManagementGroup(ctx context.Con
 	if err != nil {
 		return DefinitionsClientCreateOrUpdateAtManagementGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionsClientCreateOrUpdateAtManagementGroupResponse{}, err
-	}
-	resp, err := client.createOrUpdateAtManagementGroupHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateAtManagementGroupHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createOrUpdateAtManagementGroupCreateRequest creates the CreateOrUpdateAtManagementGroup request.
@@ -162,8 +155,11 @@ func (client *DefinitionsClient) createOrUpdateAtManagementGroupCreateRequest(ct
 }
 
 // createOrUpdateAtManagementGroupHandleResponse handles the CreateOrUpdateAtManagementGroup response.
-func (client *DefinitionsClient) createOrUpdateAtManagementGroupHandleResponse(resp *http.Response) (DefinitionsClientCreateOrUpdateAtManagementGroupResponse, error) {
+func (client *DefinitionsClient) createOrUpdateAtManagementGroupHandleResponse(resp *http.Response, successCodes ...int) (DefinitionsClientCreateOrUpdateAtManagementGroupResponse, error) {
 	result := DefinitionsClientCreateOrUpdateAtManagementGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Definition); err != nil {
 		return DefinitionsClientCreateOrUpdateAtManagementGroupResponse{}, err
 	}
@@ -189,8 +185,7 @@ func (client *DefinitionsClient) Delete(ctx context.Context, policyDefinitionNam
 		return DefinitionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionsClientDeleteResponse{}, err
+		return DefinitionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DefinitionsClientDeleteResponse{}, nil
 }
@@ -237,8 +232,7 @@ func (client *DefinitionsClient) DeleteAtManagementGroup(ctx context.Context, ma
 		return DefinitionsClientDeleteAtManagementGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionsClientDeleteAtManagementGroupResponse{}, err
+		return DefinitionsClientDeleteAtManagementGroupResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DefinitionsClientDeleteAtManagementGroupResponse{}, nil
 }
@@ -282,12 +276,7 @@ func (client *DefinitionsClient) Get(ctx context.Context, policyDefinitionName s
 	if err != nil {
 		return DefinitionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -313,8 +302,11 @@ func (client *DefinitionsClient) getCreateRequest(ctx context.Context, policyDef
 }
 
 // getHandleResponse handles the Get response.
-func (client *DefinitionsClient) getHandleResponse(resp *http.Response) (DefinitionsClientGetResponse, error) {
+func (client *DefinitionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DefinitionsClientGetResponse, error) {
 	result := DefinitionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Definition); err != nil {
 		return DefinitionsClientGetResponse{}, err
 	}
@@ -341,12 +333,7 @@ func (client *DefinitionsClient) GetAtManagementGroup(ctx context.Context, manag
 	if err != nil {
 		return DefinitionsClientGetAtManagementGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionsClientGetAtManagementGroupResponse{}, err
-	}
-	resp, err := client.getAtManagementGroupHandleResponse(httpResp)
-	return resp, err
+	return client.getAtManagementGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAtManagementGroupCreateRequest creates the GetAtManagementGroup request.
@@ -372,8 +359,11 @@ func (client *DefinitionsClient) getAtManagementGroupCreateRequest(ctx context.C
 }
 
 // getAtManagementGroupHandleResponse handles the GetAtManagementGroup response.
-func (client *DefinitionsClient) getAtManagementGroupHandleResponse(resp *http.Response) (DefinitionsClientGetAtManagementGroupResponse, error) {
+func (client *DefinitionsClient) getAtManagementGroupHandleResponse(resp *http.Response, successCodes ...int) (DefinitionsClientGetAtManagementGroupResponse, error) {
 	result := DefinitionsClientGetAtManagementGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Definition); err != nil {
 		return DefinitionsClientGetAtManagementGroupResponse{}, err
 	}
@@ -398,12 +388,7 @@ func (client *DefinitionsClient) GetBuiltIn(ctx context.Context, policyDefinitio
 	if err != nil {
 		return DefinitionsClientGetBuiltInResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DefinitionsClientGetBuiltInResponse{}, err
-	}
-	resp, err := client.getBuiltInHandleResponse(httpResp)
-	return resp, err
+	return client.getBuiltInHandleResponse(httpResp, http.StatusOK)
 }
 
 // getBuiltInCreateRequest creates the GetBuiltIn request.
@@ -425,8 +410,11 @@ func (client *DefinitionsClient) getBuiltInCreateRequest(ctx context.Context, po
 }
 
 // getBuiltInHandleResponse handles the GetBuiltIn response.
-func (client *DefinitionsClient) getBuiltInHandleResponse(resp *http.Response) (DefinitionsClientGetBuiltInResponse, error) {
+func (client *DefinitionsClient) getBuiltInHandleResponse(resp *http.Response, successCodes ...int) (DefinitionsClientGetBuiltInResponse, error) {
 	result := DefinitionsClientGetBuiltInResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Definition); err != nil {
 		return DefinitionsClientGetBuiltInResponse{}, err
 	}
@@ -453,45 +441,59 @@ func (client *DefinitionsClient) NewListPager(options *DefinitionsClientListOpti
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return DefinitionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DefinitionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DefinitionsClient) listCreateRequest(ctx context.Context, options *DefinitionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DefinitionsClient) listCreateRequest(ctx context.Context, nextLink string, options *DefinitionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DefinitionsClient) listHandleResponse(resp *http.Response) (DefinitionsClientListResponse, error) {
+func (client *DefinitionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DefinitionsClientListResponse, error) {
 	result := DefinitionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefinitionListResult); err != nil {
 		return DefinitionsClientListResponse{}, err
 	}
@@ -515,41 +517,55 @@ func (client *DefinitionsClient) NewListBuiltInPager(options *DefinitionsClientL
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBuiltInCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBuiltInCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return DefinitionsClientListBuiltInResponse{}, err
 			}
-			return client.listBuiltInHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DefinitionsClientListBuiltInResponse{}, err
+			}
+			return client.listBuiltInHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBuiltInCreateRequest creates the ListBuiltIn request.
-func (client *DefinitionsClient) listBuiltInCreateRequest(ctx context.Context, options *DefinitionsClientListBuiltInOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Authorization/policyDefinitions"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *DefinitionsClient) listBuiltInCreateRequest(ctx context.Context, nextLink string, options *DefinitionsClientListBuiltInOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Authorization/policyDefinitions"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBuiltInHandleResponse handles the ListBuiltIn response.
-func (client *DefinitionsClient) listBuiltInHandleResponse(resp *http.Response) (DefinitionsClientListBuiltInResponse, error) {
+func (client *DefinitionsClient) listBuiltInHandleResponse(resp *http.Response, successCodes ...int) (DefinitionsClientListBuiltInResponse, error) {
 	result := DefinitionsClientListBuiltInResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefinitionListResult); err != nil {
 		return DefinitionsClientListBuiltInResponse{}, err
 	}
@@ -578,45 +594,59 @@ func (client *DefinitionsClient) NewListByManagementGroupPager(managementGroupID
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByManagementGroupCreateRequest(ctx, managementGroupID, options)
-			}, nil)
+			req, err := client.listByManagementGroupCreateRequest(ctx, managementGroupID, nextLink, options)
 			if err != nil {
 				return DefinitionsClientListByManagementGroupResponse{}, err
 			}
-			return client.listByManagementGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DefinitionsClientListByManagementGroupResponse{}, err
+			}
+			return client.listByManagementGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByManagementGroupCreateRequest creates the ListByManagementGroup request.
-func (client *DefinitionsClient) listByManagementGroupCreateRequest(ctx context.Context, managementGroupID string, options *DefinitionsClientListByManagementGroupOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization/policyDefinitions"
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
+func (client *DefinitionsClient) listByManagementGroupCreateRequest(ctx context.Context, managementGroupID string, nextLink string, options *DefinitionsClientListByManagementGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization/policyDefinitions"
+		if managementGroupID == "" {
+			return nil, errors.New("parameter managementGroupID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByManagementGroupHandleResponse handles the ListByManagementGroup response.
-func (client *DefinitionsClient) listByManagementGroupHandleResponse(resp *http.Response) (DefinitionsClientListByManagementGroupResponse, error) {
+func (client *DefinitionsClient) listByManagementGroupHandleResponse(resp *http.Response, successCodes ...int) (DefinitionsClientListByManagementGroupResponse, error) {
 	result := DefinitionsClientListByManagementGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefinitionListResult); err != nil {
 		return DefinitionsClientListByManagementGroupResponse{}, err
 	}

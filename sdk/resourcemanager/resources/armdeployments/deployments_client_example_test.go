@@ -138,7 +138,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeplo
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723776Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2020, time.June, 5, 1, 20, 1, 723776000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -211,7 +211,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillDeplo
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723776Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2020, time.June, 5, 1, 20, 1, 723776000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -307,7 +307,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createDeploymentUsingExternalI
 	// 			},
 	// 			ProvisioningState: to.Ptr(armdeployments.ProvisioningStateSucceeded),
 	// 			TemplateHash: to.Ptr("17686481789412793580"),
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T14:36:48.2047169Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2025, time.April, 9, 14, 36, 48, 204716900, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -416,7 +416,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedep
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -526,7 +526,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_createADeploymentThatWillRedep
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-01T00:00:00.0000000Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2019, time.March, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -618,7 +618,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtManagementGroupScope() {
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armdeployments.ProvisioningStateAccepted),
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-24T22:52:38.7895563Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2019, time.April, 24, 22, 52, 38, 789556300, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -714,7 +714,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtScope() {
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armdeployments.ProvisioningStateAccepted),
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-24T22:52:38.7895563Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2019, time.April, 24, 22, 52, 38, 789556300, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"tagKey1": to.Ptr("tag-value-1"),
@@ -779,7 +779,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtSubscriptionScope() {
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:51:58.6288067Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2020, time.June, 5, 1, 51, 58, 628806700, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -875,7 +875,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdateAtTenantScope() {
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armdeployments.ProvisioningStateAccepted),
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-24T22:52:38.7895563Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2019, time.April, 24, 22, 52, 38, 789556300, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"tagKey1": to.Ptr("tag-value-1"),
@@ -965,7 +965,7 @@ func ExampleDeploymentsClient_BeginValidate() {
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723776Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2020, time.June, 5, 1, 20, 1, 723776000, time.UTC)),
 	// 			ValidatedResources: []*armdeployments.ResourceReference{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/my-storage-account"),
@@ -1055,7 +1055,7 @@ func ExampleDeploymentsClient_BeginValidateAtManagementGroupScope() {
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723776Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2020, time.June, 5, 1, 20, 1, 723776000, time.UTC)),
 	// 			ValidatedResources: []*armdeployments.ResourceReference{
 	// 				{
 	// 					ID: to.Ptr("/providers/Microsoft.Management/managementGroups/myManagementGroup/providers/Microsoft.Authorization/policyAssignments/myPolicyAssignment"),
@@ -1146,7 +1146,7 @@ func ExampleDeploymentsClient_BeginValidateAtScope() {
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Resources/TemplateSpecs/TemplateSpec-Name/versions/v1"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723776Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2020, time.June, 5, 1, 20, 1, 723776000, time.UTC)),
 	// 			ValidatedResources: []*armdeployments.ResourceReference{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group/providers/Microsoft.Storage/storageAccounts/my-storage-account"),
@@ -1237,7 +1237,7 @@ func ExampleDeploymentsClient_BeginValidateAtSubscriptionScope() {
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723776Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2020, time.June, 5, 1, 20, 1, 723776000, time.UTC)),
 	// 			ValidatedResources: []*armdeployments.ResourceReference{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000001/resourceGroups/my-resource-group2"),
@@ -1327,7 +1327,7 @@ func ExampleDeploymentsClient_BeginValidateAtTenantScope() {
 	// 				ContentVersion: to.Ptr("1.0.0.0"),
 	// 				URI: to.Ptr("https://example.com/exampleTemplate.json"),
 	// 			},
-	// 			Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-06-05T01:20:01.723776Z"); return t}()),
+	// 			Timestamp: to.Ptr(time.Date(2020, time.June, 5, 1, 20, 1, 723776000, time.UTC)),
 	// 			ValidatedResources: []*armdeployments.ResourceReference{
 	// 				{
 	// 					ID: to.Ptr("/providers/Microsoft.Authorization/policyDefinitions/policy-definition-name"),

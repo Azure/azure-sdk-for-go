@@ -59,12 +59,7 @@ func (client *FileWorkspacesClient) Create(ctx context.Context, fileWorkspaceNam
 	if err != nil {
 		return FileWorkspacesClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return FileWorkspacesClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -90,8 +85,11 @@ func (client *FileWorkspacesClient) createCreateRequest(ctx context.Context, fil
 }
 
 // createHandleResponse handles the Create response.
-func (client *FileWorkspacesClient) createHandleResponse(resp *http.Response) (FileWorkspacesClientCreateResponse, error) {
+func (client *FileWorkspacesClient) createHandleResponse(resp *http.Response, successCodes ...int) (FileWorkspacesClientCreateResponse, error) {
 	result := FileWorkspacesClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileWorkspaceDetails); err != nil {
 		return FileWorkspacesClientCreateResponse{}, err
 	}
@@ -116,12 +114,7 @@ func (client *FileWorkspacesClient) Get(ctx context.Context, fileWorkspaceName s
 	if err != nil {
 		return FileWorkspacesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FileWorkspacesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -147,8 +140,11 @@ func (client *FileWorkspacesClient) getCreateRequest(ctx context.Context, fileWo
 }
 
 // getHandleResponse handles the Get response.
-func (client *FileWorkspacesClient) getHandleResponse(resp *http.Response) (FileWorkspacesClientGetResponse, error) {
+func (client *FileWorkspacesClient) getHandleResponse(resp *http.Response, successCodes ...int) (FileWorkspacesClientGetResponse, error) {
 	result := FileWorkspacesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileWorkspaceDetails); err != nil {
 		return FileWorkspacesClientGetResponse{}, err
 	}

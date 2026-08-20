@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/FirewallPolicyDraftPut.json
+// Generated from example definition: 2025-09-01/FirewallPolicyDraftPut.json
 func ExampleFirewallPolicyDraftsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleFirewallPolicyDraftsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyDraftDelete.json
+// Generated from example definition: 2025-09-01/FirewallPolicyDraftDelete.json
 func ExampleFirewallPolicyDraftsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,7 +232,7 @@ func ExampleFirewallPolicyDraftsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyDraftGet.json
+// Generated from example definition: 2025-09-01/FirewallPolicyDraftGet.json
 func ExampleFirewallPolicyDraftsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

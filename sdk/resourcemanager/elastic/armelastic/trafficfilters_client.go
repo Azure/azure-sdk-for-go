@@ -62,8 +62,7 @@ func (client *TrafficFiltersClient) Delete(ctx context.Context, resourceGroupNam
 		return TrafficFiltersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TrafficFiltersClientDeleteResponse{}, err
+		return TrafficFiltersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TrafficFiltersClientDeleteResponse{}, nil
 }

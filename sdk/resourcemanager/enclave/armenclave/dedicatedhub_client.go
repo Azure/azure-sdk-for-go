@@ -84,8 +84,7 @@ func (client *DedicatedHubClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -165,8 +164,7 @@ func (client *DedicatedHubClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -220,12 +218,7 @@ func (client *DedicatedHubClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return DedicatedHubClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DedicatedHubClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -259,8 +252,11 @@ func (client *DedicatedHubClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *DedicatedHubClient) getHandleResponse(resp *http.Response) (DedicatedHubClientGetResponse, error) {
+func (client *DedicatedHubClient) getHandleResponse(resp *http.Response, successCodes ...int) (DedicatedHubClientGetResponse, error) {
 	result := DedicatedHubClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedHubResource); err != nil {
 		return DedicatedHubClientGetResponse{}, err
 	}
@@ -283,47 +279,61 @@ func (client *DedicatedHubClient) NewListByCommunityResourcePager(resourceGroupN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByCommunityResourceCreateRequest(ctx, resourceGroupName, communityName, options)
-			}, nil)
+			req, err := client.listByCommunityResourceCreateRequest(ctx, resourceGroupName, communityName, nextLink, options)
 			if err != nil {
 				return DedicatedHubClientListByCommunityResourceResponse{}, err
 			}
-			return client.listByCommunityResourceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DedicatedHubClientListByCommunityResourceResponse{}, err
+			}
+			return client.listByCommunityResourceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByCommunityResourceCreateRequest creates the ListByCommunityResource request.
-func (client *DedicatedHubClient) listByCommunityResourceCreateRequest(ctx context.Context, resourceGroupName string, communityName string, _ *DedicatedHubClientListByCommunityResourceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/dedicatedHubs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DedicatedHubClient) listByCommunityResourceCreateRequest(ctx context.Context, resourceGroupName string, communityName string, nextLink string, _ *DedicatedHubClientListByCommunityResourceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/dedicatedHubs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if communityName == "" {
+			return nil, errors.New("parameter communityName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if communityName == "" {
-		return nil, errors.New("parameter communityName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByCommunityResourceHandleResponse handles the ListByCommunityResource response.
-func (client *DedicatedHubClient) listByCommunityResourceHandleResponse(resp *http.Response) (DedicatedHubClientListByCommunityResourceResponse, error) {
+func (client *DedicatedHubClient) listByCommunityResourceHandleResponse(resp *http.Response, successCodes ...int) (DedicatedHubClientListByCommunityResourceResponse, error) {
 	result := DedicatedHubClientListByCommunityResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedHubResourceListResult); err != nil {
 		return DedicatedHubClientListByCommunityResourceResponse{}, err
 	}
@@ -345,43 +355,57 @@ func (client *DedicatedHubClient) NewListBySubscriptionPager(communityName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, communityName, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, communityName, nextLink, options)
 			if err != nil {
 				return DedicatedHubClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DedicatedHubClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *DedicatedHubClient) listBySubscriptionCreateRequest(ctx context.Context, communityName string, _ *DedicatedHubClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Mission/communities/{communityName}/dedicatedHubs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DedicatedHubClient) listBySubscriptionCreateRequest(ctx context.Context, communityName string, nextLink string, _ *DedicatedHubClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Mission/communities/{communityName}/dedicatedHubs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if communityName == "" {
+			return nil, errors.New("parameter communityName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if communityName == "" {
-		return nil, errors.New("parameter communityName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *DedicatedHubClient) listBySubscriptionHandleResponse(resp *http.Response) (DedicatedHubClientListBySubscriptionResponse, error) {
+func (client *DedicatedHubClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (DedicatedHubClientListBySubscriptionResponse, error) {
 	result := DedicatedHubClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DedicatedHubResourceListResult); err != nil {
 		return DedicatedHubClientListBySubscriptionResponse{}, err
 	}
@@ -430,8 +454,7 @@ func (client *DedicatedHubClient) update(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

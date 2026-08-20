@@ -53,6 +53,10 @@ type CapacitiesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListSKUsForCapacityPager func(resourceGroupName string, capacityName string, options *armfabric.CapacitiesClientListSKUsForCapacityOptions) (resp azfake.PagerResponder[armfabric.CapacitiesClientListSKUsForCapacityResponse])
 
+	// NewListUsagesPager is the fake for method CapacitiesClient.NewListUsagesPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListUsagesPager func(location string, options *armfabric.CapacitiesClientListUsagesOptions) (resp azfake.PagerResponder[armfabric.CapacitiesClientListUsagesResponse])
+
 	// BeginResume is the fake for method CapacitiesClient.BeginResume
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginResume func(ctx context.Context, resourceGroupName string, capacityName string, options *armfabric.CapacitiesClientBeginResumeOptions) (resp azfake.PollerResponder[armfabric.CapacitiesClientResumeResponse], errResp azfake.ErrorResponder)
@@ -78,6 +82,7 @@ func NewCapacitiesServerTransport(srv *CapacitiesServer) *CapacitiesServerTransp
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armfabric.CapacitiesClientListBySubscriptionResponse]](),
 		newListSKUsPager:            newTracker[azfake.PagerResponder[armfabric.CapacitiesClientListSKUsResponse]](),
 		newListSKUsForCapacityPager: newTracker[azfake.PagerResponder[armfabric.CapacitiesClientListSKUsForCapacityResponse]](),
+		newListUsagesPager:          newTracker[azfake.PagerResponder[armfabric.CapacitiesClientListUsagesResponse]](),
 		beginResume:                 newTracker[azfake.PollerResponder[armfabric.CapacitiesClientResumeResponse]](),
 		beginSuspend:                newTracker[azfake.PollerResponder[armfabric.CapacitiesClientSuspendResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armfabric.CapacitiesClientUpdateResponse]](),
@@ -94,6 +99,7 @@ type CapacitiesServerTransport struct {
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armfabric.CapacitiesClientListBySubscriptionResponse]]
 	newListSKUsPager            *tracker[azfake.PagerResponder[armfabric.CapacitiesClientListSKUsResponse]]
 	newListSKUsForCapacityPager *tracker[azfake.PagerResponder[armfabric.CapacitiesClientListSKUsForCapacityResponse]]
+	newListUsagesPager          *tracker[azfake.PagerResponder[armfabric.CapacitiesClientListUsagesResponse]]
 	beginResume                 *tracker[azfake.PollerResponder[armfabric.CapacitiesClientResumeResponse]]
 	beginSuspend                *tracker[azfake.PollerResponder[armfabric.CapacitiesClientSuspendResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armfabric.CapacitiesClientUpdateResponse]]
@@ -136,6 +142,8 @@ func (c *CapacitiesServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = c.dispatchNewListSKUsPager(req)
 			case "CapacitiesClient.NewListSKUsForCapacityPager":
 				res.resp, res.err = c.dispatchNewListSKUsForCapacityPager(req)
+			case "CapacitiesClient.NewListUsagesPager":
+				res.resp, res.err = c.dispatchNewListUsagesPager(req)
 			case "CapacitiesClient.BeginResume":
 				res.resp, res.err = c.dispatchBeginResume(req)
 			case "CapacitiesClient.BeginSuspend":
@@ -456,6 +464,43 @@ func (c *CapacitiesServerTransport) dispatchNewListSKUsForCapacityPager(req *htt
 	}
 	if !server.PagerResponderMore(newListSKUsForCapacityPager) {
 		c.newListSKUsForCapacityPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (c *CapacitiesServerTransport) dispatchNewListUsagesPager(req *http.Request) (*http.Response, error) {
+	if c.srv.NewListUsagesPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListUsagesPager not implemented")}
+	}
+	newListUsagesPager := c.newListUsagesPager.get(req)
+	if newListUsagesPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Fabric/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		resp := c.srv.NewListUsagesPager(locationParam, nil)
+		newListUsagesPager = &resp
+		c.newListUsagesPager.add(req, newListUsagesPager)
+		server.PagerResponderInjectNextLinks(newListUsagesPager, req, func(page *armfabric.CapacitiesClientListUsagesResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListUsagesPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		c.newListUsagesPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListUsagesPager) {
+		c.newListUsagesPager.remove(req)
 	}
 	return resp, nil
 }

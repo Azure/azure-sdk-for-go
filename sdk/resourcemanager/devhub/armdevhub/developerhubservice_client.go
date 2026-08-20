@@ -62,12 +62,7 @@ func (client *DeveloperHubServiceClient) GeneratePreviewArtifacts(ctx context.Co
 	if err != nil {
 		return DeveloperHubServiceClientGeneratePreviewArtifactsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeveloperHubServiceClientGeneratePreviewArtifactsResponse{}, err
-	}
-	resp, err := client.generatePreviewArtifactsHandleResponse(httpResp)
-	return resp, err
+	return client.generatePreviewArtifactsHandleResponse(httpResp, http.StatusOK)
 }
 
 // generatePreviewArtifactsCreateRequest creates the GeneratePreviewArtifacts request.
@@ -97,8 +92,11 @@ func (client *DeveloperHubServiceClient) generatePreviewArtifactsCreateRequest(c
 }
 
 // generatePreviewArtifactsHandleResponse handles the GeneratePreviewArtifacts response.
-func (client *DeveloperHubServiceClient) generatePreviewArtifactsHandleResponse(resp *http.Response) (DeveloperHubServiceClientGeneratePreviewArtifactsResponse, error) {
+func (client *DeveloperHubServiceClient) generatePreviewArtifactsHandleResponse(resp *http.Response, successCodes ...int) (DeveloperHubServiceClientGeneratePreviewArtifactsResponse, error) {
 	result := DeveloperHubServiceClientGeneratePreviewArtifactsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return DeveloperHubServiceClientGeneratePreviewArtifactsResponse{}, err
 	}
@@ -126,12 +124,7 @@ func (client *DeveloperHubServiceClient) GetADOOAuthInfo(ctx context.Context, lo
 	if err != nil {
 		return DeveloperHubServiceClientGetADOOAuthInfoResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeveloperHubServiceClientGetADOOAuthInfoResponse{}, err
-	}
-	resp, err := client.getADOOAuthInfoHandleResponse(httpResp)
-	return resp, err
+	return client.getADOOAuthInfoHandleResponse(httpResp, http.StatusOK)
 }
 
 // getADOOAuthInfoCreateRequest creates the GetADOOAuthInfo request.
@@ -164,8 +157,11 @@ func (client *DeveloperHubServiceClient) getADOOAuthInfoCreateRequest(ctx contex
 }
 
 // getADOOAuthInfoHandleResponse handles the GetADOOAuthInfo response.
-func (client *DeveloperHubServiceClient) getADOOAuthInfoHandleResponse(resp *http.Response) (DeveloperHubServiceClientGetADOOAuthInfoResponse, error) {
+func (client *DeveloperHubServiceClient) getADOOAuthInfoHandleResponse(resp *http.Response, successCodes ...int) (DeveloperHubServiceClientGetADOOAuthInfoResponse, error) {
 	result := DeveloperHubServiceClientGetADOOAuthInfoResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ADOOAuthInfoResponse); err != nil {
 		return DeveloperHubServiceClientGetADOOAuthInfoResponse{}, err
 	}
@@ -193,12 +189,7 @@ func (client *DeveloperHubServiceClient) GitHubOAuth(ctx context.Context, locati
 	if err != nil {
 		return DeveloperHubServiceClientGitHubOAuthResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeveloperHubServiceClientGitHubOAuthResponse{}, err
-	}
-	resp, err := client.gitHubOAuthHandleResponse(httpResp)
-	return resp, err
+	return client.gitHubOAuthHandleResponse(httpResp, http.StatusOK)
 }
 
 // gitHubOAuthCreateRequest creates the GitHubOAuth request.
@@ -231,8 +222,11 @@ func (client *DeveloperHubServiceClient) gitHubOAuthCreateRequest(ctx context.Co
 }
 
 // gitHubOAuthHandleResponse handles the GitHubOAuth response.
-func (client *DeveloperHubServiceClient) gitHubOAuthHandleResponse(resp *http.Response) (DeveloperHubServiceClientGitHubOAuthResponse, error) {
+func (client *DeveloperHubServiceClient) gitHubOAuthHandleResponse(resp *http.Response, successCodes ...int) (DeveloperHubServiceClientGitHubOAuthResponse, error) {
 	result := DeveloperHubServiceClientGitHubOAuthResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GitHubOAuthInfoResponse); err != nil {
 		return DeveloperHubServiceClientGitHubOAuthResponse{}, err
 	}
@@ -262,12 +256,7 @@ func (client *DeveloperHubServiceClient) GitHubOAuthCallback(ctx context.Context
 	if err != nil {
 		return DeveloperHubServiceClientGitHubOAuthCallbackResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeveloperHubServiceClientGitHubOAuthCallbackResponse{}, err
-	}
-	resp, err := client.gitHubOAuthCallbackHandleResponse(httpResp)
-	return resp, err
+	return client.gitHubOAuthCallbackHandleResponse(httpResp, http.StatusOK)
 }
 
 // gitHubOAuthCallbackCreateRequest creates the GitHubOAuthCallback request.
@@ -295,8 +284,11 @@ func (client *DeveloperHubServiceClient) gitHubOAuthCallbackCreateRequest(ctx co
 }
 
 // gitHubOAuthCallbackHandleResponse handles the GitHubOAuthCallback response.
-func (client *DeveloperHubServiceClient) gitHubOAuthCallbackHandleResponse(resp *http.Response) (DeveloperHubServiceClientGitHubOAuthCallbackResponse, error) {
+func (client *DeveloperHubServiceClient) gitHubOAuthCallbackHandleResponse(resp *http.Response, successCodes ...int) (DeveloperHubServiceClientGitHubOAuthCallbackResponse, error) {
 	result := DeveloperHubServiceClientGitHubOAuthCallbackResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GitHubOAuthResponse); err != nil {
 		return DeveloperHubServiceClientGitHubOAuthCallbackResponse{}, err
 	}
@@ -324,12 +316,7 @@ func (client *DeveloperHubServiceClient) ListGitHubOAuth(ctx context.Context, lo
 	if err != nil {
 		return DeveloperHubServiceClientListGitHubOAuthResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeveloperHubServiceClientListGitHubOAuthResponse{}, err
-	}
-	resp, err := client.listGitHubOAuthHandleResponse(httpResp)
-	return resp, err
+	return client.listGitHubOAuthHandleResponse(httpResp, http.StatusOK)
 }
 
 // listGitHubOAuthCreateRequest creates the ListGitHubOAuth request.
@@ -355,8 +342,11 @@ func (client *DeveloperHubServiceClient) listGitHubOAuthCreateRequest(ctx contex
 }
 
 // listGitHubOAuthHandleResponse handles the ListGitHubOAuth response.
-func (client *DeveloperHubServiceClient) listGitHubOAuthHandleResponse(resp *http.Response) (DeveloperHubServiceClientListGitHubOAuthResponse, error) {
+func (client *DeveloperHubServiceClient) listGitHubOAuthHandleResponse(resp *http.Response, successCodes ...int) (DeveloperHubServiceClientListGitHubOAuthResponse, error) {
 	result := DeveloperHubServiceClientListGitHubOAuthResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GitHubOAuthListResponse); err != nil {
 		return DeveloperHubServiceClientListGitHubOAuthResponse{}, err
 	}

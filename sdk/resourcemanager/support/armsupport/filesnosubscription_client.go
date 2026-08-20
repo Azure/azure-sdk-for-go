@@ -59,12 +59,7 @@ func (client *FilesNoSubscriptionClient) Create(ctx context.Context, fileWorkspa
 	if err != nil {
 		return FilesNoSubscriptionClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return FilesNoSubscriptionClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -94,8 +89,11 @@ func (client *FilesNoSubscriptionClient) createCreateRequest(ctx context.Context
 }
 
 // createHandleResponse handles the Create response.
-func (client *FilesNoSubscriptionClient) createHandleResponse(resp *http.Response) (FilesNoSubscriptionClientCreateResponse, error) {
+func (client *FilesNoSubscriptionClient) createHandleResponse(resp *http.Response, successCodes ...int) (FilesNoSubscriptionClientCreateResponse, error) {
 	result := FilesNoSubscriptionClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileDetails); err != nil {
 		return FilesNoSubscriptionClientCreateResponse{}, err
 	}
@@ -121,12 +119,7 @@ func (client *FilesNoSubscriptionClient) Get(ctx context.Context, fileWorkspaceN
 	if err != nil {
 		return FilesNoSubscriptionClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FilesNoSubscriptionClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -152,8 +145,11 @@ func (client *FilesNoSubscriptionClient) getCreateRequest(ctx context.Context, f
 }
 
 // getHandleResponse handles the Get response.
-func (client *FilesNoSubscriptionClient) getHandleResponse(resp *http.Response) (FilesNoSubscriptionClientGetResponse, error) {
+func (client *FilesNoSubscriptionClient) getHandleResponse(resp *http.Response, successCodes ...int) (FilesNoSubscriptionClientGetResponse, error) {
 	result := FilesNoSubscriptionClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileDetails); err != nil {
 		return FilesNoSubscriptionClientGetResponse{}, err
 	}
@@ -175,39 +171,53 @@ func (client *FilesNoSubscriptionClient) NewListPager(fileWorkspaceName string, 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, fileWorkspaceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, fileWorkspaceName, nextLink, options)
 			if err != nil {
 				return FilesNoSubscriptionClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FilesNoSubscriptionClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *FilesNoSubscriptionClient) listCreateRequest(ctx context.Context, fileWorkspaceName string, _ *FilesNoSubscriptionClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Support/fileWorkspaces/{fileWorkspaceName}/files"
-	if fileWorkspaceName == "" {
-		return nil, errors.New("parameter fileWorkspaceName cannot be empty")
+func (client *FilesNoSubscriptionClient) listCreateRequest(ctx context.Context, fileWorkspaceName string, nextLink string, _ *FilesNoSubscriptionClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Support/fileWorkspaces/{fileWorkspaceName}/files"
+		if fileWorkspaceName == "" {
+			return nil, errors.New("parameter fileWorkspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{fileWorkspaceName}", url.PathEscape(fileWorkspaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{fileWorkspaceName}", url.PathEscape(fileWorkspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *FilesNoSubscriptionClient) listHandleResponse(resp *http.Response) (FilesNoSubscriptionClientListResponse, error) {
+func (client *FilesNoSubscriptionClient) listHandleResponse(resp *http.Response, successCodes ...int) (FilesNoSubscriptionClientListResponse, error) {
 	result := FilesNoSubscriptionClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FilesListResult); err != nil {
 		return FilesNoSubscriptionClientListResponse{}, err
 	}
@@ -236,8 +246,7 @@ func (client *FilesNoSubscriptionClient) Upload(ctx context.Context, fileWorkspa
 		return FilesNoSubscriptionClientUploadResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return FilesNoSubscriptionClientUploadResponse{}, err
+		return FilesNoSubscriptionClientUploadResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return FilesNoSubscriptionClientUploadResponse{}, nil
 }

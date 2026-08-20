@@ -62,12 +62,7 @@ func (client *IntegrationRuntimeObjectMetadataClient) Get(ctx context.Context, r
 	if err != nil {
 		return IntegrationRuntimeObjectMetadataClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IntegrationRuntimeObjectMetadataClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -108,8 +103,11 @@ func (client *IntegrationRuntimeObjectMetadataClient) getCreateRequest(ctx conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationRuntimeObjectMetadataClient) getHandleResponse(resp *http.Response) (IntegrationRuntimeObjectMetadataClientGetResponse, error) {
+func (client *IntegrationRuntimeObjectMetadataClient) getHandleResponse(resp *http.Response, successCodes ...int) (IntegrationRuntimeObjectMetadataClientGetResponse, error) {
 	result := IntegrationRuntimeObjectMetadataClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SsisObjectMetadataListResponse); err != nil {
 		return IntegrationRuntimeObjectMetadataClientGetResponse{}, err
 	}
@@ -157,8 +155,7 @@ func (client *IntegrationRuntimeObjectMetadataClient) refresh(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

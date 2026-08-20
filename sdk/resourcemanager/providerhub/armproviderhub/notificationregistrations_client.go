@@ -18,6 +18,8 @@ import (
 
 // NotificationRegistrationsClient contains the methods for the NotificationRegistrations group.
 // Don't use this type directly, use NewNotificationRegistrationsClient() instead.
+//
+// Generated from API version 2024-09-01
 type NotificationRegistrationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNotificationRegistrationsClient(subscriptionID string, credential azcore
 
 // CreateOrUpdate - Creates or updates a notification registration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - notificationRegistrationName - The notification registration.
 //   - properties - The required body parameters supplied to the notification registration operation.
@@ -62,12 +62,7 @@ func (client *NotificationRegistrationsClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return NotificationRegistrationsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NotificationRegistrationsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -90,8 +85,8 @@ func (client *NotificationRegistrationsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -101,8 +96,11 @@ func (client *NotificationRegistrationsClient) createOrUpdateCreateRequest(ctx c
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *NotificationRegistrationsClient) createOrUpdateHandleResponse(resp *http.Response) (NotificationRegistrationsClientCreateOrUpdateResponse, error) {
+func (client *NotificationRegistrationsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (NotificationRegistrationsClientCreateOrUpdateResponse, error) {
 	result := NotificationRegistrationsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationRegistration); err != nil {
 		return NotificationRegistrationsClientCreateOrUpdateResponse{}, err
 	}
@@ -111,8 +109,6 @@ func (client *NotificationRegistrationsClient) createOrUpdateHandleResponse(resp
 
 // Delete - Deletes a notification registration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - notificationRegistrationName - The notification registration.
 //   - options - NotificationRegistrationsClientDeleteOptions contains the optional parameters for the NotificationRegistrationsClient.Delete
@@ -132,8 +128,7 @@ func (client *NotificationRegistrationsClient) Delete(ctx context.Context, provi
 		return NotificationRegistrationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return NotificationRegistrationsClientDeleteResponse{}, err
+		return NotificationRegistrationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return NotificationRegistrationsClientDeleteResponse{}, nil
 }
@@ -158,15 +153,13 @@ func (client *NotificationRegistrationsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the notification registration details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - notificationRegistrationName - The notification registration.
 //   - options - NotificationRegistrationsClientGetOptions contains the optional parameters for the NotificationRegistrationsClient.Get
@@ -185,12 +178,7 @@ func (client *NotificationRegistrationsClient) Get(ctx context.Context, provider
 	if err != nil {
 		return NotificationRegistrationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NotificationRegistrationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -213,15 +201,18 @@ func (client *NotificationRegistrationsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *NotificationRegistrationsClient) getHandleResponse(resp *http.Response) (NotificationRegistrationsClientGetResponse, error) {
+func (client *NotificationRegistrationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (NotificationRegistrationsClientGetResponse, error) {
 	result := NotificationRegistrationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationRegistration); err != nil {
 		return NotificationRegistrationsClientGetResponse{}, err
 	}
@@ -229,8 +220,6 @@ func (client *NotificationRegistrationsClient) getHandleResponse(resp *http.Resp
 }
 
 // NewListByProviderRegistrationPager - Gets the list of the notification registrations for the given provider.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - NotificationRegistrationsClientListByProviderRegistrationOptions contains the optional parameters for the NotificationRegistrationsClient.NewListByProviderRegistrationPager
 //     method.
@@ -245,43 +234,57 @@ func (client *NotificationRegistrationsClient) NewListByProviderRegistrationPage
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, options)
-			}, nil)
+			req, err := client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, nextLink, options)
 			if err != nil {
 				return NotificationRegistrationsClientListByProviderRegistrationResponse{}, err
 			}
-			return client.listByProviderRegistrationHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NotificationRegistrationsClientListByProviderRegistrationResponse{}, err
+			}
+			return client.listByProviderRegistrationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByProviderRegistrationCreateRequest creates the ListByProviderRegistration request.
-func (client *NotificationRegistrationsClient) listByProviderRegistrationCreateRequest(ctx context.Context, providerNamespace string, _ *NotificationRegistrationsClientListByProviderRegistrationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NotificationRegistrationsClient) listByProviderRegistrationCreateRequest(ctx context.Context, providerNamespace string, nextLink string, _ *NotificationRegistrationsClientListByProviderRegistrationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if providerNamespace == "" {
+			return nil, errors.New("parameter providerNamespace cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if providerNamespace == "" {
-		return nil, errors.New("parameter providerNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByProviderRegistrationHandleResponse handles the ListByProviderRegistration response.
-func (client *NotificationRegistrationsClient) listByProviderRegistrationHandleResponse(resp *http.Response) (NotificationRegistrationsClientListByProviderRegistrationResponse, error) {
+func (client *NotificationRegistrationsClient) listByProviderRegistrationHandleResponse(resp *http.Response, successCodes ...int) (NotificationRegistrationsClientListByProviderRegistrationResponse, error) {
 	result := NotificationRegistrationsClientListByProviderRegistrationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotificationRegistrationArrayResponseWithContinuation); err != nil {
 		return NotificationRegistrationsClientListByProviderRegistrationResponse{}, err
 	}

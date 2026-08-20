@@ -61,12 +61,7 @@ func (client *RegistriesClient) GetBuildSourceUploadURL(ctx context.Context, res
 	if err != nil {
 		return RegistriesClientGetBuildSourceUploadURLResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegistriesClientGetBuildSourceUploadURLResponse{}, err
-	}
-	resp, err := client.getBuildSourceUploadURLHandleResponse(httpResp)
-	return resp, err
+	return client.getBuildSourceUploadURLHandleResponse(httpResp, http.StatusOK)
 }
 
 // getBuildSourceUploadURLCreateRequest creates the GetBuildSourceUploadURL request.
@@ -96,8 +91,11 @@ func (client *RegistriesClient) getBuildSourceUploadURLCreateRequest(ctx context
 }
 
 // getBuildSourceUploadURLHandleResponse handles the GetBuildSourceUploadURL response.
-func (client *RegistriesClient) getBuildSourceUploadURLHandleResponse(resp *http.Response) (RegistriesClientGetBuildSourceUploadURLResponse, error) {
+func (client *RegistriesClient) getBuildSourceUploadURLHandleResponse(resp *http.Response, successCodes ...int) (RegistriesClientGetBuildSourceUploadURLResponse, error) {
 	result := RegistriesClientGetBuildSourceUploadURLResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceUploadDefinition); err != nil {
 		return RegistriesClientGetBuildSourceUploadURLResponse{}, err
 	}
@@ -124,12 +122,7 @@ func (client *RegistriesClient) ScheduleRun(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return RegistriesClientScheduleRunResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegistriesClientScheduleRunResponse{}, err
-	}
-	resp, err := client.scheduleRunHandleResponse(httpResp)
-	return resp, err
+	return client.scheduleRunHandleResponse(httpResp, http.StatusOK)
 }
 
 // scheduleRunCreateRequest creates the ScheduleRun request.
@@ -163,8 +156,11 @@ func (client *RegistriesClient) scheduleRunCreateRequest(ctx context.Context, re
 }
 
 // scheduleRunHandleResponse handles the ScheduleRun response.
-func (client *RegistriesClient) scheduleRunHandleResponse(resp *http.Response) (RegistriesClientScheduleRunResponse, error) {
+func (client *RegistriesClient) scheduleRunHandleResponse(resp *http.Response, successCodes ...int) (RegistriesClientScheduleRunResponse, error) {
 	result := RegistriesClientScheduleRunResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Run); err != nil {
 		return RegistriesClientScheduleRunResponse{}, err
 	}

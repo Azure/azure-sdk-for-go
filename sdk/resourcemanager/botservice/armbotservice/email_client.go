@@ -18,6 +18,8 @@ import (
 
 // EmailClient contains the methods for the Email group.
 // Don't use this type directly, use NewEmailClient() instead.
+//
+// Generated from API version 2023-09-15-preview
 type EmailClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewEmailClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // CreateSignInURL - Creates an email channel sign in url for a Bot Service
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Bot resource.
 //   - options - EmailClientCreateSignInURLOptions contains the optional parameters for the EmailClient.CreateSignInURL method.
@@ -60,12 +60,7 @@ func (client *EmailClient) CreateSignInURL(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return EmailClientCreateSignInURLResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EmailClientCreateSignInURLResponse{}, err
-	}
-	resp, err := client.createSignInURLHandleResponse(httpResp)
-	return resp, err
+	return client.createSignInURLHandleResponse(httpResp, http.StatusOK)
 }
 
 // createSignInURLCreateRequest creates the CreateSignInURL request.
@@ -88,15 +83,18 @@ func (client *EmailClient) createSignInURLCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // createSignInURLHandleResponse handles the CreateSignInURL response.
-func (client *EmailClient) createSignInURLHandleResponse(resp *http.Response) (EmailClientCreateSignInURLResponse, error) {
+func (client *EmailClient) createSignInURLHandleResponse(resp *http.Response, successCodes ...int) (EmailClientCreateSignInURLResponse, error) {
 	result := EmailClientCreateSignInURLResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreateEmailSignInURLResponse); err != nil {
 		return EmailClientCreateSignInURLResponse{}, err
 	}

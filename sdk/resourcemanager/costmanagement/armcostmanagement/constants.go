@@ -269,10 +269,13 @@ func PossibleBenefitUtilizationSummaryReportSchemaValues() []BenefitUtilizationS
 // BudgetNotificationOperatorType - The comparison operator.
 // Supported for CategoryType(s): Cost, ReservationUtilization.
 // Supported operators for **CategoryType: Cost**
-// - GreaterThan
-// - GreaterThanOrEqualTo
+//
+//   - GreaterThan
+//   - GreaterThanOrEqualTo
+//
 // Supported operators for **CategoryType: ReservationUtilization**
-// - LessThan
+//
+//   - LessThan
 type BudgetNotificationOperatorType string
 
 const (
@@ -320,8 +323,9 @@ func PossibleBudgetOperatorTypeValues() []BudgetOperatorType {
 }
 
 // CategoryType - The category of the budget.
-// - 'Cost' defines a Budget.
-// - 'ReservationUtilization' defines a Reservation Utilization Alert Rule.
+//
+//   - 'Cost' defines a Budget.
+//   - 'ReservationUtilization' defines a Reservation Utilization Alert Rule.
 type CategoryType string
 
 const (
@@ -1471,16 +1475,20 @@ func PossibleThresholdTypeValues() []ThresholdType {
 // TimeGrainType - The time covered by a budget. Tracking of the amount will be reset based on the time grain.
 // Supported for CategoryType(s): Cost, ReservationUtilization.
 // Supported timeGrainTypes for **CategoryType: Cost**
-// - Monthly
-// - Quarterly
-// - Annually
-// - BillingMonth*
-// - BillingQuarter*
-// - BillingAnnual*
+//
+//   - Monthly
+//   - Quarterly
+//   - Annually
+//   - BillingMonth*
+//   - BillingQuarter*
+//   - BillingAnnual*
+//
 // *only supported for Web Direct customers.
 // Supported timeGrainTypes for **CategoryType: ReservationUtilization**
-// - Last7Days
-// - Last30Days
+//
+//   - Last7Days
+//   - Last30Days
+//
 // Required for CategoryType(s): Cost, ReservationUtilization.
 type TimeGrainType string
 

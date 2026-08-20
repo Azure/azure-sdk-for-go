@@ -81,8 +81,7 @@ func (client *OrganizationClient) activateResource(ctx context.Context, body Act
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -150,8 +149,7 @@ func (client *OrganizationClient) create(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -209,12 +207,7 @@ func (client *OrganizationClient) CreateAPIKey(ctx context.Context, resourceGrou
 	if err != nil {
 		return OrganizationClientCreateAPIKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OrganizationClientCreateAPIKeyResponse{}, err
-	}
-	resp, err := client.createAPIKeyHandleResponse(httpResp)
-	return resp, err
+	return client.createAPIKeyHandleResponse(httpResp, http.StatusOK)
 }
 
 // createAPIKeyCreateRequest creates the CreateAPIKey request.
@@ -256,8 +249,11 @@ func (client *OrganizationClient) createAPIKeyCreateRequest(ctx context.Context,
 }
 
 // createAPIKeyHandleResponse handles the CreateAPIKey response.
-func (client *OrganizationClient) createAPIKeyHandleResponse(resp *http.Response) (OrganizationClientCreateAPIKeyResponse, error) {
+func (client *OrganizationClient) createAPIKeyHandleResponse(resp *http.Response, successCodes ...int) (OrganizationClientCreateAPIKeyResponse, error) {
 	result := OrganizationClientCreateAPIKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKeyRecord); err != nil {
 		return OrganizationClientCreateAPIKeyResponse{}, err
 	}
@@ -304,8 +300,7 @@ func (client *OrganizationClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -357,8 +352,7 @@ func (client *OrganizationClient) DeleteClusterAPIKey(ctx context.Context, resou
 		return OrganizationClientDeleteClusterAPIKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return OrganizationClientDeleteClusterAPIKeyResponse{}, err
+		return OrganizationClientDeleteClusterAPIKeyResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return OrganizationClientDeleteClusterAPIKeyResponse{}, nil
 }
@@ -411,12 +405,7 @@ func (client *OrganizationClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return OrganizationClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OrganizationClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -446,8 +435,11 @@ func (client *OrganizationClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *OrganizationClient) getHandleResponse(resp *http.Response) (OrganizationClientGetResponse, error) {
+func (client *OrganizationClient) getHandleResponse(resp *http.Response, successCodes ...int) (OrganizationClientGetResponse, error) {
 	result := OrganizationClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OrganizationResource); err != nil {
 		return OrganizationClientGetResponse{}, err
 	}
@@ -475,12 +467,7 @@ func (client *OrganizationClient) GetClusterAPIKey(ctx context.Context, resource
 	if err != nil {
 		return OrganizationClientGetClusterAPIKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OrganizationClientGetClusterAPIKeyResponse{}, err
-	}
-	resp, err := client.getClusterAPIKeyHandleResponse(httpResp)
-	return resp, err
+	return client.getClusterAPIKeyHandleResponse(httpResp, http.StatusOK)
 }
 
 // getClusterAPIKeyCreateRequest creates the GetClusterAPIKey request.
@@ -514,8 +501,11 @@ func (client *OrganizationClient) getClusterAPIKeyCreateRequest(ctx context.Cont
 }
 
 // getClusterAPIKeyHandleResponse handles the GetClusterAPIKey response.
-func (client *OrganizationClient) getClusterAPIKeyHandleResponse(resp *http.Response) (OrganizationClientGetClusterAPIKeyResponse, error) {
+func (client *OrganizationClient) getClusterAPIKeyHandleResponse(resp *http.Response, successCodes ...int) (OrganizationClientGetClusterAPIKeyResponse, error) {
 	result := OrganizationClientGetClusterAPIKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKeyRecord); err != nil {
 		return OrganizationClientGetClusterAPIKeyResponse{}, err
 	}
@@ -544,12 +534,7 @@ func (client *OrganizationClient) GetClusterByID(ctx context.Context, resourceGr
 	if err != nil {
 		return OrganizationClientGetClusterByIDResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OrganizationClientGetClusterByIDResponse{}, err
-	}
-	resp, err := client.getClusterByIDHandleResponse(httpResp)
-	return resp, err
+	return client.getClusterByIDHandleResponse(httpResp, http.StatusOK)
 }
 
 // getClusterByIDCreateRequest creates the GetClusterByID request.
@@ -587,8 +572,11 @@ func (client *OrganizationClient) getClusterByIDCreateRequest(ctx context.Contex
 }
 
 // getClusterByIDHandleResponse handles the GetClusterByID response.
-func (client *OrganizationClient) getClusterByIDHandleResponse(resp *http.Response) (OrganizationClientGetClusterByIDResponse, error) {
+func (client *OrganizationClient) getClusterByIDHandleResponse(resp *http.Response, successCodes ...int) (OrganizationClientGetClusterByIDResponse, error) {
 	result := OrganizationClientGetClusterByIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SCClusterRecord); err != nil {
 		return OrganizationClientGetClusterByIDResponse{}, err
 	}
@@ -616,12 +604,7 @@ func (client *OrganizationClient) GetEnvironmentByID(ctx context.Context, resour
 	if err != nil {
 		return OrganizationClientGetEnvironmentByIDResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OrganizationClientGetEnvironmentByIDResponse{}, err
-	}
-	resp, err := client.getEnvironmentByIDHandleResponse(httpResp)
-	return resp, err
+	return client.getEnvironmentByIDHandleResponse(httpResp, http.StatusOK)
 }
 
 // getEnvironmentByIDCreateRequest creates the GetEnvironmentByID request.
@@ -655,8 +638,11 @@ func (client *OrganizationClient) getEnvironmentByIDCreateRequest(ctx context.Co
 }
 
 // getEnvironmentByIDHandleResponse handles the GetEnvironmentByID response.
-func (client *OrganizationClient) getEnvironmentByIDHandleResponse(resp *http.Response) (OrganizationClientGetEnvironmentByIDResponse, error) {
+func (client *OrganizationClient) getEnvironmentByIDHandleResponse(resp *http.Response, successCodes ...int) (OrganizationClientGetEnvironmentByIDResponse, error) {
 	result := OrganizationClientGetEnvironmentByIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SCEnvironmentRecord); err != nil {
 		return OrganizationClientGetEnvironmentByIDResponse{}, err
 	}
@@ -685,12 +671,7 @@ func (client *OrganizationClient) GetSchemaRegistryClusterByID(ctx context.Conte
 	if err != nil {
 		return OrganizationClientGetSchemaRegistryClusterByIDResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OrganizationClientGetSchemaRegistryClusterByIDResponse{}, err
-	}
-	resp, err := client.getSchemaRegistryClusterByIDHandleResponse(httpResp)
-	return resp, err
+	return client.getSchemaRegistryClusterByIDHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSchemaRegistryClusterByIDCreateRequest creates the GetSchemaRegistryClusterByID request.
@@ -728,8 +709,11 @@ func (client *OrganizationClient) getSchemaRegistryClusterByIDCreateRequest(ctx 
 }
 
 // getSchemaRegistryClusterByIDHandleResponse handles the GetSchemaRegistryClusterByID response.
-func (client *OrganizationClient) getSchemaRegistryClusterByIDHandleResponse(resp *http.Response) (OrganizationClientGetSchemaRegistryClusterByIDResponse, error) {
+func (client *OrganizationClient) getSchemaRegistryClusterByIDHandleResponse(resp *http.Response, successCodes ...int) (OrganizationClientGetSchemaRegistryClusterByIDResponse, error) {
 	result := OrganizationClientGetSchemaRegistryClusterByIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SchemaRegistryClusterRecord); err != nil {
 		return OrganizationClientGetSchemaRegistryClusterByIDResponse{}, err
 	}
@@ -756,12 +740,7 @@ func (client *OrganizationClient) LatestLinkedSaaS(ctx context.Context, resource
 	if err != nil {
 		return OrganizationClientLatestLinkedSaaSResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OrganizationClientLatestLinkedSaaSResponse{}, err
-	}
-	resp, err := client.latestLinkedSaaSHandleResponse(httpResp)
-	return resp, err
+	return client.latestLinkedSaaSHandleResponse(httpResp, http.StatusOK)
 }
 
 // latestLinkedSaaSCreateRequest creates the LatestLinkedSaaS request.
@@ -791,8 +770,11 @@ func (client *OrganizationClient) latestLinkedSaaSCreateRequest(ctx context.Cont
 }
 
 // latestLinkedSaaSHandleResponse handles the LatestLinkedSaaS response.
-func (client *OrganizationClient) latestLinkedSaaSHandleResponse(resp *http.Response) (OrganizationClientLatestLinkedSaaSResponse, error) {
+func (client *OrganizationClient) latestLinkedSaaSHandleResponse(resp *http.Response, successCodes ...int) (OrganizationClientLatestLinkedSaaSResponse, error) {
 	result := OrganizationClientLatestLinkedSaaSResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LatestLinkedSaaSResponse); err != nil {
 		return OrganizationClientLatestLinkedSaaSResponse{}, err
 	}
@@ -845,8 +827,7 @@ func (client *OrganizationClient) linkSaaS(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -896,43 +877,57 @@ func (client *OrganizationClient) NewListByResourceGroupPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return OrganizationClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OrganizationClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *OrganizationClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *OrganizationClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *OrganizationClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *OrganizationClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260602Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *OrganizationClient) listByResourceGroupHandleResponse(resp *http.Response) (OrganizationClientListByResourceGroupResponse, error) {
+func (client *OrganizationClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (OrganizationClientListByResourceGroupResponse, error) {
 	result := OrganizationClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OrganizationResourceListResult); err != nil {
 		return OrganizationClientListByResourceGroupResponse{}, err
 	}
@@ -953,39 +948,53 @@ func (client *OrganizationClient) NewListBySubscriptionPager(options *Organizati
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return OrganizationClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OrganizationClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *OrganizationClient) listBySubscriptionCreateRequest(ctx context.Context, _ *OrganizationClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/organizations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *OrganizationClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *OrganizationClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/organizations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260602Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *OrganizationClient) listBySubscriptionHandleResponse(resp *http.Response) (OrganizationClientListBySubscriptionResponse, error) {
+func (client *OrganizationClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (OrganizationClientListBySubscriptionResponse, error) {
 	result := OrganizationClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OrganizationResourceListResult); err != nil {
 		return OrganizationClientListBySubscriptionResponse{}, err
 	}
@@ -1009,57 +1018,71 @@ func (client *OrganizationClient) NewListClustersPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listClustersCreateRequest(ctx, resourceGroupName, organizationName, environmentID, options)
-			}, nil)
+			req, err := client.listClustersCreateRequest(ctx, resourceGroupName, organizationName, environmentID, nextLink, options)
 			if err != nil {
 				return OrganizationClientListClustersResponse{}, err
 			}
-			return client.listClustersHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OrganizationClientListClustersResponse{}, err
+			}
+			return client.listClustersHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listClustersCreateRequest creates the ListClusters request.
-func (client *OrganizationClient) listClustersCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, options *OrganizationClientListClustersOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *OrganizationClient) listClustersCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, nextLink string, options *OrganizationClientListClustersOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if organizationName == "" {
+			return nil, errors.New("parameter organizationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+		if environmentID == "" {
+			return nil, errors.New("parameter environmentID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{environmentId}", url.PathEscape(environmentID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if organizationName == "" {
-		return nil, errors.New("parameter organizationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
-	if environmentID == "" {
-		return nil, errors.New("parameter environmentID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{environmentId}", url.PathEscape(environmentID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
-	if options != nil && options.PageSize != nil {
-		reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260602Preview)
+		if options != nil && options.PageSize != nil {
+			reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))
+		}
+		if options != nil && options.PageToken != nil {
+			reqQP.Set("pageToken", *options.PageToken)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.PageToken != nil {
-		reqQP.Set("pageToken", *options.PageToken)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listClustersHandleResponse handles the ListClusters response.
-func (client *OrganizationClient) listClustersHandleResponse(resp *http.Response) (OrganizationClientListClustersResponse, error) {
+func (client *OrganizationClient) listClustersHandleResponse(resp *http.Response, successCodes ...int) (OrganizationClientListClustersResponse, error) {
 	result := OrganizationClientListClustersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListClustersSuccessResponse); err != nil {
 		return OrganizationClientListClustersResponse{}, err
 	}
@@ -1082,53 +1105,67 @@ func (client *OrganizationClient) NewListEnvironmentsPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listEnvironmentsCreateRequest(ctx, resourceGroupName, organizationName, options)
-			}, nil)
+			req, err := client.listEnvironmentsCreateRequest(ctx, resourceGroupName, organizationName, nextLink, options)
 			if err != nil {
 				return OrganizationClientListEnvironmentsResponse{}, err
 			}
-			return client.listEnvironmentsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OrganizationClientListEnvironmentsResponse{}, err
+			}
+			return client.listEnvironmentsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listEnvironmentsCreateRequest creates the ListEnvironments request.
-func (client *OrganizationClient) listEnvironmentsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, options *OrganizationClientListEnvironmentsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *OrganizationClient) listEnvironmentsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, nextLink string, options *OrganizationClientListEnvironmentsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if organizationName == "" {
+			return nil, errors.New("parameter organizationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if organizationName == "" {
-		return nil, errors.New("parameter organizationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
-	if options != nil && options.PageSize != nil {
-		reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260602Preview)
+		if options != nil && options.PageSize != nil {
+			reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))
+		}
+		if options != nil && options.PageToken != nil {
+			reqQP.Set("pageToken", *options.PageToken)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.PageToken != nil {
-		reqQP.Set("pageToken", *options.PageToken)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listEnvironmentsHandleResponse handles the ListEnvironments response.
-func (client *OrganizationClient) listEnvironmentsHandleResponse(resp *http.Response) (OrganizationClientListEnvironmentsResponse, error) {
+func (client *OrganizationClient) listEnvironmentsHandleResponse(resp *http.Response, successCodes ...int) (OrganizationClientListEnvironmentsResponse, error) {
 	result := OrganizationClientListEnvironmentsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetEnvironmentsResponse); err != nil {
 		return OrganizationClientListEnvironmentsResponse{}, err
 	}
@@ -1156,12 +1193,7 @@ func (client *OrganizationClient) ListRegions(ctx context.Context, resourceGroup
 	if err != nil {
 		return OrganizationClientListRegionsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OrganizationClientListRegionsResponse{}, err
-	}
-	resp, err := client.listRegionsHandleResponse(httpResp)
-	return resp, err
+	return client.listRegionsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listRegionsCreateRequest creates the ListRegions request.
@@ -1195,8 +1227,11 @@ func (client *OrganizationClient) listRegionsCreateRequest(ctx context.Context, 
 }
 
 // listRegionsHandleResponse handles the ListRegions response.
-func (client *OrganizationClient) listRegionsHandleResponse(resp *http.Response) (OrganizationClientListRegionsResponse, error) {
+func (client *OrganizationClient) listRegionsHandleResponse(resp *http.Response, successCodes ...int) (OrganizationClientListRegionsResponse, error) {
 	result := OrganizationClientListRegionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListRegionsSuccessResponse); err != nil {
 		return OrganizationClientListRegionsResponse{}, err
 	}
@@ -1220,57 +1255,71 @@ func (client *OrganizationClient) NewListSchemaRegistryClustersPager(resourceGro
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSchemaRegistryClustersCreateRequest(ctx, resourceGroupName, organizationName, environmentID, options)
-			}, nil)
+			req, err := client.listSchemaRegistryClustersCreateRequest(ctx, resourceGroupName, organizationName, environmentID, nextLink, options)
 			if err != nil {
 				return OrganizationClientListSchemaRegistryClustersResponse{}, err
 			}
-			return client.listSchemaRegistryClustersHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OrganizationClientListSchemaRegistryClustersResponse{}, err
+			}
+			return client.listSchemaRegistryClustersHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSchemaRegistryClustersCreateRequest creates the ListSchemaRegistryClusters request.
-func (client *OrganizationClient) listSchemaRegistryClustersCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, options *OrganizationClientListSchemaRegistryClustersOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/schemaRegistryClusters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *OrganizationClient) listSchemaRegistryClustersCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, nextLink string, options *OrganizationClientListSchemaRegistryClustersOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/schemaRegistryClusters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if organizationName == "" {
+			return nil, errors.New("parameter organizationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+		if environmentID == "" {
+			return nil, errors.New("parameter environmentID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{environmentId}", url.PathEscape(environmentID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if organizationName == "" {
-		return nil, errors.New("parameter organizationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
-	if environmentID == "" {
-		return nil, errors.New("parameter environmentID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{environmentId}", url.PathEscape(environmentID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
-	if options != nil && options.PageSize != nil {
-		reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260602Preview)
+		if options != nil && options.PageSize != nil {
+			reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))
+		}
+		if options != nil && options.PageToken != nil {
+			reqQP.Set("pageToken", *options.PageToken)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.PageToken != nil {
-		reqQP.Set("pageToken", *options.PageToken)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listSchemaRegistryClustersHandleResponse handles the ListSchemaRegistryClusters response.
-func (client *OrganizationClient) listSchemaRegistryClustersHandleResponse(resp *http.Response) (OrganizationClientListSchemaRegistryClustersResponse, error) {
+func (client *OrganizationClient) listSchemaRegistryClustersHandleResponse(resp *http.Response, successCodes ...int) (OrganizationClientListSchemaRegistryClustersResponse, error) {
 	result := OrganizationClientListSchemaRegistryClustersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListSchemaRegistryClustersResponse); err != nil {
 		return OrganizationClientListSchemaRegistryClustersResponse{}, err
 	}
@@ -1297,12 +1346,7 @@ func (client *OrganizationClient) Update(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return OrganizationClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OrganizationClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -1336,8 +1380,11 @@ func (client *OrganizationClient) updateCreateRequest(ctx context.Context, resou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *OrganizationClient) updateHandleResponse(resp *http.Response) (OrganizationClientUpdateResponse, error) {
+func (client *OrganizationClient) updateHandleResponse(resp *http.Response, successCodes ...int) (OrganizationClientUpdateResponse, error) {
 	result := OrganizationClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OrganizationResource); err != nil {
 		return OrganizationClientUpdateResponse{}, err
 	}

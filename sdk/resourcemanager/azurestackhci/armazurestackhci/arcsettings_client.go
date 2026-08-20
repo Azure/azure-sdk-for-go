@@ -62,12 +62,7 @@ func (client *ArcSettingsClient) ConsentAndInstallDefaultExtensions(ctx context.
 	if err != nil {
 		return ArcSettingsClientConsentAndInstallDefaultExtensionsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ArcSettingsClientConsentAndInstallDefaultExtensionsResponse{}, err
-	}
-	resp, err := client.consentAndInstallDefaultExtensionsHandleResponse(httpResp)
-	return resp, err
+	return client.consentAndInstallDefaultExtensionsHandleResponse(httpResp, http.StatusOK)
 }
 
 // consentAndInstallDefaultExtensionsCreateRequest creates the ConsentAndInstallDefaultExtensions request.
@@ -101,8 +96,11 @@ func (client *ArcSettingsClient) consentAndInstallDefaultExtensionsCreateRequest
 }
 
 // consentAndInstallDefaultExtensionsHandleResponse handles the ConsentAndInstallDefaultExtensions response.
-func (client *ArcSettingsClient) consentAndInstallDefaultExtensionsHandleResponse(resp *http.Response) (ArcSettingsClientConsentAndInstallDefaultExtensionsResponse, error) {
+func (client *ArcSettingsClient) consentAndInstallDefaultExtensionsHandleResponse(resp *http.Response, successCodes ...int) (ArcSettingsClientConsentAndInstallDefaultExtensionsResponse, error) {
 	result := ArcSettingsClientConsentAndInstallDefaultExtensionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArcSetting); err != nil {
 		return ArcSettingsClientConsentAndInstallDefaultExtensionsResponse{}, err
 	}
@@ -130,12 +128,7 @@ func (client *ArcSettingsClient) Create(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ArcSettingsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ArcSettingsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK)
 }
 
 // createCreateRequest creates the Create request.
@@ -173,8 +166,11 @@ func (client *ArcSettingsClient) createCreateRequest(ctx context.Context, resour
 }
 
 // createHandleResponse handles the Create response.
-func (client *ArcSettingsClient) createHandleResponse(resp *http.Response) (ArcSettingsClientCreateResponse, error) {
+func (client *ArcSettingsClient) createHandleResponse(resp *http.Response, successCodes ...int) (ArcSettingsClientCreateResponse, error) {
 	result := ArcSettingsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArcSetting); err != nil {
 		return ArcSettingsClientCreateResponse{}, err
 	}
@@ -223,8 +219,7 @@ func (client *ArcSettingsClient) createIdentity(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -299,8 +294,7 @@ func (client *ArcSettingsClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -355,12 +349,7 @@ func (client *ArcSettingsClient) GeneratePassword(ctx context.Context, resourceG
 	if err != nil {
 		return ArcSettingsClientGeneratePasswordResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ArcSettingsClientGeneratePasswordResponse{}, err
-	}
-	resp, err := client.generatePasswordHandleResponse(httpResp)
-	return resp, err
+	return client.generatePasswordHandleResponse(httpResp, http.StatusOK)
 }
 
 // generatePasswordCreateRequest creates the GeneratePassword request.
@@ -394,8 +383,11 @@ func (client *ArcSettingsClient) generatePasswordCreateRequest(ctx context.Conte
 }
 
 // generatePasswordHandleResponse handles the GeneratePassword response.
-func (client *ArcSettingsClient) generatePasswordHandleResponse(resp *http.Response) (ArcSettingsClientGeneratePasswordResponse, error) {
+func (client *ArcSettingsClient) generatePasswordHandleResponse(resp *http.Response, successCodes ...int) (ArcSettingsClientGeneratePasswordResponse, error) {
 	result := ArcSettingsClientGeneratePasswordResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PasswordCredential); err != nil {
 		return ArcSettingsClientGeneratePasswordResponse{}, err
 	}
@@ -422,12 +414,7 @@ func (client *ArcSettingsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ArcSettingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ArcSettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -461,8 +448,11 @@ func (client *ArcSettingsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *ArcSettingsClient) getHandleResponse(resp *http.Response) (ArcSettingsClientGetResponse, error) {
+func (client *ArcSettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ArcSettingsClientGetResponse, error) {
 	result := ArcSettingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArcSetting); err != nil {
 		return ArcSettingsClientGetResponse{}, err
 	}
@@ -511,8 +501,7 @@ func (client *ArcSettingsClient) initializeDisableProcess(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -562,47 +551,61 @@ func (client *ArcSettingsClient) NewListByClusterPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, options)
-			}, nil)
+			req, err := client.listByClusterCreateRequest(ctx, resourceGroupName, clusterName, nextLink, options)
 			if err != nil {
 				return ArcSettingsClientListByClusterResponse{}, err
 			}
-			return client.listByClusterHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ArcSettingsClientListByClusterResponse{}, err
+			}
+			return client.listByClusterHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByClusterCreateRequest creates the ListByCluster request.
-func (client *ArcSettingsClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ArcSettingsClientListByClusterOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ArcSettingsClient) listByClusterCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nextLink string, _ *ArcSettingsClientListByClusterOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/arcSettings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if clusterName == "" {
+			return nil, errors.New("parameter clusterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260430)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByClusterHandleResponse handles the ListByCluster response.
-func (client *ArcSettingsClient) listByClusterHandleResponse(resp *http.Response) (ArcSettingsClientListByClusterResponse, error) {
+func (client *ArcSettingsClient) listByClusterHandleResponse(resp *http.Response, successCodes ...int) (ArcSettingsClientListByClusterResponse, error) {
 	result := ArcSettingsClientListByClusterResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArcSettingList); err != nil {
 		return ArcSettingsClientListByClusterResponse{}, err
 	}
@@ -652,8 +655,7 @@ func (client *ArcSettingsClient) reconcile(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -713,12 +715,7 @@ func (client *ArcSettingsClient) Update(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ArcSettingsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ArcSettingsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -756,8 +753,11 @@ func (client *ArcSettingsClient) updateCreateRequest(ctx context.Context, resour
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ArcSettingsClient) updateHandleResponse(resp *http.Response) (ArcSettingsClientUpdateResponse, error) {
+func (client *ArcSettingsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ArcSettingsClientUpdateResponse, error) {
 	result := ArcSettingsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ArcSetting); err != nil {
 		return ArcSettingsClientUpdateResponse{}, err
 	}

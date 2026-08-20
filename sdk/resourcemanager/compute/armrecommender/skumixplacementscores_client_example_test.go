@@ -141,7 +141,7 @@ func ExampleSKUMixPlacementScoresClient_Post() {
 	// 			},
 	// 		},
 	// 		PartialFulfillmentReason: to.Ptr(armrecommender.SKUMixPlacementPartialFulfillmentReasonNone),
-	// 		ValidUntil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-05T18:00:00Z"); return t}()),
+	// 		ValidUntil: to.Ptr(time.Date(2026, time.May, 5, 18, 0, 0, 0, time.UTC)),
 	// 	},
 	// }
 }

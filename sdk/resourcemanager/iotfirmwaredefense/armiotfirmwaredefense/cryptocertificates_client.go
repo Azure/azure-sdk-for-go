@@ -58,51 +58,65 @@ func (client *CryptoCertificatesClient) NewListByFirmwarePager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByFirmwareCreateRequest(ctx, resourceGroupName, workspaceName, firmwareID, options)
-			}, nil)
+			req, err := client.listByFirmwareCreateRequest(ctx, resourceGroupName, workspaceName, firmwareID, nextLink, options)
 			if err != nil {
 				return CryptoCertificatesClientListByFirmwareResponse{}, err
 			}
-			return client.listByFirmwareHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CryptoCertificatesClientListByFirmwareResponse{}, err
+			}
+			return client.listByFirmwareHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByFirmwareCreateRequest creates the ListByFirmware request.
-func (client *CryptoCertificatesClient) listByFirmwareCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, firmwareID string, _ *CryptoCertificatesClientListByFirmwareOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}/cryptoCertificates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CryptoCertificatesClient) listByFirmwareCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, firmwareID string, nextLink string, _ *CryptoCertificatesClientListByFirmwareOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}/cryptoCertificates"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		if firmwareID == "" {
+			return nil, errors.New("parameter firmwareID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{firmwareId}", url.PathEscape(firmwareID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if firmwareID == "" {
-		return nil, errors.New("parameter firmwareID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{firmwareId}", url.PathEscape(firmwareID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250802)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250802)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByFirmwareHandleResponse handles the ListByFirmware response.
-func (client *CryptoCertificatesClient) listByFirmwareHandleResponse(resp *http.Response) (CryptoCertificatesClientListByFirmwareResponse, error) {
+func (client *CryptoCertificatesClient) listByFirmwareHandleResponse(resp *http.Response, successCodes ...int) (CryptoCertificatesClientListByFirmwareResponse, error) {
 	result := CryptoCertificatesClientListByFirmwareResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CryptoCertificateResourceListResult); err != nil {
 		return CryptoCertificatesClientListByFirmwareResponse{}, err
 	}

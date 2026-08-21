@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsAzureActiveDirectory.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsAzureActiveDirectory.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForAadipAzureActiveDirectoryIdentityProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -43,7 +43,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForAadip
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsAzureActiveDirectoryNoAuthorization.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsAzureActiveDirectoryNoAuthorization.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForAadipAzureActiveDirectoryIdentityProtectionNoAuthorization() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForAadip
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsAzureActiveDirectoryNoLicense.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsAzureActiveDirectoryNoLicense.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForAadipAzureActiveDirectoryIdentityProtectionNoLicense() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForAadip
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsAzureSecurityCenter.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsAzureSecurityCenter.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForAsc() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForAsc()
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsDynamics365.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsDynamics365.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForDynamics365() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +167,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForDynam
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsIoT.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsIoT.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForIoT() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -198,7 +198,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForIoT()
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsMdatp.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsMdatp.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForMdatp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +229,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForMdatp
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsMicrosoftCloudAppSecurity.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsMicrosoftCloudAppSecurity.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForMcas() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,7 +260,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForMcas(
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsMicrosoftPurviewInformationProtection.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsMicrosoftPurviewInformationProtection.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForMicrosoftPurviewInformationProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -291,7 +291,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForMicro
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsMicrosoftThreatIntelligence.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsMicrosoftThreatIntelligence.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForMicrosoftThreatIntelligence() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -322,7 +322,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForMicro
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsMicrosoftThreatProtection.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsMicrosoftThreatProtection.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForMicrosoftThreatProtection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +353,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForMicro
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsOffice365Project.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsOffice365Project.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForOffice365Project() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -384,7 +384,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForOffic
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsOfficeATP.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsOfficeATP.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForOfficeAtp() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -415,7 +415,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForOffic
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsOfficeIRM.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsOfficeIRM.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForOfficeIrm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -446,7 +446,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForOffic
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsOfficePowerBI.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsOfficePowerBI.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForOfficePowerBi() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -477,7 +477,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForOffic
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsPurviewAudit.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsPurviewAudit.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForPurviewAudit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -508,7 +508,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForPurvi
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsThreatIntelligence.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsThreatIntelligence.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForTi() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -539,7 +539,7 @@ func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForTi() 
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/dataConnectors/CheckRequirementsThreatIntelligenceTaxii.json
+// Generated from example definition: 2025-10-01-preview/dataConnectors/CheckRequirementsThreatIntelligenceTaxii.json
 func ExampleDataConnectorsCheckRequirementsClient_Post_checkRequirementsForTiTaxii() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

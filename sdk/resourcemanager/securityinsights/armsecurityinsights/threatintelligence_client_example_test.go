@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/threatintelligence/PostThreatIntelligenceCount.json
+// Generated from example definition: 2025-10-01-preview/threatintelligence/PostThreatIntelligenceCount.json
 func ExampleThreatIntelligenceClient_Count() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExampleThreatIntelligenceClient_Count() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/threatintelligence/PostThreatIntelligenceQuery.json
+// Generated from example definition: 2025-10-01-preview/threatintelligence/PostThreatIntelligenceQuery.json
 func ExampleThreatIntelligenceClient_NewQueryPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

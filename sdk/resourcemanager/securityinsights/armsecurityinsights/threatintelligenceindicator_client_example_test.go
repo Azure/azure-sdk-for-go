@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-01-preview/threatintelligence/AppendTagsThreatIntelligence.json
+// Generated from example definition: 2025-10-01-preview/threatintelligence/AppendTagsThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_AppendTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleThreatIntelligenceIndicatorClient_AppendTags() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/threatintelligence/UpdateThreatIntelligence.json
+// Generated from example definition: 2025-10-01-preview/threatintelligence/UpdateThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleThreatIntelligenceIndicatorClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/threatintelligence/CreateThreatIntelligence.json
+// Generated from example definition: 2025-10-01-preview/threatintelligence/CreateThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_CreateIndicator() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +199,7 @@ func ExampleThreatIntelligenceIndicatorClient_CreateIndicator() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/threatintelligence/DeleteThreatIntelligence.json
+// Generated from example definition: 2025-10-01-preview/threatintelligence/DeleteThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExampleThreatIntelligenceIndicatorClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/threatintelligence/GetThreatIntelligenceById.json
+// Generated from example definition: 2025-10-01-preview/threatintelligence/GetThreatIntelligenceById.json
 func ExampleThreatIntelligenceIndicatorClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,7 +276,7 @@ func ExampleThreatIntelligenceIndicatorClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/threatintelligence/QueryThreatIntelligence.json
+// Generated from example definition: 2025-10-01-preview/threatintelligence/QueryThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_NewQueryIndicatorsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -403,7 +403,7 @@ func ExampleThreatIntelligenceIndicatorClient_NewQueryIndicatorsPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/threatintelligence/ReplaceTagsThreatIntelligence.json
+// Generated from example definition: 2025-10-01-preview/threatintelligence/ReplaceTagsThreatIntelligence.json
 func ExampleThreatIntelligenceIndicatorClient_ReplaceTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-07-01-preview/entities/expand/PostExpandEntity.json
+// Generated from example definition: 2025-10-01-preview/entities/expand/PostExpandEntity.json
 func ExampleEntitiesClient_Expand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleEntitiesClient_Expand() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetAccountEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetAccountEntityById.json
 func ExampleEntitiesClient_Get_getAnAccountEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleEntitiesClient_Get_getAnAccountEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetAzureResourceEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetAzureResourceEntityById.json
 func ExampleEntitiesClient_Get_getAnAzureResourceEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleEntitiesClient_Get_getAnAzureResourceEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetCloudApplicationEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetCloudApplicationEntityById.json
 func ExampleEntitiesClient_Get_getACloudApplicationEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +181,7 @@ func ExampleEntitiesClient_Get_getACloudApplicationEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetDnsEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetDnsEntityById.json
 func ExampleEntitiesClient_Get_getADnsEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleEntitiesClient_Get_getADnsEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetFileEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetFileEntityById.json
 func ExampleEntitiesClient_Get_getAFileEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -249,7 +249,7 @@ func ExampleEntitiesClient_Get_getAFileEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetFileHashEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetFileHashEntityById.json
 func ExampleEntitiesClient_Get_getAFileHashEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +282,7 @@ func ExampleEntitiesClient_Get_getAFileHashEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetHostEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetHostEntityById.json
 func ExampleEntitiesClient_Get_getAHostEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -322,7 +322,7 @@ func ExampleEntitiesClient_Get_getAHostEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetIoTDeviceEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetIoTDeviceEntityById.json
 func ExampleEntitiesClient_Get_getAnIoTDeviceEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -376,7 +376,7 @@ func ExampleEntitiesClient_Get_getAnIoTDeviceEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetIpEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetIpEntityById.json
 func ExampleEntitiesClient_Get_getAnIPEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -408,7 +408,7 @@ func ExampleEntitiesClient_Get_getAnIPEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetMailClusterEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetMailClusterEntityById.json
 func ExampleEntitiesClient_Get_getAMailClusterEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -461,7 +461,7 @@ func ExampleEntitiesClient_Get_getAMailClusterEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetMailMessageEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetMailMessageEntityById.json
 func ExampleEntitiesClient_Get_getAMailMessageEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -518,7 +518,7 @@ func ExampleEntitiesClient_Get_getAMailMessageEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetMailboxEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetMailboxEntityById.json
 func ExampleEntitiesClient_Get_getAMailboxEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -553,7 +553,7 @@ func ExampleEntitiesClient_Get_getAMailboxEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetMalwareEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetMalwareEntityById.json
 func ExampleEntitiesClient_Get_getAMalwareEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -586,7 +586,7 @@ func ExampleEntitiesClient_Get_getAMalwareEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetProcessEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetProcessEntityById.json
 func ExampleEntitiesClient_Get_getAProcessEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -620,7 +620,7 @@ func ExampleEntitiesClient_Get_getAProcessEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetRegistryKeyEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetRegistryKeyEntityById.json
 func ExampleEntitiesClient_Get_getARegistryKeyEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -653,7 +653,7 @@ func ExampleEntitiesClient_Get_getARegistryKeyEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetRegistryValueEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetRegistryValueEntityById.json
 func ExampleEntitiesClient_Get_getARegistryValueEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -688,7 +688,7 @@ func ExampleEntitiesClient_Get_getARegistryValueEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetSecurityAlertEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetSecurityAlertEntityById.json
 func ExampleEntitiesClient_Get_getASecurityAlertEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -748,7 +748,7 @@ func ExampleEntitiesClient_Get_getASecurityAlertEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetSecurityGroupEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetSecurityGroupEntityById.json
 func ExampleEntitiesClient_Get_getASecurityGroupEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -782,7 +782,7 @@ func ExampleEntitiesClient_Get_getASecurityGroupEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetSubmissionMailEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetSubmissionMailEntityById.json
 func ExampleEntitiesClient_Get_getASubmissionMailEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -820,7 +820,7 @@ func ExampleEntitiesClient_Get_getASubmissionMailEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetUrlEntityById.json
+// Generated from example definition: 2025-10-01-preview/entities/GetUrlEntityById.json
 func ExampleEntitiesClient_Get_getAUrlEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -852,7 +852,7 @@ func ExampleEntitiesClient_Get_getAUrlEntity() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/insights/PostGetInsights.json
+// Generated from example definition: 2025-10-01-preview/entities/insights/PostGetInsights.json
 func ExampleEntitiesClient_GetInsights() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -960,7 +960,7 @@ func ExampleEntitiesClient_GetInsights() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetEntities.json
+// Generated from example definition: 2025-10-01-preview/entities/GetEntities.json
 func ExampleEntitiesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1038,7 +1038,7 @@ func ExampleEntitiesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/entities/GetQueries.json
+// Generated from example definition: 2025-10-01-preview/entities/GetQueries.json
 func ExampleEntitiesClient_NewQueriesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1509,7 +1509,7 @@ func ExampleEntitiesClient_NewQueriesPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01-preview/manualTrigger/Entities_RunPlaybook.json
+// Generated from example definition: 2025-10-01-preview/manualTrigger/Entities_RunPlaybook.json
 func ExampleEntitiesClient_RunPlaybook() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

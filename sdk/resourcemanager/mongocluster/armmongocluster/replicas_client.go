@@ -19,7 +19,7 @@ import (
 // ReplicasClient contains the methods for the Replicas group.
 // Don't use this type directly, use NewReplicasClient() instead.
 //
-// Generated from API version 2026-06-01
+// Generated from API version 2026-06-15-preview
 type ReplicasClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -57,61 +57,47 @@ func (client *ReplicasClient) NewListByParentPager(resourceGroupName string, mon
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listByParentCreateRequest(ctx, resourceGroupName, mongoClusterName, nextLink, options)
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.listByParentCreateRequest(ctx, resourceGroupName, mongoClusterName, options)
+			}, nil)
 			if err != nil {
 				return ReplicasClientListByParentResponse{}, err
 			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ReplicasClientListByParentResponse{}, err
-			}
-			return client.listByParentHandleResponse(resp, http.StatusOK)
+			return client.listByParentHandleResponse(resp)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByParentCreateRequest creates the ListByParent request.
-func (client *ReplicasClient) listByParentCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, nextLink string, _ *ReplicasClientListByParentOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/replicas"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if mongoClusterName == "" {
-			return nil, errors.New("parameter mongoClusterName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{mongoClusterName}", url.PathEscape(mongoClusterName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+func (client *ReplicasClient) listByParentCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, _ *ReplicasClientListByParentOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/replicas"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if mongoClusterName == "" {
+		return nil, errors.New("parameter mongoClusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{mongoClusterName}", url.PathEscape(mongoClusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260615Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByParentHandleResponse handles the ListByParent response.
-func (client *ReplicasClient) listByParentHandleResponse(resp *http.Response, successCodes ...int) (ReplicasClientListByParentResponse, error) {
+func (client *ReplicasClient) listByParentHandleResponse(resp *http.Response) (ReplicasClientListByParentResponse, error) {
 	result := ReplicasClientListByParentResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicaListResult); err != nil {
 		return ReplicasClientListByParentResponse{}, err
 	}

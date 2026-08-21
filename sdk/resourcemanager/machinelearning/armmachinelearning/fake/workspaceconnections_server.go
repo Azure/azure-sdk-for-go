@@ -15,7 +15,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v5"
 	"net/http"
 	"net/url"
-	"reflect"
 	"regexp"
 	"slices"
 	"strconv"
@@ -43,10 +42,6 @@ type WorkspaceConnectionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListSecrets func(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, options *armmachinelearning.WorkspaceConnectionsClientListSecretsOptions) (resp azfake.Responder[armmachinelearning.WorkspaceConnectionsClientListSecretsResponse], errResp azfake.ErrorResponder)
 
-	// BeginTestConnection is the fake for method WorkspaceConnectionsClient.BeginTestConnection
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginTestConnection func(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, options *armmachinelearning.WorkspaceConnectionsClientBeginTestConnectionOptions) (resp azfake.PollerResponder[armmachinelearning.WorkspaceConnectionsClientTestConnectionResponse], errResp azfake.ErrorResponder)
-
 	// Update is the fake for method WorkspaceConnectionsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, body armmachinelearning.WorkspaceConnectionUpdateParameter, options *armmachinelearning.WorkspaceConnectionsClientUpdateOptions) (resp azfake.Responder[armmachinelearning.WorkspaceConnectionsClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -57,18 +52,16 @@ type WorkspaceConnectionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWorkspaceConnectionsServerTransport(srv *WorkspaceConnectionsServer) *WorkspaceConnectionsServerTransport {
 	return &WorkspaceConnectionsServerTransport{
-		srv:                 srv,
-		newListPager:        newTracker[azfake.PagerResponder[armmachinelearning.WorkspaceConnectionsClientListResponse]](),
-		beginTestConnection: newTracker[azfake.PollerResponder[armmachinelearning.WorkspaceConnectionsClientTestConnectionResponse]](),
+		srv:          srv,
+		newListPager: newTracker[azfake.PagerResponder[armmachinelearning.WorkspaceConnectionsClientListResponse]](),
 	}
 }
 
 // WorkspaceConnectionsServerTransport connects instances of armmachinelearning.WorkspaceConnectionsClient to instances of WorkspaceConnectionsServer.
 // Don't use this type directly, use NewWorkspaceConnectionsServerTransport instead.
 type WorkspaceConnectionsServerTransport struct {
-	srv                 *WorkspaceConnectionsServer
-	newListPager        *tracker[azfake.PagerResponder[armmachinelearning.WorkspaceConnectionsClientListResponse]]
-	beginTestConnection *tracker[azfake.PollerResponder[armmachinelearning.WorkspaceConnectionsClientTestConnectionResponse]]
+	srv          *WorkspaceConnectionsServer
+	newListPager *tracker[azfake.PagerResponder[armmachinelearning.WorkspaceConnectionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for WorkspaceConnectionsServerTransport.
@@ -102,8 +95,6 @@ func (w *WorkspaceConnectionsServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = w.dispatchNewListPager(req)
 			case "WorkspaceConnectionsClient.ListSecrets":
 				res.resp, res.err = w.dispatchListSecrets(req)
-			case "WorkspaceConnectionsClient.BeginTestConnection":
-				res.resp, res.err = w.dispatchBeginTestConnection(req)
 			case "WorkspaceConnectionsClient.Update":
 				res.resp, res.err = w.dispatchUpdate(req)
 			default:
@@ -327,64 +318,6 @@ func (w *WorkspaceConnectionsServerTransport) dispatchListSecrets(req *http.Requ
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (w *WorkspaceConnectionsServerTransport) dispatchBeginTestConnection(req *http.Request) (*http.Response, error) {
-	if w.srv.BeginTestConnection == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginTestConnection not implemented")}
-	}
-	beginTestConnection := w.beginTestConnection.get(req)
-	if beginTestConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/connections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/testconnection`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.WorkspaceConnectionPropertiesV2BasicResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		connectionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("connectionName")])
-		if err != nil {
-			return nil, err
-		}
-		var options *armmachinelearning.WorkspaceConnectionsClientBeginTestConnectionOptions
-		if !reflect.ValueOf(body).IsZero() {
-			options = &armmachinelearning.WorkspaceConnectionsClientBeginTestConnectionOptions{
-				Body: &body,
-			}
-		}
-		respr, errRespr := w.srv.BeginTestConnection(req.Context(), resourceGroupNameParam, workspaceNameParam, connectionNameParam, options)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginTestConnection = &respr
-		w.beginTestConnection.add(req, beginTestConnection)
-	}
-
-	resp, err := server.PollerResponderNext(beginTestConnection, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		w.beginTestConnection.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginTestConnection) {
-		w.beginTestConnection.remove(req)
-	}
-
 	return resp, nil
 }
 

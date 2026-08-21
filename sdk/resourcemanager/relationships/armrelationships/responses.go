@@ -4,6 +4,18 @@
 
 package armrelationships
 
+// ContainsRelationshipsClientListByResourceGroupResponse contains the response from method ContainsRelationshipsClient.NewListByResourceGroupPager.
+type ContainsRelationshipsClientListByResourceGroupResponse struct {
+	// The response of a ContainsRelationship list operation.
+	ContainsRelationshipListResult
+}
+
+// ContainsRelationshipsClientListBySubscriptionResponse contains the response from method ContainsRelationshipsClient.NewListBySubscriptionPager.
+type ContainsRelationshipsClientListBySubscriptionResponse struct {
+	// The response of a ContainsRelationship list operation.
+	ContainsRelationshipListResult
+}
+
 // DependencyOfRelationshipsClientCreateOrUpdateResponse contains the response from method DependencyOfRelationshipsClient.BeginCreateOrUpdate.
 type DependencyOfRelationshipsClientCreateOrUpdateResponse struct {
 	// Defines a dependencyOf relationship resource.
@@ -19,6 +31,12 @@ type DependencyOfRelationshipsClientDeleteResponse struct {
 type DependencyOfRelationshipsClientGetResponse struct {
 	// Defines a dependencyOf relationship resource.
 	DependencyOfRelationship
+}
+
+// DependencyOfRelationshipsClientListByParentResponse contains the response from method DependencyOfRelationshipsClient.NewListByParentPager.
+type DependencyOfRelationshipsClientListByParentResponse struct {
+	// The response of a DependencyOfRelationship list operation.
+	DependencyOfRelationshipListResult
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
@@ -42,4 +60,10 @@ type ServiceGroupMemberRelationshipsClientDeleteResponse struct {
 type ServiceGroupMemberRelationshipsClientGetResponse struct {
 	// Defines a ServiceGroupMember relationship resource.
 	ServiceGroupMemberRelationship
+}
+
+// ServiceGroupMemberRelationshipsClientListByParentResponse contains the response from method ServiceGroupMemberRelationshipsClient.NewListByParentPager.
+type ServiceGroupMemberRelationshipsClientListByParentResponse struct {
+	// The response of a ServiceGroupMemberRelationship list operation.
+	ServiceGroupMemberRelationshipListResult
 }

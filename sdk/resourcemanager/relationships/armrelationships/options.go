@@ -4,6 +4,20 @@
 
 package armrelationships
 
+// ContainsRelationshipsClientListByResourceGroupOptions contains the optional parameters for the ContainsRelationshipsClient.NewListByResourceGroupPager
+// method.
+type ContainsRelationshipsClientListByResourceGroupOptions struct {
+	// Filters the results by target resource type. Example: properties.metadata.targetType eq 'Microsoft.Compute/virtualMachines'
+	Filter *string
+}
+
+// ContainsRelationshipsClientListBySubscriptionOptions contains the optional parameters for the ContainsRelationshipsClient.NewListBySubscriptionPager
+// method.
+type ContainsRelationshipsClientListBySubscriptionOptions struct {
+	// Filters the results by target resource type. Example: properties.metadata.targetType eq 'Microsoft.Compute/virtualMachines'
+	Filter *string
+}
+
 // DependencyOfRelationshipsClientBeginCreateOrUpdateOptions contains the optional parameters for the DependencyOfRelationshipsClient.BeginCreateOrUpdate
 // method.
 type DependencyOfRelationshipsClientBeginCreateOrUpdateOptions struct {
@@ -21,6 +35,12 @@ type DependencyOfRelationshipsClientBeginDeleteOptions struct {
 // DependencyOfRelationshipsClientGetOptions contains the optional parameters for the DependencyOfRelationshipsClient.Get
 // method.
 type DependencyOfRelationshipsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DependencyOfRelationshipsClientListByParentOptions contains the optional parameters for the DependencyOfRelationshipsClient.NewListByParentPager
+// method.
+type DependencyOfRelationshipsClientListByParentOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -46,5 +66,11 @@ type ServiceGroupMemberRelationshipsClientBeginDeleteOptions struct {
 // ServiceGroupMemberRelationshipsClientGetOptions contains the optional parameters for the ServiceGroupMemberRelationshipsClient.Get
 // method.
 type ServiceGroupMemberRelationshipsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ServiceGroupMemberRelationshipsClientListByParentOptions contains the optional parameters for the ServiceGroupMemberRelationshipsClient.NewListByParentPager
+// method.
+type ServiceGroupMemberRelationshipsClientListByParentOptions struct {
 	// placeholder for future optional parameters
 }

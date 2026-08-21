@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2023-09-01-preview/DependencyOfRelationships_CreateOrUpdate.json
+// Generated from example definition: 2026-03-01-preview/DependencyOfRelationships_CreateOrUpdate.json
 func ExampleDependencyOfRelationshipsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -46,7 +46,7 @@ func ExampleDependencyOfRelationshipsClient_BeginCreateOrUpdate() {
 	// 			TargetID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg123/providers/Microsoft.Web/staticSites/test-site"),
 	// 			TargetTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
 	// 			OriginInformation: &armrelationships.RelationshipOriginInformation{
-	// 				RelationshipOriginType: to.Ptr(armrelationships.RelationshipOrigins("SystemExplicitlyCreated")),
+	// 				RelationshipOriginType: to.Ptr(armrelationships.RelationshipOriginsUserExplicitlyCreated),
 	// 				DiscoveryEngine: to.Ptr("PEM"),
 	// 			},
 	// 			Metadata: &armrelationships.RelationshipMetadata{
@@ -62,7 +62,7 @@ func ExampleDependencyOfRelationshipsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2023-09-01-preview/DependencyOfRelationships_Delete.json
+// Generated from example definition: 2026-03-01-preview/DependencyOfRelationships_Delete.json
 func ExampleDependencyOfRelationshipsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleDependencyOfRelationshipsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2023-09-01-preview/DependencyOfRelationships_Get.json
+// Generated from example definition: 2026-03-01-preview/DependencyOfRelationships_Get.json
 func ExampleDependencyOfRelationshipsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleDependencyOfRelationshipsClient_Get() {
 	// 			TargetID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg123/providers/Microsoft.Web/staticSites/test-site"),
 	// 			TargetTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
 	// 			OriginInformation: &armrelationships.RelationshipOriginInformation{
-	// 				RelationshipOriginType: to.Ptr(armrelationships.RelationshipOrigins("SystemExplicitlyCreated")),
+	// 				RelationshipOriginType: to.Ptr(armrelationships.RelationshipOriginsUserExplicitlyCreated),
 	// 				DiscoveryEngine: to.Ptr("PEM"),
 	// 			},
 	// 			Metadata: &armrelationships.RelationshipMetadata{
@@ -122,4 +122,71 @@ func ExampleDependencyOfRelationshipsClient_Get() {
 	// 		Type: to.Ptr("Microsoft.Relationships/dependencyOf"),
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-03-01-preview/DependencyOfRelationships_ListByParent.json
+func ExampleDependencyOfRelationshipsClient_NewListByParentPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrelationships.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDependencyOfRelationshipsClient().NewListByParentPager("subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armrelationships.DependencyOfRelationshipsClientListByParentResponse{
+		// 	DependencyOfRelationshipListResult: armrelationships.DependencyOfRelationshipListResult{
+		// 		Value: []*armrelationships.DependencyOfRelationship{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account/providers/Microsoft.Relationships/dependencyOf/relationshipOne"),
+		// 				Name: to.Ptr("relationshipOne"),
+		// 				Type: to.Ptr("Microsoft.Relationships/dependencyOf"),
+		// 				Properties: &armrelationships.DependencyOfRelationshipProperties{
+		// 					SourceID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account"),
+		// 					TargetID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg123/providers/Microsoft.Web/staticSites/test-site"),
+		// 					TargetTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+		// 					OriginInformation: &armrelationships.RelationshipOriginInformation{
+		// 						RelationshipOriginType: to.Ptr(armrelationships.RelationshipOriginsUserExplicitlyCreated),
+		// 					},
+		// 					Metadata: &armrelationships.RelationshipMetadata{
+		// 						SourceType: to.Ptr("Microsoft.DocumentDb/databaseAccounts"),
+		// 						TargetType: to.Ptr("Microsoft.Web/staticSites"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armrelationships.ProvisioningStateSucceeded),
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account/providers/Microsoft.Relationships/dependencyOf/relationshipTwo"),
+		// 				Name: to.Ptr("relationshipTwo"),
+		// 				Type: to.Ptr("Microsoft.Relationships/dependencyOf"),
+		// 				Properties: &armrelationships.DependencyOfRelationshipProperties{
+		// 					SourceID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.DocumentDb/databaseAccounts/test-db-account"),
+		// 					TargetID: to.Ptr("/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg456/providers/Microsoft.Storage/storageAccounts/test-storage"),
+		// 					TargetTenant: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+		// 					OriginInformation: &armrelationships.RelationshipOriginInformation{
+		// 						RelationshipOriginType: to.Ptr(armrelationships.RelationshipOriginsServiceExplicitlyCreated),
+		// 					},
+		// 					Metadata: &armrelationships.RelationshipMetadata{
+		// 						SourceType: to.Ptr("Microsoft.DocumentDb/databaseAccounts"),
+		// 						TargetType: to.Ptr("Microsoft.Storage/storageAccounts"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armrelationships.ProvisioningStateSucceeded),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

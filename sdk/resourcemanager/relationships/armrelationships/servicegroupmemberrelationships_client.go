@@ -19,7 +19,7 @@ import (
 // ServiceGroupMemberRelationshipsClient contains the methods for the ServiceGroupMemberRelationships group.
 // Don't use this type directly, use NewServiceGroupMemberRelationshipsClient() instead.
 //
-// Generated from API version 2023-09-01-preview
+// Generated from API version 2026-03-01-preview
 type ServiceGroupMemberRelationshipsClient struct {
 	internal *arm.Client
 }
@@ -100,7 +100,7 @@ func (client *ServiceGroupMemberRelationshipsClient) createOrUpdateCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230901Preview)
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -171,7 +171,7 @@ func (client *ServiceGroupMemberRelationshipsClient) deleteCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230901Preview)
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -215,7 +215,7 @@ func (client *ServiceGroupMemberRelationshipsClient) getCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230901Preview)
+	reqQP.Set("api-version", version20260301Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -229,6 +229,74 @@ func (client *ServiceGroupMemberRelationshipsClient) getHandleResponse(resp *htt
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGroupMemberRelationship); err != nil {
 		return ServiceGroupMemberRelationshipsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByParentPager - List ServiceGroupMemberRelationship resources by parent
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - options - ServiceGroupMemberRelationshipsClientListByParentOptions contains the optional parameters for the ServiceGroupMemberRelationshipsClient.NewListByParentPager
+//     method.
+func (client *ServiceGroupMemberRelationshipsClient) NewListByParentPager(resourceURI string, options *ServiceGroupMemberRelationshipsClientListByParentOptions) *runtime.Pager[ServiceGroupMemberRelationshipsClientListByParentResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ServiceGroupMemberRelationshipsClientListByParentResponse]{
+		More: func(page ServiceGroupMemberRelationshipsClientListByParentResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ServiceGroupMemberRelationshipsClientListByParentResponse) (ServiceGroupMemberRelationshipsClientListByParentResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ServiceGroupMemberRelationshipsClient.NewListByParentPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByParentCreateRequest(ctx, resourceURI, nextLink, options)
+			if err != nil {
+				return ServiceGroupMemberRelationshipsClientListByParentResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServiceGroupMemberRelationshipsClientListByParentResponse{}, err
+			}
+			return client.listByParentHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByParentCreateRequest creates the ListByParent request.
+func (client *ServiceGroupMemberRelationshipsClient) listByParentCreateRequest(ctx context.Context, resourceURI string, nextLink string, _ *ServiceGroupMemberRelationshipsClientListByParentOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByParentHandleResponse handles the ListByParent response.
+func (client *ServiceGroupMemberRelationshipsClient) listByParentHandleResponse(resp *http.Response, successCodes ...int) (ServiceGroupMemberRelationshipsClientListByParentResponse, error) {
+	result := ServiceGroupMemberRelationshipsClientListByParentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceGroupMemberRelationshipListResult); err != nil {
+		return ServiceGroupMemberRelationshipsClientListByParentResponse{}, err
 	}
 	return result, nil
 }

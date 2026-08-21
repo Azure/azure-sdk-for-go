@@ -29,6 +29,14 @@ func NewClientFactory(credential azcore.TokenCredential, options *arm.ClientOpti
 	}, nil
 }
 
+// NewContainsRelationshipsClient creates a new instance of ContainsRelationshipsClient.
+func (c *ClientFactory) NewContainsRelationshipsClient(subscriptionID string) *ContainsRelationshipsClient {
+	return &ContainsRelationshipsClient{
+		subscriptionID: subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewDependencyOfRelationshipsClient creates a new instance of DependencyOfRelationshipsClient.
 func (c *ClientFactory) NewDependencyOfRelationshipsClient() *DependencyOfRelationshipsClient {
 	return &DependencyOfRelationshipsClient{

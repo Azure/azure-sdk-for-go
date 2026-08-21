@@ -41,7 +41,7 @@ if (Select-String -path ./report.xml -pattern '<testsuites></testsuites>' -simpl
 
     if ($env:PUBLISHCODECOVERAGE -eq 'true') {
         Write-Host "##[command] Converting coverage.txt to Cobertura XML"
-        gocover-cobertura < coverage.txt > coverage.xml
+        Get-Content coverage.txt | gocover-cobertura > coverage.xml
         if ($LASTEXITCODE -gt 0) {
             Write-Host "##[warning] Failed to convert coverage to Cobertura format"
         }

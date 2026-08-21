@@ -183,9 +183,8 @@ steps:
       condition: succeededOrFailed()
       displayName: 'Publish Code Coverage'
       inputs:
-        summaryFileFormat: 'Cobertura'
+        summaryFileLocation: '$(Build.SourcesDirectory)/**/coverage.xml'
         pathToSources: '$(Build.SourcesDirectory)/sdk'
-        summaryFile: '$(Build.SourcesDirectory)/**/coverage.xml'
 
   - template: /eng/common/pipelines/templates/steps/upload-llm-artifacts.yml
     parameters:

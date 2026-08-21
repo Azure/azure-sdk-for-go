@@ -18,9 +18,16 @@ type AMQPLink interface {
 	LinkName() string
 }
 
+// LinksForManagementOps are the functions that the management operations use within Links[T].
+type LinksForManagementOps interface {
+	// RetryManagement is [Links.RetryManagement]
+	RetryManagement(ctx context.Context, eventName azlog.Event, operation string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid LinkWithID[amqpwrap.RPCLink]) error) error
+}
+
 // LinksForPartitionClient are the functions that the PartitionClient uses within Links[T]
-// (for unit testing only)
 type LinksForPartitionClient[LinkT AMQPLink] interface {
+	LinksForManagementOps
+
 	// Retry is [Links.Retry]
 	Retry(ctx context.Context, eventName azlog.Event, operation string, partitionID string, retryOptions exported.RetryOptions, fn func(ctx context.Context, lwid LinkWithID[LinkT]) error) error
 

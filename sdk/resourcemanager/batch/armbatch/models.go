@@ -1326,13 +1326,13 @@ type NetworkSecurityPerimeterConfiguration struct {
 	Type *string
 }
 
-// NetworkSecurityPerimeterConfigurationListResult - Result of a list NSP (network security perimeter) configurations request.
+// NetworkSecurityPerimeterConfigurationListResult - The response of a NetworkSecurityPerimeterConfiguration list operation.
 type NetworkSecurityPerimeterConfigurationListResult struct {
-	// The link used to get the next page of results.
-	NextLink *string
-
-	// Array of network security perimeter results.
+	// REQUIRED; The NetworkSecurityPerimeterConfiguration items on this page
 	Value []*NetworkSecurityPerimeterConfiguration
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // NetworkSecurityPerimeterConfigurationProperties - Network security configuration properties.

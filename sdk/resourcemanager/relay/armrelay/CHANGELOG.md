@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.1 (2026-08-05)
+## 2.1.0-beta.1 (2026-08-21)
 ### Features Added
 
 - New enum type `ClusterProvisioningState` with values `ClusterProvisioningStateCanceled`, `ClusterProvisioningStateCreating`, `ClusterProvisioningStateDeleting`, `ClusterProvisioningStateFailed`, `ClusterProvisioningStateScaling`, `ClusterProvisioningStateSucceeded`

@@ -293,11 +293,11 @@ func ExampleNamespacesClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/RG-eg/providers/Microsoft.Relay/namespaces/example-RelayRelayNamespace-01"),
 	// 		Location: to.Ptr("West US"),
 	// 		Properties: &armrelay.NamespaceProperties{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:38:12.46Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 38, 12, 460000000, time.UTC)),
 	// 			MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-RelayRelayNamespace-01"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-01.servicebus.windows.net:443/"),
-	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:38:34.533Z"); return t}()),
+	// 			UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 38, 34, 533000000, time.UTC)),
 	// 			MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 	// 		},
 	// 		SKU: &armrelay.SKU{
@@ -428,11 +428,11 @@ func ExampleNamespacesClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/RG1-eg/providers/Microsoft.Relay/namespaces/example-RelayRelayNamespace-01"),
 		// 				Location: to.Ptr("West US"),
 		// 				Properties: &armrelay.NamespaceProperties{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:34:49.4131724Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 49, 413172400, time.UTC)),
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-RelayRelayNamespace-01"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-01.servicebus.windows.net:443/"),
-		// 					UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:34:59.4131724Z"); return t}()),
+		// 					UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 59, 413172400, time.UTC)),
 		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
@@ -450,11 +450,11 @@ func ExampleNamespacesClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/RG1-eg/providers/Microsoft.Relay/namespaces/example-RelayRelayNamespace-02"),
 		// 				Location: to.Ptr("West US"),
 		// 				Properties: &armrelay.NamespaceProperties{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:34:39.4131724Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 39, 413172400, time.UTC)),
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-RelayRelayNamespace-02"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-02.servicebus.windows.net:443/"),
-		// 					UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-01-23T20:34:49.4131724Z"); return t}()),
+		// 					UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 49, 413172400, time.UTC)),
 		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{

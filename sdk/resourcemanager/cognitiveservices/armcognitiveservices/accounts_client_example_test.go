@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/CreateAccount.json
+// Generated from example definition: 2026-07-15-preview/CreateAccount.json
 func ExampleAccountsClient_BeginCreate_createAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,6 +42,11 @@ func ExampleAccountsClient_BeginCreate_createAccount() {
 				{
 					ResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount"),
 				},
+			},
+			CapabilitySettings: &armcognitiveservices.CapabilitySettings{
+				DocumentStore: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.DocumentDB/databaseAccounts/myCosmosAccount"),
+				VectorStore:   to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Search/searchServices/mySearchService"),
+				BlobStore:     to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount"),
 			},
 		},
 		SKU: &armcognitiveservices.SKU{
@@ -87,6 +92,11 @@ func ExampleAccountsClient_BeginCreate_createAccount() {
 	// 					ResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount"),
 	// 				},
 	// 			},
+	// 			CapabilitySettings: &armcognitiveservices.CapabilitySettings{
+	// 				DocumentStore: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.DocumentDB/databaseAccounts/myCosmosAccount"),
+	// 				VectorStore: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Search/searchServices/mySearchService"),
+	// 				BlobStore: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount"),
+	// 			},
 	// 		},
 	// 		SKU: &armcognitiveservices.SKU{
 	// 			Name: to.Ptr("S0"),
@@ -95,7 +105,7 @@ func ExampleAccountsClient_BeginCreate_createAccount() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/CreateAccountMin.json
+// Generated from example definition: 2026-07-15-preview/CreateAccountMin.json
 func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +161,92 @@ func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/DeleteAccount.json
+// Generated from example definition: 2026-07-15-preview/CreateAccountWithAgentHostingConfiguration.json
+func ExampleAccountsClient_BeginCreate_createAFoundryAccountWithCustomerOwnedAksHosting() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginCreate(ctx, "myResourceGroup", "foundryByocAccount", armcognitiveservices.Account{
+		Identity: &armcognitiveservices.Identity{
+			Type: to.Ptr(armcognitiveservices.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armcognitiveservices.UserAssignedIdentity{
+				"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/account-control-plane": {},
+			},
+		},
+		Kind:     to.Ptr("AIServices"),
+		Location: to.Ptr("West US"),
+		Properties: &armcognitiveservices.AccountProperties{
+			AgentHostingConfigurations: []armcognitiveservices.AgentHostingConfigurationClassification{
+				&armcognitiveservices.ManagedClusterAgentHostingConfiguration{
+					Name:                                to.Ptr("default"),
+					HostingType:                         to.Ptr(armcognitiveservices.AgentHostingTypeManagedCluster),
+					HostingManagementIdentityResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/account-control-plane"),
+					WorkloadIdentityResourceID:          to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/aks-workload"),
+					ClusterResourceID:                   to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+					StorageAccountResourceID:            to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/storage1"),
+				},
+			},
+		},
+		SKU: &armcognitiveservices.SKU{
+			Name: to.Ptr("S0"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.AccountsClientCreateResponse{
+	// 	Account: armcognitiveservices.Account{
+	// 		Name: to.Ptr("foundryByocAccount"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
+	// 		Etag: to.Ptr("W/\"datetime'2026-08-05T03%3A00%3A00.0000000Z'\""),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/foundryByocAccount"),
+	// 		Identity: &armcognitiveservices.Identity{
+	// 			Type: to.Ptr(armcognitiveservices.ResourceIdentityTypeUserAssigned),
+	// 			TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 			UserAssignedIdentities: map[string]*armcognitiveservices.UserAssignedIdentity{
+	// 				"/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/account-control-plane": &armcognitiveservices.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("b5cf119e-a5c2-42c7-802f-592e0efb169f"),
+	// 					ClientID: to.Ptr("2f7ee82a-3d7f-4a7f-b8de-3c43ad9478a2"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Kind: to.Ptr("AIServices"),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armcognitiveservices.AccountProperties{
+	// 			Endpoint: to.Ptr("https://foundrybyocaccount.cognitiveservices.azure.com/"),
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+	// 			AgentHostingConfigurations: []armcognitiveservices.AgentHostingConfigurationClassification{
+	// 				&armcognitiveservices.ManagedClusterAgentHostingConfiguration{
+	// 					Name: to.Ptr("default"),
+	// 					HostingType: to.Ptr(armcognitiveservices.AgentHostingTypeManagedCluster),
+	// 					HostingManagementIdentityResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/account-control-plane"),
+	// 					WorkloadIdentityResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/aks-workload"),
+	// 					ClusterResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.ContainerService/managedClusters/cluster1"),
+	// 					StorageAccountResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/storage1"),
+	// 				},
+	// 			},
+	// 		},
+	// 		SKU: &armcognitiveservices.SKU{
+	// 			Name: to.Ptr("S0"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-15-preview/DeleteAccount.json
 func ExampleAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,7 +272,7 @@ func ExampleAccountsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/EvaluateDeploymentPolicies.json
+// Generated from example definition: 2026-07-15-preview/EvaluateDeploymentPolicies.json
 func ExampleAccountsClient_EvaluateDeploymentPolicies() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +349,7 @@ func ExampleAccountsClient_EvaluateDeploymentPolicies() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/GetAccount.json
+// Generated from example definition: 2026-07-15-preview/GetAccount.json
 func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +390,7 @@ func ExampleAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ListAccountsBySubscription.json
+// Generated from example definition: 2026-07-15-preview/ListAccountsBySubscription.json
 func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +484,7 @@ func ExampleAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ListAccountsByResourceGroup.json
+// Generated from example definition: 2026-07-15-preview/ListAccountsByResourceGroup.json
 func ExampleAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -456,7 +551,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ListKeys.json
+// Generated from example definition: 2026-07-15-preview/ListKeys.json
 func ExampleAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -482,7 +577,7 @@ func ExampleAccountsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ListAccountModels.json
+// Generated from example definition: 2026-07-15-preview/ListAccountModels.json
 func ExampleAccountsClient_NewListModelsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -529,10 +624,10 @@ func ExampleAccountsClient_NewListModelsPager() {
 		// 				LifecycleStatus: to.Ptr(armcognitiveservices.ModelLifecycleStatusLegacy),
 		// 				MaxCapacity: to.Ptr[int32](10),
 		// 				SystemData: &armcognitiveservices.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-07T00:00:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.October, 7, 0, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("Microsoft"),
 		// 					CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-10-07T00:00:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.October, 7, 0, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("Microsoft"),
 		// 					LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
 		// 				},
@@ -554,10 +649,10 @@ func ExampleAccountsClient_NewListModelsPager() {
 		// 				MaxCapacity: to.Ptr[int32](2),
 		// 				ModelCatalogAssetID: to.Ptr("azureml://registries/azure-openai/models/dall-e-3/versions/3.0"),
 		// 				SystemData: &armcognitiveservices.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-11T00:00:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.August, 11, 0, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("Microsoft"),
 		// 					CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-08-11T00:00:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.August, 11, 0, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("Microsoft"),
 		// 					LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
 		// 				},
@@ -580,10 +675,10 @@ func ExampleAccountsClient_NewListModelsPager() {
 		// 				LifecycleStatus: to.Ptr(armcognitiveservices.ModelLifecycleStatusDeprecated),
 		// 				MaxCapacity: to.Ptr[int32](9),
 		// 				SystemData: &armcognitiveservices.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-09T00:00:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.March, 9, 0, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("Microsoft"),
 		// 					CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-06T00:00:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.July, 6, 0, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("Microsoft"),
 		// 					LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
 		// 				},
@@ -607,16 +702,16 @@ func ExampleAccountsClient_NewListModelsPager() {
 		// 				MaxCapacity: to.Ptr[int32](50),
 		// 				ModelCatalogAssetID: to.Ptr("azureml://registries/azure-openai/models/gpt-4o/versions/2024-05-13"),
 		// 				ReplacementConfig: &armcognitiveservices.ReplacementConfig{
-		// 					AutoUpgradeStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-03-26T07:00:00Z"); return t}()),
+		// 					AutoUpgradeStartDate: to.Ptr(time.Date(2025, time.March, 26, 7, 0, 0, 0, time.UTC)),
 		// 					TargetModelName: to.Ptr("gpt-4.1"),
 		// 					TargetModelVersion: to.Ptr("2025-04-14"),
 		// 					UpgradeOnExpiryLeadTimeDays: to.Ptr[int32](7),
 		// 				},
 		// 				SystemData: &armcognitiveservices.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-05-13T00:00:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.May, 13, 0, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("Microsoft"),
 		// 					CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-15T00:00:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.December, 15, 0, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("Microsoft"),
 		// 					LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
 		// 				},
@@ -637,10 +732,10 @@ func ExampleAccountsClient_NewListModelsPager() {
 		// 				MaxCapacity: to.Ptr[int32](3),
 		// 				ModelCatalogAssetID: to.Ptr("azureml://registries/azureml-meta/models/Llama-3.2-90B-Vision-Instruct/versions/2"),
 		// 				SystemData: &armcognitiveservices.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-10-01T00:00:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("Microsoft"),
 		// 					CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-16T04:45:33.9367873Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.April, 16, 4, 45, 33, 936787300, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("MaaSModelConverter"),
 		// 					LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
 		// 				},
@@ -668,10 +763,10 @@ func ExampleAccountsClient_NewListModelsPager() {
 		// 				MaxCapacity: to.Ptr[int32](50),
 		// 				ModelCatalogAssetID: to.Ptr("azureml://registries/azure-openai/models/gpt-4o/versions/2024-08-06"),
 		// 				SystemData: &armcognitiveservices.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-08-06T00:00:00Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.August, 6, 0, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("Microsoft"),
 		// 					CreatedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("Microsoft"),
 		// 					LastModifiedByType: to.Ptr(armcognitiveservices.CreatedByTypeApplication),
 		// 				},
@@ -683,7 +778,7 @@ func ExampleAccountsClient_NewListModelsPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ListSkus.json
+// Generated from example definition: 2026-07-15-preview/ListSkus.json
 func ExampleAccountsClient_ListSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -723,7 +818,7 @@ func ExampleAccountsClient_ListSKUs() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/GetUsages.json
+// Generated from example definition: 2026-07-15-preview/GetUsages.json
 func ExampleAccountsClient_ListUsages_getUsages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -763,7 +858,7 @@ func ExampleAccountsClient_ListUsages_getUsages() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/GetUsagesClassicScope.json
+// Generated from example definition: 2026-07-15-preview/GetUsagesClassicScope.json
 func ExampleAccountsClient_ListUsages_getUsagesClassicScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -802,7 +897,7 @@ func ExampleAccountsClient_ListUsages_getUsagesClassicScope() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/GetUsagesDataZoneScope.json
+// Generated from example definition: 2026-07-15-preview/GetUsagesDataZoneScope.json
 func ExampleAccountsClient_ListUsages_getUsagesDataZoneScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -842,7 +937,7 @@ func ExampleAccountsClient_ListUsages_getUsagesDataZoneScope() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/GetUsagesGlobalScope.json
+// Generated from example definition: 2026-07-15-preview/GetUsagesGlobalScope.json
 func ExampleAccountsClient_ListUsages_getUsagesGlobalScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -882,7 +977,7 @@ func ExampleAccountsClient_ListUsages_getUsagesGlobalScope() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/RegenerateKey.json
+// Generated from example definition: 2026-07-15-preview/RegenerateKey.json
 func ExampleAccountsClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -910,7 +1005,7 @@ func ExampleAccountsClient_RegenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/UpdateAccount.json
+// Generated from example definition: 2026-07-15-preview/UpdateAccount.json
 func ExampleAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

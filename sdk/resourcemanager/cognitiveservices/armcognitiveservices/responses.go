@@ -198,6 +198,35 @@ type AgentDeploymentsClientStopResponse struct {
 	// placeholder for future response values
 }
 
+// ArcDeploymentsClientCreateOrUpdateResponse contains the response from method ArcDeploymentsClient.BeginCreateOrUpdate.
+type ArcDeploymentsClientCreateOrUpdateResponse struct {
+	// Cognitive Services account Arc deployment, backed by customer-managed Arc-enabled Kubernetes resources.
+	ArcDeployment
+}
+
+// ArcDeploymentsClientDeleteResponse contains the response from method ArcDeploymentsClient.BeginDelete.
+type ArcDeploymentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ArcDeploymentsClientGetResponse contains the response from method ArcDeploymentsClient.Get.
+type ArcDeploymentsClientGetResponse struct {
+	// Cognitive Services account Arc deployment, backed by customer-managed Arc-enabled Kubernetes resources.
+	ArcDeployment
+}
+
+// ArcDeploymentsClientListResponse contains the response from method ArcDeploymentsClient.NewListPager.
+type ArcDeploymentsClientListResponse struct {
+	// The list of Arc deployments.
+	ArcDeploymentListResult
+}
+
+// ArcDeploymentsClientUpdateResponse contains the response from method ArcDeploymentsClient.BeginUpdate.
+type ArcDeploymentsClientUpdateResponse struct {
+	// Cognitive Services account Arc deployment, backed by customer-managed Arc-enabled Kubernetes resources.
+	ArcDeployment
+}
+
 // CommitmentPlansClientCreateOrUpdateAssociationResponse contains the response from method CommitmentPlansClient.BeginCreateOrUpdateAssociation.
 type CommitmentPlansClientCreateOrUpdateAssociationResponse struct {
 	// The commitment plan association.
@@ -293,9 +322,7 @@ type ComputeOperationsClientGetResponse struct {
 
 // ComputesClientCreateOrUpdateResponse contains the response from method ComputesClient.BeginCreateOrUpdate.
 type ComputesClientCreateOrUpdateResponse struct {
-	// Cognitive Services compute resource. Supports polymorphic compute types
-	// (Cluster, ContainerInstance) via the computeType discriminator in properties.
-	Compute
+	// placeholder for future response values
 }
 
 // ComputesClientDeleteResponse contains the response from method ComputesClient.BeginDelete.
@@ -329,13 +356,6 @@ type ComputesClientStartResponse struct {
 // ComputesClientStopResponse contains the response from method ComputesClient.BeginStop.
 type ComputesClientStopResponse struct {
 	// placeholder for future response values
-}
-
-// ComputesClientUpdateResponse contains the response from method ComputesClient.BeginUpdate.
-type ComputesClientUpdateResponse struct {
-	// Cognitive Services compute resource. Supports polymorphic compute types
-	// (Cluster, ContainerInstance) via the computeType discriminator in properties.
-	Compute
 }
 
 // DefenderForAISettingsClientCreateOrUpdateResponse contains the response from method DefenderForAISettingsClient.CreateOrUpdate.

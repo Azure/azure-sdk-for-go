@@ -5,7 +5,7 @@
 package armcognitiveservices
 
 const (
-	version20260515Preview string = "2026-05-15-preview"
+	version20260715Preview string = "2026-07-15-preview"
 )
 
 // AbusePenaltyAction - The action of AbusePenalty.
@@ -127,6 +127,21 @@ func PossibleAgentDeploymentTypeValues() []AgentDeploymentType {
 	}
 }
 
+// AgentHostingType - Type of infrastructure used to host Foundry agents.
+type AgentHostingType string
+
+const (
+	// AgentHostingTypeManagedCluster - Agents are hosted on an Azure Kubernetes Service managed cluster.
+	AgentHostingTypeManagedCluster AgentHostingType = "ManagedCluster"
+)
+
+// PossibleAgentHostingTypeValues returns the possible values for the AgentHostingType const type.
+func PossibleAgentHostingTypeValues() []AgentHostingType {
+	return []AgentHostingType{
+		AgentHostingTypeManagedCluster,
+	}
+}
+
 // AgentProtocol - Protocol used by the agent/exposed by a deployment.
 type AgentProtocol string
 
@@ -175,6 +190,57 @@ func PossibleAgenticApplicationProvisioningStateValues() []AgenticApplicationPro
 		AgenticApplicationProvisioningStateFailed,
 		AgenticApplicationProvisioningStateSucceeded,
 		AgenticApplicationProvisioningStateUpdating,
+	}
+}
+
+// ArcDeploymentComputeType - Compute type for an Arc deployment.
+type ArcDeploymentComputeType string
+
+const (
+	// ArcDeploymentComputeTypeCPU - CPU compute.
+	ArcDeploymentComputeTypeCPU ArcDeploymentComputeType = "cpu"
+	// ArcDeploymentComputeTypeGpu - GPU compute.
+	ArcDeploymentComputeTypeGpu ArcDeploymentComputeType = "gpu"
+)
+
+// PossibleArcDeploymentComputeTypeValues returns the possible values for the ArcDeploymentComputeType const type.
+func PossibleArcDeploymentComputeTypeValues() []ArcDeploymentComputeType {
+	return []ArcDeploymentComputeType{
+		ArcDeploymentComputeTypeCPU,
+		ArcDeploymentComputeTypeGpu,
+	}
+}
+
+// ArcDeploymentRuntime - Inference runtime for an Arc deployment.
+type ArcDeploymentRuntime string
+
+const (
+	// ArcDeploymentRuntimeOnnx - ONNX runtime.
+	ArcDeploymentRuntimeOnnx ArcDeploymentRuntime = "onnx-genai"
+	// ArcDeploymentRuntimeVllm - vLLM runtime.
+	ArcDeploymentRuntimeVllm ArcDeploymentRuntime = "vllm"
+)
+
+// PossibleArcDeploymentRuntimeValues returns the possible values for the ArcDeploymentRuntime const type.
+func PossibleArcDeploymentRuntimeValues() []ArcDeploymentRuntime {
+	return []ArcDeploymentRuntime{
+		ArcDeploymentRuntimeOnnx,
+		ArcDeploymentRuntimeVllm,
+	}
+}
+
+// ArcDeploymentSKUName - SKU for an Arc deployment.
+type ArcDeploymentSKUName string
+
+const (
+	// ArcDeploymentSKUNameArc - Arc SKU.
+	ArcDeploymentSKUNameArc ArcDeploymentSKUName = "Arc"
+)
+
+// PossibleArcDeploymentSKUNameValues returns the possible values for the ArcDeploymentSKUName const type.
+func PossibleArcDeploymentSKUNameValues() []ArcDeploymentSKUName {
+	return []ArcDeploymentSKUName{
+		ArcDeploymentSKUNameArc,
 	}
 }
 
@@ -1326,14 +1392,15 @@ func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointSer
 type ProvisioningState string
 
 const (
-	ProvisioningStateAccepted     ProvisioningState = "Accepted"
-	ProvisioningStateCanceled     ProvisioningState = "Canceled"
-	ProvisioningStateCreating     ProvisioningState = "Creating"
-	ProvisioningStateDeleting     ProvisioningState = "Deleting"
-	ProvisioningStateFailed       ProvisioningState = "Failed"
-	ProvisioningStateMoving       ProvisioningState = "Moving"
-	ProvisioningStateResolvingDNS ProvisioningState = "ResolvingDNS"
-	ProvisioningStateSucceeded    ProvisioningState = "Succeeded"
+	ProvisioningStateAccepted             ProvisioningState = "Accepted"
+	ProvisioningStateCanceled             ProvisioningState = "Canceled"
+	ProvisioningStateCreating             ProvisioningState = "Creating"
+	ProvisioningStateDeleting             ProvisioningState = "Deleting"
+	ProvisioningStateExtensionUnreachable ProvisioningState = "ExtensionUnreachable"
+	ProvisioningStateFailed               ProvisioningState = "Failed"
+	ProvisioningStateMoving               ProvisioningState = "Moving"
+	ProvisioningStateResolvingDNS         ProvisioningState = "ResolvingDNS"
+	ProvisioningStateSucceeded            ProvisioningState = "Succeeded"
 )
 
 // PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
@@ -1343,6 +1410,7 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateCanceled,
 		ProvisioningStateCreating,
 		ProvisioningStateDeleting,
+		ProvisioningStateExtensionUnreachable,
 		ProvisioningStateFailed,
 		ProvisioningStateMoving,
 		ProvisioningStateResolvingDNS,
@@ -1914,16 +1982,16 @@ func PossibleUpgradeAvailabilityStatusValues() []UpgradeAvailabilityStatus {
 type VMPriority string
 
 const (
-	// VMPriorityLowPriority - Low-priority VM.
-	VMPriorityLowPriority VMPriority = "LowPriority"
 	// VMPriorityRegular - Regular VM priority.
 	VMPriorityRegular VMPriority = "Regular"
+	// VMPrioritySpot - Spot VM priority.
+	VMPrioritySpot VMPriority = "Spot"
 )
 
 // PossibleVMPriorityValues returns the possible values for the VMPriority const type.
 func PossibleVMPriorityValues() []VMPriority {
 	return []VMPriority{
-		VMPriorityLowPriority,
 		VMPriorityRegular,
+		VMPrioritySpot,
 	}
 }

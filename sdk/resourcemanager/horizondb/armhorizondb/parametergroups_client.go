@@ -20,7 +20,7 @@ import (
 // ParameterGroupsClient contains the methods for the ParameterGroups group.
 // Don't use this type directly, use NewParameterGroupsClient() instead.
 //
-// Generated from API version 2026-01-20-preview
+// Generated from API version 2026-05-01-preview
 type ParameterGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,10 +42,10 @@ func NewParameterGroupsClient(subscriptionID string, credential azcore.TokenCred
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Creates a new HorizonDb parameter group or updates an existing parameter group.
+// BeginCreateOrUpdate - Creates a new HorizonDB parameter group or updates an existing parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - parameterGroupName - The name of the HorizonDb parameter group.
+//   - parameterGroupName - The name of the HorizonDB parameter group.
 //   - resource - Resource create parameters.
 //   - options - ParameterGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ParameterGroupsClient.BeginCreateOrUpdate
 //     method.
@@ -67,7 +67,7 @@ func (client *ParameterGroupsClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Creates a new HorizonDb parameter group or updates an existing parameter group.
+// CreateOrUpdate - Creates a new HorizonDB parameter group or updates an existing parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ParameterGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, parameterGroupName string, resource ParameterGroup, options *ParameterGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -109,7 +109,7 @@ func (client *ParameterGroupsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -119,10 +119,10 @@ func (client *ParameterGroupsClient) createOrUpdateCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// BeginDelete - Deletes a HorizonDb parameter group.
+// BeginDelete - Deletes a HorizonDB parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - parameterGroupName - The name of the HorizonDb parameter group.
+//   - parameterGroupName - The name of the HorizonDB parameter group.
 //   - options - ParameterGroupsClientBeginDeleteOptions contains the optional parameters for the ParameterGroupsClient.BeginDelete
 //     method.
 func (client *ParameterGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, parameterGroupName string, options *ParameterGroupsClientBeginDeleteOptions) (*runtime.Poller[ParameterGroupsClientDeleteResponse], error) {
@@ -142,7 +142,7 @@ func (client *ParameterGroupsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Deletes a HorizonDb parameter group.
+// Delete - Deletes a HorizonDB parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ParameterGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, parameterGroupName string, options *ParameterGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -184,15 +184,15 @@ func (client *ParameterGroupsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// Get - Gets information about a HorizonDb parameter group.
+// Get - Gets information about a HorizonDB parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - parameterGroupName - The name of the HorizonDb parameter group.
+//   - parameterGroupName - The name of the HorizonDB parameter group.
 //   - options - ParameterGroupsClientGetOptions contains the optional parameters for the ParameterGroupsClient.Get method.
 func (client *ParameterGroupsClient) Get(ctx context.Context, resourceGroupName string, parameterGroupName string, options *ParameterGroupsClientGetOptions) (ParameterGroupsClientGetResponse, error) {
 	var err error
@@ -231,7 +231,7 @@ func (client *ParameterGroupsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -249,7 +249,7 @@ func (client *ParameterGroupsClient) getHandleResponse(resp *http.Response, succ
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Lists all HorizonDb parameter groups in a resource group.
+// NewListByResourceGroupPager - Lists all HorizonDB parameter groups in a resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ParameterGroupsClientListByResourceGroupOptions contains the optional parameters for the ParameterGroupsClient.NewListByResourceGroupPager
 //     method.
@@ -302,7 +302,7 @@ func (client *ParameterGroupsClient) listByResourceGroupCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260120Preview)
+		reqQP.Set("api-version", version20260501Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -321,7 +321,7 @@ func (client *ParameterGroupsClient) listByResourceGroupHandleResponse(resp *htt
 	return result, nil
 }
 
-// NewListBySubscriptionPager - Lists all HorizonDb parameter groups in a subscription.
+// NewListBySubscriptionPager - Lists all HorizonDB parameter groups in a subscription.
 //   - options - ParameterGroupsClientListBySubscriptionOptions contains the optional parameters for the ParameterGroupsClient.NewListBySubscriptionPager
 //     method.
 func (client *ParameterGroupsClient) NewListBySubscriptionPager(options *ParameterGroupsClientListBySubscriptionOptions) *runtime.Pager[ParameterGroupsClientListBySubscriptionResponse] {
@@ -369,7 +369,7 @@ func (client *ParameterGroupsClient) listBySubscriptionCreateRequest(ctx context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260120Preview)
+		reqQP.Set("api-version", version20260501Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -390,7 +390,7 @@ func (client *ParameterGroupsClient) listBySubscriptionHandleResponse(resp *http
 
 // NewListConnectionsPager - Gets all connections to a parameter group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - parameterGroupName - The name of the HorizonDb parameter group.
+//   - parameterGroupName - The name of the HorizonDB parameter group.
 //   - options - ParameterGroupsClientListConnectionsOptions contains the optional parameters for the ParameterGroupsClient.NewListConnectionsPager
 //     method.
 func (client *ParameterGroupsClient) NewListConnectionsPager(resourceGroupName string, parameterGroupName string, options *ParameterGroupsClientListConnectionsOptions) *runtime.Pager[ParameterGroupsClientListConnectionsResponse] {
@@ -446,7 +446,7 @@ func (client *ParameterGroupsClient) listConnectionsCreateRequest(ctx context.Co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260120Preview)
+		reqQP.Set("api-version", version20260501Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -467,7 +467,7 @@ func (client *ParameterGroupsClient) listConnectionsHandleResponse(resp *http.Re
 
 // NewListVersionsPager - Lists parameter groups filtered by version number.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - parameterGroupName - The name of the HorizonDb parameter group.
+//   - parameterGroupName - The name of the HorizonDB parameter group.
 //   - options - ParameterGroupsClientListVersionsOptions contains the optional parameters for the ParameterGroupsClient.NewListVersionsPager
 //     method.
 func (client *ParameterGroupsClient) NewListVersionsPager(resourceGroupName string, parameterGroupName string, options *ParameterGroupsClientListVersionsOptions) *runtime.Pager[ParameterGroupsClientListVersionsResponse] {
@@ -523,7 +523,7 @@ func (client *ParameterGroupsClient) listVersionsCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260120Preview)
+		reqQP.Set("api-version", version20260501Preview)
 		if options != nil && options.Version != nil {
 			reqQP.Set("version", strconv.FormatInt(int64(*options.Version), 10))
 		}
@@ -545,10 +545,10 @@ func (client *ParameterGroupsClient) listVersionsHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// BeginUpdate - Updates an existing HorizonDb parameter group.
+// BeginUpdate - Updates an existing HorizonDB parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - parameterGroupName - The name of the HorizonDb parameter group.
+//   - parameterGroupName - The name of the HorizonDB parameter group.
 //   - properties - The resource properties to be updated.
 //   - options - ParameterGroupsClientBeginUpdateOptions contains the optional parameters for the ParameterGroupsClient.BeginUpdate
 //     method.
@@ -569,7 +569,7 @@ func (client *ParameterGroupsClient) BeginUpdate(ctx context.Context, resourceGr
 	}
 }
 
-// Update - Updates an existing HorizonDb parameter group.
+// Update - Updates an existing HorizonDB parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ParameterGroupsClient) update(ctx context.Context, resourceGroupName string, parameterGroupName string, properties ParameterGroupForPatchUpdate, options *ParameterGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -611,7 +611,7 @@ func (client *ParameterGroupsClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

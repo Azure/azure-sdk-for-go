@@ -19,7 +19,7 @@ import (
 // PoolsClient contains the methods for the Pools group.
 // Don't use this type directly, use NewPoolsClient() instead.
 //
-// Generated from API version 2026-01-20-preview
+// Generated from API version 2026-05-01-preview
 type PoolsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,11 +41,11 @@ func NewPoolsClient(subscriptionID string, credential azcore.TokenCredential, op
 	return client, nil
 }
 
-// Get - Gets information about a HorizonDb pool.
+// Get - Gets information about a HorizonDB pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the HorizonDb cluster.
-//   - poolName - The name of the HorizonDb pool.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
 //   - options - PoolsClientGetOptions contains the optional parameters for the PoolsClient.Get method.
 func (client *PoolsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *PoolsClientGetOptions) (PoolsClientGetResponse, error) {
 	var err error
@@ -88,7 +88,7 @@ func (client *PoolsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -106,9 +106,9 @@ func (client *PoolsClient) getHandleResponse(resp *http.Response, successCodes .
 	return result, nil
 }
 
-// NewListPager - Lists all HorizonDb pools in a cluster.
+// NewListPager - Lists all HorizonDB pools in a cluster.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the HorizonDb cluster.
+//   - clusterName - The name of the HorizonDB cluster.
 //   - options - PoolsClientListOptions contains the optional parameters for the PoolsClient.NewListPager method.
 func (client *PoolsClient) NewListPager(resourceGroupName string, clusterName string, options *PoolsClientListOptions) *runtime.Pager[PoolsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PoolsClientListResponse]{
@@ -163,7 +163,7 @@ func (client *PoolsClient) listCreateRequest(ctx context.Context, resourceGroupN
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260120Preview)
+		reqQP.Set("api-version", version20260501Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

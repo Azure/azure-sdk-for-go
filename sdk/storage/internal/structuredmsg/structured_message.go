@@ -204,6 +204,9 @@ func SMDecode(smData []byte) (SMDecodeResult, error) {
 
 	flags := binary.LittleEndian.Uint16(smData[9:11])
 	numSegments := binary.LittleEndian.Uint16(smData[11:13])
+	if numSegments == 0 {
+		return SMDecodeResult{}, fmt.Errorf("structured message has zero segments")
+	}
 	// The structured message body is negotiated with properties=crc64, so the CRC64 flag
 	// must be present. Rejecting its absence prevents silently skipping validation. Only the
 	// CRC64 bit is required; other flag bits are ignored to preserve forward compatibility.
@@ -827,14 +830,17 @@ func (d *SMDecoder) fillFrame() (bool, error) {
 		n, err := d.source.Read(d.frameBuf[d.frameHave:d.frameNeed])
 		d.frameHave += n
 		d.bytesRead += int64(n)
-		if d.frameHave >= d.frameNeed {
-			return true, nil
-		}
 		if err != nil {
+			if d.frameHave >= d.frameNeed && errors.Is(err, io.EOF) {
+				return true, nil
+			}
 			if errors.Is(err, io.EOF) {
 				return false, fmt.Errorf("reading structured message framing (have %d of %d bytes): %w", d.frameHave, d.frameNeed, io.ErrUnexpectedEOF)
 			}
 			return false, err
+		}
+		if d.frameHave >= d.frameNeed {
+			return true, nil
 		}
 	}
 	return true, nil

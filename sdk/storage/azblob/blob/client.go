@@ -339,109 +339,30 @@ func (b *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o 
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 
 // downloadBuffer downloads an Azure blob to a WriterAt in parallel.
-// It uses an initial GetBlob (GET) request instead of GetProperties (HEAD) to determine the blob size,
-// eliminating an extra round trip for small blobs where the entire content is returned in the initial response.
 func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downloadOptions) (int64, error) {
 	if o.BlockSize == 0 {
 		o.BlockSize = DefaultDownloadBlockSize
 	}
-
-	count := o.Range.Count
-	if count != CountToEnd {
-		return b.parallelDownload(ctx, writer, o, count)
-	}
-
-	initialRange := HTTPRange{Offset: o.Range.Offset, Count: o.BlockSize}
-	dr, err := b.DownloadStream(ctx, o.getDownloadBlobOptions(initialRange, nil))
-	if err != nil {
-		if bloberror.HasCode(err, bloberror.InvalidRange) {
-			return 0, nil
-		}
-		return 0, err
-	}
-
-	var totalSize int64
-	if dr.ContentRange != nil {
-		totalSize = parseContentRangeTotal(*dr.ContentRange)
-		if totalSize <= 0 {
-			dr.Body.Close()
-			return 0, fmt.Errorf("unable to parse total size from Content-Range header: %s", *dr.ContentRange)
-		}
-	} else if dr.ContentLength != nil {
-		totalSize = *dr.ContentLength + o.Range.Offset
-	} else {
-		dr.Body.Close()
-		return 0, fmt.Errorf("response missing both Content-Range and Content-Length headers")
-	}
-
-	count = totalSize - o.Range.Offset
-	if count <= 0 {
-		dr.Body.Close()
-		return 0, nil
-	}
-
-	if dr.ETag != nil {
-		if o.AccessConditions == nil {
-			o.AccessConditions = &AccessConditions{
-				ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: dr.ETag},
-			}
-		} else if o.AccessConditions.ModifiedAccessConditions == nil {
-			o.AccessConditions.ModifiedAccessConditions = &ModifiedAccessConditions{IfMatch: dr.ETag}
-		} else if o.AccessConditions.ModifiedAccessConditions.IfMatch == nil {
-			o.AccessConditions.ModifiedAccessConditions.IfMatch = dr.ETag
-		}
-	}
-
-	var initialChunkSize int64
-	if dr.ContentRange != nil {
-		initialChunkSize = parseContentRangeLength(*dr.ContentRange)
-	} else if dr.ContentLength != nil {
-		initialChunkSize = *dr.ContentLength
-	}
-	if initialChunkSize <= 0 {
-		dr.Body.Close()
-		return 0, nil
-	}
-
-	progress := int64(0)
-	progressLock := &sync.Mutex{}
-	var body io.ReadCloser = dr.NewRetryReader(ctx, &o.RetryReaderOptionsPerBlock)
-	if o.Progress != nil {
-		body = streaming.NewResponseProgress(body, func(bytesTransferred int64) {
-			progressLock.Lock()
-			progress = bytesTransferred
-			o.Progress(progress)
-			progressLock.Unlock()
-		})
-	}
-	_, err = io.Copy(shared.NewSectionWriter(writer, 0, initialChunkSize), body)
-	if err != nil {
-		body.Close()
-		return 0, err
-	}
-	if err = body.Close(); err != nil {
-		return 0, err
-	}
-
-	initialDataLen := initialChunkSize
-	if dr.StructuredBodyType != nil && *dr.StructuredBodyType != "" && dr.ContentRange != nil {
-		initialDataLen = parseContentRangeLength(*dr.ContentRange)
-	}
-
-	if initialChunkSize >= count {
-		return initialDataLen, nil
-	}
-
-	remaining := count - initialChunkSize
-	remainingDownloaded, err := b.parallelDownloadFrom(ctx, writer, o, initialChunkSize, remaining, &progress, progressLock)
-	if err != nil {
-		return 0, err
-	}
-	return initialDataLen + remainingDownloaded, nil
-}
-
-func (b *Client) parallelDownload(ctx context.Context, writer io.WriterAt, o downloadOptions, count int64) (int64, error) {
 	dataDownloaded := int64(0)
+	computeReadLength := true
+	count := o.Range.Count
+	if count == CountToEnd { // If size not specified, calculate it
+		// If we don't have the length at all, get it
+		gr, err := b.GetProperties(ctx, o.getBlobPropertiesOptions())
+		if err != nil {
+			return 0, err
+		}
+		count = *gr.ContentLength - o.Range.Offset
+		dataDownloaded = count
+		computeReadLength = false
+	}
+
+	if count <= 0 {
+		// The file is empty, there is nothing to download.
+		return 0, nil
+	}
+
+	// Prepare and do parallel download.
 	progress := int64(0)
 	progressLock := &sync.Mutex{}
 
@@ -452,76 +373,43 @@ func (b *Client) parallelDownload(ctx context.Context, writer io.WriterAt, o dow
 		NumChunks:     uint64(((count - 1) / o.BlockSize) + 1),
 		Concurrency:   o.Concurrency,
 		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
-			dr, err := b.DownloadStream(ctx, o.getDownloadBlobOptions(HTTPRange{
-				Offset: chunkStart + o.Range.Offset, Count: count}, nil))
+			downloadBlobOptions := o.getDownloadBlobOptions(HTTPRange{
+				Offset: chunkStart + o.Range.Offset,
+				Count:  count,
+			}, nil)
+			dr, err := b.DownloadStream(ctx, downloadBlobOptions)
 			if err != nil {
 				return err
 			}
 			var body io.ReadCloser = dr.NewRetryReader(ctx, &o.RetryReaderOptionsPerBlock)
 			if o.Progress != nil {
 				rangeProgress := int64(0)
-				body = streaming.NewResponseProgress(body, func(bytesTransferred int64) {
-					diff := bytesTransferred - rangeProgress
-					rangeProgress = bytesTransferred
-					progressLock.Lock()
-					progress += diff
-					o.Progress(progress)
-					progressLock.Unlock()
-				})
+				body = streaming.NewResponseProgress(
+					body,
+					func(bytesTransferred int64) {
+						diff := bytesTransferred - rangeProgress
+						rangeProgress = bytesTransferred
+						progressLock.Lock()
+						progress += diff
+						o.Progress(progress)
+						progressLock.Unlock()
+					})
 			}
-			if _, err = io.Copy(shared.NewSectionWriter(writer, chunkStart, count), body); err != nil {
-				return err
-			}
-			if dr.StructuredBodyType != nil && *dr.StructuredBodyType != "" && dr.ContentRange != nil {
-				atomic.AddInt64(&dataDownloaded, parseContentRangeLength(*dr.ContentRange))
-			} else {
-				atomic.AddInt64(&dataDownloaded, *dr.ContentLength)
-			}
-			return body.Close()
-		},
-	})
-	if err != nil {
-		return 0, err
-	}
-	return dataDownloaded, nil
-}
-
-func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o downloadOptions, writerOffset int64, remaining int64, progress *int64, progressLock *sync.Mutex) (int64, error) {
-	dataDownloaded := int64(0)
-
-	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
-		OperationName: "downloadBlobToWriterAt",
-		TransferSize:  remaining,
-		ChunkSize:     o.BlockSize,
-		NumChunks:     uint64(((remaining - 1) / o.BlockSize) + 1),
-		Concurrency:   o.Concurrency,
-		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
-			dr, err := b.DownloadStream(ctx, o.getDownloadBlobOptions(HTTPRange{
-				Offset: chunkStart + writerOffset + o.Range.Offset, Count: count}, nil))
+			_, err = io.Copy(shared.NewSectionWriter(writer, chunkStart, count), body)
 			if err != nil {
 				return err
 			}
-			var body io.ReadCloser = dr.NewRetryReader(ctx, &o.RetryReaderOptionsPerBlock)
-			if o.Progress != nil {
-				rangeProgress := int64(0)
-				body = streaming.NewResponseProgress(body, func(bytesTransferred int64) {
-					diff := bytesTransferred - rangeProgress
-					rangeProgress = bytesTransferred
-					progressLock.Lock()
-					*progress += diff
-					o.Progress(*progress)
-					progressLock.Unlock()
-				})
+			if computeReadLength {
+				if dr.StructuredBodyType != nil && *dr.StructuredBodyType != "" && dr.ContentRange != nil {
+					// For structured message responses, ContentLength reflects the encoded size.
+					// Use ContentRange to get the original data length.
+					atomic.AddInt64(&dataDownloaded, parseContentRangeLength(*dr.ContentRange))
+				} else {
+					atomic.AddInt64(&dataDownloaded, *dr.ContentLength)
+				}
 			}
-			if _, err = io.Copy(shared.NewSectionWriter(writer, chunkStart+writerOffset, count), body); err != nil {
-				return err
-			}
-			if dr.StructuredBodyType != nil && *dr.StructuredBodyType != "" && dr.ContentRange != nil {
-				atomic.AddInt64(&dataDownloaded, parseContentRangeLength(*dr.ContentRange))
-			} else {
-				atomic.AddInt64(&dataDownloaded, *dr.ContentLength)
-			}
-			return body.Close()
+			err = body.Close()
+			return err
 		},
 	})
 	if err != nil {
@@ -543,6 +431,8 @@ func (b *Client) DownloadStream(ctx context.Context, o *DownloadStreamOptions) (
 		return DownloadStreamResponse{}, err
 	}
 
+	// If the response contains a structured message body, wrap it with SMDecoder
+	// to validate CRC64 checksums and extract the raw data.
 	if dr.StructuredBodyType != nil && *dr.StructuredBodyType != "" {
 		dr.Body = shared.NewSMDecoder(dr.Body)
 	}
@@ -574,24 +464,39 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	}
 	do := (*downloadOptions)(o)
 
-	downloaded, err := b.downloadBuffer(ctx, file, *do)
+	// 1. Calculate the size of the destination file
+	var size int64
+
+	count := do.Range.Count
+	if count == CountToEnd {
+		// Try to get Azure blob's size
+		getBlobPropertiesOptions := do.getBlobPropertiesOptions()
+		props, err := b.GetProperties(ctx, getBlobPropertiesOptions)
+		if err != nil {
+			return 0, err
+		}
+		size = *props.ContentLength - do.Range.Offset
+		do.Range.Count = size
+	} else {
+		size = count
+	}
+
+	// 2. Compare and try to resize local file's size if it doesn't match Azure blob's size.
+	stat, err := file.Stat()
 	if err != nil {
 		return 0, err
 	}
-
-	if downloaded > 0 {
-		stat, err := file.Stat()
-		if err != nil {
-			return downloaded, err
-		}
-		if stat.Size() != downloaded {
-			if err = file.Truncate(downloaded); err != nil {
-				return downloaded, err
-			}
+	if stat.Size() != size {
+		if err = file.Truncate(size); err != nil {
+			return 0, err
 		}
 	}
 
-	return downloaded, nil
+	if size > 0 {
+		return b.downloadBuffer(ctx, file, *do)
+	} else { // if the blob's size is 0, there is no need in downloading it
+		return 0, nil
+	}
 }
 
 // parseContentRangeLength parses the range length from a Content-Range header value.
@@ -603,12 +508,4 @@ func parseContentRangeLength(contentRange string) int64 {
 		return 0
 	}
 	return end - start + 1
-}
-
-func parseContentRangeTotal(contentRange string) int64 {
-	var start, end, total int64
-	if _, err := fmt.Sscanf(contentRange, "bytes %d-%d/%d", &start, &end, &total); err != nil {
-		return 0
-	}
-	return total
 }

@@ -10,21 +10,6 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestParseContentRangeTotal(t *testing.T) {
-	require.Equal(t, int64(1000), parseContentRangeTotal("bytes 0-999/1000"))
-	require.Equal(t, int64(5000000), parseContentRangeTotal("bytes 0-4194303/5000000"))
-	require.Equal(t, int64(100), parseContentRangeTotal("bytes 50-99/100"))
-	require.Equal(t, int64(0), parseContentRangeTotal("invalid"))
-	require.Equal(t, int64(0), parseContentRangeTotal(""))
-}
-
-func TestParseContentRangeLength(t *testing.T) {
-	require.Equal(t, int64(1000), parseContentRangeLength("bytes 0-999/1000"))
-	require.Equal(t, int64(4194304), parseContentRangeLength("bytes 0-4194303/5000000"))
-	require.Equal(t, int64(50), parseContentRangeLength("bytes 50-99/100"))
-	require.Equal(t, int64(0), parseContentRangeLength("invalid"))
-}
-
 func TestDeserializeORSPolicies(t *testing.T) {
 
 	headers := map[string]*string{

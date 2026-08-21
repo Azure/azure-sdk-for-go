@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-01/BillingAccountQuery.json
+// Generated from example definition: 2026-06-01/BillingAccountQuery.json
 func ExampleQueryClient_Usage_billingAccountQueryLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleQueryClient_Usage_billingAccountQueryLegacy() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/BillingAccountQueryGrouping.json
+// Generated from example definition: 2026-06-01/BillingAccountQueryGrouping.json
 func ExampleQueryClient_Usage_billingAccountQueryGroupingLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleQueryClient_Usage_billingAccountQueryGroupingLegacy() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/DepartmentQuery.json
+// Generated from example definition: 2026-06-01/DepartmentQuery.json
 func ExampleQueryClient_Usage_departmentQueryLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -325,7 +325,7 @@ func ExampleQueryClient_Usage_departmentQueryLegacy() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/DepartmentQueryGrouping.json
+// Generated from example definition: 2026-06-01/DepartmentQueryGrouping.json
 func ExampleQueryClient_Usage_departmentQueryGroupingLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -404,7 +404,7 @@ func ExampleQueryClient_Usage_departmentQueryGroupingLegacy() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/EnrollmentAccountQuery.json
+// Generated from example definition: 2026-06-01/EnrollmentAccountQuery.json
 func ExampleQueryClient_Usage_enrollmentAccountQueryLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -521,7 +521,7 @@ func ExampleQueryClient_Usage_enrollmentAccountQueryLegacy() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/EnrollmentAccountQueryGrouping.json
+// Generated from example definition: 2026-06-01/EnrollmentAccountQueryGrouping.json
 func ExampleQueryClient_Usage_enrollmentAccountQueryGroupingLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -607,7 +607,7 @@ func ExampleQueryClient_Usage_enrollmentAccountQueryGroupingLegacy() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/MCABillingAccountQuery.json
+// Generated from example definition: 2026-06-01/MCABillingAccountQuery.json
 func ExampleQueryClient_Usage_billingAccountQueryMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -724,7 +724,7 @@ func ExampleQueryClient_Usage_billingAccountQueryMca() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/MCABillingAccountQueryGrouping.json
+// Generated from example definition: 2026-06-01/MCABillingAccountQueryGrouping.json
 func ExampleQueryClient_Usage_billingAccountQueryGroupingMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -803,7 +803,7 @@ func ExampleQueryClient_Usage_billingAccountQueryGroupingMca() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/MCABillingProfileQuery.json
+// Generated from example definition: 2026-06-01/MCABillingProfileQuery.json
 func ExampleQueryClient_Usage_billingProfileQueryMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -920,7 +920,7 @@ func ExampleQueryClient_Usage_billingProfileQueryMca() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/MCABillingProfileQueryGrouping.json
+// Generated from example definition: 2026-06-01/MCABillingProfileQueryGrouping.json
 func ExampleQueryClient_Usage_billingProfileQueryGroupingMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -999,7 +999,7 @@ func ExampleQueryClient_Usage_billingProfileQueryGroupingMca() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/MCACustomerQuery.json
+// Generated from example definition: 2026-06-01/MCACustomerQuery.json
 func ExampleQueryClient_Usage_customerQueryMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1116,7 +1116,7 @@ func ExampleQueryClient_Usage_customerQueryMca() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/MCACustomerQueryGrouping.json
+// Generated from example definition: 2026-06-01/MCACustomerQueryGrouping.json
 func ExampleQueryClient_Usage_customerQueryGroupingMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1195,7 +1195,7 @@ func ExampleQueryClient_Usage_customerQueryGroupingMca() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/MCAInvoiceSectionQuery.json
+// Generated from example definition: 2026-06-01/MCAInvoiceSectionQuery.json
 func ExampleQueryClient_Usage_invoiceSectionQueryMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1312,7 +1312,7 @@ func ExampleQueryClient_Usage_invoiceSectionQueryMca() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/MCAInvoiceSectionQueryGrouping.json
+// Generated from example definition: 2026-06-01/MCAInvoiceSectionQueryGrouping.json
 func ExampleQueryClient_Usage_invoiceSectionQueryGroupingMca() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1391,7 +1391,7 @@ func ExampleQueryClient_Usage_invoiceSectionQueryGroupingMca() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ManagementGroupQuery.json
+// Generated from example definition: 2026-06-01/ManagementGroupQuery.json
 func ExampleQueryClient_Usage_managementGroupQueryLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1508,7 +1508,7 @@ func ExampleQueryClient_Usage_managementGroupQueryLegacy() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ManagementGroupQueryGrouping.json
+// Generated from example definition: 2026-06-01/ManagementGroupQueryGrouping.json
 func ExampleQueryClient_Usage_managementGroupQueryGroupingLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1594,7 +1594,7 @@ func ExampleQueryClient_Usage_managementGroupQueryGroupingLegacy() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ResourceGroupQuery.json
+// Generated from example definition: 2026-06-01/ResourceGroupQuery.json
 func ExampleQueryClient_Usage_resourceGroupQueryLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1698,7 +1698,7 @@ func ExampleQueryClient_Usage_resourceGroupQueryLegacy() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ResourceGroupQueryGrouping.json
+// Generated from example definition: 2026-06-01/ResourceGroupQueryGrouping.json
 func ExampleQueryClient_Usage_resourceGroupQueryGroupingLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1777,7 +1777,7 @@ func ExampleQueryClient_Usage_resourceGroupQueryGroupingLegacy() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/SubscriptionQuery.json
+// Generated from example definition: 2026-06-01/SubscriptionQuery.json
 func ExampleQueryClient_Usage_subscriptionQueryLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1893,7 +1893,7 @@ func ExampleQueryClient_Usage_subscriptionQueryLegacy() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/SubscriptionQueryGrouping.json
+// Generated from example definition: 2026-06-01/SubscriptionQueryGrouping.json
 func ExampleQueryClient_Usage_subscriptionQueryGroupingLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1976,7 +1976,7 @@ func ExampleQueryClient_Usage_subscriptionQueryGroupingLegacy() {
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExternalBillingAccountsQuery.json
+// Generated from example definition: 2026-06-01/ExternalBillingAccountsQuery.json
 func ExampleQueryClient_UsageByExternalCloudProviderType_externalBillingAccountQueryList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2084,7 +2084,7 @@ func ExampleQueryClient_UsageByExternalCloudProviderType_externalBillingAccountQ
 	// }
 }
 
-// Generated from example definition: 2025-03-01/ExternalSubscriptionsQuery.json
+// Generated from example definition: 2026-06-01/ExternalSubscriptionsQuery.json
 func ExampleQueryClient_UsageByExternalCloudProviderType_externalSubscriptionsQuery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

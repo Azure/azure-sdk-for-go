@@ -19,7 +19,7 @@ import (
 // PublicCloudConnectorsClient contains the methods for the PublicCloudConnectors group.
 // Don't use this type directly, use NewPublicCloudConnectorsClient() instead.
 //
-// Generated from API version 2024-12-01
+// Generated from API version 2027-01-01
 type PublicCloudConnectorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -107,7 +107,7 @@ func (client *PublicCloudConnectorsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -163,7 +163,7 @@ func (client *PublicCloudConnectorsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -211,7 +211,7 @@ func (client *PublicCloudConnectorsClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -282,7 +282,7 @@ func (client *PublicCloudConnectorsClient) listByResourceGroupCreateRequest(ctx 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20241201)
+		reqQP.Set("api-version", version20270101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -349,7 +349,7 @@ func (client *PublicCloudConnectorsClient) listBySubscriptionCreateRequest(ctx c
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20241201)
+		reqQP.Set("api-version", version20270101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -368,6 +368,8 @@ func (client *PublicCloudConnectorsClient) listBySubscriptionHandleResponse(resp
 	return result, nil
 }
 
+// BeginTestPermissions - A long-running resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - publicCloudConnector - Represent public cloud connectors resource.
 //   - options - PublicCloudConnectorsClientBeginTestPermissionsOptions contains the optional parameters for the PublicCloudConnectorsClient.BeginTestPermissions
@@ -389,7 +391,7 @@ func (client *PublicCloudConnectorsClient) BeginTestPermissions(ctx context.Cont
 	}
 }
 
-// TestPermissions -
+// TestPermissions - A long-running resource action.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PublicCloudConnectorsClient) testPermissions(ctx context.Context, resourceGroupName string, publicCloudConnector string, options *PublicCloudConnectorsClientBeginTestPermissionsOptions) (*http.Response, error) {
 	var err error
@@ -431,7 +433,7 @@ func (client *PublicCloudConnectorsClient) testPermissionsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -481,7 +483,7 @@ func (client *PublicCloudConnectorsClient) updateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

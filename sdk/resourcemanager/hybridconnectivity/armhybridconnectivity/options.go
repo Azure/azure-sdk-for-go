@@ -59,6 +59,11 @@ type GenerateAwsTemplateClientPostOptions struct {
 	// placeholder for future optional parameters
 }
 
+// GenerateGcpTemplateClientPostOptions contains the optional parameters for the GenerateGcpTemplateClient.Post method.
+type GenerateGcpTemplateClientPostOptions struct {
+	// placeholder for future optional parameters
+}
+
 // InventoryClientGetOptions contains the optional parameters for the InventoryClient.Get method.
 type InventoryClientGetOptions struct {
 	// placeholder for future optional parameters

@@ -67,12 +67,7 @@ func (client *JobTargetExecutionsClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return JobTargetExecutionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return JobTargetExecutionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -122,8 +117,11 @@ func (client *JobTargetExecutionsClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobTargetExecutionsClient) getHandleResponse(resp *http.Response) (JobTargetExecutionsClientGetResponse, error) {
+func (client *JobTargetExecutionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (JobTargetExecutionsClientGetResponse, error) {
 	result := JobTargetExecutionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecution); err != nil {
 		return JobTargetExecutionsClientGetResponse{}, err
 	}
@@ -149,80 +147,94 @@ func (client *JobTargetExecutionsClient) NewListByJobExecutionPager(resourceGrou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByJobExecutionCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
-			}, nil)
+			req, err := client.listByJobExecutionCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, nextLink, options)
 			if err != nil {
 				return JobTargetExecutionsClientListByJobExecutionResponse{}, err
 			}
-			return client.listByJobExecutionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return JobTargetExecutionsClientListByJobExecutionResponse{}, err
+			}
+			return client.listByJobExecutionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByJobExecutionCreateRequest creates the ListByJobExecution request.
-func (client *JobTargetExecutionsClient) listByJobExecutionCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobTargetExecutionsClientListByJobExecutionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/targets"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *JobTargetExecutionsClient) listByJobExecutionCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, nextLink string, options *JobTargetExecutionsClientListByJobExecutionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/targets"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serverName == "" {
+			return nil, errors.New("parameter serverName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+		if jobAgentName == "" {
+			return nil, errors.New("parameter jobAgentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobAgentName}", url.PathEscape(jobAgentName))
+		if jobName == "" {
+			return nil, errors.New("parameter jobName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+		if jobExecutionID == "" {
+			return nil, errors.New("parameter jobExecutionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobExecutionId}", url.PathEscape(jobExecutionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if jobAgentName == "" {
-		return nil, errors.New("parameter jobAgentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobAgentName}", url.PathEscape(jobAgentName))
-	if jobName == "" {
-		return nil, errors.New("parameter jobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	if jobExecutionID == "" {
-		return nil, errors.New("parameter jobExecutionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobExecutionId}", url.PathEscape(jobExecutionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(*options.Skip, 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
+		}
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.CreateTimeMax != nil {
+			reqQP.Set("createTimeMax", datetime.RFC3339((*options.CreateTimeMax).UTC()).String())
+		}
+		if options != nil && options.CreateTimeMin != nil {
+			reqQP.Set("createTimeMin", datetime.RFC3339((*options.CreateTimeMin).UTC()).String())
+		}
+		if options != nil && options.EndTimeMax != nil {
+			reqQP.Set("endTimeMax", datetime.RFC3339((*options.EndTimeMax).UTC()).String())
+		}
+		if options != nil && options.EndTimeMin != nil {
+			reqQP.Set("endTimeMin", datetime.RFC3339((*options.EndTimeMin).UTC()).String())
+		}
+		if options != nil && options.IsActive != nil {
+			reqQP.Set("isActive", strconv.FormatBool(*options.IsActive))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
-	}
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.CreateTimeMax != nil {
-		reqQP.Set("createTimeMax", datetime.RFC3339(*options.CreateTimeMax).String())
-	}
-	if options != nil && options.CreateTimeMin != nil {
-		reqQP.Set("createTimeMin", datetime.RFC3339(*options.CreateTimeMin).String())
-	}
-	if options != nil && options.EndTimeMax != nil {
-		reqQP.Set("endTimeMax", datetime.RFC3339(*options.EndTimeMax).String())
-	}
-	if options != nil && options.EndTimeMin != nil {
-		reqQP.Set("endTimeMin", datetime.RFC3339(*options.EndTimeMin).String())
-	}
-	if options != nil && options.IsActive != nil {
-		reqQP.Set("isActive", strconv.FormatBool(*options.IsActive))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByJobExecutionHandleResponse handles the ListByJobExecution response.
-func (client *JobTargetExecutionsClient) listByJobExecutionHandleResponse(resp *http.Response) (JobTargetExecutionsClientListByJobExecutionResponse, error) {
+func (client *JobTargetExecutionsClient) listByJobExecutionHandleResponse(resp *http.Response, successCodes ...int) (JobTargetExecutionsClientListByJobExecutionResponse, error) {
 	result := JobTargetExecutionsClientListByJobExecutionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecutionListResult); err != nil {
 		return JobTargetExecutionsClientListByJobExecutionResponse{}, err
 	}
@@ -249,84 +261,98 @@ func (client *JobTargetExecutionsClient) NewListByStepPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByStepCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, stepName, options)
-			}, nil)
+			req, err := client.listByStepCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, stepName, nextLink, options)
 			if err != nil {
 				return JobTargetExecutionsClientListByStepResponse{}, err
 			}
-			return client.listByStepHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return JobTargetExecutionsClientListByStepResponse{}, err
+			}
+			return client.listByStepHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByStepCreateRequest creates the ListByStep request.
-func (client *JobTargetExecutionsClient) listByStepCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, stepName string, options *JobTargetExecutionsClientListByStepOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps/{stepName}/targets"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *JobTargetExecutionsClient) listByStepCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, stepName string, nextLink string, options *JobTargetExecutionsClientListByStepOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/steps/{stepName}/targets"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serverName == "" {
+			return nil, errors.New("parameter serverName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+		if jobAgentName == "" {
+			return nil, errors.New("parameter jobAgentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobAgentName}", url.PathEscape(jobAgentName))
+		if jobName == "" {
+			return nil, errors.New("parameter jobName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+		if jobExecutionID == "" {
+			return nil, errors.New("parameter jobExecutionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobExecutionId}", url.PathEscape(jobExecutionID))
+		if stepName == "" {
+			return nil, errors.New("parameter stepName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{stepName}", url.PathEscape(stepName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if jobAgentName == "" {
-		return nil, errors.New("parameter jobAgentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobAgentName}", url.PathEscape(jobAgentName))
-	if jobName == "" {
-		return nil, errors.New("parameter jobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	if jobExecutionID == "" {
-		return nil, errors.New("parameter jobExecutionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobExecutionId}", url.PathEscape(jobExecutionID))
-	if stepName == "" {
-		return nil, errors.New("parameter stepName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{stepName}", url.PathEscape(stepName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(*options.Skip, 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
+		}
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.CreateTimeMax != nil {
+			reqQP.Set("createTimeMax", datetime.RFC3339((*options.CreateTimeMax).UTC()).String())
+		}
+		if options != nil && options.CreateTimeMin != nil {
+			reqQP.Set("createTimeMin", datetime.RFC3339((*options.CreateTimeMin).UTC()).String())
+		}
+		if options != nil && options.EndTimeMax != nil {
+			reqQP.Set("endTimeMax", datetime.RFC3339((*options.EndTimeMax).UTC()).String())
+		}
+		if options != nil && options.EndTimeMin != nil {
+			reqQP.Set("endTimeMin", datetime.RFC3339((*options.EndTimeMin).UTC()).String())
+		}
+		if options != nil && options.IsActive != nil {
+			reqQP.Set("isActive", strconv.FormatBool(*options.IsActive))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
-	}
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.CreateTimeMax != nil {
-		reqQP.Set("createTimeMax", datetime.RFC3339(*options.CreateTimeMax).String())
-	}
-	if options != nil && options.CreateTimeMin != nil {
-		reqQP.Set("createTimeMin", datetime.RFC3339(*options.CreateTimeMin).String())
-	}
-	if options != nil && options.EndTimeMax != nil {
-		reqQP.Set("endTimeMax", datetime.RFC3339(*options.EndTimeMax).String())
-	}
-	if options != nil && options.EndTimeMin != nil {
-		reqQP.Set("endTimeMin", datetime.RFC3339(*options.EndTimeMin).String())
-	}
-	if options != nil && options.IsActive != nil {
-		reqQP.Set("isActive", strconv.FormatBool(*options.IsActive))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByStepHandleResponse handles the ListByStep response.
-func (client *JobTargetExecutionsClient) listByStepHandleResponse(resp *http.Response) (JobTargetExecutionsClientListByStepResponse, error) {
+func (client *JobTargetExecutionsClient) listByStepHandleResponse(resp *http.Response, successCodes ...int) (JobTargetExecutionsClientListByStepResponse, error) {
 	result := JobTargetExecutionsClientListByStepResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobExecutionListResult); err != nil {
 		return JobTargetExecutionsClientListByStepResponse{}, err
 	}

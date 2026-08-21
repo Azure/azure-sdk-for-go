@@ -40,7 +40,7 @@ func ExampleDeletedServersClient_Get() {
 	// 			OriginalID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/sqlcrudtest-d-1414"),
 	// 			Version: to.Ptr("12.0"),
 	// 			OriginalResourceGroup: to.Ptr("Default"),
-	// 			ScheduledPurgeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-22T11:20:00.345Z"); return t}()),
+	// 			ScheduledPurgeTime: to.Ptr(time.Date(2017, time.June, 22, 11, 20, 0, 345000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -81,7 +81,7 @@ func ExampleDeletedServersClient_NewListPager() {
 		// 					OriginalID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/sqlcrudtest-d-1414"),
 		// 					Version: to.Ptr("12.0"),
 		// 					OriginalResourceGroup: to.Ptr("Default"),
-		// 					ScheduledPurgeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-20T10:10:00.678Z"); return t}()),
+		// 					ScheduledPurgeTime: to.Ptr(time.Date(2017, time.June, 20, 10, 10, 0, 678000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -94,7 +94,7 @@ func ExampleDeletedServersClient_NewListPager() {
 		// 					OriginalID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/sqlcrudtest-d-2424"),
 		// 					Version: to.Ptr("12.0"),
 		// 					OriginalResourceGroup: to.Ptr("Default"),
-		// 					ScheduledPurgeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-20T10:10:00.678Z"); return t}()),
+		// 					ScheduledPurgeTime: to.Ptr(time.Date(2017, time.June, 20, 10, 10, 0, 678000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -138,7 +138,7 @@ func ExampleDeletedServersClient_NewListByLocationPager() {
 		// 					OriginalID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/sqlcrudtest-d-1414"),
 		// 					Version: to.Ptr("12.0"),
 		// 					OriginalResourceGroup: to.Ptr("Default"),
-		// 					ScheduledPurgeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-20T10:10:00.678Z"); return t}()),
+		// 					ScheduledPurgeTime: to.Ptr(time.Date(2017, time.June, 20, 10, 10, 0, 678000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -151,7 +151,7 @@ func ExampleDeletedServersClient_NewListByLocationPager() {
 		// 					OriginalID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/sqlcrudtest-d-2424"),
 		// 					Version: to.Ptr("12.0"),
 		// 					OriginalResourceGroup: to.Ptr("Default"),
-		// 					ScheduledPurgeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-20T10:10:00.678Z"); return t}()),
+		// 					ScheduledPurgeTime: to.Ptr(time.Date(2017, time.June, 20, 10, 10, 0, 678000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -193,7 +193,7 @@ func ExampleDeletedServersClient_BeginRecover() {
 	// 			OriginalID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/sqlcrudtest-d-1414"),
 	// 			Version: to.Ptr("12.0"),
 	// 			OriginalResourceGroup: to.Ptr("Default"),
-	// 			ScheduledPurgeTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-20T10:10:00.678Z"); return t}()),
+	// 			ScheduledPurgeTime: to.Ptr(time.Date(2017, time.June, 20, 10, 10, 0, 678000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

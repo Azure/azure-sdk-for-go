@@ -63,12 +63,7 @@ func (client *MaintenanceWindowOptionsClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return MaintenanceWindowOptionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MaintenanceWindowOptionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -103,8 +98,11 @@ func (client *MaintenanceWindowOptionsClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *MaintenanceWindowOptionsClient) getHandleResponse(resp *http.Response) (MaintenanceWindowOptionsClientGetResponse, error) {
+func (client *MaintenanceWindowOptionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (MaintenanceWindowOptionsClientGetResponse, error) {
 	result := MaintenanceWindowOptionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceWindowOptions); err != nil {
 		return MaintenanceWindowOptionsClientGetResponse{}, err
 	}

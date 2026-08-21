@@ -63,8 +63,7 @@ func (client *RecommendedSensitivityLabelsClient) Update(ctx context.Context, re
 		return RecommendedSensitivityLabelsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RecommendedSensitivityLabelsClientUpdateResponse{}, err
+		return RecommendedSensitivityLabelsClientUpdateResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return RecommendedSensitivityLabelsClientUpdateResponse{}, nil
 }

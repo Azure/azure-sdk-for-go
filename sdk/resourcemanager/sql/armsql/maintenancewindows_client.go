@@ -64,8 +64,7 @@ func (client *MaintenanceWindowsClient) CreateOrUpdate(ctx context.Context, reso
 		return MaintenanceWindowsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MaintenanceWindowsClientCreateOrUpdateResponse{}, err
+		return MaintenanceWindowsClientCreateOrUpdateResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return MaintenanceWindowsClientCreateOrUpdateResponse{}, nil
 }
@@ -125,12 +124,7 @@ func (client *MaintenanceWindowsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return MaintenanceWindowsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MaintenanceWindowsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -165,8 +159,11 @@ func (client *MaintenanceWindowsClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *MaintenanceWindowsClient) getHandleResponse(resp *http.Response) (MaintenanceWindowsClientGetResponse, error) {
+func (client *MaintenanceWindowsClient) getHandleResponse(resp *http.Response, successCodes ...int) (MaintenanceWindowsClientGetResponse, error) {
 	result := MaintenanceWindowsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceWindows); err != nil {
 		return MaintenanceWindowsClientGetResponse{}, err
 	}

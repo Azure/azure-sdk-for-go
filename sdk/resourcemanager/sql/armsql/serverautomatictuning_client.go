@@ -61,12 +61,7 @@ func (client *ServerAutomaticTuningClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return ServerAutomaticTuningClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServerAutomaticTuningClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -96,8 +91,11 @@ func (client *ServerAutomaticTuningClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServerAutomaticTuningClient) getHandleResponse(resp *http.Response) (ServerAutomaticTuningClientGetResponse, error) {
+func (client *ServerAutomaticTuningClient) getHandleResponse(resp *http.Response, successCodes ...int) (ServerAutomaticTuningClientGetResponse, error) {
 	result := ServerAutomaticTuningClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerAutomaticTuning); err != nil {
 		return ServerAutomaticTuningClientGetResponse{}, err
 	}
@@ -125,12 +123,7 @@ func (client *ServerAutomaticTuningClient) Update(ctx context.Context, resourceG
 	if err != nil {
 		return ServerAutomaticTuningClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServerAutomaticTuningClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -164,8 +157,11 @@ func (client *ServerAutomaticTuningClient) updateCreateRequest(ctx context.Conte
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ServerAutomaticTuningClient) updateHandleResponse(resp *http.Response) (ServerAutomaticTuningClientUpdateResponse, error) {
+func (client *ServerAutomaticTuningClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ServerAutomaticTuningClientUpdateResponse, error) {
 	result := ServerAutomaticTuningClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerAutomaticTuning); err != nil {
 		return ServerAutomaticTuningClientUpdateResponse{}, err
 	}

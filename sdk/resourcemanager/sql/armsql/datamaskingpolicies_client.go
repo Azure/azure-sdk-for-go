@@ -64,12 +64,7 @@ func (client *DataMaskingPoliciesClient) CreateOrUpdate(ctx context.Context, res
 	if err != nil {
 		return DataMaskingPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return DataMaskingPoliciesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -111,8 +106,11 @@ func (client *DataMaskingPoliciesClient) createOrUpdateCreateRequest(ctx context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DataMaskingPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (DataMaskingPoliciesClientCreateOrUpdateResponse, error) {
+func (client *DataMaskingPoliciesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DataMaskingPoliciesClientCreateOrUpdateResponse, error) {
 	result := DataMaskingPoliciesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataMaskingPolicy); err != nil {
 		return DataMaskingPoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -140,12 +138,7 @@ func (client *DataMaskingPoliciesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DataMaskingPoliciesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DataMaskingPoliciesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -183,8 +176,11 @@ func (client *DataMaskingPoliciesClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataMaskingPoliciesClient) getHandleResponse(resp *http.Response) (DataMaskingPoliciesClientGetResponse, error) {
+func (client *DataMaskingPoliciesClient) getHandleResponse(resp *http.Response, successCodes ...int) (DataMaskingPoliciesClientGetResponse, error) {
 	result := DataMaskingPoliciesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataMaskingPolicy); err != nil {
 		return DataMaskingPoliciesClientGetResponse{}, err
 	}

@@ -63,12 +63,7 @@ func (client *ManagedDatabaseRestoreDetailsClient) Get(ctx context.Context, reso
 	if err != nil {
 		return ManagedDatabaseRestoreDetailsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabaseRestoreDetailsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -106,8 +101,11 @@ func (client *ManagedDatabaseRestoreDetailsClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabaseRestoreDetailsClient) getHandleResponse(resp *http.Response) (ManagedDatabaseRestoreDetailsClientGetResponse, error) {
+func (client *ManagedDatabaseRestoreDetailsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseRestoreDetailsClientGetResponse, error) {
 	result := ManagedDatabaseRestoreDetailsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseRestoreDetailsResult); err != nil {
 		return ManagedDatabaseRestoreDetailsClientGetResponse{}, err
 	}

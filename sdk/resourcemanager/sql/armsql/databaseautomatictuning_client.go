@@ -62,12 +62,7 @@ func (client *DatabaseAutomaticTuningClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return DatabaseAutomaticTuningClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabaseAutomaticTuningClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -101,8 +96,11 @@ func (client *DatabaseAutomaticTuningClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabaseAutomaticTuningClient) getHandleResponse(resp *http.Response) (DatabaseAutomaticTuningClientGetResponse, error) {
+func (client *DatabaseAutomaticTuningClient) getHandleResponse(resp *http.Response, successCodes ...int) (DatabaseAutomaticTuningClientGetResponse, error) {
 	result := DatabaseAutomaticTuningClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAutomaticTuning); err != nil {
 		return DatabaseAutomaticTuningClientGetResponse{}, err
 	}
@@ -131,12 +129,7 @@ func (client *DatabaseAutomaticTuningClient) Update(ctx context.Context, resourc
 	if err != nil {
 		return DatabaseAutomaticTuningClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabaseAutomaticTuningClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -174,8 +167,11 @@ func (client *DatabaseAutomaticTuningClient) updateCreateRequest(ctx context.Con
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DatabaseAutomaticTuningClient) updateHandleResponse(resp *http.Response) (DatabaseAutomaticTuningClientUpdateResponse, error) {
+func (client *DatabaseAutomaticTuningClient) updateHandleResponse(resp *http.Response, successCodes ...int) (DatabaseAutomaticTuningClientUpdateResponse, error) {
 	result := DatabaseAutomaticTuningClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseAutomaticTuning); err != nil {
 		return DatabaseAutomaticTuningClientUpdateResponse{}, err
 	}

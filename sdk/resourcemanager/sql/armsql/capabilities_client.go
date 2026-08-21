@@ -60,12 +60,7 @@ func (client *CapabilitiesClient) ListByLocation(ctx context.Context, locationNa
 	if err != nil {
 		return CapabilitiesClientListByLocationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CapabilitiesClientListByLocationResponse{}, err
-	}
-	resp, err := client.listByLocationHandleResponse(httpResp)
-	return resp, err
+	return client.listByLocationHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
@@ -94,8 +89,11 @@ func (client *CapabilitiesClient) listByLocationCreateRequest(ctx context.Contex
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *CapabilitiesClient) listByLocationHandleResponse(resp *http.Response) (CapabilitiesClientListByLocationResponse, error) {
+func (client *CapabilitiesClient) listByLocationHandleResponse(resp *http.Response, successCodes ...int) (CapabilitiesClientListByLocationResponse, error) {
 	result := CapabilitiesClientListByLocationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocationCapabilities); err != nil {
 		return CapabilitiesClientListByLocationResponse{}, err
 	}

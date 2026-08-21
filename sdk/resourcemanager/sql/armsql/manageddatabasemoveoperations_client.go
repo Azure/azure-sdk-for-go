@@ -63,12 +63,7 @@ func (client *ManagedDatabaseMoveOperationsClient) Get(ctx context.Context, reso
 	if err != nil {
 		return ManagedDatabaseMoveOperationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabaseMoveOperationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -102,8 +97,11 @@ func (client *ManagedDatabaseMoveOperationsClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabaseMoveOperationsClient) getHandleResponse(resp *http.Response) (ManagedDatabaseMoveOperationsClientGetResponse, error) {
+func (client *ManagedDatabaseMoveOperationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseMoveOperationsClientGetResponse, error) {
 	result := ManagedDatabaseMoveOperationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseMoveOperationResult); err != nil {
 		return ManagedDatabaseMoveOperationsClientGetResponse{}, err
 	}
@@ -126,53 +124,67 @@ func (client *ManagedDatabaseMoveOperationsClient) NewListByLocationPager(resour
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByLocationCreateRequest(ctx, resourceGroupName, locationName, options)
-			}, nil)
+			req, err := client.listByLocationCreateRequest(ctx, resourceGroupName, locationName, nextLink, options)
 			if err != nil {
 				return ManagedDatabaseMoveOperationsClientListByLocationResponse{}, err
 			}
-			return client.listByLocationHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedDatabaseMoveOperationsClientListByLocationResponse{}, err
+			}
+			return client.listByLocationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *ManagedDatabaseMoveOperationsClient) listByLocationCreateRequest(ctx context.Context, resourceGroupName string, locationName string, options *ManagedDatabaseMoveOperationsClientListByLocationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/managedDatabaseMoveOperationResults"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedDatabaseMoveOperationsClient) listByLocationCreateRequest(ctx context.Context, resourceGroupName string, locationName string, nextLink string, options *ManagedDatabaseMoveOperationsClientListByLocationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/managedDatabaseMoveOperationResults"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if locationName == "" {
+			return nil, errors.New("parameter locationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.OnlyLatestPerDatabase != nil {
+			reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *ManagedDatabaseMoveOperationsClient) listByLocationHandleResponse(resp *http.Response) (ManagedDatabaseMoveOperationsClientListByLocationResponse, error) {
+func (client *ManagedDatabaseMoveOperationsClient) listByLocationHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseMoveOperationsClientListByLocationResponse, error) {
 	result := ManagedDatabaseMoveOperationsClientListByLocationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseMoveOperationListResult); err != nil {
 		return ManagedDatabaseMoveOperationsClientListByLocationResponse{}, err
 	}

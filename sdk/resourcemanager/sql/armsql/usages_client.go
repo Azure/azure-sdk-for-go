@@ -58,50 +58,64 @@ func (client *UsagesClient) NewListByInstancePoolPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByInstancePoolCreateRequest(ctx, resourceGroupName, instancePoolName, options)
-			}, nil)
+			req, err := client.listByInstancePoolCreateRequest(ctx, resourceGroupName, instancePoolName, nextLink, options)
 			if err != nil {
 				return UsagesClientListByInstancePoolResponse{}, err
 			}
-			return client.listByInstancePoolHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return UsagesClientListByInstancePoolResponse{}, err
+			}
+			return client.listByInstancePoolHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByInstancePoolCreateRequest creates the ListByInstancePool request.
-func (client *UsagesClient) listByInstancePoolCreateRequest(ctx context.Context, resourceGroupName string, instancePoolName string, options *UsagesClientListByInstancePoolOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}/usages"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *UsagesClient) listByInstancePoolCreateRequest(ctx context.Context, resourceGroupName string, instancePoolName string, nextLink string, options *UsagesClientListByInstancePoolOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/instancePools/{instancePoolName}/usages"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if instancePoolName == "" {
+			return nil, errors.New("parameter instancePoolName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{instancePoolName}", url.PathEscape(instancePoolName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if instancePoolName == "" {
-		return nil, errors.New("parameter instancePoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{instancePoolName}", url.PathEscape(instancePoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.ExpandChildren != nil {
-		reqQP.Set("expandChildren", strconv.FormatBool(*options.ExpandChildren))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.ExpandChildren != nil {
+			reqQP.Set("expandChildren", strconv.FormatBool(*options.ExpandChildren))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByInstancePoolHandleResponse handles the ListByInstancePool response.
-func (client *UsagesClient) listByInstancePoolHandleResponse(resp *http.Response) (UsagesClientListByInstancePoolResponse, error) {
+func (client *UsagesClient) listByInstancePoolHandleResponse(resp *http.Response, successCodes ...int) (UsagesClientListByInstancePoolResponse, error) {
 	result := UsagesClientListByInstancePoolResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsageListResult); err != nil {
 		return UsagesClientListByInstancePoolResponse{}, err
 	}

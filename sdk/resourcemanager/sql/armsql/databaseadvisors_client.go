@@ -62,12 +62,7 @@ func (client *DatabaseAdvisorsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return DatabaseAdvisorsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabaseAdvisorsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -105,8 +100,11 @@ func (client *DatabaseAdvisorsClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabaseAdvisorsClient) getHandleResponse(resp *http.Response) (DatabaseAdvisorsClientGetResponse, error) {
+func (client *DatabaseAdvisorsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DatabaseAdvisorsClientGetResponse, error) {
 	result := DatabaseAdvisorsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Advisor); err != nil {
 		return DatabaseAdvisorsClientGetResponse{}, err
 	}
@@ -134,12 +132,7 @@ func (client *DatabaseAdvisorsClient) ListByDatabase(ctx context.Context, resour
 	if err != nil {
 		return DatabaseAdvisorsClientListByDatabaseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabaseAdvisorsClientListByDatabaseResponse{}, err
-	}
-	resp, err := client.listByDatabaseHandleResponse(httpResp)
-	return resp, err
+	return client.listByDatabaseHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
@@ -176,8 +169,11 @@ func (client *DatabaseAdvisorsClient) listByDatabaseCreateRequest(ctx context.Co
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *DatabaseAdvisorsClient) listByDatabaseHandleResponse(resp *http.Response) (DatabaseAdvisorsClientListByDatabaseResponse, error) {
+func (client *DatabaseAdvisorsClient) listByDatabaseHandleResponse(resp *http.Response, successCodes ...int) (DatabaseAdvisorsClientListByDatabaseResponse, error) {
 	result := DatabaseAdvisorsClientListByDatabaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvisorArray); err != nil {
 		return DatabaseAdvisorsClientListByDatabaseResponse{}, err
 	}
@@ -206,12 +202,7 @@ func (client *DatabaseAdvisorsClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DatabaseAdvisorsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabaseAdvisorsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -253,8 +244,11 @@ func (client *DatabaseAdvisorsClient) updateCreateRequest(ctx context.Context, r
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DatabaseAdvisorsClient) updateHandleResponse(resp *http.Response) (DatabaseAdvisorsClientUpdateResponse, error) {
+func (client *DatabaseAdvisorsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (DatabaseAdvisorsClientUpdateResponse, error) {
 	result := DatabaseAdvisorsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Advisor); err != nil {
 		return DatabaseAdvisorsClientUpdateResponse{}, err
 	}

@@ -83,8 +83,7 @@ func (client *SyncAgentsClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -163,8 +162,7 @@ func (client *SyncAgentsClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -218,12 +216,7 @@ func (client *SyncAgentsClient) GenerateKey(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return SyncAgentsClientGenerateKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SyncAgentsClientGenerateKeyResponse{}, err
-	}
-	resp, err := client.generateKeyHandleResponse(httpResp)
-	return resp, err
+	return client.generateKeyHandleResponse(httpResp, http.StatusOK)
 }
 
 // generateKeyCreateRequest creates the GenerateKey request.
@@ -257,8 +250,11 @@ func (client *SyncAgentsClient) generateKeyCreateRequest(ctx context.Context, re
 }
 
 // generateKeyHandleResponse handles the GenerateKey response.
-func (client *SyncAgentsClient) generateKeyHandleResponse(resp *http.Response) (SyncAgentsClientGenerateKeyResponse, error) {
+func (client *SyncAgentsClient) generateKeyHandleResponse(resp *http.Response, successCodes ...int) (SyncAgentsClientGenerateKeyResponse, error) {
 	result := SyncAgentsClientGenerateKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncAgentKeyProperties); err != nil {
 		return SyncAgentsClientGenerateKeyResponse{}, err
 	}
@@ -285,12 +281,7 @@ func (client *SyncAgentsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return SyncAgentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SyncAgentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -324,8 +315,11 @@ func (client *SyncAgentsClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *SyncAgentsClient) getHandleResponse(resp *http.Response) (SyncAgentsClientGetResponse, error) {
+func (client *SyncAgentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SyncAgentsClientGetResponse, error) {
 	result := SyncAgentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncAgent); err != nil {
 		return SyncAgentsClientGetResponse{}, err
 	}
@@ -348,47 +342,61 @@ func (client *SyncAgentsClient) NewListByServerPager(resourceGroupName string, s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByServerCreateRequest(ctx, resourceGroupName, serverName, options)
-			}, nil)
+			req, err := client.listByServerCreateRequest(ctx, resourceGroupName, serverName, nextLink, options)
 			if err != nil {
 				return SyncAgentsClientListByServerResponse{}, err
 			}
-			return client.listByServerHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SyncAgentsClientListByServerResponse{}, err
+			}
+			return client.listByServerHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *SyncAgentsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, _ *SyncAgentsClientListByServerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SyncAgentsClient) listByServerCreateRequest(ctx context.Context, resourceGroupName string, serverName string, nextLink string, _ *SyncAgentsClientListByServerOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serverName == "" {
+			return nil, errors.New("parameter serverName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *SyncAgentsClient) listByServerHandleResponse(resp *http.Response) (SyncAgentsClientListByServerResponse, error) {
+func (client *SyncAgentsClient) listByServerHandleResponse(resp *http.Response, successCodes ...int) (SyncAgentsClientListByServerResponse, error) {
 	result := SyncAgentsClientListByServerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncAgentListResult); err != nil {
 		return SyncAgentsClientListByServerResponse{}, err
 	}
@@ -412,51 +420,65 @@ func (client *SyncAgentsClient) NewListLinkedDatabasesPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listLinkedDatabasesCreateRequest(ctx, resourceGroupName, serverName, syncAgentName, options)
-			}, nil)
+			req, err := client.listLinkedDatabasesCreateRequest(ctx, resourceGroupName, serverName, syncAgentName, nextLink, options)
 			if err != nil {
 				return SyncAgentsClientListLinkedDatabasesResponse{}, err
 			}
-			return client.listLinkedDatabasesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SyncAgentsClientListLinkedDatabasesResponse{}, err
+			}
+			return client.listLinkedDatabasesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listLinkedDatabasesCreateRequest creates the ListLinkedDatabases request.
-func (client *SyncAgentsClient) listLinkedDatabasesCreateRequest(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, _ *SyncAgentsClientListLinkedDatabasesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}/linkedDatabases"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SyncAgentsClient) listLinkedDatabasesCreateRequest(ctx context.Context, resourceGroupName string, serverName string, syncAgentName string, nextLink string, _ *SyncAgentsClientListLinkedDatabasesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/syncAgents/{syncAgentName}/linkedDatabases"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serverName == "" {
+			return nil, errors.New("parameter serverName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+		if syncAgentName == "" {
+			return nil, errors.New("parameter syncAgentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{syncAgentName}", url.PathEscape(syncAgentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if syncAgentName == "" {
-		return nil, errors.New("parameter syncAgentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{syncAgentName}", url.PathEscape(syncAgentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listLinkedDatabasesHandleResponse handles the ListLinkedDatabases response.
-func (client *SyncAgentsClient) listLinkedDatabasesHandleResponse(resp *http.Response) (SyncAgentsClientListLinkedDatabasesResponse, error) {
+func (client *SyncAgentsClient) listLinkedDatabasesHandleResponse(resp *http.Response, successCodes ...int) (SyncAgentsClientListLinkedDatabasesResponse, error) {
 	result := SyncAgentsClientListLinkedDatabasesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SyncAgentLinkedDatabaseListResult); err != nil {
 		return SyncAgentsClientListLinkedDatabasesResponse{}, err
 	}

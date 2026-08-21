@@ -61,12 +61,7 @@ func (client *ServerAdvisorsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ServerAdvisorsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServerAdvisorsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -100,8 +95,11 @@ func (client *ServerAdvisorsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServerAdvisorsClient) getHandleResponse(resp *http.Response) (ServerAdvisorsClientGetResponse, error) {
+func (client *ServerAdvisorsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ServerAdvisorsClientGetResponse, error) {
 	result := ServerAdvisorsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Advisor); err != nil {
 		return ServerAdvisorsClientGetResponse{}, err
 	}
@@ -128,12 +126,7 @@ func (client *ServerAdvisorsClient) ListByServer(ctx context.Context, resourceGr
 	if err != nil {
 		return ServerAdvisorsClientListByServerResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServerAdvisorsClientListByServerResponse{}, err
-	}
-	resp, err := client.listByServerHandleResponse(httpResp)
-	return resp, err
+	return client.listByServerHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -166,8 +159,11 @@ func (client *ServerAdvisorsClient) listByServerCreateRequest(ctx context.Contex
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *ServerAdvisorsClient) listByServerHandleResponse(resp *http.Response) (ServerAdvisorsClientListByServerResponse, error) {
+func (client *ServerAdvisorsClient) listByServerHandleResponse(resp *http.Response, successCodes ...int) (ServerAdvisorsClientListByServerResponse, error) {
 	result := ServerAdvisorsClientListByServerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvisorArray); err != nil {
 		return ServerAdvisorsClientListByServerResponse{}, err
 	}
@@ -195,12 +191,7 @@ func (client *ServerAdvisorsClient) Update(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ServerAdvisorsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServerAdvisorsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -238,8 +229,11 @@ func (client *ServerAdvisorsClient) updateCreateRequest(ctx context.Context, res
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ServerAdvisorsClient) updateHandleResponse(resp *http.Response) (ServerAdvisorsClientUpdateResponse, error) {
+func (client *ServerAdvisorsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ServerAdvisorsClientUpdateResponse, error) {
 	result := ServerAdvisorsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Advisor); err != nil {
 		return ServerAdvisorsClientUpdateResponse{}, err
 	}

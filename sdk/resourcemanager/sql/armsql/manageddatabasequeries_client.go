@@ -62,12 +62,7 @@ func (client *ManagedDatabaseQueriesClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return ManagedDatabaseQueriesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabaseQueriesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -105,8 +100,11 @@ func (client *ManagedDatabaseQueriesClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabaseQueriesClient) getHandleResponse(resp *http.Response) (ManagedDatabaseQueriesClientGetResponse, error) {
+func (client *ManagedDatabaseQueriesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseQueriesClientGetResponse, error) {
 	result := ManagedDatabaseQueriesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceQuery); err != nil {
 		return ManagedDatabaseQueriesClientGetResponse{}, err
 	}
@@ -130,64 +128,78 @@ func (client *ManagedDatabaseQueriesClient) NewListByQueryPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByQueryCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, queryID, options)
-			}, nil)
+			req, err := client.listByQueryCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, queryID, nextLink, options)
 			if err != nil {
 				return ManagedDatabaseQueriesClientListByQueryResponse{}, err
 			}
-			return client.listByQueryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedDatabaseQueriesClientListByQueryResponse{}, err
+			}
+			return client.listByQueryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByQueryCreateRequest creates the ListByQuery request.
-func (client *ManagedDatabaseQueriesClient) listByQueryCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, queryID string, options *ManagedDatabaseQueriesClientListByQueryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/queries/{queryId}/statistics"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedDatabaseQueriesClient) listByQueryCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, queryID string, nextLink string, options *ManagedDatabaseQueriesClientListByQueryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/queries/{queryId}/statistics"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		if queryID == "" {
+			return nil, errors.New("parameter queryID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{queryId}", url.PathEscape(queryID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	if queryID == "" {
-		return nil, errors.New("parameter queryID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{queryId}", url.PathEscape(queryID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.EndTime != nil {
-		reqQP.Set("endTime", *options.EndTime)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.EndTime != nil {
+			reqQP.Set("endTime", *options.EndTime)
+		}
+		if options != nil && options.Interval != nil {
+			reqQP.Set("interval", string(*options.Interval))
+		}
+		if options != nil && options.StartTime != nil {
+			reqQP.Set("startTime", *options.StartTime)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Interval != nil {
-		reqQP.Set("interval", string(*options.Interval))
-	}
-	if options != nil && options.StartTime != nil {
-		reqQP.Set("startTime", *options.StartTime)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByQueryHandleResponse handles the ListByQuery response.
-func (client *ManagedDatabaseQueriesClient) listByQueryHandleResponse(resp *http.Response) (ManagedDatabaseQueriesClientListByQueryResponse, error) {
+func (client *ManagedDatabaseQueriesClient) listByQueryHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseQueriesClientListByQueryResponse, error) {
 	result := ManagedDatabaseQueriesClientListByQueryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceQueryStatistics); err != nil {
 		return ManagedDatabaseQueriesClientListByQueryResponse{}, err
 	}

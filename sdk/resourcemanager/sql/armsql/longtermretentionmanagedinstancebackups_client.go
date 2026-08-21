@@ -84,8 +84,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) deleteOperation(ctx
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -166,8 +165,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) deleteByResourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -231,12 +229,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) Get(ctx context.Con
 	if err != nil {
 		return LongTermRetentionManagedInstanceBackupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LongTermRetentionManagedInstanceBackupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -274,8 +267,11 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) getCreateRequest(ct
 }
 
 // getHandleResponse handles the Get response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) getHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsClientGetResponse, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (LongTermRetentionManagedInstanceBackupsClientGetResponse, error) {
 	result := LongTermRetentionManagedInstanceBackupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionBackup); err != nil {
 		return LongTermRetentionManagedInstanceBackupsClientGetResponse{}, err
 	}
@@ -305,12 +301,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) GetByResourceGroup(
 	if err != nil {
 		return LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse{}, err
-	}
-	resp, err := client.getByResourceGroupHandleResponse(httpResp)
-	return resp, err
+	return client.getByResourceGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByResourceGroupCreateRequest creates the GetByResourceGroup request.
@@ -352,8 +343,11 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) getByResourceGroupC
 }
 
 // getByResourceGroupHandleResponse handles the GetByResourceGroup response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) getByResourceGroupHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) getByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse, error) {
 	result := LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionBackup); err != nil {
 		return LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse{}, err
 	}
@@ -377,57 +371,71 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByDatabasePa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDatabaseCreateRequest(ctx, locationName, managedInstanceName, databaseName, options)
-			}, nil)
+			req, err := client.listByDatabaseCreateRequest(ctx, locationName, managedInstanceName, databaseName, nextLink, options)
 			if err != nil {
 				return LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse{}, err
 			}
-			return client.listByDatabaseHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse{}, err
+			}
+			return client.listByDatabaseHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseCreateRequest(ctx context.Context, locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsClientListByDatabaseOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseCreateRequest(ctx context.Context, locationName string, managedInstanceName string, databaseName string, nextLink string, options *LongTermRetentionManagedInstanceBackupsClientListByDatabaseOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if locationName == "" {
+			return nil, errors.New("parameter locationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.DatabaseState != nil {
-		reqQP.Set("databaseState", string(*options.DatabaseState))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.DatabaseState != nil {
+			reqQP.Set("databaseState", string(*options.DatabaseState))
+		}
+		if options != nil && options.OnlyLatestPerDatabase != nil {
+			reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseHandleResponse(resp *http.Response, successCodes ...int) (LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse, error) {
 	result := LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionBackupListResult); err != nil {
 		return LongTermRetentionManagedInstanceBackupsClientListByDatabaseResponse{}, err
 	}
@@ -450,53 +458,67 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByInstancePa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByInstanceCreateRequest(ctx, locationName, managedInstanceName, options)
-			}, nil)
+			req, err := client.listByInstanceCreateRequest(ctx, locationName, managedInstanceName, nextLink, options)
 			if err != nil {
 				return LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse{}, err
 			}
-			return client.listByInstanceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse{}, err
+			}
+			return client.listByInstanceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByInstanceCreateRequest creates the ListByInstance request.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceCreateRequest(ctx context.Context, locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsClientListByInstanceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionManagedInstanceBackups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceCreateRequest(ctx context.Context, locationName string, managedInstanceName string, nextLink string, options *LongTermRetentionManagedInstanceBackupsClientListByInstanceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionManagedInstanceBackups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if locationName == "" {
+			return nil, errors.New("parameter locationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.DatabaseState != nil {
-		reqQP.Set("databaseState", string(*options.DatabaseState))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.DatabaseState != nil {
+			reqQP.Set("databaseState", string(*options.DatabaseState))
+		}
+		if options != nil && options.OnlyLatestPerDatabase != nil {
+			reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByInstanceHandleResponse handles the ListByInstance response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceHandleResponse(resp *http.Response, successCodes ...int) (LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse, error) {
 	result := LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionBackupListResult); err != nil {
 		return LongTermRetentionManagedInstanceBackupsClientListByInstanceResponse{}, err
 	}
@@ -518,58 +540,72 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByLocationPa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByLocationCreateRequest(ctx, locationName, options)
-			}, nil)
+			req, err := client.listByLocationCreateRequest(ctx, locationName, nextLink, options)
 			if err != nil {
 				return LongTermRetentionManagedInstanceBackupsClientListByLocationResponse{}, err
 			}
-			return client.listByLocationHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LongTermRetentionManagedInstanceBackupsClientListByLocationResponse{}, err
+			}
+			return client.listByLocationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationCreateRequest(ctx context.Context, locationName string, options *LongTermRetentionManagedInstanceBackupsClientListByLocationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstanceBackups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationCreateRequest(ctx context.Context, locationName string, nextLink string, options *LongTermRetentionManagedInstanceBackupsClientListByLocationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstanceBackups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if locationName == "" {
+			return nil, errors.New("parameter locationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
+		}
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.DatabaseState != nil {
+			reqQP.Set("databaseState", string(*options.DatabaseState))
+		}
+		if options != nil && options.OnlyLatestPerDatabase != nil {
+			reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(*options.Skip, 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
-	}
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.DatabaseState != nil {
-		reqQP.Set("databaseState", string(*options.DatabaseState))
-	}
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsClientListByLocationResponse, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationHandleResponse(resp *http.Response, successCodes ...int) (LongTermRetentionManagedInstanceBackupsClientListByLocationResponse, error) {
 	result := LongTermRetentionManagedInstanceBackupsClientListByLocationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionBackupListResult); err != nil {
 		return LongTermRetentionManagedInstanceBackupsClientListByLocationResponse{}, err
 	}
@@ -594,61 +630,75 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByResourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupDatabaseCreateRequest(ctx, resourceGroupName, locationName, managedInstanceName, databaseName, options)
-			}, nil)
+			req, err := client.listByResourceGroupDatabaseCreateRequest(ctx, resourceGroupName, locationName, managedInstanceName, databaseName, nextLink, options)
 			if err != nil {
 				return LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse{}, err
 			}
-			return client.listByResourceGroupDatabaseHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse{}, err
+			}
+			return client.listByResourceGroupDatabaseHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupDatabaseCreateRequest creates the ListByResourceGroupDatabase request.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupDatabaseCreateRequest(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupDatabaseCreateRequest(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, databaseName string, nextLink string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionDatabases/{databaseName}/longTermRetentionManagedInstanceBackups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if locationName == "" {
+			return nil, errors.New("parameter locationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.DatabaseState != nil {
-		reqQP.Set("databaseState", string(*options.DatabaseState))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.DatabaseState != nil {
+			reqQP.Set("databaseState", string(*options.DatabaseState))
+		}
+		if options != nil && options.OnlyLatestPerDatabase != nil {
+			reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupDatabaseHandleResponse handles the ListByResourceGroupDatabase response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupDatabaseHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupDatabaseHandleResponse(resp *http.Response, successCodes ...int) (LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse, error) {
 	result := LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionBackupListResult); err != nil {
 		return LongTermRetentionManagedInstanceBackupsClientListByResourceGroupDatabaseResponse{}, err
 	}
@@ -672,57 +722,71 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByResourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupInstanceCreateRequest(ctx, resourceGroupName, locationName, managedInstanceName, options)
-			}, nil)
+			req, err := client.listByResourceGroupInstanceCreateRequest(ctx, resourceGroupName, locationName, managedInstanceName, nextLink, options)
 			if err != nil {
 				return LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse{}, err
 			}
-			return client.listByResourceGroupInstanceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse{}, err
+			}
+			return client.listByResourceGroupInstanceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupInstanceCreateRequest creates the ListByResourceGroupInstance request.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupInstanceCreateRequest(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionManagedInstanceBackups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupInstanceCreateRequest(ctx context.Context, resourceGroupName string, locationName string, managedInstanceName string, nextLink string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstances/{managedInstanceName}/longTermRetentionManagedInstanceBackups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if locationName == "" {
+			return nil, errors.New("parameter locationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.DatabaseState != nil {
-		reqQP.Set("databaseState", string(*options.DatabaseState))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.DatabaseState != nil {
+			reqQP.Set("databaseState", string(*options.DatabaseState))
+		}
+		if options != nil && options.OnlyLatestPerDatabase != nil {
+			reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupInstanceHandleResponse handles the ListByResourceGroupInstance response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupInstanceHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupInstanceHandleResponse(resp *http.Response, successCodes ...int) (LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse, error) {
 	result := LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionBackupListResult); err != nil {
 		return LongTermRetentionManagedInstanceBackupsClientListByResourceGroupInstanceResponse{}, err
 	}
@@ -745,62 +809,76 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) NewListByResourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupLocationCreateRequest(ctx, resourceGroupName, locationName, options)
-			}, nil)
+			req, err := client.listByResourceGroupLocationCreateRequest(ctx, resourceGroupName, locationName, nextLink, options)
 			if err != nil {
 				return LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse{}, err
 			}
-			return client.listByResourceGroupLocationHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse{}, err
+			}
+			return client.listByResourceGroupLocationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupLocationCreateRequest creates the ListByResourceGroupLocation request.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupLocationCreateRequest(ctx context.Context, resourceGroupName string, locationName string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstanceBackups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupLocationCreateRequest(ctx context.Context, resourceGroupName string, locationName string, nextLink string, options *LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionManagedInstanceBackups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if locationName == "" {
+			return nil, errors.New("parameter locationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(*options.Skip, 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
+		}
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.DatabaseState != nil {
+			reqQP.Set("databaseState", string(*options.DatabaseState))
+		}
+		if options != nil && options.OnlyLatestPerDatabase != nil {
+			reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(*options.Skip, 10))
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
-	}
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.DatabaseState != nil {
-		reqQP.Set("databaseState", string(*options.DatabaseState))
-	}
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupLocationHandleResponse handles the ListByResourceGroupLocation response.
-func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupLocationHandleResponse(resp *http.Response) (LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse, error) {
+func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroupLocationHandleResponse(resp *http.Response, successCodes ...int) (LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse, error) {
 	result := LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceLongTermRetentionBackupListResult); err != nil {
 		return LongTermRetentionManagedInstanceBackupsClientListByResourceGroupLocationResponse{}, err
 	}

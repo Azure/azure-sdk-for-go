@@ -64,12 +64,7 @@ func (client *JobVersionsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return JobVersionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return JobVersionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -108,8 +103,11 @@ func (client *JobVersionsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobVersionsClient) getHandleResponse(resp *http.Response) (JobVersionsClientGetResponse, error) {
+func (client *JobVersionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (JobVersionsClientGetResponse, error) {
 	result := JobVersionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobVersion); err != nil {
 		return JobVersionsClientGetResponse{}, err
 	}
@@ -134,55 +132,69 @@ func (client *JobVersionsClient) NewListByJobPager(resourceGroupName string, ser
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByJobCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, options)
-			}, nil)
+			req, err := client.listByJobCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, nextLink, options)
 			if err != nil {
 				return JobVersionsClientListByJobResponse{}, err
 			}
-			return client.listByJobHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return JobVersionsClientListByJobResponse{}, err
+			}
+			return client.listByJobHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByJobCreateRequest creates the ListByJob request.
-func (client *JobVersionsClient) listByJobCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, _ *JobVersionsClientListByJobOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *JobVersionsClient) listByJobCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, nextLink string, _ *JobVersionsClientListByJobOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serverName == "" {
+			return nil, errors.New("parameter serverName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+		if jobAgentName == "" {
+			return nil, errors.New("parameter jobAgentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobAgentName}", url.PathEscape(jobAgentName))
+		if jobName == "" {
+			return nil, errors.New("parameter jobName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if jobAgentName == "" {
-		return nil, errors.New("parameter jobAgentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobAgentName}", url.PathEscape(jobAgentName))
-	if jobName == "" {
-		return nil, errors.New("parameter jobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByJobHandleResponse handles the ListByJob response.
-func (client *JobVersionsClient) listByJobHandleResponse(resp *http.Response) (JobVersionsClientListByJobResponse, error) {
+func (client *JobVersionsClient) listByJobHandleResponse(resp *http.Response, successCodes ...int) (JobVersionsClientListByJobResponse, error) {
 	result := JobVersionsClientListByJobResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobVersionListResult); err != nil {
 		return JobVersionsClientListByJobResponse{}, err
 	}

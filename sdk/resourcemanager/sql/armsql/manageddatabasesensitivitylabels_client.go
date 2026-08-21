@@ -67,12 +67,7 @@ func (client *ManagedDatabaseSensitivityLabelsClient) CreateOrUpdate(ctx context
 	if err != nil {
 		return ManagedDatabaseSensitivityLabelsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabaseSensitivityLabelsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,8 +118,11 @@ func (client *ManagedDatabaseSensitivityLabelsClient) createOrUpdateCreateReques
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ManagedDatabaseSensitivityLabelsClient) createOrUpdateHandleResponse(resp *http.Response) (ManagedDatabaseSensitivityLabelsClientCreateOrUpdateResponse, error) {
+func (client *ManagedDatabaseSensitivityLabelsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseSensitivityLabelsClientCreateOrUpdateResponse, error) {
 	result := ManagedDatabaseSensitivityLabelsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabel); err != nil {
 		return ManagedDatabaseSensitivityLabelsClientCreateOrUpdateResponse{}, err
 	}
@@ -156,8 +154,7 @@ func (client *ManagedDatabaseSensitivityLabelsClient) Delete(ctx context.Context
 		return ManagedDatabaseSensitivityLabelsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabaseSensitivityLabelsClientDeleteResponse{}, err
+		return ManagedDatabaseSensitivityLabelsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ManagedDatabaseSensitivityLabelsClientDeleteResponse{}, nil
 }
@@ -229,8 +226,7 @@ func (client *ManagedDatabaseSensitivityLabelsClient) DisableRecommendation(ctx 
 		return ManagedDatabaseSensitivityLabelsClientDisableRecommendationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabaseSensitivityLabelsClientDisableRecommendationResponse{}, err
+		return ManagedDatabaseSensitivityLabelsClientDisableRecommendationResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ManagedDatabaseSensitivityLabelsClientDisableRecommendationResponse{}, nil
 }
@@ -303,8 +299,7 @@ func (client *ManagedDatabaseSensitivityLabelsClient) EnableRecommendation(ctx c
 		return ManagedDatabaseSensitivityLabelsClientEnableRecommendationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabaseSensitivityLabelsClientEnableRecommendationResponse{}, err
+		return ManagedDatabaseSensitivityLabelsClientEnableRecommendationResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ManagedDatabaseSensitivityLabelsClientEnableRecommendationResponse{}, nil
 }
@@ -376,12 +371,7 @@ func (client *ManagedDatabaseSensitivityLabelsClient) Get(ctx context.Context, r
 	if err != nil {
 		return ManagedDatabaseSensitivityLabelsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabaseSensitivityLabelsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -431,8 +421,11 @@ func (client *ManagedDatabaseSensitivityLabelsClient) getCreateRequest(ctx conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabaseSensitivityLabelsClient) getHandleResponse(resp *http.Response) (ManagedDatabaseSensitivityLabelsClientGetResponse, error) {
+func (client *ManagedDatabaseSensitivityLabelsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseSensitivityLabelsClientGetResponse, error) {
 	result := ManagedDatabaseSensitivityLabelsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabel); err != nil {
 		return ManagedDatabaseSensitivityLabelsClientGetResponse{}, err
 	}
@@ -456,54 +449,68 @@ func (client *ManagedDatabaseSensitivityLabelsClient) NewListByDatabasePager(res
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
-			}, nil)
+			req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, nextLink, options)
 			if err != nil {
 				return ManagedDatabaseSensitivityLabelsClientListByDatabaseResponse{}, err
 			}
-			return client.listByDatabaseHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedDatabaseSensitivityLabelsClientListByDatabaseResponse{}, err
+			}
+			return client.listByDatabaseHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *ManagedDatabaseSensitivityLabelsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSensitivityLabelsClientListByDatabaseOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/sensitivityLabels"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedDatabaseSensitivityLabelsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, nextLink string, options *ManagedDatabaseSensitivityLabelsClientListByDatabaseOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/sensitivityLabels"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *ManagedDatabaseSensitivityLabelsClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseSensitivityLabelsClientListByDatabaseResponse, error) {
+func (client *ManagedDatabaseSensitivityLabelsClient) listByDatabaseHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseSensitivityLabelsClientListByDatabaseResponse, error) {
 	result := ManagedDatabaseSensitivityLabelsClientListByDatabaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabelListResult); err != nil {
 		return ManagedDatabaseSensitivityLabelsClientListByDatabaseResponse{}, err
 	}
@@ -527,60 +534,74 @@ func (client *ManagedDatabaseSensitivityLabelsClient) NewListCurrentByDatabasePa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCurrentByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
-			}, nil)
+			req, err := client.listCurrentByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, nextLink, options)
 			if err != nil {
 				return ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse{}, err
 			}
-			return client.listCurrentByDatabaseHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse{}, err
+			}
+			return client.listCurrentByDatabaseHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCurrentByDatabaseCreateRequest creates the ListCurrentByDatabase request.
-func (client *ManagedDatabaseSensitivityLabelsClient) listCurrentByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/currentSensitivityLabels"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedDatabaseSensitivityLabelsClient) listCurrentByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, nextLink string, options *ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/currentSensitivityLabels"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Count != nil {
-		reqQP.Set("$count", strconv.FormatBool(*options.Count))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Count != nil {
+			reqQP.Set("$count", strconv.FormatBool(*options.Count))
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		reqQP.Set("api-version", version20250801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	reqQP.Set("api-version", version20250801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listCurrentByDatabaseHandleResponse handles the ListCurrentByDatabase response.
-func (client *ManagedDatabaseSensitivityLabelsClient) listCurrentByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse, error) {
+func (client *ManagedDatabaseSensitivityLabelsClient) listCurrentByDatabaseHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse, error) {
 	result := ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabelListResult); err != nil {
 		return ManagedDatabaseSensitivityLabelsClientListCurrentByDatabaseResponse{}, err
 	}
@@ -604,60 +625,74 @@ func (client *ManagedDatabaseSensitivityLabelsClient) NewListRecommendedByDataba
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listRecommendedByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
-			}, nil)
+			req, err := client.listRecommendedByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, nextLink, options)
 			if err != nil {
 				return ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse{}, err
 			}
-			return client.listRecommendedByDatabaseHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse{}, err
+			}
+			return client.listRecommendedByDatabaseHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listRecommendedByDatabaseCreateRequest creates the ListRecommendedByDatabase request.
-func (client *ManagedDatabaseSensitivityLabelsClient) listRecommendedByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/recommendedSensitivityLabels"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedDatabaseSensitivityLabelsClient) listRecommendedByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, nextLink string, options *ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/recommendedSensitivityLabels"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.IncludeDisabledRecommendations != nil {
+			reqQP.Set("includeDisabledRecommendations", strconv.FormatBool(*options.IncludeDisabledRecommendations))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.IncludeDisabledRecommendations != nil {
-		reqQP.Set("includeDisabledRecommendations", strconv.FormatBool(*options.IncludeDisabledRecommendations))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listRecommendedByDatabaseHandleResponse handles the ListRecommendedByDatabase response.
-func (client *ManagedDatabaseSensitivityLabelsClient) listRecommendedByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse, error) {
+func (client *ManagedDatabaseSensitivityLabelsClient) listRecommendedByDatabaseHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse, error) {
 	result := ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SensitivityLabelListResult); err != nil {
 		return ManagedDatabaseSensitivityLabelsClientListRecommendedByDatabaseResponse{}, err
 	}
@@ -686,8 +721,7 @@ func (client *ManagedDatabaseSensitivityLabelsClient) Update(ctx context.Context
 		return ManagedDatabaseSensitivityLabelsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabaseSensitivityLabelsClientUpdateResponse{}, err
+		return ManagedDatabaseSensitivityLabelsClientUpdateResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ManagedDatabaseSensitivityLabelsClientUpdateResponse{}, nil
 }

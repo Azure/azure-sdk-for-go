@@ -64,12 +64,7 @@ func (client *DatabaseRecommendedActionsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return DatabaseRecommendedActionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabaseRecommendedActionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -111,8 +106,11 @@ func (client *DatabaseRecommendedActionsClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabaseRecommendedActionsClient) getHandleResponse(resp *http.Response) (DatabaseRecommendedActionsClientGetResponse, error) {
+func (client *DatabaseRecommendedActionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DatabaseRecommendedActionsClientGetResponse, error) {
 	result := DatabaseRecommendedActionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendedAction); err != nil {
 		return DatabaseRecommendedActionsClientGetResponse{}, err
 	}
@@ -141,12 +139,7 @@ func (client *DatabaseRecommendedActionsClient) ListByDatabaseAdvisor(ctx contex
 	if err != nil {
 		return DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse{}, err
-	}
-	resp, err := client.listByDatabaseAdvisorHandleResponse(httpResp)
-	return resp, err
+	return client.listByDatabaseAdvisorHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByDatabaseAdvisorCreateRequest creates the ListByDatabaseAdvisor request.
@@ -184,8 +177,11 @@ func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorCreateReque
 }
 
 // listByDatabaseAdvisorHandleResponse handles the ListByDatabaseAdvisor response.
-func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorHandleResponse(resp *http.Response) (DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse, error) {
+func (client *DatabaseRecommendedActionsClient) listByDatabaseAdvisorHandleResponse(resp *http.Response, successCodes ...int) (DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse, error) {
 	result := DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendedActionArray); err != nil {
 		return DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse{}, err
 	}
@@ -216,12 +212,7 @@ func (client *DatabaseRecommendedActionsClient) Update(ctx context.Context, reso
 	if err != nil {
 		return DatabaseRecommendedActionsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabaseRecommendedActionsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -267,8 +258,11 @@ func (client *DatabaseRecommendedActionsClient) updateCreateRequest(ctx context.
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DatabaseRecommendedActionsClient) updateHandleResponse(resp *http.Response) (DatabaseRecommendedActionsClientUpdateResponse, error) {
+func (client *DatabaseRecommendedActionsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (DatabaseRecommendedActionsClientUpdateResponse, error) {
 	result := DatabaseRecommendedActionsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendedAction); err != nil {
 		return DatabaseRecommendedActionsClientUpdateResponse{}, err
 	}

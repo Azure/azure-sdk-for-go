@@ -84,8 +84,7 @@ func (client *LongTermRetentionBackupsClient) changeAccessTier(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -171,8 +170,7 @@ func (client *LongTermRetentionBackupsClient) changeAccessTierByResourceGroup(ct
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -262,8 +260,7 @@ func (client *LongTermRetentionBackupsClient) copyOperation(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -350,8 +347,7 @@ func (client *LongTermRetentionBackupsClient) copyByResourceGroup(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -440,8 +436,7 @@ func (client *LongTermRetentionBackupsClient) deleteOperation(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -522,8 +517,7 @@ func (client *LongTermRetentionBackupsClient) deleteByResourceGroup(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -587,12 +581,7 @@ func (client *LongTermRetentionBackupsClient) Get(ctx context.Context, locationN
 	if err != nil {
 		return LongTermRetentionBackupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LongTermRetentionBackupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -630,8 +619,11 @@ func (client *LongTermRetentionBackupsClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *LongTermRetentionBackupsClient) getHandleResponse(resp *http.Response) (LongTermRetentionBackupsClientGetResponse, error) {
+func (client *LongTermRetentionBackupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (LongTermRetentionBackupsClientGetResponse, error) {
 	result := LongTermRetentionBackupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LongTermRetentionBackup); err != nil {
 		return LongTermRetentionBackupsClientGetResponse{}, err
 	}
@@ -661,12 +653,7 @@ func (client *LongTermRetentionBackupsClient) GetByResourceGroup(ctx context.Con
 	if err != nil {
 		return LongTermRetentionBackupsClientGetByResourceGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LongTermRetentionBackupsClientGetByResourceGroupResponse{}, err
-	}
-	resp, err := client.getByResourceGroupHandleResponse(httpResp)
-	return resp, err
+	return client.getByResourceGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByResourceGroupCreateRequest creates the GetByResourceGroup request.
@@ -708,8 +695,11 @@ func (client *LongTermRetentionBackupsClient) getByResourceGroupCreateRequest(ct
 }
 
 // getByResourceGroupHandleResponse handles the GetByResourceGroup response.
-func (client *LongTermRetentionBackupsClient) getByResourceGroupHandleResponse(resp *http.Response) (LongTermRetentionBackupsClientGetByResourceGroupResponse, error) {
+func (client *LongTermRetentionBackupsClient) getByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (LongTermRetentionBackupsClientGetByResourceGroupResponse, error) {
 	result := LongTermRetentionBackupsClientGetByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LongTermRetentionBackup); err != nil {
 		return LongTermRetentionBackupsClientGetByResourceGroupResponse{}, err
 	}
@@ -733,57 +723,71 @@ func (client *LongTermRetentionBackupsClient) NewListByDatabasePager(locationNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDatabaseCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, options)
-			}, nil)
+			req, err := client.listByDatabaseCreateRequest(ctx, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, nextLink, options)
 			if err != nil {
 				return LongTermRetentionBackupsClientListByDatabaseResponse{}, err
 			}
-			return client.listByDatabaseHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LongTermRetentionBackupsClientListByDatabaseResponse{}, err
+			}
+			return client.listByDatabaseHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *LongTermRetentionBackupsClient) listByDatabaseCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, options *LongTermRetentionBackupsClientListByDatabaseOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LongTermRetentionBackupsClient) listByDatabaseCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, nextLink string, options *LongTermRetentionBackupsClientListByDatabaseOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if locationName == "" {
+			return nil, errors.New("parameter locationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+		if longTermRetentionServerName == "" {
+			return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
+		if longTermRetentionDatabaseName == "" {
+			return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if longTermRetentionServerName == "" {
-		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
-	if longTermRetentionDatabaseName == "" {
-		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.DatabaseState != nil {
-		reqQP.Set("databaseState", string(*options.DatabaseState))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.DatabaseState != nil {
+			reqQP.Set("databaseState", string(*options.DatabaseState))
+		}
+		if options != nil && options.OnlyLatestPerDatabase != nil {
+			reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *LongTermRetentionBackupsClient) listByDatabaseHandleResponse(resp *http.Response) (LongTermRetentionBackupsClientListByDatabaseResponse, error) {
+func (client *LongTermRetentionBackupsClient) listByDatabaseHandleResponse(resp *http.Response, successCodes ...int) (LongTermRetentionBackupsClientListByDatabaseResponse, error) {
 	result := LongTermRetentionBackupsClientListByDatabaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LongTermRetentionBackupListResult); err != nil {
 		return LongTermRetentionBackupsClientListByDatabaseResponse{}, err
 	}
@@ -805,49 +809,63 @@ func (client *LongTermRetentionBackupsClient) NewListByLocationPager(locationNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByLocationCreateRequest(ctx, locationName, options)
-			}, nil)
+			req, err := client.listByLocationCreateRequest(ctx, locationName, nextLink, options)
 			if err != nil {
 				return LongTermRetentionBackupsClientListByLocationResponse{}, err
 			}
-			return client.listByLocationHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LongTermRetentionBackupsClientListByLocationResponse{}, err
+			}
+			return client.listByLocationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *LongTermRetentionBackupsClient) listByLocationCreateRequest(ctx context.Context, locationName string, options *LongTermRetentionBackupsClientListByLocationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionBackups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LongTermRetentionBackupsClient) listByLocationCreateRequest(ctx context.Context, locationName string, nextLink string, options *LongTermRetentionBackupsClientListByLocationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionBackups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if locationName == "" {
+			return nil, errors.New("parameter locationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.DatabaseState != nil {
-		reqQP.Set("databaseState", string(*options.DatabaseState))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.DatabaseState != nil {
+			reqQP.Set("databaseState", string(*options.DatabaseState))
+		}
+		if options != nil && options.OnlyLatestPerDatabase != nil {
+			reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *LongTermRetentionBackupsClient) listByLocationHandleResponse(resp *http.Response) (LongTermRetentionBackupsClientListByLocationResponse, error) {
+func (client *LongTermRetentionBackupsClient) listByLocationHandleResponse(resp *http.Response, successCodes ...int) (LongTermRetentionBackupsClientListByLocationResponse, error) {
 	result := LongTermRetentionBackupsClientListByLocationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LongTermRetentionBackupListResult); err != nil {
 		return LongTermRetentionBackupsClientListByLocationResponse{}, err
 	}
@@ -873,61 +891,75 @@ func (client *LongTermRetentionBackupsClient) NewListByResourceGroupDatabasePage
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupDatabaseCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, options)
-			}, nil)
+			req, err := client.listByResourceGroupDatabaseCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, longTermRetentionDatabaseName, nextLink, options)
 			if err != nil {
 				return LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse{}, err
 			}
-			return client.listByResourceGroupDatabaseHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse{}, err
+			}
+			return client.listByResourceGroupDatabaseHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupDatabaseCreateRequest creates the ListByResourceGroupDatabase request.
-func (client *LongTermRetentionBackupsClient) listByResourceGroupDatabaseCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, options *LongTermRetentionBackupsClientListByResourceGroupDatabaseOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LongTermRetentionBackupsClient) listByResourceGroupDatabaseCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, longTermRetentionDatabaseName string, nextLink string, options *LongTermRetentionBackupsClientListByResourceGroupDatabaseOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionDatabases/{longTermRetentionDatabaseName}/longTermRetentionBackups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if locationName == "" {
+			return nil, errors.New("parameter locationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+		if longTermRetentionServerName == "" {
+			return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
+		if longTermRetentionDatabaseName == "" {
+			return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if longTermRetentionServerName == "" {
-		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
-	if longTermRetentionDatabaseName == "" {
-		return nil, errors.New("parameter longTermRetentionDatabaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionDatabaseName}", url.PathEscape(longTermRetentionDatabaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.DatabaseState != nil {
-		reqQP.Set("databaseState", string(*options.DatabaseState))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.DatabaseState != nil {
+			reqQP.Set("databaseState", string(*options.DatabaseState))
+		}
+		if options != nil && options.OnlyLatestPerDatabase != nil {
+			reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupDatabaseHandleResponse handles the ListByResourceGroupDatabase response.
-func (client *LongTermRetentionBackupsClient) listByResourceGroupDatabaseHandleResponse(resp *http.Response) (LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse, error) {
+func (client *LongTermRetentionBackupsClient) listByResourceGroupDatabaseHandleResponse(resp *http.Response, successCodes ...int) (LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse, error) {
 	result := LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LongTermRetentionBackupListResult); err != nil {
 		return LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse{}, err
 	}
@@ -950,53 +982,67 @@ func (client *LongTermRetentionBackupsClient) NewListByResourceGroupLocationPage
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupLocationCreateRequest(ctx, resourceGroupName, locationName, options)
-			}, nil)
+			req, err := client.listByResourceGroupLocationCreateRequest(ctx, resourceGroupName, locationName, nextLink, options)
 			if err != nil {
 				return LongTermRetentionBackupsClientListByResourceGroupLocationResponse{}, err
 			}
-			return client.listByResourceGroupLocationHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LongTermRetentionBackupsClientListByResourceGroupLocationResponse{}, err
+			}
+			return client.listByResourceGroupLocationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupLocationCreateRequest creates the ListByResourceGroupLocation request.
-func (client *LongTermRetentionBackupsClient) listByResourceGroupLocationCreateRequest(ctx context.Context, resourceGroupName string, locationName string, options *LongTermRetentionBackupsClientListByResourceGroupLocationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionBackups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LongTermRetentionBackupsClient) listByResourceGroupLocationCreateRequest(ctx context.Context, resourceGroupName string, locationName string, nextLink string, options *LongTermRetentionBackupsClientListByResourceGroupLocationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionBackups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if locationName == "" {
+			return nil, errors.New("parameter locationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.DatabaseState != nil {
-		reqQP.Set("databaseState", string(*options.DatabaseState))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.DatabaseState != nil {
+			reqQP.Set("databaseState", string(*options.DatabaseState))
+		}
+		if options != nil && options.OnlyLatestPerDatabase != nil {
+			reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupLocationHandleResponse handles the ListByResourceGroupLocation response.
-func (client *LongTermRetentionBackupsClient) listByResourceGroupLocationHandleResponse(resp *http.Response) (LongTermRetentionBackupsClientListByResourceGroupLocationResponse, error) {
+func (client *LongTermRetentionBackupsClient) listByResourceGroupLocationHandleResponse(resp *http.Response, successCodes ...int) (LongTermRetentionBackupsClientListByResourceGroupLocationResponse, error) {
 	result := LongTermRetentionBackupsClientListByResourceGroupLocationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LongTermRetentionBackupListResult); err != nil {
 		return LongTermRetentionBackupsClientListByResourceGroupLocationResponse{}, err
 	}
@@ -1020,57 +1066,71 @@ func (client *LongTermRetentionBackupsClient) NewListByResourceGroupServerPager(
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupServerCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, options)
-			}, nil)
+			req, err := client.listByResourceGroupServerCreateRequest(ctx, resourceGroupName, locationName, longTermRetentionServerName, nextLink, options)
 			if err != nil {
 				return LongTermRetentionBackupsClientListByResourceGroupServerResponse{}, err
 			}
-			return client.listByResourceGroupServerHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LongTermRetentionBackupsClientListByResourceGroupServerResponse{}, err
+			}
+			return client.listByResourceGroupServerHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupServerCreateRequest creates the ListByResourceGroupServer request.
-func (client *LongTermRetentionBackupsClient) listByResourceGroupServerCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, options *LongTermRetentionBackupsClientListByResourceGroupServerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LongTermRetentionBackupsClient) listByResourceGroupServerCreateRequest(ctx context.Context, resourceGroupName string, locationName string, longTermRetentionServerName string, nextLink string, options *LongTermRetentionBackupsClientListByResourceGroupServerOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if locationName == "" {
+			return nil, errors.New("parameter locationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+		if longTermRetentionServerName == "" {
+			return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if longTermRetentionServerName == "" {
-		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.DatabaseState != nil {
-		reqQP.Set("databaseState", string(*options.DatabaseState))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.DatabaseState != nil {
+			reqQP.Set("databaseState", string(*options.DatabaseState))
+		}
+		if options != nil && options.OnlyLatestPerDatabase != nil {
+			reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupServerHandleResponse handles the ListByResourceGroupServer response.
-func (client *LongTermRetentionBackupsClient) listByResourceGroupServerHandleResponse(resp *http.Response) (LongTermRetentionBackupsClientListByResourceGroupServerResponse, error) {
+func (client *LongTermRetentionBackupsClient) listByResourceGroupServerHandleResponse(resp *http.Response, successCodes ...int) (LongTermRetentionBackupsClientListByResourceGroupServerResponse, error) {
 	result := LongTermRetentionBackupsClientListByResourceGroupServerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LongTermRetentionBackupListResult); err != nil {
 		return LongTermRetentionBackupsClientListByResourceGroupServerResponse{}, err
 	}
@@ -1093,53 +1153,67 @@ func (client *LongTermRetentionBackupsClient) NewListByServerPager(locationName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByServerCreateRequest(ctx, locationName, longTermRetentionServerName, options)
-			}, nil)
+			req, err := client.listByServerCreateRequest(ctx, locationName, longTermRetentionServerName, nextLink, options)
 			if err != nil {
 				return LongTermRetentionBackupsClientListByServerResponse{}, err
 			}
-			return client.listByServerHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LongTermRetentionBackupsClientListByServerResponse{}, err
+			}
+			return client.listByServerHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByServerCreateRequest creates the ListByServer request.
-func (client *LongTermRetentionBackupsClient) listByServerCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, options *LongTermRetentionBackupsClientListByServerOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LongTermRetentionBackupsClient) listByServerCreateRequest(ctx context.Context, locationName string, longTermRetentionServerName string, nextLink string, options *LongTermRetentionBackupsClientListByServerOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/longTermRetentionServers/{longTermRetentionServerName}/longTermRetentionBackups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if locationName == "" {
+			return nil, errors.New("parameter locationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+		if longTermRetentionServerName == "" {
+			return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	if longTermRetentionServerName == "" {
-		return nil, errors.New("parameter longTermRetentionServerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{longTermRetentionServerName}", url.PathEscape(longTermRetentionServerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
-	if options != nil && options.DatabaseState != nil {
-		reqQP.Set("databaseState", string(*options.DatabaseState))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250801Preview)
+		if options != nil && options.DatabaseState != nil {
+			reqQP.Set("databaseState", string(*options.DatabaseState))
+		}
+		if options != nil && options.OnlyLatestPerDatabase != nil {
+			reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.OnlyLatestPerDatabase != nil {
-		reqQP.Set("onlyLatestPerDatabase", strconv.FormatBool(*options.OnlyLatestPerDatabase))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByServerHandleResponse handles the ListByServer response.
-func (client *LongTermRetentionBackupsClient) listByServerHandleResponse(resp *http.Response) (LongTermRetentionBackupsClientListByServerResponse, error) {
+func (client *LongTermRetentionBackupsClient) listByServerHandleResponse(resp *http.Response, successCodes ...int) (LongTermRetentionBackupsClientListByServerResponse, error) {
 	result := LongTermRetentionBackupsClientListByServerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LongTermRetentionBackupListResult); err != nil {
 		return LongTermRetentionBackupsClientListByServerResponse{}, err
 	}
@@ -1188,8 +1262,7 @@ func (client *LongTermRetentionBackupsClient) lockTimeBasedImmutability(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1271,8 +1344,7 @@ func (client *LongTermRetentionBackupsClient) lockTimeBasedImmutabilityByResourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1357,8 +1429,7 @@ func (client *LongTermRetentionBackupsClient) removeLegalHoldImmutability(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1440,8 +1511,7 @@ func (client *LongTermRetentionBackupsClient) removeLegalHoldImmutabilityByResou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1526,8 +1596,7 @@ func (client *LongTermRetentionBackupsClient) removeTimeBasedImmutability(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1609,8 +1678,7 @@ func (client *LongTermRetentionBackupsClient) removeTimeBasedImmutabilityByResou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1695,8 +1763,7 @@ func (client *LongTermRetentionBackupsClient) setLegalHoldImmutability(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1778,8 +1845,7 @@ func (client *LongTermRetentionBackupsClient) setLegalHoldImmutabilityByResource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1865,8 +1931,7 @@ func (client *LongTermRetentionBackupsClient) update(ctx context.Context, locati
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1953,8 +2018,7 @@ func (client *LongTermRetentionBackupsClient) updateByResourceGroup(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

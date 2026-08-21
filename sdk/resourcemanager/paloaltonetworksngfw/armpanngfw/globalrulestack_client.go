@@ -78,8 +78,7 @@ func (client *GlobalRulestackClient) commit(ctx context.Context, globalRulestack
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -141,8 +140,7 @@ func (client *GlobalRulestackClient) createOrUpdate(ctx context.Context, globalR
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -208,8 +206,7 @@ func (client *GlobalRulestackClient) deleteOperation(ctx context.Context, global
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -249,12 +246,7 @@ func (client *GlobalRulestackClient) Get(ctx context.Context, globalRulestackNam
 	if err != nil {
 		return GlobalRulestackClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GlobalRulestackClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -276,8 +268,11 @@ func (client *GlobalRulestackClient) getCreateRequest(ctx context.Context, globa
 }
 
 // getHandleResponse handles the Get response.
-func (client *GlobalRulestackClient) getHandleResponse(resp *http.Response) (GlobalRulestackClientGetResponse, error) {
+func (client *GlobalRulestackClient) getHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientGetResponse, error) {
 	result := GlobalRulestackClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GlobalRulestackResource); err != nil {
 		return GlobalRulestackClientGetResponse{}, err
 	}
@@ -303,12 +298,7 @@ func (client *GlobalRulestackClient) GetChangeLog(ctx context.Context, globalRul
 	if err != nil {
 		return GlobalRulestackClientGetChangeLogResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GlobalRulestackClientGetChangeLogResponse{}, err
-	}
-	resp, err := client.getChangeLogHandleResponse(httpResp)
-	return resp, err
+	return client.getChangeLogHandleResponse(httpResp, http.StatusOK)
 }
 
 // getChangeLogCreateRequest creates the GetChangeLog request.
@@ -330,8 +320,11 @@ func (client *GlobalRulestackClient) getChangeLogCreateRequest(ctx context.Conte
 }
 
 // getChangeLogHandleResponse handles the GetChangeLog response.
-func (client *GlobalRulestackClient) getChangeLogHandleResponse(resp *http.Response) (GlobalRulestackClientGetChangeLogResponse, error) {
+func (client *GlobalRulestackClient) getChangeLogHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientGetChangeLogResponse, error) {
 	result := GlobalRulestackClientGetChangeLogResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Changelog); err != nil {
 		return GlobalRulestackClientGetChangeLogResponse{}, err
 	}
@@ -352,35 +345,49 @@ func (client *GlobalRulestackClient) NewListPager(options *GlobalRulestackClient
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return GlobalRulestackClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GlobalRulestackClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *GlobalRulestackClient) listCreateRequest(ctx context.Context, _ *GlobalRulestackClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *GlobalRulestackClient) listCreateRequest(ctx context.Context, nextLink string, _ *GlobalRulestackClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260729Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260729Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *GlobalRulestackClient) listHandleResponse(resp *http.Response) (GlobalRulestackClientListResponse, error) {
+func (client *GlobalRulestackClient) listHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListResponse, error) {
 	result := GlobalRulestackClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GlobalRulestackResourceListResult); err != nil {
 		return GlobalRulestackClientListResponse{}, err
 	}
@@ -406,12 +413,7 @@ func (client *GlobalRulestackClient) ListAdvancedSecurityObjects(ctx context.Con
 	if err != nil {
 		return GlobalRulestackClientListAdvancedSecurityObjectsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GlobalRulestackClientListAdvancedSecurityObjectsResponse{}, err
-	}
-	resp, err := client.listAdvancedSecurityObjectsHandleResponse(httpResp)
-	return resp, err
+	return client.listAdvancedSecurityObjectsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAdvancedSecurityObjectsCreateRequest creates the ListAdvancedSecurityObjects request.
@@ -440,8 +442,11 @@ func (client *GlobalRulestackClient) listAdvancedSecurityObjectsCreateRequest(ct
 }
 
 // listAdvancedSecurityObjectsHandleResponse handles the ListAdvancedSecurityObjects response.
-func (client *GlobalRulestackClient) listAdvancedSecurityObjectsHandleResponse(resp *http.Response) (GlobalRulestackClientListAdvancedSecurityObjectsResponse, error) {
+func (client *GlobalRulestackClient) listAdvancedSecurityObjectsHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListAdvancedSecurityObjectsResponse, error) {
 	result := GlobalRulestackClientListAdvancedSecurityObjectsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdvSecurityObjectListResponse); err != nil {
 		return GlobalRulestackClientListAdvancedSecurityObjectsResponse{}, err
 	}
@@ -467,12 +472,7 @@ func (client *GlobalRulestackClient) ListAppIDs(ctx context.Context, globalRules
 	if err != nil {
 		return GlobalRulestackClientListAppIDsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GlobalRulestackClientListAppIDsResponse{}, err
-	}
-	resp, err := client.listAppIDsHandleResponse(httpResp)
-	return resp, err
+	return client.listAppIDsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAppIDsCreateRequest creates the ListAppIDs request.
@@ -506,8 +506,11 @@ func (client *GlobalRulestackClient) listAppIDsCreateRequest(ctx context.Context
 }
 
 // listAppIDsHandleResponse handles the ListAppIDs response.
-func (client *GlobalRulestackClient) listAppIDsHandleResponse(resp *http.Response) (GlobalRulestackClientListAppIDsResponse, error) {
+func (client *GlobalRulestackClient) listAppIDsHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListAppIDsResponse, error) {
 	result := GlobalRulestackClientListAppIDsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListAppIDResponse); err != nil {
 		return GlobalRulestackClientListAppIDsResponse{}, err
 	}
@@ -533,12 +536,7 @@ func (client *GlobalRulestackClient) ListCountries(ctx context.Context, globalRu
 	if err != nil {
 		return GlobalRulestackClientListCountriesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GlobalRulestackClientListCountriesResponse{}, err
-	}
-	resp, err := client.listCountriesHandleResponse(httpResp)
-	return resp, err
+	return client.listCountriesHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCountriesCreateRequest creates the ListCountries request.
@@ -566,8 +564,11 @@ func (client *GlobalRulestackClient) listCountriesCreateRequest(ctx context.Cont
 }
 
 // listCountriesHandleResponse handles the ListCountries response.
-func (client *GlobalRulestackClient) listCountriesHandleResponse(resp *http.Response) (GlobalRulestackClientListCountriesResponse, error) {
+func (client *GlobalRulestackClient) listCountriesHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListCountriesResponse, error) {
 	result := GlobalRulestackClientListCountriesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CountriesResponse); err != nil {
 		return GlobalRulestackClientListCountriesResponse{}, err
 	}
@@ -593,12 +594,7 @@ func (client *GlobalRulestackClient) ListFirewalls(ctx context.Context, globalRu
 	if err != nil {
 		return GlobalRulestackClientListFirewallsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GlobalRulestackClientListFirewallsResponse{}, err
-	}
-	resp, err := client.listFirewallsHandleResponse(httpResp)
-	return resp, err
+	return client.listFirewallsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listFirewallsCreateRequest creates the ListFirewalls request.
@@ -620,8 +616,11 @@ func (client *GlobalRulestackClient) listFirewallsCreateRequest(ctx context.Cont
 }
 
 // listFirewallsHandleResponse handles the ListFirewalls response.
-func (client *GlobalRulestackClient) listFirewallsHandleResponse(resp *http.Response) (GlobalRulestackClientListFirewallsResponse, error) {
+func (client *GlobalRulestackClient) listFirewallsHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListFirewallsResponse, error) {
 	result := GlobalRulestackClientListFirewallsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListFirewallsResponse); err != nil {
 		return GlobalRulestackClientListFirewallsResponse{}, err
 	}
@@ -647,12 +646,7 @@ func (client *GlobalRulestackClient) ListPredefinedURLCategories(ctx context.Con
 	if err != nil {
 		return GlobalRulestackClientListPredefinedURLCategoriesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GlobalRulestackClientListPredefinedURLCategoriesResponse{}, err
-	}
-	resp, err := client.listPredefinedURLCategoriesHandleResponse(httpResp)
-	return resp, err
+	return client.listPredefinedURLCategoriesHandleResponse(httpResp, http.StatusOK)
 }
 
 // listPredefinedURLCategoriesCreateRequest creates the ListPredefinedURLCategories request.
@@ -680,8 +674,11 @@ func (client *GlobalRulestackClient) listPredefinedURLCategoriesCreateRequest(ct
 }
 
 // listPredefinedURLCategoriesHandleResponse handles the ListPredefinedURLCategories response.
-func (client *GlobalRulestackClient) listPredefinedURLCategoriesHandleResponse(resp *http.Response) (GlobalRulestackClientListPredefinedURLCategoriesResponse, error) {
+func (client *GlobalRulestackClient) listPredefinedURLCategoriesHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListPredefinedURLCategoriesResponse, error) {
 	result := GlobalRulestackClientListPredefinedURLCategoriesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PredefinedURLCategoriesResponse); err != nil {
 		return GlobalRulestackClientListPredefinedURLCategoriesResponse{}, err
 	}
@@ -707,12 +704,7 @@ func (client *GlobalRulestackClient) ListSecurityServices(ctx context.Context, g
 	if err != nil {
 		return GlobalRulestackClientListSecurityServicesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GlobalRulestackClientListSecurityServicesResponse{}, err
-	}
-	resp, err := client.listSecurityServicesHandleResponse(httpResp)
-	return resp, err
+	return client.listSecurityServicesHandleResponse(httpResp, http.StatusOK)
 }
 
 // listSecurityServicesCreateRequest creates the ListSecurityServices request.
@@ -741,8 +733,11 @@ func (client *GlobalRulestackClient) listSecurityServicesCreateRequest(ctx conte
 }
 
 // listSecurityServicesHandleResponse handles the ListSecurityServices response.
-func (client *GlobalRulestackClient) listSecurityServicesHandleResponse(resp *http.Response) (GlobalRulestackClientListSecurityServicesResponse, error) {
+func (client *GlobalRulestackClient) listSecurityServicesHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListSecurityServicesResponse, error) {
 	result := GlobalRulestackClientListSecurityServicesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityServicesResponse); err != nil {
 		return GlobalRulestackClientListSecurityServicesResponse{}, err
 	}
@@ -768,8 +763,7 @@ func (client *GlobalRulestackClient) Revert(ctx context.Context, globalRulestack
 		return GlobalRulestackClientRevertResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return GlobalRulestackClientRevertResponse{}, err
+		return GlobalRulestackClientRevertResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return GlobalRulestackClientRevertResponse{}, nil
 }
@@ -810,12 +804,7 @@ func (client *GlobalRulestackClient) Update(ctx context.Context, globalRulestack
 	if err != nil {
 		return GlobalRulestackClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GlobalRulestackClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -841,8 +830,11 @@ func (client *GlobalRulestackClient) updateCreateRequest(ctx context.Context, gl
 }
 
 // updateHandleResponse handles the Update response.
-func (client *GlobalRulestackClient) updateHandleResponse(resp *http.Response) (GlobalRulestackClientUpdateResponse, error) {
+func (client *GlobalRulestackClient) updateHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientUpdateResponse, error) {
 	result := GlobalRulestackClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GlobalRulestackResource); err != nil {
 		return GlobalRulestackClientUpdateResponse{}, err
 	}

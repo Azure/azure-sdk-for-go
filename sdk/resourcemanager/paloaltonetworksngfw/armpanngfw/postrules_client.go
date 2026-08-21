@@ -79,8 +79,7 @@ func (client *PostRulesClient) createOrUpdate(ctx context.Context, globalRulesta
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -150,8 +149,7 @@ func (client *PostRulesClient) deleteOperation(ctx context.Context, globalRulest
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -196,12 +194,7 @@ func (client *PostRulesClient) Get(ctx context.Context, globalRulestackName stri
 	if err != nil {
 		return PostRulesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PostRulesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -227,8 +220,11 @@ func (client *PostRulesClient) getCreateRequest(ctx context.Context, globalRules
 }
 
 // getHandleResponse handles the Get response.
-func (client *PostRulesClient) getHandleResponse(resp *http.Response) (PostRulesClientGetResponse, error) {
+func (client *PostRulesClient) getHandleResponse(resp *http.Response, successCodes ...int) (PostRulesClientGetResponse, error) {
 	result := PostRulesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PostRulesResource); err != nil {
 		return PostRulesClientGetResponse{}, err
 	}
@@ -254,12 +250,7 @@ func (client *PostRulesClient) GetCounters(ctx context.Context, globalRulestackN
 	if err != nil {
 		return PostRulesClientGetCountersResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PostRulesClientGetCountersResponse{}, err
-	}
-	resp, err := client.getCountersHandleResponse(httpResp)
-	return resp, err
+	return client.getCountersHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCountersCreateRequest creates the GetCounters request.
@@ -288,8 +279,11 @@ func (client *PostRulesClient) getCountersCreateRequest(ctx context.Context, glo
 }
 
 // getCountersHandleResponse handles the GetCounters response.
-func (client *PostRulesClient) getCountersHandleResponse(resp *http.Response) (PostRulesClientGetCountersResponse, error) {
+func (client *PostRulesClient) getCountersHandleResponse(resp *http.Response, successCodes ...int) (PostRulesClientGetCountersResponse, error) {
 	result := PostRulesClientGetCountersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuleCounter); err != nil {
 		return PostRulesClientGetCountersResponse{}, err
 	}
@@ -310,39 +304,53 @@ func (client *PostRulesClient) NewListPager(globalRulestackName string, options 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, globalRulestackName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, globalRulestackName, nextLink, options)
 			if err != nil {
 				return PostRulesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PostRulesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *PostRulesClient) listCreateRequest(ctx context.Context, globalRulestackName string, _ *PostRulesClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/postRules"
-	if globalRulestackName == "" {
-		return nil, errors.New("parameter globalRulestackName cannot be empty")
+func (client *PostRulesClient) listCreateRequest(ctx context.Context, globalRulestackName string, nextLink string, _ *PostRulesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/postRules"
+		if globalRulestackName == "" {
+			return nil, errors.New("parameter globalRulestackName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260729Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260729Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PostRulesClient) listHandleResponse(resp *http.Response) (PostRulesClientListResponse, error) {
+func (client *PostRulesClient) listHandleResponse(resp *http.Response, successCodes ...int) (PostRulesClientListResponse, error) {
 	result := PostRulesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PostRulesResourceListResult); err != nil {
 		return PostRulesClientListResponse{}, err
 	}
@@ -370,8 +378,7 @@ func (client *PostRulesClient) RefreshCounters(ctx context.Context, globalRulest
 		return PostRulesClientRefreshCountersResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return PostRulesClientRefreshCountersResponse{}, err
+		return PostRulesClientRefreshCountersResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return PostRulesClientRefreshCountersResponse{}, nil
 }
@@ -419,12 +426,7 @@ func (client *PostRulesClient) ResetCounters(ctx context.Context, globalRulestac
 	if err != nil {
 		return PostRulesClientResetCountersResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PostRulesClientResetCountersResponse{}, err
-	}
-	resp, err := client.resetCountersHandleResponse(httpResp)
-	return resp, err
+	return client.resetCountersHandleResponse(httpResp, http.StatusOK)
 }
 
 // resetCountersCreateRequest creates the ResetCounters request.
@@ -453,8 +455,11 @@ func (client *PostRulesClient) resetCountersCreateRequest(ctx context.Context, g
 }
 
 // resetCountersHandleResponse handles the ResetCounters response.
-func (client *PostRulesClient) resetCountersHandleResponse(resp *http.Response) (PostRulesClientResetCountersResponse, error) {
+func (client *PostRulesClient) resetCountersHandleResponse(resp *http.Response, successCodes ...int) (PostRulesClientResetCountersResponse, error) {
 	result := PostRulesClientResetCountersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuleCounterReset); err != nil {
 		return PostRulesClientResetCountersResponse{}, err
 	}

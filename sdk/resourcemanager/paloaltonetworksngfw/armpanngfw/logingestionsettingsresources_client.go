@@ -64,12 +64,7 @@ func (client *LogIngestionSettingsResourcesClient) CreateOrUpdate(ctx context.Co
 	if err != nil {
 		return LogIngestionSettingsResourcesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return LogIngestionSettingsResourcesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -103,8 +98,11 @@ func (client *LogIngestionSettingsResourcesClient) createOrUpdateCreateRequest(c
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *LogIngestionSettingsResourcesClient) createOrUpdateHandleResponse(resp *http.Response) (LogIngestionSettingsResourcesClientCreateOrUpdateResponse, error) {
+func (client *LogIngestionSettingsResourcesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (LogIngestionSettingsResourcesClientCreateOrUpdateResponse, error) {
 	result := LogIngestionSettingsResourcesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogIngestionSettingsResource); err != nil {
 		return LogIngestionSettingsResourcesClientCreateOrUpdateResponse{}, err
 	}
@@ -133,8 +131,7 @@ func (client *LogIngestionSettingsResourcesClient) Delete(ctx context.Context, r
 		return LogIngestionSettingsResourcesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return LogIngestionSettingsResourcesClientDeleteResponse{}, err
+		return LogIngestionSettingsResourcesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return LogIngestionSettingsResourcesClientDeleteResponse{}, nil
 }
@@ -185,12 +182,7 @@ func (client *LogIngestionSettingsResourcesClient) Get(ctx context.Context, reso
 	if err != nil {
 		return LogIngestionSettingsResourcesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LogIngestionSettingsResourcesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -220,8 +212,11 @@ func (client *LogIngestionSettingsResourcesClient) getCreateRequest(ctx context.
 }
 
 // getHandleResponse handles the Get response.
-func (client *LogIngestionSettingsResourcesClient) getHandleResponse(resp *http.Response) (LogIngestionSettingsResourcesClientGetResponse, error) {
+func (client *LogIngestionSettingsResourcesClient) getHandleResponse(resp *http.Response, successCodes ...int) (LogIngestionSettingsResourcesClientGetResponse, error) {
 	result := LogIngestionSettingsResourcesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogIngestionSettingsResource); err != nil {
 		return LogIngestionSettingsResourcesClientGetResponse{}, err
 	}
@@ -245,47 +240,61 @@ func (client *LogIngestionSettingsResourcesClient) NewListByFirewallPager(resour
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByFirewallCreateRequest(ctx, resourceGroupName, firewallName, options)
-			}, nil)
+			req, err := client.listByFirewallCreateRequest(ctx, resourceGroupName, firewallName, nextLink, options)
 			if err != nil {
 				return LogIngestionSettingsResourcesClientListByFirewallResponse{}, err
 			}
-			return client.listByFirewallHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LogIngestionSettingsResourcesClientListByFirewallResponse{}, err
+			}
+			return client.listByFirewallHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByFirewallCreateRequest creates the ListByFirewall request.
-func (client *LogIngestionSettingsResourcesClient) listByFirewallCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, _ *LogIngestionSettingsResourcesClientListByFirewallOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}/logIngestionSettings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LogIngestionSettingsResourcesClient) listByFirewallCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, nextLink string, _ *LogIngestionSettingsResourcesClientListByFirewallOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}/logIngestionSettings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if firewallName == "" {
+			return nil, errors.New("parameter firewallName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{firewallName}", url.PathEscape(firewallName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if firewallName == "" {
-		return nil, errors.New("parameter firewallName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{firewallName}", url.PathEscape(firewallName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260729Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260729Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByFirewallHandleResponse handles the ListByFirewall response.
-func (client *LogIngestionSettingsResourcesClient) listByFirewallHandleResponse(resp *http.Response) (LogIngestionSettingsResourcesClientListByFirewallResponse, error) {
+func (client *LogIngestionSettingsResourcesClient) listByFirewallHandleResponse(resp *http.Response, successCodes ...int) (LogIngestionSettingsResourcesClientListByFirewallResponse, error) {
 	result := LogIngestionSettingsResourcesClientListByFirewallResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogIngestionSettingsResourceListResult); err != nil {
 		return LogIngestionSettingsResourcesClientListByFirewallResponse{}, err
 	}

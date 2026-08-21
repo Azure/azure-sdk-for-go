@@ -83,8 +83,7 @@ func (client *PrefixListLocalRulestackClient) createOrUpdate(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -164,8 +163,7 @@ func (client *PrefixListLocalRulestackClient) deleteOperation(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -220,12 +218,7 @@ func (client *PrefixListLocalRulestackClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return PrefixListLocalRulestackClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrefixListLocalRulestackClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -259,8 +252,11 @@ func (client *PrefixListLocalRulestackClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrefixListLocalRulestackClient) getHandleResponse(resp *http.Response) (PrefixListLocalRulestackClientGetResponse, error) {
+func (client *PrefixListLocalRulestackClient) getHandleResponse(resp *http.Response, successCodes ...int) (PrefixListLocalRulestackClientGetResponse, error) {
 	result := PrefixListLocalRulestackClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrefixListResource); err != nil {
 		return PrefixListLocalRulestackClientGetResponse{}, err
 	}
@@ -283,47 +279,61 @@ func (client *PrefixListLocalRulestackClient) NewListByLocalRulestacksPager(reso
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByLocalRulestacksCreateRequest(ctx, resourceGroupName, localRulestackName, options)
-			}, nil)
+			req, err := client.listByLocalRulestacksCreateRequest(ctx, resourceGroupName, localRulestackName, nextLink, options)
 			if err != nil {
 				return PrefixListLocalRulestackClientListByLocalRulestacksResponse{}, err
 			}
-			return client.listByLocalRulestacksHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrefixListLocalRulestackClientListByLocalRulestacksResponse{}, err
+			}
+			return client.listByLocalRulestacksHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByLocalRulestacksCreateRequest creates the ListByLocalRulestacks request.
-func (client *PrefixListLocalRulestackClient) listByLocalRulestacksCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, _ *PrefixListLocalRulestackClientListByLocalRulestacksOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/prefixlists"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PrefixListLocalRulestackClient) listByLocalRulestacksCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, nextLink string, _ *PrefixListLocalRulestackClientListByLocalRulestacksOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/prefixlists"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if localRulestackName == "" {
+			return nil, errors.New("parameter localRulestackName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if localRulestackName == "" {
-		return nil, errors.New("parameter localRulestackName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{localRulestackName}", url.PathEscape(localRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260729Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260729Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByLocalRulestacksHandleResponse handles the ListByLocalRulestacks response.
-func (client *PrefixListLocalRulestackClient) listByLocalRulestacksHandleResponse(resp *http.Response) (PrefixListLocalRulestackClientListByLocalRulestacksResponse, error) {
+func (client *PrefixListLocalRulestackClient) listByLocalRulestacksHandleResponse(resp *http.Response, successCodes ...int) (PrefixListLocalRulestackClientListByLocalRulestacksResponse, error) {
 	result := PrefixListLocalRulestackClientListByLocalRulestacksResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrefixListResourceListResult); err != nil {
 		return PrefixListLocalRulestackClientListByLocalRulestacksResponse{}, err
 	}

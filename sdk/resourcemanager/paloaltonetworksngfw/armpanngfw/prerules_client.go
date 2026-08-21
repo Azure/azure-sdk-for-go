@@ -79,8 +79,7 @@ func (client *PreRulesClient) createOrUpdate(ctx context.Context, globalRulestac
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -150,8 +149,7 @@ func (client *PreRulesClient) deleteOperation(ctx context.Context, globalRulesta
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -196,12 +194,7 @@ func (client *PreRulesClient) Get(ctx context.Context, globalRulestackName strin
 	if err != nil {
 		return PreRulesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PreRulesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -227,8 +220,11 @@ func (client *PreRulesClient) getCreateRequest(ctx context.Context, globalRulest
 }
 
 // getHandleResponse handles the Get response.
-func (client *PreRulesClient) getHandleResponse(resp *http.Response) (PreRulesClientGetResponse, error) {
+func (client *PreRulesClient) getHandleResponse(resp *http.Response, successCodes ...int) (PreRulesClientGetResponse, error) {
 	result := PreRulesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PreRulesResource); err != nil {
 		return PreRulesClientGetResponse{}, err
 	}
@@ -254,12 +250,7 @@ func (client *PreRulesClient) GetCounters(ctx context.Context, globalRulestackNa
 	if err != nil {
 		return PreRulesClientGetCountersResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PreRulesClientGetCountersResponse{}, err
-	}
-	resp, err := client.getCountersHandleResponse(httpResp)
-	return resp, err
+	return client.getCountersHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCountersCreateRequest creates the GetCounters request.
@@ -288,8 +279,11 @@ func (client *PreRulesClient) getCountersCreateRequest(ctx context.Context, glob
 }
 
 // getCountersHandleResponse handles the GetCounters response.
-func (client *PreRulesClient) getCountersHandleResponse(resp *http.Response) (PreRulesClientGetCountersResponse, error) {
+func (client *PreRulesClient) getCountersHandleResponse(resp *http.Response, successCodes ...int) (PreRulesClientGetCountersResponse, error) {
 	result := PreRulesClientGetCountersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuleCounter); err != nil {
 		return PreRulesClientGetCountersResponse{}, err
 	}
@@ -310,39 +304,53 @@ func (client *PreRulesClient) NewListPager(globalRulestackName string, options *
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, globalRulestackName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, globalRulestackName, nextLink, options)
 			if err != nil {
 				return PreRulesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PreRulesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *PreRulesClient) listCreateRequest(ctx context.Context, globalRulestackName string, _ *PreRulesClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/preRules"
-	if globalRulestackName == "" {
-		return nil, errors.New("parameter globalRulestackName cannot be empty")
+func (client *PreRulesClient) listCreateRequest(ctx context.Context, globalRulestackName string, nextLink string, _ *PreRulesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/preRules"
+		if globalRulestackName == "" {
+			return nil, errors.New("parameter globalRulestackName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260729Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260729Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PreRulesClient) listHandleResponse(resp *http.Response) (PreRulesClientListResponse, error) {
+func (client *PreRulesClient) listHandleResponse(resp *http.Response, successCodes ...int) (PreRulesClientListResponse, error) {
 	result := PreRulesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PreRulesResourceListResult); err != nil {
 		return PreRulesClientListResponse{}, err
 	}
@@ -370,8 +378,7 @@ func (client *PreRulesClient) RefreshCounters(ctx context.Context, globalRulesta
 		return PreRulesClientRefreshCountersResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return PreRulesClientRefreshCountersResponse{}, err
+		return PreRulesClientRefreshCountersResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return PreRulesClientRefreshCountersResponse{}, nil
 }
@@ -419,12 +426,7 @@ func (client *PreRulesClient) ResetCounters(ctx context.Context, globalRulestack
 	if err != nil {
 		return PreRulesClientResetCountersResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PreRulesClientResetCountersResponse{}, err
-	}
-	resp, err := client.resetCountersHandleResponse(httpResp)
-	return resp, err
+	return client.resetCountersHandleResponse(httpResp, http.StatusOK)
 }
 
 // resetCountersCreateRequest creates the ResetCounters request.
@@ -453,8 +455,11 @@ func (client *PreRulesClient) resetCountersCreateRequest(ctx context.Context, gl
 }
 
 // resetCountersHandleResponse handles the ResetCounters response.
-func (client *PreRulesClient) resetCountersHandleResponse(resp *http.Response) (PreRulesClientResetCountersResponse, error) {
+func (client *PreRulesClient) resetCountersHandleResponse(resp *http.Response, successCodes ...int) (PreRulesClientResetCountersResponse, error) {
 	result := PreRulesClientResetCountersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RuleCounterReset); err != nil {
 		return PreRulesClientResetCountersResponse{}, err
 	}

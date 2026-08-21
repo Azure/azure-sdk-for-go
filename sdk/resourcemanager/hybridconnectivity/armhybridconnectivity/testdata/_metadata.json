@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.HybridConnectivity": "2024-12-01"
+    "Microsoft.HybridConnectivity": "2027-01-01"
   },
   "emitterVersion": "0.16.0"
 }

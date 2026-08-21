@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2026-08-12)
+## 2.0.0 (2026-08-21)
 ### Breaking Changes
 
 - Type of `PlanData.BillingCycle` has been changed from `*BillingCycle` to `*string`

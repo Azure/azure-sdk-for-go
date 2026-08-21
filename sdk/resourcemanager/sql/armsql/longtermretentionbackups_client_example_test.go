@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/ChangeLongTermRetentionBackupAccessTier.json
+// Generated from example definition: 2025-08-01-preview/ChangeLongTermRetentionBackupAccessTier.json
 func ExampleLongTermRetentionBackupsClient_BeginChangeAccessTier() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleLongTermRetentionBackupsClient_BeginChangeAccessTier() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedChangeLongTermRetentionBackupAccessTier.json
+// Generated from example definition: 2025-08-01-preview/ResourceGroupBasedChangeLongTermRetentionBackupAccessTier.json
 func ExampleLongTermRetentionBackupsClient_BeginChangeAccessTierByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleLongTermRetentionBackupsClient_BeginChangeAccessTierByResourceGroup(
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/LongTermRetentionBackupCopy.json
+// Generated from example definition: 2025-08-01-preview/LongTermRetentionBackupCopy.json
 func ExampleLongTermRetentionBackupsClient_BeginCopy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleLongTermRetentionBackupsClient_BeginCopy() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedLongTermRetentionBackupCopy.json
+// Generated from example definition: 2025-08-01-preview/ResourceGroupBasedLongTermRetentionBackupCopy.json
 func ExampleLongTermRetentionBackupsClient_BeginCopyByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleLongTermRetentionBackupsClient_BeginCopyByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/LongTermRetentionBackupDelete.json
+// Generated from example definition: 2025-08-01-preview/LongTermRetentionBackupDelete.json
 func ExampleLongTermRetentionBackupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -211,7 +211,7 @@ func ExampleLongTermRetentionBackupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedLongTermRetentionBackupDelete.json
+// Generated from example definition: 2025-08-01-preview/ResourceGroupBasedLongTermRetentionBackupDelete.json
 func ExampleLongTermRetentionBackupsClient_BeginDeleteByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExampleLongTermRetentionBackupsClient_BeginDeleteByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/LongTermRetentionBackupGet.json
+// Generated from example definition: 2025-08-01-preview/LongTermRetentionBackupGet.json
 func ExampleLongTermRetentionBackupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,7 +276,7 @@ func ExampleLongTermRetentionBackupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedLongTermRetentionBackupGet.json
+// Generated from example definition: 2025-08-01-preview/ResourceGroupBasedLongTermRetentionBackupGet.json
 func ExampleLongTermRetentionBackupsClient_GetByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,8 +315,8 @@ func ExampleLongTermRetentionBackupsClient_GetByResourceGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/LongTermRetentionBackupListByDatabase.json
-func ExampleLongTermRetentionBackupsClient_NewListByDatabasePager() {
+// Generated from example definition: 2025-08-01-preview/LongTermRetentionBackupListByDatabase.json
+func ExampleLongTermRetentionBackupsClient_NewListByDatabasePager_getAllLongTermRetentionBackupsUnderTheDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -381,8 +381,75 @@ func ExampleLongTermRetentionBackupsClient_NewListByDatabasePager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/LongTermRetentionBackupListByLocation.json
-func ExampleLongTermRetentionBackupsClient_NewListByLocationPager() {
+// Generated from example definition: 2025-08-01-preview/LongTermRetentionBackupListByDatabaseWithPagination.json
+func ExampleLongTermRetentionBackupsClient_NewListByDatabasePager_getLongTermRetentionBackupsUnderTheDatabaseWithPagination() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewLongTermRetentionBackupsClient().NewListByDatabasePager("japaneast", "testserver", "testDatabase", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsql.LongTermRetentionBackupsClientListByDatabaseResponse{
+		// 	LongTermRetentionBackupListResult: armsql.LongTermRetentionBackupListResult{
+		// 		Value: []*armsql.LongTermRetentionBackup{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionServers/testserver/longTermRetentionDatabases/testDatabase/longTermRetentionBackups/55555555-6666-7777-8888-999999999999;131637960820000000;Hot"),
+		// 				Name: to.Ptr("55555555-6666-7777-8888-999999999999;131637960820000000;Hot"),
+		// 				Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionServers/longTermRetentionDatabases/longTermRetentionBackups"),
+		// 				Properties: &armsql.LongTermRetentionBackupProperties{
+		// 					ServerName: to.Ptr("testserver"),
+		// 					ServerCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
+		// 					DatabaseName: to.Ptr("testDatabase"),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 23, 8, 0, 0, 0, time.UTC)),
+		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					IsBackupImmutable: to.Ptr(true),
+		// 					TimeBasedImmutability: to.Ptr(armsql.TimeBasedImmutabilityDisabled),
+		// 					TimeBasedImmutabilityMode: to.Ptr(armsql.TimeBasedImmutabilityModeUnlocked),
+		// 					LegalHoldImmutability: to.Ptr(armsql.SetLegalHoldImmutabilityEnabled),
+		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionServers/testserver/longTermRetentionDatabases/testDatabase/longTermRetentionBackups/55555555-6666-7777-8888-999999999999;131677960820000000;Hot"),
+		// 				Name: to.Ptr("55555555-6666-7777-8888-999999999999;131677960820000000;Hot"),
+		// 				Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionServers/longTermRetentionDatabases/longTermRetentionBackups"),
+		// 				Properties: &armsql.LongTermRetentionBackupProperties{
+		// 					ServerName: to.Ptr("testserver"),
+		// 					ServerCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
+		// 					DatabaseName: to.Ptr("testDatabase"),
+		// 					DatabaseDeletionTime: to.Ptr(time.Date(2017, time.September, 7, 8, 0, 0, 0, time.UTC)),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.September, 6, 8, 0, 0, 0, time.UTC)),
+		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					IsBackupImmutable: to.Ptr(true),
+		// 					TimeBasedImmutability: to.Ptr(armsql.TimeBasedImmutabilityEnabled),
+		// 					TimeBasedImmutabilityMode: to.Ptr(armsql.TimeBasedImmutabilityModeUnlocked),
+		// 					LegalHoldImmutability: to.Ptr(armsql.SetLegalHoldImmutabilityDisabled),
+		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionServers/testserver/longTermRetentionDatabases/testDatabase/longTermRetentionBackups?api-version=2025-08-01-preview&$top=2&$skipToken=eyJEYXRhYmFzZUlkIjoiNTU1NTU1NTUtNjY2Ni03Nzc3LTg4ODgtOTk5OTk5OTk5OTk5IiwiQmFja3VwVGltZSI6IjIwMTctMDktMDZUMDg6MDA6MDBaIiwiQmFja3VwU3RvcmFnZUFjY2Vzc1RpZXIiOiJIb3QifQ%3D%3D"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01-preview/LongTermRetentionBackupListByLocation.json
+func ExampleLongTermRetentionBackupsClient_NewListByLocationPager_getAllLongTermRetentionBackupsUnderTheLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -446,8 +513,74 @@ func ExampleLongTermRetentionBackupsClient_NewListByLocationPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedLongTermRetentionBackupListByDatabase.json
-func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupDatabasePager() {
+// Generated from example definition: 2025-08-01-preview/LongTermRetentionBackupListByLocationWithPagination.json
+func ExampleLongTermRetentionBackupsClient_NewListByLocationPager_getLongTermRetentionBackupsUnderTheLocationWithPagination() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewLongTermRetentionBackupsClient().NewListByLocationPager("japaneast", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsql.LongTermRetentionBackupsClientListByLocationResponse{
+		// 	LongTermRetentionBackupListResult: armsql.LongTermRetentionBackupListResult{
+		// 		Value: []*armsql.LongTermRetentionBackup{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionServers/testserver1/longTermRetentionDatabases/testDatabase1/longTermRetentionBackups/55555555-6666-7777-8888-999999999999;131637960820000000;Hot"),
+		// 				Name: to.Ptr("55555555-6666-7777-8888-999999999999;131637960820000000;Hot"),
+		// 				Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionServers/longTermRetentionDatabases/longTermRetentionBackups"),
+		// 				Properties: &armsql.LongTermRetentionBackupProperties{
+		// 					ServerName: to.Ptr("testserver1"),
+		// 					ServerCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
+		// 					DatabaseName: to.Ptr("testDatabase1"),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 23, 8, 0, 0, 0, time.UTC)),
+		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					IsBackupImmutable: to.Ptr(true),
+		// 					TimeBasedImmutability: to.Ptr(armsql.TimeBasedImmutabilityEnabled),
+		// 					TimeBasedImmutabilityMode: to.Ptr(armsql.TimeBasedImmutabilityModeLocked),
+		// 					LegalHoldImmutability: to.Ptr(armsql.SetLegalHoldImmutabilityDisabled),
+		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionServers/testserver2/longTermRetentionDatabases/testDatabase2/longTermRetentionBackups/12341234-1234-1234-1234-123123123123;131657960820000000;Hot"),
+		// 				Name: to.Ptr("12341234-1234-1234-1234-123123123123;131657960820000000;Hot"),
+		// 				Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionServers/longTermRetentionDatabases/longTermRetentionBackups"),
+		// 				Properties: &armsql.LongTermRetentionBackupProperties{
+		// 					ServerName: to.Ptr("testserver2"),
+		// 					ServerCreateTime: to.Ptr(time.Date(2017, time.April, 10, 8, 0, 0, 0, time.UTC)),
+		// 					DatabaseName: to.Ptr("testDatabase2"),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 30, 8, 0, 0, 0, time.UTC)),
+		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					IsBackupImmutable: to.Ptr(true),
+		// 					TimeBasedImmutability: to.Ptr(armsql.TimeBasedImmutabilityEnabled),
+		// 					TimeBasedImmutabilityMode: to.Ptr(armsql.TimeBasedImmutabilityModeLocked),
+		// 					LegalHoldImmutability: to.Ptr(armsql.SetLegalHoldImmutabilityDisabled),
+		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackups?api-version=2025-08-01-preview&$top=2&$skipToken=eyJEYXRhYmFzZUlkIjoiMTIzNDEyMzQtMTIzNC0xMjM0LTEyMzQtMTIzMTIzMTIzMTIzIiwiQmFja3VwVGltZSI6IjIwMTctMDgtMzBUMDg6MDA6MDBaIiwiQmFja3VwU3RvcmFnZUFjY2Vzc1RpZXIiOiJIb3QifQ%3D%3D"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01-preview/ResourceGroupBasedLongTermRetentionBackupListByDatabase.json
+func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupDatabasePager_getAllLongTermRetentionBackupsUnderTheDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -511,8 +644,74 @@ func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupDatabasePager()
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedLongTermRetentionBackupListByLocation.json
-func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupLocationPager() {
+// Generated from example definition: 2025-08-01-preview/ResourceGroupBasedLongTermRetentionBackupListByDatabaseWithPagination.json
+func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupDatabasePager_getLongTermRetentionBackupsUnderTheDatabaseBasedOnResourceGroupWithPagination() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewLongTermRetentionBackupsClient().NewListByResourceGroupDatabasePager("testResourceGroup", "japaneast", "testserver", "testDatabase", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsql.LongTermRetentionBackupsClientListByResourceGroupDatabaseResponse{
+		// 	LongTermRetentionBackupListResult: armsql.LongTermRetentionBackupListResult{
+		// 		Value: []*armsql.LongTermRetentionBackup{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japaneast/longTermRetentionServers/testserver/longTermRetentionDatabases/testDatabase/longTermRetentionBackups/55555555-6666-7777-8888-999999999999;131637960820000000;Hot"),
+		// 				Name: to.Ptr("55555555-6666-7777-8888-999999999999;131637960820000000;Hot"),
+		// 				Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionServers/longTermRetentionDatabases/longTermRetentionBackups"),
+		// 				Properties: &armsql.LongTermRetentionBackupProperties{
+		// 					ServerName: to.Ptr("testserver"),
+		// 					ServerCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
+		// 					DatabaseName: to.Ptr("testDatabase"),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 23, 8, 0, 0, 0, time.UTC)),
+		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					IsBackupImmutable: to.Ptr(true),
+		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
+		// 					TimeBasedImmutability: to.Ptr(armsql.TimeBasedImmutabilityEnabled),
+		// 					TimeBasedImmutabilityMode: to.Ptr(armsql.TimeBasedImmutabilityModeLocked),
+		// 					LegalHoldImmutability: to.Ptr(armsql.SetLegalHoldImmutabilityDisabled),
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japaneast/longTermRetentionServers/testserver/longTermRetentionDatabases/testDatabase/longTermRetentionBackups/55555555-6666-7777-8888-999999999999;131657960820000000;Hot"),
+		// 				Name: to.Ptr("55555555-6666-7777-8888-999999999999;131657960820000000;Hot"),
+		// 				Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionServers/longTermRetentionDatabases/longTermRetentionBackups"),
+		// 				Properties: &armsql.LongTermRetentionBackupProperties{
+		// 					ServerName: to.Ptr("testserver"),
+		// 					ServerCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
+		// 					DatabaseName: to.Ptr("testDatabase"),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 30, 8, 0, 0, 0, time.UTC)),
+		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					IsBackupImmutable: to.Ptr(true),
+		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
+		// 					TimeBasedImmutability: to.Ptr(armsql.TimeBasedImmutabilityEnabled),
+		// 					TimeBasedImmutabilityMode: to.Ptr(armsql.TimeBasedImmutabilityModeLocked),
+		// 					LegalHoldImmutability: to.Ptr(armsql.SetLegalHoldImmutabilityDisabled),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japaneast/longTermRetentionServers/testserver/longTermRetentionDatabases/testDatabase/longTermRetentionBackups?api-version=2025-08-01-preview&$top=2&$skipToken=eyJEYXRhYmFzZUlkIjoiNTU1NTU1NTUtNjY2Ni03Nzc3LTg4ODgtOTk5OTk5OTk5OTk5IiwiQmFja3VwVGltZSI6IjIwMTctMDgtMzBUMDg6MDA6MDBaIiwiQmFja3VwU3RvcmFnZUFjY2Vzc1RpZXIiOiJIb3QifQ%3D%3D"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01-preview/ResourceGroupBasedLongTermRetentionBackupListByLocation.json
+func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupLocationPager_getAllLongTermRetentionBackupsUnderTheLocationBasedOnResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -576,8 +775,74 @@ func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupLocationPager()
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedLongTermRetentionBackupListByServer.json
-func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupServerPager() {
+// Generated from example definition: 2025-08-01-preview/ResourceGroupBasedLongTermRetentionBackupListByLocationWithPagination.json
+func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupLocationPager_getLongTermRetentionBackupsUnderTheLocationBasedOnResourceGroupWithPagination() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewLongTermRetentionBackupsClient().NewListByResourceGroupLocationPager("testResourceGroup", "japaneast", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsql.LongTermRetentionBackupsClientListByResourceGroupLocationResponse{
+		// 	LongTermRetentionBackupListResult: armsql.LongTermRetentionBackupListResult{
+		// 		Value: []*armsql.LongTermRetentionBackup{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japaneast/longTermRetentionServers/testserver1/longTermRetentionDatabases/testDatabase1/longTermRetentionBackups/55555555-6666-7777-8888-999999999999;131637960820000000;Hot"),
+		// 				Name: to.Ptr("55555555-6666-7777-8888-999999999999;131637960820000000;Hot"),
+		// 				Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionServers/longTermRetentionDatabases/longTermRetentionBackups"),
+		// 				Properties: &armsql.LongTermRetentionBackupProperties{
+		// 					ServerName: to.Ptr("testserver1"),
+		// 					ServerCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
+		// 					DatabaseName: to.Ptr("testDatabase1"),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 23, 8, 0, 0, 0, time.UTC)),
+		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
+		// 					IsBackupImmutable: to.Ptr(true),
+		// 					TimeBasedImmutability: to.Ptr(armsql.TimeBasedImmutabilityEnabled),
+		// 					TimeBasedImmutabilityMode: to.Ptr(armsql.TimeBasedImmutabilityModeLocked),
+		// 					LegalHoldImmutability: to.Ptr(armsql.SetLegalHoldImmutabilityDisabled),
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japaneast/longTermRetentionServers/testserver2/longTermRetentionDatabases/testDatabase2/longTermRetentionBackups/12341234-1234-1234-1234-123123123123;131657960820000000;Hot"),
+		// 				Name: to.Ptr("12341234-1234-1234-1234-123123123123;131657960820000000;Hot"),
+		// 				Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionServers/longTermRetentionDatabases/longTermRetentionBackups"),
+		// 				Properties: &armsql.LongTermRetentionBackupProperties{
+		// 					ServerName: to.Ptr("testserver2"),
+		// 					ServerCreateTime: to.Ptr(time.Date(2017, time.April, 10, 8, 0, 0, 0, time.UTC)),
+		// 					DatabaseName: to.Ptr("testDatabase2"),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 30, 8, 0, 0, 0, time.UTC)),
+		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
+		// 					IsBackupImmutable: to.Ptr(true),
+		// 					TimeBasedImmutability: to.Ptr(armsql.TimeBasedImmutabilityEnabled),
+		// 					TimeBasedImmutabilityMode: to.Ptr(armsql.TimeBasedImmutabilityModeLocked),
+		// 					LegalHoldImmutability: to.Ptr(armsql.SetLegalHoldImmutabilityDisabled),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japaneast/longTermRetentionBackups?api-version=2025-08-01-preview&$top=2&$skipToken=eyJEYXRhYmFzZUlkIjoiMTIzNDEyMzQtMTIzNC0xMjM0LTEyMzQtMTIzMTIzMTIzMTIzIiwiQmFja3VwVGltZSI6IjIwMTctMDgtMzBUMDg6MDA6MDBaIiwiQmFja3VwU3RvcmFnZUFjY2Vzc1RpZXIiOiJIb3QifQ%3D%3D"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01-preview/ResourceGroupBasedLongTermRetentionBackupListByServer.json
+func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupServerPager_getAllLongTermRetentionBackupsUnderTheServerBasedOnResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -641,8 +906,74 @@ func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupServerPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/LongTermRetentionBackupListByServer.json
-func ExampleLongTermRetentionBackupsClient_NewListByServerPager() {
+// Generated from example definition: 2025-08-01-preview/ResourceGroupBasedLongTermRetentionBackupListByServerWithPagination.json
+func ExampleLongTermRetentionBackupsClient_NewListByResourceGroupServerPager_getLongTermRetentionBackupsUnderTheServerBasedOnResourceGroupWithPagination() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewLongTermRetentionBackupsClient().NewListByResourceGroupServerPager("testResourceGroup", "japaneast", "testserver", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsql.LongTermRetentionBackupsClientListByResourceGroupServerResponse{
+		// 	LongTermRetentionBackupListResult: armsql.LongTermRetentionBackupListResult{
+		// 		Value: []*armsql.LongTermRetentionBackup{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japaneast/longTermRetentionServers/testserver/longTermRetentionDatabases/testDatabase1/longTermRetentionBackups/55555555-6666-7777-8888-999999999999;131637960820000000;Hot"),
+		// 				Name: to.Ptr("55555555-6666-7777-8888-999999999999;131637960820000000;Hot"),
+		// 				Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionServers/longTermRetentionDatabases/longTermRetentionBackups"),
+		// 				Properties: &armsql.LongTermRetentionBackupProperties{
+		// 					ServerName: to.Ptr("testserver"),
+		// 					ServerCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
+		// 					DatabaseName: to.Ptr("testDatabase1"),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 23, 8, 0, 0, 0, time.UTC)),
+		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
+		// 					IsBackupImmutable: to.Ptr(true),
+		// 					TimeBasedImmutability: to.Ptr(armsql.TimeBasedImmutabilityEnabled),
+		// 					TimeBasedImmutabilityMode: to.Ptr(armsql.TimeBasedImmutabilityModeLocked),
+		// 					LegalHoldImmutability: to.Ptr(armsql.SetLegalHoldImmutabilityDisabled),
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japaneast/longTermRetentionServers/testserver/longTermRetentionDatabases/testDatabase2/longTermRetentionBackups/12341234-1234-1234-1234-123123123123;131657960820000000;Hot"),
+		// 				Name: to.Ptr("12341234-1234-1234-1234-123123123123;131657960820000000;Hot"),
+		// 				Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionServers/longTermRetentionDatabases/longTermRetentionBackups"),
+		// 				Properties: &armsql.LongTermRetentionBackupProperties{
+		// 					ServerName: to.Ptr("testserver"),
+		// 					ServerCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
+		// 					DatabaseName: to.Ptr("testDatabase2"),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 30, 8, 0, 0, 0, time.UTC)),
+		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
+		// 					IsBackupImmutable: to.Ptr(true),
+		// 					TimeBasedImmutability: to.Ptr(armsql.TimeBasedImmutabilityEnabled),
+		// 					TimeBasedImmutabilityMode: to.Ptr(armsql.TimeBasedImmutabilityModeLocked),
+		// 					LegalHoldImmutability: to.Ptr(armsql.SetLegalHoldImmutabilityDisabled),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testResourceGroup/providers/Microsoft.Sql/locations/japaneast/longTermRetentionServers/testserver/longTermRetentionBackups?api-version=2025-08-01-preview&$top=2&$skipToken=eyJEYXRhYmFzZUlkIjoiMTIzNDEyMzQtMTIzNC0xMjM0LTEyMzQtMTIzMTIzMTIzMTIzIiwiQmFja3VwVGltZSI6IjIwMTctMDgtMzBUMDg6MDA6MDBaIiwiQmFja3VwU3RvcmFnZUFjY2Vzc1RpZXIiOiJIb3QifQ%3D%3D"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01-preview/LongTermRetentionBackupListByServer.json
+func ExampleLongTermRetentionBackupsClient_NewListByServerPager_getAllLongTermRetentionBackupsUnderTheServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -706,7 +1037,73 @@ func ExampleLongTermRetentionBackupsClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/LockTimeBasedImmutabilityLongTermRetentionBackup.json
+// Generated from example definition: 2025-08-01-preview/LongTermRetentionBackupListByServerWithPagination.json
+func ExampleLongTermRetentionBackupsClient_NewListByServerPager_getLongTermRetentionBackupsUnderTheServerWithPagination() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewLongTermRetentionBackupsClient().NewListByServerPager("japaneast", "testserver", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsql.LongTermRetentionBackupsClientListByServerResponse{
+		// 	LongTermRetentionBackupListResult: armsql.LongTermRetentionBackupListResult{
+		// 		Value: []*armsql.LongTermRetentionBackup{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionServers/testserver/longTermRetentionDatabases/testDatabase1/longTermRetentionBackups/55555555-6666-7777-8888-999999999999;131637960820000000;Hot"),
+		// 				Name: to.Ptr("55555555-6666-7777-8888-999999999999;131637960820000000;Hot"),
+		// 				Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionServers/longTermRetentionDatabases/longTermRetentionBackups"),
+		// 				Properties: &armsql.LongTermRetentionBackupProperties{
+		// 					ServerName: to.Ptr("testserver"),
+		// 					ServerCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
+		// 					DatabaseName: to.Ptr("testDatabase1"),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 23, 8, 0, 0, 0, time.UTC)),
+		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					IsBackupImmutable: to.Ptr(true),
+		// 					TimeBasedImmutability: to.Ptr(armsql.TimeBasedImmutabilityEnabled),
+		// 					TimeBasedImmutabilityMode: to.Ptr(armsql.TimeBasedImmutabilityModeLocked),
+		// 					LegalHoldImmutability: to.Ptr(armsql.SetLegalHoldImmutabilityDisabled),
+		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionServers/testserver/longTermRetentionDatabases/testDatabase2/longTermRetentionBackups/12341234-1234-1234-1234-123123123123;131657960820000000;Hot"),
+		// 				Name: to.Ptr("12341234-1234-1234-1234-123123123123;131657960820000000;Hot"),
+		// 				Type: to.Ptr("Microsoft.Sql/locations/longTermRetentionServers/longTermRetentionDatabases/longTermRetentionBackups"),
+		// 				Properties: &armsql.LongTermRetentionBackupProperties{
+		// 					ServerName: to.Ptr("testserver"),
+		// 					ServerCreateTime: to.Ptr(time.Date(2017, time.March, 10, 8, 0, 0, 0, time.UTC)),
+		// 					DatabaseName: to.Ptr("testDatabase2"),
+		// 					BackupTime: to.Ptr(time.Date(2017, time.August, 30, 8, 0, 0, 0, time.UTC)),
+		// 					BackupStorageRedundancy: to.Ptr(armsql.BackupStorageRedundancyGeo),
+		// 					IsBackupImmutable: to.Ptr(true),
+		// 					TimeBasedImmutability: to.Ptr(armsql.TimeBasedImmutabilityEnabled),
+		// 					TimeBasedImmutabilityMode: to.Ptr(armsql.TimeBasedImmutabilityModeLocked),
+		// 					LegalHoldImmutability: to.Ptr(armsql.SetLegalHoldImmutabilityDisabled),
+		// 					BackupStorageAccessTier: to.Ptr(armsql.BackupStorageAccessTierHot),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.Sql/locations/japaneast/longTermRetentionServers/testserver/longTermRetentionBackups?api-version=2025-08-01-preview&$top=2&$skipToken=eyJEYXRhYmFzZUlkIjoiMTIzNDEyMzQtMTIzNC0xMjM0LTEyMzQtMTIzMTIzMTIzMTIzIiwiQmFja3VwVGltZSI6IjIwMTctMDgtMzBUMDg6MDA6MDBaIiwiQmFja3VwU3RvcmFnZUFjY2Vzc1RpZXIiOiJIb3QifQ%3D%3D"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01-preview/LockTimeBasedImmutabilityLongTermRetentionBackup.json
 func ExampleLongTermRetentionBackupsClient_BeginLockTimeBasedImmutability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -739,7 +1136,7 @@ func ExampleLongTermRetentionBackupsClient_BeginLockTimeBasedImmutability() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedLockTimeBasedImmutabilityLongTermRetentionBackup.json
+// Generated from example definition: 2025-08-01-preview/ResourceGroupBasedLockTimeBasedImmutabilityLongTermRetentionBackup.json
 func ExampleLongTermRetentionBackupsClient_BeginLockTimeBasedImmutabilityByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -772,7 +1169,7 @@ func ExampleLongTermRetentionBackupsClient_BeginLockTimeBasedImmutabilityByResou
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/RemoveLegalHoldImmutabilityLongTermRetentionBackup.json
+// Generated from example definition: 2025-08-01-preview/RemoveLegalHoldImmutabilityLongTermRetentionBackup.json
 func ExampleLongTermRetentionBackupsClient_BeginRemoveLegalHoldImmutability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -805,7 +1202,7 @@ func ExampleLongTermRetentionBackupsClient_BeginRemoveLegalHoldImmutability() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedRemoveLegalHoldImmutabilityLongTermRetentionBackup.json
+// Generated from example definition: 2025-08-01-preview/ResourceGroupBasedRemoveLegalHoldImmutabilityLongTermRetentionBackup.json
 func ExampleLongTermRetentionBackupsClient_BeginRemoveLegalHoldImmutabilityByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -838,7 +1235,7 @@ func ExampleLongTermRetentionBackupsClient_BeginRemoveLegalHoldImmutabilityByRes
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/RemoveTimeBasedImmutabilityLongTermRetentionBackup.json
+// Generated from example definition: 2025-08-01-preview/RemoveTimeBasedImmutabilityLongTermRetentionBackup.json
 func ExampleLongTermRetentionBackupsClient_BeginRemoveTimeBasedImmutability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -871,7 +1268,7 @@ func ExampleLongTermRetentionBackupsClient_BeginRemoveTimeBasedImmutability() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedRemoveTimeBasedImmutabilityLongTermRetentionBackup.json
+// Generated from example definition: 2025-08-01-preview/ResourceGroupBasedRemoveTimeBasedImmutabilityLongTermRetentionBackup.json
 func ExampleLongTermRetentionBackupsClient_BeginRemoveTimeBasedImmutabilityByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -904,7 +1301,7 @@ func ExampleLongTermRetentionBackupsClient_BeginRemoveTimeBasedImmutabilityByRes
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SetLegalHoldImmutabilityLongTermRetentionBackup.json
+// Generated from example definition: 2025-08-01-preview/SetLegalHoldImmutabilityLongTermRetentionBackup.json
 func ExampleLongTermRetentionBackupsClient_BeginSetLegalHoldImmutability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -937,7 +1334,7 @@ func ExampleLongTermRetentionBackupsClient_BeginSetLegalHoldImmutability() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedSetLegalHoldImmutabilityLongTermRetentionBackup.json
+// Generated from example definition: 2025-08-01-preview/ResourceGroupBasedSetLegalHoldImmutabilityLongTermRetentionBackup.json
 func ExampleLongTermRetentionBackupsClient_BeginSetLegalHoldImmutabilityByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -970,7 +1367,7 @@ func ExampleLongTermRetentionBackupsClient_BeginSetLegalHoldImmutabilityByResour
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/LongTermRetentionBackupUpdate.json
+// Generated from example definition: 2025-08-01-preview/LongTermRetentionBackupUpdate.json
 func ExampleLongTermRetentionBackupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1012,7 +1409,7 @@ func ExampleLongTermRetentionBackupsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ResourceGroupBasedLongTermRetentionBackupUpdate.json
+// Generated from example definition: 2025-08-01-preview/ResourceGroupBasedLongTermRetentionBackupUpdate.json
 func ExampleLongTermRetentionBackupsClient_BeginUpdateByResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

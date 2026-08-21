@@ -19,7 +19,7 @@ import (
 // CapabilitiesClient contains the methods for the Capabilities group.
 // Don't use this type directly, use NewCapabilitiesClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type CapabilitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -79,7 +79,7 @@ func (client *CapabilitiesClient) listByLocationCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	if options != nil && options.Include != nil {
 		reqQP.Set("include", string(*options.Include))
 	}

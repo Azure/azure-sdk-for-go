@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/PrivateEndpointConnectionUpdate.json
+// Generated from example definition: 2025-08-01-preview/PrivateEndpointConnectionUpdate.json
 func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,13 +55,13 @@ func ExamplePrivateEndpointConnectionsClient_BeginCreateOrUpdate() {
 	// 				ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
 	// 				Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
 	// 			},
-	// 			ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningStateReady),
+	// 			ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Ready")),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/PrivateEndpointConnectionDelete.json
+// Generated from example definition: 2025-08-01-preview/PrivateEndpointConnectionDelete.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/PrivateEndpointConnectionGet.json
+// Generated from example definition: 2025-08-01-preview/PrivateEndpointConnectionGet.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,13 +119,13 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// 				ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
 	// 				Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
 	// 			},
-	// 			ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningStateReady),
+	// 			ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Ready")),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/PrivateEndpointConnectionList.json
+// Generated from example definition: 2025-08-01-preview/PrivateEndpointConnectionList.json
 func ExamplePrivateEndpointConnectionsClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListByServerPager() {
 		// 						ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
 		// 						Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
 		// 					},
-		// 					ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningStateReady),
+		// 					ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Ready")),
 		// 				},
 		// 			},
 		// 			{
@@ -179,7 +179,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListByServerPager() {
 		// 						ActionsRequired: to.Ptr(armsql.PrivateLinkServiceConnectionStateActionsRequireNone),
 		// 						Status: to.Ptr(armsql.PrivateLinkServiceConnectionStateStatusApproved),
 		// 					},
-		// 					ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningStateReady),
+		// 					ProvisioningState: to.Ptr(armsql.PrivateEndpointProvisioningState("Ready")),
 		// 				},
 		// 			},
 		// 		},

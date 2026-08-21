@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupCancelSync.json
+// Generated from example definition: 2025-08-01-preview/SyncGroupCancelSync.json
 func ExampleSyncGroupsClient_CancelSync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleSyncGroupsClient_CancelSync() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupCreate.json
+// Generated from example definition: 2025-08-01-preview/SyncGroupCreate.json
 func ExampleSyncGroupsClient_BeginCreateOrUpdate_createASyncGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleSyncGroupsClient_BeginCreateOrUpdate_createASyncGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupCreateWithIdentity.json
+// Generated from example definition: 2025-08-01-preview/SyncGroupCreateWithIdentity.json
 func ExampleSyncGroupsClient_BeginCreateOrUpdate_createASyncGroupWithUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExampleSyncGroupsClient_BeginCreateOrUpdate_createASyncGroupWithUserAssigne
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupUpdate.json
+// Generated from example definition: 2025-08-01-preview/SyncGroupUpdate.json
 func ExampleSyncGroupsClient_BeginCreateOrUpdate_updateASyncGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExampleSyncGroupsClient_BeginCreateOrUpdate_updateASyncGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupDelete.json
+// Generated from example definition: 2025-08-01-preview/SyncGroupDelete.json
 func ExampleSyncGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +219,7 @@ func ExampleSyncGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupGet.json
+// Generated from example definition: 2025-08-01-preview/SyncGroupGet.json
 func ExampleSyncGroupsClient_Get_getASyncGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,7 +256,7 @@ func ExampleSyncGroupsClient_Get_getASyncGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupGetWithIdentity.json
+// Generated from example definition: 2025-08-01-preview/SyncGroupGetWithIdentity.json
 func ExampleSyncGroupsClient_Get_getASyncGroupWithUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -301,7 +301,7 @@ func ExampleSyncGroupsClient_Get_getASyncGroupWithUserAssignedIdentity() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupListByDatabase.json
+// Generated from example definition: 2025-08-01-preview/SyncGroupListByDatabase.json
 func ExampleSyncGroupsClient_NewListByDatabasePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -362,7 +362,7 @@ func ExampleSyncGroupsClient_NewListByDatabasePager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupGetHubSchema.json
+// Generated from example definition: 2025-08-01-preview/SyncGroupGetHubSchema.json
 func ExampleSyncGroupsClient_NewListHubSchemasPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -422,7 +422,7 @@ func ExampleSyncGroupsClient_NewListHubSchemasPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupGetLog.json
+// Generated from example definition: 2025-08-01-preview/SyncGroupGetLog.json
 func ExampleSyncGroupsClient_NewListLogsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -469,7 +469,7 @@ func ExampleSyncGroupsClient_NewListLogsPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupGetSyncDatabaseId.json
+// Generated from example definition: 2025-08-01-preview/SyncGroupGetSyncDatabaseId.json
 func ExampleSyncGroupsClient_NewListSyncDatabaseIDsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -503,7 +503,7 @@ func ExampleSyncGroupsClient_NewListSyncDatabaseIDsPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupRefreshHubSchema.json
+// Generated from example definition: 2025-08-01-preview/SyncGroupRefreshHubSchema.json
 func ExampleSyncGroupsClient_BeginRefreshHubSchema() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -529,7 +529,7 @@ func ExampleSyncGroupsClient_BeginRefreshHubSchema() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupTriggerSync.json
+// Generated from example definition: 2025-08-01-preview/SyncGroupTriggerSync.json
 func ExampleSyncGroupsClient_TriggerSync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -551,7 +551,7 @@ func ExampleSyncGroupsClient_TriggerSync() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupPatch.json
+// Generated from example definition: 2025-08-01-preview/SyncGroupPatch.json
 func ExampleSyncGroupsClient_BeginUpdate_updateASyncGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -601,7 +601,7 @@ func ExampleSyncGroupsClient_BeginUpdate_updateASyncGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupPatchAddAndRemoveIdentity.json
+// Generated from example definition: 2025-08-01-preview/SyncGroupPatchAddAndRemoveIdentity.json
 func ExampleSyncGroupsClient_BeginUpdate_updateASyncGroupWithNewUserAssignedIdentityAndRemoveOlderAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -662,7 +662,7 @@ func ExampleSyncGroupsClient_BeginUpdate_updateASyncGroupWithNewUserAssignedIden
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/SyncGroupPatchWithIdentity.json
+// Generated from example definition: 2025-08-01-preview/SyncGroupPatchWithIdentity.json
 func ExampleSyncGroupsClient_BeginUpdate_updateASyncGroupWithUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

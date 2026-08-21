@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseConfiguredBackupStorageRedundancy.json
+// Generated from example definition: 2025-08-01-preview/CreateDatabaseConfiguredBackupStorageRedundancy.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithSpecifiedBackupStorageRedundancy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithSpecifiedBac
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseCopyMode.json
+// Generated from example definition: 2025-08-01-preview/CreateDatabaseCopyMode.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsACopy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsACopy() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseDefaultEnclave.json
+// Generated from example definition: 2025-08-01-preview/CreateDatabaseDefaultEnclave.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDefaultEnclaveType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +215,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDefaultEncla
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseDefaultMode.json
+// Generated from example definition: 2025-08-01-preview/CreateDatabaseDefaultMode.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDefaultMode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -287,7 +287,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDefaultMode(
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseDefaultModeWithKeysAndEncryptionProtector.json
+// Generated from example definition: 2025-08-01-preview/CreateDatabaseDefaultModeWithKeysAndEncryptionProtector.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDatabaseLevelCustomerManagedKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -370,7 +370,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDatabaseLeve
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseDefaultModeWithVersionlessKeysAndVersionlessEncryptionProtector.json
+// Generated from example definition: 2025-08-01-preview/CreateDatabaseDefaultModeWithVersionlessKeysAndVersionlessEncryptionProtector.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDatabaseLevelVersionlessCustomerManagedKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -453,7 +453,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithDatabaseLeve
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseLedger.json
+// Generated from example definition: 2025-08-01-preview/CreateDatabaseLedger.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithLedgerOn() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -518,7 +518,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithLedgerOn() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseMaintenanceConfiguration.json
+// Generated from example definition: 2025-08-01-preview/CreateDatabaseMaintenanceConfiguration.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithPreferredMaintenanceWindow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -590,7 +590,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithPreferredMai
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseMin.json
+// Generated from example definition: 2025-08-01-preview/CreateDatabaseMin.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithMinimumNumberOfParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -653,7 +653,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithMinimumNumbe
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseNamedReplica.json
+// Generated from example definition: 2025-08-01-preview/CreateDatabaseNamedReplica.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsNamedReplicaSecondary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -731,7 +731,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsNamedReplicaSe
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabasePITRMode.json
+// Generated from example definition: 2025-08-01-preview/CreateDatabasePITRMode.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseFromPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -799,7 +799,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseFromPointInTimeR
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseSecondaryMode.json
+// Generated from example definition: 2025-08-01-preview/CreateDatabaseSecondaryMode.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsAnOnLineSecondary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -872,7 +872,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsAnOnLineSecond
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseStandbyMode.json
+// Generated from example definition: 2025-08-01-preview/CreateDatabaseStandbyMode.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsAStandbySecondary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -945,7 +945,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseAsAStandbySecond
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseVBSEnclave.json
+// Generated from example definition: 2025-08-01-preview/CreateDatabaseVBSEnclave.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithVbsEnclaveType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1010,7 +1010,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithVbsEnclaveTy
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseWithAvailabilityZone.json
+// Generated from example definition: 2025-08-01-preview/CreateDatabaseWithAvailabilityZone.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithAvailabilityZoneSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1084,7 +1084,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithAvailability
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDatabaseWithEncryptionProtectorAutoRotation.json
+// Generated from example definition: 2025-08-01-preview/CreateDatabaseWithEncryptionProtectorAutoRotation.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithEncryptionProtectorAutoRotation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1166,7 +1166,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADatabaseWithEncryptionPr
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDwDatabaseCrossSubscriptionPITR.json
+// Generated from example definition: 2025-08-01-preview/CreateDwDatabaseCrossSubscriptionPITR.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsACrossSubscriptionRestoreFromARestorePointOfAnExistingDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1229,7 +1229,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsA
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDwDatabaseCrossSubscriptionRecovery.json
+// Generated from example definition: 2025-08-01-preview/CreateDwDatabaseCrossSubscriptionRecovery.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsACrossSubscriptionRestoreFromAGeoBackup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1291,7 +1291,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsA
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateDwDatabaseCrossSubscriptionRestore.json
+// Generated from example definition: 2025-08-01-preview/CreateDwDatabaseCrossSubscriptionRestore.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsACrossSubscriptionRestoreFromABackupOfADroppedDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1353,7 +1353,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsADataWarehouseDatabaseAsA
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateVCoreDatabaseByServiceObjective.json
+// Generated from example definition: 2025-08-01-preview/CreateVCoreDatabaseByServiceObjective.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsAVCoreDatabaseBySpecifyingServiceObjectiveName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1423,7 +1423,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsAVCoreDatabaseBySpecifyin
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/CreateVCoreDatabaseBySkuNameCapacity.json
+// Generated from example definition: 2025-08-01-preview/CreateVCoreDatabaseBySkuNameCapacity.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_createsAVCoreDatabaseBySpecifyingSkuNameAndCapacity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1492,7 +1492,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_createsAVCoreDatabaseBySpecifyin
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/UpdateDatabaseHyperscaleMigrationPerformCutover.json
+// Generated from example definition: 2025-08-01-preview/UpdateDatabaseHyperscaleMigrationPerformCutover.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_updatesADatabaseToHyperscaleTierByTriggeringManualCutoverDuringMigrationWorkflow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1569,7 +1569,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_updatesADatabaseToHyperscaleTier
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/UpdateDatabaseHyperscaleMigrationWithManualCutover.json
+// Generated from example definition: 2025-08-01-preview/UpdateDatabaseHyperscaleMigrationWithManualCutover.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_updatesADatabaseToHyperscaleSloWithManualCutover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1650,7 +1650,7 @@ func ExampleDatabasesClient_BeginCreateOrUpdate_updatesADatabaseToHyperscaleSloW
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/DeleteDatabase.json
+// Generated from example definition: 2025-08-01-preview/DeleteDatabase.json
 func ExampleDatabasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1676,7 +1676,7 @@ func ExampleDatabasesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ExportDatabase.json
+// Generated from example definition: 2025-08-01-preview/ExportDatabase.json
 func ExampleDatabasesClient_BeginExport_exportsADatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1724,7 +1724,7 @@ func ExampleDatabasesClient_BeginExport_exportsADatabase() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ExportDatabaseWithManagedIdentity.json
+// Generated from example definition: 2025-08-01-preview/ExportDatabaseWithManagedIdentity.json
 func ExampleDatabasesClient_BeginExport_exportsADatabaseUsingManagedIdentityToCommunicateWithSqlServerAndStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1771,7 +1771,7 @@ func ExampleDatabasesClient_BeginExport_exportsADatabaseUsingManagedIdentityToCo
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ExportDatabaseWithNetworkIsolation.json
+// Generated from example definition: 2025-08-01-preview/ExportDatabaseWithNetworkIsolation.json
 func ExampleDatabasesClient_BeginExport_exportsADatabaseUsingPrivateLinkToCommunicateWithSqlServerAndStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1823,7 +1823,7 @@ func ExampleDatabasesClient_BeginExport_exportsADatabaseUsingPrivateLinkToCommun
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/FailoverDatabase.json
+// Generated from example definition: 2025-08-01-preview/FailoverDatabase.json
 func ExampleDatabasesClient_BeginFailover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1850,7 +1850,7 @@ func ExampleDatabasesClient_BeginFailover() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/GetDatabaseWithAvailabilityZone.json
+// Generated from example definition: 2025-08-01-preview/GetDatabaseWithAvailabilityZone.json
 func ExampleDatabasesClient_Get_getsADatabaseWithAvailabilityZoneSpecified() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1908,7 +1908,7 @@ func ExampleDatabasesClient_Get_getsADatabaseWithAvailabilityZoneSpecified() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/GetVCoreDatabase.json
+// Generated from example definition: 2025-08-01-preview/GetVCoreDatabase.json
 func ExampleDatabasesClient_Get_getsADatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1968,7 +1968,7 @@ func ExampleDatabasesClient_Get_getsADatabase() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/GetVCoreDatabaseDefaultEnclave.json
+// Generated from example definition: 2025-08-01-preview/GetVCoreDatabaseDefaultEnclave.json
 func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithDefaultEnclaveType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2029,7 +2029,7 @@ func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithDefaultEnclaveType() 
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/GetVCoreDatabaseVBSEnclave.json
+// Generated from example definition: 2025-08-01-preview/GetVCoreDatabaseVBSEnclave.json
 func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithVbsEnclaveType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2090,7 +2090,7 @@ func ExampleDatabasesClient_Get_getsADatabaseConfiguredWithVbsEnclaveType() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/GetVCoreDatabaseWithExpandEqualsKeys.json
+// Generated from example definition: 2025-08-01-preview/GetVCoreDatabaseWithExpandEqualsKeys.json
 func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpanded() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2158,7 +2158,7 @@ func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpanded() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/GetVCoreDatabaseWithExpandEqualsKeysWithVersionlessKeys.json
+// Generated from example definition: 2025-08-01-preview/GetVCoreDatabaseWithExpandEqualsKeysWithVersionlessKeys.json
 func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpandedUsingVersionlessKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2226,7 +2226,7 @@ func ExampleDatabasesClient_Get_getsADatabaseWithDatabaseLevelKeysExpandedUsingV
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ImportDatabase.json
+// Generated from example definition: 2025-08-01-preview/ImportDatabase.json
 func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2274,7 +2274,7 @@ func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabase() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ImportDatabaseWithManagedIdentity.json
+// Generated from example definition: 2025-08-01-preview/ImportDatabaseWithManagedIdentity.json
 func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabaseUsingManagedIdentityToCommunicateWithSqlServerAndStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2321,7 +2321,7 @@ func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabaseUsingMan
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ImportDatabaseWithNetworkIsolation.json
+// Generated from example definition: 2025-08-01-preview/ImportDatabaseWithNetworkIsolation.json
 func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabaseUsingPrivateLinkToCommunicateWithSqlServerAndStorageAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2373,7 +2373,7 @@ func ExampleDatabasesClient_BeginImport_importsToAnExistingEmptyDatabaseUsingPri
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ListDatabasesByElasticPool.json
+// Generated from example definition: 2025-08-01-preview/ListDatabasesByElasticPool.json
 func ExampleDatabasesClient_NewListByElasticPoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2448,7 +2448,7 @@ func ExampleDatabasesClient_NewListByElasticPoolPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ListVCoreDatabasesByServer.json
+// Generated from example definition: 2025-08-01-preview/ListVCoreDatabasesByServer.json
 func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabases() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2550,7 +2550,7 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabases() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ListVCoreDatabasesByServerWithOdata.json
+// Generated from example definition: 2025-08-01-preview/ListVCoreDatabasesByServerWithOdata.json
 func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesWithODataFiltering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2657,7 +2657,7 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesWithODataFi
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ListVCoreDatabasesEnclaveTypeByServer.json
+// Generated from example definition: 2025-08-01-preview/ListVCoreDatabasesEnclaveTypeByServer.json
 func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesConfiguredWithEnclaveType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2761,7 +2761,7 @@ func ExampleDatabasesClient_NewListByServerPager_getsAListOfDatabasesConfiguredW
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/ListVCoreInaccessibleDatabasesByServer.json
+// Generated from example definition: 2025-08-01-preview/ListVCoreInaccessibleDatabasesByServer.json
 func ExampleDatabasesClient_NewListInaccessibleByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2817,7 +2817,7 @@ func ExampleDatabasesClient_NewListInaccessibleByServerPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/PauseDatabase.json
+// Generated from example definition: 2025-08-01-preview/PauseDatabase.json
 func ExampleDatabasesClient_BeginPause() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2863,7 +2863,7 @@ func ExampleDatabasesClient_BeginPause() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/RenameDatabase.json
+// Generated from example definition: 2025-08-01-preview/RenameDatabase.json
 func ExampleDatabasesClient_Rename() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2887,7 +2887,7 @@ func ExampleDatabasesClient_Rename() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ResumeDatabase.json
+// Generated from example definition: 2025-08-01-preview/ResumeDatabase.json
 func ExampleDatabasesClient_BeginResume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2933,7 +2933,7 @@ func ExampleDatabasesClient_BeginResume() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/PatchDatabaseDefaultEnclave.json
+// Generated from example definition: 2025-08-01-preview/PatchDatabaseDefaultEnclave.json
 func ExampleDatabasesClient_BeginUpdate_updatesADatabaseWithDefaultEnclaveType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2997,7 +2997,7 @@ func ExampleDatabasesClient_BeginUpdate_updatesADatabaseWithDefaultEnclaveType()
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/PatchDatabaseVBSEnclave.json
+// Generated from example definition: 2025-08-01-preview/PatchDatabaseVBSEnclave.json
 func ExampleDatabasesClient_BeginUpdate_updatesADatabaseWithVbsEnclaveType() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3061,7 +3061,7 @@ func ExampleDatabasesClient_BeginUpdate_updatesADatabaseWithVbsEnclaveType() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/PatchVCoreDatabase.json
+// Generated from example definition: 2025-08-01-preview/PatchVCoreDatabase.json
 func ExampleDatabasesClient_BeginUpdate_updatesADatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3132,7 +3132,7 @@ func ExampleDatabasesClient_BeginUpdate_updatesADatabase() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/PatchVCoreDatabaseAssignMaintenanceConfiguration.json
+// Generated from example definition: 2025-08-01-preview/PatchVCoreDatabaseAssignMaintenanceConfiguration.json
 func ExampleDatabasesClient_BeginUpdate_assignsMaintenanceWindowToADatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3203,7 +3203,7 @@ func ExampleDatabasesClient_BeginUpdate_assignsMaintenanceWindowToADatabase() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/PatchVCoreDatabaseResetMaintenanceConfiguration.json
+// Generated from example definition: 2025-08-01-preview/PatchVCoreDatabaseResetMaintenanceConfiguration.json
 func ExampleDatabasesClient_BeginUpdate_resetsMaintenanceWindowOfADatabaseToDefault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3273,7 +3273,7 @@ func ExampleDatabasesClient_BeginUpdate_resetsMaintenanceWindowOfADatabaseToDefa
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/PatchVCoreDatabaseWithKeysAndEncryptionProtector.json
+// Generated from example definition: 2025-08-01-preview/PatchVCoreDatabaseWithKeysAndEncryptionProtector.json
 func ExampleDatabasesClient_BeginUpdate_patchADatabaseWithDatabaseLevelCustomerManagedKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3353,7 +3353,7 @@ func ExampleDatabasesClient_BeginUpdate_patchADatabaseWithDatabaseLevelCustomerM
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/UpgradeDataWarehouse.json
+// Generated from example definition: 2025-08-01-preview/UpgradeDataWarehouse.json
 func ExampleDatabasesClient_BeginUpgradeDataWarehouse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

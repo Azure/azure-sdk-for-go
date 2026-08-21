@@ -19,7 +19,7 @@ import (
 // ManagedDatabaseColumnsClient contains the methods for the ManagedDatabaseColumns group.
 // Don't use this type directly, use NewManagedDatabaseColumnsClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type ManagedDatabaseColumnsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -104,7 +104,7 @@ func (client *ManagedDatabaseColumnsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,7 +188,7 @@ func (client *ManagedDatabaseColumnsClient) listByDatabaseCreateRequest(ctx cont
 		if options != nil && options.Skiptoken != nil {
 			reqQP.Set("$skiptoken", *options.Skiptoken)
 		}
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.Column != nil {
 			for _, qv := range options.Column {
 				reqQP.Add("column", qv)
@@ -303,7 +303,7 @@ func (client *ManagedDatabaseColumnsClient) listByTableCreateRequest(ctx context
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

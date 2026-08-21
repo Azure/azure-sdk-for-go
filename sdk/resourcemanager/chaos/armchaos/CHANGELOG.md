@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.1 (2026-07-28)
+## 3.0.0-beta.1 (2026-08-21)
 ### Breaking Changes
 
 - Type of `WorkspaceEvaluationProperties.Results` has been changed from `[]*ScenarioEvaluationResultItem` to `[]*TemplateEvaluationResultItem`

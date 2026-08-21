@@ -1119,9 +1119,10 @@ type ResourceTargeting struct {
 // ResourceTargetingCriteria - Model that represents a set of targeting criteria for resource selection.
 // Used on both the include and exclude sides of ResourceTargeting.
 // All dimensions use unified null/empty semantics:
-// - Null or omitted means "no constraint" (this dimension is inactive).
-// - Empty array is treated the same as null (no constraint).
-// - Non-empty array means the dimension is active.
+//
+//   - Null or omitted means "no constraint" (this dimension is inactive).
+//   - Empty array is treated the same as null (no constraint).
+//   - Non-empty array means the dimension is active.
 type ResourceTargetingCriteria struct {
 	// Array of Azure location strings (e.g., "eastus", "westeurope", "global").
 	// Case-insensitive, normalized form only (e.g., "eastus" not "East US").

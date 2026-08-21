@@ -81,8 +81,7 @@ func (client *ExperimentsClient) cancel(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -153,8 +152,7 @@ func (client *ExperimentsClient) createOrUpdate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -228,8 +226,7 @@ func (client *ExperimentsClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -280,12 +277,7 @@ func (client *ExperimentsClient) ExecutionDetails(ctx context.Context, resourceG
 	if err != nil {
 		return ExperimentsClientExecutionDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExperimentsClientExecutionDetailsResponse{}, err
-	}
-	resp, err := client.executionDetailsHandleResponse(httpResp)
-	return resp, err
+	return client.executionDetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // executionDetailsCreateRequest creates the ExecutionDetails request.
@@ -319,8 +311,11 @@ func (client *ExperimentsClient) executionDetailsCreateRequest(ctx context.Conte
 }
 
 // executionDetailsHandleResponse handles the ExecutionDetails response.
-func (client *ExperimentsClient) executionDetailsHandleResponse(resp *http.Response) (ExperimentsClientExecutionDetailsResponse, error) {
+func (client *ExperimentsClient) executionDetailsHandleResponse(resp *http.Response, successCodes ...int) (ExperimentsClientExecutionDetailsResponse, error) {
 	result := ExperimentsClientExecutionDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExperimentExecutionDetails); err != nil {
 		return ExperimentsClientExecutionDetailsResponse{}, err
 	}
@@ -346,12 +341,7 @@ func (client *ExperimentsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ExperimentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExperimentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -381,8 +371,11 @@ func (client *ExperimentsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExperimentsClient) getHandleResponse(resp *http.Response) (ExperimentsClientGetResponse, error) {
+func (client *ExperimentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ExperimentsClientGetResponse, error) {
 	result := ExperimentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Experiment); err != nil {
 		return ExperimentsClientGetResponse{}, err
 	}
@@ -410,12 +403,7 @@ func (client *ExperimentsClient) GetExecution(ctx context.Context, resourceGroup
 	if err != nil {
 		return ExperimentsClientGetExecutionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExperimentsClientGetExecutionResponse{}, err
-	}
-	resp, err := client.getExecutionHandleResponse(httpResp)
-	return resp, err
+	return client.getExecutionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getExecutionCreateRequest creates the GetExecution request.
@@ -449,8 +437,11 @@ func (client *ExperimentsClient) getExecutionCreateRequest(ctx context.Context, 
 }
 
 // getExecutionHandleResponse handles the GetExecution response.
-func (client *ExperimentsClient) getExecutionHandleResponse(resp *http.Response) (ExperimentsClientGetExecutionResponse, error) {
+func (client *ExperimentsClient) getExecutionHandleResponse(resp *http.Response, successCodes ...int) (ExperimentsClientGetExecutionResponse, error) {
 	result := ExperimentsClientGetExecutionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExperimentExecution); err != nil {
 		return ExperimentsClientGetExecutionResponse{}, err
 	}
@@ -471,49 +462,63 @@ func (client *ExperimentsClient) NewListPager(resourceGroupName string, options 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return ExperimentsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ExperimentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ExperimentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, options *ExperimentsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ExperimentsClient) listCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, options *ExperimentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	if options != nil && options.ContinuationToken != nil {
-		reqQP.Set("continuationToken", *options.ContinuationToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260801Preview)
+		if options != nil && options.ContinuationToken != nil {
+			reqQP.Set("continuationToken", *options.ContinuationToken)
+		}
+		if options != nil && options.Running != nil {
+			reqQP.Set("running", strconv.FormatBool(*options.Running))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Running != nil {
-		reqQP.Set("running", strconv.FormatBool(*options.Running))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ExperimentsClient) listHandleResponse(resp *http.Response) (ExperimentsClientListResponse, error) {
+func (client *ExperimentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ExperimentsClientListResponse, error) {
 	result := ExperimentsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExperimentListResult); err != nil {
 		return ExperimentsClientListResponse{}, err
 	}
@@ -533,45 +538,59 @@ func (client *ExperimentsClient) NewListAllPager(options *ExperimentsClientListA
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ExperimentsClientListAllResponse{}, err
 			}
-			return client.listAllHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ExperimentsClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *ExperimentsClient) listAllCreateRequest(ctx context.Context, options *ExperimentsClientListAllOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/experiments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ExperimentsClient) listAllCreateRequest(ctx context.Context, nextLink string, options *ExperimentsClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/experiments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	if options != nil && options.ContinuationToken != nil {
-		reqQP.Set("continuationToken", *options.ContinuationToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260801Preview)
+		if options != nil && options.ContinuationToken != nil {
+			reqQP.Set("continuationToken", *options.ContinuationToken)
+		}
+		if options != nil && options.Running != nil {
+			reqQP.Set("running", strconv.FormatBool(*options.Running))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Running != nil {
-		reqQP.Set("running", strconv.FormatBool(*options.Running))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *ExperimentsClient) listAllHandleResponse(resp *http.Response) (ExperimentsClientListAllResponse, error) {
+func (client *ExperimentsClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (ExperimentsClientListAllResponse, error) {
 	result := ExperimentsClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExperimentListResult); err != nil {
 		return ExperimentsClientListAllResponse{}, err
 	}
@@ -594,47 +613,61 @@ func (client *ExperimentsClient) NewListAllExecutionsPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllExecutionsCreateRequest(ctx, resourceGroupName, experimentName, options)
-			}, nil)
+			req, err := client.listAllExecutionsCreateRequest(ctx, resourceGroupName, experimentName, nextLink, options)
 			if err != nil {
 				return ExperimentsClientListAllExecutionsResponse{}, err
 			}
-			return client.listAllExecutionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ExperimentsClientListAllExecutionsResponse{}, err
+			}
+			return client.listAllExecutionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAllExecutionsCreateRequest creates the ListAllExecutions request.
-func (client *ExperimentsClient) listAllExecutionsCreateRequest(ctx context.Context, resourceGroupName string, experimentName string, _ *ExperimentsClientListAllExecutionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}/executions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ExperimentsClient) listAllExecutionsCreateRequest(ctx context.Context, resourceGroupName string, experimentName string, nextLink string, _ *ExperimentsClientListAllExecutionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/experiments/{experimentName}/executions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if experimentName == "" {
+			return nil, errors.New("parameter experimentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{experimentName}", url.PathEscape(experimentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if experimentName == "" {
-		return nil, errors.New("parameter experimentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{experimentName}", url.PathEscape(experimentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260801Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAllExecutionsHandleResponse handles the ListAllExecutions response.
-func (client *ExperimentsClient) listAllExecutionsHandleResponse(resp *http.Response) (ExperimentsClientListAllExecutionsResponse, error) {
+func (client *ExperimentsClient) listAllExecutionsHandleResponse(resp *http.Response, successCodes ...int) (ExperimentsClientListAllExecutionsResponse, error) {
 	result := ExperimentsClientListAllExecutionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExperimentExecutionListResult); err != nil {
 		return ExperimentsClientListAllExecutionsResponse{}, err
 	}
@@ -680,8 +713,7 @@ func (client *ExperimentsClient) start(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -751,8 +783,7 @@ func (client *ExperimentsClient) update(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

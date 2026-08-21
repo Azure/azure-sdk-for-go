@@ -60,12 +60,7 @@ func (client *MarkupRulesClient) CreateOrUpdate(ctx context.Context, billingAcco
 	if err != nil {
 		return MarkupRulesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return MarkupRulesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -99,8 +94,11 @@ func (client *MarkupRulesClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *MarkupRulesClient) createOrUpdateHandleResponse(resp *http.Response) (MarkupRulesClientCreateOrUpdateResponse, error) {
+func (client *MarkupRulesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (MarkupRulesClientCreateOrUpdateResponse, error) {
 	result := MarkupRulesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MarkupRule); err != nil {
 		return MarkupRulesClientCreateOrUpdateResponse{}, err
 	}
@@ -128,8 +126,7 @@ func (client *MarkupRulesClient) Delete(ctx context.Context, billingAccountID st
 		return MarkupRulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return MarkupRulesClientDeleteResponse{}, err
+		return MarkupRulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return MarkupRulesClientDeleteResponse{}, nil
 }
@@ -179,12 +176,7 @@ func (client *MarkupRulesClient) Get(ctx context.Context, billingAccountID strin
 	if err != nil {
 		return MarkupRulesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MarkupRulesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -214,8 +206,11 @@ func (client *MarkupRulesClient) getCreateRequest(ctx context.Context, billingAc
 }
 
 // getHandleResponse handles the Get response.
-func (client *MarkupRulesClient) getHandleResponse(resp *http.Response) (MarkupRulesClientGetResponse, error) {
+func (client *MarkupRulesClient) getHandleResponse(resp *http.Response, successCodes ...int) (MarkupRulesClientGetResponse, error) {
 	result := MarkupRulesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MarkupRule); err != nil {
 		return MarkupRulesClientGetResponse{}, err
 	}
@@ -237,43 +232,57 @@ func (client *MarkupRulesClient) NewListPager(billingAccountID string, billingPr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, billingAccountID, billingProfileID, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, billingAccountID, billingProfileID, nextLink, options)
 			if err != nil {
 				return MarkupRulesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MarkupRulesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *MarkupRulesClient) listCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, _ *MarkupRulesClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.CostManagement/markupRules"
-	if billingAccountID == "" {
-		return nil, errors.New("parameter billingAccountID cannot be empty")
+func (client *MarkupRulesClient) listCreateRequest(ctx context.Context, billingAccountID string, billingProfileID string, nextLink string, _ *MarkupRulesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.CostManagement/markupRules"
+		if billingAccountID == "" {
+			return nil, errors.New("parameter billingAccountID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
+		if billingProfileID == "" {
+			return nil, errors.New("parameter billingProfileID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingProfileId}", url.PathEscape(billingProfileID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
-	if billingProfileID == "" {
-		return nil, errors.New("parameter billingProfileID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingProfileId}", url.PathEscape(billingProfileID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *MarkupRulesClient) listHandleResponse(resp *http.Response) (MarkupRulesClientListResponse, error) {
+func (client *MarkupRulesClient) listHandleResponse(resp *http.Response, successCodes ...int) (MarkupRulesClientListResponse, error) {
 	result := MarkupRulesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MarkupRulePagedResponse); err != nil {
 		return MarkupRulesClientListResponse{}, err
 	}

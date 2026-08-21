@@ -58,12 +58,7 @@ func (client *CostAllocationRulesClient) CheckNameAvailability(ctx context.Conte
 	if err != nil {
 		return CostAllocationRulesClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CostAllocationRulesClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -89,8 +84,11 @@ func (client *CostAllocationRulesClient) checkNameAvailabilityCreateRequest(ctx 
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *CostAllocationRulesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (CostAllocationRulesClientCheckNameAvailabilityResponse, error) {
+func (client *CostAllocationRulesClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (CostAllocationRulesClientCheckNameAvailabilityResponse, error) {
 	result := CostAllocationRulesClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CostAllocationRuleCheckNameAvailabilityResponse); err != nil {
 		return CostAllocationRulesClientCheckNameAvailabilityResponse{}, err
 	}
@@ -120,12 +118,7 @@ func (client *CostAllocationRulesClient) CreateOrUpdate(ctx context.Context, bil
 	if err != nil {
 		return CostAllocationRulesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return CostAllocationRulesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -155,8 +148,11 @@ func (client *CostAllocationRulesClient) createOrUpdateCreateRequest(ctx context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CostAllocationRulesClient) createOrUpdateHandleResponse(resp *http.Response) (CostAllocationRulesClientCreateOrUpdateResponse, error) {
+func (client *CostAllocationRulesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (CostAllocationRulesClientCreateOrUpdateResponse, error) {
 	result := CostAllocationRulesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CostAllocationRuleDefinition); err != nil {
 		return CostAllocationRulesClientCreateOrUpdateResponse{}, err
 	}
@@ -185,8 +181,7 @@ func (client *CostAllocationRulesClient) Delete(ctx context.Context, billingAcco
 		return CostAllocationRulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return CostAllocationRulesClientDeleteResponse{}, err
+		return CostAllocationRulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return CostAllocationRulesClientDeleteResponse{}, nil
 }
@@ -232,12 +227,7 @@ func (client *CostAllocationRulesClient) Get(ctx context.Context, billingAccount
 	if err != nil {
 		return CostAllocationRulesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CostAllocationRulesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -263,8 +253,11 @@ func (client *CostAllocationRulesClient) getCreateRequest(ctx context.Context, b
 }
 
 // getHandleResponse handles the Get response.
-func (client *CostAllocationRulesClient) getHandleResponse(resp *http.Response) (CostAllocationRulesClientGetResponse, error) {
+func (client *CostAllocationRulesClient) getHandleResponse(resp *http.Response, successCodes ...int) (CostAllocationRulesClientGetResponse, error) {
 	result := CostAllocationRulesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CostAllocationRuleDefinition); err != nil {
 		return CostAllocationRulesClientGetResponse{}, err
 	}
@@ -286,39 +279,53 @@ func (client *CostAllocationRulesClient) NewListPager(billingAccountID string, o
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, billingAccountID, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, billingAccountID, nextLink, options)
 			if err != nil {
 				return CostAllocationRulesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CostAllocationRulesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *CostAllocationRulesClient) listCreateRequest(ctx context.Context, billingAccountID string, _ *CostAllocationRulesClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/costAllocationRules"
-	if billingAccountID == "" {
-		return nil, errors.New("parameter billingAccountID cannot be empty")
+func (client *CostAllocationRulesClient) listCreateRequest(ctx context.Context, billingAccountID string, nextLink string, _ *CostAllocationRulesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/microsoft.Billing/billingAccounts/{billingAccountId}/providers/Microsoft.CostManagement/costAllocationRules"
+		if billingAccountID == "" {
+			return nil, errors.New("parameter billingAccountID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{billingAccountId}", url.PathEscape(billingAccountID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *CostAllocationRulesClient) listHandleResponse(resp *http.Response) (CostAllocationRulesClientListResponse, error) {
+func (client *CostAllocationRulesClient) listHandleResponse(resp *http.Response, successCodes ...int) (CostAllocationRulesClientListResponse, error) {
 	result := CostAllocationRulesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CostAllocationRuleList); err != nil {
 		return CostAllocationRulesClientListResponse{}, err
 	}

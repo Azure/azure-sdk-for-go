@@ -399,7 +399,7 @@ func (a AsyncOperationStatusProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "reportUrl", a.ReportURL)
 	populate(objectMap, "secondaryReportUrl", a.SecondaryReportURL)
-	populateTime[datetime.RFC3339](objectMap, "validUntil", a.ValidUntil)
+	populateTime[datetime.RFC3339](objectMap, "validUntil", a.ValidUntil, true)
 	return json.Marshal(objectMap)
 }
 
@@ -484,8 +484,8 @@ func (b BenefitRecommendationProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "commitmentGranularity", b.CommitmentGranularity)
 	populate(objectMap, "costWithoutBenefit", b.CostWithoutBenefit)
 	populate(objectMap, "currencyCode", b.CurrencyCode)
-	populateTime[datetime.RFC3339](objectMap, "firstConsumptionDate", b.FirstConsumptionDate)
-	populateTime[datetime.RFC3339](objectMap, "lastConsumptionDate", b.LastConsumptionDate)
+	populateTime[datetime.RFC3339](objectMap, "firstConsumptionDate", b.FirstConsumptionDate, true)
+	populateTime[datetime.RFC3339](objectMap, "lastConsumptionDate", b.LastConsumptionDate, true)
 	populate(objectMap, "lookBackPeriod", b.LookBackPeriod)
 	populate(objectMap, "recommendationDetails", b.RecommendationDetails)
 	populate(objectMap, "scope", b.Scope)
@@ -655,10 +655,10 @@ func (b BenefitUtilizationSummariesRequest) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "benefitOrderId", b.BenefitOrderID)
 	populate(objectMap, "billingAccountId", b.BillingAccountID)
 	populate(objectMap, "billingProfileId", b.BillingProfileID)
-	populateTime[datetime.RFC3339](objectMap, "endDate", b.EndDate)
+	populateTime[datetime.RFC3339](objectMap, "endDate", b.EndDate, true)
 	populate(objectMap, "grain", b.Grain)
 	populate(objectMap, "kind", b.Kind)
-	populateTime[datetime.RFC3339](objectMap, "startDate", b.StartDate)
+	populateTime[datetime.RFC3339](objectMap, "startDate", b.StartDate, true)
 	return json.Marshal(objectMap)
 }
 
@@ -983,8 +983,8 @@ func (b *BudgetProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type BudgetTimePeriod.
 func (b BudgetTimePeriod) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "endDate", b.EndDate)
-	populateTime[datetime.RFC3339](objectMap, "startDate", b.StartDate)
+	populateTime[datetime.RFC3339](objectMap, "endDate", b.EndDate, true)
+	populateTime[datetime.RFC3339](objectMap, "startDate", b.StartDate, true)
 	return json.Marshal(objectMap)
 }
 
@@ -1117,7 +1117,7 @@ func (c CommonExportProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "deliveryInfo", c.DeliveryInfo)
 	populate(objectMap, "exportDescription", c.ExportDescription)
 	populate(objectMap, "format", c.Format)
-	populateTime[datetime.RFC3339](objectMap, "nextRunTimeEstimate", c.NextRunTimeEstimate)
+	populateTime[datetime.RFC3339](objectMap, "nextRunTimeEstimate", c.NextRunTimeEstimate, true)
 	populate(objectMap, "partitionData", c.PartitionData)
 	populate(objectMap, "runHistory", c.RunHistory)
 	populate(objectMap, "systemSuspensionContext", c.SystemSuspensionContext)
@@ -1376,11 +1376,11 @@ func (c *CostAllocationRuleList) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type CostAllocationRuleProperties.
 func (c CostAllocationRuleProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdDate", c.CreatedDate)
+	populateTime[datetime.RFC3339](objectMap, "createdDate", c.CreatedDate, true)
 	populate(objectMap, "description", c.Description)
 	populate(objectMap, "details", c.Details)
 	populate(objectMap, "status", c.Status)
-	populateTime[datetime.RFC3339](objectMap, "updatedDate", c.UpdatedDate)
+	populateTime[datetime.RFC3339](objectMap, "updatedDate", c.UpdatedDate, true)
 	return json.Marshal(objectMap)
 }
 
@@ -1425,7 +1425,7 @@ func (c CostDetailsOperationResults) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "name", c.Name)
 	populate(objectMap, "status", c.Status)
 	populate(objectMap, "type", c.Type)
-	populateTime[datetime.RFC3339](objectMap, "validTill", c.ValidTill)
+	populateTime[datetime.RFC3339](objectMap, "validTill", c.ValidTill, true)
 	return json.Marshal(objectMap)
 }
 
@@ -1625,8 +1625,8 @@ func (d DimensionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "groupingEnabled", d.GroupingEnabled)
 	populate(objectMap, "nextLink", d.NextLink)
 	populate(objectMap, "total", d.Total)
-	populateTime[datetime.RFC3339](objectMap, "usageEnd", d.UsageEnd)
-	populateTime[datetime.RFC3339](objectMap, "usageStart", d.UsageStart)
+	populateTime[datetime.RFC3339](objectMap, "usageEnd", d.UsageEnd, true)
+	populateTime[datetime.RFC3339](objectMap, "usageStart", d.UsageStart, true)
 	return json.Marshal(objectMap)
 }
 
@@ -1736,8 +1736,8 @@ func (d *DismissAlertPayload) UnmarshalJSON(data []byte) error {
 func (d DownloadURL) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "downloadUrl", d.DownloadURL)
-	populateTime[datetime.RFC3339](objectMap, "expiryTime", d.ExpiryTime)
-	populateTime[datetime.RFC3339](objectMap, "validTill", d.ValidTill)
+	populateTime[datetime.RFC3339](objectMap, "expiryTime", d.ExpiryTime, true)
+	populateTime[datetime.RFC3339](objectMap, "validTill", d.ValidTill, true)
 	return json.Marshal(objectMap)
 }
 
@@ -2095,7 +2095,7 @@ func (e ExportProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "deliveryInfo", e.DeliveryInfo)
 	populate(objectMap, "exportDescription", e.ExportDescription)
 	populate(objectMap, "format", e.Format)
-	populateTime[datetime.RFC3339](objectMap, "nextRunTimeEstimate", e.NextRunTimeEstimate)
+	populateTime[datetime.RFC3339](objectMap, "nextRunTimeEstimate", e.NextRunTimeEstimate, true)
 	populate(objectMap, "partitionData", e.PartitionData)
 	populate(objectMap, "runHistory", e.RunHistory)
 	populate(objectMap, "schedule", e.Schedule)
@@ -2156,8 +2156,8 @@ func (e *ExportProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ExportRecurrencePeriod.
 func (e ExportRecurrencePeriod) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "from", e.From)
-	populateTime[datetime.RFC3339](objectMap, "to", e.To)
+	populateTime[datetime.RFC3339](objectMap, "from", e.From, true)
+	populateTime[datetime.RFC3339](objectMap, "to", e.To, true)
 	return json.Marshal(objectMap)
 }
 
@@ -2230,18 +2230,18 @@ func (e *ExportRun) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ExportRunProperties.
 func (e ExportRunProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "endDate", e.EndDate)
+	populateTime[datetime.RFC3339](objectMap, "endDate", e.EndDate, true)
 	populate(objectMap, "error", e.Error)
 	populate(objectMap, "executionType", e.ExecutionType)
 	populate(objectMap, "fileName", e.FileName)
 	populate(objectMap, "manifestFile", e.ManifestFile)
-	populateTime[datetime.RFC3339](objectMap, "processingEndTime", e.ProcessingEndTime)
-	populateTime[datetime.RFC3339](objectMap, "processingStartTime", e.ProcessingStartTime)
+	populateTime[datetime.RFC3339](objectMap, "processingEndTime", e.ProcessingEndTime, true)
+	populateTime[datetime.RFC3339](objectMap, "processingStartTime", e.ProcessingStartTime, true)
 	populate(objectMap, "runSettings", e.RunSettings)
-	populateTime[datetime.RFC3339](objectMap, "startDate", e.StartDate)
+	populateTime[datetime.RFC3339](objectMap, "startDate", e.StartDate, true)
 	populate(objectMap, "status", e.Status)
 	populate(objectMap, "submittedBy", e.SubmittedBy)
-	populateTime[datetime.RFC3339](objectMap, "submittedTime", e.SubmittedTime)
+	populateTime[datetime.RFC3339](objectMap, "submittedTime", e.SubmittedTime, true)
 	return json.Marshal(objectMap)
 }
 
@@ -2365,7 +2365,7 @@ func (e ExportSuspensionContext) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "suspensionCode", e.SuspensionCode)
 	populate(objectMap, "suspensionReason", e.SuspensionReason)
-	populateTime[datetime.RFC3339](objectMap, "suspensionTime", e.SuspensionTime)
+	populateTime[datetime.RFC3339](objectMap, "suspensionTime", e.SuspensionTime, true)
 	return json.Marshal(objectMap)
 }
 
@@ -2398,8 +2398,8 @@ func (e *ExportSuspensionContext) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ExportTimePeriod.
 func (e ExportTimePeriod) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "from", e.From)
-	populateTime[datetime.RFC3339](objectMap, "to", e.To)
+	populateTime[datetime.RFC3339](objectMap, "from", e.From, true)
+	populateTime[datetime.RFC3339](objectMap, "to", e.To, true)
 	return json.Marshal(objectMap)
 }
 
@@ -2857,8 +2857,8 @@ func (f *ForecastSpend) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ForecastTimePeriod.
 func (f ForecastTimePeriod) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "from", f.From)
-	populateTime[datetime.RFC3339](objectMap, "to", f.To)
+	populateTime[datetime.RFC3339](objectMap, "from", f.From, true)
+	populateTime[datetime.RFC3339](objectMap, "to", f.To, true)
 	return json.Marshal(objectMap)
 }
 
@@ -3154,7 +3154,7 @@ func (i IncludedQuantityUtilizationSummaryProperties) MarshalJSON() ([]byte, err
 	populate(objectMap, "benefitId", i.BenefitID)
 	populate(objectMap, "benefitOrderId", i.BenefitOrderID)
 	populate(objectMap, "benefitType", i.BenefitType)
-	populateTime[datetime.RFC3339](objectMap, "usageDate", i.UsageDate)
+	populateTime[datetime.RFC3339](objectMap, "usageDate", i.UsageDate, true)
 	populate(objectMap, "utilizationPercentage", i.UtilizationPercentage)
 	return json.Marshal(objectMap)
 }
@@ -3239,8 +3239,8 @@ func (m MCAPriceSheetProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "billingProfileId", m.BillingProfileID)
 	populate(objectMap, "billingProfileName", m.BillingProfileName)
 	populate(objectMap, "currency", m.Currency)
-	populateTime[datetime.RFC3339](objectMap, "effectiveEndDate", m.EffectiveEndDate)
-	populateTime[datetime.RFC3339](objectMap, "effectiveStartDate", m.EffectiveStartDate)
+	populateTime[datetime.RFC3339](objectMap, "effectiveEndDate", m.EffectiveEndDate, true)
+	populateTime[datetime.RFC3339](objectMap, "effectiveStartDate", m.EffectiveStartDate, true)
 	populate(objectMap, "marketPrice", m.MarketPrice)
 	populate(objectMap, "meterCategory", m.MeterCategory)
 	populate(objectMap, "meterId", m.MeterID)
@@ -3364,8 +3364,8 @@ func (m ManagementGroupScopeBenefitRecommendationProperties) MarshalJSON() ([]by
 	populate(objectMap, "commitmentGranularity", m.CommitmentGranularity)
 	populate(objectMap, "costWithoutBenefit", m.CostWithoutBenefit)
 	populate(objectMap, "currencyCode", m.CurrencyCode)
-	populateTime[datetime.RFC3339](objectMap, "firstConsumptionDate", m.FirstConsumptionDate)
-	populateTime[datetime.RFC3339](objectMap, "lastConsumptionDate", m.LastConsumptionDate)
+	populateTime[datetime.RFC3339](objectMap, "firstConsumptionDate", m.FirstConsumptionDate, true)
+	populateTime[datetime.RFC3339](objectMap, "lastConsumptionDate", m.LastConsumptionDate, true)
 	populate(objectMap, "lookBackPeriod", m.LookBackPeriod)
 	populate(objectMap, "managementGroupId", m.ManagementGroupID)
 	populate(objectMap, "recommendationDetails", m.RecommendationDetails)
@@ -3518,9 +3518,9 @@ func (m MarkupRuleProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "customerDetails", m.CustomerDetails)
 	populate(objectMap, "description", m.Description)
-	populateTime[datetime.RFC3339](objectMap, "endDate", m.EndDate)
+	populateTime[datetime.RFC3339](objectMap, "endDate", m.EndDate, true)
 	populate(objectMap, "percentage", m.Percentage)
-	populateTime[datetime.RFC3339](objectMap, "startDate", m.StartDate)
+	populateTime[datetime.RFC3339](objectMap, "startDate", m.StartDate, true)
 	return json.Marshal(objectMap)
 }
 
@@ -3842,7 +3842,7 @@ func (p PricesheetDownloadProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "downloadFileProperties", p.DownloadFileProperties)
 	populate(objectMap, "downloadUrl", p.DownloadURL)
-	populateTime[datetime.RFC3339](objectMap, "expiryTime", p.ExpiryTime)
+	populateTime[datetime.RFC3339](objectMap, "expiryTime", p.ExpiryTime, true)
 	return json.Marshal(objectMap)
 }
 
@@ -4241,8 +4241,8 @@ func (q *QueryResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type QueryTimePeriod.
 func (q QueryTimePeriod) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "from", q.From)
-	populateTime[datetime.RFC3339](objectMap, "to", q.To)
+	populateTime[datetime.RFC3339](objectMap, "from", q.From, true)
+	populateTime[datetime.RFC3339](objectMap, "to", q.To, true)
 	return json.Marshal(objectMap)
 }
 
@@ -4587,8 +4587,8 @@ func (r *ReportConfigSorting) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ReportConfigTimePeriod.
 func (r ReportConfigTimePeriod) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "from", r.From)
-	populateTime[datetime.RFC3339](objectMap, "to", r.To)
+	populateTime[datetime.RFC3339](objectMap, "from", r.From, true)
+	populateTime[datetime.RFC3339](objectMap, "to", r.To, true)
 	return json.Marshal(objectMap)
 }
 
@@ -4670,7 +4670,7 @@ func (r *ReportManifest) UnmarshalJSON(data []byte) error {
 func (r ReportURL) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "reportUrl", r.ReportURL)
-	populateTime[datetime.RFC3339](objectMap, "validUntil", r.ValidUntil)
+	populateTime[datetime.RFC3339](objectMap, "validUntil", r.ValidUntil, true)
 	return json.Marshal(objectMap)
 }
 
@@ -4785,7 +4785,7 @@ func (s SavingsPlanUtilizationSummaryProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "benefitType", s.BenefitType)
 	populate(objectMap, "maxUtilizationPercentage", s.MaxUtilizationPercentage)
 	populate(objectMap, "minUtilizationPercentage", s.MinUtilizationPercentage)
-	populateTime[datetime.RFC3339](objectMap, "usageDate", s.UsageDate)
+	populateTime[datetime.RFC3339](objectMap, "usageDate", s.UsageDate, true)
 	return json.Marshal(objectMap)
 }
 
@@ -4835,10 +4835,10 @@ func (s ScheduleProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "dayOfMonth", s.DayOfMonth)
 	populate(objectMap, "daysOfWeek", s.DaysOfWeek)
-	populateTime[datetime.RFC3339](objectMap, "endDate", s.EndDate)
+	populateTime[datetime.RFC3339](objectMap, "endDate", s.EndDate, true)
 	populate(objectMap, "frequency", s.Frequency)
 	populate(objectMap, "hourOfDay", s.HourOfDay)
-	populateTime[datetime.RFC3339](objectMap, "startDate", s.StartDate)
+	populateTime[datetime.RFC3339](objectMap, "startDate", s.StartDate, true)
 	populate(objectMap, "weeksOfMonth", s.WeeksOfMonth)
 	return json.Marshal(objectMap)
 }
@@ -5096,8 +5096,8 @@ func (s SharedScopeBenefitRecommendationProperties) MarshalJSON() ([]byte, error
 	populate(objectMap, "commitmentGranularity", s.CommitmentGranularity)
 	populate(objectMap, "costWithoutBenefit", s.CostWithoutBenefit)
 	populate(objectMap, "currencyCode", s.CurrencyCode)
-	populateTime[datetime.RFC3339](objectMap, "firstConsumptionDate", s.FirstConsumptionDate)
-	populateTime[datetime.RFC3339](objectMap, "lastConsumptionDate", s.LastConsumptionDate)
+	populateTime[datetime.RFC3339](objectMap, "firstConsumptionDate", s.FirstConsumptionDate, true)
+	populateTime[datetime.RFC3339](objectMap, "lastConsumptionDate", s.LastConsumptionDate, true)
 	populate(objectMap, "lookBackPeriod", s.LookBackPeriod)
 	populate(objectMap, "recommendationDetails", s.RecommendationDetails)
 	objectMap["scope"] = ScopeShared
@@ -5171,8 +5171,8 @@ func (s SingleScopeBenefitRecommendationProperties) MarshalJSON() ([]byte, error
 	populate(objectMap, "commitmentGranularity", s.CommitmentGranularity)
 	populate(objectMap, "costWithoutBenefit", s.CostWithoutBenefit)
 	populate(objectMap, "currencyCode", s.CurrencyCode)
-	populateTime[datetime.RFC3339](objectMap, "firstConsumptionDate", s.FirstConsumptionDate)
-	populateTime[datetime.RFC3339](objectMap, "lastConsumptionDate", s.LastConsumptionDate)
+	populateTime[datetime.RFC3339](objectMap, "firstConsumptionDate", s.FirstConsumptionDate, true)
+	populateTime[datetime.RFC3339](objectMap, "lastConsumptionDate", s.LastConsumptionDate, true)
 	populate(objectMap, "lookBackPeriod", s.LookBackPeriod)
 	populate(objectMap, "recommendationDetails", s.RecommendationDetails)
 	populate(objectMap, "resourceGroup", s.ResourceGroup)
@@ -5346,10 +5346,10 @@ func (s *SystemAssignedServiceIdentity) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt, true)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt, true)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -5586,13 +5586,13 @@ func (v ViewProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accumulated", v.Accumulated)
 	populate(objectMap, "chart", v.Chart)
-	populateTime[datetime.RFC3339](objectMap, "createdOn", v.CreatedOn)
+	populateTime[datetime.RFC3339](objectMap, "createdOn", v.CreatedOn, true)
 	populate(objectMap, "currency", v.Currency)
 	populate(objectMap, "dateRange", v.DateRange)
 	populate(objectMap, "displayName", v.DisplayName)
 	populate(objectMap, "kpis", v.Kpis)
 	populate(objectMap, "metric", v.Metric)
-	populateTime[datetime.RFC3339](objectMap, "modifiedOn", v.ModifiedOn)
+	populateTime[datetime.RFC3339](objectMap, "modifiedOn", v.ModifiedOn, true)
 	populate(objectMap, "pivots", v.Pivots)
 	populate(objectMap, "query", v.Query)
 	populate(objectMap, "scope", v.Scope)
@@ -5662,13 +5662,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time, utc bool) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
 		m[k] = nil
 	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
+		tt := *t
+		if utc {
+			tt = tt.UTC()
+		}
+		newTime := T(tt)
 		m[k] = (*T)(&newTime)
 	}
 }
@@ -5688,7 +5692,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }
@@ -5699,7 +5703,7 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 	}
 	var aux T
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	newTime := time.Time(aux)
 	*t = &newTime

@@ -1195,7 +1195,7 @@ func (r *segDataNetErrorReader) Read(p []byte) (int, error) {
 		return 0, io.EOF
 	}
 	// Calculate the end of the first segment's data within the encoded stream.
-	// Header (13 bytes) + segment header (6 bytes) + segment data (segSize bytes).
+	// Header (13 bytes) + segment header (10 bytes) + segment data (segSize bytes).
 	segDataEnd := SMHeaderSize + SMSegmentHeaderSize + r.segSize
 	if !r.injected && r.off < segDataEnd {
 		// Serve up to the end of segment data, then inject the error.
@@ -1232,6 +1232,7 @@ func TestDecoderPrematureEOFDuringSegmentData(t *testing.T) {
 	dec := NewSMDecoder(io.NopCloser(bytes.NewReader(truncated)))
 	_, err := io.ReadAll(dec)
 	require.Error(t, err)
+	require.ErrorIs(t, err, io.ErrUnexpectedEOF)
 	require.Contains(t, err.Error(), "segment")
 }
 
@@ -1298,7 +1299,7 @@ func TestFillFrameTruncatedFooterIsRetryable(t *testing.T) {
 	encoded := SMEncode(data, segSize).EncodedData
 
 	// Truncate after segment data, partway through the segment footer.
-	// Header (13) + seg header (6) + seg data (8) + partial footer (4 of 8).
+	// Header (13) + seg header (10) + seg data (8) + partial footer (4 of 8).
 	truncateAt := SMHeaderSize + SMSegmentHeaderSize + segSize + 4
 	require.Less(t, truncateAt, len(encoded))
 	truncated := encoded[:truncateAt]
@@ -1318,7 +1319,7 @@ func TestFillFrameTruncatedTrailerIsRetryable(t *testing.T) {
 	encoded := SMEncode(data, segSize).EncodedData
 
 	// Truncate after segment footer, partway through the message trailer.
-	// Header (13) + seg header (6) + seg data (8) + seg footer (8) + partial trailer (4 of 8).
+	// Header (13) + seg header (10) + seg data (8) + seg footer (8) + partial trailer (4 of 8).
 	truncateAt := SMHeaderSize + SMSegmentHeaderSize + segSize + SMSegmentFooterSize + 4
 	require.Less(t, truncateAt, len(encoded))
 	truncated := encoded[:truncateAt]

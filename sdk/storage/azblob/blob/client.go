@@ -381,15 +381,18 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	}
 
 	if dr.ETag != nil {
-		if o.AccessConditions == nil {
-			o.AccessConditions = &AccessConditions{
-				ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: dr.ETag},
-			}
-		} else if o.AccessConditions.ModifiedAccessConditions == nil {
-			o.AccessConditions.ModifiedAccessConditions = &ModifiedAccessConditions{IfMatch: dr.ETag}
-		} else if o.AccessConditions.ModifiedAccessConditions.IfMatch == nil {
-			o.AccessConditions.ModifiedAccessConditions.IfMatch = dr.ETag
+		ac := &AccessConditions{}
+		if o.AccessConditions != nil {
+			clone := *o.AccessConditions
+			ac = &clone
 		}
+		if ac.ModifiedAccessConditions == nil {
+			ac.ModifiedAccessConditions = &ModifiedAccessConditions{}
+		}
+		if ac.ModifiedAccessConditions.IfMatch == nil {
+			ac.ModifiedAccessConditions.IfMatch = dr.ETag
+		}
+		o.AccessConditions = ac
 	}
 
 	var initialChunkSize int64
@@ -470,6 +473,7 @@ func (b *Client) parallelDownload(ctx context.Context, writer io.WriterAt, o dow
 				})
 			}
 			if _, err = io.Copy(shared.NewSectionWriter(writer, chunkStart, count), body); err != nil {
+				body.Close()
 				return err
 			}
 			if dr.StructuredBodyType != nil && *dr.StructuredBodyType != "" && dr.ContentRange != nil {
@@ -514,6 +518,7 @@ func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o
 				})
 			}
 			if _, err = io.Copy(shared.NewSectionWriter(writer, chunkStart+writerOffset, count), body); err != nil {
+				body.Close()
 				return err
 			}
 			if dr.StructuredBodyType != nil && *dr.StructuredBodyType != "" && dr.ContentRange != nil {
@@ -579,15 +584,13 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 		return 0, err
 	}
 
-	if downloaded > 0 {
-		stat, err := file.Stat()
-		if err != nil {
+	stat, err := file.Stat()
+	if err != nil {
+		return downloaded, err
+	}
+	if stat.Size() != downloaded {
+		if err = file.Truncate(downloaded); err != nil {
 			return downloaded, err
-		}
-		if stat.Size() != downloaded {
-			if err = file.Truncate(downloaded); err != nil {
-				return downloaded, err
-			}
 		}
 	}
 

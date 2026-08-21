@@ -4297,6 +4297,8 @@ type fakeDownloadBlob struct {
 func (f *fakeDownloadBlob) Do(req *http.Request) (*http.Response, error) {
 	atomic.AddUint64(&f.numGets, 1)
 
+	etag := `"test-etag-12345"`
+
 	if rangeValues, ok := req.Header["x-ms-range"]; ok && len(rangeValues) > 0 {
 		var start, end int64
 		fmt.Sscanf(rangeValues[0], "bytes=%d-%d", &start, &end)
@@ -4304,6 +4306,10 @@ func (f *fakeDownloadBlob) Do(req *http.Request) (*http.Response, error) {
 			end = f.contentSize - 1
 		}
 		chunkLen := end - start + 1
+		body := make([]byte, chunkLen)
+		for i := int64(0); i < chunkLen; i++ {
+			body[i] = byte((start + i) % 251)
+		}
 		return &http.Response{
 			Request:    req,
 			Status:     "Partial Content",
@@ -4311,16 +4317,24 @@ func (f *fakeDownloadBlob) Do(req *http.Request) (*http.Response, error) {
 			Header: http.Header{
 				"Content-Length": []string{fmt.Sprintf("%d", chunkLen)},
 				"Content-Range":  []string{fmt.Sprintf("bytes %d-%d/%d", start, end, f.contentSize)},
+				"Etag":           []string{etag},
 			},
-			Body: http.NoBody,
+			Body: io.NopCloser(bytes.NewReader(body)),
 		}, nil
+	}
+	body := make([]byte, f.contentSize)
+	for i := int64(0); i < f.contentSize; i++ {
+		body[i] = byte(i % 251)
 	}
 	return &http.Response{
 		Request:    req,
 		Status:     "OK",
 		StatusCode: http.StatusOK,
-		Header:     http.Header{"Content-Length": []string{fmt.Sprintf("%d", f.contentSize)}},
-		Body:       http.NoBody,
+		Header: http.Header{
+			"Content-Length": []string{fmt.Sprintf("%d", f.contentSize)},
+			"Etag":           []string{etag},
+		},
+		Body: io.NopCloser(bytes.NewReader(body)),
 	}, nil
 }
 
@@ -4374,6 +4388,81 @@ func TestDownloadSmallBlobSkipsParallelRequests(t *testing.T) {
 	_require.NoError(err)
 	_require.Equal(fileSize, n)
 	_require.Equal(uint64(1), atomic.LoadUint64(&fbb.numGets))
+
+	for i := int64(0); i < fileSize; i++ {
+		_require.Equal(byte(i%251), buff[i], "data mismatch at offset %d", i)
+	}
+}
+
+func TestDownloadETagConsistency(t *testing.T) {
+	_require := require.New(t)
+
+	fileSize := int64(10 * 1024 * 1024) // 10MB → 3 chunks at 4MB default
+	blockSize := int64(4 * 1024 * 1024)
+	fbb := &fakeDownloadBlobWithETagCheck{contentSize: fileSize}
+
+	log.SetListener(nil)
+
+	blobClient, err := blockblob.NewClientWithNoCredential("https://fake/blob/path", &blockblob.ClientOptions{
+		ClientOptions: policy.ClientOptions{Transport: fbb},
+	})
+	_require.NoError(err)
+
+	buff := make([]byte, fileSize)
+	_, err = blobClient.DownloadBuffer(context.Background(), buff, &blob.DownloadBufferOptions{BlockSize: blockSize})
+	_require.NoError(err)
+
+	totalGets := atomic.LoadUint64(&fbb.numGets)
+	ifMatchCount := atomic.LoadUint64(&fbb.numIfMatch)
+	_require.Equal(uint64(3), totalGets)
+	_require.Equal(uint64(2), ifMatchCount, "follow-up requests should carry If-Match from initial response")
+}
+
+type fakeDownloadBlobWithETagCheck struct {
+	contentSize int64
+	numGets     uint64
+	numIfMatch  uint64
+}
+
+// nolint
+func (f *fakeDownloadBlobWithETagCheck) Do(req *http.Request) (*http.Response, error) {
+	atomic.AddUint64(&f.numGets, 1)
+
+	if req.Header.Get("If-Match") != "" {
+		atomic.AddUint64(&f.numIfMatch, 1)
+	}
+
+	etag := `"etag-consistency-test"`
+
+	if rangeValues, ok := req.Header["x-ms-range"]; ok && len(rangeValues) > 0 {
+		var start, end int64
+		fmt.Sscanf(rangeValues[0], "bytes=%d-%d", &start, &end)
+		if end >= f.contentSize {
+			end = f.contentSize - 1
+		}
+		chunkLen := end - start + 1
+		return &http.Response{
+			Request:    req,
+			Status:     "Partial Content",
+			StatusCode: http.StatusPartialContent,
+			Header: http.Header{
+				"Content-Length": []string{fmt.Sprintf("%d", chunkLen)},
+				"Content-Range":  []string{fmt.Sprintf("bytes %d-%d/%d", start, end, f.contentSize)},
+				"Etag":           []string{etag},
+			},
+			Body: http.NoBody,
+		}, nil
+	}
+	return &http.Response{
+		Request:    req,
+		Status:     "OK",
+		StatusCode: http.StatusOK,
+		Header: http.Header{
+			"Content-Length": []string{fmt.Sprintf("%d", f.contentSize)},
+			"Etag":           []string{etag},
+		},
+		Body: http.NoBody,
+	}, nil
 }
 
 func (s *BlobRecordedTestsSuite) TestGetSetTagsWithBlobModifiedAccessConditions() {

@@ -15,6 +15,8 @@
 
 ### Other Changes
 
+- Added unit-testing guidance and a compile-checked example for code that uses
+  `Receiver` through a consumer-defined interface.
 - Every administration operation now runs against service api-version `2024-05`, where it previously ran against `2021-05`. Responses follow the 2024-05 contract, which adds fields to some entity descriptions, and the topic filter counts above require this version. Set `APIVersion` on the `azcore.ClientOptions` embedded in the client's `ClientOptions` to pin a different version. (PR#27323)
 - Cleaned up accumulated `golangci-lint` findings in `azservicebus` (deprecated
   `runtime.WithHTTPHeader` calls switched to `policy.WithHTTPHeader`, duplicate

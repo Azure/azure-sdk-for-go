@@ -64,12 +64,7 @@ func (client *KeysClient) CreateIfNotExist(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return KeysClientCreateIfNotExistResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return KeysClientCreateIfNotExistResponse{}, err
-	}
-	resp, err := client.createIfNotExistHandleResponse(httpResp)
-	return resp, err
+	return client.createIfNotExistHandleResponse(httpResp, http.StatusOK)
 }
 
 // createIfNotExistCreateRequest creates the CreateIfNotExist request.
@@ -107,8 +102,11 @@ func (client *KeysClient) createIfNotExistCreateRequest(ctx context.Context, res
 }
 
 // createIfNotExistHandleResponse handles the CreateIfNotExist response.
-func (client *KeysClient) createIfNotExistHandleResponse(resp *http.Response) (KeysClientCreateIfNotExistResponse, error) {
+func (client *KeysClient) createIfNotExistHandleResponse(resp *http.Response, successCodes ...int) (KeysClientCreateIfNotExistResponse, error) {
 	result := KeysClientCreateIfNotExistResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
 		return KeysClientCreateIfNotExistResponse{}, err
 	}
@@ -135,12 +133,7 @@ func (client *KeysClient) Get(ctx context.Context, resourceGroupName string, vau
 	if err != nil {
 		return KeysClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return KeysClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -174,8 +167,11 @@ func (client *KeysClient) getCreateRequest(ctx context.Context, resourceGroupNam
 }
 
 // getHandleResponse handles the Get response.
-func (client *KeysClient) getHandleResponse(resp *http.Response) (KeysClientGetResponse, error) {
+func (client *KeysClient) getHandleResponse(resp *http.Response, successCodes ...int) (KeysClientGetResponse, error) {
 	result := KeysClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
 		return KeysClientGetResponse{}, err
 	}
@@ -203,12 +199,7 @@ func (client *KeysClient) GetVersion(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return KeysClientGetVersionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return KeysClientGetVersionResponse{}, err
-	}
-	resp, err := client.getVersionHandleResponse(httpResp)
-	return resp, err
+	return client.getVersionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getVersionCreateRequest creates the GetVersion request.
@@ -246,8 +237,11 @@ func (client *KeysClient) getVersionCreateRequest(ctx context.Context, resourceG
 }
 
 // getVersionHandleResponse handles the GetVersion response.
-func (client *KeysClient) getVersionHandleResponse(resp *http.Response) (KeysClientGetVersionResponse, error) {
+func (client *KeysClient) getVersionHandleResponse(resp *http.Response, successCodes ...int) (KeysClientGetVersionResponse, error) {
 	result := KeysClientGetVersionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Key); err != nil {
 		return KeysClientGetVersionResponse{}, err
 	}
@@ -269,47 +263,61 @@ func (client *KeysClient) NewListPager(resourceGroupName string, vaultName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, vaultName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, vaultName, nextLink, options)
 			if err != nil {
 				return KeysClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return KeysClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *KeysClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, _ *KeysClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *KeysClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, nextLink string, _ *KeysClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if vaultName == "" {
+			return nil, errors.New("parameter vaultName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *KeysClient) listHandleResponse(resp *http.Response) (KeysClientListResponse, error) {
+func (client *KeysClient) listHandleResponse(resp *http.Response, successCodes ...int) (KeysClientListResponse, error) {
 	result := KeysClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
 		return KeysClientListResponse{}, err
 	}
@@ -332,51 +340,65 @@ func (client *KeysClient) NewListVersionsPager(resourceGroupName string, vaultNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listVersionsCreateRequest(ctx, resourceGroupName, vaultName, keyName, options)
-			}, nil)
+			req, err := client.listVersionsCreateRequest(ctx, resourceGroupName, vaultName, keyName, nextLink, options)
 			if err != nil {
 				return KeysClientListVersionsResponse{}, err
 			}
-			return client.listVersionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return KeysClientListVersionsResponse{}, err
+			}
+			return client.listVersionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listVersionsCreateRequest creates the ListVersions request.
-func (client *KeysClient) listVersionsCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, _ *KeysClientListVersionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys/{keyName}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *KeysClient) listVersionsCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, keyName string, nextLink string, _ *KeysClientListVersionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}/keys/{keyName}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if vaultName == "" {
+			return nil, errors.New("parameter vaultName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+		if keyName == "" {
+			return nil, errors.New("parameter keyName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{keyName}", url.PathEscape(keyName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if keyName == "" {
-		return nil, errors.New("parameter keyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{keyName}", url.PathEscape(keyName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listVersionsHandleResponse handles the ListVersions response.
-func (client *KeysClient) listVersionsHandleResponse(resp *http.Response) (KeysClientListVersionsResponse, error) {
+func (client *KeysClient) listVersionsHandleResponse(resp *http.Response, successCodes ...int) (KeysClientListVersionsResponse, error) {
 	result := KeysClientListVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyListResult); err != nil {
 		return KeysClientListVersionsResponse{}, err
 	}

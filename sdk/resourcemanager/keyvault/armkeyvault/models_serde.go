@@ -254,11 +254,11 @@ func (d *DeletedManagedHsmListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DeletedManagedHsmProperties.
 func (d DeletedManagedHsmProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "deletionDate", d.DeletionDate)
+	populateTime[datetime.RFC3339](objectMap, "deletionDate", d.DeletionDate, true)
 	populate(objectMap, "location", d.Location)
 	populate(objectMap, "mhsmId", d.MhsmID)
 	populate(objectMap, "purgeProtectionEnabled", d.PurgeProtectionEnabled)
-	populateTime[datetime.RFC3339](objectMap, "scheduledPurgeDate", d.ScheduledPurgeDate)
+	populateTime[datetime.RFC3339](objectMap, "scheduledPurgeDate", d.ScheduledPurgeDate, true)
 	populate(objectMap, "tags", d.Tags)
 	return json.Marshal(objectMap)
 }
@@ -375,10 +375,10 @@ func (d *DeletedVaultListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DeletedVaultProperties.
 func (d DeletedVaultProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "deletionDate", d.DeletionDate)
+	populateTime[datetime.RFC3339](objectMap, "deletionDate", d.DeletionDate, true)
 	populate(objectMap, "location", d.Location)
 	populate(objectMap, "purgeProtectionEnabled", d.PurgeProtectionEnabled)
-	populateTime[datetime.RFC3339](objectMap, "scheduledPurgeDate", d.ScheduledPurgeDate)
+	populateTime[datetime.RFC3339](objectMap, "scheduledPurgeDate", d.ScheduledPurgeDate, true)
 	populate(objectMap, "tags", d.Tags)
 	populate(objectMap, "vaultId", d.VaultID)
 	return json.Marshal(objectMap)
@@ -1858,7 +1858,7 @@ func (m ManagedHsmProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "provisioningState", m.ProvisioningState)
 	populate(objectMap, "publicNetworkAccess", m.PublicNetworkAccess)
 	populate(objectMap, "regions", m.Regions)
-	populateTime[datetime.RFC3339](objectMap, "scheduledPurgeDate", m.ScheduledPurgeDate)
+	populateTime[datetime.RFC3339](objectMap, "scheduledPurgeDate", m.ScheduledPurgeDate, true)
 	populate(objectMap, "securityDomainProperties", m.SecurityDomainProperties)
 	populate(objectMap, "softDeleteRetentionInDays", m.SoftDeleteRetentionInDays)
 	populate(objectMap, "statusMessage", m.StatusMessage)
@@ -2823,11 +2823,11 @@ func (s *Secret) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SecretAttributes.
 func (s SecretAttributes) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.Unix](objectMap, "created", s.Created)
+	populateTime[datetime.Unix](objectMap, "created", s.Created, false)
 	populate(objectMap, "enabled", s.Enabled)
-	populateTime[datetime.Unix](objectMap, "exp", s.Expires)
-	populateTime[datetime.Unix](objectMap, "nbf", s.NotBefore)
-	populateTime[datetime.Unix](objectMap, "updated", s.Updated)
+	populateTime[datetime.Unix](objectMap, "exp", s.Expires, false)
+	populateTime[datetime.Unix](objectMap, "nbf", s.NotBefore, false)
+	populateTime[datetime.Unix](objectMap, "updated", s.Updated, false)
 	return json.Marshal(objectMap)
 }
 
@@ -3068,10 +3068,10 @@ func (s *ServiceSpecification) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt, true)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt, true)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -3716,13 +3716,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time, utc bool) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
 		m[k] = nil
 	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
+		tt := *t
+		if utc {
+			tt = tt.UTC()
+		}
+		newTime := T(tt)
 		m[k] = (*T)(&newTime)
 	}
 }
@@ -3742,7 +3746,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }
@@ -3753,7 +3757,7 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 	}
 	var aux T
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	newTime := time.Time(aux)
 	*t = &newTime

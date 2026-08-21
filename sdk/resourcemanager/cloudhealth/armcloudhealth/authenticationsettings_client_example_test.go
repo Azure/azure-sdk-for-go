@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/AuthenticationSettings_CreateOrUpdate.json
+// Generated from example definition: 2026-09-01-preview/AuthenticationSettings_CreateOrUpdate.json
 func ExampleAuthenticationSettingsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -63,7 +63,7 @@ func ExampleAuthenticationSettingsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/AuthenticationSettings_Delete.json
+// Generated from example definition: 2026-09-01-preview/AuthenticationSettings_Delete.json
 func ExampleAuthenticationSettingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleAuthenticationSettingsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/AuthenticationSettings_Get.json
+// Generated from example definition: 2026-09-01-preview/AuthenticationSettings_Get.json
 func ExampleAuthenticationSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleAuthenticationSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/AuthenticationSettings_ListByHealthModel.json
+// Generated from example definition: 2026-09-01-preview/AuthenticationSettings_ListByHealthModel.json
 func ExampleAuthenticationSettingsClient_NewListByHealthModelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -7,6 +7,7 @@
 package mock
 
 import (
+	context "context"
 	reflect "reflect"
 
 	auth "github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/auth"
@@ -37,16 +38,16 @@ func (m *MockTokenProvider) EXPECT() *MockTokenProviderMockRecorder {
 }
 
 // GetToken mocks base method.
-func (m *MockTokenProvider) GetToken(uri string) (*auth.Token, error) {
+func (m *MockTokenProvider) GetToken(ctx context.Context, uri string) (*auth.Token, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetToken", uri)
+	ret := m.ctrl.Call(m, "GetToken", ctx, uri)
 	ret0, _ := ret[0].(*auth.Token)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetToken indicates an expected call of GetToken.
-func (mr *MockTokenProviderMockRecorder) GetToken(uri interface{}) *gomock.Call {
+func (mr *MockTokenProviderMockRecorder) GetToken(ctx, uri interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetToken", reflect.TypeOf((*MockTokenProvider)(nil).GetToken), uri)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetToken", reflect.TypeOf((*MockTokenProvider)(nil).GetToken), ctx, uri)
 }

@@ -1,5 +1,18 @@
 # Release History
 
+## 11.0.0-beta.3 (2026-08-14)
+### Breaking Changes
+
+- Field `LdapOverTLS` of struct `LdapConfiguration` has been removed
+- Field `LdapOverTLS` of struct `LdapConfigurationPatch` has been removed
+
+### Features Added
+
+- New enum type `SecureLdapType` with values `SecureLdapTypeLdapOverTLS`, `SecureLdapTypeNone`
+- New field `SecureLdapType` in struct `LdapConfiguration`
+- New field `SecureLdapType` in struct `LdapConfigurationPatch`
+
+
 ## 11.0.0-beta.2 (2026-07-27)
 ### Features Added
 

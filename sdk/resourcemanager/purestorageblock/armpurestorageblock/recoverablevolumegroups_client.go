@@ -82,8 +82,7 @@ func (client *RecoverableVolumeGroupsClient) deleteOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -138,12 +137,7 @@ func (client *RecoverableVolumeGroupsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return RecoverableVolumeGroupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RecoverableVolumeGroupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -177,8 +171,11 @@ func (client *RecoverableVolumeGroupsClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecoverableVolumeGroupsClient) getHandleResponse(resp *http.Response) (RecoverableVolumeGroupsClientGetResponse, error) {
+func (client *RecoverableVolumeGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (RecoverableVolumeGroupsClientGetResponse, error) {
 	result := RecoverableVolumeGroupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableVolumeGroup); err != nil {
 		return RecoverableVolumeGroupsClientGetResponse{}, err
 	}
@@ -201,47 +198,61 @@ func (client *RecoverableVolumeGroupsClient) NewListByStoragePoolPager(resourceG
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByStoragePoolCreateRequest(ctx, resourceGroupName, storagePoolName, options)
-			}, nil)
+			req, err := client.listByStoragePoolCreateRequest(ctx, resourceGroupName, storagePoolName, nextLink, options)
 			if err != nil {
 				return RecoverableVolumeGroupsClientListByStoragePoolResponse{}, err
 			}
-			return client.listByStoragePoolHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RecoverableVolumeGroupsClientListByStoragePoolResponse{}, err
+			}
+			return client.listByStoragePoolHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByStoragePoolCreateRequest creates the ListByStoragePool request.
-func (client *RecoverableVolumeGroupsClient) listByStoragePoolCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *RecoverableVolumeGroupsClientListByStoragePoolOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/recoverableVolumeGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RecoverableVolumeGroupsClient) listByStoragePoolCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, nextLink string, _ *RecoverableVolumeGroupsClientListByStoragePoolOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/recoverableVolumeGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if storagePoolName == "" {
+			return nil, errors.New("parameter storagePoolName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storagePoolName == "" {
-		return nil, errors.New("parameter storagePoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByStoragePoolHandleResponse handles the ListByStoragePool response.
-func (client *RecoverableVolumeGroupsClient) listByStoragePoolHandleResponse(resp *http.Response) (RecoverableVolumeGroupsClientListByStoragePoolResponse, error) {
+func (client *RecoverableVolumeGroupsClient) listByStoragePoolHandleResponse(resp *http.Response, successCodes ...int) (RecoverableVolumeGroupsClientListByStoragePoolResponse, error) {
 	result := RecoverableVolumeGroupsClientListByStoragePoolResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableVolumeGroupListResult); err != nil {
 		return RecoverableVolumeGroupsClientListByStoragePoolResponse{}, err
 	}

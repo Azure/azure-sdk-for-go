@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (2026-07-29)
+## 1.1.0-beta.2 (2026-08-21)
 ### Features Added
 
 - New enum type `PlatformConsoleAuthType` with values `PlatformConsoleAuthTypeSSH`

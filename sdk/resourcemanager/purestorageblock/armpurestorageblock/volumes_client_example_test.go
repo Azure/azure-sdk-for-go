@@ -51,7 +51,7 @@ func ExampleVolumesClient_BeginCreate() {
 	// 			},
 	// 			ProvisionedSize: to.Ptr[int64](10737418240),
 	// 			SerialNumber: to.Ptr("PURE-VOL-ABC123XYZ"),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 			SoftDeletion: &armpurestorageblock.DestroyedStateProperties{
 	// 				Destroyed: to.Ptr(false),
 	// 			},
@@ -63,10 +63,10 @@ func ExampleVolumesClient_BeginCreate() {
 	// 		SystemData: &armpurestorageblock.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -122,7 +122,7 @@ func ExampleVolumesClient_Get() {
 	// 			},
 	// 			ProvisionedSize: to.Ptr[int64](10737418240),
 	// 			SerialNumber: to.Ptr("PURE-VOL-ABC123XYZ"),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 			SoftDeletion: &armpurestorageblock.DestroyedStateProperties{
 	// 				Destroyed: to.Ptr(false),
 	// 			},
@@ -134,10 +134,10 @@ func ExampleVolumesClient_Get() {
 	// 		SystemData: &armpurestorageblock.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -178,7 +178,7 @@ func ExampleVolumesClient_NewListByVolumeGroupPager() {
 		// 					},
 		// 					ProvisionedSize: to.Ptr[int64](10737418240),
 		// 					SerialNumber: to.Ptr("PURE-VOL-ABC123XYZ"),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 		// 					SoftDeletion: &armpurestorageblock.DestroyedStateProperties{
 		// 						Destroyed: to.Ptr(false),
 		// 					},
@@ -190,10 +190,10 @@ func ExampleVolumesClient_NewListByVolumeGroupPager() {
 		// 				SystemData: &armpurestorageblock.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -267,7 +267,7 @@ func ExampleVolumesClient_BeginUpdate() {
 	// 			},
 	// 			ProvisionedSize: to.Ptr[int64](21474836480),
 	// 			SerialNumber: to.Ptr("PURE-VOL-ABC123XYZ"),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01/volumes/volume-01"),
@@ -276,10 +276,10 @@ func ExampleVolumesClient_BeginUpdate() {
 	// 		SystemData: &armpurestorageblock.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T07:25:56.721Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-16T08:30:00Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 8, 30, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }

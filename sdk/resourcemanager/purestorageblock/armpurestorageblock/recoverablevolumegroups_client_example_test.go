@@ -53,12 +53,12 @@ func ExampleRecoverableVolumeGroupsClient_Get() {
 	// res = armpurestorageblock.RecoverableVolumeGroupsClientGetResponse{
 	// 	RecoverableVolumeGroup: armpurestorageblock.RecoverableVolumeGroup{
 	// 		Properties: &armpurestorageblock.RecoverableVolumeGroupProperties{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-20T10:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 20, 10, 0, 0, 0, time.UTC)),
 	// 			SoftDeletion: &armpurestorageblock.DestroyedStateProperties{
 	// 				Destroyed: to.Ptr(true),
-	// 				DestroyedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-05T12:00:00.000Z"); return t}()),
+	// 				DestroyedAt: to.Ptr(time.Date(2026, time.February, 5, 12, 0, 0, 0, time.UTC)),
 	// 				PreviousName: to.Ptr("volumegroup-01"),
-	// 				EradicationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-19T12:00:00.000Z"); return t}()),
+	// 				EradicationTimestamp: to.Ptr(time.Date(2026, time.February, 19, 12, 0, 0, 0, time.UTC)),
 	// 			},
 	// 			PerformanceParameters: &armpurestorageblock.PerformanceParameters{
 	// 				BandwidthLimitMbPerSec: to.Ptr[int64](500),
@@ -82,10 +82,10 @@ func ExampleRecoverableVolumeGroupsClient_Get() {
 	// 		SystemData: &armpurestorageblock.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-20T10:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 20, 10, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-05T12:00:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.February, 5, 12, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -118,12 +118,12 @@ func ExampleRecoverableVolumeGroupsClient_NewListByStoragePoolPager() {
 		// 		Value: []*armpurestorageblock.RecoverableVolumeGroup{
 		// 			{
 		// 				Properties: &armpurestorageblock.RecoverableVolumeGroupProperties{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-20T10:00:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.January, 20, 10, 0, 0, 0, time.UTC)),
 		// 					SoftDeletion: &armpurestorageblock.DestroyedStateProperties{
 		// 						Destroyed: to.Ptr(true),
-		// 						DestroyedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-05T12:00:00.000Z"); return t}()),
+		// 						DestroyedAt: to.Ptr(time.Date(2026, time.February, 5, 12, 0, 0, 0, time.UTC)),
 		// 						PreviousName: to.Ptr("volumegroup-01"),
-		// 						EradicationTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-19T12:00:00.000Z"); return t}()),
+		// 						EradicationTimestamp: to.Ptr(time.Date(2026, time.February, 19, 12, 0, 0, 0, time.UTC)),
 		// 					},
 		// 					PerformanceParameters: &armpurestorageblock.PerformanceParameters{
 		// 						BandwidthLimitMbPerSec: to.Ptr[int64](500),
@@ -147,10 +147,10 @@ func ExampleRecoverableVolumeGroupsClient_NewListByStoragePoolPager() {
 		// 				SystemData: &armpurestorageblock.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-01-20T10:00:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.January, 20, 10, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-05T12:00:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.February, 5, 12, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

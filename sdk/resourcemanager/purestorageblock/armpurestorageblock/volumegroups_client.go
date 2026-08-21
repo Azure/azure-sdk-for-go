@@ -83,8 +83,7 @@ func (client *VolumeGroupsClient) create(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -164,8 +163,7 @@ func (client *VolumeGroupsClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -219,12 +217,7 @@ func (client *VolumeGroupsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return VolumeGroupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VolumeGroupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -258,8 +251,11 @@ func (client *VolumeGroupsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *VolumeGroupsClient) getHandleResponse(resp *http.Response) (VolumeGroupsClientGetResponse, error) {
+func (client *VolumeGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (VolumeGroupsClientGetResponse, error) {
 	result := VolumeGroupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VolumeGroup); err != nil {
 		return VolumeGroupsClientGetResponse{}, err
 	}
@@ -286,12 +282,7 @@ func (client *VolumeGroupsClient) GetStatus(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return VolumeGroupsClientGetStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VolumeGroupsClientGetStatusResponse{}, err
-	}
-	resp, err := client.getStatusHandleResponse(httpResp)
-	return resp, err
+	return client.getStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // getStatusCreateRequest creates the GetStatus request.
@@ -325,8 +316,11 @@ func (client *VolumeGroupsClient) getStatusCreateRequest(ctx context.Context, re
 }
 
 // getStatusHandleResponse handles the GetStatus response.
-func (client *VolumeGroupsClient) getStatusHandleResponse(resp *http.Response) (VolumeGroupsClientGetStatusResponse, error) {
+func (client *VolumeGroupsClient) getStatusHandleResponse(resp *http.Response, successCodes ...int) (VolumeGroupsClientGetStatusResponse, error) {
 	result := VolumeGroupsClientGetStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VolumeGroupStatus); err != nil {
 		return VolumeGroupsClientGetStatusResponse{}, err
 	}
@@ -349,47 +343,61 @@ func (client *VolumeGroupsClient) NewListByStoragePoolPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByStoragePoolCreateRequest(ctx, resourceGroupName, storagePoolName, options)
-			}, nil)
+			req, err := client.listByStoragePoolCreateRequest(ctx, resourceGroupName, storagePoolName, nextLink, options)
 			if err != nil {
 				return VolumeGroupsClientListByStoragePoolResponse{}, err
 			}
-			return client.listByStoragePoolHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VolumeGroupsClientListByStoragePoolResponse{}, err
+			}
+			return client.listByStoragePoolHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByStoragePoolCreateRequest creates the ListByStoragePool request.
-func (client *VolumeGroupsClient) listByStoragePoolCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *VolumeGroupsClientListByStoragePoolOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *VolumeGroupsClient) listByStoragePoolCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, nextLink string, _ *VolumeGroupsClientListByStoragePoolOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if storagePoolName == "" {
+			return nil, errors.New("parameter storagePoolName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storagePoolName == "" {
-		return nil, errors.New("parameter storagePoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByStoragePoolHandleResponse handles the ListByStoragePool response.
-func (client *VolumeGroupsClient) listByStoragePoolHandleResponse(resp *http.Response) (VolumeGroupsClientListByStoragePoolResponse, error) {
+func (client *VolumeGroupsClient) listByStoragePoolHandleResponse(resp *http.Response, successCodes ...int) (VolumeGroupsClientListByStoragePoolResponse, error) {
 	result := VolumeGroupsClientListByStoragePoolResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VolumeGroupListResult); err != nil {
 		return VolumeGroupsClientListByStoragePoolResponse{}, err
 	}
@@ -417,12 +425,7 @@ func (client *VolumeGroupsClient) ListConnectionParameters(ctx context.Context, 
 	if err != nil {
 		return VolumeGroupsClientListConnectionParametersResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VolumeGroupsClientListConnectionParametersResponse{}, err
-	}
-	resp, err := client.listConnectionParametersHandleResponse(httpResp)
-	return resp, err
+	return client.listConnectionParametersHandleResponse(httpResp, http.StatusOK)
 }
 
 // listConnectionParametersCreateRequest creates the ListConnectionParameters request.
@@ -456,8 +459,11 @@ func (client *VolumeGroupsClient) listConnectionParametersCreateRequest(ctx cont
 }
 
 // listConnectionParametersHandleResponse handles the ListConnectionParameters response.
-func (client *VolumeGroupsClient) listConnectionParametersHandleResponse(resp *http.Response) (VolumeGroupsClientListConnectionParametersResponse, error) {
+func (client *VolumeGroupsClient) listConnectionParametersHandleResponse(resp *http.Response, successCodes ...int) (VolumeGroupsClientListConnectionParametersResponse, error) {
 	result := VolumeGroupsClientListConnectionParametersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionParametersResponse); err != nil {
 		return VolumeGroupsClientListConnectionParametersResponse{}, err
 	}
@@ -507,8 +513,7 @@ func (client *VolumeGroupsClient) overwrite(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -588,8 +593,7 @@ func (client *VolumeGroupsClient) update(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

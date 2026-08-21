@@ -454,10 +454,10 @@ func ExampleReservationsClient_BeginLinkSaaS() {
 	// 		SystemData: &armpurestorageblock.SystemData{
 	// 			CreatedBy: to.Ptr("john.doe@contoso.com"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T10:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.March, 1, 10, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("john.doe@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-03T14:30:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.March, 3, 14, 30, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }

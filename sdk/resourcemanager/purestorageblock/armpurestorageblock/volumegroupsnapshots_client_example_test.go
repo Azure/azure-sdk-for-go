@@ -41,7 +41,7 @@ func ExampleVolumeGroupSnapshotsClient_BeginCreate() {
 	// res = armpurestorageblock.VolumeGroupSnapshotsClientCreateResponse{
 	// 	VolumeGroupSnapshot: armpurestorageblock.VolumeGroupSnapshot{
 	// 		Properties: &armpurestorageblock.VolumeGroupSnapshotProperties{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-10T08:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.February, 10, 8, 0, 0, 0, time.UTC)),
 	// 			CreatedByPolicy: to.Ptr(false),
 	// 			SoftDeletion: &armpurestorageblock.DestroyedStateProperties{
 	// 				Destroyed: to.Ptr(false),
@@ -62,10 +62,10 @@ func ExampleVolumeGroupSnapshotsClient_BeginCreate() {
 	// 		SystemData: &armpurestorageblock.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-10T08:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.February, 10, 8, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-10T08:00:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.February, 10, 8, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -113,7 +113,7 @@ func ExampleVolumeGroupSnapshotsClient_Get() {
 	// res = armpurestorageblock.VolumeGroupSnapshotsClientGetResponse{
 	// 	VolumeGroupSnapshot: armpurestorageblock.VolumeGroupSnapshot{
 	// 		Properties: &armpurestorageblock.VolumeGroupSnapshotProperties{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-10T08:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.February, 10, 8, 0, 0, 0, time.UTC)),
 	// 			CreatedByPolicy: to.Ptr(false),
 	// 			SoftDeletion: &armpurestorageblock.DestroyedStateProperties{
 	// 				Destroyed: to.Ptr(false),
@@ -144,10 +144,10 @@ func ExampleVolumeGroupSnapshotsClient_Get() {
 	// 		SystemData: &armpurestorageblock.SystemData{
 	// 			CreatedBy: to.Ptr("user@contoso.com"),
 	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-10T08:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.February, 10, 8, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-10T08:00:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.February, 10, 8, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -180,7 +180,7 @@ func ExampleVolumeGroupSnapshotsClient_NewListByVolumeGroupPager() {
 		// 		Value: []*armpurestorageblock.VolumeGroupSnapshot{
 		// 			{
 		// 				Properties: &armpurestorageblock.VolumeGroupSnapshotProperties{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-10T08:00:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.February, 10, 8, 0, 0, 0, time.UTC)),
 		// 					CreatedByPolicy: to.Ptr(false),
 		// 					SoftDeletion: &armpurestorageblock.DestroyedStateProperties{
 		// 						Destroyed: to.Ptr(false),
@@ -201,10 +201,10 @@ func ExampleVolumeGroupSnapshotsClient_NewListByVolumeGroupPager() {
 		// 				SystemData: &armpurestorageblock.SystemData{
 		// 					CreatedBy: to.Ptr("user@contoso.com"),
 		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-10T08:00:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.February, 10, 8, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-10T08:00:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.February, 10, 8, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -241,7 +241,7 @@ func ExampleVolumeGroupSnapshotsClient_ListSnapshots() {
 	// 		Value: []*armpurestorageblock.VolumeGroupSnapshot{
 	// 			{
 	// 				Properties: &armpurestorageblock.VolumeGroupSnapshotProperties{
-	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-10T08:00:00.000Z"); return t}()),
+	// 					CreatedAt: to.Ptr(time.Date(2026, time.February, 10, 8, 0, 0, 0, time.UTC)),
 	// 					CreatedByPolicy: to.Ptr(false),
 	// 					SoftDeletion: &armpurestorageblock.DestroyedStateProperties{
 	// 						Destroyed: to.Ptr(false),
@@ -262,10 +262,10 @@ func ExampleVolumeGroupSnapshotsClient_ListSnapshots() {
 	// 				SystemData: &armpurestorageblock.SystemData{
 	// 					CreatedBy: to.Ptr("user@contoso.com"),
 	// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-10T08:00:00.000Z"); return t}()),
+	// 					CreatedAt: to.Ptr(time.Date(2026, time.February, 10, 8, 0, 0, 0, time.UTC)),
 	// 					LastModifiedBy: to.Ptr("user@contoso.com"),
 	// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-02-10T08:00:00.000Z"); return t}()),
+	// 					LastModifiedAt: to.Ptr(time.Date(2026, time.February, 10, 8, 0, 0, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 		},

@@ -876,7 +876,7 @@ func (a *AzureVmwareService) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AzureVolumeProperties.
 func (a AzureVolumeProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", a.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", a.CreatedAt, true)
 	populate(objectMap, "provisionedSize", a.ProvisionedSize)
 	populate(objectMap, "provisioningState", a.ProvisioningState)
 	populate(objectMap, "serialNumber", a.SerialNumber)
@@ -1092,8 +1092,8 @@ func (c *ConnectionParametersResponse) UnmarshalJSON(data []byte) error {
 func (d DestroyedStateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "destroyed", d.Destroyed)
-	populateTime[datetime.RFC3339](objectMap, "destroyedAt", d.DestroyedAt)
-	populateTime[datetime.RFC3339](objectMap, "eradicationTimestamp", d.EradicationTimestamp)
+	populateTime[datetime.RFC3339](objectMap, "destroyedAt", d.DestroyedAt, true)
+	populateTime[datetime.RFC3339](objectMap, "eradicationTimestamp", d.EradicationTimestamp, true)
 	populate(objectMap, "previousName", d.PreviousName)
 	return json.Marshal(objectMap)
 }
@@ -1699,7 +1699,7 @@ func (p *PlatformConsoleAccessSettings) UnmarshalJSON(data []byte) error {
 func (p PlatformConsoleActivationCode) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "activationCode", p.ActivationCode)
-	populateTime[datetime.RFC3339](objectMap, "expiresAt", p.ExpiresAt)
+	populateTime[datetime.RFC3339](objectMap, "expiresAt", p.ExpiresAt, true)
 	populate(objectMap, "username", p.Username)
 	return json.Marshal(objectMap)
 }
@@ -2036,7 +2036,7 @@ func (r *RecoverableVolumeGroupListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RecoverableVolumeGroupProperties.
 func (r RecoverableVolumeGroupProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", r.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", r.CreatedAt, true)
 	populate(objectMap, "performanceParameters", r.PerformanceParameters)
 	populate(objectMap, "protectionParameters", r.ProtectionParameters)
 	populate(objectMap, "provisioningState", r.ProvisioningState)
@@ -2972,10 +2972,10 @@ func (s *StoragePoolUpdateProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt, true)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt, true)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -3491,7 +3491,7 @@ func (v *VolumeGroupSnapshotPostListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type VolumeGroupSnapshotProperties.
 func (v VolumeGroupSnapshotProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", v.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", v.CreatedAt, true)
 	populate(objectMap, "createdByPolicy", v.CreatedByPolicy)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "softDeletion", v.SoftDeletion)
@@ -3934,13 +3934,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time, utc bool) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
 		m[k] = nil
 	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
+		tt := *t
+		if utc {
+			tt = tt.UTC()
+		}
+		newTime := T(tt)
 		m[k] = (*T)(&newTime)
 	}
 }
@@ -3950,7 +3954,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }
@@ -3961,7 +3965,7 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 	}
 	var aux T
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	newTime := time.Time(aux)
 	*t = &newTime

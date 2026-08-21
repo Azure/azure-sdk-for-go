@@ -584,7 +584,7 @@ func ExampleStoragePoolsClient_ListPlatformConsoleActivationCode() {
 	// 	PlatformConsoleActivationCode: armpurestorageblock.PlatformConsoleActivationCode{
 	// 		Username: to.Ptr("cloudadmin"),
 	// 		ActivationCode: to.Ptr("OTC-A1B2C3D4E5F6G7H8I9J0"),
-	// 		ExpiresAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-06-04T13:00:00Z"); return t}()),
+	// 		ExpiresAt: to.Ptr(time.Date(2026, time.June, 4, 13, 0, 0, 0, time.UTC)),
 	// 	},
 	// }
 }

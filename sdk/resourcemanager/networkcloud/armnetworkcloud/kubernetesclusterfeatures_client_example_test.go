@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusterFeatures_Create.json
+// Generated from example definition: 2026-07-01/KubernetesClusterFeatures_Create.json
 func ExampleKubernetesClusterFeaturesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleKubernetesClusterFeaturesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusterFeatures_Delete.json
+// Generated from example definition: 2026-07-01/KubernetesClusterFeatures_Delete.json
 func ExampleKubernetesClusterFeaturesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleKubernetesClusterFeaturesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusterFeatures_Get.json
+// Generated from example definition: 2026-07-01/KubernetesClusterFeatures_Get.json
 func ExampleKubernetesClusterFeaturesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleKubernetesClusterFeaturesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusterFeatures_ListByKubernetesCluster.json
+// Generated from example definition: 2026-07-01/KubernetesClusterFeatures_ListByKubernetesCluster.json
 func ExampleKubernetesClusterFeaturesClient_NewListByKubernetesClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +222,7 @@ func ExampleKubernetesClusterFeaturesClient_NewListByKubernetesClusterPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusterFeatures_Patch.json
+// Generated from example definition: 2026-07-01/KubernetesClusterFeatures_Patch.json
 func ExampleKubernetesClusterFeaturesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

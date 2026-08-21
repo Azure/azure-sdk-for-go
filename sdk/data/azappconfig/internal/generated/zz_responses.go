@@ -255,3 +255,108 @@ type AzureAppConfigurationClientUpdateSnapshotResponse struct {
 	// Used to guarantee real-time consistency between requests.
 	SyncToken *string
 }
+
+// AzureAppConfigurationFeatureFlagClientCheckFeatureFlagResponse contains the response from method AzureAppConfigurationFeatureFlagClient.CheckFeatureFlag.
+type AzureAppConfigurationFeatureFlagClientCheckFeatureFlagResponse struct {
+	// A value representing the current state of the resource.
+	ETag *string
+
+	// Used to guarantee real-time consistency between requests.
+	SyncToken *string
+}
+
+// AzureAppConfigurationFeatureFlagClientCheckFeatureFlagRevisionsResponse contains the response from method AzureAppConfigurationFeatureFlagClient.CheckFeatureFlagRevisions.
+type AzureAppConfigurationFeatureFlagClientCheckFeatureFlagRevisionsResponse struct {
+	// A value representing the current state of the resource.
+	ETag *string
+
+	// Used to guarantee real-time consistency between requests.
+	SyncToken *string
+}
+
+// AzureAppConfigurationFeatureFlagClientCheckFeatureFlagsResponse contains the response from method AzureAppConfigurationFeatureFlagClient.CheckFeatureFlags.
+type AzureAppConfigurationFeatureFlagClientCheckFeatureFlagsResponse struct {
+	// A value representing the current state of the resource.
+	ETag *string
+
+	// Used to guarantee real-time consistency between requests.
+	SyncToken *string
+}
+
+// AzureAppConfigurationFeatureFlagClientDeleteFeatureFlagResponse contains the response from method AzureAppConfigurationFeatureFlagClient.DeleteFeatureFlag.
+type AzureAppConfigurationFeatureFlagClientDeleteFeatureFlagResponse struct {
+	// A feature flag.
+	FeatureFlag
+
+	// Content-Type header
+	ContentType *GetFeatureFlagResponseContentType
+
+	// A value representing the current state of the resource.
+	ETag *string
+
+	// Used to guarantee real-time consistency between requests.
+	SyncToken *string
+}
+
+// AzureAppConfigurationFeatureFlagClientGetFeatureFlagResponse contains the response from method AzureAppConfigurationFeatureFlagClient.GetFeatureFlag.
+type AzureAppConfigurationFeatureFlagClientGetFeatureFlagResponse struct {
+	// A feature flag.
+	FeatureFlag
+
+	// Content-Type header
+	ContentType *GetFeatureFlagResponseContentType
+
+	// A value representing the current state of the resource.
+	ETag *string
+
+	// An opaque, globally-unique, server-generated string identifier for the request.
+	RequestID *string
+
+	// Used to guarantee real-time consistency between requests.
+	SyncToken *string
+}
+
+// AzureAppConfigurationFeatureFlagClientGetFeatureFlagRevisionsResponse contains the response from method AzureAppConfigurationFeatureFlagClient.NewGetFeatureFlagRevisionsPager.
+type AzureAppConfigurationFeatureFlagClientGetFeatureFlagRevisionsResponse struct {
+	// The result of a Feature Flag list request.
+	FeatureFlagListResult
+
+	// Content-Type header
+	ContentType *GetFeatureFlagsResponseContentType
+
+	// A value representing the current state of the resource.
+	ETag *string
+
+	// Used to guarantee real-time consistency between requests.
+	SyncToken *string
+}
+
+// AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse contains the response from method AzureAppConfigurationFeatureFlagClient.NewGetFeatureFlagsPager.
+type AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse struct {
+	// The result of a Feature Flag list request.
+	FeatureFlagListResult
+
+	// Content-Type header
+	ContentType *GetFeatureFlagsResponseContentType
+
+	// A value representing the current state of the resource.
+	ETag *string
+
+	// Used to guarantee real-time consistency between requests.
+	SyncToken *string
+}
+
+// AzureAppConfigurationFeatureFlagClientPutFeatureFlagResponse contains the response from method AzureAppConfigurationFeatureFlagClient.PutFeatureFlag.
+type AzureAppConfigurationFeatureFlagClientPutFeatureFlagResponse struct {
+	// A feature flag.
+	FeatureFlag
+
+	// Content-Type header
+	ContentType *GetFeatureFlagResponseContentType
+
+	// A value representing the current state of the resource.
+	ETag *string
+
+	// Used to guarantee real-time consistency between requests.
+	SyncToken *string
+}

@@ -54,7 +54,6 @@ func (client *AzureAppConfigurationClient) NewGetKeyValuesPagerWithMatchConditio
 				NextReq: func(ctx context.Context, encodedNextLink string) (*policy.Request, error) {
 					return client.getNextPageCreateRequestWithMatchConditions(ctx, encodedNextLink, curCondition)
 				},
-				StatusCodes: []int{http.StatusNotModified},
 			})
 			if err != nil {
 				return AzureAppConfigurationClientGetKeyValuesResponse{}, err
@@ -89,15 +88,8 @@ func (a *AzureAppConfigurationClient) getKeyValuesHandleResponseWithLinkHeader(r
 		return result, err
 	}
 
-	link := resp.Header.Get("Link")
-	if link == "" {
-		return result, err
-	}
-
-	// the link header format is <nextLinkURL>; rel="next"
-	// extract the values between < and >
-	if endIndex := strings.Index(link, ">"); endIndex > 0 {
-		result.NextLink = to.Ptr(link[1:endIndex])
+	if nextLink := nextLinkFromHeader(resp.Header.Get("Link")); nextLink != "" {
+		result.NextLink = to.Ptr(nextLink)
 	}
 	return result, err
 }
@@ -200,4 +192,131 @@ func (client *AzureAppConfigurationClient) getNextPageCreateRequest(ctx context.
 	}
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
+}
+
+// ffAcceptHeader matches the Accept header used by the generated feature flag pager requests.
+const ffAcceptHeader = "application/json;profile=\"https://azconfig.io/mime-profiles/ffset\";charset=utf-8, application/problem+json"
+
+// NewGetFeatureFlagsPagerWithLinkHeader wraps the generated feature flag pager so that the nextLink
+// can also be discovered from the "Link" response header. Azure App Configuration returns
+// pagination information via the Link header rather than the JSON body for feature flag list
+// responses.
+func (client *AzureAppConfigurationFeatureFlagClient) NewGetFeatureFlagsPagerWithLinkHeader(matchConditions []azcore.MatchConditions, options *AzureAppConfigurationFeatureFlagClientGetFeatureFlagsOptions) *runtime.Pager[AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse]{
+		More: func(page AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse) (AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse, error) {
+			curCondition := azcore.MatchConditions{}
+			if len(matchConditions) > 0 {
+				curCondition = matchConditions[0]
+				matchConditions = matchConditions[1:]
+			}
+			options.IfMatch = (*string)(curCondition.IfMatch)
+			options.IfNoneMatch = (*string)(curCondition.IfNoneMatch)
+			nextLink := ""
+			if page != nil && page.NextLink != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getFeatureFlagsCreateRequest(ctx, options)
+			}, &runtime.FetcherForNextLinkOptions{
+				NextReq: func(ctx context.Context, encodedNextLink string) (*policy.Request, error) {
+					return client.getFeatureFlagNextPageCreateRequest(ctx, encodedNextLink, curCondition)
+				},
+			})
+			if err != nil {
+				return AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse{}, err
+			}
+			return client.getFeatureFlagsHandleResponseWithLinkHeader(resp)
+		},
+	})
+}
+
+// NewGetFeatureFlagRevisionsPagerWithLinkHeader wraps the generated feature flag revisions pager
+// so that the nextLink can also be discovered from the "Link" response header.
+func (client *AzureAppConfigurationFeatureFlagClient) NewGetFeatureFlagRevisionsPagerWithLinkHeader(options *AzureAppConfigurationFeatureFlagClientGetFeatureFlagRevisionsOptions) *runtime.Pager[AzureAppConfigurationFeatureFlagClientGetFeatureFlagRevisionsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AzureAppConfigurationFeatureFlagClientGetFeatureFlagRevisionsResponse]{
+		More: func(page AzureAppConfigurationFeatureFlagClientGetFeatureFlagRevisionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AzureAppConfigurationFeatureFlagClientGetFeatureFlagRevisionsResponse) (AzureAppConfigurationFeatureFlagClientGetFeatureFlagRevisionsResponse, error) {
+			nextLink := ""
+			if page != nil && page.NextLink != nil {
+				nextLink = *page.NextLink
+			}
+			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
+				return client.getFeatureFlagRevisionsCreateRequest(ctx, options)
+			}, &runtime.FetcherForNextLinkOptions{
+				NextReq: func(ctx context.Context, encodedNextLink string) (*policy.Request, error) {
+					return client.getFeatureFlagNextPageCreateRequest(ctx, encodedNextLink, azcore.MatchConditions{})
+				},
+			})
+			if err != nil {
+				return AzureAppConfigurationFeatureFlagClientGetFeatureFlagRevisionsResponse{}, err
+			}
+			return client.getFeatureFlagRevisionsHandleResponseWithLinkHeader(resp)
+		},
+	})
+}
+
+// getFeatureFlagNextPageCreateRequest builds a request for a subsequent page of feature flags or
+// revisions from the encoded nextLink returned by the service.
+func (client *AzureAppConfigurationFeatureFlagClient) getFeatureFlagNextPageCreateRequest(ctx context.Context, nextLink string, matchConditions azcore.MatchConditions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, nextLink))
+	if err != nil {
+		return nil, err
+	}
+	req.Raw().Header["Accept"] = []string{ffAcceptHeader}
+	if matchConditions.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*(*string)(matchConditions.IfMatch)}
+	}
+	if matchConditions.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*(*string)(matchConditions.IfNoneMatch)}
+	}
+	return req, nil
+}
+
+// getFeatureFlagsHandleResponseWithLinkHeader parses the nextLink from the "Link" response header
+// when it is not populated in the JSON body.
+func (client *AzureAppConfigurationFeatureFlagClient) getFeatureFlagsHandleResponseWithLinkHeader(resp *http.Response) (AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse, error) {
+	result, err := client.getFeatureFlagsHandleResponse(resp)
+	if err != nil {
+		return AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse{}, err
+	}
+	if result.NextLink != nil {
+		return result, nil
+	}
+	if nextLink := nextLinkFromHeader(resp.Header.Get("Link")); nextLink != "" {
+		result.NextLink = to.Ptr(nextLink)
+	}
+	return result, nil
+}
+
+// getFeatureFlagRevisionsHandleResponseWithLinkHeader parses the nextLink from the "Link" response
+// header when it is not populated in the JSON body.
+func (client *AzureAppConfigurationFeatureFlagClient) getFeatureFlagRevisionsHandleResponseWithLinkHeader(resp *http.Response) (AzureAppConfigurationFeatureFlagClientGetFeatureFlagRevisionsResponse, error) {
+	result, err := client.getFeatureFlagRevisionsHandleResponse(resp)
+	if err != nil {
+		return AzureAppConfigurationFeatureFlagClientGetFeatureFlagRevisionsResponse{}, err
+	}
+	if result.NextLink != nil {
+		return result, nil
+	}
+	if nextLink := nextLinkFromHeader(resp.Header.Get("Link")); nextLink != "" {
+		result.NextLink = to.Ptr(nextLink)
+	}
+	return result, nil
+}
+
+// nextLinkFromHeader extracts the URL from a Link header value of the form
+// `<nextLinkURL>; rel="next"`. Returns "" if the header does not contain a URL.
+func nextLinkFromHeader(link string) string {
+	if link == "" {
+		return ""
+	}
+	if endIndex := strings.Index(link, ">"); endIndex > 0 {
+		return link[1:endIndex]
+	}
+	return ""
 }

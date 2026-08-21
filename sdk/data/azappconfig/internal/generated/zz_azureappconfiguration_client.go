@@ -19,10 +19,18 @@ import (
 // AzureAppConfigurationClient - Azure App Configuration REST API
 // Don't use this type directly, use a constructor function instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-05-01-preview
 type AzureAppConfigurationClient struct {
 	internal *azcore.Client
 	endpoint string
+}
+
+// NewAzureAppConfigurationFeatureFlagClient creates a new instance of [AzureAppConfigurationFeatureFlagClient].
+func (client *AzureAppConfigurationClient) NewAzureAppConfigurationFeatureFlagClient() *AzureAppConfigurationFeatureFlagClient {
+	return &AzureAppConfigurationFeatureFlagClient{
+		endpoint: client.endpoint,
+		internal: client.internal,
+	}
 }
 
 // CheckKeyValue - Requests the headers and status of the given resource.
@@ -65,7 +73,7 @@ func (client *AzureAppConfigurationClient) checkKeyValueCreateRequest(ctx contex
 	if options != nil && options.Select != nil {
 		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
 	}
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
@@ -143,7 +151,7 @@ func (client *AzureAppConfigurationClient) checkKeyValuesCreateRequest(ctx conte
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.Key != nil {
 		reqQP.Set("key", *options.Key)
 	}
@@ -224,7 +232,7 @@ func (client *AzureAppConfigurationClient) checkKeysCreateRequest(ctx context.Co
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.Name != nil {
 		reqQP.Set("name", *options.Name)
 	}
@@ -288,9 +296,12 @@ func (client *AzureAppConfigurationClient) checkLabelsCreateRequest(ctx context.
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.Name != nil {
 		reqQP.Set("name", *options.Name)
+	}
+	if options != nil && options.ResourceType != nil {
+		reqQP.Set("resourceType", *options.ResourceType)
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.AcceptDatetime != nil {
@@ -352,7 +363,7 @@ func (client *AzureAppConfigurationClient) checkRevisionsCreateRequest(ctx conte
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.Key != nil {
 		reqQP.Set("key", *options.Key)
 	}
@@ -426,7 +437,7 @@ func (client *AzureAppConfigurationClient) checkSnapshotCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -493,7 +504,7 @@ func (client *AzureAppConfigurationClient) checkSnapshotsCreateRequest(ctx conte
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.SyncToken != nil {
 		req.Raw().Header["Sync-Token"] = []string{*options.SyncToken}
@@ -568,7 +579,7 @@ func (client *AzureAppConfigurationClient) createSnapshotCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.snapshot+json, application/problem+json"}
 	req.Raw().Header["Content-Type"] = []string{string(contentType)}
@@ -618,7 +629,7 @@ func (client *AzureAppConfigurationClient) deleteKeyValueCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
@@ -691,7 +702,7 @@ func (client *AzureAppConfigurationClient) deleteLockCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
@@ -770,7 +781,7 @@ func (client *AzureAppConfigurationClient) getKeyValueCreateRequest(ctx context.
 	if options != nil && options.Select != nil {
 		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
 	}
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
@@ -860,7 +871,7 @@ func (client *AzureAppConfigurationClient) getKeyValuesCreateRequest(ctx context
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.Key != nil {
 		reqQP.Set("key", *options.Key)
 	}
@@ -947,7 +958,7 @@ func (client *AzureAppConfigurationClient) getKeysCreateRequest(ctx context.Cont
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.Name != nil {
 		reqQP.Set("name", *options.Name)
 	}
@@ -1017,9 +1028,12 @@ func (client *AzureAppConfigurationClient) getLabelsCreateRequest(ctx context.Co
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.Name != nil {
 		reqQP.Set("name", *options.Name)
+	}
+	if options != nil && options.ResourceType != nil {
+		reqQP.Set("resourceType", *options.ResourceType)
 	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.labelset+json, application/problem+json"}
@@ -1083,7 +1097,7 @@ func (client *AzureAppConfigurationClient) getOperationDetailsCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	reqQP.Set("snapshot", snapshot)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
@@ -1142,7 +1156,7 @@ func (client *AzureAppConfigurationClient) getRevisionsCreateRequest(ctx context
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.Key != nil {
 		reqQP.Set("key", *options.Key)
 	}
@@ -1226,7 +1240,7 @@ func (client *AzureAppConfigurationClient) getSnapshotCreateRequest(ctx context.
 	if options != nil && options.Select != nil {
 		reqQP.Set("$Select", strings.Join(strings.Fields(strings.Trim(fmt.Sprint(options.Select), "[]")), ","))
 	}
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.snapshot+json, application/problem+json"}
 	if options != nil && options.IfMatch != nil {
@@ -1308,7 +1322,7 @@ func (client *AzureAppConfigurationClient) getSnapshotsCreateRequest(ctx context
 	if options != nil && options.After != nil {
 		reqQP.Set("After", *options.After)
 	}
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.Name != nil {
 		reqQP.Set("name", *options.Name)
 	}
@@ -1377,7 +1391,7 @@ func (client *AzureAppConfigurationClient) putKeyValueCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
@@ -1457,7 +1471,7 @@ func (client *AzureAppConfigurationClient) putLockCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	if options != nil && options.Label != nil {
 		reqQP.Set("label", *options.Label)
 	}
@@ -1535,7 +1549,7 @@ func (client *AzureAppConfigurationClient) updateSnapshotCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/vnd.microsoft.appconfig.snapshot+json, application/problem+json"}
 	req.Raw().Header["Content-Type"] = []string{string(contentType)}

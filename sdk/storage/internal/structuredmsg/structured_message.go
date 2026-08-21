@@ -219,8 +219,8 @@ func SMDecode(smData []byte) (SMDecodeResult, error) {
 		msgHasher = crc64.New(CRC64Table)
 	}
 
-	for i := uint16(1); i <= numSegments; i++ {
-		segment, err := decodeSMSegment(smData, offset, i, hasCRC)
+	for i := uint32(1); i <= uint32(numSegments); i++ {
+		segment, err := decodeSMSegment(smData, offset, uint16(i), hasCRC)
 		if err != nil {
 			return SMDecodeResult{}, err
 		}
@@ -572,7 +572,7 @@ type SMDecoder struct {
 	msgLen      uint64
 
 	// Segment tracking
-	segIndex  uint16 // 1-based segment number currently being processed
+	segIndex  uint32 // 1-based segment number currently being processed
 	segRemain int64  // bytes remaining in current segment data
 	segCRC    hash64 // per-segment CRC hasher
 	msgCRC    hash64 // message-level CRC hasher
@@ -764,7 +764,7 @@ func (d *SMDecoder) parseSegmentHeader() error {
 	segDataLen := binary.LittleEndian.Uint64(buf[2:10])
 
 	d.segIndex++
-	if segNum != d.segIndex {
+	if uint32(segNum) != d.segIndex {
 		return fmt.Errorf("segment number mismatch: expected %d, got %d", d.segIndex, segNum)
 	}
 
@@ -792,7 +792,7 @@ func (d *SMDecoder) validateSegmentCRC() error {
 }
 
 func (d *SMDecoder) advanceAfterSegment() {
-	if d.segIndex >= d.numSegments {
+	if d.segIndex >= uint32(d.numSegments) {
 		if d.hasCRC {
 			d.prepareFrame(SMMessageTrailerSize)
 			d.state = decStateTrailer

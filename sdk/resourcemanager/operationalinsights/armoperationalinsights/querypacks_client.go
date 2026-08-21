@@ -63,12 +63,7 @@ func (client *QueryPacksClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	if err != nil {
 		return QueryPacksClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return QueryPacksClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -102,8 +97,11 @@ func (client *QueryPacksClient) createOrUpdateCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *QueryPacksClient) createOrUpdateHandleResponse(resp *http.Response) (QueryPacksClientCreateOrUpdateResponse, error) {
+func (client *QueryPacksClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (QueryPacksClientCreateOrUpdateResponse, error) {
 	result := QueryPacksClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogAnalyticsQueryPack); err != nil {
 		return QueryPacksClientCreateOrUpdateResponse{}, err
 	}
@@ -131,12 +129,7 @@ func (client *QueryPacksClient) CreateOrUpdateWithoutName(ctx context.Context, r
 	if err != nil {
 		return QueryPacksClientCreateOrUpdateWithoutNameResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return QueryPacksClientCreateOrUpdateWithoutNameResponse{}, err
-	}
-	resp, err := client.createOrUpdateWithoutNameHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateWithoutNameHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createOrUpdateWithoutNameCreateRequest creates the CreateOrUpdateWithoutName request.
@@ -166,8 +159,11 @@ func (client *QueryPacksClient) createOrUpdateWithoutNameCreateRequest(ctx conte
 }
 
 // createOrUpdateWithoutNameHandleResponse handles the CreateOrUpdateWithoutName response.
-func (client *QueryPacksClient) createOrUpdateWithoutNameHandleResponse(resp *http.Response) (QueryPacksClientCreateOrUpdateWithoutNameResponse, error) {
+func (client *QueryPacksClient) createOrUpdateWithoutNameHandleResponse(resp *http.Response, successCodes ...int) (QueryPacksClientCreateOrUpdateWithoutNameResponse, error) {
 	result := QueryPacksClientCreateOrUpdateWithoutNameResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogAnalyticsQueryPack); err != nil {
 		return QueryPacksClientCreateOrUpdateWithoutNameResponse{}, err
 	}
@@ -194,8 +190,7 @@ func (client *QueryPacksClient) Delete(ctx context.Context, resourceGroupName st
 		return QueryPacksClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return QueryPacksClientDeleteResponse{}, err
+		return QueryPacksClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return QueryPacksClientDeleteResponse{}, nil
 }
@@ -244,12 +239,7 @@ func (client *QueryPacksClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return QueryPacksClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return QueryPacksClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -279,8 +269,11 @@ func (client *QueryPacksClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *QueryPacksClient) getHandleResponse(resp *http.Response) (QueryPacksClientGetResponse, error) {
+func (client *QueryPacksClient) getHandleResponse(resp *http.Response, successCodes ...int) (QueryPacksClientGetResponse, error) {
 	result := QueryPacksClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogAnalyticsQueryPack); err != nil {
 		return QueryPacksClientGetResponse{}, err
 	}
@@ -300,39 +293,53 @@ func (client *QueryPacksClient) NewListPager(options *QueryPacksClientListOption
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return QueryPacksClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return QueryPacksClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *QueryPacksClient) listCreateRequest(ctx context.Context, _ *QueryPacksClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/queryPacks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *QueryPacksClient) listCreateRequest(ctx context.Context, nextLink string, _ *QueryPacksClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.OperationalInsights/queryPacks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *QueryPacksClient) listHandleResponse(resp *http.Response) (QueryPacksClientListResponse, error) {
+func (client *QueryPacksClient) listHandleResponse(resp *http.Response, successCodes ...int) (QueryPacksClientListResponse, error) {
 	result := QueryPacksClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogAnalyticsQueryPackListResult); err != nil {
 		return QueryPacksClientListResponse{}, err
 	}
@@ -354,43 +361,57 @@ func (client *QueryPacksClient) NewListByResourceGroupPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return QueryPacksClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return QueryPacksClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *QueryPacksClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *QueryPacksClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *QueryPacksClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *QueryPacksClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/queryPacks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *QueryPacksClient) listByResourceGroupHandleResponse(resp *http.Response) (QueryPacksClientListByResourceGroupResponse, error) {
+func (client *QueryPacksClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (QueryPacksClientListByResourceGroupResponse, error) {
 	result := QueryPacksClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogAnalyticsQueryPackListResult); err != nil {
 		return QueryPacksClientListByResourceGroupResponse{}, err
 	}
@@ -417,12 +438,7 @@ func (client *QueryPacksClient) UpdateTags(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return QueryPacksClientUpdateTagsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return QueryPacksClientUpdateTagsResponse{}, err
-	}
-	resp, err := client.updateTagsHandleResponse(httpResp)
-	return resp, err
+	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -456,8 +472,11 @@ func (client *QueryPacksClient) updateTagsCreateRequest(ctx context.Context, res
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *QueryPacksClient) updateTagsHandleResponse(resp *http.Response) (QueryPacksClientUpdateTagsResponse, error) {
+func (client *QueryPacksClient) updateTagsHandleResponse(resp *http.Response, successCodes ...int) (QueryPacksClientUpdateTagsResponse, error) {
 	result := QueryPacksClientUpdateTagsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LogAnalyticsQueryPack); err != nil {
 		return QueryPacksClientUpdateTagsResponse{}, err
 	}

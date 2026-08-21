@@ -129,8 +129,8 @@ func ExampleWorkspacePurgeClient_BeginPurgeLakeData() {
 	poller, err := clientFactory.NewWorkspacePurgeClient().BeginPurgeLakeData(ctx, "OIAutoRest5123", "aztest5048", armoperationalinsights.WorkspacePurgeLakeDataBody{
 		Table: to.Ptr("AuxiliaryLogs_CL"),
 		TimeRange: &armoperationalinsights.WorkspacePurgeLakeDataTimeRange{
-			StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-01T00:00:00Z"); return t }()),
-			EndTime:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-03-02T00:00:00Z"); return t }()),
+			StartTime: to.Ptr(time.Date(2026, time.March, 1, 0, 0, 0, 0, time.UTC)),
+			EndTime:   to.Ptr(time.Date(2026, time.March, 2, 0, 0, 0, 0, time.UTC)),
 		},
 	}, nil)
 	if err != nil {

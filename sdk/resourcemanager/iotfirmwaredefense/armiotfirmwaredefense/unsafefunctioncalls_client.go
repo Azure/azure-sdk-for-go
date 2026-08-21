@@ -16,55 +16,55 @@ import (
 	"strings"
 )
 
-// CryptoKeysClient contains the methods for the CryptoKeys group.
-// Don't use this type directly, use NewCryptoKeysClient() instead.
+// UnsafeFunctionCallsClient contains the methods for the UnsafeFunctionCalls group.
+// Don't use this type directly, use NewUnsafeFunctionCallsClient() instead.
 //
 // Generated from API version 2026-06-01-preview
-type CryptoKeysClient struct {
+type UnsafeFunctionCallsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewCryptoKeysClient creates a new instance of CryptoKeysClient with the specified values.
+// NewUnsafeFunctionCallsClient creates a new instance of UnsafeFunctionCallsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewCryptoKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CryptoKeysClient, error) {
+func NewUnsafeFunctionCallsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UnsafeFunctionCallsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &CryptoKeysClient{
+	client := &UnsafeFunctionCallsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// NewListByFirmwarePager - Lists crypto key analysis results of a firmware.
+// NewListByFirmwarePager - Lists unsafe function call analysis results of a firmware.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - The name of the firmware analysis workspace.
 //   - firmwareID - The id of the firmware.
-//   - options - CryptoKeysClientListByFirmwareOptions contains the optional parameters for the CryptoKeysClient.NewListByFirmwarePager
+//   - options - UnsafeFunctionCallsClientListByFirmwareOptions contains the optional parameters for the UnsafeFunctionCallsClient.NewListByFirmwarePager
 //     method.
-func (client *CryptoKeysClient) NewListByFirmwarePager(resourceGroupName string, workspaceName string, firmwareID string, options *CryptoKeysClientListByFirmwareOptions) *runtime.Pager[CryptoKeysClientListByFirmwareResponse] {
-	return runtime.NewPager(runtime.PagingHandler[CryptoKeysClientListByFirmwareResponse]{
-		More: func(page CryptoKeysClientListByFirmwareResponse) bool {
+func (client *UnsafeFunctionCallsClient) NewListByFirmwarePager(resourceGroupName string, workspaceName string, firmwareID string, options *UnsafeFunctionCallsClientListByFirmwareOptions) *runtime.Pager[UnsafeFunctionCallsClientListByFirmwareResponse] {
+	return runtime.NewPager(runtime.PagingHandler[UnsafeFunctionCallsClientListByFirmwareResponse]{
+		More: func(page UnsafeFunctionCallsClientListByFirmwareResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *CryptoKeysClientListByFirmwareResponse) (CryptoKeysClientListByFirmwareResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "CryptoKeysClient.NewListByFirmwarePager")
+		Fetcher: func(ctx context.Context, page *UnsafeFunctionCallsClientListByFirmwareResponse) (UnsafeFunctionCallsClientListByFirmwareResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "UnsafeFunctionCallsClient.NewListByFirmwarePager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listByFirmwareCreateRequest(ctx, resourceGroupName, workspaceName, firmwareID, nextLink, options)
 			if err != nil {
-				return CryptoKeysClientListByFirmwareResponse{}, err
+				return UnsafeFunctionCallsClientListByFirmwareResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return CryptoKeysClientListByFirmwareResponse{}, err
+				return UnsafeFunctionCallsClientListByFirmwareResponse{}, err
 			}
 			return client.listByFirmwareHandleResponse(resp, http.StatusOK)
 		},
@@ -73,12 +73,12 @@ func (client *CryptoKeysClient) NewListByFirmwarePager(resourceGroupName string,
 }
 
 // listByFirmwareCreateRequest creates the ListByFirmware request.
-func (client *CryptoKeysClient) listByFirmwareCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, firmwareID string, nextLink string, _ *CryptoKeysClientListByFirmwareOptions) (*policy.Request, error) {
+func (client *UnsafeFunctionCallsClient) listByFirmwareCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, firmwareID string, nextLink string, _ *UnsafeFunctionCallsClientListByFirmwareOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}/cryptoKeys"
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTFirmwareDefense/workspaces/{workspaceName}/firmwares/{firmwareId}/unsafeFunctionCalls"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter client.subscriptionID cannot be empty")
 		}
@@ -112,13 +112,13 @@ func (client *CryptoKeysClient) listByFirmwareCreateRequest(ctx context.Context,
 }
 
 // listByFirmwareHandleResponse handles the ListByFirmware response.
-func (client *CryptoKeysClient) listByFirmwareHandleResponse(resp *http.Response, successCodes ...int) (CryptoKeysClientListByFirmwareResponse, error) {
-	result := CryptoKeysClientListByFirmwareResponse{}
+func (client *UnsafeFunctionCallsClient) listByFirmwareHandleResponse(resp *http.Response, successCodes ...int) (UnsafeFunctionCallsClientListByFirmwareResponse, error) {
+	result := UnsafeFunctionCallsClientListByFirmwareResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CryptoKeyResourceListResult); err != nil {
-		return CryptoKeysClientListByFirmwareResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.UnsafeFunctionCallsResourceListResult); err != nil {
+		return UnsafeFunctionCallsClientListByFirmwareResponse{}, err
 	}
 	return result, nil
 }

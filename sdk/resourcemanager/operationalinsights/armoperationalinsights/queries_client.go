@@ -20,7 +20,7 @@ import (
 // QueriesClient contains the methods for the Queries group.
 // Don't use this type directly, use NewQueriesClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2026-03-01
 type QueriesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -92,7 +92,7 @@ func (client *QueriesClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -144,7 +144,7 @@ func (client *QueriesClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -225,7 +225,7 @@ func (client *QueriesClient) listCreateRequest(ctx context.Context, resourceGrou
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
 		}
-		reqQP.Set("api-version", version20250701)
+		reqQP.Set("api-version", version20260301)
 		if options != nil && options.IncludeBody != nil {
 			reqQP.Set("includeBody", strconv.FormatBool(*options.IncludeBody))
 		}
@@ -295,7 +295,7 @@ func (client *QueriesClient) putCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -381,7 +381,7 @@ func (client *QueriesClient) searchCreateRequest(ctx context.Context, resourceGr
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
 		}
-		reqQP.Set("api-version", version20250701)
+		reqQP.Set("api-version", version20260301)
 		if options != nil && options.IncludeBody != nil {
 			reqQP.Set("includeBody", strconv.FormatBool(*options.IncludeBody))
 		}
@@ -455,7 +455,7 @@ func (client *QueriesClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

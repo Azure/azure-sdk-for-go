@@ -81,7 +81,7 @@ steps:
 
   - ${{ if eq(parameters.PublishCodeCoverage, true) }}:
     - pwsh: |
-        go install github.com/boumenot/gocover-cobertura@latest
+        go install github.com/boumenot/gocover-cobertura@v1.5.0
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       displayName: "Install gocover-cobertura"
       retryCountOnTaskFailure: 3

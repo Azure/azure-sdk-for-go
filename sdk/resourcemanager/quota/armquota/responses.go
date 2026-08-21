@@ -176,6 +176,45 @@ type GroupQuotasClientUpdateResponse struct {
 	GroupQuotasEntity
 }
 
+// IncomingQuotaTransfersClientApproveResponse contains the response from method IncomingQuotaTransfersClient.BeginApprove.
+type IncomingQuotaTransfersClientApproveResponse struct {
+	// Recipient-side projection of a quota transfer. The URI key `{transferId}` is the
+	// server-generated GUID returned to the donor in the PUT response under
+	// `properties.transferId`. The resource is read-only from the recipient side; state
+	// changes occur through the approve and reject actions.
+	IncomingQuotaTransfer
+}
+
+// IncomingQuotaTransfersClientGetResponse contains the response from method IncomingQuotaTransfersClient.Get.
+type IncomingQuotaTransfersClientGetResponse struct {
+	// Recipient-side projection of a quota transfer. The URI key `{transferId}` is the
+	// server-generated GUID returned to the donor in the PUT response under
+	// `properties.transferId`. The resource is read-only from the recipient side; state
+	// changes occur through the approve and reject actions.
+	IncomingQuotaTransfer
+}
+
+// IncomingQuotaTransfersClientListBySubscriptionResponse contains the response from method IncomingQuotaTransfersClient.NewListBySubscriptionPager.
+type IncomingQuotaTransfersClientListBySubscriptionResponse struct {
+	// The response of a IncomingQuotaTransfer list operation.
+	IncomingQuotaTransferListResult
+}
+
+// IncomingQuotaTransfersClientListResponse contains the response from method IncomingQuotaTransfersClient.NewListPager.
+type IncomingQuotaTransfersClientListResponse struct {
+	// The response of a IncomingQuotaTransfer list operation.
+	IncomingQuotaTransferListResult
+}
+
+// IncomingQuotaTransfersClientRejectResponse contains the response from method IncomingQuotaTransfersClient.Reject.
+type IncomingQuotaTransfersClientRejectResponse struct {
+	// Recipient-side projection of a quota transfer. The URI key `{transferId}` is the
+	// server-generated GUID returned to the donor in the PUT response under
+	// `properties.transferId`. The resource is read-only from the recipient side; state
+	// changes occur through the approve and reject actions.
+	IncomingQuotaTransfer
+}
+
 // OperationClientListResponse contains the response from method OperationClient.NewListPager.
 type OperationClientListResponse struct {
 	// The paginated list of connected cluster API operations.
@@ -192,6 +231,41 @@ type RequestStatusClientGetResponse struct {
 type RequestStatusClientListResponse struct {
 	// Quota request information.
 	RequestDetailsList
+}
+
+// TransfersClientCancelResponse contains the response from method TransfersClient.Cancel.
+type TransfersClientCancelResponse struct {
+	// A quota transfer authored on the donor side. The donor selects the URI segment
+	// `{transferName}`; the recipient addresses the same logical transfer via the
+	// server-generated `properties.transferId` GUID on the `incomingQuotaTransfers` URI.
+	Transfer
+}
+
+// TransfersClientCreateOrUpdateResponse contains the response from method TransfersClient.BeginCreateOrUpdate.
+type TransfersClientCreateOrUpdateResponse struct {
+	// A quota transfer authored on the donor side. The donor selects the URI segment
+	// `{transferName}`; the recipient addresses the same logical transfer via the
+	// server-generated `properties.transferId` GUID on the `incomingQuotaTransfers` URI.
+	Transfer
+}
+
+// TransfersClientDeleteResponse contains the response from method TransfersClient.Delete.
+type TransfersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// TransfersClientGetResponse contains the response from method TransfersClient.Get.
+type TransfersClientGetResponse struct {
+	// A quota transfer authored on the donor side. The donor selects the URI segment
+	// `{transferName}`; the recipient addresses the same logical transfer via the
+	// server-generated `properties.transferId` GUID on the `incomingQuotaTransfers` URI.
+	Transfer
+}
+
+// TransfersClientListResponse contains the response from method TransfersClient.NewListPager.
+type TransfersClientListResponse struct {
+	// The response of a QuotaTransfer list operation.
+	TransferListResult
 }
 
 // UsagesClientGetResponse contains the response from method UsagesClient.Get.

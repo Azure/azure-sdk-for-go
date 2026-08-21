@@ -18,6 +18,8 @@ import (
 
 // UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
+//
+// Generated from API version 2026-09-01-preview
 type UsagesClient struct {
 	internal *arm.Client
 }
@@ -39,15 +41,24 @@ func NewUsagesClient(credential azcore.TokenCredential, options *arm.ClientOptio
 // Get - Get the current usage of a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2025-09-01
+//   - scope - The fully qualified Azure Resource manager identifier of the resource.
+//
+//   - resourceName - Resource name for a given resource provider. For example:
+//
+//   - SKU name for Microsoft.Compute
+//
+//   - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
+//
+//     For Microsoft.Network PublicIPAddresses.
+//
 //   - options - UsagesClientGetOptions contains the optional parameters for the UsagesClient.Get method.
-func (client *UsagesClient) Get(ctx context.Context, resourceName string, scope string, options *UsagesClientGetOptions) (UsagesClientGetResponse, error) {
+func (client *UsagesClient) Get(ctx context.Context, scope string, resourceName string, options *UsagesClientGetOptions) (UsagesClientGetResponse, error) {
 	var err error
 	const operationName = "UsagesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceName, scope, options)
+	req, err := client.getCreateRequest(ctx, scope, resourceName, options)
 	if err != nil {
 		return UsagesClientGetResponse{}, err
 	}
@@ -55,40 +66,38 @@ func (client *UsagesClient) Get(ctx context.Context, resourceName string, scope 
 	if err != nil {
 		return UsagesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UsagesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
-func (client *UsagesClient) getCreateRequest(ctx context.Context, resourceName string, scope string, _ *UsagesClientGetOptions) (*policy.Request, error) {
+func (client *UsagesClient) getCreateRequest(ctx context.Context, scope string, resourceName string, _ *UsagesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Quota/usages/{resourceName}"
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	if scope == "" {
 		return nil, errors.New("parameter scope cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *UsagesClient) getHandleResponse(resp *http.Response) (UsagesClientGetResponse, error) {
+func (client *UsagesClient) getHandleResponse(resp *http.Response, successCodes ...int) (UsagesClientGetResponse, error) {
 	result := UsagesClientGetResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CurrentUsagesBase); err != nil {
@@ -98,8 +107,6 @@ func (client *UsagesClient) getHandleResponse(resp *http.Response) (UsagesClient
 }
 
 // NewListPager - Get a list of current usage for all resources for the scope specified.
-//
-// Generated from API version 2025-09-01
 //   - scope - The fully qualified Azure Resource manager identifier of the resource.
 //   - options - UsagesClientListOptions contains the optional parameters for the UsagesClient.NewListPager method.
 func (client *UsagesClient) NewListPager(scope string, options *UsagesClientListOptions) *runtime.Pager[UsagesClientListResponse] {
@@ -113,40 +120,54 @@ func (client *UsagesClient) NewListPager(scope string, options *UsagesClientList
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, scope, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, scope, nextLink, options)
 			if err != nil {
 				return UsagesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return UsagesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *UsagesClient) listCreateRequest(ctx context.Context, scope string, _ *UsagesClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Quota/usages"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
+func (client *UsagesClient) listCreateRequest(ctx context.Context, scope string, nextLink string, _ *UsagesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.Quota/usages"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *UsagesClient) listHandleResponse(resp *http.Response) (UsagesClientListResponse, error) {
+func (client *UsagesClient) listHandleResponse(resp *http.Response, successCodes ...int) (UsagesClientListResponse, error) {
 	result := UsagesClientListResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsagesLimits); err != nil {

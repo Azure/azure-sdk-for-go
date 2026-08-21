@@ -6,5 +6,5 @@ package armquota
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota"
-	moduleVersion = "v2.0.0"
+	moduleVersion = "v3.0.0-beta.1"
 )

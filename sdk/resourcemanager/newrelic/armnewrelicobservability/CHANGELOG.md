@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2025-11-24)
+## 2.0.0 (2026-08-21)
 ### Breaking Changes
 
 - Type of `PlanData.BillingCycle` has been changed from `*BillingCycle` to `*string`
@@ -10,12 +10,12 @@
 ### Features Added
 
 - New function `*ClientFactory.NewSaaSClient() *SaaSClient`
-- New function `*MonitorsClient.LatestLinkedSaaS(context.Context, string, string, *MonitorsClientLatestLinkedSaaSOptions) (MonitorsClientLatestLinkedSaaSResponse, error)`
-- New function `*MonitorsClient.BeginLinkSaaS(context.Context, string, string, SaaSData, *MonitorsClientBeginLinkSaaSOptions) (*runtime.Poller[MonitorsClientLinkSaaSResponse], error)`
-- New function `*MonitorsClient.RefreshIngestionKey(context.Context, string, string, *MonitorsClientRefreshIngestionKeyOptions) (MonitorsClientRefreshIngestionKeyResponse, error)`
-- New function `*MonitorsClient.BeginResubscribe(context.Context, string, string, *MonitorsClientBeginResubscribeOptions) (*runtime.Poller[MonitorsClientResubscribeResponse], error)`
-- New function `NewSaaSClient(string, azcore.TokenCredential, *arm.ClientOptions) (*SaaSClient, error)`
-- New function `*SaaSClient.ActivateResource(context.Context, ActivateSaaSParameterRequest, *SaaSClientActivateResourceOptions) (SaaSClientActivateResourceResponse, error)`
+- New function `*MonitorsClient.LatestLinkedSaaS(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientLatestLinkedSaaSOptions) (MonitorsClientLatestLinkedSaaSResponse, error)`
+- New function `*MonitorsClient.BeginLinkSaaS(ctx context.Context, resourceGroupName string, monitorName string, body SaaSData, options *MonitorsClientBeginLinkSaaSOptions) (*runtime.Poller[MonitorsClientLinkSaaSResponse], error)`
+- New function `*MonitorsClient.RefreshIngestionKey(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientRefreshIngestionKeyOptions) (MonitorsClientRefreshIngestionKeyResponse, error)`
+- New function `*MonitorsClient.BeginResubscribe(ctx context.Context, resourceGroupName string, monitorName string, options *MonitorsClientBeginResubscribeOptions) (*runtime.Poller[MonitorsClientResubscribeResponse], error)`
+- New function `NewSaaSClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SaaSClient, error)`
+- New function `*SaaSClient.ActivateResource(ctx context.Context, request ActivateSaaSParameterRequest, options *SaaSClientActivateResourceOptions) (SaaSClientActivateResourceResponse, error)`
 - New struct `ActivateSaaSParameterRequest`
 - New struct `LatestLinkedSaaSResponse`
 - New struct `ResubscribeProperties`

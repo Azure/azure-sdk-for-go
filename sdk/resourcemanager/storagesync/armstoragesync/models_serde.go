@@ -411,6 +411,7 @@ func (c *CloudEndpointCreateParameters) UnmarshalJSON(data []byte) error {
 func (c CloudEndpointCreateParametersProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "azureFileShareName", c.AzureFileShareName)
+	populate(objectMap, "changeEnumerationIntervalDays", c.ChangeEnumerationIntervalDays)
 	populate(objectMap, "friendlyName", c.FriendlyName)
 	populate(objectMap, "storageAccountResourceId", c.StorageAccountResourceID)
 	populate(objectMap, "storageAccountTenantId", c.StorageAccountTenantID)
@@ -428,6 +429,9 @@ func (c *CloudEndpointCreateParametersProperties) UnmarshalJSON(data []byte) err
 		switch key {
 		case "azureFileShareName":
 			err = unpopulate(val, "AzureFileShareName", &c.AzureFileShareName)
+			delete(rawMsg, key)
+		case "changeEnumerationIntervalDays":
+			err = unpopulate(val, "ChangeEnumerationIntervalDays", &c.ChangeEnumerationIntervalDays)
 			delete(rawMsg, key)
 		case "friendlyName":
 			err = unpopulate(val, "FriendlyName", &c.FriendlyName)
@@ -498,6 +502,7 @@ func (c CloudEndpointProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "azureFileShareName", c.AzureFileShareName)
 	populate(objectMap, "backupEnabled", c.BackupEnabled)
+	populate(objectMap, "changeEnumerationIntervalDays", c.ChangeEnumerationIntervalDays)
 	populate(objectMap, "changeEnumerationStatus", c.ChangeEnumerationStatus)
 	populate(objectMap, "friendlyName", c.FriendlyName)
 	populate(objectMap, "lastOperationName", c.LastOperationName)
@@ -524,6 +529,9 @@ func (c *CloudEndpointProperties) UnmarshalJSON(data []byte) error {
 		case "backupEnabled":
 			err = unpopulate(val, "BackupEnabled", &c.BackupEnabled)
 			delete(rawMsg, key)
+		case "changeEnumerationIntervalDays":
+			err = unpopulate(val, "ChangeEnumerationIntervalDays", &c.ChangeEnumerationIntervalDays)
+			delete(rawMsg, key)
 		case "changeEnumerationStatus":
 			err = unpopulate(val, "ChangeEnumerationStatus", &c.ChangeEnumerationStatus)
 			delete(rawMsg, key)
@@ -547,6 +555,60 @@ func (c *CloudEndpointProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "storageAccountTenantId":
 			err = unpopulate(val, "StorageAccountTenantID", &c.StorageAccountTenantID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CloudEndpointUpdateParameters.
+func (c CloudEndpointUpdateParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "properties", c.Properties)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CloudEndpointUpdateParameters.
+func (c *CloudEndpointUpdateParameters) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, "Properties", &c.Properties)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type CloudEndpointUpdateProperties.
+func (c CloudEndpointUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "changeEnumerationIntervalDays", c.ChangeEnumerationIntervalDays)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type CloudEndpointUpdateProperties.
+func (c *CloudEndpointUpdateProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "changeEnumerationIntervalDays":
+			err = unpopulate(val, "ChangeEnumerationIntervalDays", &c.ChangeEnumerationIntervalDays)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2781,12 +2843,23 @@ func (s ServerEndpointSyncActivityStatus) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "appliedBytes", s.AppliedBytes)
 	populate(objectMap, "appliedItemCount", s.AppliedItemCount)
+	populate(objectMap, "inProgressLargeFilePath", s.InProgressLargeFilePath)
+	populate(objectMap, "inProgressLargeFilePercentComplete", s.InProgressLargeFilePercentComplete)
+	populate(objectMap, "inProgressLargeFileSizeBytes", s.InProgressLargeFileSizeBytes)
+	populate(objectMap, "isRemainingFinal", s.IsRemainingFinal)
 	populate(objectMap, "perItemErrorCount", s.PerItemErrorCount)
+	populate(objectMap, "recentItemsPerSecond", s.RecentItemsPerSecond)
+	populate(objectMap, "recentMegabytesPerSecond", s.RecentMegabytesPerSecond)
+	populate(objectMap, "remainingDeleteCount", s.RemainingDeleteCount)
+	populate(objectMap, "remainingDirectoryCount", s.RemainingDirectoryCount)
+	populate(objectMap, "remainingFileCount", s.RemainingFileCount)
+	populate(objectMap, "remainingLogicalSizeBytes", s.RemainingLogicalSizeBytes)
 	populate(objectMap, "sessionMinutesRemaining", s.SessionMinutesRemaining)
 	populate(objectMap, "syncMode", s.SyncMode)
 	populateTime[datetime.RFC3339](objectMap, "timestamp", s.Timestamp, true)
 	populate(objectMap, "totalBytes", s.TotalBytes)
 	populate(objectMap, "totalItemCount", s.TotalItemCount)
+	populate(objectMap, "warning", s.Warning)
 	return json.Marshal(objectMap)
 }
 
@@ -2805,8 +2878,38 @@ func (s *ServerEndpointSyncActivityStatus) UnmarshalJSON(data []byte) error {
 		case "appliedItemCount":
 			err = unpopulate(val, "AppliedItemCount", &s.AppliedItemCount)
 			delete(rawMsg, key)
+		case "inProgressLargeFilePath":
+			err = unpopulate(val, "InProgressLargeFilePath", &s.InProgressLargeFilePath)
+			delete(rawMsg, key)
+		case "inProgressLargeFilePercentComplete":
+			err = unpopulate(val, "InProgressLargeFilePercentComplete", &s.InProgressLargeFilePercentComplete)
+			delete(rawMsg, key)
+		case "inProgressLargeFileSizeBytes":
+			err = unpopulate(val, "InProgressLargeFileSizeBytes", &s.InProgressLargeFileSizeBytes)
+			delete(rawMsg, key)
+		case "isRemainingFinal":
+			err = unpopulate(val, "IsRemainingFinal", &s.IsRemainingFinal)
+			delete(rawMsg, key)
 		case "perItemErrorCount":
 			err = unpopulate(val, "PerItemErrorCount", &s.PerItemErrorCount)
+			delete(rawMsg, key)
+		case "recentItemsPerSecond":
+			err = unpopulate(val, "RecentItemsPerSecond", &s.RecentItemsPerSecond)
+			delete(rawMsg, key)
+		case "recentMegabytesPerSecond":
+			err = unpopulate(val, "RecentMegabytesPerSecond", &s.RecentMegabytesPerSecond)
+			delete(rawMsg, key)
+		case "remainingDeleteCount":
+			err = unpopulate(val, "RemainingDeleteCount", &s.RemainingDeleteCount)
+			delete(rawMsg, key)
+		case "remainingDirectoryCount":
+			err = unpopulate(val, "RemainingDirectoryCount", &s.RemainingDirectoryCount)
+			delete(rawMsg, key)
+		case "remainingFileCount":
+			err = unpopulate(val, "RemainingFileCount", &s.RemainingFileCount)
+			delete(rawMsg, key)
+		case "remainingLogicalSizeBytes":
+			err = unpopulate(val, "RemainingLogicalSizeBytes", &s.RemainingLogicalSizeBytes)
 			delete(rawMsg, key)
 		case "sessionMinutesRemaining":
 			err = unpopulate(val, "SessionMinutesRemaining", &s.SessionMinutesRemaining)
@@ -2822,6 +2925,9 @@ func (s *ServerEndpointSyncActivityStatus) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "totalItemCount":
 			err = unpopulate(val, "TotalItemCount", &s.TotalItemCount)
+			delete(rawMsg, key)
+		case "warning":
+			err = unpopulate(val, "Warning", &s.Warning)
 			delete(rawMsg, key)
 		}
 		if err != nil {

@@ -64,6 +64,10 @@ type CloudEndpointsServer struct {
 	// BeginTriggerChangeDetection is the fake for method CloudEndpointsClient.BeginTriggerChangeDetection
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginTriggerChangeDetection func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, parameters armstoragesync.TriggerChangeDetectionParameters, options *armstoragesync.CloudEndpointsClientBeginTriggerChangeDetectionOptions) (resp azfake.PollerResponder[armstoragesync.CloudEndpointsClientTriggerChangeDetectionResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method CloudEndpointsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, storageSyncServiceName string, syncGroupName string, cloudEndpointName string, properties armstoragesync.CloudEndpointUpdateParameters, options *armstoragesync.CloudEndpointsClientBeginUpdateOptions) (resp azfake.PollerResponder[armstoragesync.CloudEndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCloudEndpointsServerTransport creates a new instance of CloudEndpointsServerTransport with the provided implementation.
@@ -80,6 +84,7 @@ func NewCloudEndpointsServerTransport(srv *CloudEndpointsServer) *CloudEndpoints
 		beginPreBackup:              newTracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientPreBackupResponse]](),
 		beginPreRestore:             newTracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientPreRestoreResponse]](),
 		beginTriggerChangeDetection: newTracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientTriggerChangeDetectionResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientUpdateResponse]](),
 	}
 }
 
@@ -95,6 +100,7 @@ type CloudEndpointsServerTransport struct {
 	beginPreBackup              *tracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientPreBackupResponse]]
 	beginPreRestore             *tracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientPreRestoreResponse]]
 	beginTriggerChangeDetection *tracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientTriggerChangeDetectionResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armstoragesync.CloudEndpointsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for CloudEndpointsServerTransport.
@@ -140,6 +146,8 @@ func (c *CloudEndpointsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = c.dispatchRestoreheartbeat(req)
 			case "CloudEndpointsClient.BeginTriggerChangeDetection":
 				res.resp, res.err = c.dispatchBeginTriggerChangeDetection(req)
+			case "CloudEndpointsClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -725,6 +733,62 @@ func (c *CloudEndpointsServerTransport) dispatchBeginTriggerChangeDetection(req 
 	}
 	if !server.PollerResponderMore(beginTriggerChangeDetection) {
 		c.beginTriggerChangeDetection.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *CloudEndpointsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageSync/storageSyncServices/(?P<storageSyncServiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/syncGroups/(?P<syncGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cloudEndpoints/(?P<cloudEndpointName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armstoragesync.CloudEndpointUpdateParameters](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		storageSyncServiceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storageSyncServiceName")])
+		if err != nil {
+			return nil, err
+		}
+		syncGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("syncGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		cloudEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudEndpointName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, storageSyncServiceNameParam, syncGroupNameParam, cloudEndpointNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
 	}
 
 	return resp, nil

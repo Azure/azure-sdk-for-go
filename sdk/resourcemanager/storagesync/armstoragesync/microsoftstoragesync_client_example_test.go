@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-09-01/LocationOperationStatus_Get.json
+// Generated from example definition: 2025-12-01/LocationOperationStatus_Get.json
 func ExampleMicrosoftStorageSyncClient_LocationOperationStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

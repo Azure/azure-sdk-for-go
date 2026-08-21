@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-09-01/StorageSyncServiceCheckNameAvailability_AlreadyExists.json
+// Generated from example definition: 2025-12-01/StorageSyncServiceCheckNameAvailability_AlreadyExists.json
 func ExampleServicesClient_CheckNameAvailability_storageSyncServiceCheckNameAvailabilityAlreadyExists() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleServicesClient_CheckNameAvailability_storageSyncServiceCheckNameAvai
 	// }
 }
 
-// Generated from example definition: 2022-09-01/StorageSyncServiceCheckNameAvailability_Available.json
+// Generated from example definition: 2025-12-01/StorageSyncServiceCheckNameAvailability_Available.json
 func ExampleServicesClient_CheckNameAvailability_storageSyncServiceCheckNameAvailabilityAvailable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleServicesClient_CheckNameAvailability_storageSyncServiceCheckNameAvai
 	// }
 }
 
-// Generated from example definition: 2022-09-01/StorageSyncServices_Create.json
+// Generated from example definition: 2025-12-01/StorageSyncServices_Create.json
 func ExampleServicesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +133,7 @@ func ExampleServicesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/StorageSyncServices_Delete.json
+// Generated from example definition: 2025-12-01/StorageSyncServices_Delete.json
 func ExampleServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleServicesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/StorageSyncServices_Get.json
+// Generated from example definition: 2025-12-01/StorageSyncServices_Get.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,7 +229,7 @@ func ExampleServicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/StorageSyncServices_ListByResourceGroup.json
+// Generated from example definition: 2025-12-01/StorageSyncServices_ListByResourceGroup.json
 func ExampleServicesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -358,7 +358,7 @@ func ExampleServicesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2022-09-01/StorageSyncServices_ListBySubscription.json
+// Generated from example definition: 2025-12-01/StorageSyncServices_ListBySubscription.json
 func ExampleServicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -487,7 +487,7 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2022-09-01/StorageSyncServices_Update.json
+// Generated from example definition: 2025-12-01/StorageSyncServices_Update.json
 func ExampleServicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

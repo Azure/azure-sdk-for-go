@@ -81,8 +81,7 @@ func (client *PoliciesClient) createOrUpdateByBillingAccount(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -152,8 +151,7 @@ func (client *PoliciesClient) createOrUpdateByBillingProfile(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -228,8 +226,7 @@ func (client *PoliciesClient) createOrUpdateByCustomer(ctx context.Context, bill
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -307,8 +304,7 @@ func (client *PoliciesClient) createOrUpdateByCustomerAtBillingAccount(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -358,12 +354,7 @@ func (client *PoliciesClient) GetByBillingAccount(ctx context.Context, billingAc
 	if err != nil {
 		return PoliciesClientGetByBillingAccountResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoliciesClientGetByBillingAccountResponse{}, err
-	}
-	resp, err := client.getByBillingAccountHandleResponse(httpResp)
-	return resp, err
+	return client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
@@ -385,8 +376,11 @@ func (client *PoliciesClient) getByBillingAccountCreateRequest(ctx context.Conte
 }
 
 // getByBillingAccountHandleResponse handles the GetByBillingAccount response.
-func (client *PoliciesClient) getByBillingAccountHandleResponse(resp *http.Response) (PoliciesClientGetByBillingAccountResponse, error) {
+func (client *PoliciesClient) getByBillingAccountHandleResponse(resp *http.Response, successCodes ...int) (PoliciesClientGetByBillingAccountResponse, error) {
 	result := PoliciesClientGetByBillingAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AccountPolicy); err != nil {
 		return PoliciesClientGetByBillingAccountResponse{}, err
 	}
@@ -414,12 +408,7 @@ func (client *PoliciesClient) GetByBillingProfile(ctx context.Context, billingAc
 	if err != nil {
 		return PoliciesClientGetByBillingProfileResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoliciesClientGetByBillingProfileResponse{}, err
-	}
-	resp, err := client.getByBillingProfileHandleResponse(httpResp)
-	return resp, err
+	return client.getByBillingProfileHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByBillingProfileCreateRequest creates the GetByBillingProfile request.
@@ -445,8 +434,11 @@ func (client *PoliciesClient) getByBillingProfileCreateRequest(ctx context.Conte
 }
 
 // getByBillingProfileHandleResponse handles the GetByBillingProfile response.
-func (client *PoliciesClient) getByBillingProfileHandleResponse(resp *http.Response) (PoliciesClientGetByBillingProfileResponse, error) {
+func (client *PoliciesClient) getByBillingProfileHandleResponse(resp *http.Response, successCodes ...int) (PoliciesClientGetByBillingProfileResponse, error) {
 	result := PoliciesClientGetByBillingProfileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProfilePolicy); err != nil {
 		return PoliciesClientGetByBillingProfileResponse{}, err
 	}
@@ -475,12 +467,7 @@ func (client *PoliciesClient) GetByCustomer(ctx context.Context, billingAccountN
 	if err != nil {
 		return PoliciesClientGetByCustomerResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoliciesClientGetByCustomerResponse{}, err
-	}
-	resp, err := client.getByCustomerHandleResponse(httpResp)
-	return resp, err
+	return client.getByCustomerHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByCustomerCreateRequest creates the GetByCustomer request.
@@ -514,8 +501,11 @@ func (client *PoliciesClient) getByCustomerCreateRequest(ctx context.Context, bi
 }
 
 // getByCustomerHandleResponse handles the GetByCustomer response.
-func (client *PoliciesClient) getByCustomerHandleResponse(resp *http.Response) (PoliciesClientGetByCustomerResponse, error) {
+func (client *PoliciesClient) getByCustomerHandleResponse(resp *http.Response, successCodes ...int) (PoliciesClientGetByCustomerResponse, error) {
 	result := PoliciesClientGetByCustomerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomerPolicy); err != nil {
 		return PoliciesClientGetByCustomerResponse{}, err
 	}
@@ -543,12 +533,7 @@ func (client *PoliciesClient) GetByCustomerAtBillingAccount(ctx context.Context,
 	if err != nil {
 		return PoliciesClientGetByCustomerAtBillingAccountResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoliciesClientGetByCustomerAtBillingAccountResponse{}, err
-	}
-	resp, err := client.getByCustomerAtBillingAccountHandleResponse(httpResp)
-	return resp, err
+	return client.getByCustomerAtBillingAccountHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByCustomerAtBillingAccountCreateRequest creates the GetByCustomerAtBillingAccount request.
@@ -574,8 +559,11 @@ func (client *PoliciesClient) getByCustomerAtBillingAccountCreateRequest(ctx con
 }
 
 // getByCustomerAtBillingAccountHandleResponse handles the GetByCustomerAtBillingAccount response.
-func (client *PoliciesClient) getByCustomerAtBillingAccountHandleResponse(resp *http.Response) (PoliciesClientGetByCustomerAtBillingAccountResponse, error) {
+func (client *PoliciesClient) getByCustomerAtBillingAccountHandleResponse(resp *http.Response, successCodes ...int) (PoliciesClientGetByCustomerAtBillingAccountResponse, error) {
 	result := PoliciesClientGetByCustomerAtBillingAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomerPolicy); err != nil {
 		return PoliciesClientGetByCustomerAtBillingAccountResponse{}, err
 	}
@@ -601,12 +589,7 @@ func (client *PoliciesClient) GetBySubscription(ctx context.Context, options *Po
 	if err != nil {
 		return PoliciesClientGetBySubscriptionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoliciesClientGetBySubscriptionResponse{}, err
-	}
-	resp, err := client.getBySubscriptionHandleResponse(httpResp)
-	return resp, err
+	return client.getBySubscriptionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getBySubscriptionCreateRequest creates the GetBySubscription request.
@@ -628,8 +611,11 @@ func (client *PoliciesClient) getBySubscriptionCreateRequest(ctx context.Context
 }
 
 // getBySubscriptionHandleResponse handles the GetBySubscription response.
-func (client *PoliciesClient) getBySubscriptionHandleResponse(resp *http.Response) (PoliciesClientGetBySubscriptionResponse, error) {
+func (client *PoliciesClient) getBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (PoliciesClientGetBySubscriptionResponse, error) {
 	result := PoliciesClientGetBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionPolicy); err != nil {
 		return PoliciesClientGetBySubscriptionResponse{}, err
 	}

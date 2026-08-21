@@ -18,6 +18,8 @@ import (
 
 // BackupEnginesClient contains the methods for the BackupEngines group.
 // Don't use this type directly, use NewBackupEnginesClient() instead.
+//
+// Generated from API version 2026-07-01
 type BackupEnginesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewBackupEnginesClient(subscriptionID string, credential azcore.TokenCreden
 
 // Get - Returns backup management server registered to Recovery Services Vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupEnginesClientGetOptions contains the optional parameters for the BackupEnginesClient.Get method.
 func (client *BackupEnginesClient) Get(ctx context.Context, vaultName string, resourceGroupName string, backupEngineName string, options *BackupEnginesClientGetOptions) (BackupEnginesClientGetResponse, error) {
@@ -59,12 +59,7 @@ func (client *BackupEnginesClient) Get(ctx context.Context, vaultName string, re
 	if err != nil {
 		return BackupEnginesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupEnginesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -97,15 +92,18 @@ func (client *BackupEnginesClient) getCreateRequest(ctx context.Context, vaultNa
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *BackupEnginesClient) getHandleResponse(resp *http.Response) (BackupEnginesClientGetResponse, error) {
+func (client *BackupEnginesClient) getHandleResponse(resp *http.Response, successCodes ...int) (BackupEnginesClientGetResponse, error) {
 	result := BackupEnginesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupEngineBaseResource); err != nil {
 		return BackupEnginesClientGetResponse{}, err
 	}
@@ -113,8 +111,6 @@ func (client *BackupEnginesClient) getHandleResponse(resp *http.Response) (Backu
 }
 
 // NewListPager - Backup management servers registered to Recovery Services Vault. Returns a pageable list of servers.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupEnginesClientListOptions contains the optional parameters for the BackupEnginesClient.NewListPager method.
 func (client *BackupEnginesClient) NewListPager(vaultName string, resourceGroupName string, options *BackupEnginesClientListOptions) *runtime.Pager[BackupEnginesClientListResponse] {
@@ -128,53 +124,67 @@ func (client *BackupEnginesClient) NewListPager(vaultName string, resourceGroupN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, vaultName, resourceGroupName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, vaultName, resourceGroupName, nextLink, options)
 			if err != nil {
 				return BackupEnginesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BackupEnginesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *BackupEnginesClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, options *BackupEnginesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupEngines"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *BackupEnginesClient) listCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, nextLink string, options *BackupEnginesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupEngines"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if vaultName == "" {
+			return nil, errors.New("parameter vaultName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		reqQP.Set("api-version", version20260701)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *BackupEnginesClient) listHandleResponse(resp *http.Response) (BackupEnginesClientListResponse, error) {
+func (client *BackupEnginesClient) listHandleResponse(resp *http.Response, successCodes ...int) (BackupEnginesClientListResponse, error) {
 	result := BackupEnginesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupEngineBaseResourceList); err != nil {
 		return BackupEnginesClientListResponse{}, err
 	}

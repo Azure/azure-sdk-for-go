@@ -62,12 +62,7 @@ func (client *OperationStatusClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return OperationStatusClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationStatusClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -105,12 +100,15 @@ func (client *OperationStatusClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *OperationStatusClient) getHandleResponse(resp *http.Response) (OperationStatusClientGetResponse, error) {
+func (client *OperationStatusClient) getHandleResponse(resp *http.Response, successCodes ...int) (OperationStatusClientGetResponse, error) {
 	result := OperationStatusClientGetResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {

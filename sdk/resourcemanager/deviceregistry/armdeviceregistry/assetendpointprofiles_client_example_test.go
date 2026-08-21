@@ -66,10 +66,10 @@ func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace_createOrReplaceAsse
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 	// 		},
 	// 		Properties: &armdeviceregistry.AssetEndpointProfileProperties{
 	// 			UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
@@ -139,10 +139,10 @@ func ExampleAssetEndpointProfilesClient_BeginCreateOrReplace_createOrReplaceAsse
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 	// 		},
 	// 		Properties: &armdeviceregistry.AssetEndpointProfileProperties{
 	// 			UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
@@ -213,10 +213,10 @@ func ExampleAssetEndpointProfilesClient_Get_getAssetEndpointProfile() {
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 	// 		},
 	// 		Properties: &armdeviceregistry.AssetEndpointProfileProperties{
 	// 			UUID: to.Ptr("1824a74f-21e1-4458-ae07-604d3a241d2e"),
@@ -269,10 +269,10 @@ func ExampleAssetEndpointProfilesClient_Get_getAssetEndpointProfileWithSyncStatu
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 	// 		},
 	// 		Properties: &armdeviceregistry.AssetEndpointProfileProperties{
 	// 			UUID: to.Ptr("1824a74f-21e1-4458-ae07-604d3a241d2e"),
@@ -339,10 +339,10 @@ func ExampleAssetEndpointProfilesClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armdeviceregistry.SystemData{
 		// 					CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 		// 				},
 		// 				Properties: &armdeviceregistry.AssetEndpointProfileProperties{
 		// 					UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
@@ -369,10 +369,10 @@ func ExampleAssetEndpointProfilesClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armdeviceregistry.SystemData{
 		// 					CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 		// 				},
 		// 				Properties: &armdeviceregistry.AssetEndpointProfileProperties{
 		// 					UUID: to.Ptr("7824a74f-21e1-4458-ae06-604d3a241d2c"),
@@ -402,10 +402,10 @@ func ExampleAssetEndpointProfilesClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armdeviceregistry.SystemData{
 		// 					CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 		// 				},
 		// 				Properties: &armdeviceregistry.AssetEndpointProfileProperties{
 		// 					UUID: to.Ptr("1824a74f-21e1-4458-ae07-604d3a241d2e"),
@@ -467,10 +467,10 @@ func ExampleAssetEndpointProfilesClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armdeviceregistry.SystemData{
 		// 					CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 		// 				},
 		// 				Properties: &armdeviceregistry.AssetEndpointProfileProperties{
 		// 					UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
@@ -497,10 +497,10 @@ func ExampleAssetEndpointProfilesClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armdeviceregistry.SystemData{
 		// 					CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 		// 				},
 		// 				Properties: &armdeviceregistry.AssetEndpointProfileProperties{
 		// 					UUID: to.Ptr("7824a74f-21e1-4458-ae06-604d3a241d2c"),
@@ -530,10 +530,10 @@ func ExampleAssetEndpointProfilesClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armdeviceregistry.SystemData{
 		// 					CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 		// 					LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 		// 				},
 		// 				Properties: &armdeviceregistry.AssetEndpointProfileProperties{
 		// 					UUID: to.Ptr("1824a74f-21e1-4458-ae07-604d3a241d2e"),
@@ -597,10 +597,10 @@ func ExampleAssetEndpointProfilesClient_BeginUpdate() {
 	// 		SystemData: &armdeviceregistry.SystemData{
 	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T00:36:43.2516899Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
 	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-16T01:37:16.0922793Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
 	// 		},
 	// 		Properties: &armdeviceregistry.AssetEndpointProfileProperties{
 	// 			UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),

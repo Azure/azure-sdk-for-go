@@ -268,7 +268,7 @@ func (m *MHSMPrivateEndpointConnectionsServerTransport) dispatchPut(req *http.Re
 		return nil, err
 	}
 	if val := server.GetResponse(respr).AzureAsyncOperation; val != nil {
-		resp.Header.Set("Azure-AsyncOperation", *val)
+		resp.Header.Set("Azure-Asyncoperation", *val)
 	}
 	if val := server.GetResponse(respr).RetryAfter; val != nil {
 		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))

@@ -18,6 +18,8 @@ import (
 
 // ConnectionMonitorTestsClient contains the methods for the ConnectionMonitorTests group.
 // Don't use this type directly, use NewConnectionMonitorTestsClient() instead.
+//
+// Generated from API version 2025-05-01
 type ConnectionMonitorTestsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewConnectionMonitorTestsClient(subscriptionID string, credential azcore.To
 // CreateOrUpdate - Creates or updates a connection monitor test with the specified name under the given subscription, resource
 // group and peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringServiceName - The name of the peering.
 //   - connectionMonitorTestName - The name of the connection monitor test
@@ -64,12 +64,7 @@ func (client *ConnectionMonitorTestsClient) CreateOrUpdate(ctx context.Context, 
 	if err != nil {
 		return ConnectionMonitorTestsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectionMonitorTestsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -96,8 +91,8 @@ func (client *ConnectionMonitorTestsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connectionMonitorTest); err != nil {
@@ -107,8 +102,11 @@ func (client *ConnectionMonitorTestsClient) createOrUpdateCreateRequest(ctx cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ConnectionMonitorTestsClient) createOrUpdateHandleResponse(resp *http.Response) (ConnectionMonitorTestsClientCreateOrUpdateResponse, error) {
+func (client *ConnectionMonitorTestsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ConnectionMonitorTestsClientCreateOrUpdateResponse, error) {
 	result := ConnectionMonitorTestsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionMonitorTest); err != nil {
 		return ConnectionMonitorTestsClientCreateOrUpdateResponse{}, err
 	}
@@ -118,8 +116,6 @@ func (client *ConnectionMonitorTestsClient) createOrUpdateHandleResponse(resp *h
 // Delete - Deletes an existing connection monitor test with the specified name under the given subscription, resource group
 // and peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringServiceName - The name of the peering.
 //   - connectionMonitorTestName - The name of the connection monitor test
@@ -140,8 +136,7 @@ func (client *ConnectionMonitorTestsClient) Delete(ctx context.Context, resource
 		return ConnectionMonitorTestsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectionMonitorTestsClientDeleteResponse{}, err
+		return ConnectionMonitorTestsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ConnectionMonitorTestsClientDeleteResponse{}, nil
 }
@@ -170,16 +165,14 @@ func (client *ConnectionMonitorTestsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets an existing connection monitor test with the specified name under the given subscription, resource group and
 // peering service.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringServiceName - The name of the peering.
 //   - connectionMonitorTestName - The name of the connection monitor test
@@ -199,12 +192,7 @@ func (client *ConnectionMonitorTestsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return ConnectionMonitorTestsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectionMonitorTestsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -231,15 +219,18 @@ func (client *ConnectionMonitorTestsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConnectionMonitorTestsClient) getHandleResponse(resp *http.Response) (ConnectionMonitorTestsClientGetResponse, error) {
+func (client *ConnectionMonitorTestsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConnectionMonitorTestsClientGetResponse, error) {
 	result := ConnectionMonitorTestsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionMonitorTest); err != nil {
 		return ConnectionMonitorTestsClientGetResponse{}, err
 	}
@@ -248,8 +239,6 @@ func (client *ConnectionMonitorTestsClient) getHandleResponse(resp *http.Respons
 
 // NewListByPeeringServicePager - Lists all connection monitor tests under the given subscription, resource group and peering
 // service.
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringServiceName - The name of the peering.
 //   - options - ConnectionMonitorTestsClientListByPeeringServiceOptions contains the optional parameters for the ConnectionMonitorTestsClient.NewListByPeeringServicePager
@@ -265,47 +254,61 @@ func (client *ConnectionMonitorTestsClient) NewListByPeeringServicePager(resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByPeeringServiceCreateRequest(ctx, resourceGroupName, peeringServiceName, options)
-			}, nil)
+			req, err := client.listByPeeringServiceCreateRequest(ctx, resourceGroupName, peeringServiceName, nextLink, options)
 			if err != nil {
 				return ConnectionMonitorTestsClientListByPeeringServiceResponse{}, err
 			}
-			return client.listByPeeringServiceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConnectionMonitorTestsClientListByPeeringServiceResponse{}, err
+			}
+			return client.listByPeeringServiceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByPeeringServiceCreateRequest creates the ListByPeeringService request.
-func (client *ConnectionMonitorTestsClient) listByPeeringServiceCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, _ *ConnectionMonitorTestsClientListByPeeringServiceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/connectionMonitorTests"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConnectionMonitorTestsClient) listByPeeringServiceCreateRequest(ctx context.Context, resourceGroupName string, peeringServiceName string, nextLink string, _ *ConnectionMonitorTestsClientListByPeeringServiceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peeringServices/{peeringServiceName}/connectionMonitorTests"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if peeringServiceName == "" {
+			return nil, errors.New("parameter peeringServiceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{peeringServiceName}", url.PathEscape(peeringServiceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if peeringServiceName == "" {
-		return nil, errors.New("parameter peeringServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{peeringServiceName}", url.PathEscape(peeringServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByPeeringServiceHandleResponse handles the ListByPeeringService response.
-func (client *ConnectionMonitorTestsClient) listByPeeringServiceHandleResponse(resp *http.Response) (ConnectionMonitorTestsClientListByPeeringServiceResponse, error) {
+func (client *ConnectionMonitorTestsClient) listByPeeringServiceHandleResponse(resp *http.Response, successCodes ...int) (ConnectionMonitorTestsClientListByPeeringServiceResponse, error) {
 	result := ConnectionMonitorTestsClientListByPeeringServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionMonitorTestListResult); err != nil {
 		return ConnectionMonitorTestsClientListByPeeringServiceResponse{}, err
 	}

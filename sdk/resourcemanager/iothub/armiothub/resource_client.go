@@ -19,7 +19,7 @@ import (
 // ResourceClient contains the methods for the Resource group.
 // Don't use this type directly, use NewResourceClient() instead.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-05-01-preview
 type ResourceClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -62,12 +62,7 @@ func (client *ResourceClient) CheckNameAvailability(ctx context.Context, operati
 	if err != nil {
 		return ResourceClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -82,7 +77,7 @@ func (client *ResourceClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -93,8 +88,11 @@ func (client *ResourceClient) checkNameAvailabilityCreateRequest(ctx context.Con
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *ResourceClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ResourceClientCheckNameAvailabilityResponse, error) {
+func (client *ResourceClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientCheckNameAvailabilityResponse, error) {
 	result := ResourceClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailabilityInfo); err != nil {
 		return ResourceClientCheckNameAvailabilityResponse{}, err
 	}
@@ -126,12 +124,7 @@ func (client *ResourceClient) CreateEventHubConsumerGroup(ctx context.Context, r
 	if err != nil {
 		return ResourceClientCreateEventHubConsumerGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientCreateEventHubConsumerGroupResponse{}, err
-	}
-	resp, err := client.createEventHubConsumerGroupHandleResponse(httpResp)
-	return resp, err
+	return client.createEventHubConsumerGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // createEventHubConsumerGroupCreateRequest creates the CreateEventHubConsumerGroup request.
@@ -162,7 +155,7 @@ func (client *ResourceClient) createEventHubConsumerGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -173,8 +166,11 @@ func (client *ResourceClient) createEventHubConsumerGroupCreateRequest(ctx conte
 }
 
 // createEventHubConsumerGroupHandleResponse handles the CreateEventHubConsumerGroup response.
-func (client *ResourceClient) createEventHubConsumerGroupHandleResponse(resp *http.Response) (ResourceClientCreateEventHubConsumerGroupResponse, error) {
+func (client *ResourceClient) createEventHubConsumerGroupHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientCreateEventHubConsumerGroupResponse, error) {
 	result := ResourceClientCreateEventHubConsumerGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventHubConsumerGroupInfo); err != nil {
 		return ResourceClientCreateEventHubConsumerGroupResponse{}, err
 	}
@@ -229,8 +225,7 @@ func (client *ResourceClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -255,7 +250,7 @@ func (client *ResourceClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -311,8 +306,7 @@ func (client *ResourceClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -337,7 +331,7 @@ func (client *ResourceClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -368,8 +362,7 @@ func (client *ResourceClient) DeleteEventHubConsumerGroup(ctx context.Context, r
 		return ResourceClientDeleteEventHubConsumerGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientDeleteEventHubConsumerGroupResponse{}, err
+		return ResourceClientDeleteEventHubConsumerGroupResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ResourceClientDeleteEventHubConsumerGroupResponse{}, nil
 }
@@ -402,7 +395,7 @@ func (client *ResourceClient) deleteEventHubConsumerGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -431,12 +424,7 @@ func (client *ResourceClient) ExportDevices(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ResourceClientExportDevicesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientExportDevicesResponse{}, err
-	}
-	resp, err := client.exportDevicesHandleResponse(httpResp)
-	return resp, err
+	return client.exportDevicesHandleResponse(httpResp, http.StatusOK)
 }
 
 // exportDevicesCreateRequest creates the ExportDevices request.
@@ -459,7 +447,7 @@ func (client *ResourceClient) exportDevicesCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -470,8 +458,11 @@ func (client *ResourceClient) exportDevicesCreateRequest(ctx context.Context, re
 }
 
 // exportDevicesHandleResponse handles the ExportDevices response.
-func (client *ResourceClient) exportDevicesHandleResponse(resp *http.Response) (ResourceClientExportDevicesResponse, error) {
+func (client *ResourceClient) exportDevicesHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientExportDevicesResponse, error) {
 	result := ResourceClientExportDevicesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobResponse); err != nil {
 		return ResourceClientExportDevicesResponse{}, err
 	}
@@ -499,12 +490,7 @@ func (client *ResourceClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return ResourceClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -527,15 +513,18 @@ func (client *ResourceClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ResourceClient) getHandleResponse(resp *http.Response) (ResourceClientGetResponse, error) {
+func (client *ResourceClient) getHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientGetResponse, error) {
 	result := ResourceClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Description); err != nil {
 		return ResourceClientGetResponse{}, err
 	}
@@ -559,47 +548,61 @@ func (client *ResourceClient) NewGetEndpointHealthPager(resourceGroupName string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getEndpointHealthCreateRequest(ctx, resourceGroupName, iotHubName, options)
-			}, nil)
+			req, err := client.getEndpointHealthCreateRequest(ctx, resourceGroupName, iotHubName, nextLink, options)
 			if err != nil {
 				return ResourceClientGetEndpointHealthResponse{}, err
 			}
-			return client.getEndpointHealthHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ResourceClientGetEndpointHealthResponse{}, err
+			}
+			return client.getEndpointHealthHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getEndpointHealthCreateRequest creates the GetEndpointHealth request.
-func (client *ResourceClient) getEndpointHealthCreateRequest(ctx context.Context, resourceGroupName string, iotHubName string, _ *ResourceClientGetEndpointHealthOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{iotHubName}/routingEndpointsHealth"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ResourceClient) getEndpointHealthCreateRequest(ctx context.Context, resourceGroupName string, iotHubName string, nextLink string, _ *ResourceClientGetEndpointHealthOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{iotHubName}/routingEndpointsHealth"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if iotHubName == "" {
+			return nil, errors.New("parameter iotHubName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{iotHubName}", url.PathEscape(iotHubName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if iotHubName == "" {
-		return nil, errors.New("parameter iotHubName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{iotHubName}", url.PathEscape(iotHubName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // getEndpointHealthHandleResponse handles the GetEndpointHealth response.
-func (client *ResourceClient) getEndpointHealthHandleResponse(resp *http.Response) (ResourceClientGetEndpointHealthResponse, error) {
+func (client *ResourceClient) getEndpointHealthHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientGetEndpointHealthResponse, error) {
 	result := ResourceClientGetEndpointHealthResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointHealthDataListResult); err != nil {
 		return ResourceClientGetEndpointHealthResponse{}, err
 	}
@@ -630,12 +633,7 @@ func (client *ResourceClient) GetEventHubConsumerGroup(ctx context.Context, reso
 	if err != nil {
 		return ResourceClientGetEventHubConsumerGroupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientGetEventHubConsumerGroupResponse{}, err
-	}
-	resp, err := client.getEventHubConsumerGroupHandleResponse(httpResp)
-	return resp, err
+	return client.getEventHubConsumerGroupHandleResponse(httpResp, http.StatusOK)
 }
 
 // getEventHubConsumerGroupCreateRequest creates the GetEventHubConsumerGroup request.
@@ -666,15 +664,18 @@ func (client *ResourceClient) getEventHubConsumerGroupCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getEventHubConsumerGroupHandleResponse handles the GetEventHubConsumerGroup response.
-func (client *ResourceClient) getEventHubConsumerGroupHandleResponse(resp *http.Response) (ResourceClientGetEventHubConsumerGroupResponse, error) {
+func (client *ResourceClient) getEventHubConsumerGroupHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientGetEventHubConsumerGroupResponse, error) {
 	result := ResourceClientGetEventHubConsumerGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventHubConsumerGroupInfo); err != nil {
 		return ResourceClientGetEventHubConsumerGroupResponse{}, err
 	}
@@ -703,12 +704,7 @@ func (client *ResourceClient) GetJob(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ResourceClientGetJobResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientGetJobResponse{}, err
-	}
-	resp, err := client.getJobHandleResponse(httpResp)
-	return resp, err
+	return client.getJobHandleResponse(httpResp, http.StatusOK)
 }
 
 // getJobCreateRequest creates the GetJob request.
@@ -735,15 +731,18 @@ func (client *ResourceClient) getJobCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getJobHandleResponse handles the GetJob response.
-func (client *ResourceClient) getJobHandleResponse(resp *http.Response) (ResourceClientGetJobResponse, error) {
+func (client *ResourceClient) getJobHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientGetJobResponse, error) {
 	result := ResourceClientGetJobResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobResponse); err != nil {
 		return ResourceClientGetJobResponse{}, err
 	}
@@ -773,12 +772,7 @@ func (client *ResourceClient) GetKeysForKeyName(ctx context.Context, resourceGro
 	if err != nil {
 		return ResourceClientGetKeysForKeyNameResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientGetKeysForKeyNameResponse{}, err
-	}
-	resp, err := client.getKeysForKeyNameHandleResponse(httpResp)
-	return resp, err
+	return client.getKeysForKeyNameHandleResponse(httpResp, http.StatusOK)
 }
 
 // getKeysForKeyNameCreateRequest creates the GetKeysForKeyName request.
@@ -805,15 +799,18 @@ func (client *ResourceClient) getKeysForKeyNameCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getKeysForKeyNameHandleResponse handles the GetKeysForKeyName response.
-func (client *ResourceClient) getKeysForKeyNameHandleResponse(resp *http.Response) (ResourceClientGetKeysForKeyNameResponse, error) {
+func (client *ResourceClient) getKeysForKeyNameHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientGetKeysForKeyNameResponse, error) {
 	result := ResourceClientGetKeysForKeyNameResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessSignatureAuthorizationRule); err != nil {
 		return ResourceClientGetKeysForKeyNameResponse{}, err
 	}
@@ -838,47 +835,61 @@ func (client *ResourceClient) NewGetQuotaMetricsPager(resourceGroupName string, 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getQuotaMetricsCreateRequest(ctx, resourceGroupName, resourceName, options)
-			}, nil)
+			req, err := client.getQuotaMetricsCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
 			if err != nil {
 				return ResourceClientGetQuotaMetricsResponse{}, err
 			}
-			return client.getQuotaMetricsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ResourceClientGetQuotaMetricsResponse{}, err
+			}
+			return client.getQuotaMetricsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getQuotaMetricsCreateRequest creates the GetQuotaMetrics request.
-func (client *ResourceClient) getQuotaMetricsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ResourceClientGetQuotaMetricsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/quotaMetrics"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ResourceClient) getQuotaMetricsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *ResourceClientGetQuotaMetricsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/quotaMetrics"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // getQuotaMetricsHandleResponse handles the GetQuotaMetrics response.
-func (client *ResourceClient) getQuotaMetricsHandleResponse(resp *http.Response) (ResourceClientGetQuotaMetricsResponse, error) {
+func (client *ResourceClient) getQuotaMetricsHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientGetQuotaMetricsResponse, error) {
 	result := ResourceClientGetQuotaMetricsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaMetricInfoListResult); err != nil {
 		return ResourceClientGetQuotaMetricsResponse{}, err
 	}
@@ -905,12 +916,7 @@ func (client *ResourceClient) GetStats(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ResourceClientGetStatsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientGetStatsResponse{}, err
-	}
-	resp, err := client.getStatsHandleResponse(httpResp)
-	return resp, err
+	return client.getStatsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getStatsCreateRequest creates the GetStats request.
@@ -933,15 +939,18 @@ func (client *ResourceClient) getStatsCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getStatsHandleResponse handles the GetStats response.
-func (client *ResourceClient) getStatsHandleResponse(resp *http.Response) (ResourceClientGetStatsResponse, error) {
+func (client *ResourceClient) getStatsHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientGetStatsResponse, error) {
 	result := ResourceClientGetStatsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryStatistics); err != nil {
 		return ResourceClientGetStatsResponse{}, err
 	}
@@ -966,47 +975,61 @@ func (client *ResourceClient) NewGetValidSKUsPager(resourceGroupName string, res
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getValidSKUsCreateRequest(ctx, resourceGroupName, resourceName, options)
-			}, nil)
+			req, err := client.getValidSKUsCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
 			if err != nil {
 				return ResourceClientGetValidSKUsResponse{}, err
 			}
-			return client.getValidSKUsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ResourceClientGetValidSKUsResponse{}, err
+			}
+			return client.getValidSKUsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getValidSKUsCreateRequest creates the GetValidSKUs request.
-func (client *ResourceClient) getValidSKUsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ResourceClientGetValidSKUsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/skus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ResourceClient) getValidSKUsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *ResourceClientGetValidSKUsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/skus"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // getValidSKUsHandleResponse handles the GetValidSKUs response.
-func (client *ResourceClient) getValidSKUsHandleResponse(resp *http.Response) (ResourceClientGetValidSKUsResponse, error) {
+func (client *ResourceClient) getValidSKUsHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientGetValidSKUsResponse, error) {
 	result := ResourceClientGetValidSKUsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUDescriptionListResult); err != nil {
 		return ResourceClientGetValidSKUsResponse{}, err
 	}
@@ -1036,12 +1059,7 @@ func (client *ResourceClient) ImportDevices(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ResourceClientImportDevicesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientImportDevicesResponse{}, err
-	}
-	resp, err := client.importDevicesHandleResponse(httpResp)
-	return resp, err
+	return client.importDevicesHandleResponse(httpResp, http.StatusOK)
 }
 
 // importDevicesCreateRequest creates the ImportDevices request.
@@ -1064,7 +1082,7 @@ func (client *ResourceClient) importDevicesCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1075,8 +1093,11 @@ func (client *ResourceClient) importDevicesCreateRequest(ctx context.Context, re
 }
 
 // importDevicesHandleResponse handles the ImportDevices response.
-func (client *ResourceClient) importDevicesHandleResponse(resp *http.Response) (ResourceClientImportDevicesResponse, error) {
+func (client *ResourceClient) importDevicesHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientImportDevicesResponse, error) {
 	result := ResourceClientImportDevicesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobResponse); err != nil {
 		return ResourceClientImportDevicesResponse{}, err
 	}
@@ -1100,43 +1121,57 @@ func (client *ResourceClient) NewListByResourceGroupPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return ResourceClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ResourceClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ResourceClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ResourceClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ResourceClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ResourceClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ResourceClient) listByResourceGroupHandleResponse(resp *http.Response) (ResourceClientListByResourceGroupResponse, error) {
+func (client *ResourceClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientListByResourceGroupResponse, error) {
 	result := ResourceClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DescriptionListResult); err != nil {
 		return ResourceClientListByResourceGroupResponse{}, err
 	}
@@ -1159,39 +1194,53 @@ func (client *ResourceClient) NewListBySubscriptionPager(options *ResourceClient
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ResourceClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ResourceClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ResourceClient) listBySubscriptionCreateRequest(ctx context.Context, _ *ResourceClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Devices/IotHubs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ResourceClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *ResourceClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Devices/IotHubs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ResourceClient) listBySubscriptionHandleResponse(resp *http.Response) (ResourceClientListBySubscriptionResponse, error) {
+func (client *ResourceClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientListBySubscriptionResponse, error) {
 	result := ResourceClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DescriptionListResult); err != nil {
 		return ResourceClientListBySubscriptionResponse{}, err
 	}
@@ -1218,51 +1267,65 @@ func (client *ResourceClient) NewListEventHubConsumerGroupsPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listEventHubConsumerGroupsCreateRequest(ctx, resourceGroupName, resourceName, eventHubEndpointName, options)
-			}, nil)
+			req, err := client.listEventHubConsumerGroupsCreateRequest(ctx, resourceGroupName, resourceName, eventHubEndpointName, nextLink, options)
 			if err != nil {
 				return ResourceClientListEventHubConsumerGroupsResponse{}, err
 			}
-			return client.listEventHubConsumerGroupsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ResourceClientListEventHubConsumerGroupsResponse{}, err
+			}
+			return client.listEventHubConsumerGroupsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listEventHubConsumerGroupsCreateRequest creates the ListEventHubConsumerGroups request.
-func (client *ResourceClient) listEventHubConsumerGroupsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string, _ *ResourceClientListEventHubConsumerGroupsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ResourceClient) listEventHubConsumerGroupsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string, nextLink string, _ *ResourceClientListEventHubConsumerGroupsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		if eventHubEndpointName == "" {
+			return nil, errors.New("parameter eventHubEndpointName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{eventHubEndpointName}", url.PathEscape(eventHubEndpointName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if eventHubEndpointName == "" {
-		return nil, errors.New("parameter eventHubEndpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{eventHubEndpointName}", url.PathEscape(eventHubEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listEventHubConsumerGroupsHandleResponse handles the ListEventHubConsumerGroups response.
-func (client *ResourceClient) listEventHubConsumerGroupsHandleResponse(resp *http.Response) (ResourceClientListEventHubConsumerGroupsResponse, error) {
+func (client *ResourceClient) listEventHubConsumerGroupsHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientListEventHubConsumerGroupsResponse, error) {
 	result := ResourceClientListEventHubConsumerGroupsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventHubConsumerGroupsListResult); err != nil {
 		return ResourceClientListEventHubConsumerGroupsResponse{}, err
 	}
@@ -1286,47 +1349,61 @@ func (client *ResourceClient) NewListJobsPager(resourceGroupName string, resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listJobsCreateRequest(ctx, resourceGroupName, resourceName, options)
-			}, nil)
+			req, err := client.listJobsCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
 			if err != nil {
 				return ResourceClientListJobsResponse{}, err
 			}
-			return client.listJobsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ResourceClientListJobsResponse{}, err
+			}
+			return client.listJobsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listJobsCreateRequest creates the ListJobs request.
-func (client *ResourceClient) listJobsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ResourceClientListJobsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/jobs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ResourceClient) listJobsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *ResourceClientListJobsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/jobs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listJobsHandleResponse handles the ListJobs response.
-func (client *ResourceClient) listJobsHandleResponse(resp *http.Response) (ResourceClientListJobsResponse, error) {
+func (client *ResourceClient) listJobsHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientListJobsResponse, error) {
 	result := ResourceClientListJobsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobResponseListResult); err != nil {
 		return ResourceClientListJobsResponse{}, err
 	}
@@ -1350,47 +1427,61 @@ func (client *ResourceClient) NewListKeysPager(resourceGroupName string, resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listKeysCreateRequest(ctx, resourceGroupName, resourceName, options)
-			}, nil)
+			req, err := client.listKeysCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
 			if err != nil {
 				return ResourceClientListKeysResponse{}, err
 			}
-			return client.listKeysHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ResourceClientListKeysResponse{}, err
+			}
+			return client.listKeysHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listKeysCreateRequest creates the ListKeys request.
-func (client *ResourceClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ResourceClientListKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/listkeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ResourceClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *ResourceClientListKeysOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/listkeys"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *ResourceClient) listKeysHandleResponse(resp *http.Response) (ResourceClientListKeysResponse, error) {
+func (client *ResourceClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientListKeysResponse, error) {
 	result := ResourceClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessSignatureAuthorizationRuleListResult); err != nil {
 		return ResourceClientListKeysResponse{}, err
 	}
@@ -1417,12 +1508,7 @@ func (client *ResourceClient) TestAllRoutes(ctx context.Context, iotHubName stri
 	if err != nil {
 		return ResourceClientTestAllRoutesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientTestAllRoutesResponse{}, err
-	}
-	resp, err := client.testAllRoutesHandleResponse(httpResp)
-	return resp, err
+	return client.testAllRoutesHandleResponse(httpResp, http.StatusOK)
 }
 
 // testAllRoutesCreateRequest creates the TestAllRoutes request.
@@ -1445,7 +1531,7 @@ func (client *ResourceClient) testAllRoutesCreateRequest(ctx context.Context, io
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1456,8 +1542,11 @@ func (client *ResourceClient) testAllRoutesCreateRequest(ctx context.Context, io
 }
 
 // testAllRoutesHandleResponse handles the TestAllRoutes response.
-func (client *ResourceClient) testAllRoutesHandleResponse(resp *http.Response) (ResourceClientTestAllRoutesResponse, error) {
+func (client *ResourceClient) testAllRoutesHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientTestAllRoutesResponse, error) {
 	result := ResourceClientTestAllRoutesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestAllRoutesResult); err != nil {
 		return ResourceClientTestAllRoutesResponse{}, err
 	}
@@ -1484,12 +1573,7 @@ func (client *ResourceClient) TestRoute(ctx context.Context, iotHubName string, 
 	if err != nil {
 		return ResourceClientTestRouteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceClientTestRouteResponse{}, err
-	}
-	resp, err := client.testRouteHandleResponse(httpResp)
-	return resp, err
+	return client.testRouteHandleResponse(httpResp, http.StatusOK)
 }
 
 // testRouteCreateRequest creates the TestRoute request.
@@ -1512,7 +1596,7 @@ func (client *ResourceClient) testRouteCreateRequest(ctx context.Context, iotHub
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1523,8 +1607,11 @@ func (client *ResourceClient) testRouteCreateRequest(ctx context.Context, iotHub
 }
 
 // testRouteHandleResponse handles the TestRoute response.
-func (client *ResourceClient) testRouteHandleResponse(resp *http.Response) (ResourceClientTestRouteResponse, error) {
+func (client *ResourceClient) testRouteHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientTestRouteResponse, error) {
 	result := ResourceClientTestRouteResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TestRouteResult); err != nil {
 		return ResourceClientTestRouteResponse{}, err
 	}
@@ -1576,8 +1663,7 @@ func (client *ResourceClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1602,7 +1688,7 @@ func (client *ResourceClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

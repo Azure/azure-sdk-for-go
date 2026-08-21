@@ -61,12 +61,7 @@ func (client *PTUQuotaClient) GetAvailable(ctx context.Context, location string,
 	if err != nil {
 		return PTUQuotaClientGetAvailableResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PTUQuotaClientGetAvailableResponse{}, err
-	}
-	resp, err := client.getAvailableHandleResponse(httpResp)
-	return resp, err
+	return client.getAvailableHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAvailableCreateRequest creates the GetAvailable request.
@@ -92,8 +87,11 @@ func (client *PTUQuotaClient) getAvailableCreateRequest(ctx context.Context, loc
 }
 
 // getAvailableHandleResponse handles the GetAvailable response.
-func (client *PTUQuotaClient) getAvailableHandleResponse(resp *http.Response) (PTUQuotaClientGetAvailableResponse, error) {
+func (client *PTUQuotaClient) getAvailableHandleResponse(resp *http.Response, successCodes ...int) (PTUQuotaClientGetAvailableResponse, error) {
 	result := PTUQuotaClientGetAvailableResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableQuota); err != nil {
 		return PTUQuotaClientGetAvailableResponse{}, err
 	}
@@ -116,46 +114,60 @@ func (client *PTUQuotaClient) NewListPager(location string, options *PTUQuotaCli
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return PTUQuotaClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PTUQuotaClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *PTUQuotaClient) listCreateRequest(ctx context.Context, location string, options *PTUQuotaClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/quotaAndUsage"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PTUQuotaClient) listCreateRequest(ctx context.Context, location string, nextLink string, options *PTUQuotaClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/quotaAndUsage"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", *options.Skip)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", *options.Skip)
+		}
+		reqQP.Set("api-version", version20260315Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PTUQuotaClient) listHandleResponse(resp *http.Response) (PTUQuotaClientListResponse, error) {
+func (client *PTUQuotaClient) listHandleResponse(resp *http.Response, successCodes ...int) (PTUQuotaClientListResponse, error) {
 	result := PTUQuotaClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsageAndQuotaDetailsArmPaginatedResult); err != nil {
 		return PTUQuotaClientListResponse{}, err
 	}
@@ -179,46 +191,60 @@ func (client *PTUQuotaClient) NewListAvailablePager(location string, options *PT
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAvailableCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listAvailableCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return PTUQuotaClientListAvailableResponse{}, err
 			}
-			return client.listAvailableHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PTUQuotaClientListAvailableResponse{}, err
+			}
+			return client.listAvailableHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAvailableCreateRequest creates the ListAvailable request.
-func (client *PTUQuotaClient) listAvailableCreateRequest(ctx context.Context, location string, options *PTUQuotaClientListAvailableOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/availableQuota"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PTUQuotaClient) listAvailableCreateRequest(ctx context.Context, location string, nextLink string, options *PTUQuotaClientListAvailableOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.MachineLearningServices/locations/{location}/availableQuota"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", *options.Skip)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", *options.Skip)
+		}
+		reqQP.Set("api-version", version20260315Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260315Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listAvailableHandleResponse handles the ListAvailable response.
-func (client *PTUQuotaClient) listAvailableHandleResponse(resp *http.Response) (PTUQuotaClientListAvailableResponse, error) {
+func (client *PTUQuotaClient) listAvailableHandleResponse(resp *http.Response, successCodes ...int) (PTUQuotaClientListAvailableResponse, error) {
 	result := PTUQuotaClientListAvailableResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableQuotaArmPaginatedResult); err != nil {
 		return PTUQuotaClientListAvailableResponse{}, err
 	}

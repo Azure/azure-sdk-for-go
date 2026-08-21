@@ -61,12 +61,7 @@ func (client *AvailableServiceTiersClient) ListByWorkspace(ctx context.Context, 
 	if err != nil {
 		return AvailableServiceTiersClientListByWorkspaceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AvailableServiceTiersClientListByWorkspaceResponse{}, err
-	}
-	resp, err := client.listByWorkspaceHandleResponse(httpResp)
-	return resp, err
+	return client.listByWorkspaceHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
@@ -96,8 +91,11 @@ func (client *AvailableServiceTiersClient) listByWorkspaceCreateRequest(ctx cont
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *AvailableServiceTiersClient) listByWorkspaceHandleResponse(resp *http.Response) (AvailableServiceTiersClientListByWorkspaceResponse, error) {
+func (client *AvailableServiceTiersClient) listByWorkspaceHandleResponse(resp *http.Response, successCodes ...int) (AvailableServiceTiersClientListByWorkspaceResponse, error) {
 	result := AvailableServiceTiersClientListByWorkspaceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableServiceTierArray); err != nil {
 		return AvailableServiceTiersClientListByWorkspaceResponse{}, err
 	}

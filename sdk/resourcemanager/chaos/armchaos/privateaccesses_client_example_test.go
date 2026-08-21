@@ -47,8 +47,8 @@ func ExamplePrivateAccessesClient_BeginCreateOrUpdate_createOrUpdateAPrivateAcce
 	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -92,8 +92,8 @@ func ExamplePrivateAccessesClient_BeginCreateOrUpdate_createOrUpdateAPrivateAcce
 	// 			PublicNetworkAccess: to.Ptr(armchaos.PublicNetworkAccessOptionEnabled),
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -168,8 +168,8 @@ func ExamplePrivateAccessesClient_Get_getAPrivateAccessResource() {
 	// 		Properties: &armchaos.PrivateAccessProperties{
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -221,8 +221,8 @@ func ExamplePrivateAccessesClient_Get_getAPrivateAccessResourceWithPrivateEndpoi
 	// 			PublicNetworkAccess: to.Ptr(armchaos.PublicNetworkAccessOptionEnabled),
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -341,8 +341,8 @@ func ExamplePrivateAccessesClient_NewListPager() {
 		// 				Properties: &armchaos.PrivateAccessProperties{
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -371,8 +371,8 @@ func ExamplePrivateAccessesClient_NewListPager() {
 		// 					PublicNetworkAccess: to.Ptr(armchaos.PublicNetworkAccessOptionEnabled),
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-01T00:00:00.0Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-01T00:00:00.0Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -415,8 +415,8 @@ func ExamplePrivateAccessesClient_NewListAllPager() {
 		// 				Properties: &armchaos.PrivateAccessProperties{
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -445,8 +445,8 @@ func ExamplePrivateAccessesClient_NewListAllPager() {
 		// 					PublicNetworkAccess: to.Ptr(armchaos.PublicNetworkAccessOptionDisabled),
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-01T00:00:00.0Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-01T00:00:00.0Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.August, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -539,8 +539,8 @@ func ExamplePrivateAccessesClient_BeginUpdate() {
 	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-07-01T00:00:00.0Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"tag1": to.Ptr("value1"),

@@ -60,12 +60,7 @@ func (client *DiscountClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return DiscountClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DiscountClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -95,8 +90,11 @@ func (client *DiscountClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *DiscountClient) getHandleResponse(resp *http.Response) (DiscountClientGetResponse, error) {
+func (client *DiscountClient) getHandleResponse(resp *http.Response, successCodes ...int) (DiscountClientGetResponse, error) {
 	result := DiscountClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Discount); err != nil {
 		return DiscountClientGetResponse{}, err
 	}
@@ -144,8 +142,7 @@ func (client *DiscountClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

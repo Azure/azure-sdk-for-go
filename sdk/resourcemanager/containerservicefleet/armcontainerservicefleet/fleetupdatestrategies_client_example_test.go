@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-02-preview/UpdateStrategies_CreateOrUpdate.json
+// Generated from example definition: 2026-06-01/UpdateStrategies_CreateOrUpdate.json
 func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,10 +84,10 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 		},
 	// 		Properties: &armcontainerservicefleet.FleetUpdateStrategyProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.FleetUpdateStrategyProvisioningStateSucceeded),
@@ -136,7 +136,7 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/UpdateStrategies_Delete.json
+// Generated from example definition: 2026-06-01/UpdateStrategies_Delete.json
 func ExampleFleetUpdateStrategiesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleFleetUpdateStrategiesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/UpdateStrategies_Get.json
+// Generated from example definition: 2026-06-01/UpdateStrategies_Get.json
 func ExampleFleetUpdateStrategiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,10 +188,10 @@ func ExampleFleetUpdateStrategiesClient_Get() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 	// 		},
 	// 		Properties: &armcontainerservicefleet.FleetUpdateStrategyProperties{
 	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.FleetUpdateStrategyProvisioningStateSucceeded),
@@ -240,7 +240,7 @@ func ExampleFleetUpdateStrategiesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/UpdateStrategies_ListByFleet.json
+// Generated from example definition: 2026-06-01/UpdateStrategies_ListByFleet.json
 func ExampleFleetUpdateStrategiesClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,10 +272,10 @@ func ExampleFleetUpdateStrategiesClient_NewListByFleetPager() {
 		// 				SystemData: &armcontainerservicefleet.SystemData{
 		// 					CreatedBy: to.Ptr("@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T01:10:08.395Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.March, 1, 1, 10, 8, 395000000, time.UTC)),
 		// 				},
 		// 				Properties: &armcontainerservicefleet.FleetUpdateStrategyProperties{
 		// 					ProvisioningState: to.Ptr(armcontainerservicefleet.FleetUpdateStrategyProvisioningStateSucceeded),

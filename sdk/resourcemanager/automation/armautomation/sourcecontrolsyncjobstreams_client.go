@@ -64,12 +64,7 @@ func (client *SourceControlSyncJobStreamsClient) Get(ctx context.Context, resour
 	if err != nil {
 		return SourceControlSyncJobStreamsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SourceControlSyncJobStreamsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -111,8 +106,11 @@ func (client *SourceControlSyncJobStreamsClient) getCreateRequest(ctx context.Co
 }
 
 // getHandleResponse handles the Get response.
-func (client *SourceControlSyncJobStreamsClient) getHandleResponse(resp *http.Response) (SourceControlSyncJobStreamsClientGetResponse, error) {
+func (client *SourceControlSyncJobStreamsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SourceControlSyncJobStreamsClientGetResponse, error) {
 	result := SourceControlSyncJobStreamsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlSyncJobStreamByID); err != nil {
 		return SourceControlSyncJobStreamsClientGetResponse{}, err
 	}
@@ -137,58 +135,72 @@ func (client *SourceControlSyncJobStreamsClient) NewListBySyncJobPager(resourceG
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySyncJobCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobID, options)
-			}, nil)
+			req, err := client.listBySyncJobCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobID, nextLink, options)
 			if err != nil {
 				return SourceControlSyncJobStreamsClientListBySyncJobResponse{}, err
 			}
-			return client.listBySyncJobHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SourceControlSyncJobStreamsClientListBySyncJobResponse{}, err
+			}
+			return client.listBySyncJobHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySyncJobCreateRequest creates the ListBySyncJob request.
-func (client *SourceControlSyncJobStreamsClient) listBySyncJobCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID string, options *SourceControlSyncJobStreamsClientListBySyncJobOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}/sourceControlSyncJobs/{sourceControlSyncJobId}/streams"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SourceControlSyncJobStreamsClient) listBySyncJobCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID string, nextLink string, options *SourceControlSyncJobStreamsClientListBySyncJobOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}/sourceControlSyncJobs/{sourceControlSyncJobId}/streams"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if automationAccountName == "" {
+			return nil, errors.New("parameter automationAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+		if sourceControlName == "" {
+			return nil, errors.New("parameter sourceControlName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{sourceControlName}", url.PathEscape(sourceControlName))
+		if sourceControlSyncJobID == "" {
+			return nil, errors.New("parameter sourceControlSyncJobID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{sourceControlSyncJobId}", url.PathEscape(sourceControlSyncJobID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if automationAccountName == "" {
-		return nil, errors.New("parameter automationAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	if sourceControlName == "" {
-		return nil, errors.New("parameter sourceControlName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sourceControlName}", url.PathEscape(sourceControlName))
-	if sourceControlSyncJobID == "" {
-		return nil, errors.New("parameter sourceControlSyncJobID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sourceControlSyncJobId}", url.PathEscape(sourceControlSyncJobID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20241023)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20241023)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySyncJobHandleResponse handles the ListBySyncJob response.
-func (client *SourceControlSyncJobStreamsClient) listBySyncJobHandleResponse(resp *http.Response) (SourceControlSyncJobStreamsClientListBySyncJobResponse, error) {
+func (client *SourceControlSyncJobStreamsClient) listBySyncJobHandleResponse(resp *http.Response, successCodes ...int) (SourceControlSyncJobStreamsClientListBySyncJobResponse, error) {
 	result := SourceControlSyncJobStreamsClientListBySyncJobResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SourceControlSyncJobStreamsListBySyncJob); err != nil {
 		return SourceControlSyncJobStreamsClientListBySyncJobResponse{}, err
 	}

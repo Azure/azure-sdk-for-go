@@ -57,12 +57,7 @@ func (client *SavingsPlanOrderClient) Elevate(ctx context.Context, savingsPlanOr
 	if err != nil {
 		return SavingsPlanOrderClientElevateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SavingsPlanOrderClientElevateResponse{}, err
-	}
-	resp, err := client.elevateHandleResponse(httpResp)
-	return resp, err
+	return client.elevateHandleResponse(httpResp, http.StatusOK)
 }
 
 // elevateCreateRequest creates the Elevate request.
@@ -84,8 +79,11 @@ func (client *SavingsPlanOrderClient) elevateCreateRequest(ctx context.Context, 
 }
 
 // elevateHandleResponse handles the Elevate response.
-func (client *SavingsPlanOrderClient) elevateHandleResponse(resp *http.Response) (SavingsPlanOrderClientElevateResponse, error) {
+func (client *SavingsPlanOrderClient) elevateHandleResponse(resp *http.Response, successCodes ...int) (SavingsPlanOrderClientElevateResponse, error) {
 	result := SavingsPlanOrderClientElevateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RoleAssignmentEntity); err != nil {
 		return SavingsPlanOrderClientElevateResponse{}, err
 	}
@@ -110,12 +108,7 @@ func (client *SavingsPlanOrderClient) Get(ctx context.Context, savingsPlanOrderI
 	if err != nil {
 		return SavingsPlanOrderClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SavingsPlanOrderClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -140,8 +133,11 @@ func (client *SavingsPlanOrderClient) getCreateRequest(ctx context.Context, savi
 }
 
 // getHandleResponse handles the Get response.
-func (client *SavingsPlanOrderClient) getHandleResponse(resp *http.Response) (SavingsPlanOrderClientGetResponse, error) {
+func (client *SavingsPlanOrderClient) getHandleResponse(resp *http.Response, successCodes ...int) (SavingsPlanOrderClientGetResponse, error) {
 	result := SavingsPlanOrderClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SavingsPlanOrderModel); err != nil {
 		return SavingsPlanOrderClientGetResponse{}, err
 	}
@@ -162,35 +158,49 @@ func (client *SavingsPlanOrderClient) NewListPager(options *SavingsPlanOrderClie
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return SavingsPlanOrderClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SavingsPlanOrderClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *SavingsPlanOrderClient) listCreateRequest(ctx context.Context, _ *SavingsPlanOrderClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.BillingBenefits/savingsPlanOrders"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *SavingsPlanOrderClient) listCreateRequest(ctx context.Context, nextLink string, _ *SavingsPlanOrderClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.BillingBenefits/savingsPlanOrders"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SavingsPlanOrderClient) listHandleResponse(resp *http.Response) (SavingsPlanOrderClientListResponse, error) {
+func (client *SavingsPlanOrderClient) listHandleResponse(resp *http.Response, successCodes ...int) (SavingsPlanOrderClientListResponse, error) {
 	result := SavingsPlanOrderClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SavingsPlanOrderModelList); err != nil {
 		return SavingsPlanOrderClientListResponse{}, err
 	}

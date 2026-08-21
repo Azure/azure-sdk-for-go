@@ -57,8 +57,8 @@ func ExampleActionsClient_Get() {
 	// 			},
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00.000Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -117,8 +117,8 @@ func ExampleActionsClient_NewListPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00.000Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

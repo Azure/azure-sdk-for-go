@@ -61,12 +61,7 @@ func (client *ListAssociatedTrafficFiltersClient) List(ctx context.Context, reso
 	if err != nil {
 		return ListAssociatedTrafficFiltersClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ListAssociatedTrafficFiltersClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -96,8 +91,11 @@ func (client *ListAssociatedTrafficFiltersClient) listCreateRequest(ctx context.
 }
 
 // listHandleResponse handles the List response.
-func (client *ListAssociatedTrafficFiltersClient) listHandleResponse(resp *http.Response) (ListAssociatedTrafficFiltersClientListResponse, error) {
+func (client *ListAssociatedTrafficFiltersClient) listHandleResponse(resp *http.Response, successCodes ...int) (ListAssociatedTrafficFiltersClientListResponse, error) {
 	result := ListAssociatedTrafficFiltersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TrafficFilterResponse); err != nil {
 		return ListAssociatedTrafficFiltersClientListResponse{}, err
 	}

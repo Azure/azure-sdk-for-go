@@ -2,7 +2,7 @@
 
 ## 1.0.0 (2026-08-21)
 ### Other Changes
-
+- Stable release of the `armnapsteromniagentapi` module.
 
 ## 0.1.0 (2026-06-11)
 ### Other Changes

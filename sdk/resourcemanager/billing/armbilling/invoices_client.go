@@ -32,6 +32,9 @@ type InvoicesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewInvoicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InvoicesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -231,9 +234,6 @@ func (client *InvoicesClient) downloadByBillingSubscription(ctx context.Context,
 // downloadByBillingSubscriptionCreateRequest creates the DownloadByBillingSubscription request.
 func (client *InvoicesClient) downloadByBillingSubscriptionCreateRequest(ctx context.Context, invoiceName string, options *InvoicesClientBeginDownloadByBillingSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/{subscriptionId}/invoices/{invoiceName}/download"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if invoiceName == "" {
 		return nil, errors.New("parameter invoiceName cannot be empty")
@@ -375,9 +375,6 @@ func (client *InvoicesClient) downloadDocumentsByBillingSubscription(ctx context
 // downloadDocumentsByBillingSubscriptionCreateRequest creates the DownloadDocumentsByBillingSubscription request.
 func (client *InvoicesClient) downloadDocumentsByBillingSubscriptionCreateRequest(ctx context.Context, parameters []*DocumentDownloadRequest, _ *InvoicesClientBeginDownloadDocumentsByBillingSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/{subscriptionId}/downloadDocuments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -599,9 +596,6 @@ func (client *InvoicesClient) GetByBillingSubscription(ctx context.Context, invo
 // getByBillingSubscriptionCreateRequest creates the GetByBillingSubscription request.
 func (client *InvoicesClient) getByBillingSubscriptionCreateRequest(ctx context.Context, invoiceName string, _ *InvoicesClientGetByBillingSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/{subscriptionId}/invoices/{invoiceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if invoiceName == "" {
 		return nil, errors.New("parameter invoiceName cannot be empty")
@@ -857,9 +851,6 @@ func (client *InvoicesClient) listByBillingSubscriptionCreateRequest(ctx context
 	var err error
 	if firstPage {
 		urlPath := "/providers/Microsoft.Billing/billingAccounts/default/billingSubscriptions/{subscriptionId}/invoices"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {

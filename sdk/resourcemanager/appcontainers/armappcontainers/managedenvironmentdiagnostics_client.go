@@ -30,6 +30,9 @@ type ManagedEnvironmentDiagnosticsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedEnvironmentDiagnosticsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedEnvironmentDiagnosticsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,9 +73,6 @@ func (client *ManagedEnvironmentDiagnosticsClient) GetDetector(ctx context.Conte
 // getDetectorCreateRequest creates the GetDetector request.
 func (client *ManagedEnvironmentDiagnosticsClient) getDetectorCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, detectorName string, _ *ManagedEnvironmentDiagnosticsClientGetDetectorOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/detectors/{detectorName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -137,9 +137,6 @@ func (client *ManagedEnvironmentDiagnosticsClient) ListDetectors(ctx context.Con
 // listDetectorsCreateRequest creates the ListDetectors request.
 func (client *ManagedEnvironmentDiagnosticsClient) listDetectorsCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, _ *ManagedEnvironmentDiagnosticsClientListDetectorsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/detectors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

@@ -30,6 +30,9 @@ type DeploymentWafPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDeploymentWafPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeploymentWafPoliciesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,9 +71,6 @@ func (client *DeploymentWafPoliciesClient) Analysis(ctx context.Context, resourc
 // analysisCreateRequest creates the Analysis request.
 func (client *DeploymentWafPoliciesClient) analysisCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, wafPolicyName string, options *DeploymentWafPoliciesClientAnalysisOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/wafPolicies/{wafPolicyName}/analyzeWafPolicy"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

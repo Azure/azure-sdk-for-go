@@ -31,6 +31,9 @@ type WhatIfResultsAtSubscriptionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWhatIfResultsAtSubscriptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WhatIfResultsAtSubscriptionClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -90,9 +93,6 @@ func (client *WhatIfResultsAtSubscriptionClient) createOrUpdate(ctx context.Cont
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *WhatIfResultsAtSubscriptionClient) createOrUpdateCreateRequest(ctx context.Context, deploymentStacksWhatIfResultName string, resource WhatIfResult, _ *WhatIfResultsAtSubscriptionClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deploymentStacksWhatIfResultName == "" {
 		return nil, errors.New("parameter deploymentStacksWhatIfResultName cannot be empty")
@@ -142,9 +142,6 @@ func (client *WhatIfResultsAtSubscriptionClient) Delete(ctx context.Context, dep
 // deleteCreateRequest creates the Delete request.
 func (client *WhatIfResultsAtSubscriptionClient) deleteCreateRequest(ctx context.Context, deploymentStacksWhatIfResultName string, options *WhatIfResultsAtSubscriptionClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deploymentStacksWhatIfResultName == "" {
 		return nil, errors.New("parameter deploymentStacksWhatIfResultName cannot be empty")
@@ -200,9 +197,6 @@ func (client *WhatIfResultsAtSubscriptionClient) Get(ctx context.Context, deploy
 // getCreateRequest creates the Get request.
 func (client *WhatIfResultsAtSubscriptionClient) getCreateRequest(ctx context.Context, deploymentStacksWhatIfResultName string, _ *WhatIfResultsAtSubscriptionClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deploymentStacksWhatIfResultName == "" {
 		return nil, errors.New("parameter deploymentStacksWhatIfResultName cannot be empty")
@@ -266,9 +260,6 @@ func (client *WhatIfResultsAtSubscriptionClient) listCreateRequest(ctx context.C
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -345,9 +336,6 @@ func (client *WhatIfResultsAtSubscriptionClient) whatIf(ctx context.Context, dep
 // whatIfCreateRequest creates the WhatIf request.
 func (client *WhatIfResultsAtSubscriptionClient) whatIfCreateRequest(ctx context.Context, deploymentStacksWhatIfResultName string, _ *WhatIfResultsAtSubscriptionClientBeginWhatIfOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deploymentStacksWhatIfResults/{deploymentStacksWhatIfResultName}/whatIf"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deploymentStacksWhatIfResultName == "" {
 		return nil, errors.New("parameter deploymentStacksWhatIfResultName cannot be empty")

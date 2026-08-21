@@ -30,6 +30,9 @@ type MonitorResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMonitorResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MonitorResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,9 +72,6 @@ func (client *MonitorResourcesClient) LatestLinkedSaaS(ctx context.Context, reso
 // latestLinkedSaaSCreateRequest creates the LatestLinkedSaaS request.
 func (client *MonitorResourcesClient) latestLinkedSaaSCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitorResourcesClientLatestLinkedSaaSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/latestLinkedSaaS"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -158,9 +158,6 @@ func (client *MonitorResourcesClient) linkSaaS(ctx context.Context, resourceGrou
 // linkSaaSCreateRequest creates the LinkSaaS request.
 func (client *MonitorResourcesClient) linkSaaSCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, body SaaSData, _ *MonitorResourcesClientBeginLinkSaaSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/linkSaaS"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

@@ -30,6 +30,9 @@ type GlobalClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGlobalClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GlobalClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,9 +70,6 @@ func (client *GlobalClient) GetDeletedWebApp(ctx context.Context, deletedSiteID 
 // getDeletedWebAppCreateRequest creates the GetDeletedWebApp request.
 func (client *GlobalClient) getDeletedWebAppCreateRequest(ctx context.Context, deletedSiteID string, _ *GlobalClientGetDeletedWebAppOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deletedSiteID == "" {
 		return nil, errors.New("parameter deletedSiteID cannot be empty")
@@ -125,9 +125,6 @@ func (client *GlobalClient) GetDeletedWebAppSnapshots(ctx context.Context, delet
 // getDeletedWebAppSnapshotsCreateRequest creates the GetDeletedWebAppSnapshots request.
 func (client *GlobalClient) getDeletedWebAppSnapshotsCreateRequest(ctx context.Context, deletedSiteID string, _ *GlobalClientGetDeletedWebAppSnapshotsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}/snapshots"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if deletedSiteID == "" {
 		return nil, errors.New("parameter deletedSiteID cannot be empty")
@@ -187,9 +184,6 @@ func (client *GlobalClient) GetSubscriptionOperationWithAsyncResponse(ctx contex
 // getSubscriptionOperationWithAsyncResponseCreateRequest creates the GetSubscriptionOperationWithAsyncResponse request.
 func (client *GlobalClient) getSubscriptionOperationWithAsyncResponseCreateRequest(ctx context.Context, location string, operationID string, _ *GlobalClientGetSubscriptionOperationWithAsyncResponseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/operations/{operationId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")

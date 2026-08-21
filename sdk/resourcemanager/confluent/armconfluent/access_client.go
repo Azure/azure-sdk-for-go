@@ -30,6 +30,9 @@ type AccessClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,9 +71,6 @@ func (client *AccessClient) CreateRoleBinding(ctx context.Context, resourceGroup
 // createRoleBindingCreateRequest creates the CreateRoleBinding request.
 func (client *AccessClient) createRoleBindingCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body AccessCreateRoleBindingRequestModel, _ *AccessClientCreateRoleBindingOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/createRoleBinding"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -137,9 +137,6 @@ func (client *AccessClient) DeleteRoleBinding(ctx context.Context, resourceGroup
 // deleteRoleBindingCreateRequest creates the DeleteRoleBinding request.
 func (client *AccessClient) deleteRoleBindingCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, roleBindingID string, _ *AccessClientDeleteRoleBindingOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/deleteRoleBinding/{roleBindingId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -189,9 +186,6 @@ func (client *AccessClient) InviteUser(ctx context.Context, resourceGroupName st
 // inviteUserCreateRequest creates the InviteUser request.
 func (client *AccessClient) inviteUserCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body AccessInviteUserAccountModel, _ *AccessClientInviteUserOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/createInvitation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -254,9 +248,6 @@ func (client *AccessClient) ListClusters(ctx context.Context, resourceGroupName 
 // listClustersCreateRequest creates the ListClusters request.
 func (client *AccessClient) listClustersCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *AccessClientListClustersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/listClusters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -319,9 +310,6 @@ func (client *AccessClient) ListEnvironments(ctx context.Context, resourceGroupN
 // listEnvironmentsCreateRequest creates the ListEnvironments request.
 func (client *AccessClient) listEnvironmentsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *AccessClientListEnvironmentsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/listEnvironments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -384,9 +372,6 @@ func (client *AccessClient) ListInvitations(ctx context.Context, resourceGroupNa
 // listInvitationsCreateRequest creates the ListInvitations request.
 func (client *AccessClient) listInvitationsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *AccessClientListInvitationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/listInvitations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -450,9 +435,6 @@ func (client *AccessClient) ListRoleBindingNameList(ctx context.Context, resourc
 // listRoleBindingNameListCreateRequest creates the ListRoleBindingNameList request.
 func (client *AccessClient) listRoleBindingNameListCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *AccessClientListRoleBindingNameListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/listRoleBindingNameList"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -515,9 +497,6 @@ func (client *AccessClient) ListRoleBindings(ctx context.Context, resourceGroupN
 // listRoleBindingsCreateRequest creates the ListRoleBindings request.
 func (client *AccessClient) listRoleBindingsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *AccessClientListRoleBindingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/listRoleBindings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -581,9 +560,6 @@ func (client *AccessClient) ListServiceAccounts(ctx context.Context, resourceGro
 // listServiceAccountsCreateRequest creates the ListServiceAccounts request.
 func (client *AccessClient) listServiceAccountsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *AccessClientListServiceAccountsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/listServiceAccounts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -646,9 +622,6 @@ func (client *AccessClient) ListUsers(ctx context.Context, resourceGroupName str
 // listUsersCreateRequest creates the ListUsers request.
 func (client *AccessClient) listUsersCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *AccessClientListUsersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/access/default/listUsers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

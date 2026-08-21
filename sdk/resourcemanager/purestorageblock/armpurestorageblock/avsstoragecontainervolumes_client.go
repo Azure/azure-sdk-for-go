@@ -30,6 +30,9 @@ type AvsStorageContainerVolumesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAvsStorageContainerVolumesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvsStorageContainerVolumesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -91,9 +94,6 @@ func (client *AvsStorageContainerVolumesClient) deleteOperation(ctx context.Cont
 // deleteCreateRequest creates the Delete request.
 func (client *AvsStorageContainerVolumesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, _ *AvsStorageContainerVolumesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers/{storageContainerName}/volumes/{volumeId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -149,9 +149,6 @@ func (client *AvsStorageContainerVolumesClient) Get(ctx context.Context, resourc
 // getCreateRequest creates the Get request.
 func (client *AvsStorageContainerVolumesClient) getCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, _ *AvsStorageContainerVolumesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers/{storageContainerName}/volumes/{volumeId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -230,9 +227,6 @@ func (client *AvsStorageContainerVolumesClient) listByAvsStorageContainerCreateR
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers/{storageContainerName}/volumes"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -325,9 +319,6 @@ func (client *AvsStorageContainerVolumesClient) update(ctx context.Context, reso
 // updateCreateRequest creates the Update request.
 func (client *AvsStorageContainerVolumesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, volumeID string, properties AvsStorageContainerVolumeUpdate, _ *AvsStorageContainerVolumesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers/{storageContainerName}/volumes/{volumeId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

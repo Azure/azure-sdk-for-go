@@ -30,6 +30,9 @@ type CloudExadataInfrastructuresClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCloudExadataInfrastructuresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CloudExadataInfrastructuresClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -89,9 +92,6 @@ func (client *CloudExadataInfrastructuresClient) addStorageCapacity(ctx context.
 // addStorageCapacityCreateRequest creates the AddStorageCapacity request.
 func (client *CloudExadataInfrastructuresClient) addStorageCapacityCreateRequest(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, _ *CloudExadataInfrastructuresClientBeginAddStorageCapacityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}/addStorageCapacity"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -161,9 +161,6 @@ func (client *CloudExadataInfrastructuresClient) configureExascale(ctx context.C
 // configureExascaleCreateRequest creates the ConfigureExascale request.
 func (client *CloudExadataInfrastructuresClient) configureExascaleCreateRequest(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, body ConfigureExascaleCloudExadataInfrastructureDetails, _ *CloudExadataInfrastructuresClientBeginConfigureExascaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}/configureExascale"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -237,9 +234,6 @@ func (client *CloudExadataInfrastructuresClient) createOrUpdate(ctx context.Cont
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *CloudExadataInfrastructuresClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, resource CloudExadataInfrastructure, _ *CloudExadataInfrastructuresClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -312,9 +306,6 @@ func (client *CloudExadataInfrastructuresClient) deleteOperation(ctx context.Con
 // deleteCreateRequest creates the Delete request.
 func (client *CloudExadataInfrastructuresClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, _ *CloudExadataInfrastructuresClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -360,9 +351,6 @@ func (client *CloudExadataInfrastructuresClient) Get(ctx context.Context, resour
 // getCreateRequest creates the Get request.
 func (client *CloudExadataInfrastructuresClient) getCreateRequest(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, _ *CloudExadataInfrastructuresClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -431,9 +419,6 @@ func (client *CloudExadataInfrastructuresClient) listByResourceGroupCreateReques
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -502,9 +487,6 @@ func (client *CloudExadataInfrastructuresClient) listBySubscriptionCreateRequest
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/cloudExadataInfrastructures"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -583,9 +565,6 @@ func (client *CloudExadataInfrastructuresClient) update(ctx context.Context, res
 // updateCreateRequest creates the Update request.
 func (client *CloudExadataInfrastructuresClient) updateCreateRequest(ctx context.Context, resourceGroupName string, cloudexadatainfrastructurename string, properties CloudExadataInfrastructureUpdate, _ *CloudExadataInfrastructuresClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudExadataInfrastructures/{cloudexadatainfrastructurename}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

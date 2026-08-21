@@ -30,6 +30,9 @@ type AuthorizedApplicationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAuthorizedApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthorizedApplicationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -90,9 +93,6 @@ func (client *AuthorizedApplicationsClient) createOrUpdate(ctx context.Context, 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *AuthorizedApplicationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, applicationID string, properties AuthorizedApplication, _ *AuthorizedApplicationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/authorizedApplications/{applicationId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
 		return nil, errors.New("parameter providerNamespace cannot be empty")
@@ -146,9 +146,6 @@ func (client *AuthorizedApplicationsClient) Delete(ctx context.Context, provider
 // deleteCreateRequest creates the Delete request.
 func (client *AuthorizedApplicationsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, applicationID string, _ *AuthorizedApplicationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/authorizedApplications/{applicationId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
 		return nil, errors.New("parameter providerNamespace cannot be empty")
@@ -194,9 +191,6 @@ func (client *AuthorizedApplicationsClient) Get(ctx context.Context, providerNam
 // getCreateRequest creates the Get request.
 func (client *AuthorizedApplicationsClient) getCreateRequest(ctx context.Context, providerNamespace string, applicationID string, _ *AuthorizedApplicationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/authorizedApplications/{applicationId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if providerNamespace == "" {
 		return nil, errors.New("parameter providerNamespace cannot be empty")
@@ -265,9 +259,6 @@ func (client *AuthorizedApplicationsClient) listCreateRequest(ctx context.Contex
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/authorizedApplications"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if providerNamespace == "" {
 			return nil, errors.New("parameter providerNamespace cannot be empty")

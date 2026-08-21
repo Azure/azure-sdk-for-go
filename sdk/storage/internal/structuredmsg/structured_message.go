@@ -408,7 +408,7 @@ func (e *SMEncoder) Read(p []byte) (int, error) {
 				e.segRemain -= int64(n)
 			}
 			if e.segRemain == 0 {
-				// Segment data fully read — emit footer
+				// Segment data fully read - emit footer
 				footer := make([]byte, SMSegmentFooterSize)
 				binary.LittleEndian.PutUint64(footer, e.segCRC.Sum64())
 				e.pending = footer
@@ -458,7 +458,7 @@ func (e *SMEncoder) Read(p []byte) (int, error) {
 
 func (e *SMEncoder) advanceToNextSegment() {
 	if e.segIndex >= e.numSegments {
-		// All segments done — emit trailer
+		// All segments done - emit trailer
 		trailer := make([]byte, SMMessageTrailerSize)
 		binary.LittleEndian.PutUint64(trailer, e.msgCRC.Sum64())
 		e.pending = trailer

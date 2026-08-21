@@ -20,7 +20,7 @@ import (
 // VirtualMachineBulkOperationsClient contains the methods for the VirtualMachineBulkOperations group.
 // Don't use this type directly, use NewVirtualMachineBulkOperationsClient() instead.
 //
-// Generated from API version 2026-07-06-preview
+// Generated from API version 2026-08-06-preview
 type VirtualMachineBulkOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -86,7 +86,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkAcknowledgeOperationErrors
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -152,7 +152,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkCancelOperationsCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -219,7 +219,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkCreateOperationCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -286,7 +286,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkDeallocateOperationCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -353,7 +353,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkDeleteOperationCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -419,7 +419,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkGetOperationsStatusCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -486,7 +486,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkHibernateOperationCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -566,7 +566,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkListOperationErrorsCreateR
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260706Preview)
+		reqQP.Set("api-version", version20260806Preview)
 		if options != nil && options.LookbackInMinutes != nil {
 			reqQP.Set("lookbackInMinutes", strconv.FormatInt(int64(*options.LookbackInMinutes), 10))
 		}
@@ -633,7 +633,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkReimageOperationCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -700,7 +700,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkStartOperationCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -767,7 +767,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkVdiFlexCreateOperationCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

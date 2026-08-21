@@ -18,6 +18,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Conditional list requests for configuration settings and feature flags now return HTTP 304 Not Modified responses as errors.
 
 ### Other Changes
 * Updated to API version `2026-05-01-preview`.

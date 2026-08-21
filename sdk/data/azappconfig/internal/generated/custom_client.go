@@ -54,7 +54,6 @@ func (client *AzureAppConfigurationClient) NewGetKeyValuesPagerWithMatchConditio
 				NextReq: func(ctx context.Context, encodedNextLink string) (*policy.Request, error) {
 					return client.getNextPageCreateRequestWithMatchConditions(ctx, encodedNextLink, curCondition)
 				},
-				StatusCodes: []int{http.StatusNotModified},
 			})
 			if err != nil {
 				return AzureAppConfigurationClientGetKeyValuesResponse{}, err
@@ -225,7 +224,6 @@ func (client *AzureAppConfigurationFeatureFlagClient) NewGetFeatureFlagsPagerWit
 				NextReq: func(ctx context.Context, encodedNextLink string) (*policy.Request, error) {
 					return client.getFeatureFlagNextPageCreateRequest(ctx, encodedNextLink, curCondition)
 				},
-				StatusCodes: []int{http.StatusNotModified},
 			})
 			if err != nil {
 				return AzureAppConfigurationFeatureFlagClientGetFeatureFlagsResponse{}, err

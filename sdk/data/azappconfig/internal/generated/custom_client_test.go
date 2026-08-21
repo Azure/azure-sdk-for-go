@@ -17,11 +17,12 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-type featureFlagPagerTransport struct {
-	headers []http.Header
+type pagerTransport struct {
+	headers    []http.Header
+	statusCode int
 }
 
-func (t *featureFlagPagerTransport) Do(req *http.Request) (*http.Response, error) {
+func (t *pagerTransport) Do(req *http.Request) (*http.Response, error) {
 	t.headers = append(t.headers, req.Header.Clone())
 
 	header := http.Header{}
@@ -33,14 +34,14 @@ func (t *featureFlagPagerTransport) Do(req *http.Request) (*http.Response, error
 
 	return &http.Response{
 		Request:    req,
-		StatusCode: http.StatusNotModified,
+		StatusCode: t.statusCode,
 		Header:     header,
 		Body:       io.NopCloser(strings.NewReader("{}")),
 	}, nil
 }
 
 func TestNewGetFeatureFlagsPagerWithLinkHeaderMatchConditions(t *testing.T) {
-	transport := &featureFlagPagerTransport{}
+	transport := &pagerTransport{statusCode: http.StatusOK}
 	client, err := azcore.NewClient("azappconfig", "v0.1.0", runtime.PipelineOptions{}, &policy.ClientOptions{
 		Transport: transport,
 	})
@@ -63,4 +64,44 @@ func TestNewGetFeatureFlagsPagerWithLinkHeaderMatchConditions(t *testing.T) {
 	require.Len(t, transport.headers, 2)
 	require.Equal(t, `"page-1"`, transport.headers[0].Get("If-None-Match"))
 	require.Equal(t, `"page-2"`, transport.headers[1].Get("If-None-Match"))
+}
+
+func TestConditionalGetPagersReturnNotModifiedAsError(t *testing.T) {
+	t.Run("configuration settings", func(t *testing.T) {
+		transport := &pagerTransport{statusCode: http.StatusNotModified}
+		client, err := azcore.NewClient("azappconfig", "v0.1.0", runtime.PipelineOptions{}, &policy.ClientOptions{
+			Transport: transport,
+		})
+		require.NoError(t, err)
+
+		appConfigClient := NewAzureAppConfigurationClient("https://example.azconfig.io", client)
+		pager := appConfigClient.NewGetKeyValuesPagerWithMatchConditions(
+			[]azcore.MatchConditions{{IfNoneMatch: to.Ptr(azcore.ETag(`"page-1"`))}},
+			&AzureAppConfigurationClientGetKeyValuesOptions{},
+		)
+
+		_, err = pager.NextPage(context.Background())
+		var responseError *azcore.ResponseError
+		require.ErrorAs(t, err, &responseError)
+		require.Equal(t, http.StatusNotModified, responseError.StatusCode)
+	})
+
+	t.Run("feature flags", func(t *testing.T) {
+		transport := &pagerTransport{statusCode: http.StatusNotModified}
+		client, err := azcore.NewClient("azappconfig", "v0.1.0", runtime.PipelineOptions{}, &policy.ClientOptions{
+			Transport: transport,
+		})
+		require.NoError(t, err)
+
+		featureFlagClient := NewAzureAppConfigurationClient("https://example.azconfig.io", client).NewAzureAppConfigurationFeatureFlagClient()
+		pager := featureFlagClient.NewGetFeatureFlagsPagerWithLinkHeader(
+			[]azcore.MatchConditions{{IfNoneMatch: to.Ptr(azcore.ETag(`"page-1"`))}},
+			&AzureAppConfigurationFeatureFlagClientGetFeatureFlagsOptions{},
+		)
+
+		_, err = pager.NextPage(context.Background())
+		var responseError *azcore.ResponseError
+		require.ErrorAs(t, err, &responseError)
+		require.Equal(t, http.StatusNotModified, responseError.StatusCode)
+	})
 }

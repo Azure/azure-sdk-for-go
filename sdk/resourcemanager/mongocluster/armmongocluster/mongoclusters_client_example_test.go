@@ -127,10 +127,10 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 		},
 	// 		Properties: &armmongocluster.Properties{
 	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
@@ -319,10 +319,10 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-08T10:00:00Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 8, 10, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-08T12:00:00Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 8, 12, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		Properties: &armmongocluster.Properties{
 	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
@@ -410,7 +410,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 				Password: to.Ptr("********"),
 			},
 			RestoreParameters: &armmongocluster.RestoreParameters{
-				PointInTimeUTC:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-13T20:07:35Z"); return t }()),
+				PointInTimeUTC:   to.Ptr(time.Date(2023, time.January, 13, 20, 7, 35, 0, time.UTC)),
 				SourceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster"),
 			},
 		},
@@ -496,7 +496,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 		Properties: &armmongocluster.Properties{
 			CreateMode: to.Ptr(armmongocluster.CreateModePointInTimeRestore),
 			RestoreParameters: &armmongocluster.RestoreParameters{
-				PointInTimeUTC:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-13T20:07:35Z"); return t }()),
+				PointInTimeUTC:   to.Ptr(time.Date(2023, time.January, 13, 20, 7, 35, 0, time.UTC)),
 				SourceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster"),
 			},
 			Encryption: &armmongocluster.EncryptionProperties{
@@ -531,10 +531,10 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 		},
 	// 		Properties: &armmongocluster.Properties{
 	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
@@ -619,7 +619,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 				},
 			},
 			RestoreParameters: &armmongocluster.RestoreParameters{
-				PointInTimeUTC:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-01-13T20:07:35Z"); return t }()),
+				PointInTimeUTC:   to.Ptr(time.Date(2023, time.January, 13, 20, 7, 35, 0, time.UTC)),
 				SourceResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myOtherMongoCluster"),
 			},
 		},
@@ -748,10 +748,10 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 		},
 	// 		Properties: &armmongocluster.Properties{
 	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
@@ -874,10 +874,10 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 		},
 	// 		Properties: &armmongocluster.Properties{
 	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
@@ -973,10 +973,10 @@ func ExampleMongoClustersClient_Get() {
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 		},
 	// 		Properties: &armmongocluster.Properties{
 	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
@@ -1061,10 +1061,10 @@ func ExampleMongoClustersClient_NewListPager() {
 		// 				SystemData: &armmongocluster.SystemData{
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 		// 				},
 		// 				Properties: &armmongocluster.Properties{
 		// 					ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
@@ -1118,10 +1118,10 @@ func ExampleMongoClustersClient_NewListPager() {
 		// 				SystemData: &armmongocluster.SystemData{
 		// 					CreatedBy: to.Ptr("user2"),
 		// 					CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T17:18:19.1234567Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 17, 18, 19, 123456700, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T17:18:19.1234567Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 2, 17, 18, 19, 123456700, time.UTC)),
 		// 				},
 		// 				Properties: &armmongocluster.Properties{
 		// 					ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
@@ -1208,10 +1208,10 @@ func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armmongocluster.SystemData{
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 		// 				},
 		// 				Properties: &armmongocluster.Properties{
 		// 					ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
@@ -1265,10 +1265,10 @@ func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armmongocluster.SystemData{
 		// 					CreatedBy: to.Ptr("user2"),
 		// 					CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-01T17:18:19.1234567Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 17, 18, 19, 123456700, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-02T17:18:19.1234567Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 2, 17, 18, 19, 123456700, time.UTC)),
 		// 				},
 		// 				Properties: &armmongocluster.Properties{
 		// 					ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
@@ -1444,10 +1444,10 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheCustomerManagedEncryptionK
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 		},
 	// 		Properties: &armmongocluster.Properties{
 	// 			Administrator: &armmongocluster.AdministratorProperties{
@@ -1479,10 +1479,10 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheCustomerManagedEncryptionK
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster/privateEndpointConnections/mymongocluster-pe.ffffffff-ffff-ffff-ffff-ffffffffffff"),
 	// 					SystemData: &armmongocluster.SystemData{
-	// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-06T04:00:25.0509765Z"); return t}()),
+	// 						CreatedAt: to.Ptr(time.Date(2024, time.February, 6, 4, 0, 25, 50976500, time.UTC)),
 	// 						CreatedBy: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
 	// 						CreatedByType: to.Ptr(armmongocluster.CreatedByTypeApplication),
-	// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-06T04:00:25.0509765Z"); return t}()),
+	// 						LastModifiedAt: to.Ptr(time.Date(2024, time.February, 6, 4, 0, 25, 50976500, time.UTC)),
 	// 						LastModifiedBy: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
 	// 						LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeApplication),
 	// 					},
@@ -1574,10 +1574,10 @@ func ExampleMongoClustersClient_BeginUpdate_enablesDataApiOnAMongoClusterResourc
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 		},
 	// 		Properties: &armmongocluster.Properties{
 	// 			Administrator: &armmongocluster.AdministratorProperties{
@@ -1609,10 +1609,10 @@ func ExampleMongoClustersClient_BeginUpdate_enablesDataApiOnAMongoClusterResourc
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster/privateEndpointConnections/mymongocluster-pe.ffffffff-ffff-ffff-ffff-ffffffffffff"),
 	// 					SystemData: &armmongocluster.SystemData{
-	// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-06T04:00:25.0509765Z"); return t}()),
+	// 						CreatedAt: to.Ptr(time.Date(2024, time.February, 6, 4, 0, 25, 50976500, time.UTC)),
 	// 						CreatedBy: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
 	// 						CreatedByType: to.Ptr(armmongocluster.CreatedByTypeApplication),
-	// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-06T04:00:25.0509765Z"); return t}()),
+	// 						LastModifiedAt: to.Ptr(time.Date(2024, time.February, 6, 4, 0, 25, 50976500, time.UTC)),
 	// 						LastModifiedBy: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
 	// 						LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeApplication),
 	// 					},
@@ -1687,10 +1687,10 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModes
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 		},
 	// 		Properties: &armmongocluster.Properties{
 	// 			Administrator: &armmongocluster.AdministratorProperties{
@@ -1772,10 +1772,10 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnAMongoClusterRes
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 		},
 	// 		Properties: &armmongocluster.Properties{
 	// 			Administrator: &armmongocluster.AdministratorProperties{
@@ -1860,10 +1860,10 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModes
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 		},
 	// 		Properties: &armmongocluster.Properties{
 	// 			Administrator: &armmongocluster.AdministratorProperties{
@@ -1944,10 +1944,10 @@ func ExampleMongoClustersClient_BeginUpdate_enablesNetworkBypassModeOnAMongoClus
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 		},
 	// 		Properties: &armmongocluster.Properties{
 	// 			Administrator: &armmongocluster.AdministratorProperties{
@@ -2028,10 +2028,10 @@ func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnAMongoC
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 		},
 	// 		Properties: &armmongocluster.Properties{
 	// 			Administrator: &armmongocluster.AdministratorProperties{
@@ -2063,10 +2063,10 @@ func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnAMongoC
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster/privateEndpointConnections/mymongocluster-pe.ffffffff-ffff-ffff-ffff-ffffffffffff"),
 	// 					SystemData: &armmongocluster.SystemData{
-	// 						CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-06T04:00:25.0509765Z"); return t}()),
+	// 						CreatedAt: to.Ptr(time.Date(2024, time.February, 6, 4, 0, 25, 50976500, time.UTC)),
 	// 						CreatedBy: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
 	// 						CreatedByType: to.Ptr(armmongocluster.CreatedByTypeApplication),
-	// 						LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-02-06T04:00:25.0509765Z"); return t}()),
+	// 						LastModifiedAt: to.Ptr(time.Date(2024, time.February, 6, 4, 0, 25, 50976500, time.UTC)),
 	// 						LastModifiedBy: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
 	// 						LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeApplication),
 	// 					},
@@ -2140,10 +2140,10 @@ func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSsDv2SizeOnAMongoCl
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 		},
 	// 		Properties: &armmongocluster.Properties{
 	// 			Administrator: &armmongocluster.AdministratorProperties{
@@ -2226,10 +2226,10 @@ func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword(
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 		},
 	// 		Properties: &armmongocluster.Properties{
 	// 			Administrator: &armmongocluster.AdministratorProperties{
@@ -2335,10 +2335,10 @@ func ExampleMongoClustersClient_BeginUpdate_updatesAMongoClusterResource() {
 	// 		SystemData: &armmongocluster.SystemData{
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T17:18:19.1234567Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 17, 18, 19, 123456700, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armmongocluster.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-02T17:18:19.1234567Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 2, 17, 18, 19, 123456700, time.UTC)),
 	// 		},
 	// 		Properties: &armmongocluster.Properties{
 	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),

@@ -62,6 +62,10 @@ type AdditionalCacheNodeProperties struct {
 	// READ-ONLY; Cache node resource aggregated status text.
 	AggregatedStatusText *string
 
+	// READ-ONLY; Version of the Windows Subsystem for Linux application version used to run the cache node on the Windows host
+	// machine
+	AppVersionWsl *string
+
 	// READ-ONLY; Auto update version that is the applied to update on mcc cache node
 	AutoUpdateAppliedVersion *string
 
@@ -92,8 +96,41 @@ type AdditionalCacheNodeProperties struct {
 	// READ-ONLY; Cache node resource short state text.
 	CacheNodeStateShortText *string
 
+	// READ-ONLY; Operating system build of the container used to run the cache node
+	ContainerOsBuild *string
+
+	// READ-ONLY; Operating system edition of container used to run the cache node
+	ContainerOsEdition *string
+
+	// READ-ONLY; Operating system version of the container used to run the cache node
+	ContainerOsVersion *string
+
 	// READ-ONLY; cache node current tls certificate.
 	CurrentTLSCertificate *MccCacheNodeTLSCertificate
+
+	// READ-ONLY; Operating system build of the WSL Linux distribution used to run the cache node on Windows host machines
+	DistroOsBuildWsl *string
+
+	// READ-ONLY; Operating system edition of the WSL Linux distribution used to run the cache node on Windows host machines
+	DistroOsEditionWsl *string
+
+	// READ-ONLY; Operating system version of the WSL Linux distribution used to run the cache node on Windows host machines
+	DistroOsVersionWsl *string
+
+	// READ-ONLY; Operating system build of the cache node host machine
+	HostOsBuild *string
+
+	// READ-ONLY; Operating system edition of the cache node host machine
+	HostOsEdition *string
+
+	// READ-ONLY; Operating system version of the cache node host machine
+	HostOsVersion *string
+
+	// READ-ONLY; Version of the Windows deployment application used to deploy the cache node
+	InstallVersionMsix *string
+
+	// READ-ONLY; Version of the installation scripts used to deploy the cache node
+	InstallVersionScript *string
 
 	// READ-ONLY; Cache node resource flag indicating if cache node has been physically installed or provisioned on their physical
 	// lab.
@@ -248,8 +285,11 @@ type CacheNodeEntity struct {
 	// month, 1 is first week, 2 is second week, etc.
 	AutoUpdateRequestedWeek *int32
 
-	// Auto Update Ring Type which is slow or fast etc.
+	// Auto Update Ring Type which is stable or beta as new values. slow or fast are legacy from version 2026-06-01.
 	AutoUpdateRingType *AutoUpdateRingType
+
+	// Cache node resource Bgp network interface.
+	BgpNetworkInterface *string
 
 	// Cache node resource identifier of the cache node
 	CacheNodeID *string
@@ -289,6 +329,21 @@ type CacheNodeEntity struct {
 
 	// Cache node resource maximum allowed egress in Mbps.
 	MaxAllowableEgressInMbps *int32
+
+	// Cache node port firewall rule creation opt-in for port 443 property
+	OpenFirewallPort443 *bool
+
+	// Cache node port firewall rule creation opt-in for port 5000 property
+	OpenFirewallPort5000 *bool
+
+	// Cache node port firewall rule creation opt-in for port 5001 property
+	OpenFirewallPort5001 *bool
+
+	// Cache node port firewall rule creation opt-in for port 80 property
+	OpenFirewallPort80 *bool
+
+	// Connected Cache runtime account type
+	RuntimeAccountType *string
 
 	// Cache node resource flag for determining if customer will be migrated.
 	ShouldMigrate *bool
@@ -871,6 +926,9 @@ type MccCacheNodeIssueHistoryProperties struct {
 type MccCacheNodeTLSCertificate struct {
 	// READ-ONLY; Mcc cache node Tls certificate status.
 	ActionRequired *string
+
+	// READ-ONLY; Mcc cache node Tls certificate Type.
+	CertType *string
 
 	// READ-ONLY; Mcc cache node Tls certificate file name.
 	CertificateFileName *string

@@ -66,10 +66,10 @@ func ExampleHardwareSettingsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armdisconnectedoperations.SystemData{
 	// 			CreatedBy: to.Ptr("kisu"),
 	// 			CreatedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-15T22:59:45.585Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 15, 22, 59, 45, 585000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("alaunn"),
 	// 			LastModifiedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-15T22:59:45.585Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 15, 22, 59, 45, 585000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -134,10 +134,10 @@ func ExampleHardwareSettingsClient_Get() {
 	// 		SystemData: &armdisconnectedoperations.SystemData{
 	// 			CreatedBy: to.Ptr("kisu"),
 	// 			CreatedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-15T22:59:45.585Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 15, 22, 59, 45, 585000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("alaunn"),
 	// 			LastModifiedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-15T22:59:45.585Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 15, 22, 59, 45, 585000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -187,10 +187,10 @@ func ExampleHardwareSettingsClient_NewListByParentPager() {
 		// 				SystemData: &armdisconnectedoperations.SystemData{
 		// 					CreatedBy: to.Ptr("kisu"),
 		// 					CreatedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-15T22:59:45.585Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 15, 22, 59, 45, 585000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("alaunn"),
 		// 					LastModifiedByType: to.Ptr(armdisconnectedoperations.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-15T22:59:45.585Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 15, 22, 59, 45, 585000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

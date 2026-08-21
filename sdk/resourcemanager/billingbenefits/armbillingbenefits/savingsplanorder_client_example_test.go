@@ -73,22 +73,22 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 			BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
 	// 			BillingScopeID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/1234567/billingSubscriptions/30000000-0000-0000-0000-000000000003"),
 	// 			DisplayName: to.Ptr("Compute_SavingsPlan_10-19-2022_11-01"),
-	// 			ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-19T18:03:55.2519794Z"); return t}()),
+	// 			ExpiryDateTime: to.Ptr(time.Date(2025, time.October, 19, 18, 3, 55, 251979400, time.UTC)),
 	// 			PlanInformation: &armbillingbenefits.BillingPlanInformation{
-	// 				NextPaymentDueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-11-19"); return t}()),
+	// 				NextPaymentDueDate: to.Ptr(time.Date(2022, time.November, 19, 0, 0, 0, 0, time.UTC)),
 	// 				PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 					Amount: to.Ptr[float64](26.28),
 	// 					CurrencyCode: to.Ptr("USD"),
 	// 				},
-	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-10-19"); return t}()),
+	// 				StartDate: to.Ptr(time.Date(2022, time.October, 19, 0, 0, 0, 0, time.UTC)),
 	// 				Transactions: []*armbillingbenefits.PaymentDetail{
 	// 					{
 	// 						BillingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
 	// 						},
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-10-19"); return t}()),
-	// 						PaymentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-10-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2022, time.October, 19, 0, 0, 0, 0, time.UTC)),
+	// 						PaymentDate: to.Ptr(time.Date(2022, time.October, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -96,7 +96,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatus("Completed")),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-11-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2022, time.November, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -104,7 +104,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2022-12-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2022, time.December, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -112,7 +112,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-01-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.January, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -120,7 +120,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-02-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.February, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -128,7 +128,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-03-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.March, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -136,7 +136,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-04-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.April, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -144,7 +144,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-05-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.May, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -152,7 +152,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-06-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.June, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -160,7 +160,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-07-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.July, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -168,7 +168,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-08-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.August, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -176,7 +176,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-09-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.September, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -184,7 +184,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-10-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.October, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -192,7 +192,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-11-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.November, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -200,7 +200,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-12-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2023, time.December, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -208,7 +208,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-01-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.January, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -216,7 +216,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-02-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.February, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -224,7 +224,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-03-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.March, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -232,7 +232,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-04-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.April, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -240,7 +240,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-05-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.May, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -248,7 +248,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-06-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.June, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -256,7 +256,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-07-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.July, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -264,7 +264,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-08-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.August, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -272,7 +272,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-09-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.September, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -280,7 +280,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-10-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.October, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -288,7 +288,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-11-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.November, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -296,7 +296,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-12-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2024, time.December, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -304,7 +304,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-01-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2025, time.January, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -312,7 +312,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-02-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2025, time.February, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -320,7 +320,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-03-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2025, time.March, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -328,7 +328,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-04-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2025, time.April, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -336,7 +336,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-05-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2025, time.May, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -344,7 +344,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-06-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2025, time.June, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -352,7 +352,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-07-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2025, time.July, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -360,7 +360,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-08-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2025, time.August, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -368,7 +368,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderWithExpandedPaymentsGet()
 	// 						Status: to.Ptr(armbillingbenefits.PaymentStatusScheduled),
 	// 					},
 	// 					{
-	// 						DueDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2025-09-19"); return t}()),
+	// 						DueDate: to.Ptr(time.Date(2025, time.September, 19, 0, 0, 0, 0, time.UTC)),
 	// 						PricingCurrencyTotal: &armbillingbenefits.Price{
 	// 							Amount: to.Ptr[float64](0.73),
 	// 							CurrencyCode: to.Ptr("USD"),
@@ -419,7 +419,7 @@ func ExampleSavingsPlanOrderClient_Get_savingsPlanOrderGet() {
 	// 			BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
 	// 			BillingScopeID: to.Ptr("20000000-0000-0000-0000-000000000005"),
 	// 			DisplayName: to.Ptr("Compute_SavingsPlan_10-19-2022_11-01"),
-	// 			ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-19T18:03:55.2519794Z"); return t}()),
+	// 			ExpiryDateTime: to.Ptr(time.Date(2025, time.October, 19, 18, 3, 55, 251979400, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armbillingbenefits.ProvisioningStateSucceeded),
 	// 			SavingsPlans: []*string{
 	// 				to.Ptr("/providers/Microsoft.BillingBenefits/savingsPlanOrders/20000000-0000-0000-0000-000000000000/savingsPlans/30000000-0000-0000-0000-000000000000"),
@@ -468,7 +468,7 @@ func ExampleSavingsPlanOrderClient_NewListPager() {
 		// 					BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000004:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
 		// 					BillingScopeID: to.Ptr("20000000-0000-0000-0000-000000000005"),
 		// 					DisplayName: to.Ptr("Compute_SavingsPlan_10-28-2022_16-38"),
-		// 					ExpiryDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-28T23:40:30.6028303Z"); return t}()),
+		// 					ExpiryDateTime: to.Ptr(time.Date(2025, time.October, 28, 23, 40, 30, 602830300, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armbillingbenefits.ProvisioningStateSucceeded),
 		// 					SavingsPlans: []*string{
 		// 						to.Ptr("/providers/Microsoft.BillingBenefits/savingsPlanOrders/20000000-0000-0000-0000-000000000000/savingsPlans/20000000-0000-0000-0000-000000000001"),

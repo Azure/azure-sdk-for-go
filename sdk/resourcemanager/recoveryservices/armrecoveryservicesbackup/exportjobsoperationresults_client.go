@@ -18,6 +18,8 @@ import (
 
 // ExportJobsOperationResultsClient contains the methods for the ExportJobsOperationResults group.
 // Don't use this type directly, use NewExportJobsOperationResultsClient() instead.
+//
+// Generated from API version 2026-07-01
 type ExportJobsOperationResultsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewExportJobsOperationResultsClient(subscriptionID string, credential azcor
 // Get - Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
 // contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized format.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ExportJobsOperationResultsClientGetOptions contains the optional parameters for the ExportJobsOperationResultsClient.Get
 //     method.
@@ -61,12 +61,7 @@ func (client *ExportJobsOperationResultsClient) Get(ctx context.Context, vaultNa
 	if err != nil {
 		return ExportJobsOperationResultsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ExportJobsOperationResultsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getCreateRequest creates the Get request.
@@ -93,15 +88,18 @@ func (client *ExportJobsOperationResultsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExportJobsOperationResultsClient) getHandleResponse(resp *http.Response) (ExportJobsOperationResultsClientGetResponse, error) {
+func (client *ExportJobsOperationResultsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ExportJobsOperationResultsClientGetResponse, error) {
 	result := ExportJobsOperationResultsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationResultInfoBaseResource); err != nil {
 		return ExportJobsOperationResultsClientGetResponse{}, err
 	}

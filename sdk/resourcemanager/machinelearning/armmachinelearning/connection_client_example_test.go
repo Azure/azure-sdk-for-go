@@ -124,8 +124,8 @@ func ExampleConnectionClient_GetAllModels() {
 	// 					"search": to.Ptr("true"),
 	// 				},
 	// 				Deprecation: &armmachinelearning.EndpointModelDeprecationProperties{
-	// 					FineTune: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-05T00:00:00+00:00"); return t}()),
-	// 					Inference: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-05T00:00:00+00:00"); return t}()),
+	// 					FineTune: to.Ptr(time.Date(2024, time.July, 5, 0, 0, 0, 0, time.UTC)),
+	// 					Inference: to.Ptr(time.Date(2024, time.July, 5, 0, 0, 0, 0, time.UTC)),
 	// 				},
 	// 				FinetuneCapabilities: map[string]*string{
 	// 					"FineTuneTokensMaxValue": to.Ptr("2000000000"),
@@ -145,7 +145,7 @@ func ExampleConnectionClient_GetAllModels() {
 	// 							to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.MachineLearningServices/workspaces/workspace-1/connections/connection-1"),
 	// 							to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.MachineLearningServices/workspaces/workspace-1/connections/connection-2"),
 	// 						},
-	// 						DeprecationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-01T00:00:00+00:00"); return t}()),
+	// 						DeprecationDate: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
 	// 						RateLimits: []*armmachinelearning.EndpointModelSKURateLimitProperties{
 	// 							{
 	// 								Count: to.Ptr[float32](1),
@@ -181,8 +181,8 @@ func ExampleConnectionClient_GetAllModels() {
 	// 					"search": to.Ptr("true"),
 	// 				},
 	// 				Deprecation: &armmachinelearning.EndpointModelDeprecationProperties{
-	// 					FineTune: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-05T00:00:00+00:00"); return t}()),
-	// 					Inference: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-05T00:00:00+00:00"); return t}()),
+	// 					FineTune: to.Ptr(time.Date(2024, time.July, 5, 0, 0, 0, 0, time.UTC)),
+	// 					Inference: to.Ptr(time.Date(2024, time.July, 5, 0, 0, 0, 0, time.UTC)),
 	// 				},
 	// 				FinetuneCapabilities: map[string]*string{
 	// 					"FineTuneTokensMaxValue": to.Ptr("2000000000"),
@@ -201,7 +201,7 @@ func ExampleConnectionClient_GetAllModels() {
 	// 						ConnectionIDs: []*string{
 	// 							to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup-1/providers/Microsoft.MachineLearningServices/workspaces/workspace-1/connections/connection-1"),
 	// 						},
-	// 						DeprecationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-01T00:00:00+00:00"); return t}()),
+	// 						DeprecationDate: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
 	// 						RateLimits: []*armmachinelearning.EndpointModelSKURateLimitProperties{
 	// 							{
 	// 								Count: to.Ptr[float32](1),
@@ -311,8 +311,8 @@ func ExampleConnectionClient_NewGetModelsPager() {
 		// 					"search": to.Ptr("true"),
 		// 				},
 		// 				Deprecation: &armmachinelearning.EndpointModelDeprecationProperties{
-		// 					FineTune: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-05T00:00:00+00:00"); return t}()),
-		// 					Inference: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-05T00:00:00+00:00"); return t}()),
+		// 					FineTune: to.Ptr(time.Date(2024, time.July, 5, 0, 0, 0, 0, time.UTC)),
+		// 					Inference: to.Ptr(time.Date(2024, time.July, 5, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 				FinetuneCapabilities: map[string]*string{
 		// 					"FineTuneTokensMaxValue": to.Ptr("2000000000"),
@@ -328,7 +328,7 @@ func ExampleConnectionClient_NewGetModelsPager() {
 		// 						Capacity: &armmachinelearning.EndpointModelSKUCapacityProperties{
 		// 							Maximum: to.Ptr[int32](10000),
 		// 						},
-		// 						DeprecationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-01T00:00:00+00:00"); return t}()),
+		// 						DeprecationDate: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
 		// 						RateLimits: []*armmachinelearning.EndpointModelSKURateLimitProperties{
 		// 							{
 		// 								Count: to.Ptr[float32](1),
@@ -364,8 +364,8 @@ func ExampleConnectionClient_NewGetModelsPager() {
 		// 					"search": to.Ptr("true"),
 		// 				},
 		// 				Deprecation: &armmachinelearning.EndpointModelDeprecationProperties{
-		// 					FineTune: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-05T00:00:00+00:00"); return t}()),
-		// 					Inference: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-05T00:00:00+00:00"); return t}()),
+		// 					FineTune: to.Ptr(time.Date(2024, time.July, 5, 0, 0, 0, 0, time.UTC)),
+		// 					Inference: to.Ptr(time.Date(2024, time.July, 5, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 				FinetuneCapabilities: map[string]*string{
 		// 					"FineTuneTokensMaxValue": to.Ptr("2000000000"),
@@ -381,7 +381,7 @@ func ExampleConnectionClient_NewGetModelsPager() {
 		// 						Capacity: &armmachinelearning.EndpointModelSKUCapacityProperties{
 		// 							Maximum: to.Ptr[int32](10000),
 		// 						},
-		// 						DeprecationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-03-01T00:00:00+00:00"); return t}()),
+		// 						DeprecationDate: to.Ptr(time.Date(2024, time.March, 1, 0, 0, 0, 0, time.UTC)),
 		// 						RateLimits: []*armmachinelearning.EndpointModelSKURateLimitProperties{
 		// 							{
 		// 								Count: to.Ptr[float32](1),

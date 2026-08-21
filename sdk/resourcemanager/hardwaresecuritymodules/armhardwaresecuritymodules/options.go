@@ -164,6 +164,77 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PaymentHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PaymentHsmClusterPrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PaymentHsmClusterPrivateEndpointConnectionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PaymentHsmClusterPrivateEndpointConnectionsClientCreateOptions contains the optional parameters for the PaymentHsmClusterPrivateEndpointConnectionsClient.Create
+// method.
+type PaymentHsmClusterPrivateEndpointConnectionsClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PaymentHsmClusterPrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PaymentHsmClusterPrivateEndpointConnectionsClient.Get
+// method.
+type PaymentHsmClusterPrivateEndpointConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PaymentHsmClusterPrivateEndpointConnectionsClientListByPaymentHsmClusterOptions contains the optional parameters for the
+// PaymentHsmClusterPrivateEndpointConnectionsClient.NewListByPaymentHsmClusterPager method.
+type PaymentHsmClusterPrivateEndpointConnectionsClientListByPaymentHsmClusterOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PaymentHsmClusterPrivateLinkResourcesClientListByPaymentHsmClusterOptions contains the optional parameters for the PaymentHsmClusterPrivateLinkResourcesClient.NewListByPaymentHsmClusterPager
+// method.
+type PaymentHsmClusterPrivateLinkResourcesClientListByPaymentHsmClusterOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PaymentHsmClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the PaymentHsmClustersClient.BeginCreateOrUpdate
+// method.
+type PaymentHsmClustersClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PaymentHsmClustersClientBeginDeleteOptions contains the optional parameters for the PaymentHsmClustersClient.BeginDelete
+// method.
+type PaymentHsmClustersClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PaymentHsmClustersClientBeginUpdateOptions contains the optional parameters for the PaymentHsmClustersClient.BeginUpdate
+// method.
+type PaymentHsmClustersClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PaymentHsmClustersClientGetOptions contains the optional parameters for the PaymentHsmClustersClient.Get method.
+type PaymentHsmClustersClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PaymentHsmClustersClientListByResourceGroupOptions contains the optional parameters for the PaymentHsmClustersClient.NewListByResourceGroupPager
+// method.
+type PaymentHsmClustersClientListByResourceGroupOptions struct {
+	// The page-continuation token to use with a paged version of this API
+	Skiptoken *string
+}
+
+// PaymentHsmClustersClientListBySubscriptionOptions contains the optional parameters for the PaymentHsmClustersClient.NewListBySubscriptionPager
+// method.
+type PaymentHsmClustersClientListBySubscriptionOptions struct {
+	// The page-continuation token to use with a paged version of this API
+	Skiptoken *string
+}
+
 // PrivateEndpointConnectionsClientListByCloudHsmClusterOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByCloudHsmClusterPager
 // method.
 type PrivateEndpointConnectionsClientListByCloudHsmClusterOptions struct {

@@ -65,12 +65,7 @@ func (client *FluxConfigOperationStatusClient) Get(ctx context.Context, resource
 	if err != nil {
 		return FluxConfigOperationStatusClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FluxConfigOperationStatusClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -116,8 +111,11 @@ func (client *FluxConfigOperationStatusClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *FluxConfigOperationStatusClient) getHandleResponse(resp *http.Response) (FluxConfigOperationStatusClientGetResponse, error) {
+func (client *FluxConfigOperationStatusClient) getHandleResponse(resp *http.Response, successCodes ...int) (FluxConfigOperationStatusClientGetResponse, error) {
 	result := FluxConfigOperationStatusClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatusResult); err != nil {
 		return FluxConfigOperationStatusClientGetResponse{}, err
 	}

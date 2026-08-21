@@ -48,7 +48,7 @@ func ExampleScopeMapsClient_BeginCreate() {
 	// 		Name: to.Ptr("myScopeMap"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/scopeMaps"),
 	// 		Properties: &armcontainerregistry.ScopeMapProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:14:37.0707808Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.March, 1, 23, 14, 37, 70780800, time.UTC)),
 	// 			Type: to.Ptr("IsUserDefined"),
 	// 			Actions: []*string{
 	// 				to.Ptr("repositories/myrepository/contentWrite"),
@@ -110,7 +110,7 @@ func ExampleScopeMapsClient_Get() {
 	// 		Name: to.Ptr("myScopeMap"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/scopeMaps"),
 	// 		Properties: &armcontainerregistry.ScopeMapProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:14:37.0707808Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.March, 1, 23, 14, 37, 70780800, time.UTC)),
 	// 			Type: to.Ptr("IsUserDefined"),
 	// 			Actions: []*string{
 	// 				to.Ptr("repositories/myrepository/contentWrite"),
@@ -152,7 +152,7 @@ func ExampleScopeMapsClient_NewListPager() {
 		// 				Name: to.Ptr("myScopeMap"),
 		// 				Type: to.Ptr("Microsoft.ContainerRegistry/registries/scopeMaps"),
 		// 				Properties: &armcontainerregistry.ScopeMapProperties{
-		// 					CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:14:37.0707808Z"); return t}()),
+		// 					CreationDate: to.Ptr(time.Date(2017, time.March, 1, 23, 14, 37, 70780800, time.UTC)),
 		// 					Type: to.Ptr("IsUserDefined"),
 		// 					Actions: []*string{
 		// 						to.Ptr("repositories/myrepository/contentWrite"),
@@ -203,7 +203,7 @@ func ExampleScopeMapsClient_BeginUpdate() {
 	// 		Name: to.Ptr("myScopeMap"),
 	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/scopeMaps"),
 	// 		Properties: &armcontainerregistry.ScopeMapProperties{
-	// 			CreationDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-03-01T23:14:37.0707808Z"); return t}()),
+	// 			CreationDate: to.Ptr(time.Date(2017, time.March, 1, 23, 14, 37, 70780800, time.UTC)),
 	// 			Type: to.Ptr("IsUserDefined"),
 	// 			Actions: []*string{
 	// 				to.Ptr("repositories/myrepository/contentWrite"),

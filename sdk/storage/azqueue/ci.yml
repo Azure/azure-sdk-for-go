@@ -27,4 +27,3 @@ extends:
       ServiceDirectory: 'storage/azqueue'
       RunLiveTests: true
       UsePipelineProxy: false
-      EnableCiCodeCoverage: true

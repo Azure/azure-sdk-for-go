@@ -82,9 +82,6 @@ parameters:
   - name: EnableRaceDetector
     type: boolean
     default: false
-  - name: EnableCiCodeCoverage
-    type: boolean
-    default: false
   - name: UseFederatedAuth
     type: boolean
     default: true
@@ -166,7 +163,6 @@ extends:
                       PackageInfoDirectory: $(Build.ArtifactStagingDirectory)/PackageInfo
               AdditionalParameters:
                 EnableRaceDetector: ${{ parameters.EnableRaceDetector }}
-                PublishCodeCoverage: ${{ parameters.EnableCiCodeCoverage }}
                 ServiceDirectory: ${{ parameters.ServiceDirectory }}
                 TestRunTime: ${{ parameters.TestRunTime }}
                 UsePipelineProxy: ${{ parameters.UsePipelineProxy }}

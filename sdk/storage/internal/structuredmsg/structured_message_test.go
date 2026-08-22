@@ -13,7 +13,7 @@ import (
 	"net"
 	"testing"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/streams"
 	"github.com/stretchr/testify/require"
 )
 
@@ -544,8 +544,8 @@ func TestStreamingEncoderWorksWithValidateSeekableStream(t *testing.T) {
 	data := []byte("validate seekable test data")
 	enc := NewSMEncoder(bytes.NewReader(data), int64(len(data)), 0)
 
-	// internal.ValidateSeekableStreamAt0AndGetCount uses Seek(0, SeekCurrent), Seek(0, SeekEnd), Seek(0, SeekStart)
-	count, err := internal.ValidateSeekableStreamAt0AndGetCount(enc)
+	// streams.ValidateSeekableStreamAt0AndGetCount uses Seek(0, SeekCurrent), Seek(0, SeekEnd), Seek(0, SeekStart)
+	count, err := streams.ValidateSeekableStreamAt0AndGetCount(enc)
 	require.NoError(t, err)
 	require.Equal(t, enc.EncodedLength(), count)
 

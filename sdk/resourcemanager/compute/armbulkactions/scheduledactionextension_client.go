@@ -18,7 +18,7 @@ import (
 // ScheduledActionExtensionClient contains the methods for the ScheduledActionExtension group.
 // Don't use this type directly, use NewScheduledActionExtensionClient() instead.
 //
-// Generated from API version 2026-07-06-preview
+// Generated from API version 2026-08-06-preview
 type ScheduledActionExtensionClient struct {
 	internal *arm.Client
 }
@@ -86,7 +86,7 @@ func (client *ScheduledActionExtensionClient) listByVMsCreateRequest(ctx context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260706Preview)
+		reqQP.Set("api-version", version20260806Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -20,7 +20,7 @@ import (
 // GoalResourcesClient contains the methods for the GoalResources group.
 // Don't use this type directly, use NewGoalResourcesClient() instead.
 //
-// Generated from API version 2026-04-01-preview
+// Generated from API version 2026-08-31-preview
 type GoalResourcesClient struct {
 	internal *arm.Client
 }
@@ -82,7 +82,7 @@ func (client *GoalResourcesClient) getCreateRequest(ctx context.Context, service
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -159,7 +159,7 @@ func (client *GoalResourcesClient) listCreateRequest(ctx context.Context, servic
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260401Preview)
+		reqQP.Set("api-version", version20260831Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

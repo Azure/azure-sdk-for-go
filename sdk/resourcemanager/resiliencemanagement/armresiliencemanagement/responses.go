@@ -38,10 +38,21 @@ type DrillRunsClientFailOverResponse struct {
 	// placeholder for future response values
 }
 
+// DrillRunsClientGenerateReportResponse contains the response from method DrillRunsClient.BeginGenerateReport.
+type DrillRunsClientGenerateReportResponse struct {
+	// placeholder for future response values
+}
+
 // DrillRunsClientGetResponse contains the response from method DrillRunsClient.Get.
 type DrillRunsClientGetResponse struct {
 	// DrillRun resource.
 	DrillRun
+}
+
+// DrillRunsClientListReportDownloadURLResponse contains the response from method DrillRunsClient.ListReportDownloadURL.
+type DrillRunsClientListReportDownloadURLResponse struct {
+	// Response containing a short-lived, read-only download URL for a Drill Run report.
+	ListReportDownloadURLResponse
 }
 
 // DrillRunsClientListResponse contains the response from method DrillRunsClient.NewListPager.

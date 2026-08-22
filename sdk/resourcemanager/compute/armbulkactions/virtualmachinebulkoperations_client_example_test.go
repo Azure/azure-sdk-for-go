@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MaximumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkAcknowledgeOperationErrors_virtualMachineBulkOperationsBulkAcknowledgeOperationErrorsExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkAcknowledgeOperationErrors_vi
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkAcknowledgeOperationErrors_MinimumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkAcknowledgeOperationErrors_virtualMachineBulkOperationsBulkAcknowledgeOperationErrorsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkAcknowledgeOperationErrors_vi
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkCancel_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkCancel_MaximumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_virtualMachineBulkOperationsBulkCancelExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_virtualMachi
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkCancel_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkCancel_MinimumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_virtualMachineBulkOperationsBulkCancelExampleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkCancelOperations_virtualMachi
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkCreate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkCreate_MaximumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkCreateOperation_virtualMachineBulkOperationsBulkCreateExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1093,7 +1093,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkCreateOperation_virtualMachin
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkCreate_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkCreate_MinimumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkCreateOperation_virtualMachineBulkOperationsBulkCreateExampleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1125,7 +1125,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkCreateOperation_virtualMachin
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkDeallocate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkDeallocate_MaximumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkDeallocateOperation_virtualMachineBulkOperationsBulkDeallocateExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1203,7 +1203,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkDeallocateOperation_virtualMa
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkDeallocate_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkDeallocate_MinimumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkDeallocateOperation_virtualMachineBulkOperationsBulkDeallocateGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1237,7 +1237,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkDeallocateOperation_virtualMa
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkDelete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkDelete_MaximumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkDeleteOperation_virtualMachineBulkOperationsBulkDeleteExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1316,7 +1316,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkDeleteOperation_virtualMachin
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkDelete_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkDelete_MinimumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkDeleteOperation_virtualMachineBulkOperationsBulkDeleteGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1350,7 +1350,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkDeleteOperation_virtualMachin
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_MaximumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_virtualMachineBulkOperationsBulkGetOperationsStatusExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1416,7 +1416,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_virtualMa
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkGetOperationsStatus_MinimumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_virtualMachineBulkOperationsBulkGetOperationsStatusExampleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1448,7 +1448,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkGetOperationsStatus_virtualMa
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkHibernate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkHibernate_MaximumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkHibernateOperation_virtualMachineBulkOperationsBulkHibernateExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1529,7 +1529,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkHibernateOperation_virtualMac
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkHibernate_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkHibernate_MinimumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkHibernateOperation_virtualMachineBulkOperationsBulkHibernateGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1563,7 +1563,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkHibernateOperation_virtualMac
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_MaximumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_NewBulkListOperationErrorsPager_virtualMachineBulkOperationsBulkListOperationErrorsExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1629,13 +1629,13 @@ func ExampleVirtualMachineBulkOperationsClient_NewBulkListOperationErrorsPager_v
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/useast2euap/listBulkOperationErrors?api-version=2026-07-06-preview&continuationToken=abc123"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/1FBA3C66-5C9C-4391-B72F-9F52735FC9F2/resourceGroups/rgBulkactions/providers/Microsoft.Compute/locations/useast2euap/listBulkOperationErrors?api-version=2026-08-06-preview&continuationToken=abc123"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkListOperationErrors_MinimumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_NewBulkListOperationErrorsPager_virtualMachineBulkOperationsBulkListOperationErrorsMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1668,7 +1668,7 @@ func ExampleVirtualMachineBulkOperationsClient_NewBulkListOperationErrorsPager_v
 	}
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkReimage_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkReimage_MaximumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkReimageOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1769,7 +1769,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkReimageOperation() {
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkStart_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkStart_MaximumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_virtualMachineBulkOperationsBulkStartExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1786,6 +1786,17 @@ func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_virtualMachine
 				RetryCount:           to.Ptr[int32](2),
 				RetryWindowInMinutes: to.Ptr[int32](19),
 				OnFailureAction:      to.Ptr(armbulkactions.ResourceOperationTypeUnknown),
+			},
+			CapacityRecommendationParameters: &armbulkactions.CapacityRecommendationParameters{
+				DesiredLocations: []*string{
+					to.Ptr("eastus"),
+					to.Ptr("westus2"),
+				},
+				DesiredSizes: []*string{
+					to.Ptr("Standard_D2s_v5"),
+					to.Ptr("Standard_D4s_v5"),
+				},
+				AvailabilityZones: to.Ptr(true),
 			},
 		},
 		ResourcesWithContext: &armbulkactions.ResourcesWithContext{
@@ -1843,6 +1854,41 @@ func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_virtualMachine
 	// 					ResourceNotificationDetails: &armbulkactions.ResourceNotificationDetails{
 	// 						ResourceContext: to.Ptr("startContext"),
 	// 					},
+	// 					CapacityRecommendation: &armbulkactions.CapacityRecommendation{
+	// 						Status: to.Ptr(armbulkactions.CapacityRecommendationStatusSucceeded),
+	// 						Details: &armbulkactions.CapacityRecommendationDetails{
+	// 							DesiredLocations: []*string{
+	// 								to.Ptr("eastus"),
+	// 								to.Ptr("westus2"),
+	// 							},
+	// 							RecommendationRequestedAtUTC: to.Ptr(time.Date(2026, time.June, 11, 19, 35, 45, 98000000, time.UTC)),
+	// 							DesiredSizes: []*armbulkactions.CapacityRecommendationSize{
+	// 								{
+	// 									SKU: to.Ptr("Standard_D2s_v5"),
+	// 								},
+	// 								{
+	// 									SKU: to.Ptr("Standard_D4s_v5"),
+	// 								},
+	// 							},
+	// 							AvailabilityZones: to.Ptr(true),
+	// 							PlacementScores: []*armbulkactions.CapacityRecommendationPlacementScore{
+	// 								{
+	// 									SKU: to.Ptr("Standard_D2s_v5"),
+	// 									Region: to.Ptr("eastus"),
+	// 									AvailabilityZone: to.Ptr("1"),
+	// 									Score: to.Ptr("High"),
+	// 									IsQuotaAvailable: to.Ptr(true),
+	// 								},
+	// 								{
+	// 									SKU: to.Ptr("Standard_D4s_v5"),
+	// 									Region: to.Ptr("westus2"),
+	// 									AvailabilityZone: to.Ptr("2"),
+	// 									Score: to.Ptr("Medium"),
+	// 									IsQuotaAvailable: to.Ptr(true),
+	// 								},
+	// 							},
+	// 						},
+	// 					},
 	// 				},
 	// 			},
 	// 		},
@@ -1850,7 +1896,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_virtualMachine
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkStart_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkStart_MinimumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_virtualMachineBulkOperationsBulkStartGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1884,7 +1930,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkStartOperation_virtualMachine
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkVdiFlexCreate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkVdiFlexCreate_MaximumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkVdiFlexCreateOperation_virtualMachineBulkOperationsBulkVdiFlexCreateExample() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2818,7 +2864,7 @@ func ExampleVirtualMachineBulkOperationsClient_BulkVdiFlexCreateOperation_virtua
 	// }
 }
 
-// Generated from example definition: 2026-07-06-preview/VirtualMachineBulkOperations_BulkVdiFlexCreate_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-06-preview/VirtualMachineBulkOperations_BulkVdiFlexCreate_MinimumSet_Gen.json
 func ExampleVirtualMachineBulkOperationsClient_BulkVdiFlexCreateOperation_virtualMachineBulkOperationsBulkVdiFlexCreateExampleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

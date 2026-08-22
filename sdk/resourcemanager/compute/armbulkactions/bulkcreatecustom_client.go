@@ -20,7 +20,7 @@ import (
 // BulkCreateCustomClient contains the methods for the BulkCreateCustom group.
 // Don't use this type directly, use NewBulkCreateCustomClient() instead.
 //
-// Generated from API version 2026-07-06-preview
+// Generated from API version 2026-08-06-preview
 type BulkCreateCustomClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -112,7 +112,7 @@ func (client *BulkCreateCustomClient) cancelCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -188,7 +188,7 @@ func (client *BulkCreateCustomClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -268,7 +268,7 @@ func (client *BulkCreateCustomClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	if options != nil && options.DeleteInstances != nil {
 		reqQP.Set("deleteInstances", strconv.FormatBool(*options.DeleteInstances))
 	}
@@ -323,7 +323,7 @@ func (client *BulkCreateCustomClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -384,7 +384,7 @@ func (client *BulkCreateCustomClient) getAsyncOperationStatusCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -460,7 +460,7 @@ func (client *BulkCreateCustomClient) listByResourceGroupCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260706Preview)
+		reqQP.Set("api-version", version20260806Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -532,7 +532,7 @@ func (client *BulkCreateCustomClient) listBySubscriptionCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260706Preview)
+		reqQP.Set("api-version", version20260806Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -547,6 +547,72 @@ func (client *BulkCreateCustomClient) listBySubscriptionHandleResponse(resp *htt
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BulkCreateCustomListResult); err != nil {
 		return BulkCreateCustomClientListBySubscriptionResponse{}, err
+	}
+	return result, nil
+}
+
+// VirtualMachinesGetOperationStatus - Gets the operation status for virtual machines in a BulkCreateCustom operation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - location - The location name.
+//   - name - The name of the BulkCreateCustom. The value must be an UUID.
+//   - options - BulkCreateCustomClientVirtualMachinesGetOperationStatusOptions contains the optional parameters for the BulkCreateCustomClient.VirtualMachinesGetOperationStatus
+//     method.
+func (client *BulkCreateCustomClient) VirtualMachinesGetOperationStatus(ctx context.Context, resourceGroupName string, location string, name string, options *BulkCreateCustomClientVirtualMachinesGetOperationStatusOptions) (BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse, error) {
+	var err error
+	const operationName = "BulkCreateCustomClient.VirtualMachinesGetOperationStatus"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.virtualMachinesGetOperationStatusCreateRequest(ctx, resourceGroupName, location, name, options)
+	if err != nil {
+		return BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse{}, err
+	}
+	return client.virtualMachinesGetOperationStatusHandleResponse(httpResp, http.StatusOK)
+}
+
+// virtualMachinesGetOperationStatusCreateRequest creates the VirtualMachinesGetOperationStatus request.
+func (client *BulkCreateCustomClient) virtualMachinesGetOperationStatusCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, _ *BulkCreateCustomClientVirtualMachinesGetOperationStatusOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/bulkCreateCustom/{name}/virtualMachinesGetOperationStatus"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260806Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// virtualMachinesGetOperationStatusHandleResponse handles the VirtualMachinesGetOperationStatus response.
+func (client *BulkCreateCustomClient) virtualMachinesGetOperationStatusHandleResponse(resp *http.Response, successCodes ...int) (BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse, error) {
+	result := BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GetOperationStatusResponse); err != nil {
+		return BulkCreateCustomClientVirtualMachinesGetOperationStatusResponse{}, err
 	}
 	return result, nil
 }

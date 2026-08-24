@@ -112,6 +112,13 @@ func newTestRequest(t *testing.T, method, rawURL string) *http.Request {
 	return req
 }
 
+func newTestRequestWithHeader(t *testing.T, method, rawURL, header, value string) *http.Request {
+	t.Helper()
+	req := newTestRequest(t, method, rawURL)
+	req.Header.Set(header, value)
+	return req
+}
+
 func TestAcquireSession_Success(t *testing.T) {
 	srv, closeFn := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
 	defer closeFn()
@@ -307,6 +314,16 @@ func TestIsRequestEligible(t *testing.T) {
 		{
 			name:     "GetWithCompQueryParameter",
 			req:      newTestRequest(t, http.MethodGet, fakeContainerURL+"/myblob?comp=tags"),
+			expected: false,
+		},
+		{
+			name:     "GetWithRestypeQueryParameter",
+			req:      newTestRequest(t, http.MethodGet, fakeContainerURL+"/myblob?restype=container"),
+			expected: false,
+		},
+		{
+			name:     "GetWithStructuredBodyHeader",
+			req:      newTestRequestWithHeader(t, http.MethodGet, fakeContainerURL+"/myblob", shared.HeaderXmsStructuredBody, shared.SMHeaderValue),
 			expected: false,
 		},
 		{

@@ -62,7 +62,7 @@ func main() {
 
 ### `azlogs`
 
-The logs code for `azlogs` and `azquery` are very similiar. 
+The logs code for `azlogs` and `azquery` are very similar. 
 
 ```go
 import (

@@ -1,11 +1,6 @@
 # Release History
 
-## 2.0.0 (2026-08-21)
-### Breaking Changes
-
-- Struct `ErrorResponse` has been removed
-- Struct `ProxyResource` has been removed
-- Struct `Resource` has been removed
+## 1.2.0 (2026-08-21)
 
 ### Features Added
 

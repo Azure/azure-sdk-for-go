@@ -30,6 +30,9 @@ type VersionedTemplateClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVersionedTemplateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VersionedTemplateClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,9 +72,6 @@ func (client *VersionedTemplateClient) Generate(ctx context.Context, templateNam
 // generateCreateRequest creates the Generate request.
 func (client *VersionedTemplateClient) generateCreateRequest(ctx context.Context, templateName string, templateVersion string, parameters map[string]*string, _ *VersionedTemplateClientGenerateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/templates/{templateName}/versions/{templateVersion}/generate"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if templateName == "" {
 		return nil, errors.New("parameter templateName cannot be empty")
@@ -135,9 +135,6 @@ func (client *VersionedTemplateClient) Get(ctx context.Context, templateName str
 // getCreateRequest creates the Get request.
 func (client *VersionedTemplateClient) getCreateRequest(ctx context.Context, templateName string, templateVersion string, _ *VersionedTemplateClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/templates/{templateName}/versions/{templateVersion}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if templateName == "" {
 		return nil, errors.New("parameter templateName cannot be empty")
@@ -208,9 +205,6 @@ func (client *VersionedTemplateClient) listCreateRequest(ctx context.Context, te
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/templates/{templateName}/versions"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if templateName == "" {
 			return nil, errors.New("parameter templateName cannot be empty")

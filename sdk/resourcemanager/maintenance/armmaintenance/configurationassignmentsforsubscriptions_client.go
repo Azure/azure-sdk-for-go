@@ -30,6 +30,9 @@ type ConfigurationAssignmentsForSubscriptionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConfigurationAssignmentsForSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationAssignmentsForSubscriptionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,9 +70,6 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) CreateOrUpdate(ctx
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ConfigurationAssignmentsForSubscriptionsClient) createOrUpdateCreateRequest(ctx context.Context, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, _ *ConfigurationAssignmentsForSubscriptionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if configurationAssignmentName == "" {
 		return nil, errors.New("parameter configurationAssignmentName cannot be empty")
@@ -127,9 +127,6 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) Delete(ctx context
 // deleteCreateRequest creates the Delete request.
 func (client *ConfigurationAssignmentsForSubscriptionsClient) deleteCreateRequest(ctx context.Context, configurationAssignmentName string, _ *ConfigurationAssignmentsForSubscriptionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if configurationAssignmentName == "" {
 		return nil, errors.New("parameter configurationAssignmentName cannot be empty")
@@ -183,9 +180,6 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) Get(ctx context.Co
 // getCreateRequest creates the Get request.
 func (client *ConfigurationAssignmentsForSubscriptionsClient) getCreateRequest(ctx context.Context, configurationAssignmentName string, _ *ConfigurationAssignmentsForSubscriptionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if configurationAssignmentName == "" {
 		return nil, errors.New("parameter configurationAssignmentName cannot be empty")
@@ -240,9 +234,6 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) Update(ctx context
 // updateCreateRequest creates the Update request.
 func (client *ConfigurationAssignmentsForSubscriptionsClient) updateCreateRequest(ctx context.Context, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, _ *ConfigurationAssignmentsForSubscriptionsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if configurationAssignmentName == "" {
 		return nil, errors.New("parameter configurationAssignmentName cannot be empty")

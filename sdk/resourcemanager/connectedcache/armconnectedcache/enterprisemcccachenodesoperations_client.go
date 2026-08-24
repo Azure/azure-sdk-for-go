@@ -30,6 +30,9 @@ type EnterpriseMccCacheNodesOperationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEnterpriseMccCacheNodesOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EnterpriseMccCacheNodesOperationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -91,9 +94,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) createOrUpdate(ctx contex
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *EnterpriseMccCacheNodesOperationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, resource EnterpriseMccCacheNodeResource, _ *EnterpriseMccCacheNodesOperationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -171,9 +171,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) deleteOperation(ctx conte
 // deleteCreateRequest creates the Delete request.
 func (client *EnterpriseMccCacheNodesOperationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, _ *EnterpriseMccCacheNodesOperationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -224,9 +221,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) Get(ctx context.Context, 
 // getCreateRequest creates the Get request.
 func (client *EnterpriseMccCacheNodesOperationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, _ *EnterpriseMccCacheNodesOperationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -290,9 +284,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) GetCacheNodeAutoUpdateHis
 // getCacheNodeAutoUpdateHistoryCreateRequest creates the GetCacheNodeAutoUpdateHistory request.
 func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeAutoUpdateHistoryCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, _ *EnterpriseMccCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}/getCacheNodeAutoUpdateHistory"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -356,9 +347,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) GetCacheNodeInstallDetail
 // getCacheNodeInstallDetailsCreateRequest creates the GetCacheNodeInstallDetails request.
 func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeInstallDetailsCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, _ *EnterpriseMccCacheNodesOperationsClientGetCacheNodeInstallDetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}/getCacheNodeInstallDetails"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -422,9 +410,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) GetCacheNodeMccIssueDetai
 // getCacheNodeMccIssueDetailsHistoryCreateRequest creates the GetCacheNodeMccIssueDetailsHistory request.
 func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeMccIssueDetailsHistoryCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, _ *EnterpriseMccCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}/getCacheNodeMccIssueDetailsHistory"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -488,9 +473,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) GetCacheNodeTLSCertificat
 // getCacheNodeTLSCertificateHistoryCreateRequest creates the GetCacheNodeTLSCertificateHistory request.
 func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeTLSCertificateHistoryCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, _ *EnterpriseMccCacheNodesOperationsClientGetCacheNodeTLSCertificateHistoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}/getCacheNodeTlsCertificateHistory"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -565,9 +547,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) listByEnterpriseMccCustom
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -633,9 +612,6 @@ func (client *EnterpriseMccCacheNodesOperationsClient) Update(ctx context.Contex
 // updateCreateRequest creates the Update request.
 func (client *EnterpriseMccCacheNodesOperationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, properties PatchResource, _ *EnterpriseMccCacheNodesOperationsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

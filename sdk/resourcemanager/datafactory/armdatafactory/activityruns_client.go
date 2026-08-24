@@ -30,6 +30,9 @@ type ActivityRunsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewActivityRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActivityRunsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,9 +71,6 @@ func (client *ActivityRunsClient) QueryByPipelineRun(ctx context.Context, resour
 // queryByPipelineRunCreateRequest creates the QueryByPipelineRun request.
 func (client *ActivityRunsClient) queryByPipelineRunCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, runID string, filterParameters RunFilterParameters, _ *ActivityRunsClientQueryByPipelineRunOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/pipelineruns/{runId}/queryActivityruns"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

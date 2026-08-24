@@ -31,6 +31,9 @@ type SubscriptionNetworkManagerConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSubscriptionNetworkManagerConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionNetworkManagerConnectionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,9 +71,6 @@ func (client *SubscriptionNetworkManagerConnectionsClient) CreateOrUpdate(ctx co
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *SubscriptionNetworkManagerConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, networkManagerConnectionName string, parameters ManagerConnection, _ *SubscriptionNetworkManagerConnectionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkManagerConnections/{networkManagerConnectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if networkManagerConnectionName == "" {
 		return nil, errors.New("parameter networkManagerConnectionName cannot be empty")
@@ -131,9 +131,6 @@ func (client *SubscriptionNetworkManagerConnectionsClient) Delete(ctx context.Co
 // deleteCreateRequest creates the Delete request.
 func (client *SubscriptionNetworkManagerConnectionsClient) deleteCreateRequest(ctx context.Context, networkManagerConnectionName string, _ *SubscriptionNetworkManagerConnectionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkManagerConnections/{networkManagerConnectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if networkManagerConnectionName == "" {
 		return nil, errors.New("parameter networkManagerConnectionName cannot be empty")
@@ -174,9 +171,6 @@ func (client *SubscriptionNetworkManagerConnectionsClient) Get(ctx context.Conte
 // getCreateRequest creates the Get request.
 func (client *SubscriptionNetworkManagerConnectionsClient) getCreateRequest(ctx context.Context, networkManagerConnectionName string, _ *SubscriptionNetworkManagerConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkManagerConnections/{networkManagerConnectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if networkManagerConnectionName == "" {
 		return nil, errors.New("parameter networkManagerConnectionName cannot be empty")
@@ -240,9 +234,6 @@ func (client *SubscriptionNetworkManagerConnectionsClient) listCreateRequest(ctx
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkManagerConnections"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {

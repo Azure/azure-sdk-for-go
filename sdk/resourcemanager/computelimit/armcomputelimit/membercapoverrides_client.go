@@ -30,6 +30,9 @@ type MemberCapOverridesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMemberCapOverridesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MemberCapOverridesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,9 +72,6 @@ func (client *MemberCapOverridesClient) CreateOrUpdate(ctx context.Context, loca
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *MemberCapOverridesClient) createOrUpdateCreateRequest(ctx context.Context, location string, vmFamilyName string, memberSubscriptionID string, resource MemberCapOverride, _ *MemberCapOverridesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}/memberCapOverrides/{memberSubscriptionId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -142,9 +142,6 @@ func (client *MemberCapOverridesClient) Delete(ctx context.Context, location str
 // deleteCreateRequest creates the Delete request.
 func (client *MemberCapOverridesClient) deleteCreateRequest(ctx context.Context, location string, vmFamilyName string, memberSubscriptionID string, _ *MemberCapOverridesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}/memberCapOverrides/{memberSubscriptionId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -194,9 +191,6 @@ func (client *MemberCapOverridesClient) Get(ctx context.Context, location string
 // getCreateRequest creates the Get request.
 func (client *MemberCapOverridesClient) getCreateRequest(ctx context.Context, location string, vmFamilyName string, memberSubscriptionID string, _ *MemberCapOverridesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}/memberCapOverrides/{memberSubscriptionId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -270,9 +264,6 @@ func (client *MemberCapOverridesClient) listByParentCreateRequest(ctx context.Co
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps/{vmFamilyName}/memberCapOverrides"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if location == "" {
 			return nil, errors.New("parameter location cannot be empty")

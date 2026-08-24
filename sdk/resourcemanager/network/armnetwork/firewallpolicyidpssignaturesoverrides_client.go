@@ -30,6 +30,9 @@ type FirewallPolicyIdpsSignaturesOverridesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFirewallPolicyIdpsSignaturesOverridesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FirewallPolicyIdpsSignaturesOverridesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,9 +70,6 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) Get(ctx context.Conte
 // getCreateRequest creates the Get request.
 func (client *FirewallPolicyIdpsSignaturesOverridesClient) getCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, _ *FirewallPolicyIdpsSignaturesOverridesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/signatureOverrides/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -128,9 +128,6 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) List(ctx context.Cont
 // listCreateRequest creates the List request.
 func (client *FirewallPolicyIdpsSignaturesOverridesClient) listCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, _ *FirewallPolicyIdpsSignaturesOverridesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/signatureOverrides"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -190,9 +187,6 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) Patch(ctx context.Con
 // patchCreateRequest creates the Patch request.
 func (client *FirewallPolicyIdpsSignaturesOverridesClient) patchCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters SignaturesOverrides, _ *FirewallPolicyIdpsSignaturesOverridesClientPatchOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/signatureOverrides/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -256,9 +250,6 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) Put(ctx context.Conte
 // putCreateRequest creates the Put request.
 func (client *FirewallPolicyIdpsSignaturesOverridesClient) putCreateRequest(ctx context.Context, resourceGroupName string, firewallPolicyName string, parameters SignaturesOverrides, _ *FirewallPolicyIdpsSignaturesOverridesClientPutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/signatureOverrides/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

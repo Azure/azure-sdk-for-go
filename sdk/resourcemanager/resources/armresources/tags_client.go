@@ -30,6 +30,9 @@ type TagsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTagsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TagsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,9 +72,6 @@ func (client *TagsClient) CreateOrUpdate(ctx context.Context, tagName string, op
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *TagsClient) createOrUpdateCreateRequest(ctx context.Context, tagName string, _ *TagsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if tagName == "" {
 		return nil, errors.New("parameter tagName cannot be empty")
@@ -201,9 +201,6 @@ func (client *TagsClient) CreateOrUpdateValue(ctx context.Context, tagName strin
 // createOrUpdateValueCreateRequest creates the CreateOrUpdateValue request.
 func (client *TagsClient) createOrUpdateValueCreateRequest(ctx context.Context, tagName string, tagValue string, _ *TagsClientCreateOrUpdateValueOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if tagName == "" {
 		return nil, errors.New("parameter tagName cannot be empty")
@@ -267,9 +264,6 @@ func (client *TagsClient) Delete(ctx context.Context, tagName string, options *T
 // deleteCreateRequest creates the Delete request.
 func (client *TagsClient) deleteCreateRequest(ctx context.Context, tagName string, _ *TagsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if tagName == "" {
 		return nil, errors.New("parameter tagName cannot be empty")
@@ -380,9 +374,6 @@ func (client *TagsClient) DeleteValue(ctx context.Context, tagName string, tagVa
 // deleteValueCreateRequest creates the DeleteValue request.
 func (client *TagsClient) deleteValueCreateRequest(ctx context.Context, tagName string, tagValue string, _ *TagsClientDeleteValueOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if tagName == "" {
 		return nil, errors.New("parameter tagName cannot be empty")
@@ -493,9 +484,6 @@ func (client *TagsClient) listCreateRequest(ctx context.Context, nextLink string
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/tagNames"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {

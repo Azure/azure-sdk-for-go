@@ -31,6 +31,9 @@ type OrganizationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOrganizationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OrganizationClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -89,9 +92,6 @@ func (client *OrganizationClient) activateResource(ctx context.Context, body Act
 // activateResourceCreateRequest creates the ActivateResource request.
 func (client *OrganizationClient) activateResourceCreateRequest(ctx context.Context, body ActivateSaaSParameterRequest, _ *OrganizationClientBeginActivateResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/activateSaaS"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -157,9 +157,6 @@ func (client *OrganizationClient) create(ctx context.Context, resourceGroupName 
 // createCreateRequest creates the Create request.
 func (client *OrganizationClient) createCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body OrganizationResource, _ *OrganizationClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -213,9 +210,6 @@ func (client *OrganizationClient) CreateAPIKey(ctx context.Context, resourceGrou
 // createAPIKeyCreateRequest creates the CreateAPIKey request.
 func (client *OrganizationClient) createAPIKeyCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, body CreateAPIKeyModel, _ *OrganizationClientCreateAPIKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}/createAPIKey"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -308,9 +302,6 @@ func (client *OrganizationClient) deleteOperation(ctx context.Context, resourceG
 // deleteCreateRequest creates the Delete request.
 func (client *OrganizationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, _ *OrganizationClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -360,9 +351,6 @@ func (client *OrganizationClient) DeleteClusterAPIKey(ctx context.Context, resou
 // deleteClusterAPIKeyCreateRequest creates the DeleteClusterAPIKey request.
 func (client *OrganizationClient) deleteClusterAPIKeyCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, apiKeyID string, _ *OrganizationClientDeleteClusterAPIKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/apiKeys/{apiKeyId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -411,9 +399,6 @@ func (client *OrganizationClient) Get(ctx context.Context, resourceGroupName str
 // getCreateRequest creates the Get request.
 func (client *OrganizationClient) getCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, _ *OrganizationClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -473,9 +458,6 @@ func (client *OrganizationClient) GetClusterAPIKey(ctx context.Context, resource
 // getClusterAPIKeyCreateRequest creates the GetClusterAPIKey request.
 func (client *OrganizationClient) getClusterAPIKeyCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, apiKeyID string, _ *OrganizationClientGetClusterAPIKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/apiKeys/{apiKeyId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -540,9 +522,6 @@ func (client *OrganizationClient) GetClusterByID(ctx context.Context, resourceGr
 // getClusterByIDCreateRequest creates the GetClusterByID request.
 func (client *OrganizationClient) getClusterByIDCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, _ *OrganizationClientGetClusterByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters/{clusterId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -610,9 +589,6 @@ func (client *OrganizationClient) GetEnvironmentByID(ctx context.Context, resour
 // getEnvironmentByIDCreateRequest creates the GetEnvironmentByID request.
 func (client *OrganizationClient) getEnvironmentByIDCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, _ *OrganizationClientGetEnvironmentByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -677,9 +653,6 @@ func (client *OrganizationClient) GetSchemaRegistryClusterByID(ctx context.Conte
 // getSchemaRegistryClusterByIDCreateRequest creates the GetSchemaRegistryClusterByID request.
 func (client *OrganizationClient) getSchemaRegistryClusterByIDCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, environmentID string, clusterID string, _ *OrganizationClientGetSchemaRegistryClusterByIDOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/schemaRegistryClusters/{clusterId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -746,9 +719,6 @@ func (client *OrganizationClient) LatestLinkedSaaS(ctx context.Context, resource
 // latestLinkedSaaSCreateRequest creates the LatestLinkedSaaS request.
 func (client *OrganizationClient) latestLinkedSaaSCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, _ *OrganizationClientLatestLinkedSaaSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/latestLinkedSaaS"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -835,9 +805,6 @@ func (client *OrganizationClient) linkSaaS(ctx context.Context, resourceGroupNam
 // linkSaaSCreateRequest creates the LinkSaaS request.
 func (client *OrganizationClient) linkSaaSCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body SaaSData, _ *OrganizationClientBeginLinkSaaSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/linkSaaS"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -898,9 +865,6 @@ func (client *OrganizationClient) listByResourceGroupCreateRequest(ctx context.C
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -969,9 +933,6 @@ func (client *OrganizationClient) listBySubscriptionCreateRequest(ctx context.Co
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/organizations"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -1039,9 +1000,6 @@ func (client *OrganizationClient) listClustersCreateRequest(ctx context.Context,
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/clusters"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1126,9 +1084,6 @@ func (client *OrganizationClient) listEnvironmentsCreateRequest(ctx context.Cont
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1199,9 +1154,6 @@ func (client *OrganizationClient) ListRegions(ctx context.Context, resourceGroup
 // listRegionsCreateRequest creates the ListRegions request.
 func (client *OrganizationClient) listRegionsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *OrganizationClientListRegionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/listRegions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1276,9 +1228,6 @@ func (client *OrganizationClient) listSchemaRegistryClustersCreateRequest(ctx co
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/environments/{environmentId}/schemaRegistryClusters"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1352,9 +1301,6 @@ func (client *OrganizationClient) Update(ctx context.Context, resourceGroupName 
 // updateCreateRequest creates the Update request.
 func (client *OrganizationClient) updateCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body OrganizationResourceUpdate, _ *OrganizationClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

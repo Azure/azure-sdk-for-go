@@ -31,6 +31,9 @@ type ProjectsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProjectsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -72,9 +75,6 @@ func (client *ProjectsClient) CreateOrUpdate(ctx context.Context, groupName stri
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ProjectsClient) createOrUpdateCreateRequest(ctx context.Context, groupName string, serviceName string, projectName string, parameters Project, _ *ProjectsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if groupName == "" {
 		return nil, errors.New("parameter groupName cannot be empty")
@@ -146,9 +146,6 @@ func (client *ProjectsClient) Delete(ctx context.Context, groupName string, serv
 // deleteCreateRequest creates the Delete request.
 func (client *ProjectsClient) deleteCreateRequest(ctx context.Context, groupName string, serviceName string, projectName string, options *ProjectsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if groupName == "" {
 		return nil, errors.New("parameter groupName cannot be empty")
@@ -204,9 +201,6 @@ func (client *ProjectsClient) Get(ctx context.Context, groupName string, service
 // getCreateRequest creates the Get request.
 func (client *ProjectsClient) getCreateRequest(ctx context.Context, groupName string, serviceName string, projectName string, _ *ProjectsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if groupName == "" {
 		return nil, errors.New("parameter groupName cannot be empty")
@@ -282,9 +276,6 @@ func (client *ProjectsClient) listCreateRequest(ctx context.Context, groupName s
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if groupName == "" {
 			return nil, errors.New("parameter groupName cannot be empty")
@@ -352,9 +343,6 @@ func (client *ProjectsClient) Update(ctx context.Context, groupName string, serv
 // updateCreateRequest creates the Update request.
 func (client *ProjectsClient) updateCreateRequest(ctx context.Context, groupName string, serviceName string, projectName string, parameters Project, _ *ProjectsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if groupName == "" {
 		return nil, errors.New("parameter groupName cannot be empty")

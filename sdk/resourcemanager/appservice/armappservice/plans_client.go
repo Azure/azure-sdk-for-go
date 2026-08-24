@@ -31,6 +31,9 @@ type PlansClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PlansClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -95,9 +98,6 @@ func (client *PlansClient) createOrUpdate(ctx context.Context, resourceGroupName
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *PlansClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, appServicePlan Plan, _ *PlansClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -153,9 +153,6 @@ func (client *PlansClient) CreateOrUpdateVnetRoute(ctx context.Context, resource
 // createOrUpdateVnetRouteCreateRequest creates the CreateOrUpdateVnetRoute request.
 func (client *PlansClient) createOrUpdateVnetRouteCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, _ *PlansClientCreateOrUpdateVnetRouteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -230,9 +227,6 @@ func (client *PlansClient) Delete(ctx context.Context, resourceGroupName string,
 // deleteCreateRequest creates the Delete request.
 func (client *PlansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *PlansClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -285,9 +279,6 @@ func (client *PlansClient) DeleteHybridConnection(ctx context.Context, resourceG
 // deleteHybridConnectionCreateRequest creates the DeleteHybridConnection request.
 func (client *PlansClient) deleteHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, _ *PlansClientDeleteHybridConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -347,9 +338,6 @@ func (client *PlansClient) DeleteVnetRoute(ctx context.Context, resourceGroupNam
 // deleteVnetRouteCreateRequest creates the DeleteVnetRoute request.
 func (client *PlansClient) deleteVnetRouteCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, _ *PlansClientDeleteVnetRouteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -404,9 +392,6 @@ func (client *PlansClient) Get(ctx context.Context, resourceGroupName string, na
 // getCreateRequest creates the Get request.
 func (client *PlansClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *PlansClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -469,9 +454,6 @@ func (client *PlansClient) GetHybridConnection(ctx context.Context, resourceGrou
 // getHybridConnectionCreateRequest creates the GetHybridConnection request.
 func (client *PlansClient) getHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, _ *PlansClientGetHybridConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -540,9 +522,6 @@ func (client *PlansClient) GetHybridConnectionPlanLimit(ctx context.Context, res
 // getHybridConnectionPlanLimitCreateRequest creates the GetHybridConnectionPlanLimit request.
 func (client *PlansClient) getHybridConnectionPlanLimitCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *PlansClientGetHybridConnectionPlanLimitOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionPlanLimits/limit"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -604,9 +583,6 @@ func (client *PlansClient) GetRouteForVnet(ctx context.Context, resourceGroupNam
 // getRouteForVnetCreateRequest creates the GetRouteForVnet request.
 func (client *PlansClient) getRouteForVnetCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, _ *PlansClientGetRouteForVnetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -675,9 +651,6 @@ func (client *PlansClient) GetServerFarmInstanceDetails(ctx context.Context, res
 // getServerFarmInstanceDetailsCreateRequest creates the GetServerFarmInstanceDetails request.
 func (client *PlansClient) getServerFarmInstanceDetailsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *PlansClientGetServerFarmInstanceDetailsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/listinstances"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -738,9 +711,6 @@ func (client *PlansClient) GetServerFarmRdpPassword(ctx context.Context, resourc
 // getServerFarmRdpPasswordCreateRequest creates the GetServerFarmRdpPassword request.
 func (client *PlansClient) getServerFarmRdpPasswordCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *PlansClientGetServerFarmRdpPasswordOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/getrdppassword"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -800,9 +770,6 @@ func (client *PlansClient) GetServerFarmSKUs(ctx context.Context, resourceGroupN
 // getServerFarmSKUsCreateRequest creates the GetServerFarmSKUs request.
 func (client *PlansClient) getServerFarmSKUsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *PlansClientGetServerFarmSKUsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/skus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -864,9 +831,6 @@ func (client *PlansClient) GetVnetFromServerFarm(ctx context.Context, resourceGr
 // getVnetFromServerFarmCreateRequest creates the GetVnetFromServerFarm request.
 func (client *PlansClient) getVnetFromServerFarmCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, _ *PlansClientGetVnetFromServerFarmOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -932,9 +896,6 @@ func (client *PlansClient) GetVnetGateway(ctx context.Context, resourceGroupName
 // getVnetGatewayCreateRequest creates the GetVnetGateway request.
 func (client *PlansClient) getVnetGatewayCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, _ *PlansClientGetVnetGatewayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1011,9 +972,6 @@ func (client *PlansClient) listCreateRequest(ctx context.Context, nextLink strin
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -1084,9 +1042,6 @@ func (client *PlansClient) listByResourceGroupCreateRequest(ctx context.Context,
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1147,9 +1102,6 @@ func (client *PlansClient) ListCapabilities(ctx context.Context, resourceGroupNa
 // listCapabilitiesCreateRequest creates the ListCapabilities request.
 func (client *PlansClient) listCapabilitiesCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *PlansClientListCapabilitiesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/capabilities"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1212,9 +1164,6 @@ func (client *PlansClient) ListHybridConnectionKeys(ctx context.Context, resourc
 // listHybridConnectionKeysCreateRequest creates the ListHybridConnectionKeys request.
 func (client *PlansClient) listHybridConnectionKeysCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, _ *PlansClientListHybridConnectionKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/listKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1294,9 +1243,6 @@ func (client *PlansClient) listHybridConnectionsCreateRequest(ctx context.Contex
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionRelays"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1362,9 +1308,6 @@ func (client *PlansClient) ListRoutesForVnet(ctx context.Context, resourceGroupN
 // listRoutesForVnetCreateRequest creates the ListRoutesForVnet request.
 func (client *PlansClient) listRoutesForVnetCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, _ *PlansClientListRoutesForVnetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1439,9 +1382,6 @@ func (client *PlansClient) listUsagesCreateRequest(ctx context.Context, resource
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/usages"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1509,9 +1449,6 @@ func (client *PlansClient) ListVnets(ctx context.Context, resourceGroupName stri
 // listVnetsCreateRequest creates the ListVnets request.
 func (client *PlansClient) listVnetsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *PlansClientListVnetsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1582,9 +1519,6 @@ func (client *PlansClient) listWebAppsCreateRequest(ctx context.Context, resourc
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/sites"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1672,9 +1606,6 @@ func (client *PlansClient) listWebAppsByHybridConnectionCreateRequest(ctx contex
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/sites"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1751,9 +1682,6 @@ func (client *PlansClient) RebootWorker(ctx context.Context, resourceGroupName s
 // rebootWorkerCreateRequest creates the RebootWorker request.
 func (client *PlansClient) rebootWorkerCreateRequest(ctx context.Context, resourceGroupName string, name string, workerName string, _ *PlansClientRebootWorkerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/workers/{workerName}/reboot"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1806,9 +1734,6 @@ func (client *PlansClient) RecycleManagedInstanceWorker(ctx context.Context, res
 // recycleManagedInstanceWorkerCreateRequest creates the RecycleManagedInstanceWorker request.
 func (client *PlansClient) recycleManagedInstanceWorkerCreateRequest(ctx context.Context, resourceGroupName string, name string, workerName string, _ *PlansClientRecycleManagedInstanceWorkerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/workers/{workerName}/recycleinstance"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1875,9 +1800,6 @@ func (client *PlansClient) RestartWebApps(ctx context.Context, resourceGroupName
 // restartWebAppsCreateRequest creates the RestartWebApps request.
 func (client *PlansClient) restartWebAppsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *PlansClientRestartWebAppsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/restartSites"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1928,9 +1850,6 @@ func (client *PlansClient) Update(ctx context.Context, resourceGroupName string,
 // updateCreateRequest creates the Update request.
 func (client *PlansClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, appServicePlan PlanPatchResource, _ *PlansClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1997,9 +1916,6 @@ func (client *PlansClient) UpdateVnetGateway(ctx context.Context, resourceGroupN
 // updateVnetGatewayCreateRequest creates the UpdateVnetGateway request.
 func (client *PlansClient) updateVnetGatewayCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, _ *PlansClientUpdateVnetGatewayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -2074,9 +1990,6 @@ func (client *PlansClient) UpdateVnetRoute(ctx context.Context, resourceGroupNam
 // updateVnetRouteCreateRequest creates the UpdateVnetRoute request.
 func (client *PlansClient) updateVnetRouteCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, routeName string, route VnetRoute, _ *PlansClientUpdateVnetRouteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

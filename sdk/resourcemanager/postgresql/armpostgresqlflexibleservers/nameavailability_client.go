@@ -30,6 +30,9 @@ type NameAvailabilityClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNameAvailabilityClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NameAvailabilityClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,9 +70,6 @@ func (client *NameAvailabilityClient) CheckGlobally(ctx context.Context, paramet
 // checkGloballyCreateRequest creates the CheckGlobally request.
 func (client *NameAvailabilityClient) checkGloballyCreateRequest(ctx context.Context, parameters CheckNameAvailabilityRequest, _ *NameAvailabilityClientCheckGloballyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/checkNameAvailability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -124,9 +124,6 @@ func (client *NameAvailabilityClient) CheckWithLocation(ctx context.Context, loc
 // checkWithLocationCreateRequest creates the CheckWithLocation request.
 func (client *NameAvailabilityClient) checkWithLocationCreateRequest(ctx context.Context, locationName string, parameters CheckNameAvailabilityRequest, _ *NameAvailabilityClientCheckWithLocationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DBforPostgreSQL/locations/{locationName}/checkNameAvailability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if locationName == "" {
 		return nil, errors.New("parameter locationName cannot be empty")

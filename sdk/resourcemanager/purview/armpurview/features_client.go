@@ -30,6 +30,9 @@ type FeaturesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFeaturesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FeaturesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -71,9 +74,6 @@ func (client *FeaturesClient) AccountGet(ctx context.Context, resourceGroupName 
 // accountGetCreateRequest creates the AccountGet request.
 func (client *FeaturesClient) accountGetCreateRequest(ctx context.Context, resourceGroupName string, accountName string, featureRequest BatchFeatureRequest, _ *FeaturesClientAccountGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Purview/accounts/{accountName}/listFeatures"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -140,9 +140,6 @@ func (client *FeaturesClient) SubscriptionGet(ctx context.Context, locations str
 // subscriptionGetCreateRequest creates the SubscriptionGet request.
 func (client *FeaturesClient) subscriptionGetCreateRequest(ctx context.Context, locations string, featureRequest BatchFeatureRequest, _ *FeaturesClientSubscriptionGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Purview/locations/{locations}/listFeatures"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if locations == "" {
 		return nil, errors.New("parameter locations cannot be empty")

@@ -30,6 +30,9 @@ type InsightsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewInsightsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InsightsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,9 +70,6 @@ func (client *InsightsClient) Create(ctx context.Context, workloadImpactName str
 // createCreateRequest creates the Create request.
 func (client *InsightsClient) createCreateRequest(ctx context.Context, workloadImpactName string, insightName string, resource Insight, _ *InsightsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights/{insightName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if workloadImpactName == "" {
 		return nil, errors.New("parameter workloadImpactName cannot be empty")
@@ -134,9 +134,6 @@ func (client *InsightsClient) Delete(ctx context.Context, workloadImpactName str
 // deleteCreateRequest creates the Delete request.
 func (client *InsightsClient) deleteCreateRequest(ctx context.Context, workloadImpactName string, insightName string, _ *InsightsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights/{insightName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if workloadImpactName == "" {
 		return nil, errors.New("parameter workloadImpactName cannot be empty")
@@ -181,9 +178,6 @@ func (client *InsightsClient) Get(ctx context.Context, workloadImpactName string
 // getCreateRequest creates the Get request.
 func (client *InsightsClient) getCreateRequest(ctx context.Context, workloadImpactName string, insightName string, _ *InsightsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights/{insightName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if workloadImpactName == "" {
 		return nil, errors.New("parameter workloadImpactName cannot be empty")
@@ -252,9 +246,6 @@ func (client *InsightsClient) listBySubscriptionCreateRequest(ctx context.Contex
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}/insights"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if workloadImpactName == "" {
 			return nil, errors.New("parameter workloadImpactName cannot be empty")

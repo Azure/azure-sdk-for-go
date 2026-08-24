@@ -31,6 +31,9 @@ type CommunicationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCommunicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CommunicationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,9 +72,6 @@ func (client *CommunicationsClient) CheckNameAvailability(ctx context.Context, s
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
 func (client *CommunicationsClient) checkNameAvailabilityCreateRequest(ctx context.Context, supportTicketName string, checkNameAvailabilityInput CheckNameAvailabilityInput, _ *CommunicationsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/checkNameAvailability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if supportTicketName == "" {
 		return nil, errors.New("parameter supportTicketName cannot be empty")
@@ -154,9 +154,6 @@ func (client *CommunicationsClient) create(ctx context.Context, supportTicketNam
 // createCreateRequest creates the Create request.
 func (client *CommunicationsClient) createCreateRequest(ctx context.Context, supportTicketName string, communicationName string, createCommunicationParameters CommunicationDetails, _ *CommunicationsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications/{communicationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if supportTicketName == "" {
 		return nil, errors.New("parameter supportTicketName cannot be empty")
@@ -206,9 +203,6 @@ func (client *CommunicationsClient) Get(ctx context.Context, supportTicketName s
 // getCreateRequest creates the Get request.
 func (client *CommunicationsClient) getCreateRequest(ctx context.Context, supportTicketName string, communicationName string, _ *CommunicationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications/{communicationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if supportTicketName == "" {
 		return nil, errors.New("parameter supportTicketName cannot be empty")
@@ -280,9 +274,6 @@ func (client *CommunicationsClient) listCreateRequest(ctx context.Context, suppo
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}/communications"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if supportTicketName == "" {
 			return nil, errors.New("parameter supportTicketName cannot be empty")

@@ -30,6 +30,9 @@ type ExtendedZonesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExtendedZonesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExtendedZonesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,9 +68,6 @@ func (client *ExtendedZonesClient) Get(ctx context.Context, extendedZoneName str
 // getCreateRequest creates the Get request.
 func (client *ExtendedZonesClient) getCreateRequest(ctx context.Context, extendedZoneName string, _ *ExtendedZonesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeZones/extendedZones/{extendedZoneName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if extendedZoneName == "" {
 		return nil, errors.New("parameter extendedZoneName cannot be empty")
@@ -131,9 +131,6 @@ func (client *ExtendedZonesClient) listBySubscriptionCreateRequest(ctx context.C
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeZones/extendedZones"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -187,9 +184,6 @@ func (client *ExtendedZonesClient) Register(ctx context.Context, extendedZoneNam
 // registerCreateRequest creates the Register request.
 func (client *ExtendedZonesClient) registerCreateRequest(ctx context.Context, extendedZoneName string, _ *ExtendedZonesClientRegisterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeZones/extendedZones/{extendedZoneName}/register"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if extendedZoneName == "" {
 		return nil, errors.New("parameter extendedZoneName cannot be empty")
@@ -243,9 +237,6 @@ func (client *ExtendedZonesClient) Unregister(ctx context.Context, extendedZoneN
 // unregisterCreateRequest creates the Unregister request.
 func (client *ExtendedZonesClient) unregisterCreateRequest(ctx context.Context, extendedZoneName string, _ *ExtendedZonesClientUnregisterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EdgeZones/extendedZones/{extendedZoneName}/unregister"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if extendedZoneName == "" {
 		return nil, errors.New("parameter extendedZoneName cannot be empty")

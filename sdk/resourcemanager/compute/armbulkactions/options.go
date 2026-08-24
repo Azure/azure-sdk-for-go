@@ -49,6 +49,12 @@ type BulkCreateCustomClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// BulkCreateCustomClientVirtualMachinesGetOperationStatusOptions contains the optional parameters for the BulkCreateCustomClient.NewVirtualMachinesGetOperationStatusPager
+// method.
+type BulkCreateCustomClientVirtualMachinesGetOperationStatusOptions struct {
+	// placeholder for future optional parameters
+}
+
 // LaunchBulkInstancesOperationClientBeginCancelOptions contains the optional parameters for the LaunchBulkInstancesOperationClient.BeginCancel
 // method.
 type LaunchBulkInstancesOperationClientBeginCancelOptions struct {

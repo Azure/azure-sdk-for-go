@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (2026-07-28)
+## 1.3.0-beta.1 (2026-08-24)
 ### Features Added
 
 - New value `PromoteOptionPlanned` added to enum type `PromoteOption`

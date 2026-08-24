@@ -4470,7 +4470,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerSinglePage() {
 	_require.False(pager.More())
 }
 
-func (s *BlobRecordedTestsSuite) TestGetLayoutPagerWithSAS() {
+func (s *BlobUnrecordedTestsSuite) TestGetLayoutPagerWithSAS() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -4536,7 +4536,7 @@ func (s *BlobRecordedTestsSuite) TestGetLayoutPagerWithSAS() {
 	_require.False(pager.More())
 }
 
-func (s *BlobRecordedTestsSuite) TestGetLayoutPagerWithRange() {
+func (s *BlobUnrecordedTestsSuite) TestGetLayoutPagerWithRange() {
 	s.T().Skip("Skipping due to a known service bug with range-scoped GetLayout responses")
 
 	_require := require.New(s.T())

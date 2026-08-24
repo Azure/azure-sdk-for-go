@@ -62,6 +62,7 @@ type Receiver struct {
 	mu                       sync.Mutex
 	receiveMode              ReceiveMode
 	receiving                bool
+	getRecoveryKindFunc      func(err error) internal.RecoveryKind
 	retryOptions             RetryOptions
 	settler                  *messageSettler
 	defaultReleaserTimeout   time.Duration // defaults to 1min, settable for unit tests.
@@ -144,6 +145,7 @@ func newReceiver(args newReceiverArgs, options *ReceiverOptions) (*Receiver, err
 		cleanupOnClose:           args.cleanupOnClose,
 		lastPeekedSequenceNumber: 0,
 		maxAllowedCredits:        defaultLinkRxBuffer,
+		getRecoveryKindFunc:      args.getRecoveryKindFunc,
 		retryOptions:             args.retryOptions,
 		defaultReleaserTimeout:   time.Minute,
 	}
@@ -404,33 +406,6 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		return msgs, nil
 	}
 
-	var linksWithID *internal.LinksWithID
-
-	err := r.amqpLinks.Retry(ctx, EventReceiver, "receiveMessages.getlinks", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		linksWithID = lwid
-		return nil
-	}, r.retryOptions)
-
-	if err != nil {
-		return nil, err
-	}
-
-	// request just the right amount of credits, taking into account the credits
-	// that are already active on the link from prior ReceiveMessages() calls that
-	// might have exited before all credits were used up.
-	currentReceiverCredits := int64(linksWithID.Receiver.Credits())
-	creditsToIssue := int64(maxMessages) - currentReceiverCredits
-
-	if creditsToIssue > 0 {
-		r.amqpLinks.Writef(EventReceiver, "Issuing %d credits, have %d", creditsToIssue, currentReceiverCredits)
-
-		if err := linksWithID.Receiver.IssueCredit(uint32(creditsToIssue)); err != nil {
-			return nil, err
-		}
-	} else {
-		r.amqpLinks.Writef(EventReceiver, "Have %d credits, no new credits needed", currentReceiverCredits)
-	}
-
 	timeAfterFirstMessage := 20 * time.Millisecond
 
 	if options != nil && options.TimeAfterFirstMessage > 0 {
@@ -439,13 +414,62 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		timeAfterFirstMessage = time.Second
 	}
 
-	result := r.fetchMessages(ctx, linksWithID.Receiver, maxMessages, timeAfterFirstMessage)
+	var linksWithID *internal.LinksWithID
+	var result fetchMessagesResult
 
-	r.amqpLinks.Writef(EventReceiver, "Received %d/%d messages", len(result.Messages), maxMessages)
+	err := r.amqpLinks.Retry(ctx, EventReceiver, "receiveMessages", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		linksWithID = lwid
 
-	// this'll only close anything if the error indicates that the link/connection is bad.
-	// it's safe to call with cancellation errors.
-	rk := r.amqpLinks.CloseIfNeeded(context.Background(), result.Error)
+		// request just the right amount of credits, taking into account the credits
+		// that are already active on the link from prior ReceiveMessages() calls that
+		// might have exited before all credits were used up.
+		currentReceiverCredits := int64(lwid.Receiver.Credits())
+		creditsToIssue := int64(maxMessages) - currentReceiverCredits
+
+		if creditsToIssue > 0 {
+			r.amqpLinks.Writef(EventReceiver, "Issuing %d credits, have %d", creditsToIssue, currentReceiverCredits)
+
+			if err := lwid.Receiver.IssueCredit(uint32(creditsToIssue)); err != nil {
+				result = fetchMessagesResult{Error: err}
+				if !r.shouldRetryReceiveError(err) {
+					return nil
+				}
+
+				return err
+			}
+		} else {
+			r.amqpLinks.Writef(EventReceiver, "Have %d credits, no new credits needed", currentReceiverCredits)
+		}
+
+		result = r.fetchMessages(ctx, lwid.Receiver, maxMessages, timeAfterFirstMessage)
+		r.amqpLinks.Writef(EventReceiver, "Received %d/%d messages", len(result.Messages), maxMessages)
+
+		if len(result.Messages) > 0 || !r.shouldRetryReceiveError(result.Error) {
+			return nil
+		}
+
+		return result.Error
+	}, r.retryOptions)
+
+	if err != nil {
+		result = fetchMessagesResult{Error: err}
+	}
+
+	var rk internal.RecoveryKind
+	if err != nil {
+		rk = r.getRecoveryKind(err)
+		if rk == internal.RecoveryKindFatal {
+			rk = r.amqpLinks.CloseIfNeeded(context.Background(), err)
+		}
+	} else {
+		// this'll only close anything if the error indicates that the link/connection is bad.
+		// it's safe to call with cancellation errors.
+		rk = r.amqpLinks.CloseIfNeeded(context.Background(), result.Error)
+	}
+	if err != nil {
+		r.amqpLinks.Writef(EventReceiver, "Failure when receiving messages: %s", result.Error)
+		return nil, err
+	}
 
 	if rk == internal.RecoveryKindNone {
 		// The link is still alive - we'll start the releaser which will releasing any messages
@@ -483,6 +507,29 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	}
 
 	return receivedMessages, nil
+}
+
+func (r *Receiver) getRecoveryKind(err error) internal.RecoveryKind {
+	if r.getRecoveryKindFunc != nil {
+		return r.getRecoveryKindFunc(err)
+	}
+
+	return internal.GetRecoveryKind(err)
+}
+
+func (r *Receiver) shouldRetryReceiveError(err error) bool {
+	rk := r.getRecoveryKind(err)
+	if rk != internal.RecoveryKindLink && rk != internal.RecoveryKindConn {
+		return false
+	}
+
+	if rk == internal.RecoveryKindLink {
+		var linkErr *amqp.LinkError
+		return !errors.As(err, &linkErr) || linkErr.RemoteErr != nil
+	}
+
+	var connErr *amqp.ConnError
+	return !errors.As(err, &connErr) || connErr.RemoteErr != nil
 }
 
 // receiveFromCache gets any messages that were retrieved after the Receiver was closed

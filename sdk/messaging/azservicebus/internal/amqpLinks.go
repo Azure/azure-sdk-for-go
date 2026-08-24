@@ -337,7 +337,7 @@ func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName azlog.Event, op
 		return links.getRecoveryKindFunc(err) == RecoveryKindFatal
 	}
 
-	return utils.Retry(ctx, eventName, links.Prefix()+"("+operation+")", func(ctx context.Context, args *utils.RetryFnArgs) error {
+	err := utils.Retry(ctx, eventName, links.Prefix()+"("+operation+")", func(ctx context.Context, args *utils.RetryFnArgs) error {
 		if err := links.RecoverIfNeeded(ctx, lastID, args.LastErr); err != nil {
 			return err
 		}
@@ -380,6 +380,15 @@ func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName azlog.Event, op
 
 		return nil
 	}, isFatalErrorFunc, o)
+
+	if err != nil {
+		switch links.getRecoveryKindFunc(err) {
+		case RecoveryKindLink, RecoveryKindConn:
+			links.CloseIfNeeded(context.Background(), err)
+		}
+	}
+
+	return err
 }
 
 // EntityPath is the full entity path for the queue/topic/subscription.

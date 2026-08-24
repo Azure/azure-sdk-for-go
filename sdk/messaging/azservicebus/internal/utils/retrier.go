@@ -125,7 +125,7 @@ func calcDelay(o exported.RetryOptions, try int32) time.Duration { // try is >=1
 	}
 
 	delay := factor * o.RetryDelay
-	if delay < factor {
+	if o.RetryDelay > 0 && delay/o.RetryDelay != factor {
 		// overflow has happened so set to max value
 		delay = time.Duration(math.MaxInt64)
 	}

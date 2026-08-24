@@ -5,6 +5,7 @@ package azservicebus
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sync/atomic"
 	"testing"
@@ -39,6 +40,23 @@ func TestReceiver_ReceiveMessages_AMQPLinksFailure(t *testing.T) {
 	require.Equal(t, internal.RecoveryKindFatal, internal.GetRecoveryKind(err))
 	require.Equal(t, "failed to create links", err.Error())
 	require.Empty(t, messages)
+}
+
+func TestReceiver_ReceiveMessages_IssueCreditError(t *testing.T) {
+	issueCreditErr := errors.New("issue credit failed")
+	amqpReceiver := &internal.FakeAMQPReceiver{IssueCreditErr: issueCreditErr}
+	receiver := &Receiver{
+		amqpLinks:         &internal.FakeAMQPLinks{Receiver: amqpReceiver},
+		cancelReleaser:    &atomic.Value{},
+		maxAllowedCredits: defaultLinkRxBuffer,
+	}
+	receiver.cancelReleaser.Store(emptyCancelFn)
+
+	messages, err := receiver.receiveMessagesImpl(context.Background(), 1, nil)
+
+	require.ErrorIs(t, err, issueCreditErr)
+	require.Empty(t, messages)
+	require.Zero(t, amqpReceiver.ReceiveCalled)
 }
 
 var receiveModesForTests = []struct {

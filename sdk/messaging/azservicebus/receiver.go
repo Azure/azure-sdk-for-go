@@ -416,6 +416,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 
 	var linksWithID *internal.LinksWithID
 	var result fetchMessagesResult
+	var creditErr error
 
 	err := r.amqpLinks.Retry(ctx, EventReceiver, "receiveMessages", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
 		linksWithID = lwid
@@ -430,12 +431,8 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 			r.amqpLinks.Writef(EventReceiver, "Issuing %d credits, have %d", creditsToIssue, currentReceiverCredits)
 
 			if err := lwid.Receiver.IssueCredit(uint32(creditsToIssue)); err != nil {
-				result = fetchMessagesResult{Error: err}
-				if !r.shouldRetryReceiveError(err) {
-					return nil
-				}
-
-				return err
+				creditErr = err
+				return nil
 			}
 		} else {
 			r.amqpLinks.Writef(EventReceiver, "Have %d credits, no new credits needed", currentReceiverCredits)
@@ -450,6 +447,10 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 
 		return result.Error
 	}, r.retryOptions)
+
+	if creditErr != nil {
+		return nil, creditErr
+	}
 
 	if err != nil {
 		result = fetchMessagesResult{Error: err}

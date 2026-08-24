@@ -5,14 +5,106 @@ package azservicebus
 
 import (
 	"context"
+	"fmt"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/mock/emulation"
 	"github.com/Azure/go-amqp"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
+
+func TestSender_SendMessage_RecoversFromConnectionScopedNotAllowed(t *testing.T) {
+	var sendAttempts int
+	var md *emulation.MockData
+	md, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
+		PreSenderMock: func(ms *emulation.MockSender, ctx context.Context) error {
+			if ms.Target == "queue" {
+				ms.EXPECT().Send(gomock.Any(), gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error {
+					sendAttempts++
+					if sendAttempts == 1 {
+						return fmt.Errorf("wrapped: %w", &amqp.ConnError{RemoteErr: &amqp.Error{Condition: amqp.ErrCondNotAllowed}})
+					}
+
+					return md.AllQueues()[ms.Target].Send(ctx, msg, ms.LinkEvent(), ms.Status)
+				}).AnyTimes()
+			}
+
+			return nil
+		},
+	}, &ClientOptions{
+		RetryOptions: exported.RetryOptions{
+			MaxRetries:    1,
+			RetryDelay:    -1,
+			MaxRetryDelay: -1,
+		},
+	})
+	defer cleanup()
+
+	sender, err := client.NewSender("queue", nil)
+	require.NoError(t, err)
+	senderLinks := sender.links
+
+	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello")}, nil)
+	require.NoError(t, err)
+	require.Equal(t, 2, sendAttempts)
+	require.Equal(t, 2, countEmulationEvents(md.Events.All(), emulation.EventTypeConnOpen))
+	require.Equal(t, 3, len(md.Events.GetOpenLinks()))
+	require.Same(t, senderLinks, sender.links)
+}
+
+func TestSender_SendMessage_RecoveryExhaustionLeavesSenderUsable(t *testing.T) {
+	failSends := true
+	var sendAttempts int
+	var md *emulation.MockData
+	md, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{
+		PreSenderMock: func(ms *emulation.MockSender, ctx context.Context) error {
+			if ms.Target == "queue" {
+				ms.EXPECT().Send(gomock.Any(), gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error {
+					sendAttempts++
+					if failSends {
+						return fmt.Errorf("wrapped: %w", &amqp.ConnError{RemoteErr: &amqp.Error{Condition: amqp.ErrCondNotAllowed}})
+					}
+
+					return md.AllQueues()[ms.Target].Send(ctx, msg, ms.LinkEvent(), ms.Status)
+				}).AnyTimes()
+			}
+
+			return nil
+		},
+	}, &ClientOptions{
+		RetryOptions: exported.RetryOptions{
+			MaxRetries:    1,
+			RetryDelay:    -1,
+			MaxRetryDelay: -1,
+		},
+	})
+	defer cleanup()
+
+	sender, err := client.NewSender("queue", nil)
+	require.NoError(t, err)
+
+	err = sender.SendMessage(context.Background(), &Message{Body: []byte("first")}, nil)
+	require.Error(t, err)
+	require.Equal(t, 2, sendAttempts)
+
+	failSends = false
+	err = sender.SendMessage(context.Background(), &Message{Body: []byte("second")}, nil)
+	require.NoError(t, err)
+	require.Equal(t, 3, sendAttempts)
+}
+
+func countEmulationEvents(events []emulation.Event, eventType emulation.EventType) int {
+	count := 0
+	for _, event := range events {
+		if event.Type == eventType {
+			count++
+		}
+	}
+	return count
+}
 
 func TestSender_UserFacingError(t *testing.T) {
 	_, client, cleanup := newClientWithMockedConn(t, &emulation.MockDataOptions{

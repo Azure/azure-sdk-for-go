@@ -653,14 +653,18 @@ func TestListSettingsPagerWithETagUnmodifiedPage(t *testing.T) {
 	}
 	require.EqualValues(t, 2, countPages)
 
-	// validate an unmodified page returns 304 Not Modified as an error
+	// validate all pages are not modified and returns an empty list of settings
+	countPages = 0
 	pager = client.NewListSettingsPager(selector, &azappconfig.ListSettingsOptions{
 		MatchConditions: matchConditions,
 	})
-	_, err := pager.NextPage(context.Background())
-	var responseError *azcore.ResponseError
-	require.ErrorAs(t, err, &responseError)
-	require.Equal(t, 304, responseError.StatusCode)
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		require.Empty(t, page.Settings)
+		countPages++
+	}
+	require.EqualValues(t, 2, countPages)
 }
 
 func TestListSettingsPagerWithETagModifiedPage(t *testing.T) {
@@ -699,14 +703,22 @@ func TestListSettingsPagerWithETagModifiedPage(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	// The first page is unmodified, so paging stops with a 304 error before the modified second page is fetched.
+	// validate second page is modified
+	countPages = 0
 	pager = client.NewListSettingsPager(selector, &azappconfig.ListSettingsOptions{
 		MatchConditions: matchConditions,
 	})
-	_, err = pager.NextPage(context.Background())
-	var responseError *azcore.ResponseError
-	require.ErrorAs(t, err, &responseError)
-	require.Equal(t, 304, responseError.StatusCode)
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		require.NoError(t, err)
+		if countPages == 0 {
+			require.Empty(t, page.Settings)
+		} else {
+			require.NotEmpty(t, page.Settings)
+		}
+		countPages++
+	}
+	require.EqualValues(t, 2, countPages)
 }
 
 func TestCheckSettingsPager(t *testing.T) {

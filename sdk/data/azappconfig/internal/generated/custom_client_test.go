@@ -18,30 +18,38 @@ import (
 )
 
 type pagerTransport struct {
-	headers    []http.Header
-	statusCode int
+	headers     []http.Header
+	statusCodes []int
+	bodies      []string
 }
 
 func (t *pagerTransport) Do(req *http.Request) (*http.Response, error) {
+	responseIndex := len(t.headers)
 	t.headers = append(t.headers, req.Header.Clone())
 
 	header := http.Header{}
 	header.Set("Content-Type", "application/json")
 	header.Set("ETag", `"response-page"`)
-	if len(t.headers) == 1 {
+	if responseIndex == 0 {
 		header.Set("Link", `</ff?After=next>; rel="next"`)
 	}
 
 	return &http.Response{
 		Request:    req,
-		StatusCode: t.statusCode,
+		StatusCode: t.statusCodes[responseIndex],
 		Header:     header,
-		Body:       io.NopCloser(strings.NewReader("{}")),
+		Body:       io.NopCloser(strings.NewReader(t.bodies[responseIndex])),
 	}, nil
 }
 
-func TestNewGetFeatureFlagsPagerWithLinkHeaderMatchConditions(t *testing.T) {
-	transport := &pagerTransport{statusCode: http.StatusOK}
+func TestNewGetFeatureFlagsPagerWithLinkHeaderContinuesAfterNotModified(t *testing.T) {
+	transport := &pagerTransport{
+		statusCodes: []int{http.StatusNotModified, http.StatusOK},
+		bodies: []string{
+			"{}",
+			`{"items":[{"name":"changed","enabled":true}]}`,
+		},
+	}
 	client, err := azcore.NewClient("azappconfig", "v0.1.0", runtime.PipelineOptions{}, &policy.ClientOptions{
 		Transport: transport,
 	})
@@ -55,53 +63,17 @@ func TestNewGetFeatureFlagsPagerWithLinkHeaderMatchConditions(t *testing.T) {
 
 	page, err := pager.NextPage(context.Background())
 	require.NoError(t, err)
+	require.Empty(t, page.Items)
 	require.NotNil(t, page.NextLink)
 	require.NotNil(t, page.ETag)
 	require.Equal(t, `"response-page"`, *page.ETag)
 
-	_, err = pager.NextPage(context.Background())
+	page, err = pager.NextPage(context.Background())
 	require.NoError(t, err)
+	require.Len(t, page.Items, 1)
+	require.Equal(t, "changed", *page.Items[0].Name)
+	require.True(t, *page.Items[0].Enabled)
 	require.Len(t, transport.headers, 2)
 	require.Equal(t, `"page-1"`, transport.headers[0].Get("If-None-Match"))
 	require.Equal(t, `"page-2"`, transport.headers[1].Get("If-None-Match"))
-}
-
-func TestConditionalGetPagersReturnNotModifiedAsError(t *testing.T) {
-	t.Run("configuration settings", func(t *testing.T) {
-		transport := &pagerTransport{statusCode: http.StatusNotModified}
-		client, err := azcore.NewClient("azappconfig", "v0.1.0", runtime.PipelineOptions{}, &policy.ClientOptions{
-			Transport: transport,
-		})
-		require.NoError(t, err)
-
-		appConfigClient := NewAzureAppConfigurationClient("https://example.azconfig.io", client)
-		pager := appConfigClient.NewGetKeyValuesPagerWithMatchConditions(
-			[]azcore.MatchConditions{{IfNoneMatch: to.Ptr(azcore.ETag(`"page-1"`))}},
-			&AzureAppConfigurationClientGetKeyValuesOptions{},
-		)
-
-		_, err = pager.NextPage(context.Background())
-		var responseError *azcore.ResponseError
-		require.ErrorAs(t, err, &responseError)
-		require.Equal(t, http.StatusNotModified, responseError.StatusCode)
-	})
-
-	t.Run("feature flags", func(t *testing.T) {
-		transport := &pagerTransport{statusCode: http.StatusNotModified}
-		client, err := azcore.NewClient("azappconfig", "v0.1.0", runtime.PipelineOptions{}, &policy.ClientOptions{
-			Transport: transport,
-		})
-		require.NoError(t, err)
-
-		featureFlagClient := NewAzureAppConfigurationClient("https://example.azconfig.io", client).NewAzureAppConfigurationFeatureFlagClient()
-		pager := featureFlagClient.NewGetFeatureFlagsPagerWithLinkHeader(
-			[]azcore.MatchConditions{{IfNoneMatch: to.Ptr(azcore.ETag(`"page-1"`))}},
-			&AzureAppConfigurationFeatureFlagClientGetFeatureFlagsOptions{},
-		)
-
-		_, err = pager.NextPage(context.Background())
-		var responseError *azcore.ResponseError
-		require.ErrorAs(t, err, &responseError)
-		require.Equal(t, http.StatusNotModified, responseError.StatusCode)
-	})
 }

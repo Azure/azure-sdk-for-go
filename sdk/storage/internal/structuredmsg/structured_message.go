@@ -743,6 +743,9 @@ func (d *SMDecoder) parseHeader() error {
 	d.msgLen = binary.LittleEndian.Uint64(buf[1:9])
 	d.flags = binary.LittleEndian.Uint16(buf[9:11])
 	d.numSegments = binary.LittleEndian.Uint16(buf[11:13])
+	if d.numSegments == 0 {
+		return fmt.Errorf("structured message has zero segments")
+	}
 	// The structured message body is negotiated with properties=crc64, so the CRC64 flag
 	// must be present. Rejecting its absence prevents silently skipping validation. Only the
 	// CRC64 bit is required; other flag bits are ignored to preserve forward compatibility.

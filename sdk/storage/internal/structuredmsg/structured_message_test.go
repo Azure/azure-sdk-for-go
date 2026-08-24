@@ -985,6 +985,19 @@ func TestSMEncoderSegmentSizeJustOverLimit(t *testing.T) {
 	require.Equal(t, content, decodedData)
 }
 
+func TestSMEncodeSegmentSizeOverflowProtection(t *testing.T) {
+	data := make([]byte, 65536)
+	for i := range data {
+		data[i] = byte(i % 251)
+	}
+
+	result := SMEncode(data, 1)
+	decoded, err := SMDecode(result.EncodedData)
+	require.NoError(t, err)
+	require.Equal(t, data, decoded.Data)
+	require.LessOrEqual(t, int(decoded.NumSegments), 65535)
+}
+
 // segBoundaryReader is a test io.ReadSeeker whose Read returns err exactly when its data is
 // exhausted, allowing simulation of a source that returns bytes together with an error at a
 // segment boundary.

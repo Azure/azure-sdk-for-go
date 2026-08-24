@@ -13,13 +13,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
 // OperationStatusResultClient contains the methods for the OperationStatusResult group.
 // Don't use this type directly, use NewOperationStatusResultClient() instead.
 //
-// Generated from API version 2026-05-02-preview
+// Generated from API version 2026-06-02-preview
 type OperationStatusResultClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -89,7 +90,7 @@ func (client *OperationStatusResultClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -160,7 +161,7 @@ func (client *OperationStatusResultClient) getByAgentPoolCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -236,7 +237,7 @@ func (client *OperationStatusResultClient) listCreateRequest(ctx context.Context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260502Preview)
+		reqQP.Set("api-version", version20260602Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -251,6 +252,91 @@ func (client *OperationStatusResultClient) listHandleResponse(resp *http.Respons
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatusResultList); err != nil {
 		return OperationStatusResultClientListResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByAgentPoolPager - Gets a list of operations in the specified agent pool.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the managed cluster resource.
+//   - agentPoolName - The name of the agent pool.
+//   - options - OperationStatusResultClientListByAgentPoolOptions contains the optional parameters for the OperationStatusResultClient.NewListByAgentPoolPager
+//     method.
+func (client *OperationStatusResultClient) NewListByAgentPoolPager(resourceGroupName string, resourceName string, agentPoolName string, options *OperationStatusResultClientListByAgentPoolOptions) *runtime.Pager[OperationStatusResultClientListByAgentPoolResponse] {
+	return runtime.NewPager(runtime.PagingHandler[OperationStatusResultClientListByAgentPoolResponse]{
+		More: func(page OperationStatusResultClientListByAgentPoolResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *OperationStatusResultClientListByAgentPoolResponse) (OperationStatusResultClientListByAgentPoolResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "OperationStatusResultClient.NewListByAgentPoolPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByAgentPoolCreateRequest(ctx, resourceGroupName, resourceName, agentPoolName, nextLink, options)
+			if err != nil {
+				return OperationStatusResultClientListByAgentPoolResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OperationStatusResultClientListByAgentPoolResponse{}, err
+			}
+			return client.listByAgentPoolHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByAgentPoolCreateRequest creates the ListByAgentPool request.
+func (client *OperationStatusResultClient) listByAgentPoolCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, nextLink string, options *OperationStatusResultClientListByAgentPoolOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/agentPools/{agentPoolName}/operations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		if agentPoolName == "" {
+			return nil, errors.New("parameter agentPoolName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{agentPoolName}", url.PathEscape(agentPoolName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.ActiveOnly != nil {
+			reqQP.Set("activeOnly", strconv.FormatBool(*options.ActiveOnly))
+		}
+		reqQP.Set("api-version", version20260602Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByAgentPoolHandleResponse handles the ListByAgentPool response.
+func (client *OperationStatusResultClient) listByAgentPoolHandleResponse(resp *http.Response, successCodes ...int) (OperationStatusResultClientListByAgentPoolResponse, error) {
+	result := OperationStatusResultClientListByAgentPoolResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatusResultList); err != nil {
+		return OperationStatusResultClientListByAgentPoolResponse{}, err
 	}
 	return result, nil
 }

@@ -1,5 +1,42 @@
 # Release History
 
+## 10.0.0-beta.1 (2026-08-24)
+### Breaking Changes
+
+- `OutboundTypeManagedNATGatewayV2` from enum `OutboundType` has been removed
+- Field `DisableCustomMetrics` of struct `ManagedClusterAzureMonitorProfileContainerInsights` has been removed
+
+### Features Added
+
+- New value `OSSKUUbuntu2604` added to enum type `OSSKU`
+- New enum type `AgentPoolNICPublicIPAddressVersion` with values `AgentPoolNICPublicIPAddressVersionIPv4`
+- New enum type `DRANETMode` with values `DRANETModeManaged`, `DRANETModeUnmanaged`
+- New enum type `ManagedClusterNATGatewaySKU` with values `ManagedClusterNATGatewaySKUStandard`, `ManagedClusterNATGatewaySKUStandardV2`
+- New enum type `NvidiaDriverMode` with values `NvidiaDriverModeDRA`, `NvidiaDriverModeDevicePlugin`
+- New function `*AgentPoolsClient.BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters AgentPoolUpdate, options *AgentPoolsClientBeginUpdateOptions) (*runtime.Poller[AgentPoolsClientUpdateResponse], error)`
+- New function `*OperationStatusResultClient.NewListByAgentPoolPager(resourceGroupName string, resourceName string, agentPoolName string, options *OperationStatusResultClientListByAgentPoolOptions) *runtime.Pager[OperationStatusResultClientListByAgentPoolResponse]`
+- New struct `AgentPoolNICPublicIPAddressConfiguration`
+- New struct `AgentPoolUpdate`
+- New struct `AgentPoolUpdateManualScaleProfile`
+- New struct `AgentPoolUpdateProperties`
+- New struct `AgentPoolUpdateScaleProfile`
+- New struct `AgentPoolUpdateVirtualMachinesProfile`
+- New struct `CapacityReservation`
+- New struct `CapacityReservationGroup`
+- New struct `DRANETProfile`
+- New struct `SoftEvictionGracePeriod`
+- New struct `SoftEvictionThreshold`
+- New field `PublicIPAddressConfiguration` in struct `AgentPoolNetworkInterface`
+- New field `Dranet` in struct `AgentPoolNetworkProfile`
+- New field `CertificateAuthorityBundle` in struct `JWTAuthenticatorProperties`
+- New field `EvictionMaxPodGracePeriodInSeconds`, `SoftEvictionGracePeriod`, `SoftEvictionThreshold` in struct `KubeletConfig`
+- New field `CapacityReservation` in struct `MachineProperties`
+- New field `SKU` in struct `ManagedClusterNATGatewayProfile`
+- New field `EnableNodeHardening` in struct `ManagedClusterProperties`
+- New field `DriverMode` in struct `NvidiaGPUProfile`
+- New field `OperationType`, `SubOperationType` in struct `OperationStatusResult`
+
+
 ## 9.5.0-beta.1 (2026-07-24)
 ### Features Added
 

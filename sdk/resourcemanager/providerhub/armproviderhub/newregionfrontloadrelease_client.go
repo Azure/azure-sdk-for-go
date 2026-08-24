@@ -18,6 +18,8 @@ import (
 
 // NewRegionFrontloadReleaseClient contains the methods for the NewRegionFrontloadRelease group.
 // Don't use this type directly, use NewNewRegionFrontloadReleaseClient() instead.
+//
+// Generated from API version 2024-09-01
 type NewRegionFrontloadReleaseClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNewRegionFrontloadReleaseClient(subscriptionID string, credential azcore
 
 // CreateOrUpdate - Creates or updates a new region frontload release.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - releaseName - The name of the release.
 //   - options - NewRegionFrontloadReleaseClientCreateOrUpdateOptions contains the optional parameters for the NewRegionFrontloadReleaseClient.CreateOrUpdate
@@ -61,12 +61,7 @@ func (client *NewRegionFrontloadReleaseClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return NewRegionFrontloadReleaseClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return NewRegionFrontloadReleaseClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -89,8 +84,8 @@ func (client *NewRegionFrontloadReleaseClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -100,8 +95,11 @@ func (client *NewRegionFrontloadReleaseClient) createOrUpdateCreateRequest(ctx c
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *NewRegionFrontloadReleaseClient) createOrUpdateHandleResponse(resp *http.Response) (NewRegionFrontloadReleaseClientCreateOrUpdateResponse, error) {
+func (client *NewRegionFrontloadReleaseClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (NewRegionFrontloadReleaseClientCreateOrUpdateResponse, error) {
 	result := NewRegionFrontloadReleaseClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefaultRollout); err != nil {
 		return NewRegionFrontloadReleaseClientCreateOrUpdateResponse{}, err
 	}
@@ -110,8 +108,6 @@ func (client *NewRegionFrontloadReleaseClient) createOrUpdateHandleResponse(resp
 
 // GenerateManifest - Generates the new region frontload manifest.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - NewRegionFrontloadReleaseClientGenerateManifestOptions contains the optional parameters for the NewRegionFrontloadReleaseClient.GenerateManifest
 //     method.
@@ -129,12 +125,7 @@ func (client *NewRegionFrontloadReleaseClient) GenerateManifest(ctx context.Cont
 	if err != nil {
 		return NewRegionFrontloadReleaseClientGenerateManifestResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NewRegionFrontloadReleaseClientGenerateManifestResponse{}, err
-	}
-	resp, err := client.generateManifestHandleResponse(httpResp)
-	return resp, err
+	return client.generateManifestHandleResponse(httpResp, http.StatusOK)
 }
 
 // generateManifestCreateRequest creates the GenerateManifest request.
@@ -153,8 +144,8 @@ func (client *NewRegionFrontloadReleaseClient) generateManifestCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -164,8 +155,11 @@ func (client *NewRegionFrontloadReleaseClient) generateManifestCreateRequest(ctx
 }
 
 // generateManifestHandleResponse handles the GenerateManifest response.
-func (client *NewRegionFrontloadReleaseClient) generateManifestHandleResponse(resp *http.Response) (NewRegionFrontloadReleaseClientGenerateManifestResponse, error) {
+func (client *NewRegionFrontloadReleaseClient) generateManifestHandleResponse(resp *http.Response, successCodes ...int) (NewRegionFrontloadReleaseClientGenerateManifestResponse, error) {
 	result := NewRegionFrontloadReleaseClientGenerateManifestResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceProviderManifest); err != nil {
 		return NewRegionFrontloadReleaseClientGenerateManifestResponse{}, err
 	}
@@ -174,8 +168,6 @@ func (client *NewRegionFrontloadReleaseClient) generateManifestHandleResponse(re
 
 // Get - Gets a new region frontload release.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - releaseName - The name of the release.
 //   - options - NewRegionFrontloadReleaseClientGetOptions contains the optional parameters for the NewRegionFrontloadReleaseClient.Get
@@ -194,12 +186,7 @@ func (client *NewRegionFrontloadReleaseClient) Get(ctx context.Context, provider
 	if err != nil {
 		return NewRegionFrontloadReleaseClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NewRegionFrontloadReleaseClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -222,15 +209,18 @@ func (client *NewRegionFrontloadReleaseClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *NewRegionFrontloadReleaseClient) getHandleResponse(resp *http.Response) (NewRegionFrontloadReleaseClientGetResponse, error) {
+func (client *NewRegionFrontloadReleaseClient) getHandleResponse(resp *http.Response, successCodes ...int) (NewRegionFrontloadReleaseClientGetResponse, error) {
 	result := NewRegionFrontloadReleaseClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DefaultRollout); err != nil {
 		return NewRegionFrontloadReleaseClientGetResponse{}, err
 	}
@@ -239,8 +229,6 @@ func (client *NewRegionFrontloadReleaseClient) getHandleResponse(resp *http.Resp
 
 // Stop - Stops a new region frontload release.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - releaseName - The name of the release.
 //   - options - NewRegionFrontloadReleaseClientStopOptions contains the optional parameters for the NewRegionFrontloadReleaseClient.Stop
@@ -260,8 +248,7 @@ func (client *NewRegionFrontloadReleaseClient) Stop(ctx context.Context, provide
 		return NewRegionFrontloadReleaseClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NewRegionFrontloadReleaseClientStopResponse{}, err
+		return NewRegionFrontloadReleaseClientStopResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return NewRegionFrontloadReleaseClientStopResponse{}, nil
 }
@@ -286,7 +273,7 @@ func (client *NewRegionFrontloadReleaseClient) stopCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

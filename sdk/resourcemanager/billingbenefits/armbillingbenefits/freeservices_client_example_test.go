@@ -31,8 +31,8 @@ func ExampleFreeServicesClient_BeginCreate() {
 		},
 		Properties: &armbillingbenefits.FreeServicesProperties{
 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
-			StartAt:     to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t }()),
-			EndAt:       to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-10-01T00:00:00Z"); return t }()),
+			StartAt:     to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
+			EndAt:       to.Ptr(time.Date(2026, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		},
 	}, nil)
 	if err != nil {
@@ -53,8 +53,8 @@ func ExampleFreeServicesClient_BeginCreate() {
 	// 		Properties: &armbillingbenefits.FreeServicesProperties{
 	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
 	// 			Status: to.Ptr(armbillingbenefits.FreeServicesStatusActive),
-	// 			StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
-	// 			EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-10-01T00:00:00Z"); return t}()),
+	// 			StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
+	// 			EndAt: to.Ptr(time.Date(2026, time.October, 1, 0, 0, 0, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31"),
 	// 			BillingProfileResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
@@ -67,9 +67,9 @@ func ExampleFreeServicesClient_BeginCreate() {
 	// 		},
 	// 		SystemData: &armbillingbenefits.SystemData{
 	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.October, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.October, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -122,8 +122,8 @@ func ExampleFreeServicesClient_Get() {
 	// 		Properties: &armbillingbenefits.FreeServicesProperties{
 	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
 	// 			Status: to.Ptr(armbillingbenefits.FreeServicesStatusActive),
-	// 			StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
-	// 			EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-10-01T00:00:00Z"); return t}()),
+	// 			StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
+	// 			EndAt: to.Ptr(time.Date(2026, time.October, 1, 0, 0, 0, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31"),
 	// 			BillingProfileResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
@@ -136,9 +136,9 @@ func ExampleFreeServicesClient_Get() {
 	// 		},
 	// 		SystemData: &armbillingbenefits.SystemData{
 	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.October, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.October, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -176,8 +176,8 @@ func ExampleFreeServicesClient_NewListByResourceGroupPager() {
 		// 				Properties: &armbillingbenefits.FreeServicesProperties{
 		// 					ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
 		// 					Status: to.Ptr(armbillingbenefits.FreeServicesStatusActive),
-		// 					StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
-		// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-10-01T00:00:00Z"); return t}()),
+		// 					StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
+		// 					EndAt: to.Ptr(time.Date(2026, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31"),
 		// 					BillingProfileResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
@@ -190,9 +190,9 @@ func ExampleFreeServicesClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				SystemData: &armbillingbenefits.SystemData{
 		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.October, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.October, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -202,8 +202,8 @@ func ExampleFreeServicesClient_NewListByResourceGroupPager() {
 		// 				Properties: &armbillingbenefits.FreeServicesProperties{
 		// 					ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
 		// 					Status: to.Ptr(armbillingbenefits.FreeServicesStatusActive),
-		// 					StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
-		// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-10-01T00:00:00Z"); return t}()),
+		// 					StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
+		// 					EndAt: to.Ptr(time.Date(2026, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31"),
 		// 					BillingProfileResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
@@ -216,9 +216,9 @@ func ExampleFreeServicesClient_NewListByResourceGroupPager() {
 		// 				},
 		// 				SystemData: &armbillingbenefits.SystemData{
 		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -259,8 +259,8 @@ func ExampleFreeServicesClient_NewListBySubscriptionPager() {
 		// 				Properties: &armbillingbenefits.FreeServicesProperties{
 		// 					ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
 		// 					Status: to.Ptr(armbillingbenefits.FreeServicesStatusActive),
-		// 					StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
-		// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-10-01T00:00:00Z"); return t}()),
+		// 					StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
+		// 					EndAt: to.Ptr(time.Date(2026, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31"),
 		// 					BillingProfileResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
@@ -273,9 +273,9 @@ func ExampleFreeServicesClient_NewListBySubscriptionPager() {
 		// 				},
 		// 				SystemData: &armbillingbenefits.SystemData{
 		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.October, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.October, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -285,8 +285,8 @@ func ExampleFreeServicesClient_NewListBySubscriptionPager() {
 		// 				Properties: &armbillingbenefits.FreeServicesProperties{
 		// 					ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
 		// 					Status: to.Ptr(armbillingbenefits.FreeServicesStatusActive),
-		// 					StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
-		// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-10-01T00:00:00Z"); return t}()),
+		// 					StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
+		// 					EndAt: to.Ptr(time.Date(2026, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31"),
 		// 					BillingProfileResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
@@ -299,9 +299,9 @@ func ExampleFreeServicesClient_NewListBySubscriptionPager() {
 		// 				},
 		// 				SystemData: &armbillingbenefits.SystemData{
 		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-09-01T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.September, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -311,8 +311,8 @@ func ExampleFreeServicesClient_NewListBySubscriptionPager() {
 		// 				Properties: &armbillingbenefits.FreeServicesProperties{
 		// 					ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
 		// 					Status: to.Ptr(armbillingbenefits.FreeServicesStatusActive),
-		// 					StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
-		// 					EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-10-01T00:00:00Z"); return t}()),
+		// 					StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
+		// 					EndAt: to.Ptr(time.Date(2026, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31"),
 		// 					BillingProfileResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
@@ -325,9 +325,9 @@ func ExampleFreeServicesClient_NewListBySubscriptionPager() {
 		// 				},
 		// 				SystemData: &armbillingbenefits.SystemData{
 		// 					CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T01:01:01.1075056Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-01T01:01:01.1075056Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -349,7 +349,7 @@ func ExampleFreeServicesClient_BeginUpdate() {
 	}
 	poller, err := clientFactory.NewFreeServicesClient("97ee05f2-07d5-494d-908c-081a197f4277").BeginUpdate(ctx, "resource_group_name_01", "freeservice_20251001", armbillingbenefits.FreeServicesPatchRequest{
 		Properties: &armbillingbenefits.FreeServicesPatchRequestProperties{
-			EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-12-01T00:00:00Z"); return t }()),
+			EndAt: to.Ptr(time.Date(2026, time.December, 1, 0, 0, 0, 0, time.UTC)),
 		},
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -374,8 +374,8 @@ func ExampleFreeServicesClient_BeginUpdate() {
 	// 		Properties: &armbillingbenefits.FreeServicesProperties{
 	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
 	// 			Status: to.Ptr(armbillingbenefits.FreeServicesStatusActive),
-	// 			StartAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T00:00:00Z"); return t}()),
-	// 			EndAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-12-01T00:00:00Z"); return t}()),
+	// 			StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
+	// 			EndAt: to.Ptr(time.Date(2026, time.December, 1, 0, 0, 0, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31"),
 	// 			BillingProfileResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
@@ -388,9 +388,9 @@ func ExampleFreeServicesClient_BeginUpdate() {
 	// 		},
 	// 		SystemData: &armbillingbenefits.SystemData{
 	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T01:01:01.1075056Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.October, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-11-01T01:01:01.1075056Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.November, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }

@@ -62,12 +62,7 @@ func (client *ActivityRunsClient) QueryByPipelineRun(ctx context.Context, resour
 	if err != nil {
 		return ActivityRunsClientQueryByPipelineRunResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ActivityRunsClientQueryByPipelineRunResponse{}, err
-	}
-	resp, err := client.queryByPipelineRunHandleResponse(httpResp)
-	return resp, err
+	return client.queryByPipelineRunHandleResponse(httpResp, http.StatusOK)
 }
 
 // queryByPipelineRunCreateRequest creates the QueryByPipelineRun request.
@@ -105,8 +100,11 @@ func (client *ActivityRunsClient) queryByPipelineRunCreateRequest(ctx context.Co
 }
 
 // queryByPipelineRunHandleResponse handles the QueryByPipelineRun response.
-func (client *ActivityRunsClient) queryByPipelineRunHandleResponse(resp *http.Response) (ActivityRunsClientQueryByPipelineRunResponse, error) {
+func (client *ActivityRunsClient) queryByPipelineRunHandleResponse(resp *http.Response, successCodes ...int) (ActivityRunsClientQueryByPipelineRunResponse, error) {
 	result := ActivityRunsClientQueryByPipelineRunResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActivityRunsQueryResponse); err != nil {
 		return ActivityRunsClientQueryByPipelineRunResponse{}, err
 	}

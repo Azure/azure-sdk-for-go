@@ -87,8 +87,7 @@ func (client *ConnectionRaiBlocklistClient) create(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -180,8 +179,7 @@ func (client *ConnectionRaiBlocklistClient) deleteOperation(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -246,12 +244,7 @@ func (client *ConnectionRaiBlocklistClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return ConnectionRaiBlocklistClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectionRaiBlocklistClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -289,8 +282,11 @@ func (client *ConnectionRaiBlocklistClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConnectionRaiBlocklistClient) getHandleResponse(resp *http.Response) (ConnectionRaiBlocklistClientGetResponse, error) {
+func (client *ConnectionRaiBlocklistClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConnectionRaiBlocklistClientGetResponse, error) {
 	result := ConnectionRaiBlocklistClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiBlocklistPropertiesBasicResource); err != nil {
 		return ConnectionRaiBlocklistClientGetResponse{}, err
 	}

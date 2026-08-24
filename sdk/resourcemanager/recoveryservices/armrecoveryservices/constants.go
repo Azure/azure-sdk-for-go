@@ -5,7 +5,7 @@
 package armrecoveryservices
 
 const (
-	version20260501 string = "2026-05-01"
+	version20260701 string = "2026-07-01"
 )
 
 type AlertsState string

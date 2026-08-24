@@ -32,9 +32,9 @@ func ExampleOperationStatusClient_Get() {
 	// res = armdataprotection.OperationStatusClientGetResponse{
 	// 	OperationResource: armdataprotection.OperationResource{
 	// 		Name: to.Ptr("MjkxOTMyODMtYTE3My00YzJjLTg5NjctN2E4MDIxNDA3NjA2OzdjNGE2ZWRjLWJjMmItNDRkYi1hYzMzLWY1YzEwNzk5Y2EyOA=="),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-20T09:49:46Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2019, time.November, 20, 9, 49, 46, 0, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/0b352192-dcac-4cc7-992e-a96190ccc68c/providers/Microsoft.DataProtection/locations/WestUS/operationStatus/MjkxOTMyODMtYTE3My00YzJjLTg5NjctN2E4MDIxNDA3NjA2OzdjNGE2ZWRjLWJjMmItNDRkYi1hYzMzLWY1YzEwNzk5Y2EyOA=="),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-11-20T09:49:44.0478496Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2019, time.November, 20, 9, 49, 44, 47849600, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }

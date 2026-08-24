@@ -18,6 +18,8 @@ import (
 
 // SharedPrivateLinkResourcesClient contains the methods for the SharedPrivateLinkResources group.
 // Don't use this type directly, use NewSharedPrivateLinkResourcesClient() instead.
+//
+// Generated from API version 2026-03-01-preview
 type SharedPrivateLinkResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,8 +44,6 @@ func NewSharedPrivateLinkResourcesClient(subscriptionID string, credential azcor
 // BeginCreateOrUpdate - Initiates the creation or update of a shared private link resource managed by the search service
 // in the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
 //   - sharedPrivateLinkResourceName - The name of the shared private link resource managed by the Azure AI Search service within
@@ -71,8 +71,6 @@ func (client *SharedPrivateLinkResourcesClient) BeginCreateOrUpdate(ctx context.
 // CreateOrUpdate - Initiates the creation or update of a shared private link resource managed by the search service in the
 // given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 func (client *SharedPrivateLinkResourcesClient) createOrUpdate(ctx context.Context, resourceGroupName string, searchServiceName string, sharedPrivateLinkResourceName string, sharedPrivateLinkResource SharedPrivateLinkResource, options *SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SharedPrivateLinkResourcesClient.BeginCreateOrUpdate"
@@ -88,8 +86,7 @@ func (client *SharedPrivateLinkResourcesClient) createOrUpdate(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -118,8 +115,8 @@ func (client *SharedPrivateLinkResourcesClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -137,8 +134,6 @@ func (client *SharedPrivateLinkResourcesClient) createOrUpdateCreateRequest(ctx 
 // NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in future
 // versions and avoid new dependencies on the 404 response.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
 //   - sharedPrivateLinkResourceName - The name of the shared private link resource managed by the Azure AI Search service within
@@ -168,8 +163,6 @@ func (client *SharedPrivateLinkResourcesClient) BeginDelete(ctx context.Context,
 // NOTE: The behavior of returning 404 is inconsistent with ARM guidelines. Clients should expect a 204 response in future
 // versions and avoid new dependencies on the 404 response.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 func (client *SharedPrivateLinkResourcesClient) deleteOperation(ctx context.Context, resourceGroupName string, searchServiceName string, sharedPrivateLinkResourceName string, options *SharedPrivateLinkResourcesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SharedPrivateLinkResourcesClient.BeginDelete"
@@ -185,8 +178,7 @@ func (client *SharedPrivateLinkResourcesClient) deleteOperation(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent, http.StatusNotFound) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -215,8 +207,8 @@ func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
@@ -225,8 +217,6 @@ func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.
 
 // Get - Gets the details of the shared private link resource managed by the search service in the given resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
 //   - sharedPrivateLinkResourceName - The name of the shared private link resource managed by the Azure AI Search service within
@@ -247,12 +237,7 @@ func (client *SharedPrivateLinkResourcesClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return SharedPrivateLinkResourcesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SharedPrivateLinkResourcesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -279,8 +264,8 @@ func (client *SharedPrivateLinkResourcesClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -289,8 +274,11 @@ func (client *SharedPrivateLinkResourcesClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *SharedPrivateLinkResourcesClient) getHandleResponse(resp *http.Response) (SharedPrivateLinkResourcesClientGetResponse, error) {
+func (client *SharedPrivateLinkResourcesClient) getHandleResponse(resp *http.Response, successCodes ...int) (SharedPrivateLinkResourcesClientGetResponse, error) {
 	result := SharedPrivateLinkResourcesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedPrivateLinkResource); err != nil {
 		return SharedPrivateLinkResourcesClientGetResponse{}, err
 	}
@@ -298,8 +286,6 @@ func (client *SharedPrivateLinkResourcesClient) getHandleResponse(resp *http.Res
 }
 
 // NewListByServicePager - Gets a list of all shared private link resources managed by the given service.
-//
-// Generated from API version 2026-03-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - searchServiceName - The name of the Azure AI Search service associated with the specified resource group.
 //   - options - SharedPrivateLinkResourcesClientListByServiceOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.NewListByServicePager
@@ -315,50 +301,64 @@ func (client *SharedPrivateLinkResourcesClient) NewListByServicePager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByServiceCreateRequest(ctx, resourceGroupName, searchServiceName, options)
-			}, nil)
+			req, err := client.listByServiceCreateRequest(ctx, resourceGroupName, searchServiceName, nextLink, options)
 			if err != nil {
 				return SharedPrivateLinkResourcesClientListByServiceResponse{}, err
 			}
-			return client.listByServiceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SharedPrivateLinkResourcesClientListByServiceResponse{}, err
+			}
+			return client.listByServiceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByServiceCreateRequest creates the ListByService request.
-func (client *SharedPrivateLinkResourcesClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, searchServiceName string, options *SharedPrivateLinkResourcesClientListByServiceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/sharedPrivateLinkResources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SharedPrivateLinkResourcesClient) listByServiceCreateRequest(ctx context.Context, resourceGroupName string, searchServiceName string, nextLink string, options *SharedPrivateLinkResourcesClientListByServiceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Search/searchServices/{searchServiceName}/sharedPrivateLinkResources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if searchServiceName == "" {
+			return nil, errors.New("parameter searchServiceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{searchServiceName}", url.PathEscape(searchServiceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if searchServiceName == "" {
-		return nil, errors.New("parameter searchServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{searchServiceName}", url.PathEscape(searchServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ClientRequestID != nil {
-		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.ClientRequestID != nil {
+			req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+		}
 	}
 	return req, nil
 }
 
 // listByServiceHandleResponse handles the ListByService response.
-func (client *SharedPrivateLinkResourcesClient) listByServiceHandleResponse(resp *http.Response) (SharedPrivateLinkResourcesClientListByServiceResponse, error) {
+func (client *SharedPrivateLinkResourcesClient) listByServiceHandleResponse(resp *http.Response, successCodes ...int) (SharedPrivateLinkResourcesClientListByServiceResponse, error) {
 	result := SharedPrivateLinkResourcesClientListByServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedPrivateLinkResourceListResult); err != nil {
 		return SharedPrivateLinkResourcesClientListByServiceResponse{}, err
 	}

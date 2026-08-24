@@ -57,12 +57,7 @@ func (client *SubscriptionClient) CheckResourceName(ctx context.Context, options
 	if err != nil {
 		return SubscriptionClientCheckResourceNameResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SubscriptionClientCheckResourceNameResponse{}, err
-	}
-	resp, err := client.checkResourceNameHandleResponse(httpResp)
-	return resp, err
+	return client.checkResourceNameHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkResourceNameCreateRequest creates the CheckResourceName request.
@@ -87,8 +82,11 @@ func (client *SubscriptionClient) checkResourceNameCreateRequest(ctx context.Con
 }
 
 // checkResourceNameHandleResponse handles the CheckResourceName response.
-func (client *SubscriptionClient) checkResourceNameHandleResponse(resp *http.Response) (SubscriptionClientCheckResourceNameResponse, error) {
+func (client *SubscriptionClient) checkResourceNameHandleResponse(resp *http.Response, successCodes ...int) (SubscriptionClientCheckResourceNameResponse, error) {
 	result := SubscriptionClientCheckResourceNameResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckResourceNameResult); err != nil {
 		return SubscriptionClientCheckResourceNameResponse{}, err
 	}

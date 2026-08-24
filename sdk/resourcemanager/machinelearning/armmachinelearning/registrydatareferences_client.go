@@ -66,12 +66,7 @@ func (client *RegistryDataReferencesClient) GetBlobReferenceSAS(ctx context.Cont
 	if err != nil {
 		return RegistryDataReferencesClientGetBlobReferenceSASResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegistryDataReferencesClientGetBlobReferenceSASResponse{}, err
-	}
-	resp, err := client.getBlobReferenceSASHandleResponse(httpResp)
-	return resp, err
+	return client.getBlobReferenceSASHandleResponse(httpResp, http.StatusOK)
 }
 
 // getBlobReferenceSASCreateRequest creates the GetBlobReferenceSAS request.
@@ -113,8 +108,11 @@ func (client *RegistryDataReferencesClient) getBlobReferenceSASCreateRequest(ctx
 }
 
 // getBlobReferenceSASHandleResponse handles the GetBlobReferenceSAS response.
-func (client *RegistryDataReferencesClient) getBlobReferenceSASHandleResponse(resp *http.Response) (RegistryDataReferencesClientGetBlobReferenceSASResponse, error) {
+func (client *RegistryDataReferencesClient) getBlobReferenceSASHandleResponse(resp *http.Response, successCodes ...int) (RegistryDataReferencesClientGetBlobReferenceSASResponse, error) {
 	result := RegistryDataReferencesClientGetBlobReferenceSASResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetBlobReferenceSASResponseDto); err != nil {
 		return RegistryDataReferencesClientGetBlobReferenceSASResponse{}, err
 	}

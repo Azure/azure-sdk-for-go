@@ -111,10 +111,10 @@ func ExampleContainerAppsBuildsClient_Get() {
 	// 			ProvisioningState: to.Ptr(armappcontainers.BuildProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armappcontainers.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-11T11:05:51.4940669Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.October, 11, 11, 5, 51, 494066900, time.UTC)),
 	// 			CreatedBy: to.Ptr("sample@microsoft.com"),
 	// 			CreatedByType: to.Ptr(armappcontainers.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-11T11:05:51.4940669Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.October, 11, 11, 5, 51, 494066900, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("sample@microsoft.com"),
 	// 			LastModifiedByType: to.Ptr(armappcontainers.CreatedByTypeUser),
 	// 		},

@@ -11,12 +11,15 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
+	"strings"
 )
 
 // OfferingsClient - Offerings API operations
 // Released in 2025-02-01-preview and added back to TypeSpec as the migration is based on 2025-05-01 and does not include
 // it.
 // Don't use this type directly, use NewOfferingsClient() instead.
+//
+// Generated from API version 2026-03-01-preview
 type OfferingsClient struct {
 	internal *arm.Client
 }
@@ -39,8 +42,6 @@ func NewOfferingsClient(credential azcore.TokenCredential, options *arm.ClientOp
 // a non-ARM resource collection and is not RPC-compliant. It will be replaced with an action-style API in the next preview
 // as a breaking change. Customers should avoid taking new dependencies on the current shape.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-03-01-preview
 //   - options - OfferingsClientListOptions contains the optional parameters for the OfferingsClient.List method.
 func (client *OfferingsClient) List(ctx context.Context, options *OfferingsClientListOptions) (OfferingsClientListResponse, error) {
 	var err error
@@ -56,12 +57,7 @@ func (client *OfferingsClient) List(ctx context.Context, options *OfferingsClien
 	if err != nil {
 		return OfferingsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OfferingsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -72,15 +68,18 @@ func (client *OfferingsClient) listCreateRequest(ctx context.Context, _ *Offerin
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-03-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *OfferingsClient) listHandleResponse(resp *http.Response) (OfferingsClientListResponse, error) {
+func (client *OfferingsClient) listHandleResponse(resp *http.Response, successCodes ...int) (OfferingsClientListResponse, error) {
 	result := OfferingsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OfferingsListResult); err != nil {
 		return OfferingsClientListResponse{}, err
 	}

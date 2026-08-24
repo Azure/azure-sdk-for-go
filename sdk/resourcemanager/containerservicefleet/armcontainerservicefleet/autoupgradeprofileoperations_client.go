@@ -19,7 +19,7 @@ import (
 // AutoUpgradeProfileOperationsClient contains the methods for the AutoUpgradeProfileOperations group.
 // Don't use this type directly, use NewAutoUpgradeProfileOperationsClient() instead.
 //
-// Generated from API version 2026-03-02-preview
+// Generated from API version 2026-06-01
 type AutoUpgradeProfileOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -83,8 +83,7 @@ func (client *AutoUpgradeProfileOperationsClient) generateUpdateRun(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -113,7 +112,7 @@ func (client *AutoUpgradeProfileOperationsClient) generateUpdateRunCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260302Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

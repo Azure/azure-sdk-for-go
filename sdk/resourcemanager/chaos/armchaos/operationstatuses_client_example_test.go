@@ -33,7 +33,7 @@ func ExampleOperationStatusesClient_Get() {
 	// 	OperationStatusResult: armchaos.OperationStatusResult{
 	// 		ID: to.Ptr("/subscriptions/e25c0d12-0335-4fec-8ef8-3b4f9a10649e/providers/Microsoft.Chaos/locations/westus2/operationStatuses/4bdadd97-207c-4de8-9bba-08339ae099c7"),
 	// 		Name: to.Ptr("4bdadd97-207c-4de8-9bba-08339ae099c7"),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-14T21:52:52.2552574Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2024, time.November, 14, 21, 52, 52, 255257400, time.UTC)),
 	// 		Status: to.Ptr("Creating"),
 	// 	},
 	// }

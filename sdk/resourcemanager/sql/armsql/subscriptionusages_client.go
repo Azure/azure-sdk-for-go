@@ -18,6 +18,8 @@ import (
 
 // SubscriptionUsagesClient contains the methods for the SubscriptionUsages group.
 // Don't use this type directly, use NewSubscriptionUsagesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type SubscriptionUsagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSubscriptionUsagesClient(subscriptionID string, credential azcore.TokenC
 
 // Get - Gets a subscription usage metric.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - locationName - The name of the region where the resource is located.
 //   - usageName - Name of usage metric to return.
 //   - options - SubscriptionUsagesClientGetOptions contains the optional parameters for the SubscriptionUsagesClient.Get method.
@@ -60,12 +60,7 @@ func (client *SubscriptionUsagesClient) Get(ctx context.Context, locationName st
 	if err != nil {
 		return SubscriptionUsagesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SubscriptionUsagesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -88,15 +83,18 @@ func (client *SubscriptionUsagesClient) getCreateRequest(ctx context.Context, lo
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *SubscriptionUsagesClient) getHandleResponse(resp *http.Response) (SubscriptionUsagesClientGetResponse, error) {
+func (client *SubscriptionUsagesClient) getHandleResponse(resp *http.Response, successCodes ...int) (SubscriptionUsagesClientGetResponse, error) {
 	result := SubscriptionUsagesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionUsage); err != nil {
 		return SubscriptionUsagesClientGetResponse{}, err
 	}
@@ -104,8 +102,6 @@ func (client *SubscriptionUsagesClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListByLocationPager - Gets all subscription usage metrics in a given location.
-//
-// Generated from API version 2025-02-01-preview
 //   - locationName - The name of the region where the resource is located.
 //   - options - SubscriptionUsagesClientListByLocationOptions contains the optional parameters for the SubscriptionUsagesClient.NewListByLocationPager
 //     method.
@@ -120,43 +116,57 @@ func (client *SubscriptionUsagesClient) NewListByLocationPager(locationName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByLocationCreateRequest(ctx, locationName, options)
-			}, nil)
+			req, err := client.listByLocationCreateRequest(ctx, locationName, nextLink, options)
 			if err != nil {
 				return SubscriptionUsagesClientListByLocationResponse{}, err
 			}
-			return client.listByLocationHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SubscriptionUsagesClientListByLocationResponse{}, err
+			}
+			return client.listByLocationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.
-func (client *SubscriptionUsagesClient) listByLocationCreateRequest(ctx context.Context, locationName string, _ *SubscriptionUsagesClientListByLocationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/usages"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SubscriptionUsagesClient) listByLocationCreateRequest(ctx context.Context, locationName string, nextLink string, _ *SubscriptionUsagesClientListByLocationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/usages"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if locationName == "" {
+			return nil, errors.New("parameter locationName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if locationName == "" {
-		return nil, errors.New("parameter locationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByLocationHandleResponse handles the ListByLocation response.
-func (client *SubscriptionUsagesClient) listByLocationHandleResponse(resp *http.Response) (SubscriptionUsagesClientListByLocationResponse, error) {
+func (client *SubscriptionUsagesClient) listByLocationHandleResponse(resp *http.Response, successCodes ...int) (SubscriptionUsagesClientListByLocationResponse, error) {
 	result := SubscriptionUsagesClientListByLocationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionUsageListResult); err != nil {
 		return SubscriptionUsagesClientListByLocationResponse{}, err
 	}

@@ -64,12 +64,7 @@ func (client *EnvironmentDefinitionsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return EnvironmentDefinitionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnvironmentDefinitionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -107,8 +102,11 @@ func (client *EnvironmentDefinitionsClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *EnvironmentDefinitionsClient) getHandleResponse(resp *http.Response) (EnvironmentDefinitionsClientGetResponse, error) {
+func (client *EnvironmentDefinitionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentDefinitionsClientGetResponse, error) {
 	result := EnvironmentDefinitionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentDefinition); err != nil {
 		return EnvironmentDefinitionsClientGetResponse{}, err
 	}
@@ -137,12 +135,7 @@ func (client *EnvironmentDefinitionsClient) GetByProjectCatalog(ctx context.Cont
 	if err != nil {
 		return EnvironmentDefinitionsClientGetByProjectCatalogResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnvironmentDefinitionsClientGetByProjectCatalogResponse{}, err
-	}
-	resp, err := client.getByProjectCatalogHandleResponse(httpResp)
-	return resp, err
+	return client.getByProjectCatalogHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByProjectCatalogCreateRequest creates the GetByProjectCatalog request.
@@ -180,8 +173,11 @@ func (client *EnvironmentDefinitionsClient) getByProjectCatalogCreateRequest(ctx
 }
 
 // getByProjectCatalogHandleResponse handles the GetByProjectCatalog response.
-func (client *EnvironmentDefinitionsClient) getByProjectCatalogHandleResponse(resp *http.Response) (EnvironmentDefinitionsClientGetByProjectCatalogResponse, error) {
+func (client *EnvironmentDefinitionsClient) getByProjectCatalogHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentDefinitionsClientGetByProjectCatalogResponse, error) {
 	result := EnvironmentDefinitionsClientGetByProjectCatalogResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentDefinition); err != nil {
 		return EnvironmentDefinitionsClientGetByProjectCatalogResponse{}, err
 	}
@@ -210,12 +206,7 @@ func (client *EnvironmentDefinitionsClient) GetErrorDetails(ctx context.Context,
 	if err != nil {
 		return EnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
-	}
-	resp, err := client.getErrorDetailsHandleResponse(httpResp)
-	return resp, err
+	return client.getErrorDetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getErrorDetailsCreateRequest creates the GetErrorDetails request.
@@ -253,8 +244,11 @@ func (client *EnvironmentDefinitionsClient) getErrorDetailsCreateRequest(ctx con
 }
 
 // getErrorDetailsHandleResponse handles the GetErrorDetails response.
-func (client *EnvironmentDefinitionsClient) getErrorDetailsHandleResponse(resp *http.Response) (EnvironmentDefinitionsClientGetErrorDetailsResponse, error) {
+func (client *EnvironmentDefinitionsClient) getErrorDetailsHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentDefinitionsClientGetErrorDetailsResponse, error) {
 	result := EnvironmentDefinitionsClientGetErrorDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CatalogResourceValidationErrorDetails); err != nil {
 		return EnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
 	}
@@ -278,54 +272,68 @@ func (client *EnvironmentDefinitionsClient) NewListByCatalogPager(resourceGroupN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByCatalogCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
-			}, nil)
+			req, err := client.listByCatalogCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, nextLink, options)
 			if err != nil {
 				return EnvironmentDefinitionsClientListByCatalogResponse{}, err
 			}
-			return client.listByCatalogHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnvironmentDefinitionsClientListByCatalogResponse{}, err
+			}
+			return client.listByCatalogHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByCatalogCreateRequest creates the ListByCatalog request.
-func (client *EnvironmentDefinitionsClient) listByCatalogCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *EnvironmentDefinitionsClientListByCatalogOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/environmentDefinitions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EnvironmentDefinitionsClient) listByCatalogCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, nextLink string, options *EnvironmentDefinitionsClientListByCatalogOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/environmentDefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if devCenterName == "" {
+			return nil, errors.New("parameter devCenterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
+		if catalogName == "" {
+			return nil, errors.New("parameter catalogName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if devCenterName == "" {
-		return nil, errors.New("parameter devCenterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
-	if catalogName == "" {
-		return nil, errors.New("parameter catalogName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByCatalogHandleResponse handles the ListByCatalog response.
-func (client *EnvironmentDefinitionsClient) listByCatalogHandleResponse(resp *http.Response) (EnvironmentDefinitionsClientListByCatalogResponse, error) {
+func (client *EnvironmentDefinitionsClient) listByCatalogHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentDefinitionsClientListByCatalogResponse, error) {
 	result := EnvironmentDefinitionsClientListByCatalogResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentDefinitionListResult); err != nil {
 		return EnvironmentDefinitionsClientListByCatalogResponse{}, err
 	}
@@ -349,51 +357,65 @@ func (client *EnvironmentDefinitionsClient) NewListByProjectCatalogPager(resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByProjectCatalogCreateRequest(ctx, resourceGroupName, projectName, catalogName, options)
-			}, nil)
+			req, err := client.listByProjectCatalogCreateRequest(ctx, resourceGroupName, projectName, catalogName, nextLink, options)
 			if err != nil {
 				return EnvironmentDefinitionsClientListByProjectCatalogResponse{}, err
 			}
-			return client.listByProjectCatalogHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnvironmentDefinitionsClientListByProjectCatalogResponse{}, err
+			}
+			return client.listByProjectCatalogHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByProjectCatalogCreateRequest creates the ListByProjectCatalog request.
-func (client *EnvironmentDefinitionsClient) listByProjectCatalogCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, _ *EnvironmentDefinitionsClientListByProjectCatalogOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/environmentDefinitions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EnvironmentDefinitionsClient) listByProjectCatalogCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, nextLink string, _ *EnvironmentDefinitionsClientListByProjectCatalogOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/environmentDefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if projectName == "" {
+			return nil, errors.New("parameter projectName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+		if catalogName == "" {
+			return nil, errors.New("parameter catalogName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	if catalogName == "" {
-		return nil, errors.New("parameter catalogName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByProjectCatalogHandleResponse handles the ListByProjectCatalog response.
-func (client *EnvironmentDefinitionsClient) listByProjectCatalogHandleResponse(resp *http.Response) (EnvironmentDefinitionsClientListByProjectCatalogResponse, error) {
+func (client *EnvironmentDefinitionsClient) listByProjectCatalogHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentDefinitionsClientListByProjectCatalogResponse, error) {
 	result := EnvironmentDefinitionsClientListByProjectCatalogResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnvironmentDefinitionListResult); err != nil {
 		return EnvironmentDefinitionsClientListByProjectCatalogResponse{}, err
 	}

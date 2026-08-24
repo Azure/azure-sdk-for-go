@@ -61,12 +61,7 @@ func (client *RegistriesClient) CheckNameAvailability(ctx context.Context, regis
 	if err != nil {
 		return RegistriesClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegistriesClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -92,8 +87,11 @@ func (client *RegistriesClient) checkNameAvailabilityCreateRequest(ctx context.C
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *RegistriesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (RegistriesClientCheckNameAvailabilityResponse, error) {
+func (client *RegistriesClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (RegistriesClientCheckNameAvailabilityResponse, error) {
 	result := RegistriesClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryNameStatus); err != nil {
 		return RegistriesClientCheckNameAvailabilityResponse{}, err
 	}
@@ -140,8 +138,7 @@ func (client *RegistriesClient) create(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -215,8 +212,7 @@ func (client *RegistriesClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -287,8 +283,7 @@ func (client *RegistriesClient) generateCredentials(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -342,12 +337,7 @@ func (client *RegistriesClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return RegistriesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegistriesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -377,8 +367,11 @@ func (client *RegistriesClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *RegistriesClient) getHandleResponse(resp *http.Response) (RegistriesClientGetResponse, error) {
+func (client *RegistriesClient) getHandleResponse(resp *http.Response, successCodes ...int) (RegistriesClientGetResponse, error) {
 	result := RegistriesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Registry); err != nil {
 		return RegistriesClientGetResponse{}, err
 	}
@@ -406,12 +399,7 @@ func (client *RegistriesClient) GetPrivateLinkResource(ctx context.Context, reso
 	if err != nil {
 		return RegistriesClientGetPrivateLinkResourceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegistriesClientGetPrivateLinkResourceResponse{}, err
-	}
-	resp, err := client.getPrivateLinkResourceHandleResponse(httpResp)
-	return resp, err
+	return client.getPrivateLinkResourceHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPrivateLinkResourceCreateRequest creates the GetPrivateLinkResource request.
@@ -445,8 +433,11 @@ func (client *RegistriesClient) getPrivateLinkResourceCreateRequest(ctx context.
 }
 
 // getPrivateLinkResourceHandleResponse handles the GetPrivateLinkResource response.
-func (client *RegistriesClient) getPrivateLinkResourceHandleResponse(resp *http.Response) (RegistriesClientGetPrivateLinkResourceResponse, error) {
+func (client *RegistriesClient) getPrivateLinkResourceHandleResponse(resp *http.Response, successCodes ...int) (RegistriesClientGetPrivateLinkResourceResponse, error) {
 	result := RegistriesClientGetPrivateLinkResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
 		return RegistriesClientGetPrivateLinkResourceResponse{}, err
 	}
@@ -494,8 +485,7 @@ func (client *RegistriesClient) importImage(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -542,39 +532,53 @@ func (client *RegistriesClient) NewListPager(options *RegistriesClientListOption
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return RegistriesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RegistriesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RegistriesClient) listCreateRequest(ctx context.Context, _ *RegistriesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/registries"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RegistriesClient) listCreateRequest(ctx context.Context, nextLink string, _ *RegistriesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerRegistry/registries"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RegistriesClient) listHandleResponse(resp *http.Response) (RegistriesClientListResponse, error) {
+func (client *RegistriesClient) listHandleResponse(resp *http.Response, successCodes ...int) (RegistriesClientListResponse, error) {
 	result := RegistriesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryListResult); err != nil {
 		return RegistriesClientListResponse{}, err
 	}
@@ -596,43 +600,57 @@ func (client *RegistriesClient) NewListByResourceGroupPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return RegistriesClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RegistriesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *RegistriesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *RegistriesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RegistriesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *RegistriesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *RegistriesClient) listByResourceGroupHandleResponse(resp *http.Response) (RegistriesClientListByResourceGroupResponse, error) {
+func (client *RegistriesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (RegistriesClientListByResourceGroupResponse, error) {
 	result := RegistriesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryListResult); err != nil {
 		return RegistriesClientListByResourceGroupResponse{}, err
 	}
@@ -659,12 +677,7 @@ func (client *RegistriesClient) ListCredentials(ctx context.Context, resourceGro
 	if err != nil {
 		return RegistriesClientListCredentialsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegistriesClientListCredentialsResponse{}, err
-	}
-	resp, err := client.listCredentialsHandleResponse(httpResp)
-	return resp, err
+	return client.listCredentialsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCredentialsCreateRequest creates the ListCredentials request.
@@ -694,8 +707,11 @@ func (client *RegistriesClient) listCredentialsCreateRequest(ctx context.Context
 }
 
 // listCredentialsHandleResponse handles the ListCredentials response.
-func (client *RegistriesClient) listCredentialsHandleResponse(resp *http.Response) (RegistriesClientListCredentialsResponse, error) {
+func (client *RegistriesClient) listCredentialsHandleResponse(resp *http.Response, successCodes ...int) (RegistriesClientListCredentialsResponse, error) {
 	result := RegistriesClientListCredentialsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryListCredentialsResult); err != nil {
 		return RegistriesClientListCredentialsResponse{}, err
 	}
@@ -718,47 +734,61 @@ func (client *RegistriesClient) NewListPrivateLinkResourcesPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listPrivateLinkResourcesCreateRequest(ctx, resourceGroupName, registryName, options)
-			}, nil)
+			req, err := client.listPrivateLinkResourcesCreateRequest(ctx, resourceGroupName, registryName, nextLink, options)
 			if err != nil {
 				return RegistriesClientListPrivateLinkResourcesResponse{}, err
 			}
-			return client.listPrivateLinkResourcesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RegistriesClientListPrivateLinkResourcesResponse{}, err
+			}
+			return client.listPrivateLinkResourcesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listPrivateLinkResourcesCreateRequest creates the ListPrivateLinkResources request.
-func (client *RegistriesClient) listPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, registryName string, _ *RegistriesClientListPrivateLinkResourcesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/privateLinkResources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RegistriesClient) listPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, registryName string, nextLink string, _ *RegistriesClientListPrivateLinkResourcesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/privateLinkResources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if registryName == "" {
+			return nil, errors.New("parameter registryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if registryName == "" {
-		return nil, errors.New("parameter registryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listPrivateLinkResourcesHandleResponse handles the ListPrivateLinkResources response.
-func (client *RegistriesClient) listPrivateLinkResourcesHandleResponse(resp *http.Response) (RegistriesClientListPrivateLinkResourcesResponse, error) {
+func (client *RegistriesClient) listPrivateLinkResourcesHandleResponse(resp *http.Response, successCodes ...int) (RegistriesClientListPrivateLinkResourcesResponse, error) {
 	result := RegistriesClientListPrivateLinkResourcesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return RegistriesClientListPrivateLinkResourcesResponse{}, err
 	}
@@ -784,12 +814,7 @@ func (client *RegistriesClient) ListUsages(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return RegistriesClientListUsagesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegistriesClientListUsagesResponse{}, err
-	}
-	resp, err := client.listUsagesHandleResponse(httpResp)
-	return resp, err
+	return client.listUsagesHandleResponse(httpResp, http.StatusOK)
 }
 
 // listUsagesCreateRequest creates the ListUsages request.
@@ -819,8 +844,11 @@ func (client *RegistriesClient) listUsagesCreateRequest(ctx context.Context, res
 }
 
 // listUsagesHandleResponse handles the ListUsages response.
-func (client *RegistriesClient) listUsagesHandleResponse(resp *http.Response) (RegistriesClientListUsagesResponse, error) {
+func (client *RegistriesClient) listUsagesHandleResponse(resp *http.Response, successCodes ...int) (RegistriesClientListUsagesResponse, error) {
 	result := RegistriesClientListUsagesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryUsageListResult); err != nil {
 		return RegistriesClientListUsagesResponse{}, err
 	}
@@ -848,12 +876,7 @@ func (client *RegistriesClient) RegenerateCredential(ctx context.Context, resour
 	if err != nil {
 		return RegistriesClientRegenerateCredentialResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegistriesClientRegenerateCredentialResponse{}, err
-	}
-	resp, err := client.regenerateCredentialHandleResponse(httpResp)
-	return resp, err
+	return client.regenerateCredentialHandleResponse(httpResp, http.StatusOK)
 }
 
 // regenerateCredentialCreateRequest creates the RegenerateCredential request.
@@ -887,8 +910,11 @@ func (client *RegistriesClient) regenerateCredentialCreateRequest(ctx context.Co
 }
 
 // regenerateCredentialHandleResponse handles the RegenerateCredential response.
-func (client *RegistriesClient) regenerateCredentialHandleResponse(resp *http.Response) (RegistriesClientRegenerateCredentialResponse, error) {
+func (client *RegistriesClient) regenerateCredentialHandleResponse(resp *http.Response, successCodes ...int) (RegistriesClientRegenerateCredentialResponse, error) {
 	result := RegistriesClientRegenerateCredentialResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryListCredentialsResult); err != nil {
 		return RegistriesClientRegenerateCredentialResponse{}, err
 	}
@@ -935,8 +961,7 @@ func (client *RegistriesClient) update(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

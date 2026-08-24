@@ -62,12 +62,7 @@ func (client *TargetsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return TargetsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return TargetsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -105,8 +100,11 @@ func (client *TargetsClient) createOrUpdateCreateRequest(ctx context.Context, re
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *TargetsClient) createOrUpdateHandleResponse(resp *http.Response) (TargetsClientCreateOrUpdateResponse, error) {
+func (client *TargetsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (TargetsClientCreateOrUpdateResponse, error) {
 	result := TargetsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Target); err != nil {
 		return TargetsClientCreateOrUpdateResponse{}, err
 	}
@@ -134,8 +132,7 @@ func (client *TargetsClient) Delete(ctx context.Context, resourceGroupName strin
 		return TargetsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return TargetsClientDeleteResponse{}, err
+		return TargetsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return TargetsClientDeleteResponse{}, nil
 }
@@ -189,12 +186,7 @@ func (client *TargetsClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return TargetsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TargetsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -228,8 +220,11 @@ func (client *TargetsClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *TargetsClient) getHandleResponse(resp *http.Response) (TargetsClientGetResponse, error) {
+func (client *TargetsClient) getHandleResponse(resp *http.Response, successCodes ...int) (TargetsClientGetResponse, error) {
 	result := TargetsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Target); err != nil {
 		return TargetsClientGetResponse{}, err
 	}
@@ -252,47 +247,61 @@ func (client *TargetsClient) NewListByWatcherPager(resourceGroupName string, wat
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByWatcherCreateRequest(ctx, resourceGroupName, watcherName, options)
-			}, nil)
+			req, err := client.listByWatcherCreateRequest(ctx, resourceGroupName, watcherName, nextLink, options)
 			if err != nil {
 				return TargetsClientListByWatcherResponse{}, err
 			}
-			return client.listByWatcherHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TargetsClientListByWatcherResponse{}, err
+			}
+			return client.listByWatcherHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByWatcherCreateRequest creates the ListByWatcher request.
-func (client *TargetsClient) listByWatcherCreateRequest(ctx context.Context, resourceGroupName string, watcherName string, _ *TargetsClientListByWatcherOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/targets"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TargetsClient) listByWatcherCreateRequest(ctx context.Context, resourceGroupName string, watcherName string, nextLink string, _ *TargetsClientListByWatcherOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/targets"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if watcherName == "" {
+			return nil, errors.New("parameter watcherName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{watcherName}", url.PathEscape(watcherName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if watcherName == "" {
-		return nil, errors.New("parameter watcherName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{watcherName}", url.PathEscape(watcherName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250102)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250102)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByWatcherHandleResponse handles the ListByWatcher response.
-func (client *TargetsClient) listByWatcherHandleResponse(resp *http.Response) (TargetsClientListByWatcherResponse, error) {
+func (client *TargetsClient) listByWatcherHandleResponse(resp *http.Response, successCodes ...int) (TargetsClientListByWatcherResponse, error) {
 	result := TargetsClientListByWatcherResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TargetListResult); err != nil {
 		return TargetsClientListByWatcherResponse{}, err
 	}

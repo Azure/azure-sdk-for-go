@@ -18,6 +18,8 @@ import (
 
 // AgentClient contains the methods for the Agent group.
 // Don't use this type directly, use NewAgentClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type AgentClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAgentClient(subscriptionID string, credential azcore.TokenCredential, op
 
 // CreateOrUpdate - Puts new sql agent configuration to instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - AgentClientCreateOrUpdateOptions contains the optional parameters for the AgentClient.CreateOrUpdate method.
@@ -60,12 +60,7 @@ func (client *AgentClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 	if err != nil {
 		return AgentClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AgentClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -88,8 +83,8 @@ func (client *AgentClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -99,8 +94,11 @@ func (client *AgentClient) createOrUpdateCreateRequest(ctx context.Context, reso
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AgentClient) createOrUpdateHandleResponse(resp *http.Response) (AgentClientCreateOrUpdateResponse, error) {
+func (client *AgentClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (AgentClientCreateOrUpdateResponse, error) {
 	result := AgentClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentConfiguration); err != nil {
 		return AgentClientCreateOrUpdateResponse{}, err
 	}
@@ -109,8 +107,6 @@ func (client *AgentClient) createOrUpdateHandleResponse(resp *http.Response) (Ag
 
 // Get - Gets current instance sql agent configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - AgentClientGetOptions contains the optional parameters for the AgentClient.Get method.
@@ -128,12 +124,7 @@ func (client *AgentClient) Get(ctx context.Context, resourceGroupName string, ma
 	if err != nil {
 		return AgentClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AgentClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -156,15 +147,18 @@ func (client *AgentClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AgentClient) getHandleResponse(resp *http.Response) (AgentClientGetResponse, error) {
+func (client *AgentClient) getHandleResponse(resp *http.Response, successCodes ...int) (AgentClientGetResponse, error) {
 	result := AgentClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentConfiguration); err != nil {
 		return AgentClientGetResponse{}, err
 	}

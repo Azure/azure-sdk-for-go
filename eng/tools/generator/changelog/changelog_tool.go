@@ -21,9 +21,9 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/report"
 	"github.com/Masterminds/semver"
-	"github.com/go-git/go-git/v5"
-	"github.com/go-git/go-git/v5/config"
-	"github.com/go-git/go-git/v5/plumbing"
+	"github.com/go-git/go-git/v6"
+	"github.com/go-git/go-git/v6/config"
+	"github.com/go-git/go-git/v6/plumbing"
 )
 
 func GetAllVersionTags(moduleRelativePath string, sdkRepo repo.SDKRepository) ([]string, error) {

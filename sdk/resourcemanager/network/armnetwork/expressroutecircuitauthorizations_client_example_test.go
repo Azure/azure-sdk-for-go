@@ -7,11 +7,11 @@ package armnetwork_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitAuthorizationCreate.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitAuthorizationCreate.json
 func ExampleExpressRouteCircuitAuthorizationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleExpressRouteCircuitAuthorizationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitAuthorizationDelete.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitAuthorizationDelete.json
 func ExampleExpressRouteCircuitAuthorizationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleExpressRouteCircuitAuthorizationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitAuthorizationGet.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitAuthorizationGet.json
 func ExampleExpressRouteCircuitAuthorizationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleExpressRouteCircuitAuthorizationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/ExpressRouteCircuitAuthorizationList.json
+// Generated from example definition: 2025-09-01/ExpressRouteCircuitAuthorizationList.json
 func ExampleExpressRouteCircuitAuthorizationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

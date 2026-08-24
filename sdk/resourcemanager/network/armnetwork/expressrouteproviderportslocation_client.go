@@ -19,7 +19,7 @@ import (
 // ExpressRouteProviderPortsLocationClient contains the methods for the ExpressRouteProviderPortsLocation group.
 // Don't use this type directly, use NewExpressRouteProviderPortsLocationClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type ExpressRouteProviderPortsLocationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -59,12 +59,7 @@ func (client *ExpressRouteProviderPortsLocationClient) List(ctx context.Context,
 	if err != nil {
 		return ExpressRouteProviderPortsLocationClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExpressRouteProviderPortsLocationClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -82,15 +77,18 @@ func (client *ExpressRouteProviderPortsLocationClient) listCreateRequest(ctx con
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ExpressRouteProviderPortsLocationClient) listHandleResponse(resp *http.Response) (ExpressRouteProviderPortsLocationClientListResponse, error) {
+func (client *ExpressRouteProviderPortsLocationClient) listHandleResponse(resp *http.Response, successCodes ...int) (ExpressRouteProviderPortsLocationClientListResponse, error) {
 	result := ExpressRouteProviderPortsLocationClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExpressRouteProviderPortListResult); err != nil {
 		return ExpressRouteProviderPortsLocationClientListResponse{}, err
 	}

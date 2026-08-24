@@ -63,12 +63,7 @@ func (client *PackageClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return PackageClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return PackageClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -110,8 +105,11 @@ func (client *PackageClient) createOrUpdateCreateRequest(ctx context.Context, re
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *PackageClient) createOrUpdateHandleResponse(resp *http.Response) (PackageClientCreateOrUpdateResponse, error) {
+func (client *PackageClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (PackageClientCreateOrUpdateResponse, error) {
 	result := PackageClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Package); err != nil {
 		return PackageClientCreateOrUpdateResponse{}, err
 	}
@@ -140,8 +138,7 @@ func (client *PackageClient) Delete(ctx context.Context, resourceGroupName strin
 		return PackageClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return PackageClientDeleteResponse{}, err
+		return PackageClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return PackageClientDeleteResponse{}, nil
 }
@@ -200,12 +197,7 @@ func (client *PackageClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return PackageClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PackageClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -243,8 +235,11 @@ func (client *PackageClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *PackageClient) getHandleResponse(resp *http.Response) (PackageClientGetResponse, error) {
+func (client *PackageClient) getHandleResponse(resp *http.Response, successCodes ...int) (PackageClientGetResponse, error) {
 	result := PackageClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Package); err != nil {
 		return PackageClientGetResponse{}, err
 	}
@@ -268,51 +263,65 @@ func (client *PackageClient) NewListByRuntimeEnvironmentPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByRuntimeEnvironmentCreateRequest(ctx, resourceGroupName, automationAccountName, runtimeEnvironmentName, options)
-			}, nil)
+			req, err := client.listByRuntimeEnvironmentCreateRequest(ctx, resourceGroupName, automationAccountName, runtimeEnvironmentName, nextLink, options)
 			if err != nil {
 				return PackageClientListByRuntimeEnvironmentResponse{}, err
 			}
-			return client.listByRuntimeEnvironmentHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PackageClientListByRuntimeEnvironmentResponse{}, err
+			}
+			return client.listByRuntimeEnvironmentHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByRuntimeEnvironmentCreateRequest creates the ListByRuntimeEnvironment request.
-func (client *PackageClient) listByRuntimeEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, _ *PackageClientListByRuntimeEnvironmentOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runtimeEnvironments/{runtimeEnvironmentName}/packages"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PackageClient) listByRuntimeEnvironmentCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, runtimeEnvironmentName string, nextLink string, _ *PackageClientListByRuntimeEnvironmentOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/runtimeEnvironments/{runtimeEnvironmentName}/packages"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if automationAccountName == "" {
+			return nil, errors.New("parameter automationAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+		if runtimeEnvironmentName == "" {
+			return nil, errors.New("parameter runtimeEnvironmentName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{runtimeEnvironmentName}", url.PathEscape(runtimeEnvironmentName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if automationAccountName == "" {
-		return nil, errors.New("parameter automationAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	if runtimeEnvironmentName == "" {
-		return nil, errors.New("parameter runtimeEnvironmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{runtimeEnvironmentName}", url.PathEscape(runtimeEnvironmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241023)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241023)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByRuntimeEnvironmentHandleResponse handles the ListByRuntimeEnvironment response.
-func (client *PackageClient) listByRuntimeEnvironmentHandleResponse(resp *http.Response) (PackageClientListByRuntimeEnvironmentResponse, error) {
+func (client *PackageClient) listByRuntimeEnvironmentHandleResponse(resp *http.Response, successCodes ...int) (PackageClientListByRuntimeEnvironmentResponse, error) {
 	result := PackageClientListByRuntimeEnvironmentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PackageListResult); err != nil {
 		return PackageClientListByRuntimeEnvironmentResponse{}, err
 	}
@@ -341,12 +350,7 @@ func (client *PackageClient) Update(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return PackageClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PackageClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -388,8 +392,11 @@ func (client *PackageClient) updateCreateRequest(ctx context.Context, resourceGr
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PackageClient) updateHandleResponse(resp *http.Response) (PackageClientUpdateResponse, error) {
+func (client *PackageClient) updateHandleResponse(resp *http.Response, successCodes ...int) (PackageClientUpdateResponse, error) {
 	result := PackageClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Package); err != nil {
 		return PackageClientUpdateResponse{}, err
 	}

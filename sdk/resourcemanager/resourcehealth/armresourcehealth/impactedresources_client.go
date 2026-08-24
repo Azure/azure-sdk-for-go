@@ -60,12 +60,7 @@ func (client *ImpactedResourcesClient) Get(ctx context.Context, eventTrackingID 
 	if err != nil {
 		return ImpactedResourcesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ImpactedResourcesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -95,8 +90,11 @@ func (client *ImpactedResourcesClient) getCreateRequest(ctx context.Context, eve
 }
 
 // getHandleResponse handles the Get response.
-func (client *ImpactedResourcesClient) getHandleResponse(resp *http.Response) (ImpactedResourcesClientGetResponse, error) {
+func (client *ImpactedResourcesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ImpactedResourcesClientGetResponse, error) {
 	result := ImpactedResourcesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventImpactedResource); err != nil {
 		return ImpactedResourcesClientGetResponse{}, err
 	}
@@ -123,12 +121,7 @@ func (client *ImpactedResourcesClient) GetByTenantID(ctx context.Context, eventT
 	if err != nil {
 		return ImpactedResourcesClientGetByTenantIDResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ImpactedResourcesClientGetByTenantIDResponse{}, err
-	}
-	resp, err := client.getByTenantIDHandleResponse(httpResp)
-	return resp, err
+	return client.getByTenantIDHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByTenantIDCreateRequest creates the GetByTenantID request.
@@ -154,8 +147,11 @@ func (client *ImpactedResourcesClient) getByTenantIDCreateRequest(ctx context.Co
 }
 
 // getByTenantIDHandleResponse handles the GetByTenantID response.
-func (client *ImpactedResourcesClient) getByTenantIDHandleResponse(resp *http.Response) (ImpactedResourcesClientGetByTenantIDResponse, error) {
+func (client *ImpactedResourcesClient) getByTenantIDHandleResponse(resp *http.Response, successCodes ...int) (ImpactedResourcesClientGetByTenantIDResponse, error) {
 	result := ImpactedResourcesClientGetByTenantIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventImpactedResource); err != nil {
 		return ImpactedResourcesClientGetByTenantIDResponse{}, err
 	}
@@ -177,46 +173,60 @@ func (client *ImpactedResourcesClient) NewListBySubscriptionIDAndEventIDPager(ev
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionIDAndEventIDCreateRequest(ctx, eventTrackingID, options)
-			}, nil)
+			req, err := client.listBySubscriptionIDAndEventIDCreateRequest(ctx, eventTrackingID, nextLink, options)
 			if err != nil {
 				return ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse{}, err
 			}
-			return client.listBySubscriptionIDAndEventIDHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse{}, err
+			}
+			return client.listBySubscriptionIDAndEventIDHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionIDAndEventIDCreateRequest creates the ListBySubscriptionIDAndEventID request.
-func (client *ImpactedResourcesClient) listBySubscriptionIDAndEventIDCreateRequest(ctx context.Context, eventTrackingID string, options *ImpactedResourcesClientListBySubscriptionIDAndEventIDOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/impactedResources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ImpactedResourcesClient) listBySubscriptionIDAndEventIDCreateRequest(ctx context.Context, eventTrackingID string, nextLink string, options *ImpactedResourcesClientListBySubscriptionIDAndEventIDOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/impactedResources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if eventTrackingID == "" {
+			return nil, errors.New("parameter eventTrackingID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{eventTrackingId}", url.PathEscape(eventTrackingID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if eventTrackingID == "" {
-		return nil, errors.New("parameter eventTrackingID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{eventTrackingId}", url.PathEscape(eventTrackingID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionIDAndEventIDHandleResponse handles the ListBySubscriptionIDAndEventID response.
-func (client *ImpactedResourcesClient) listBySubscriptionIDAndEventIDHandleResponse(resp *http.Response) (ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse, error) {
+func (client *ImpactedResourcesClient) listBySubscriptionIDAndEventIDHandleResponse(resp *http.Response, successCodes ...int) (ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse, error) {
 	result := ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventImpactedResourceListResult); err != nil {
 		return ImpactedResourcesClientListBySubscriptionIDAndEventIDResponse{}, err
 	}
@@ -238,42 +248,56 @@ func (client *ImpactedResourcesClient) NewListByTenantIDAndEventIDPager(eventTra
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByTenantIDAndEventIDCreateRequest(ctx, eventTrackingID, options)
-			}, nil)
+			req, err := client.listByTenantIDAndEventIDCreateRequest(ctx, eventTrackingID, nextLink, options)
 			if err != nil {
 				return ImpactedResourcesClientListByTenantIDAndEventIDResponse{}, err
 			}
-			return client.listByTenantIDAndEventIDHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ImpactedResourcesClientListByTenantIDAndEventIDResponse{}, err
+			}
+			return client.listByTenantIDAndEventIDHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByTenantIDAndEventIDCreateRequest creates the ListByTenantIDAndEventID request.
-func (client *ImpactedResourcesClient) listByTenantIDAndEventIDCreateRequest(ctx context.Context, eventTrackingID string, options *ImpactedResourcesClientListByTenantIDAndEventIDOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/impactedResources"
-	if eventTrackingID == "" {
-		return nil, errors.New("parameter eventTrackingID cannot be empty")
+func (client *ImpactedResourcesClient) listByTenantIDAndEventIDCreateRequest(ctx context.Context, eventTrackingID string, nextLink string, options *ImpactedResourcesClientListByTenantIDAndEventIDOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/impactedResources"
+		if eventTrackingID == "" {
+			return nil, errors.New("parameter eventTrackingID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{eventTrackingId}", url.PathEscape(eventTrackingID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{eventTrackingId}", url.PathEscape(eventTrackingID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByTenantIDAndEventIDHandleResponse handles the ListByTenantIDAndEventID response.
-func (client *ImpactedResourcesClient) listByTenantIDAndEventIDHandleResponse(resp *http.Response) (ImpactedResourcesClientListByTenantIDAndEventIDResponse, error) {
+func (client *ImpactedResourcesClient) listByTenantIDAndEventIDHandleResponse(resp *http.Response, successCodes ...int) (ImpactedResourcesClientListByTenantIDAndEventIDResponse, error) {
 	result := ImpactedResourcesClientListByTenantIDAndEventIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventImpactedResourceListResult); err != nil {
 		return ImpactedResourcesClientListByTenantIDAndEventIDResponse{}, err
 	}

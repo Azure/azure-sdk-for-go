@@ -19,7 +19,7 @@ import (
 // EnterpriseMccCacheNodesOperationsClient contains the methods for the EnterpriseMccCacheNodesOperations group.
 // Don't use this type directly, use NewEnterpriseMccCacheNodesOperationsClient() instead.
 //
-// Generated from API version 2024-11-30-preview
+// Generated from API version 2026-06-01
 type EnterpriseMccCacheNodesOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -83,8 +83,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) createOrUpdate(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -113,7 +112,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) createOrUpdateCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -164,8 +163,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) deleteOperation(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -194,7 +192,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) deleteCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -220,12 +218,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) Get(ctx context.Context, 
 	if err != nil {
 		return EnterpriseMccCacheNodesOperationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnterpriseMccCacheNodesOperationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -252,15 +245,18 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *EnterpriseMccCacheNodesOperationsClient) getHandleResponse(resp *http.Response) (EnterpriseMccCacheNodesOperationsClientGetResponse, error) {
+func (client *EnterpriseMccCacheNodesOperationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (EnterpriseMccCacheNodesOperationsClientGetResponse, error) {
 	result := EnterpriseMccCacheNodesOperationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnterpriseMccCacheNodeResource); err != nil {
 		return EnterpriseMccCacheNodesOperationsClientGetResponse{}, err
 	}
@@ -288,12 +284,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) GetCacheNodeAutoUpdateHis
 	if err != nil {
 		return EnterpriseMccCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnterpriseMccCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{}, err
-	}
-	resp, err := client.getCacheNodeAutoUpdateHistoryHandleResponse(httpResp)
-	return resp, err
+	return client.getCacheNodeAutoUpdateHistoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCacheNodeAutoUpdateHistoryCreateRequest creates the GetCacheNodeAutoUpdateHistory request.
@@ -320,15 +311,18 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeAutoUpdateHis
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getCacheNodeAutoUpdateHistoryHandleResponse handles the GetCacheNodeAutoUpdateHistory response.
-func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeAutoUpdateHistoryHandleResponse(resp *http.Response) (EnterpriseMccCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse, error) {
+func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeAutoUpdateHistoryHandleResponse(resp *http.Response, successCodes ...int) (EnterpriseMccCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse, error) {
 	result := EnterpriseMccCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MccCacheNodeAutoUpdateHistory); err != nil {
 		return EnterpriseMccCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{}, err
 	}
@@ -356,12 +350,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) GetCacheNodeInstallDetail
 	if err != nil {
 		return EnterpriseMccCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnterpriseMccCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse{}, err
-	}
-	resp, err := client.getCacheNodeInstallDetailsHandleResponse(httpResp)
-	return resp, err
+	return client.getCacheNodeInstallDetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCacheNodeInstallDetailsCreateRequest creates the GetCacheNodeInstallDetails request.
@@ -388,15 +377,18 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeInstallDetail
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getCacheNodeInstallDetailsHandleResponse handles the GetCacheNodeInstallDetails response.
-func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeInstallDetailsHandleResponse(resp *http.Response) (EnterpriseMccCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse, error) {
+func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeInstallDetailsHandleResponse(resp *http.Response, successCodes ...int) (EnterpriseMccCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse, error) {
 	result := EnterpriseMccCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MccCacheNodeInstallDetails); err != nil {
 		return EnterpriseMccCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse{}, err
 	}
@@ -424,12 +416,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) GetCacheNodeMccIssueDetai
 	if err != nil {
 		return EnterpriseMccCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnterpriseMccCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{}, err
-	}
-	resp, err := client.getCacheNodeMccIssueDetailsHistoryHandleResponse(httpResp)
-	return resp, err
+	return client.getCacheNodeMccIssueDetailsHistoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCacheNodeMccIssueDetailsHistoryCreateRequest creates the GetCacheNodeMccIssueDetailsHistory request.
@@ -456,15 +443,18 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeMccIssueDetai
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getCacheNodeMccIssueDetailsHistoryHandleResponse handles the GetCacheNodeMccIssueDetailsHistory response.
-func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeMccIssueDetailsHistoryHandleResponse(resp *http.Response) (EnterpriseMccCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse, error) {
+func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeMccIssueDetailsHistoryHandleResponse(resp *http.Response, successCodes ...int) (EnterpriseMccCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse, error) {
 	result := EnterpriseMccCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MccCacheNodeIssueHistory); err != nil {
 		return EnterpriseMccCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{}, err
 	}
@@ -492,12 +482,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) GetCacheNodeTLSCertificat
 	if err != nil {
 		return EnterpriseMccCacheNodesOperationsClientGetCacheNodeTLSCertificateHistoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnterpriseMccCacheNodesOperationsClientGetCacheNodeTLSCertificateHistoryResponse{}, err
-	}
-	resp, err := client.getCacheNodeTLSCertificateHistoryHandleResponse(httpResp)
-	return resp, err
+	return client.getCacheNodeTLSCertificateHistoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCacheNodeTLSCertificateHistoryCreateRequest creates the GetCacheNodeTLSCertificateHistory request.
@@ -524,15 +509,18 @@ func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeTLSCertificat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getCacheNodeTLSCertificateHistoryHandleResponse handles the GetCacheNodeTLSCertificateHistory response.
-func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeTLSCertificateHistoryHandleResponse(resp *http.Response) (EnterpriseMccCacheNodesOperationsClientGetCacheNodeTLSCertificateHistoryResponse, error) {
+func (client *EnterpriseMccCacheNodesOperationsClient) getCacheNodeTLSCertificateHistoryHandleResponse(resp *http.Response, successCodes ...int) (EnterpriseMccCacheNodesOperationsClientGetCacheNodeTLSCertificateHistoryResponse, error) {
 	result := EnterpriseMccCacheNodesOperationsClientGetCacheNodeTLSCertificateHistoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MccCacheNodeTLSCertificateHistory); err != nil {
 		return EnterpriseMccCacheNodesOperationsClientGetCacheNodeTLSCertificateHistoryResponse{}, err
 	}
@@ -556,47 +544,61 @@ func (client *EnterpriseMccCacheNodesOperationsClient) NewListByEnterpriseMccCus
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByEnterpriseMccCustomerResourceCreateRequest(ctx, resourceGroupName, customerResourceName, options)
-			}, nil)
+			req, err := client.listByEnterpriseMccCustomerResourceCreateRequest(ctx, resourceGroupName, customerResourceName, nextLink, options)
 			if err != nil {
 				return EnterpriseMccCacheNodesOperationsClientListByEnterpriseMccCustomerResourceResponse{}, err
 			}
-			return client.listByEnterpriseMccCustomerResourceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnterpriseMccCacheNodesOperationsClientListByEnterpriseMccCustomerResourceResponse{}, err
+			}
+			return client.listByEnterpriseMccCustomerResourceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByEnterpriseMccCustomerResourceCreateRequest creates the ListByEnterpriseMccCustomerResource request.
-func (client *EnterpriseMccCacheNodesOperationsClient) listByEnterpriseMccCustomerResourceCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, _ *EnterpriseMccCacheNodesOperationsClientListByEnterpriseMccCustomerResourceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EnterpriseMccCacheNodesOperationsClient) listByEnterpriseMccCustomerResourceCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, nextLink string, _ *EnterpriseMccCacheNodesOperationsClientListByEnterpriseMccCustomerResourceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if customerResourceName == "" {
+			return nil, errors.New("parameter customerResourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{customerResourceName}", url.PathEscape(customerResourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if customerResourceName == "" {
-		return nil, errors.New("parameter customerResourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{customerResourceName}", url.PathEscape(customerResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByEnterpriseMccCustomerResourceHandleResponse handles the ListByEnterpriseMccCustomerResource response.
-func (client *EnterpriseMccCacheNodesOperationsClient) listByEnterpriseMccCustomerResourceHandleResponse(resp *http.Response) (EnterpriseMccCacheNodesOperationsClientListByEnterpriseMccCustomerResourceResponse, error) {
+func (client *EnterpriseMccCacheNodesOperationsClient) listByEnterpriseMccCustomerResourceHandleResponse(resp *http.Response, successCodes ...int) (EnterpriseMccCacheNodesOperationsClientListByEnterpriseMccCustomerResourceResponse, error) {
 	result := EnterpriseMccCacheNodesOperationsClientListByEnterpriseMccCustomerResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnterpriseMccCacheNodeResourceListResult); err != nil {
 		return EnterpriseMccCacheNodesOperationsClientListByEnterpriseMccCustomerResourceResponse{}, err
 	}
@@ -625,12 +627,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) Update(ctx context.Contex
 	if err != nil {
 		return EnterpriseMccCacheNodesOperationsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnterpriseMccCacheNodesOperationsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -657,7 +654,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) updateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -668,8 +665,11 @@ func (client *EnterpriseMccCacheNodesOperationsClient) updateCreateRequest(ctx c
 }
 
 // updateHandleResponse handles the Update response.
-func (client *EnterpriseMccCacheNodesOperationsClient) updateHandleResponse(resp *http.Response) (EnterpriseMccCacheNodesOperationsClientUpdateResponse, error) {
+func (client *EnterpriseMccCacheNodesOperationsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (EnterpriseMccCacheNodesOperationsClientUpdateResponse, error) {
 	result := EnterpriseMccCacheNodesOperationsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnterpriseMccCacheNodeResource); err != nil {
 		return EnterpriseMccCacheNodesOperationsClientUpdateResponse{}, err
 	}

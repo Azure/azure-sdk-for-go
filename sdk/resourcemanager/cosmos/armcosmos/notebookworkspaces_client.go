@@ -83,8 +83,7 @@ func (client *NotebookWorkspacesClient) createOrUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -164,8 +163,7 @@ func (client *NotebookWorkspacesClient) deleteOperation(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -219,12 +217,7 @@ func (client *NotebookWorkspacesClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return NotebookWorkspacesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NotebookWorkspacesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -258,8 +251,11 @@ func (client *NotebookWorkspacesClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *NotebookWorkspacesClient) getHandleResponse(resp *http.Response) (NotebookWorkspacesClientGetResponse, error) {
+func (client *NotebookWorkspacesClient) getHandleResponse(resp *http.Response, successCodes ...int) (NotebookWorkspacesClientGetResponse, error) {
 	result := NotebookWorkspacesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotebookWorkspace); err != nil {
 		return NotebookWorkspacesClientGetResponse{}, err
 	}
@@ -282,47 +278,61 @@ func (client *NotebookWorkspacesClient) NewListByDatabaseAccountPager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDatabaseAccountCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listByDatabaseAccountCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return NotebookWorkspacesClientListByDatabaseAccountResponse{}, err
 			}
-			return client.listByDatabaseAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NotebookWorkspacesClientListByDatabaseAccountResponse{}, err
+			}
+			return client.listByDatabaseAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDatabaseAccountCreateRequest creates the ListByDatabaseAccount request.
-func (client *NotebookWorkspacesClient) listByDatabaseAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *NotebookWorkspacesClientListByDatabaseAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NotebookWorkspacesClient) listByDatabaseAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *NotebookWorkspacesClientListByDatabaseAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260315)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260315)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByDatabaseAccountHandleResponse handles the ListByDatabaseAccount response.
-func (client *NotebookWorkspacesClient) listByDatabaseAccountHandleResponse(resp *http.Response) (NotebookWorkspacesClientListByDatabaseAccountResponse, error) {
+func (client *NotebookWorkspacesClient) listByDatabaseAccountHandleResponse(resp *http.Response, successCodes ...int) (NotebookWorkspacesClientListByDatabaseAccountResponse, error) {
 	result := NotebookWorkspacesClientListByDatabaseAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotebookWorkspaceListResult); err != nil {
 		return NotebookWorkspacesClientListByDatabaseAccountResponse{}, err
 	}
@@ -350,12 +360,7 @@ func (client *NotebookWorkspacesClient) ListConnectionInfo(ctx context.Context, 
 	if err != nil {
 		return NotebookWorkspacesClientListConnectionInfoResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NotebookWorkspacesClientListConnectionInfoResponse{}, err
-	}
-	resp, err := client.listConnectionInfoHandleResponse(httpResp)
-	return resp, err
+	return client.listConnectionInfoHandleResponse(httpResp, http.StatusOK)
 }
 
 // listConnectionInfoCreateRequest creates the ListConnectionInfo request.
@@ -389,8 +394,11 @@ func (client *NotebookWorkspacesClient) listConnectionInfoCreateRequest(ctx cont
 }
 
 // listConnectionInfoHandleResponse handles the ListConnectionInfo response.
-func (client *NotebookWorkspacesClient) listConnectionInfoHandleResponse(resp *http.Response) (NotebookWorkspacesClientListConnectionInfoResponse, error) {
+func (client *NotebookWorkspacesClient) listConnectionInfoHandleResponse(resp *http.Response, successCodes ...int) (NotebookWorkspacesClientListConnectionInfoResponse, error) {
 	result := NotebookWorkspacesClientListConnectionInfoResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NotebookWorkspaceConnectionInfoResult); err != nil {
 		return NotebookWorkspacesClientListConnectionInfoResponse{}, err
 	}
@@ -438,8 +446,7 @@ func (client *NotebookWorkspacesClient) regenerateAuthToken(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -514,8 +521,7 @@ func (client *NotebookWorkspacesClient) start(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

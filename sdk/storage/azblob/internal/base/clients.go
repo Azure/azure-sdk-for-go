@@ -11,6 +11,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
@@ -98,10 +99,23 @@ func GetAzClient(serviceURL string, cred azcore.TokenCredential, sharedKey *expo
 			if conOptions.Session.Provider == nil {
 				svcURL, err := shared.GetServiceURL(serviceURL)
 				if err != nil {
+					// In the future, we will make session default enabled. When the caller didn't
+					// explicitly ask for sessions, a setup failure isn't a configuration error,
+					// so warn and authenticate with bearer tokens instead.
+					if conOptions.Session.Mode == exported.SessionModeDefault {
+						log.Writef(exported.EventSession, "session authentication disabled: the service URL could not be determined: %v. Falling back to bearer token authentication.", err)
+						authPolicy = bearerTokenPolicy
+						break
+					}
 					return nil, fmt.Errorf("session mode is enabled but service URL could not be determined: %w", err)
 				}
 				p, err := NewContainerSessionProvider(cred, svcURL, conOptions)
 				if err != nil {
+					if conOptions.Session.Mode == exported.SessionModeDefault {
+						log.Writef(exported.EventSession, "session authentication disabled: the default session provider could not be created: %v. Falling back to bearer token authentication.", err)
+						authPolicy = bearerTokenPolicy
+						break
+					}
 					return nil, fmt.Errorf("failed to create default session provider: %w", err)
 				}
 				provider = p
@@ -111,6 +125,11 @@ func GetAzClient(serviceURL string, cred azcore.TokenCredential, sharedKey *expo
 			if conOptions.Session.AccountName == "" {
 				name, err := shared.GetAccountName(serviceURL)
 				if err != nil {
+					if conOptions.Session.Mode == exported.SessionModeDefault {
+						log.Writef(exported.EventSession, "session authentication disabled: the account name could not be determined from the URL: %v. Falling back to bearer token authentication. Set ClientOptions.Session.AccountName to use sessions.", err)
+						authPolicy = bearerTokenPolicy
+						break
+					}
 					return nil, fmt.Errorf("session mode is enabled but account name could not be determined from URL: %w. Please explicitly pass in options.Session.AccountName", err)
 				}
 				accountName = name

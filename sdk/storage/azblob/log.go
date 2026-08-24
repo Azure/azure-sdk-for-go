@@ -13,4 +13,7 @@ const (
 
 	// EventSubmitBatch is used for logging events related to submit blob batch operation.
 	EventSubmitBatch = exported.EventSubmitBatch
+
+	// EventSession is used for logging events related to session-based authentication.
+	EventSession = exported.EventSession
 )

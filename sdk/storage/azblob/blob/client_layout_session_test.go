@@ -239,4 +239,3 @@ func (s *BlobUnrecordedTestsSuite) TestDownloadBufferLayoutAwareRoutingWithSessi
 	_require.Equal(blobSize/blockSize, blobGetSession, "expected every routed chunk read to use session auth")
 	_require.Equal(0, blobGetBearer, "expected no chunk read to fall back to bearer auth")
 }
-

@@ -5,7 +5,6 @@ package azservicebus
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"sync/atomic"
 	"testing"
@@ -43,7 +42,7 @@ func TestReceiver_ReceiveMessages_AMQPLinksFailure(t *testing.T) {
 }
 
 func TestReceiver_ReceiveMessages_IssueCreditError(t *testing.T) {
-	issueCreditErr := errors.New("issue credit failed")
+	issueCreditErr := &amqp.ConnError{}
 	amqpReceiver := &internal.FakeAMQPReceiver{IssueCreditErr: issueCreditErr}
 	receiver := &Receiver{
 		amqpLinks:         &internal.FakeAMQPLinks{Receiver: amqpReceiver},

@@ -37,8 +37,8 @@ func TestSender_SendMessage_RecoversFromConnectionScopedNotAllowed(t *testing.T)
 	}, &ClientOptions{
 		RetryOptions: exported.RetryOptions{
 			MaxRetries:    1,
-			RetryDelay:    -1,
-			MaxRetryDelay: -1,
+			RetryDelay:    time.Millisecond,
+			MaxRetryDelay: time.Millisecond,
 		},
 	})
 	defer cleanup()
@@ -77,8 +77,8 @@ func TestSender_SendMessage_RecoveryExhaustionLeavesSenderUsable(t *testing.T) {
 	}, &ClientOptions{
 		RetryOptions: exported.RetryOptions{
 			MaxRetries:    1,
-			RetryDelay:    -1,
-			MaxRetryDelay: -1,
+			RetryDelay:    time.Millisecond,
+			MaxRetryDelay: time.Millisecond,
 		},
 	})
 	defer cleanup()

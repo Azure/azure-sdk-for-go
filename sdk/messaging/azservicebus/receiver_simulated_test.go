@@ -165,8 +165,8 @@ func TestReceiver_ReceiveMessages_RecoversFromConnectionScopedNotAllowed(t *test
 	}, &ClientOptions{
 		RetryOptions: exported.RetryOptions{
 			MaxRetries:    1,
-			RetryDelay:    -1,
-			MaxRetryDelay: -1,
+			RetryDelay:    time.Millisecond,
+			MaxRetryDelay: time.Millisecond,
 		},
 	})
 	defer cleanup()
@@ -211,8 +211,8 @@ func TestReceiver_ReceiveMessages_RecoveryExhaustionLeavesReceiverUsable(t *test
 	}, &ClientOptions{
 		RetryOptions: exported.RetryOptions{
 			MaxRetries:    1,
-			RetryDelay:    -1,
-			MaxRetryDelay: -1,
+			RetryDelay:    time.Millisecond,
+			MaxRetryDelay: time.Millisecond,
 		},
 	})
 	defer cleanup()
@@ -805,6 +805,7 @@ func TestSessionReceiverUserFacingErrors_Methods(t *testing.T) {
 				}).AnyTimes()
 
 				mr.EXPECT().LinkSourceFilterValue("com.microsoft:session-filter").Return("session ID").AnyTimes()
+				mr.EXPECT().Properties().Return(map[string]any(nil)).AnyTimes()
 			}
 
 			return nil

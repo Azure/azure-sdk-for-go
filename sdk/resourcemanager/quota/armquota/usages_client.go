@@ -40,25 +40,14 @@ func NewUsagesClient(credential azcore.TokenCredential, options *arm.ClientOptio
 
 // Get - Get the current usage of a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-//   - scope - The fully qualified Azure Resource manager identifier of the resource.
-//
-//   - resourceName - Resource name for a given resource provider. For example:
-//
-//   - SKU name for Microsoft.Compute
-//
-//   - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
-//
-//     For Microsoft.Network PublicIPAddresses.
-//
 //   - options - UsagesClientGetOptions contains the optional parameters for the UsagesClient.Get method.
-func (client *UsagesClient) Get(ctx context.Context, scope string, resourceName string, options *UsagesClientGetOptions) (UsagesClientGetResponse, error) {
+func (client *UsagesClient) Get(ctx context.Context, resourceName string, scope string, options *UsagesClientGetOptions) (UsagesClientGetResponse, error) {
 	var err error
 	const operationName = "UsagesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, scope, resourceName, options)
+	req, err := client.getCreateRequest(ctx, resourceName, scope, options)
 	if err != nil {
 		return UsagesClientGetResponse{}, err
 	}
@@ -70,16 +59,16 @@ func (client *UsagesClient) Get(ctx context.Context, scope string, resourceName 
 }
 
 // getCreateRequest creates the Get request.
-func (client *UsagesClient) getCreateRequest(ctx context.Context, scope string, resourceName string, _ *UsagesClientGetOptions) (*policy.Request, error) {
+func (client *UsagesClient) getCreateRequest(ctx context.Context, resourceName string, scope string, _ *UsagesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Quota/usages/{resourceName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if resourceName == "" {
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

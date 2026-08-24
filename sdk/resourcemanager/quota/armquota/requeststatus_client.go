@@ -42,16 +42,14 @@ func NewRequestStatusClient(credential azcore.TokenCredential, options *arm.Clie
 // Get - Get the quota request details and status by quota request ID for the resources of the resource provider at a specific
 // location. The quota request ID **id** is returned in the response of the PUT operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - scope - The fully qualified Azure Resource manager identifier of the resource.
-//   - id - Quota request ID.
 //   - options - RequestStatusClientGetOptions contains the optional parameters for the RequestStatusClient.Get method.
-func (client *RequestStatusClient) Get(ctx context.Context, scope string, id string, options *RequestStatusClientGetOptions) (RequestStatusClientGetResponse, error) {
+func (client *RequestStatusClient) Get(ctx context.Context, id string, scope string, options *RequestStatusClientGetOptions) (RequestStatusClientGetResponse, error) {
 	var err error
 	const operationName = "RequestStatusClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, scope, id, options)
+	req, err := client.getCreateRequest(ctx, id, scope, options)
 	if err != nil {
 		return RequestStatusClientGetResponse{}, err
 	}
@@ -63,16 +61,16 @@ func (client *RequestStatusClient) Get(ctx context.Context, scope string, id str
 }
 
 // getCreateRequest creates the Get request.
-func (client *RequestStatusClient) getCreateRequest(ctx context.Context, scope string, id string, _ *RequestStatusClientGetOptions) (*policy.Request, error) {
+func (client *RequestStatusClient) getCreateRequest(ctx context.Context, id string, scope string, _ *RequestStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Quota/quotaRequests/{id}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if id == "" {
 		return nil, errors.New("parameter id cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{id}", url.PathEscape(id))
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

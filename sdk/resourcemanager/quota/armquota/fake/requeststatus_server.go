@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -24,7 +24,7 @@ import (
 type RequestStatusServer struct {
 	// Get is the fake for method RequestStatusClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, scope string, id string, options *armquota.RequestStatusClientGetOptions) (resp azfake.Responder[armquota.RequestStatusClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, id string, scope string, options *armquota.RequestStatusClientGetOptions) (resp azfake.Responder[armquota.RequestStatusClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method RequestStatusClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -99,15 +99,15 @@ func (r *RequestStatusServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
 	idParam, err := url.PathUnescape(matches[regex.SubexpIndex("id")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.Get(req.Context(), scopeParam, idParam, nil)
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.Get(req.Context(), idParam, scopeParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

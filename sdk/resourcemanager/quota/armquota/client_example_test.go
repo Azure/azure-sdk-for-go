@@ -8,7 +8,7 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v2"
 	"log"
 )
 
@@ -23,7 +23,7 @@ func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForCompute() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus", "standardFSv2Family", armquota.CurrentQuotaLimitBase{
+	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "standardFSv2Family", "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus", armquota.CurrentQuotaLimitBase{
 		Properties: &armquota.Properties{
 			Name: &armquota.ResourceName{
 				Value: to.Ptr("standardFSv2Family"),
@@ -73,7 +73,7 @@ func ExampleClient_BeginCreateOrUpdate_quotasRequestForMachineLearningServicesLo
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.MachineLearningServices/locations/eastus", "TotalLowPriorityCores", armquota.CurrentQuotaLimitBase{
+	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "TotalLowPriorityCores", "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.MachineLearningServices/locations/eastus", armquota.CurrentQuotaLimitBase{
 		Properties: &armquota.Properties{
 			Name: &armquota.ResourceName{
 				Value: to.Ptr("TotalLowPriorityCores"),
@@ -125,7 +125,7 @@ func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForNetwork() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus", "MinPublicIpInterNetworkPrefixLength", armquota.CurrentQuotaLimitBase{
+	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "MinPublicIpInterNetworkPrefixLength", "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus", armquota.CurrentQuotaLimitBase{
 		Properties: &armquota.Properties{
 			Name: &armquota.ResourceName{
 				Value: to.Ptr("MinPublicIpInterNetworkPrefixLength"),
@@ -177,7 +177,7 @@ func ExampleClient_BeginCreateOrUpdate_quotasPutRequestForNetworkStandardSkuPubl
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus", "StandardSkuPublicIpAddresses", armquota.CurrentQuotaLimitBase{
+	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "StandardSkuPublicIpAddresses", "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus", armquota.CurrentQuotaLimitBase{
 		Properties: &armquota.Properties{
 			Name: &armquota.ResourceName{
 				Value: to.Ptr("StandardSkuPublicIpAddresses"),
@@ -229,7 +229,7 @@ func ExampleClient_Get_quotasGetRequestForCompute() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewClient().Get(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus", "standardNDSFamily", nil)
+	res, err := clientFactory.NewClient().Get(ctx, "standardNDSFamily", "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -269,7 +269,7 @@ func ExampleClient_Get_quotasUsagesRequestForNetwork() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewClient().Get(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus", "MinPublicIpInterNetworkPrefixLength", nil)
+	res, err := clientFactory.NewClient().Get(ctx, "MinPublicIpInterNetworkPrefixLength", "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1364,7 +1364,7 @@ func ExampleClient_BeginUpdate_quotasRequestPatchForCompute() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus", "standardFSv2Family", armquota.CurrentQuotaLimitBase{
+	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "standardFSv2Family", "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus", armquota.CurrentQuotaLimitBase{
 		Properties: &armquota.Properties{
 			Name: &armquota.ResourceName{
 				Value: to.Ptr("standardFSv2Family"),
@@ -1415,7 +1415,7 @@ func ExampleClient_BeginUpdate_quotasRequestPatchForNetwork() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus", "MinPublicIpInterNetworkPrefixLength", armquota.CurrentQuotaLimitBase{
+	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "MinPublicIpInterNetworkPrefixLength", "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus", armquota.CurrentQuotaLimitBase{
 		Properties: &armquota.Properties{
 			Name: &armquota.ResourceName{
 				Value: to.Ptr("MinPublicIpInterNetworkPrefixLength"),

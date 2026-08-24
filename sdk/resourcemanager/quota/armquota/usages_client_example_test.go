@@ -7,7 +7,7 @@ package armquota_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v2"
 	"log"
 )
 
@@ -22,7 +22,7 @@ func ExampleUsagesClient_Get_quotasUsagesRequestForCompute() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewUsagesClient().Get(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus", "standardNDSFamily", nil)
+	res, err := clientFactory.NewUsagesClient().Get(ctx, "standardNDSFamily", "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -61,7 +61,7 @@ func ExampleUsagesClient_Get_quotasUsagesRequestForNetwork() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewUsagesClient().Get(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus", "MinPublicIpInterNetworkPrefixLength", nil)
+	res, err := clientFactory.NewUsagesClient().Get(ctx, "MinPublicIpInterNetworkPrefixLength", "subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Network/locations/eastus", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

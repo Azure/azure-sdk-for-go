@@ -47,23 +47,10 @@ func NewClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*
 //     request.
 //
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-//   - scope - The fully qualified Azure Resource manager identifier of the resource.
-//
-//   - resourceName - Resource name for a given resource provider. For example:
-//
-//   - SKU name for Microsoft.Compute
-//
-//   - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
-//
-//     For Microsoft.Network PublicIPAddresses.
-//
-//   - createQuotaRequest - Quota request payload.
-//
 //   - options - ClientBeginCreateOrUpdateOptions contains the optional parameters for the Client.BeginCreateOrUpdate method.
-func (client *Client) BeginCreateOrUpdate(ctx context.Context, scope string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClientCreateOrUpdateResponse], error) {
+func (client *Client) BeginCreateOrUpdate(ctx context.Context, resourceName string, scope string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginCreateOrUpdateOptions) (*runtime.Poller[ClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, scope, resourceName, createQuotaRequest, options)
+		resp, err := client.createOrUpdate(ctx, resourceName, scope, createQuotaRequest, options)
 		if err != nil {
 			return nil, err
 		}
@@ -88,13 +75,13 @@ func (client *Client) BeginCreateOrUpdate(ctx context.Context, scope string, res
 //     request.
 //
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) createOrUpdate(ctx context.Context, scope string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *Client) createOrUpdate(ctx context.Context, resourceName string, scope string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, scope, resourceName, createQuotaRequest, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceName, scope, createQuotaRequest, options)
 	if err != nil {
 		return nil, err
 	}
@@ -109,16 +96,16 @@ func (client *Client) createOrUpdate(ctx context.Context, scope string, resource
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *Client) createOrUpdateCreateRequest(ctx context.Context, scope string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, _ *ClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *Client) createOrUpdateCreateRequest(ctx context.Context, resourceName string, scope string, createQuotaRequest CurrentQuotaLimitBase, _ *ClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if resourceName == "" {
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -137,25 +124,14 @@ func (client *Client) createOrUpdateCreateRequest(ctx context.Context, scope str
 // Get - Get the quota limit of a resource. The response can be used to determine the remaining quota to calculate a new quota
 // limit that can be submitted with a PUT request.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-//   - scope - The fully qualified Azure Resource manager identifier of the resource.
-//
-//   - resourceName - Resource name for a given resource provider. For example:
-//
-//   - SKU name for Microsoft.Compute
-//
-//   - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
-//
-//     For Microsoft.Network PublicIPAddresses.
-//
 //   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
-func (client *Client) Get(ctx context.Context, scope string, resourceName string, options *ClientGetOptions) (ClientGetResponse, error) {
+func (client *Client) Get(ctx context.Context, resourceName string, scope string, options *ClientGetOptions) (ClientGetResponse, error) {
 	var err error
 	const operationName = "Client.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, scope, resourceName, options)
+	req, err := client.getCreateRequest(ctx, resourceName, scope, options)
 	if err != nil {
 		return ClientGetResponse{}, err
 	}
@@ -167,16 +143,16 @@ func (client *Client) Get(ctx context.Context, scope string, resourceName string
 }
 
 // getCreateRequest creates the Get request.
-func (client *Client) getCreateRequest(ctx context.Context, scope string, resourceName string, _ *ClientGetOptions) (*policy.Request, error) {
+func (client *Client) getCreateRequest(ctx context.Context, resourceName string, scope string, _ *ClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if resourceName == "" {
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -282,23 +258,10 @@ func (client *Client) listHandleResponse(resp *http.Response, successCodes ...in
 //     request.
 //
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-//   - scope - The fully qualified Azure Resource manager identifier of the resource.
-//
-//   - resourceName - Resource name for a given resource provider. For example:
-//
-//   - SKU name for Microsoft.Compute
-//
-//   - SKU or TotalLowPriorityCores for Microsoft.MachineLearningServices
-//
-//     For Microsoft.Network PublicIPAddresses.
-//
-//   - createQuotaRequest - Quota requests payload.
-//
 //   - options - ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
-func (client *Client) BeginUpdate(ctx context.Context, scope string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error) {
+func (client *Client) BeginUpdate(ctx context.Context, resourceName string, scope string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, scope, resourceName, createQuotaRequest, options)
+		resp, err := client.update(ctx, resourceName, scope, createQuotaRequest, options)
 		if err != nil {
 			return nil, err
 		}
@@ -321,13 +284,13 @@ func (client *Client) BeginUpdate(ctx context.Context, scope string, resourceNam
 //     request.
 //
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) update(ctx context.Context, scope string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginUpdateOptions) (*http.Response, error) {
+func (client *Client) update(ctx context.Context, resourceName string, scope string, createQuotaRequest CurrentQuotaLimitBase, options *ClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, scope, resourceName, createQuotaRequest, options)
+	req, err := client.updateCreateRequest(ctx, resourceName, scope, createQuotaRequest, options)
 	if err != nil {
 		return nil, err
 	}
@@ -342,16 +305,16 @@ func (client *Client) update(ctx context.Context, scope string, resourceName str
 }
 
 // updateCreateRequest creates the Update request.
-func (client *Client) updateCreateRequest(ctx context.Context, scope string, resourceName string, createQuotaRequest CurrentQuotaLimitBase, _ *ClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *Client) updateCreateRequest(ctx context.Context, resourceName string, scope string, createQuotaRequest CurrentQuotaLimitBase, _ *ClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Quota/quotas/{resourceName}"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	if resourceName == "" {
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/quota/armquota/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -23,7 +23,7 @@ import (
 type UsagesServer struct {
 	// Get is the fake for method UsagesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, scope string, resourceName string, options *armquota.UsagesClientGetOptions) (resp azfake.Responder[armquota.UsagesClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceName string, scope string, options *armquota.UsagesClientGetOptions) (resp azfake.Responder[armquota.UsagesClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method UsagesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -98,15 +98,15 @@ func (u *UsagesServerTransport) dispatchGet(req *http.Request) (*http.Response, 
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
 	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := u.srv.Get(req.Context(), scopeParam, resourceNameParam, nil)
+	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := u.srv.Get(req.Context(), resourceNameParam, scopeParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

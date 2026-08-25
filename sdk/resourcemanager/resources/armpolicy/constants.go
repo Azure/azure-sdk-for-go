@@ -358,7 +358,7 @@ const (
 	ResourceIdentityTypeNone ResourceIdentityType = "None"
 	// ResourceIdentityTypeSystemAssigned - Indicates that a system assigned identity is associated with the resource.
 	ResourceIdentityTypeSystemAssigned ResourceIdentityType = "SystemAssigned"
-	// ResourceIdentityTypeUserAssigned - Indicates that a system assigned identity is associated with the resource.
+	// ResourceIdentityTypeUserAssigned - Indicates that a user assigned identity is associated with the resource.
 	ResourceIdentityTypeUserAssigned ResourceIdentityType = "UserAssigned"
 )
 

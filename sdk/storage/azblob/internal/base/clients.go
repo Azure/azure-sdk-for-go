@@ -82,6 +82,7 @@ func GetAzClient(serviceURL string, cred azcore.TokenCredential, sharedKey *expo
 	// A session is signed with a session key obtained via a token credential, so asking for one
 	// without a token credential is a configuration error rather than something to silently ignore.
 	if conOptions.Session.Mode == exported.SessionModeEnabled && cred == nil {
+		log.Writef(exported.EventSession, "session authentication cannot be enabled: no token credential was provided; session-based authentication requires a TokenCredential.")
 		return nil, errors.New("session mode is enabled but no token credential was provided; session-based authentication requires a TokenCredential")
 	}
 
@@ -107,6 +108,7 @@ func GetAzClient(serviceURL string, cred azcore.TokenCredential, sharedKey *expo
 						authPolicy = bearerTokenPolicy
 						break
 					}
+					log.Writef(exported.EventSession, "session authentication cannot be enabled: the service URL could not be determined: %v.", err)
 					return nil, fmt.Errorf("session mode is enabled but service URL could not be determined: %w", err)
 				}
 				p, err := NewContainerSessionProvider(cred, svcURL, conOptions)
@@ -116,6 +118,7 @@ func GetAzClient(serviceURL string, cred azcore.TokenCredential, sharedKey *expo
 						authPolicy = bearerTokenPolicy
 						break
 					}
+					log.Writef(exported.EventSession, "session authentication cannot be enabled: the default session provider could not be created: %v.", err)
 					return nil, fmt.Errorf("failed to create default session provider: %w", err)
 				}
 				provider = p
@@ -130,6 +133,7 @@ func GetAzClient(serviceURL string, cred azcore.TokenCredential, sharedKey *expo
 						authPolicy = bearerTokenPolicy
 						break
 					}
+					log.Writef(exported.EventSession, "session authentication cannot be enabled: the account name could not be determined from the URL: %v. Set ClientOptions.Session.AccountName to use sessions.", err)
 					return nil, fmt.Errorf("session mode is enabled but account name could not be determined from URL: %w. Please explicitly pass in options.Session.AccountName", err)
 				}
 				accountName = name
@@ -138,6 +142,7 @@ func GetAzClient(serviceURL string, cred azcore.TokenCredential, sharedKey *expo
 			}
 			authPolicy = exported.NewSessionPolicy(accountName, provider, bearerTokenPolicy)
 		default:
+			log.Writef(exported.EventSession, "session authentication cannot be enabled: unsupported session mode %v.", conOptions.Session.Mode)
 			return nil, fmt.Errorf("unsupported session mode %v", conOptions.Session.Mode)
 		}
 		plOpts.PerRetry = []policy.Policy{authPolicy}

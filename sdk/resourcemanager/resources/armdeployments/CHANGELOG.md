@@ -1,5 +1,21 @@
 # Release History
 
+## 3.0.0 (2026-08-25)
+### Breaking Changes
+
+- Enum `ExtensionConfigPropertyType` has been removed
+- Field `Type` of struct `DeploymentExtensionConfigItem` has been removed
+
+### Features Added
+
+- New struct `DeploymentResourceWhatIfPrediction`
+- New field `ConfigHash` in struct `DeploymentExtensionDefinition`
+- New field `ResourcePredictions` in struct `DeploymentWhatIfProperties`
+- New field `SymbolicNamePath` in struct `ResourceReference`
+- New field `SymbolicNamePath` in struct `TargetResource`
+- New field `ResourceType` in struct `WhatIfChange`
+
+
 ## 2.0.1 (2026-08-25)
 ### Other Changes
 

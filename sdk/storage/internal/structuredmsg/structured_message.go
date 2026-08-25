@@ -874,7 +874,7 @@ func (d *SMDecoder) Close() error {
 // DecodeResult returns the decoded message metadata after the header has been parsed.
 // Returns nil if the header has not yet been read.
 func (d *SMDecoder) DecodeResult() *SMDecodeResult {
-	if d.state == decStateHeader {
+	if d.state == decStateHeader || d.state == decStateError {
 		return nil
 	}
 	return &SMDecodeResult{

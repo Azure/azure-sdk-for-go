@@ -271,13 +271,13 @@ func PossiblePutKeyValueRequestContentTypeValues() []PutKeyValueRequestContentTy
 	}
 }
 
-// RequirementType - Requirement Type.
+// RequirementType - Controls how multiple feature-flag filters are combined.
 type RequirementType string
 
 const (
-	// RequirementTypeAll - All.
+	// RequirementTypeAll - Enables the feature flag only when all filters match.
 	RequirementTypeAll RequirementType = "All"
-	// RequirementTypeAny - Any.
+	// RequirementTypeAny - Enables the feature flag when any filter matches.
 	RequirementTypeAny RequirementType = "Any"
 )
 
@@ -404,11 +404,11 @@ func PossibleSnapshotStatusValues() []SnapshotStatus {
 type StatusOverride string
 
 const (
-	// StatusOverrideDisabled - Disabled.
+	// StatusOverrideDisabled - Overrides the status to disabled.
 	StatusOverrideDisabled StatusOverride = "Disabled"
-	// StatusOverrideEnabled - Enabled.
+	// StatusOverrideEnabled - Overrides the status to enabled.
 	StatusOverrideEnabled StatusOverride = "Enabled"
-	// StatusOverrideNone - None.
+	// StatusOverrideNone - No status override.
 	StatusOverrideNone StatusOverride = "None"
 )
 

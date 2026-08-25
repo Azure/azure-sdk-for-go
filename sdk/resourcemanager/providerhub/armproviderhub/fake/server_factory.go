@@ -27,6 +27,9 @@ type ServerFactory struct {
 	// DefaultRolloutsServer contains the fakes for client DefaultRolloutsClient
 	DefaultRolloutsServer DefaultRolloutsServer
 
+	// ManifestsServer contains the fakes for client ManifestsClient
+	ManifestsServer ManifestsServer
+
 	// NewRegionFrontloadReleaseServer contains the fakes for client NewRegionFrontloadReleaseClient
 	NewRegionFrontloadReleaseServer NewRegionFrontloadReleaseServer
 
@@ -70,6 +73,7 @@ type ServerFactoryTransport struct {
 	trServer                          *ServerTransport
 	trCustomRolloutsServer            *CustomRolloutsServerTransport
 	trDefaultRolloutsServer           *DefaultRolloutsServerTransport
+	trManifestsServer                 *ManifestsServerTransport
 	trNewRegionFrontloadReleaseServer *NewRegionFrontloadReleaseServerTransport
 	trNotificationRegistrationsServer *NotificationRegistrationsServerTransport
 	trOperationsServer                *OperationsServerTransport
@@ -111,6 +115,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewDefaultRolloutsServerTransport(&s.srv.DefaultRolloutsServer)
 		})
 		resp, err = s.trDefaultRolloutsServer.Do(req)
+	case "ManifestsClient":
+		initServer(&s.trMu, &s.trManifestsServer, func() *ManifestsServerTransport { return NewManifestsServerTransport(&s.srv.ManifestsServer) })
+		resp, err = s.trManifestsServer.Do(req)
 	case "NewRegionFrontloadReleaseClient":
 		initServer(&s.trMu, &s.trNewRegionFrontloadReleaseServer, func() *NewRegionFrontloadReleaseServerTransport {
 			return NewNewRegionFrontloadReleaseServerTransport(&s.srv.NewRegionFrontloadReleaseServer)

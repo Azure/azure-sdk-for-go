@@ -39,6 +39,7 @@ const (
 	HeaderXmsRequestID       = "x-ms-request-id"
 	HeaderXmsClientRequestID = "x-ms-client-request-id"
 	HeaderDate               = "Date"
+	HeaderXmsStructuredBody  = "x-ms-structured-body"
 )
 
 const crc64Polynomial uint64 = 0x9A6C9329AC4BC9B5

@@ -122,6 +122,16 @@ func (p *containerSessionProvider) IsRequestEligible(req *http.Request) bool {
 		return false
 	}
 
+	// Session auth is not supported for requests with restype query parameter
+	if u.Query().Get("restype") != "" {
+		return false
+	}
+
+	// Session auth is not supported for structured message requests
+	if req.Header.Get(shared.HeaderXmsStructuredBody) != "" {
+		return false
+	}
+
 	// A session is scoped to a container, and only blob-level requests are eligible.
 	_, blob, err := shared.GetContainerAndBlobName(u)
 	return err == nil && blob != ""

@@ -220,6 +220,19 @@ func PossibleDeleteTypeValues() []DeleteType {
 	}
 }
 
+type DownloadHint string
+
+const (
+	DownloadHintLayout DownloadHint = "layout"
+)
+
+// PossibleDownloadHintValues returns the possible values for the DownloadHint const type.
+func PossibleDownloadHintValues() []DownloadHint {
+	return []DownloadHint{
+		DownloadHintLayout,
+	}
+}
+
 type EncryptionAlgorithmType string
 
 const (

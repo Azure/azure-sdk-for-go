@@ -1913,7 +1913,9 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
 
 	// Download data from destination
 	destBuffer := make([]byte, 4*1024)
-	_, err = srcBBClient.DownloadBuffer(context.Background(), destBuffer, nil)
+	_, err = srcBBClient.DownloadBuffer(context.Background(), destBuffer, &blob.DownloadBufferOptions{
+		LayoutAwareRouting: blob.LayoutAwareRoutingDisabled,
+	})
 	_require.NoError(err)
 	_require.Equal(destBuffer, sourceData)
 

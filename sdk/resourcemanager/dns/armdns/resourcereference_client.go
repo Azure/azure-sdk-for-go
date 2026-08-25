@@ -30,6 +30,9 @@ type ResourceReferenceClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewResourceReferenceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceReferenceClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,9 +69,6 @@ func (client *ResourceReferenceClient) GetByTargetResources(ctx context.Context,
 // getByTargetResourcesCreateRequest creates the GetByTargetResources request.
 func (client *ResourceReferenceClient) getByTargetResourcesCreateRequest(ctx context.Context, parameters ResourceReferenceRequest, _ *ResourceReferenceClientGetByTargetResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/getDnsResourceReference"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

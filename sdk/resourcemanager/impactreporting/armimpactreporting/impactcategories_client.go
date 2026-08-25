@@ -30,6 +30,9 @@ type ImpactCategoriesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewImpactCategoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ImpactCategoriesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,9 +68,6 @@ func (client *ImpactCategoriesClient) Get(ctx context.Context, impactCategoryNam
 // getCreateRequest creates the Get request.
 func (client *ImpactCategoriesClient) getCreateRequest(ctx context.Context, impactCategoryName string, _ *ImpactCategoriesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/impactCategories/{impactCategoryName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if impactCategoryName == "" {
 		return nil, errors.New("parameter impactCategoryName cannot be empty")
@@ -132,9 +132,6 @@ func (client *ImpactCategoriesClient) listBySubscriptionCreateRequest(ctx contex
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/impactCategories"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {

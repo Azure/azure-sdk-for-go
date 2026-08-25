@@ -30,6 +30,9 @@ type DistributedAvailabilityGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDistributedAvailabilityGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DistributedAvailabilityGroupsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -91,9 +94,6 @@ func (client *DistributedAvailabilityGroupsClient) createOrUpdate(ctx context.Co
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *DistributedAvailabilityGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, _ *DistributedAvailabilityGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -171,9 +171,6 @@ func (client *DistributedAvailabilityGroupsClient) deleteOperation(ctx context.C
 // deleteCreateRequest creates the Delete request.
 func (client *DistributedAvailabilityGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, _ *DistributedAvailabilityGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -247,9 +244,6 @@ func (client *DistributedAvailabilityGroupsClient) failover(ctx context.Context,
 // failoverCreateRequest creates the Failover request.
 func (client *DistributedAvailabilityGroupsClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroupsFailoverRequest, _ *DistributedAvailabilityGroupsClientBeginFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}/failover"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -305,9 +299,6 @@ func (client *DistributedAvailabilityGroupsClient) Get(ctx context.Context, reso
 // getCreateRequest creates the Get request.
 func (client *DistributedAvailabilityGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, _ *DistributedAvailabilityGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -381,9 +372,6 @@ func (client *DistributedAvailabilityGroupsClient) listByInstanceCreateRequest(c
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -471,9 +459,6 @@ func (client *DistributedAvailabilityGroupsClient) setRole(ctx context.Context, 
 // setRoleCreateRequest creates the SetRole request.
 func (client *DistributedAvailabilityGroupsClient) setRoleCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroupSetRole, _ *DistributedAvailabilityGroupsClientBeginSetRoleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}/setRole"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -552,9 +537,6 @@ func (client *DistributedAvailabilityGroupsClient) update(ctx context.Context, r
 // updateCreateRequest creates the Update request.
 func (client *DistributedAvailabilityGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, _ *DistributedAvailabilityGroupsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups/{distributedAvailabilityGroupName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

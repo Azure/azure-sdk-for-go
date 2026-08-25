@@ -30,6 +30,9 @@ type SoftwareUpdateConfigurationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSoftwareUpdateConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SoftwareUpdateConfigurationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,9 +72,6 @@ func (client *SoftwareUpdateConfigurationsClient) Create(ctx context.Context, re
 // createCreateRequest creates the Create request.
 func (client *SoftwareUpdateConfigurationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, softwareUpdateConfigurationName string, parameters SoftwareUpdateConfiguration, options *SoftwareUpdateConfigurationsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/softwareUpdateConfigurations/{softwareUpdateConfigurationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -145,9 +145,6 @@ func (client *SoftwareUpdateConfigurationsClient) Delete(ctx context.Context, re
 // deleteCreateRequest creates the Delete request.
 func (client *SoftwareUpdateConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, softwareUpdateConfigurationName string, options *SoftwareUpdateConfigurationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/softwareUpdateConfigurations/{softwareUpdateConfigurationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -201,9 +198,6 @@ func (client *SoftwareUpdateConfigurationsClient) GetByName(ctx context.Context,
 // getByNameCreateRequest creates the GetByName request.
 func (client *SoftwareUpdateConfigurationsClient) getByNameCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, softwareUpdateConfigurationName string, options *SoftwareUpdateConfigurationsClientGetByNameOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/softwareUpdateConfigurations/{softwareUpdateConfigurationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -269,9 +263,6 @@ func (client *SoftwareUpdateConfigurationsClient) List(ctx context.Context, reso
 // listCreateRequest creates the List request.
 func (client *SoftwareUpdateConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *SoftwareUpdateConfigurationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/softwareUpdateConfigurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

@@ -30,6 +30,9 @@ type CassandraDataCentersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCassandraDataCentersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CassandraDataCentersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -93,9 +96,6 @@ func (client *CassandraDataCentersClient) createUpdate(ctx context.Context, reso
 // createUpdateCreateRequest creates the CreateUpdate request.
 func (client *CassandraDataCentersClient) createUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, dataCenterName string, body DataCenterResource, _ *CassandraDataCentersClientBeginCreateUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -173,9 +173,6 @@ func (client *CassandraDataCentersClient) deleteOperation(ctx context.Context, r
 // deleteCreateRequest creates the Delete request.
 func (client *CassandraDataCentersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, dataCenterName string, _ *CassandraDataCentersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -226,9 +223,6 @@ func (client *CassandraDataCentersClient) Get(ctx context.Context, resourceGroup
 // getCreateRequest creates the Get request.
 func (client *CassandraDataCentersClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, dataCenterName string, _ *CassandraDataCentersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -302,9 +296,6 @@ func (client *CassandraDataCentersClient) listCreateRequest(ctx context.Context,
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -392,9 +383,6 @@ func (client *CassandraDataCentersClient) update(ctx context.Context, resourceGr
 // updateCreateRequest creates the Update request.
 func (client *CassandraDataCentersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, dataCenterName string, body DataCenterResource, _ *CassandraDataCentersClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

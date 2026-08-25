@@ -30,6 +30,9 @@ type SystemVersionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSystemVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SystemVersionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,9 +69,6 @@ func (client *SystemVersionsClient) Get(ctx context.Context, location string, sy
 // getCreateRequest creates the Get request.
 func (client *SystemVersionsClient) getCreateRequest(ctx context.Context, location string, systemversionname string, _ *SystemVersionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/systemVersions/{systemversionname}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -137,9 +137,6 @@ func (client *SystemVersionsClient) listByLocationCreateRequest(ctx context.Cont
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/systemVersions"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if location == "" {
 			return nil, errors.New("parameter location cannot be empty")

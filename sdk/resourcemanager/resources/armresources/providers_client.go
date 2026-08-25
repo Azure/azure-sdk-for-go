@@ -30,6 +30,9 @@ type ProvidersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProvidersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProvidersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,9 +68,6 @@ func (client *ProvidersClient) Get(ctx context.Context, resourceProviderNamespac
 // getCreateRequest creates the Get request.
 func (client *ProvidersClient) getCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceProviderNamespace == "" {
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
@@ -188,9 +188,6 @@ func (client *ProvidersClient) listCreateRequest(ctx context.Context, nextLink s
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -314,9 +311,6 @@ func (client *ProvidersClient) ProviderPermissions(ctx context.Context, resource
 // providerPermissionsCreateRequest creates the ProviderPermissions request.
 func (client *ProvidersClient) providerPermissionsCreateRequest(ctx context.Context, resourceProviderNamespace string, _ *ProvidersClientProviderPermissionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/providerPermissions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceProviderNamespace == "" {
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
@@ -369,9 +363,6 @@ func (client *ProvidersClient) Register(ctx context.Context, resourceProviderNam
 // registerCreateRequest creates the Register request.
 func (client *ProvidersClient) registerCreateRequest(ctx context.Context, resourceProviderNamespace string, options *ProvidersClientRegisterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/register"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceProviderNamespace == "" {
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
@@ -479,9 +470,6 @@ func (client *ProvidersClient) Unregister(ctx context.Context, resourceProviderN
 // unregisterCreateRequest creates the Unregister request.
 func (client *ProvidersClient) unregisterCreateRequest(ctx context.Context, resourceProviderNamespace string, _ *ProvidersClientUnregisterOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{resourceProviderNamespace}/unregister"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceProviderNamespace == "" {
 		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")

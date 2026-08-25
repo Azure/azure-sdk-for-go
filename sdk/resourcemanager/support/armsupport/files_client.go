@@ -30,6 +30,9 @@ type FilesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FilesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,9 +70,6 @@ func (client *FilesClient) Create(ctx context.Context, fileWorkspaceName string,
 // createCreateRequest creates the Create request.
 func (client *FilesClient) createCreateRequest(ctx context.Context, fileWorkspaceName string, fileName string, createFileParameters FileDetails, _ *FilesClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/fileWorkspaces/{fileWorkspaceName}/files/{fileName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if fileWorkspaceName == "" {
 		return nil, errors.New("parameter fileWorkspaceName cannot be empty")
@@ -131,9 +131,6 @@ func (client *FilesClient) Get(ctx context.Context, fileWorkspaceName string, fi
 // getCreateRequest creates the Get request.
 func (client *FilesClient) getCreateRequest(ctx context.Context, fileWorkspaceName string, fileName string, _ *FilesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/fileWorkspaces/{fileWorkspaceName}/files/{fileName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if fileWorkspaceName == "" {
 		return nil, errors.New("parameter fileWorkspaceName cannot be empty")
@@ -201,9 +198,6 @@ func (client *FilesClient) listCreateRequest(ctx context.Context, fileWorkspaceN
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/fileWorkspaces/{fileWorkspaceName}/files"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if fileWorkspaceName == "" {
 			return nil, errors.New("parameter fileWorkspaceName cannot be empty")
@@ -266,9 +260,6 @@ func (client *FilesClient) Upload(ctx context.Context, fileWorkspaceName string,
 // uploadCreateRequest creates the Upload request.
 func (client *FilesClient) uploadCreateRequest(ctx context.Context, fileWorkspaceName string, fileName string, uploadFile UploadFile, _ *FilesClientUploadOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/fileWorkspaces/{fileWorkspaceName}/files/{fileName}/upload"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if fileWorkspaceName == "" {
 		return nil, errors.New("parameter fileWorkspaceName cannot be empty")

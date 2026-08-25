@@ -30,6 +30,9 @@ type StoragePoolsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewStoragePoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StoragePoolsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -90,9 +93,6 @@ func (client *StoragePoolsClient) create(ctx context.Context, resourceGroupName 
 // createCreateRequest creates the Create request.
 func (client *StoragePoolsClient) createCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, resource StoragePool, _ *StoragePoolsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -165,9 +165,6 @@ func (client *StoragePoolsClient) deleteOperation(ctx context.Context, resourceG
 // deleteCreateRequest creates the Delete request.
 func (client *StoragePoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -235,9 +232,6 @@ func (client *StoragePoolsClient) disableAvsConnection(ctx context.Context, reso
 // disableAvsConnectionCreateRequest creates the DisableAvsConnection request.
 func (client *StoragePoolsClient) disableAvsConnectionCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientBeginDisableAvsConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/disableAvsConnection"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -306,9 +300,6 @@ func (client *StoragePoolsClient) enableAvsConnection(ctx context.Context, resou
 // enableAvsConnectionCreateRequest creates the EnableAvsConnection request.
 func (client *StoragePoolsClient) enableAvsConnectionCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolEnableAvsConnectionPost, _ *StoragePoolsClientBeginEnableAvsConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/enableAvsConnection"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -381,9 +372,6 @@ func (client *StoragePoolsClient) finalizeAvsConnection(ctx context.Context, res
 // finalizeAvsConnectionCreateRequest creates the FinalizeAvsConnection request.
 func (client *StoragePoolsClient) finalizeAvsConnectionCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolFinalizeAvsConnectionPost, _ *StoragePoolsClientBeginFinalizeAvsConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/finalizeAvsConnection"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -432,9 +420,6 @@ func (client *StoragePoolsClient) Get(ctx context.Context, resourceGroupName str
 // getCreateRequest creates the Get request.
 func (client *StoragePoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -493,9 +478,6 @@ func (client *StoragePoolsClient) GetAvsConnection(ctx context.Context, resource
 // getAvsConnectionCreateRequest creates the GetAvsConnection request.
 func (client *StoragePoolsClient) getAvsConnectionCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientGetAvsConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/getAvsConnection"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -554,9 +536,6 @@ func (client *StoragePoolsClient) GetAvsStatus(ctx context.Context, resourceGrou
 // getAvsStatusCreateRequest creates the GetAvsStatus request.
 func (client *StoragePoolsClient) getAvsStatusCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientGetAvsStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/getAvsStatus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -615,9 +594,6 @@ func (client *StoragePoolsClient) GetHealthStatus(ctx context.Context, resourceG
 // getHealthStatusCreateRequest creates the GetHealthStatus request.
 func (client *StoragePoolsClient) getHealthStatusCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientGetHealthStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/getHealthStatus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -686,9 +662,6 @@ func (client *StoragePoolsClient) listByResourceGroupCreateRequest(ctx context.C
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -757,9 +730,6 @@ func (client *StoragePoolsClient) listBySubscriptionCreateRequest(ctx context.Co
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/PureStorage.Block/storagePools"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -839,9 +809,6 @@ func (client *StoragePoolsClient) repairAvsConnection(ctx context.Context, resou
 // repairAvsConnectionCreateRequest creates the RepairAvsConnection request.
 func (client *StoragePoolsClient) repairAvsConnectionCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, _ *StoragePoolsClientBeginRepairAvsConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/repairAvsConnection"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -910,9 +877,6 @@ func (client *StoragePoolsClient) update(ctx context.Context, resourceGroupName 
 // updateCreateRequest creates the Update request.
 func (client *StoragePoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, properties StoragePoolUpdate, _ *StoragePoolsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

@@ -30,6 +30,9 @@ type OperationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,9 +69,6 @@ func (client *OperationsClient) CheckNameAvailability(ctx context.Context, check
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
 func (client *OperationsClient) checkNameAvailabilityCreateRequest(ctx context.Context, checkNameAvailabilityParameters CheckNameAvailabilityParameters, _ *OperationsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/checkNameAvailability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -188,9 +188,6 @@ func (client *OperationsClient) RegionalCheckNameAvailability(ctx context.Contex
 // regionalCheckNameAvailabilityCreateRequest creates the RegionalCheckNameAvailability request.
 func (client *OperationsClient) regionalCheckNameAvailabilityCreateRequest(ctx context.Context, location string, checkNameAvailabilityParameters CheckNameAvailabilityParameters, _ *OperationsClientRegionalCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/locations/{location}/checkNameAvailability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")

@@ -31,6 +31,9 @@ type LocalRulestacksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLocalRulestacksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LocalRulestacksClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -90,9 +93,6 @@ func (client *LocalRulestacksClient) commit(ctx context.Context, resourceGroupNa
 // commitCreateRequest creates the Commit request.
 func (client *LocalRulestacksClient) commitCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, _ *LocalRulestacksClientBeginCommitOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/commit"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -161,9 +161,6 @@ func (client *LocalRulestacksClient) createOrUpdate(ctx context.Context, resourc
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *LocalRulestacksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, resource LocalRulestackResource, _ *LocalRulestacksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -236,9 +233,6 @@ func (client *LocalRulestacksClient) deleteOperation(ctx context.Context, resour
 // deleteCreateRequest creates the Delete request.
 func (client *LocalRulestacksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, _ *LocalRulestacksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -283,9 +277,6 @@ func (client *LocalRulestacksClient) Get(ctx context.Context, resourceGroupName 
 // getCreateRequest creates the Get request.
 func (client *LocalRulestacksClient) getCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, _ *LocalRulestacksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -344,9 +335,6 @@ func (client *LocalRulestacksClient) GetChangeLog(ctx context.Context, resourceG
 // getChangeLogCreateRequest creates the GetChangeLog request.
 func (client *LocalRulestacksClient) getChangeLogCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, _ *LocalRulestacksClientGetChangeLogOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/getChangeLog"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -405,9 +393,6 @@ func (client *LocalRulestacksClient) GetSupportInfo(ctx context.Context, resourc
 // getSupportInfoCreateRequest creates the GetSupportInfo request.
 func (client *LocalRulestacksClient) getSupportInfoCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, options *LocalRulestacksClientGetSupportInfoOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/getSupportInfo"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -469,9 +454,6 @@ func (client *LocalRulestacksClient) ListAdvancedSecurityObjects(ctx context.Con
 // listAdvancedSecurityObjectsCreateRequest creates the ListAdvancedSecurityObjects request.
 func (client *LocalRulestacksClient) listAdvancedSecurityObjectsCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, typeParam AdvSecurityObjectTypeEnum, options *LocalRulestacksClientListAdvancedSecurityObjectsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listAdvancedSecurityObjects"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -548,9 +530,6 @@ func (client *LocalRulestacksClient) listAppIDsCreateRequest(ctx context.Context
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listAppIds"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -636,9 +615,6 @@ func (client *LocalRulestacksClient) listByResourceGroupCreateRequest(ctx contex
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -707,9 +683,6 @@ func (client *LocalRulestacksClient) listBySubscriptionCreateRequest(ctx context
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -776,9 +749,6 @@ func (client *LocalRulestacksClient) listCountriesCreateRequest(ctx context.Cont
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listCountries"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -848,9 +818,6 @@ func (client *LocalRulestacksClient) ListFirewalls(ctx context.Context, resource
 // listFirewallsCreateRequest creates the ListFirewalls request.
 func (client *LocalRulestacksClient) listFirewallsCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, _ *LocalRulestacksClientListFirewallsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listFirewalls"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -920,9 +887,6 @@ func (client *LocalRulestacksClient) listPredefinedURLCategoriesCreateRequest(ct
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listPredefinedUrlCategories"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -992,9 +956,6 @@ func (client *LocalRulestacksClient) ListSecurityServices(ctx context.Context, r
 // listSecurityServicesCreateRequest creates the ListSecurityServices request.
 func (client *LocalRulestacksClient) listSecurityServicesCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, typeParam SecurityServicesTypeEnum, options *LocalRulestacksClientListSecurityServicesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/listSecurityServices"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1062,9 +1023,6 @@ func (client *LocalRulestacksClient) Revert(ctx context.Context, resourceGroupNa
 // revertCreateRequest creates the Revert request.
 func (client *LocalRulestacksClient) revertCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, _ *LocalRulestacksClientRevertOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/revert"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1110,9 +1068,6 @@ func (client *LocalRulestacksClient) Update(ctx context.Context, resourceGroupNa
 // updateCreateRequest creates the Update request.
 func (client *LocalRulestacksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, properties LocalRulestackResourceUpdate, _ *LocalRulestacksClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

@@ -30,6 +30,9 @@ type DeletedVaultsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDeletedVaultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeletedVaultsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,9 +69,6 @@ func (client *DeletedVaultsClient) Get(ctx context.Context, location string, del
 // getCreateRequest creates the Get request.
 func (client *DeletedVaultsClient) getCreateRequest(ctx context.Context, location string, deletedVaultName string, _ *DeletedVaultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{location}/deletedVaults/{deletedVaultName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -127,9 +127,6 @@ func (client *DeletedVaultsClient) GetOperationStatus(ctx context.Context, locat
 // getOperationStatusCreateRequest creates the GetOperationStatus request.
 func (client *DeletedVaultsClient) getOperationStatusCreateRequest(ctx context.Context, location string, deletedVaultName string, operationID string, _ *DeletedVaultsClientGetOperationStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{location}/deletedVaults/{deletedVaultName}/operations/{operationId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -202,9 +199,6 @@ func (client *DeletedVaultsClient) listBySubscriptionIDCreateRequest(ctx context
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{location}/deletedVaults"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if location == "" {
 			return nil, errors.New("parameter location cannot be empty")
@@ -287,9 +281,6 @@ func (client *DeletedVaultsClient) undelete(ctx context.Context, location string
 // undeleteCreateRequest creates the Undelete request.
 func (client *DeletedVaultsClient) undeleteCreateRequest(ctx context.Context, location string, deletedVaultName string, body DeletedVaultUndeleteInput, _ *DeletedVaultsClientBeginUndeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{location}/deletedVaults/{deletedVaultName}/undelete"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")

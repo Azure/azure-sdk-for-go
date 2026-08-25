@@ -31,6 +31,9 @@ type ContainerAppsSourceControlsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewContainerAppsSourceControlsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerAppsSourceControlsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -96,9 +99,6 @@ func (client *ContainerAppsSourceControlsClient) createOrUpdate(ctx context.Cont
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ContainerAppsSourceControlsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, sourceControlName string, sourceControlEnvelope SourceControl, options *ContainerAppsSourceControlsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -183,9 +183,6 @@ func (client *ContainerAppsSourceControlsClient) deleteOperation(ctx context.Con
 // deleteCreateRequest creates the Delete request.
 func (client *ContainerAppsSourceControlsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, sourceControlName string, options *ContainerAppsSourceControlsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -247,9 +244,6 @@ func (client *ContainerAppsSourceControlsClient) Get(ctx context.Context, resour
 // getCreateRequest creates the Get request.
 func (client *ContainerAppsSourceControlsClient) getCreateRequest(ctx context.Context, resourceGroupName string, containerAppName string, sourceControlName string, _ *ContainerAppsSourceControlsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols/{sourceControlName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -325,9 +319,6 @@ func (client *ContainerAppsSourceControlsClient) listByContainerAppCreateRequest
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/containerApps/{containerAppName}/sourcecontrols"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")

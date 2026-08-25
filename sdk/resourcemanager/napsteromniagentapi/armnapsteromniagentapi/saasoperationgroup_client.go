@@ -30,6 +30,9 @@ type SaaSOperationGroupClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSaaSOperationGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SaaSOperationGroupClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -88,9 +91,6 @@ func (client *SaaSOperationGroupClient) activateResource(ctx context.Context, bo
 // activateResourceCreateRequest creates the ActivateResource request.
 func (client *SaaSOperationGroupClient) activateResourceCreateRequest(ctx context.Context, body ActivateSaaSParameterRequest, _ *SaaSOperationGroupClientBeginActivateResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Napster.CompanionAPI/activateSaaS"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {

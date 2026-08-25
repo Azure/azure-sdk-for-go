@@ -30,6 +30,9 @@ type ConnectionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectionClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -96,9 +99,6 @@ func (client *ConnectionClient) createOrUpdateDeployment(ctx context.Context, re
 // createOrUpdateDeploymentCreateRequest creates the CreateOrUpdateDeployment request.
 func (client *ConnectionClient) createOrUpdateDeploymentCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, deploymentName string, body EndpointDeploymentResourcePropertiesBasicResource, options *ConnectionClientBeginCreateOrUpdateDeploymentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/deployments/{deploymentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -188,9 +188,6 @@ func (client *ConnectionClient) deleteDeployment(ctx context.Context, resourceGr
 // deleteDeploymentCreateRequest creates the DeleteDeployment request.
 func (client *ConnectionClient) deleteDeploymentCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, deploymentName string, options *ConnectionClientBeginDeleteDeploymentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/deployments/{deploymentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -248,9 +245,6 @@ func (client *ConnectionClient) GetAllModels(ctx context.Context, resourceGroupN
 // getAllModelsCreateRequest creates the GetAllModels request.
 func (client *ConnectionClient) getAllModelsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, _ *ConnectionClientGetAllModelsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/listConnectionModels"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -313,9 +307,6 @@ func (client *ConnectionClient) GetDeployment(ctx context.Context, resourceGroup
 // getDeploymentCreateRequest creates the GetDeployment request.
 func (client *ConnectionClient) getDeploymentCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, deploymentName string, _ *ConnectionClientGetDeploymentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/deployments/{deploymentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -396,9 +387,6 @@ func (client *ConnectionClient) getModelsCreateRequest(ctx context.Context, reso
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/models"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -483,9 +471,6 @@ func (client *ConnectionClient) listDeploymentsCreateRequest(ctx context.Context
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/deployments"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")

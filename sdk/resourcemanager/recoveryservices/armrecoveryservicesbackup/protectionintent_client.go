@@ -30,6 +30,9 @@ type ProtectionIntentClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProtectionIntentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectionIntentClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,9 +69,6 @@ func (client *ProtectionIntentClient) CreateOrUpdate(ctx context.Context, vaultN
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ProtectionIntentClient) createOrUpdateCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, intentObjectName string, parameters ProtectionIntentResource, _ *ProtectionIntentClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -140,9 +140,6 @@ func (client *ProtectionIntentClient) Delete(ctx context.Context, vaultName stri
 // deleteCreateRequest creates the Delete request.
 func (client *ProtectionIntentClient) deleteCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, intentObjectName string, _ *ProtectionIntentClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -196,9 +193,6 @@ func (client *ProtectionIntentClient) Get(ctx context.Context, vaultName string,
 // getCreateRequest creates the Get request.
 func (client *ProtectionIntentClient) getCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, intentObjectName string, _ *ProtectionIntentClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/backupProtectionIntent/{intentObjectName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if vaultName == "" {
 		return nil, errors.New("parameter vaultName cannot be empty")
@@ -275,9 +269,6 @@ func (client *ProtectionIntentClient) Validate(ctx context.Context, azureRegion 
 // validateCreateRequest creates the Validate request.
 func (client *ProtectionIntentClient) validateCreateRequest(ctx context.Context, azureRegion string, parameters PreValidateEnableBackupRequest, _ *ProtectionIntentClientValidateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupPreValidateProtection"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if azureRegion == "" {
 		return nil, errors.New("parameter azureRegion cannot be empty")

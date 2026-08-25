@@ -30,6 +30,9 @@ type NetworkBootstrapDevicesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNetworkBootstrapDevicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkBootstrapDevicesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -90,9 +93,6 @@ func (client *NetworkBootstrapDevicesClient) create(ctx context.Context, resourc
 // createCreateRequest creates the Create request.
 func (client *NetworkBootstrapDevicesClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, body NetworkBootstrapDevice, _ *NetworkBootstrapDevicesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -165,9 +165,6 @@ func (client *NetworkBootstrapDevicesClient) deleteOperation(ctx context.Context
 // deleteCreateRequest creates the Delete request.
 func (client *NetworkBootstrapDevicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, _ *NetworkBootstrapDevicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -213,9 +210,6 @@ func (client *NetworkBootstrapDevicesClient) Get(ctx context.Context, resourceGr
 // getCreateRequest creates the Get request.
 func (client *NetworkBootstrapDevicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, _ *NetworkBootstrapDevicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -284,9 +278,6 @@ func (client *NetworkBootstrapDevicesClient) listByResourceGroupCreateRequest(ct
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -355,9 +346,6 @@ func (client *NetworkBootstrapDevicesClient) listBySubscriptionCreateRequest(ctx
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -435,9 +423,6 @@ func (client *NetworkBootstrapDevicesClient) reboot(ctx context.Context, resourc
 // rebootCreateRequest creates the Reboot request.
 func (client *NetworkBootstrapDevicesClient) rebootCreateRequest(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, _ *NetworkBootstrapDevicesClientBeginRebootOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}/reboot"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -506,9 +491,6 @@ func (client *NetworkBootstrapDevicesClient) refreshConfiguration(ctx context.Co
 // refreshConfigurationCreateRequest creates the RefreshConfiguration request.
 func (client *NetworkBootstrapDevicesClient) refreshConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, _ *NetworkBootstrapDevicesClientBeginRefreshConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}/refreshConfiguration"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -583,9 +565,6 @@ func (client *NetworkBootstrapDevicesClient) resyncPasswords(ctx context.Context
 // resyncPasswordsCreateRequest creates the ResyncPasswords request.
 func (client *NetworkBootstrapDevicesClient) resyncPasswordsCreateRequest(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, _ *NetworkBootstrapDevicesClientBeginResyncPasswordsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}/resyncPasswords"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -655,9 +634,6 @@ func (client *NetworkBootstrapDevicesClient) update(ctx context.Context, resourc
 // updateCreateRequest creates the Update request.
 func (client *NetworkBootstrapDevicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, body NetworkBootstrapDevicePatch, _ *NetworkBootstrapDevicesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -731,9 +707,6 @@ func (client *NetworkBootstrapDevicesClient) updateAdministrativeState(ctx conte
 // updateAdministrativeStateCreateRequest creates the UpdateAdministrativeState request.
 func (client *NetworkBootstrapDevicesClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, body UpdateDeviceAdministrativeState, _ *NetworkBootstrapDevicesClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}/updateAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -807,9 +780,6 @@ func (client *NetworkBootstrapDevicesClient) upgrade(ctx context.Context, resour
 // upgradeCreateRequest creates the Upgrade request.
 func (client *NetworkBootstrapDevicesClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, body UpdateVersion, _ *NetworkBootstrapDevicesClientBeginUpgradeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}/upgrade"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

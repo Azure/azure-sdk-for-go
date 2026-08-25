@@ -30,6 +30,9 @@ type EdgeActionVersionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEdgeActionVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeActionVersionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -91,9 +94,6 @@ func (client *EdgeActionVersionsClient) create(ctx context.Context, resourceGrou
 // createCreateRequest creates the Create request.
 func (client *EdgeActionVersionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, resource EdgeActionVersion, _ *EdgeActionVersionsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -171,9 +171,6 @@ func (client *EdgeActionVersionsClient) deleteOperation(ctx context.Context, res
 // deleteCreateRequest creates the Delete request.
 func (client *EdgeActionVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, _ *EdgeActionVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -245,9 +242,6 @@ func (client *EdgeActionVersionsClient) deployVersionCode(ctx context.Context, r
 // deployVersionCodeCreateRequest creates the DeployVersionCode request.
 func (client *EdgeActionVersionsClient) deployVersionCodeCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, body VersionCode, _ *EdgeActionVersionsClientBeginDeployVersionCodeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}/deployVersionCode"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -302,9 +296,6 @@ func (client *EdgeActionVersionsClient) Get(ctx context.Context, resourceGroupNa
 // getCreateRequest creates the Get request.
 func (client *EdgeActionVersionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, _ *EdgeActionVersionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -390,9 +381,6 @@ func (client *EdgeActionVersionsClient) getVersionCode(ctx context.Context, reso
 // getVersionCodeCreateRequest creates the GetVersionCode request.
 func (client *EdgeActionVersionsClient) getVersionCodeCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, _ *EdgeActionVersionsClientBeginGetVersionCodeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}/getVersionCode"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -454,9 +442,6 @@ func (client *EdgeActionVersionsClient) listByEdgeActionCreateRequest(ctx contex
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -543,9 +528,6 @@ func (client *EdgeActionVersionsClient) swapDefault(ctx context.Context, resourc
 // swapDefaultCreateRequest creates the SwapDefault request.
 func (client *EdgeActionVersionsClient) swapDefaultCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, _ *EdgeActionVersionsClientBeginSwapDefaultOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}/swapDefault"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -619,9 +601,6 @@ func (client *EdgeActionVersionsClient) update(ctx context.Context, resourceGrou
 // updateCreateRequest creates the Update request.
 func (client *EdgeActionVersionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, edgeActionName string, version string, properties EdgeActionVersionUpdate, _ *EdgeActionVersionsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/edgeActions/{edgeActionName}/versions/{version}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

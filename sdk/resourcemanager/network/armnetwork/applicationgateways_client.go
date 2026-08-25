@@ -30,6 +30,9 @@ type ApplicationGatewaysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewApplicationGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationGatewaysClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -89,9 +92,6 @@ func (client *ApplicationGatewaysClient) backendHealth(ctx context.Context, reso
 // backendHealthCreateRequest creates the BackendHealth request.
 func (client *ApplicationGatewaysClient) backendHealthCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, options *ApplicationGatewaysClientBeginBackendHealthOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendhealth"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -166,9 +166,6 @@ func (client *ApplicationGatewaysClient) backendHealthOnDemand(ctx context.Conte
 // backendHealthOnDemandCreateRequest creates the BackendHealthOnDemand request.
 func (client *ApplicationGatewaysClient) backendHealthOnDemandCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, probeRequest ApplicationGatewayOnDemandProbe, options *ApplicationGatewaysClientBeginBackendHealthOnDemandOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/getBackendHealthOnDemand"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -245,9 +242,6 @@ func (client *ApplicationGatewaysClient) createOrUpdate(ctx context.Context, res
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ApplicationGatewaysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters ApplicationGateway, _ *ApplicationGatewaysClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -320,9 +314,6 @@ func (client *ApplicationGatewaysClient) deleteOperation(ctx context.Context, re
 // deleteCreateRequest creates the Delete request.
 func (client *ApplicationGatewaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, _ *ApplicationGatewaysClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -367,9 +358,6 @@ func (client *ApplicationGatewaysClient) Get(ctx context.Context, resourceGroupN
 // getCreateRequest creates the Get request.
 func (client *ApplicationGatewaysClient) getCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, _ *ApplicationGatewaysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -427,9 +415,6 @@ func (client *ApplicationGatewaysClient) GetSSLPredefinedPolicy(ctx context.Cont
 // getSSLPredefinedPolicyCreateRequest creates the GetSSLPredefinedPolicy request.
 func (client *ApplicationGatewaysClient) getSSLPredefinedPolicyCreateRequest(ctx context.Context, predefinedPolicyName string, _ *ApplicationGatewaysClientGetSSLPredefinedPolicyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableSslOptions/default/predefinedPolicies/{predefinedPolicyName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if predefinedPolicyName == "" {
 		return nil, errors.New("parameter predefinedPolicyName cannot be empty")
@@ -494,9 +479,6 @@ func (client *ApplicationGatewaysClient) listCreateRequest(ctx context.Context, 
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -565,9 +547,6 @@ func (client *ApplicationGatewaysClient) listAllCreateRequest(ctx context.Contex
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGateways"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -621,9 +600,6 @@ func (client *ApplicationGatewaysClient) ListAvailableRequestHeaders(ctx context
 // listAvailableRequestHeadersCreateRequest creates the ListAvailableRequestHeaders request.
 func (client *ApplicationGatewaysClient) listAvailableRequestHeadersCreateRequest(ctx context.Context, _ *ApplicationGatewaysClientListAvailableRequestHeadersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableRequestHeaders"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -672,9 +648,6 @@ func (client *ApplicationGatewaysClient) ListAvailableResponseHeaders(ctx contex
 // listAvailableResponseHeadersCreateRequest creates the ListAvailableResponseHeaders request.
 func (client *ApplicationGatewaysClient) listAvailableResponseHeadersCreateRequest(ctx context.Context, _ *ApplicationGatewaysClientListAvailableResponseHeadersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableResponseHeaders"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -723,9 +696,6 @@ func (client *ApplicationGatewaysClient) ListAvailableSSLOptions(ctx context.Con
 // listAvailableSSLOptionsCreateRequest creates the ListAvailableSSLOptions request.
 func (client *ApplicationGatewaysClient) listAvailableSSLOptionsCreateRequest(ctx context.Context, _ *ApplicationGatewaysClientListAvailableSSLOptionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableSslOptions/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -785,9 +755,6 @@ func (client *ApplicationGatewaysClient) listAvailableSSLPredefinedPoliciesCreat
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableSslOptions/default/predefinedPolicies"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -841,9 +808,6 @@ func (client *ApplicationGatewaysClient) ListAvailableServerVariables(ctx contex
 // listAvailableServerVariablesCreateRequest creates the ListAvailableServerVariables request.
 func (client *ApplicationGatewaysClient) listAvailableServerVariablesCreateRequest(ctx context.Context, _ *ApplicationGatewaysClientListAvailableServerVariablesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableServerVariables"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -892,9 +856,6 @@ func (client *ApplicationGatewaysClient) ListAvailableWafRuleSets(ctx context.Co
 // listAvailableWafRuleSetsCreateRequest creates the ListAvailableWafRuleSets request.
 func (client *ApplicationGatewaysClient) listAvailableWafRuleSetsCreateRequest(ctx context.Context, _ *ApplicationGatewaysClientListAvailableWafRuleSetsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableWafRuleSets"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -967,9 +928,6 @@ func (client *ApplicationGatewaysClient) start(ctx context.Context, resourceGrou
 // startCreateRequest creates the Start request.
 func (client *ApplicationGatewaysClient) startCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, _ *ApplicationGatewaysClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/start"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1037,9 +995,6 @@ func (client *ApplicationGatewaysClient) stop(ctx context.Context, resourceGroup
 // stopCreateRequest creates the Stop request.
 func (client *ApplicationGatewaysClient) stopCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, _ *ApplicationGatewaysClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/stop"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1086,9 +1041,6 @@ func (client *ApplicationGatewaysClient) UpdateTags(ctx context.Context, resourc
 // updateTagsCreateRequest creates the UpdateTags request.
 func (client *ApplicationGatewaysClient) updateTagsCreateRequest(ctx context.Context, resourceGroupName string, applicationGatewayName string, parameters TagsObject, _ *ApplicationGatewaysClientUpdateTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

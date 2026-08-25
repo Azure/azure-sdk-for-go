@@ -30,6 +30,9 @@ type AutonomousDatabaseNationalCharacterSetsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAutonomousDatabaseNationalCharacterSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutonomousDatabaseNationalCharacterSetsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,9 +70,6 @@ func (client *AutonomousDatabaseNationalCharacterSetsClient) Get(ctx context.Con
 // getCreateRequest creates the Get request.
 func (client *AutonomousDatabaseNationalCharacterSetsClient) getCreateRequest(ctx context.Context, location string, adbsncharsetname string, _ *AutonomousDatabaseNationalCharacterSetsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/autonomousDatabaseNationalCharacterSets/{adbsncharsetname}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -138,9 +138,6 @@ func (client *AutonomousDatabaseNationalCharacterSetsClient) listByLocationCreat
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/autonomousDatabaseNationalCharacterSets"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if location == "" {
 			return nil, errors.New("parameter location cannot be empty")

@@ -30,6 +30,9 @@ type FileWorkspacesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFileWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FileWorkspacesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,9 +68,6 @@ func (client *FileWorkspacesClient) Create(ctx context.Context, fileWorkspaceNam
 // createCreateRequest creates the Create request.
 func (client *FileWorkspacesClient) createCreateRequest(ctx context.Context, fileWorkspaceName string, _ *FileWorkspacesClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/fileWorkspaces/{fileWorkspaceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if fileWorkspaceName == "" {
 		return nil, errors.New("parameter fileWorkspaceName cannot be empty")
@@ -120,9 +120,6 @@ func (client *FileWorkspacesClient) Get(ctx context.Context, fileWorkspaceName s
 // getCreateRequest creates the Get request.
 func (client *FileWorkspacesClient) getCreateRequest(ctx context.Context, fileWorkspaceName string, _ *FileWorkspacesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/fileWorkspaces/{fileWorkspaceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if fileWorkspaceName == "" {
 		return nil, errors.New("parameter fileWorkspaceName cannot be empty")

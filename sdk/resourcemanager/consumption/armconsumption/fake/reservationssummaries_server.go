@@ -103,7 +103,7 @@ func (r *ReservationsSummariesServerTransport) dispatchNewListPager(req *http.Re
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceScope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Consumption/reservationSummaries`
+		const regexStr = `/(?P<resourceScope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Consumption/reservationSummaries`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -156,7 +156,7 @@ func (r *ReservationsSummariesServerTransport) dispatchNewListByReservationOrder
 	}
 	newListByReservationOrderPager := r.newListByReservationOrderPager.get(req)
 	if newListByReservationOrderPager == nil {
-		const regexStr = `/providers/Microsoft\.Capacity/reservationorders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Consumption/reservationSummaries`
+		const regexStr = `/providers/Microsoft\.Capacity/reservationorders/(?P<reservationOrderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Consumption/reservationSummaries`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -201,7 +201,7 @@ func (r *ReservationsSummariesServerTransport) dispatchNewListByReservationOrder
 	}
 	newListByReservationOrderAndReservationPager := r.newListByReservationOrderAndReservationPager.get(req)
 	if newListByReservationOrderAndReservationPager == nil {
-		const regexStr = `/providers/Microsoft\.Capacity/reservationorders/(?P<reservationOrderId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reservations/(?P<reservationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Consumption/reservationSummaries`
+		const regexStr = `/providers/Microsoft\.Capacity/reservationorders/(?P<reservationOrderId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reservations/(?P<reservationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Consumption/reservationSummaries`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

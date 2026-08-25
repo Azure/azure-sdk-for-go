@@ -31,6 +31,9 @@ type DomainsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDomainsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DomainsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,9 +72,6 @@ func (client *DomainsClient) CheckAvailability(ctx context.Context, identifier N
 // checkAvailabilityCreateRequest creates the CheckAvailability request.
 func (client *DomainsClient) checkAvailabilityCreateRequest(ctx context.Context, identifier NameIdentifier, _ *DomainsClientCheckAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/checkDomainAvailability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -153,9 +153,6 @@ func (client *DomainsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, domainName string, domain Domain, _ *DomainsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -211,9 +208,6 @@ func (client *DomainsClient) CreateOrUpdateOwnershipIdentifier(ctx context.Conte
 // createOrUpdateOwnershipIdentifierCreateRequest creates the CreateOrUpdateOwnershipIdentifier request.
 func (client *DomainsClient) createOrUpdateOwnershipIdentifierCreateRequest(ctx context.Context, resourceGroupName string, domainName string, name string, domainOwnershipIdentifier DomainOwnershipIdentifier, _ *DomainsClientCreateOrUpdateOwnershipIdentifierOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -284,9 +278,6 @@ func (client *DomainsClient) Delete(ctx context.Context, resourceGroupName strin
 // deleteCreateRequest creates the Delete request.
 func (client *DomainsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, domainName string, options *DomainsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -341,9 +332,6 @@ func (client *DomainsClient) DeleteOwnershipIdentifier(ctx context.Context, reso
 // deleteOwnershipIdentifierCreateRequest creates the DeleteOwnershipIdentifier request.
 func (client *DomainsClient) deleteOwnershipIdentifierCreateRequest(ctx context.Context, resourceGroupName string, domainName string, name string, _ *DomainsClientDeleteOwnershipIdentifierOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -394,9 +382,6 @@ func (client *DomainsClient) Get(ctx context.Context, resourceGroupName string, 
 // getCreateRequest creates the Get request.
 func (client *DomainsClient) getCreateRequest(ctx context.Context, resourceGroupName string, domainName string, _ *DomainsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -455,9 +440,6 @@ func (client *DomainsClient) GetControlCenterSsoRequest(ctx context.Context, opt
 // getControlCenterSsoRequestCreateRequest creates the GetControlCenterSsoRequest request.
 func (client *DomainsClient) getControlCenterSsoRequestCreateRequest(ctx context.Context, _ *DomainsClientGetControlCenterSsoRequestOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/generateSsoRequest"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
@@ -511,9 +493,6 @@ func (client *DomainsClient) GetOwnershipIdentifier(ctx context.Context, resourc
 // getOwnershipIdentifierCreateRequest creates the GetOwnershipIdentifier request.
 func (client *DomainsClient) getOwnershipIdentifierCreateRequest(ctx context.Context, resourceGroupName string, domainName string, name string, _ *DomainsClientGetOwnershipIdentifierOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -586,9 +565,6 @@ func (client *DomainsClient) listCreateRequest(ctx context.Context, nextLink str
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -656,9 +632,6 @@ func (client *DomainsClient) listByResourceGroupCreateRequest(ctx context.Contex
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -731,9 +704,6 @@ func (client *DomainsClient) listOwnershipIdentifiersCreateRequest(ctx context.C
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -809,9 +779,6 @@ func (client *DomainsClient) listRecommendationsCreateRequest(ctx context.Contex
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/listDomainRecommendations"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -875,9 +842,6 @@ func (client *DomainsClient) Renew(ctx context.Context, resourceGroupName string
 // renewCreateRequest creates the Renew request.
 func (client *DomainsClient) renewCreateRequest(ctx context.Context, resourceGroupName string, domainName string, _ *DomainsClientRenewOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/renew"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -924,9 +888,6 @@ func (client *DomainsClient) TransferOut(ctx context.Context, resourceGroupName 
 // transferOutCreateRequest creates the TransferOut request.
 func (client *DomainsClient) transferOutCreateRequest(ctx context.Context, resourceGroupName string, domainName string, _ *DomainsClientTransferOutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/transferOut"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -987,9 +948,6 @@ func (client *DomainsClient) Update(ctx context.Context, resourceGroupName strin
 // updateCreateRequest creates the Update request.
 func (client *DomainsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, domainName string, domain DomainPatchResource, _ *DomainsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1057,9 +1015,6 @@ func (client *DomainsClient) UpdateOwnershipIdentifier(ctx context.Context, reso
 // updateOwnershipIdentifierCreateRequest creates the UpdateOwnershipIdentifier request.
 func (client *DomainsClient) updateOwnershipIdentifierCreateRequest(ctx context.Context, resourceGroupName string, domainName string, name string, domainOwnershipIdentifier DomainOwnershipIdentifier, _ *DomainsClientUpdateOwnershipIdentifierOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}/domainOwnershipIdentifiers/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

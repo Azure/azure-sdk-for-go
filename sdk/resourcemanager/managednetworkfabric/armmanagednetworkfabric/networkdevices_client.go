@@ -30,6 +30,9 @@ type NetworkDevicesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNetworkDevicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkDevicesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -90,9 +93,6 @@ func (client *NetworkDevicesClient) create(ctx context.Context, resourceGroupNam
 // createCreateRequest creates the Create request.
 func (client *NetworkDevicesClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, body NetworkDevice, _ *NetworkDevicesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -165,9 +165,6 @@ func (client *NetworkDevicesClient) deleteOperation(ctx context.Context, resourc
 // deleteCreateRequest creates the Delete request.
 func (client *NetworkDevicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, _ *NetworkDevicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -212,9 +209,6 @@ func (client *NetworkDevicesClient) Get(ctx context.Context, resourceGroupName s
 // getCreateRequest creates the Get request.
 func (client *NetworkDevicesClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, _ *NetworkDevicesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -283,9 +277,6 @@ func (client *NetworkDevicesClient) listByResourceGroupCreateRequest(ctx context
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -354,9 +345,6 @@ func (client *NetworkDevicesClient) listBySubscriptionCreateRequest(ctx context.
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetworkFabric/networkDevices"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -435,9 +423,6 @@ func (client *NetworkDevicesClient) reboot(ctx context.Context, resourceGroupNam
 // rebootCreateRequest creates the Reboot request.
 func (client *NetworkDevicesClient) rebootCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, body RebootProperties, _ *NetworkDevicesClientBeginRebootOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/reboot"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -510,9 +495,6 @@ func (client *NetworkDevicesClient) refreshConfiguration(ctx context.Context, re
 // refreshConfigurationCreateRequest creates the RefreshConfiguration request.
 func (client *NetworkDevicesClient) refreshConfigurationCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, _ *NetworkDevicesClientBeginRefreshConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/refreshConfiguration"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -587,9 +569,6 @@ func (client *NetworkDevicesClient) resyncCertificates(ctx context.Context, reso
 // resyncCertificatesCreateRequest creates the ResyncCertificates request.
 func (client *NetworkDevicesClient) resyncCertificatesCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, _ *NetworkDevicesClientBeginResyncCertificatesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/resyncCertificates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -664,9 +643,6 @@ func (client *NetworkDevicesClient) resyncPasswords(ctx context.Context, resourc
 // resyncPasswordsCreateRequest creates the ResyncPasswords request.
 func (client *NetworkDevicesClient) resyncPasswordsCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, _ *NetworkDevicesClientBeginResyncPasswordsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/resyncPasswords"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -736,9 +712,6 @@ func (client *NetworkDevicesClient) runRoCommand(ctx context.Context, resourceGr
 // runRoCommandCreateRequest creates the RunRoCommand request.
 func (client *NetworkDevicesClient) runRoCommandCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, body DeviceRoCommand, _ *NetworkDevicesClientBeginRunRoCommandOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/runRoCommand"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -812,9 +785,6 @@ func (client *NetworkDevicesClient) runRwCommand(ctx context.Context, resourceGr
 // runRwCommandCreateRequest creates the RunRwCommand request.
 func (client *NetworkDevicesClient) runRwCommandCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, body DeviceRwCommand, _ *NetworkDevicesClientBeginRunRwCommandOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/runRwCommand"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -888,9 +858,6 @@ func (client *NetworkDevicesClient) update(ctx context.Context, resourceGroupNam
 // updateCreateRequest creates the Update request.
 func (client *NetworkDevicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, body NetworkDevicePatchParameters, _ *NetworkDevicesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -964,9 +931,6 @@ func (client *NetworkDevicesClient) updateAdministrativeState(ctx context.Contex
 // updateAdministrativeStateCreateRequest creates the UpdateAdministrativeState request.
 func (client *NetworkDevicesClient) updateAdministrativeStateCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, body UpdateDeviceAdministrativeState, _ *NetworkDevicesClientBeginUpdateAdministrativeStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/updateAdministrativeState"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1040,9 +1004,6 @@ func (client *NetworkDevicesClient) upgrade(ctx context.Context, resourceGroupNa
 // upgradeCreateRequest creates the Upgrade request.
 func (client *NetworkDevicesClient) upgradeCreateRequest(ctx context.Context, resourceGroupName string, networkDeviceName string, body NetworkDeviceUpgradeRequest, _ *NetworkDevicesClientBeginUpgradeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkDevices/{networkDeviceName}/upgrade"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

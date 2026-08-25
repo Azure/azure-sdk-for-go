@@ -30,6 +30,9 @@ type ReplicationRecoveryPlansClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewReplicationRecoveryPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationRecoveryPlansClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -95,9 +98,6 @@ func (client *ReplicationRecoveryPlansClient) create(ctx context.Context, resour
 // createCreateRequest creates the Create request.
 func (client *ReplicationRecoveryPlansClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input CreateRecoveryPlanInput, _ *ReplicationRecoveryPlansClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -179,9 +179,6 @@ func (client *ReplicationRecoveryPlansClient) deleteOperation(ctx context.Contex
 // deleteCreateRequest creates the Delete request.
 func (client *ReplicationRecoveryPlansClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, _ *ReplicationRecoveryPlansClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -258,9 +255,6 @@ func (client *ReplicationRecoveryPlansClient) failoverCancel(ctx context.Context
 // failoverCancelCreateRequest creates the FailoverCancel request.
 func (client *ReplicationRecoveryPlansClient) failoverCancelCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, _ *ReplicationRecoveryPlansClientBeginFailoverCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/failoverCancel"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -338,9 +332,6 @@ func (client *ReplicationRecoveryPlansClient) failoverCommit(ctx context.Context
 // failoverCommitCreateRequest creates the FailoverCommit request.
 func (client *ReplicationRecoveryPlansClient) failoverCommitCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, _ *ReplicationRecoveryPlansClientBeginFailoverCommitOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/failoverCommit"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -394,9 +385,6 @@ func (client *ReplicationRecoveryPlansClient) Get(ctx context.Context, resourceG
 // getCreateRequest creates the Get request.
 func (client *ReplicationRecoveryPlansClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, _ *ReplicationRecoveryPlansClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -472,9 +460,6 @@ func (client *ReplicationRecoveryPlansClient) listCreateRequest(ctx context.Cont
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -566,9 +551,6 @@ func (client *ReplicationRecoveryPlansClient) plannedFailover(ctx context.Contex
 // plannedFailoverCreateRequest creates the PlannedFailover request.
 func (client *ReplicationRecoveryPlansClient) plannedFailoverCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanPlannedFailoverInput, _ *ReplicationRecoveryPlansClientBeginPlannedFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/plannedFailover"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -650,9 +632,6 @@ func (client *ReplicationRecoveryPlansClient) reprotect(ctx context.Context, res
 // reprotectCreateRequest creates the Reprotect request.
 func (client *ReplicationRecoveryPlansClient) reprotectCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, _ *ReplicationRecoveryPlansClientBeginReprotectOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/reProtect"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -731,9 +710,6 @@ func (client *ReplicationRecoveryPlansClient) testFailover(ctx context.Context, 
 // testFailoverCreateRequest creates the TestFailover request.
 func (client *ReplicationRecoveryPlansClient) testFailoverCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanTestFailoverInput, _ *ReplicationRecoveryPlansClientBeginTestFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/testFailover"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -816,9 +792,6 @@ func (client *ReplicationRecoveryPlansClient) testFailoverCleanup(ctx context.Co
 // testFailoverCleanupCreateRequest creates the TestFailoverCleanup request.
 func (client *ReplicationRecoveryPlansClient) testFailoverCleanupCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanTestFailoverCleanupInput, _ *ReplicationRecoveryPlansClientBeginTestFailoverCleanupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/testFailoverCleanup"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -901,9 +874,6 @@ func (client *ReplicationRecoveryPlansClient) unplannedFailover(ctx context.Cont
 // unplannedFailoverCreateRequest creates the UnplannedFailover request.
 func (client *ReplicationRecoveryPlansClient) unplannedFailoverCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input RecoveryPlanUnplannedFailoverInput, _ *ReplicationRecoveryPlansClientBeginUnplannedFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}/unplannedFailover"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -986,9 +956,6 @@ func (client *ReplicationRecoveryPlansClient) update(ctx context.Context, resour
 // updateCreateRequest creates the Update request.
 func (client *ReplicationRecoveryPlansClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, recoveryPlanName string, input UpdateRecoveryPlanInput, _ *ReplicationRecoveryPlansClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationRecoveryPlans/{recoveryPlanName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

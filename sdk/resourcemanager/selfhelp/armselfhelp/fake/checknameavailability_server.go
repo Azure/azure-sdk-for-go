@@ -82,7 +82,7 @@ func (c *CheckNameAvailabilityServerTransport) dispatchCheckAvailability(req *ht
 	if c.srv.CheckAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckAvailability not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Help/checkNameAvailability`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Help/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

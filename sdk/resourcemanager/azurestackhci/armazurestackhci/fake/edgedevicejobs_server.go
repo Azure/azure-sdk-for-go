@@ -110,7 +110,7 @@ func (e *EdgeDeviceJobsServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 	}
 	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jobs/(?P<jobsName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobs/(?P<jobsName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -166,7 +166,7 @@ func (e *EdgeDeviceJobsServerTransport) dispatchBeginDelete(req *http.Request) (
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jobs/(?P<jobsName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobs/(?P<jobsName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -212,7 +212,7 @@ func (e *EdgeDeviceJobsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jobs/(?P<jobsName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobs/(?P<jobsName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -251,7 +251,7 @@ func (e *EdgeDeviceJobsServerTransport) dispatchNewListByEdgeDevicePager(req *ht
 	}
 	newListByEdgeDevicePager := e.newListByEdgeDevicePager.get(req)
 	if newListByEdgeDevicePager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jobs`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/edgeDevices/(?P<edgeDeviceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobs`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

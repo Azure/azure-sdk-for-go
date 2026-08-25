@@ -95,7 +95,7 @@ func (g *GenerateCostDetailsReportServerTransport) dispatchBeginCreateOperation(
 	}
 	beginCreateOperation := g.beginCreateOperation.get(req)
 	if beginCreateOperation == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/generateCostDetailsReport`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/generateCostDetailsReport`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -139,7 +139,7 @@ func (g *GenerateCostDetailsReportServerTransport) dispatchBeginGetOperationResu
 	}
 	beginGetOperationResults := g.beginGetOperationResults.get(req)
 	if beginGetOperationResults == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/costDetailsOperationResults/(?P<operationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/costDetailsOperationResults/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

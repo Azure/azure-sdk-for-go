@@ -30,6 +30,9 @@ type ThreatIntelligenceIndicatorClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewThreatIntelligenceIndicatorClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ThreatIntelligenceIndicatorClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -72,9 +75,6 @@ func (client *ThreatIntelligenceIndicatorClient) AppendTags(ctx context.Context,
 // appendTagsCreateRequest creates the AppendTags request.
 func (client *ThreatIntelligenceIndicatorClient) appendTagsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceAppendTags ThreatIntelligenceAppendTags, _ *ThreatIntelligenceIndicatorClientAppendTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}/appendTags"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -130,9 +130,6 @@ func (client *ThreatIntelligenceIndicatorClient) Create(ctx context.Context, res
 // createCreateRequest creates the Create request.
 func (client *ThreatIntelligenceIndicatorClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceProperties ThreatIntelligenceIndicatorModel, _ *ThreatIntelligenceIndicatorClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -200,9 +197,6 @@ func (client *ThreatIntelligenceIndicatorClient) CreateIndicator(ctx context.Con
 // createIndicatorCreateRequest creates the CreateIndicator request.
 func (client *ThreatIntelligenceIndicatorClient) createIndicatorCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, threatIntelligenceProperties ThreatIntelligenceIndicatorModel, _ *ThreatIntelligenceIndicatorClientCreateIndicatorOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/createIndicator"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -269,9 +263,6 @@ func (client *ThreatIntelligenceIndicatorClient) Delete(ctx context.Context, res
 // deleteCreateRequest creates the Delete request.
 func (client *ThreatIntelligenceIndicatorClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, _ *ThreatIntelligenceIndicatorClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -322,9 +313,6 @@ func (client *ThreatIntelligenceIndicatorClient) Get(ctx context.Context, resour
 // getCreateRequest creates the Get request.
 func (client *ThreatIntelligenceIndicatorClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, _ *ThreatIntelligenceIndicatorClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -399,9 +387,6 @@ func (client *ThreatIntelligenceIndicatorClient) queryIndicatorsCreateRequest(ct
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/queryIndicators"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -471,9 +456,6 @@ func (client *ThreatIntelligenceIndicatorClient) ReplaceTags(ctx context.Context
 // replaceTagsCreateRequest creates the ReplaceTags request.
 func (client *ThreatIntelligenceIndicatorClient) replaceTagsCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, threatIntelligenceReplaceTags ThreatIntelligenceIndicatorModel, _ *ThreatIntelligenceIndicatorClientReplaceTagsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/threatIntelligence/main/indicators/{name}/replaceTags"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

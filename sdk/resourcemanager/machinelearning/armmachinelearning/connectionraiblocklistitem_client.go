@@ -30,6 +30,9 @@ type ConnectionRaiBlocklistItemClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConnectionRaiBlocklistItemClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectionRaiBlocklistItemClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -96,9 +99,6 @@ func (client *ConnectionRaiBlocklistItemClient) addBulk(ctx context.Context, res
 // addBulkCreateRequest creates the AddBulk request.
 func (client *ConnectionRaiBlocklistItemClient) addBulkCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiBlocklistName string, body []*RaiBlocklistItemBulkRequest, _ *ConnectionRaiBlocklistItemClientBeginAddBulkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiBlocklists/{raiBlocklistName}/addRaiBlocklistItems"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -186,9 +186,6 @@ func (client *ConnectionRaiBlocklistItemClient) create(ctx context.Context, reso
 // createCreateRequest creates the Create request.
 func (client *ConnectionRaiBlocklistItemClient) createCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiBlocklistName string, raiBlocklistItemName string, body RaiBlocklistItemPropertiesBasicResource, options *ConnectionRaiBlocklistItemClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -283,9 +280,6 @@ func (client *ConnectionRaiBlocklistItemClient) deleteOperation(ctx context.Cont
 // deleteCreateRequest creates the Delete request.
 func (client *ConnectionRaiBlocklistItemClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiBlocklistName string, raiBlocklistItemName string, options *ConnectionRaiBlocklistItemClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -375,9 +369,6 @@ func (client *ConnectionRaiBlocklistItemClient) deleteBulk(ctx context.Context, 
 // deleteBulkCreateRequest creates the DeleteBulk request.
 func (client *ConnectionRaiBlocklistItemClient) deleteBulkCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiBlocklistName string, body []*string, _ *ConnectionRaiBlocklistItemClientBeginDeleteBulkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiBlocklists/{raiBlocklistName}/deleteRaiBlocklistItems"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -440,9 +431,6 @@ func (client *ConnectionRaiBlocklistItemClient) Get(ctx context.Context, resourc
 // getCreateRequest creates the Get request.
 func (client *ConnectionRaiBlocklistItemClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, raiBlocklistName string, raiBlocklistItemName string, _ *ConnectionRaiBlocklistItemClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/connections/{connectionName}/raiBlocklists/{raiBlocklistName}/raiBlocklistItems/{raiBlocklistItemName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

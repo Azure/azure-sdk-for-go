@@ -81,7 +81,7 @@ func (b *BillingAccountServerTransport) dispatchGetPolicy(req *http.Request) (*h
 	if b.srv.GetPolicy == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetPolicy not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Subscription/policies/default`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Subscription/policies/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

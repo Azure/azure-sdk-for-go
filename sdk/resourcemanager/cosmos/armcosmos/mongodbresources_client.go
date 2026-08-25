@@ -30,6 +30,9 @@ type MongoDBResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMongoDBResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MongoDBResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -92,9 +95,6 @@ func (client *MongoDBResourcesClient) createUpdateMongoDBCollection(ctx context.
 // createUpdateMongoDBCollectionCreateRequest creates the CreateUpdateMongoDBCollection request.
 func (client *MongoDBResourcesClient) createUpdateMongoDBCollectionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, createUpdateMongoDBCollectionParameters MongoDBCollectionCreateUpdateParameters, _ *MongoDBResourcesClientBeginCreateUpdateMongoDBCollectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -177,9 +177,6 @@ func (client *MongoDBResourcesClient) createUpdateMongoDBDatabase(ctx context.Co
 // createUpdateMongoDBDatabaseCreateRequest creates the CreateUpdateMongoDBDatabase request.
 func (client *MongoDBResourcesClient) createUpdateMongoDBDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, createUpdateMongoDBDatabaseParameters MongoDBDatabaseCreateUpdateParameters, _ *MongoDBResourcesClientBeginCreateUpdateMongoDBDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -255,9 +252,6 @@ func (client *MongoDBResourcesClient) createUpdateMongoRoleDefinition(ctx contex
 // createUpdateMongoRoleDefinitionCreateRequest creates the CreateUpdateMongoRoleDefinition request.
 func (client *MongoDBResourcesClient) createUpdateMongoRoleDefinitionCreateRequest(ctx context.Context, mongoRoleDefinitionID string, resourceGroupName string, accountName string, createUpdateMongoRoleDefinitionParameters MongoRoleDefinitionCreateUpdateParameters, _ *MongoDBResourcesClientBeginCreateUpdateMongoRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbRoleDefinitions/{mongoRoleDefinitionId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if mongoRoleDefinitionID == "" {
 		return nil, errors.New("parameter mongoRoleDefinitionID cannot be empty")
@@ -333,9 +327,6 @@ func (client *MongoDBResourcesClient) createUpdateMongoUserDefinition(ctx contex
 // createUpdateMongoUserDefinitionCreateRequest creates the CreateUpdateMongoUserDefinition request.
 func (client *MongoDBResourcesClient) createUpdateMongoUserDefinitionCreateRequest(ctx context.Context, mongoUserDefinitionID string, resourceGroupName string, accountName string, createUpdateMongoUserDefinitionParameters MongoUserDefinitionCreateUpdateParameters, _ *MongoDBResourcesClientBeginCreateUpdateMongoUserDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbUserDefinitions/{mongoUserDefinitionId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if mongoUserDefinitionID == "" {
 		return nil, errors.New("parameter mongoUserDefinitionID cannot be empty")
@@ -414,9 +405,6 @@ func (client *MongoDBResourcesClient) deleteMongoDBCollection(ctx context.Contex
 // deleteMongoDBCollectionCreateRequest creates the DeleteMongoDBCollection request.
 func (client *MongoDBResourcesClient) deleteMongoDBCollectionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, _ *MongoDBResourcesClientBeginDeleteMongoDBCollectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -493,9 +481,6 @@ func (client *MongoDBResourcesClient) deleteMongoDBDatabase(ctx context.Context,
 // deleteMongoDBDatabaseCreateRequest creates the DeleteMongoDBDatabase request.
 func (client *MongoDBResourcesClient) deleteMongoDBDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *MongoDBResourcesClientBeginDeleteMongoDBDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -566,9 +551,6 @@ func (client *MongoDBResourcesClient) deleteMongoRoleDefinition(ctx context.Cont
 // deleteMongoRoleDefinitionCreateRequest creates the DeleteMongoRoleDefinition request.
 func (client *MongoDBResourcesClient) deleteMongoRoleDefinitionCreateRequest(ctx context.Context, mongoRoleDefinitionID string, resourceGroupName string, accountName string, _ *MongoDBResourcesClientBeginDeleteMongoRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbRoleDefinitions/{mongoRoleDefinitionId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if mongoRoleDefinitionID == "" {
 		return nil, errors.New("parameter mongoRoleDefinitionID cannot be empty")
@@ -639,9 +621,6 @@ func (client *MongoDBResourcesClient) deleteMongoUserDefinition(ctx context.Cont
 // deleteMongoUserDefinitionCreateRequest creates the DeleteMongoUserDefinition request.
 func (client *MongoDBResourcesClient) deleteMongoUserDefinitionCreateRequest(ctx context.Context, mongoUserDefinitionID string, resourceGroupName string, accountName string, _ *MongoDBResourcesClientBeginDeleteMongoUserDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbUserDefinitions/{mongoUserDefinitionId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if mongoUserDefinitionID == "" {
 		return nil, errors.New("parameter mongoUserDefinitionID cannot be empty")
@@ -693,9 +672,6 @@ func (client *MongoDBResourcesClient) GetMongoDBCollection(ctx context.Context, 
 // getMongoDBCollectionCreateRequest creates the GetMongoDBCollection request.
 func (client *MongoDBResourcesClient) getMongoDBCollectionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, _ *MongoDBResourcesClientGetMongoDBCollectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -765,9 +741,6 @@ func (client *MongoDBResourcesClient) GetMongoDBCollectionThroughput(ctx context
 // getMongoDBCollectionThroughputCreateRequest creates the GetMongoDBCollectionThroughput request.
 func (client *MongoDBResourcesClient) getMongoDBCollectionThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, _ *MongoDBResourcesClientGetMongoDBCollectionThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -835,9 +808,6 @@ func (client *MongoDBResourcesClient) GetMongoDBDatabase(ctx context.Context, re
 // getMongoDBDatabaseCreateRequest creates the GetMongoDBDatabase request.
 func (client *MongoDBResourcesClient) getMongoDBDatabaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *MongoDBResourcesClientGetMongoDBDatabaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -902,9 +872,6 @@ func (client *MongoDBResourcesClient) GetMongoDBDatabaseThroughput(ctx context.C
 // getMongoDBDatabaseThroughputCreateRequest creates the GetMongoDBDatabaseThroughput request.
 func (client *MongoDBResourcesClient) getMongoDBDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *MongoDBResourcesClientGetMongoDBDatabaseThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -966,9 +933,6 @@ func (client *MongoDBResourcesClient) GetMongoRoleDefinition(ctx context.Context
 // getMongoRoleDefinitionCreateRequest creates the GetMongoRoleDefinition request.
 func (client *MongoDBResourcesClient) getMongoRoleDefinitionCreateRequest(ctx context.Context, mongoRoleDefinitionID string, resourceGroupName string, accountName string, _ *MongoDBResourcesClientGetMongoRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbRoleDefinitions/{mongoRoleDefinitionId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if mongoRoleDefinitionID == "" {
 		return nil, errors.New("parameter mongoRoleDefinitionID cannot be empty")
@@ -1030,9 +994,6 @@ func (client *MongoDBResourcesClient) GetMongoUserDefinition(ctx context.Context
 // getMongoUserDefinitionCreateRequest creates the GetMongoUserDefinition request.
 func (client *MongoDBResourcesClient) getMongoUserDefinitionCreateRequest(ctx context.Context, mongoUserDefinitionID string, resourceGroupName string, accountName string, _ *MongoDBResourcesClientGetMongoUserDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbUserDefinitions/{mongoUserDefinitionId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if mongoUserDefinitionID == "" {
 		return nil, errors.New("parameter mongoUserDefinitionID cannot be empty")
@@ -1107,9 +1068,6 @@ func (client *MongoDBResourcesClient) listMongoDBCollectionsCreateRequest(ctx co
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1188,9 +1146,6 @@ func (client *MongoDBResourcesClient) listMongoDBDatabasesCreateRequest(ctx cont
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1265,9 +1220,6 @@ func (client *MongoDBResourcesClient) listMongoRoleDefinitionsCreateRequest(ctx 
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbRoleDefinitions"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1342,9 +1294,6 @@ func (client *MongoDBResourcesClient) listMongoUserDefinitionsCreateRequest(ctx 
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbUserDefinitions"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1432,9 +1381,6 @@ func (client *MongoDBResourcesClient) migrateMongoDBCollectionToAutoscale(ctx co
 // migrateMongoDBCollectionToAutoscaleCreateRequest creates the MigrateMongoDBCollectionToAutoscale request.
 func (client *MongoDBResourcesClient) migrateMongoDBCollectionToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, _ *MongoDBResourcesClientBeginMigrateMongoDBCollectionToAutoscaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default/migrateToAutoscale"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1514,9 +1460,6 @@ func (client *MongoDBResourcesClient) migrateMongoDBCollectionToManualThroughput
 // migrateMongoDBCollectionToManualThroughputCreateRequest creates the MigrateMongoDBCollectionToManualThroughput request.
 func (client *MongoDBResourcesClient) migrateMongoDBCollectionToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, _ *MongoDBResourcesClientBeginMigrateMongoDBCollectionToManualThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default/migrateToManualThroughput"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1594,9 +1537,6 @@ func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToAutoscale(ctx cont
 // migrateMongoDBDatabaseToAutoscaleCreateRequest creates the MigrateMongoDBDatabaseToAutoscale request.
 func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToAutoscaleCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *MongoDBResourcesClientBeginMigrateMongoDBDatabaseToAutoscaleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default/migrateToAutoscale"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1670,9 +1610,6 @@ func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToManualThroughput(c
 // migrateMongoDBDatabaseToManualThroughputCreateRequest creates the MigrateMongoDBDatabaseToManualThroughput request.
 func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToManualThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, _ *MongoDBResourcesClientBeginMigrateMongoDBDatabaseToManualThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default/migrateToManualThroughput"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1748,9 +1685,6 @@ func (client *MongoDBResourcesClient) retrieveContinuousBackupInformation(ctx co
 // retrieveContinuousBackupInformationCreateRequest creates the RetrieveContinuousBackupInformation request.
 func (client *MongoDBResourcesClient) retrieveContinuousBackupInformationCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, location ContinuousBackupRestoreLocation, _ *MongoDBResourcesClientBeginRetrieveContinuousBackupInformationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/retrieveContinuousBackupInformation"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1834,9 +1768,6 @@ func (client *MongoDBResourcesClient) updateMongoDBCollectionThroughput(ctx cont
 // updateMongoDBCollectionThroughputCreateRequest creates the UpdateMongoDBCollectionThroughput request.
 func (client *MongoDBResourcesClient) updateMongoDBCollectionThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, collectionName string, updateThroughputParameters ThroughputSettingsUpdateParameters, _ *MongoDBResourcesClientBeginUpdateMongoDBCollectionThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/collections/{collectionName}/throughputSettings/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -1919,9 +1850,6 @@ func (client *MongoDBResourcesClient) updateMongoDBDatabaseThroughput(ctx contex
 // updateMongoDBDatabaseThroughputCreateRequest creates the UpdateMongoDBDatabaseThroughput request.
 func (client *MongoDBResourcesClient) updateMongoDBDatabaseThroughputCreateRequest(ctx context.Context, resourceGroupName string, accountName string, databaseName string, updateThroughputParameters ThroughputSettingsUpdateParameters, _ *MongoDBResourcesClientBeginUpdateMongoDBDatabaseThroughputOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongodbDatabases/{databaseName}/throughputSettings/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

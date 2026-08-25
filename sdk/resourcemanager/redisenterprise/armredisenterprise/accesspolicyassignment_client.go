@@ -30,6 +30,9 @@ type AccessPolicyAssignmentClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccessPolicyAssignmentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccessPolicyAssignmentClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -94,9 +97,6 @@ func (client *AccessPolicyAssignmentClient) createUpdate(ctx context.Context, re
 // createUpdateCreateRequest creates the CreateUpdate request.
 func (client *AccessPolicyAssignmentClient) createUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, accessPolicyAssignmentName string, parameters AccessPolicyAssignment, _ *AccessPolicyAssignmentClientBeginCreateUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments/{accessPolicyAssignmentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -181,9 +181,6 @@ func (client *AccessPolicyAssignmentClient) deleteOperation(ctx context.Context,
 // deleteCreateRequest creates the Delete request.
 func (client *AccessPolicyAssignmentClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, accessPolicyAssignmentName string, _ *AccessPolicyAssignmentClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments/{accessPolicyAssignmentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -240,9 +237,6 @@ func (client *AccessPolicyAssignmentClient) Get(ctx context.Context, resourceGro
 // getCreateRequest creates the Get request.
 func (client *AccessPolicyAssignmentClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, accessPolicyAssignmentName string, _ *AccessPolicyAssignmentClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments/{accessPolicyAssignmentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -322,9 +316,6 @@ func (client *AccessPolicyAssignmentClient) listCreateRequest(ctx context.Contex
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/accessPolicyAssignments"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")

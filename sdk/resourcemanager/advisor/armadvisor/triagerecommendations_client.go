@@ -31,6 +31,9 @@ type TriageRecommendationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTriageRecommendationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TriageRecommendationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -73,9 +76,6 @@ func (client *TriageRecommendationsClient) ApproveTriageRecommendation(ctx conte
 // approveTriageRecommendationCreateRequest creates the ApproveTriageRecommendation request.
 func (client *TriageRecommendationsClient) approveTriageRecommendationCreateRequest(ctx context.Context, reviewID string, recommendationID string, _ *TriageRecommendationsClientApproveTriageRecommendationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/resiliencyReviews/{reviewId}/providers/Microsoft.Advisor/triageRecommendations/{recommendationId}/approve"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if reviewID == "" {
 		return nil, errors.New("parameter reviewID cannot be empty")
@@ -123,9 +123,6 @@ func (client *TriageRecommendationsClient) Get(ctx context.Context, reviewID str
 // getCreateRequest creates the Get request.
 func (client *TriageRecommendationsClient) getCreateRequest(ctx context.Context, reviewID string, recommendationID string, _ *TriageRecommendationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/resiliencyReviews/{reviewId}/providers/Microsoft.Advisor/triageRecommendations/{recommendationId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if reviewID == "" {
 		return nil, errors.New("parameter reviewID cannot be empty")
@@ -196,9 +193,6 @@ func (client *TriageRecommendationsClient) listCreateRequest(ctx context.Context
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/resiliencyReviews/{reviewId}/providers/Microsoft.Advisor/triageRecommendations"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if reviewID == "" {
 			return nil, errors.New("parameter reviewID cannot be empty")
@@ -270,9 +264,6 @@ func (client *TriageRecommendationsClient) RejectTriageRecommendation(ctx contex
 // rejectTriageRecommendationCreateRequest creates the RejectTriageRecommendation request.
 func (client *TriageRecommendationsClient) rejectTriageRecommendationCreateRequest(ctx context.Context, reviewID string, recommendationID string, recommendationRejectBody RecommendationRejectBody, _ *TriageRecommendationsClientRejectTriageRecommendationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/resiliencyReviews/{reviewId}/providers/Microsoft.Advisor/triageRecommendations/{recommendationId}/reject"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if reviewID == "" {
 		return nil, errors.New("parameter reviewID cannot be empty")
@@ -327,9 +318,6 @@ func (client *TriageRecommendationsClient) ResetTriageRecommendation(ctx context
 // resetTriageRecommendationCreateRequest creates the ResetTriageRecommendation request.
 func (client *TriageRecommendationsClient) resetTriageRecommendationCreateRequest(ctx context.Context, reviewID string, recommendationID string, _ *TriageRecommendationsClientResetTriageRecommendationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/resiliencyReviews/{reviewId}/providers/Microsoft.Advisor/triageRecommendations/{recommendationId}/reset"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if reviewID == "" {
 		return nil, errors.New("parameter reviewID cannot be empty")

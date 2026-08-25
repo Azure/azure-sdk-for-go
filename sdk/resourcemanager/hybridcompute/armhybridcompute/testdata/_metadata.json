@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.HybridCompute": "2026-07-15"
   },
-  "emitterVersion": "0.16.0"
+  "emitterVersion": "0.17.1"
 }

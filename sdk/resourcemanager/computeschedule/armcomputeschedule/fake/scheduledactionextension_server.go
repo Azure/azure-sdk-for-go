@@ -87,7 +87,7 @@ func (s *ScheduledActionExtensionServerTransport) dispatchNewListByVMsPager(req 
 	}
 	newListByVMsPager := s.newListByVMsPager.get(req)
 	if newListByVMsPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeSchedule/associatedScheduledActions`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeSchedule/associatedScheduledActions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

@@ -30,6 +30,9 @@ type ConfigurationAssignmentsForResourceGroupClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConfigurationAssignmentsForResourceGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConfigurationAssignmentsForResourceGroupClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,9 +71,6 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) CreateOrUpdate(ctx
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *ConfigurationAssignmentsForResourceGroupClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, _ *ConfigurationAssignmentsForResourceGroupClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -133,9 +133,6 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) Delete(ctx context
 // deleteCreateRequest creates the Delete request.
 func (client *ConfigurationAssignmentsForResourceGroupClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, configurationAssignmentName string, _ *ConfigurationAssignmentsForResourceGroupClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -194,9 +191,6 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) Get(ctx context.Co
 // getCreateRequest creates the Get request.
 func (client *ConfigurationAssignmentsForResourceGroupClient) getCreateRequest(ctx context.Context, resourceGroupName string, configurationAssignmentName string, _ *ConfigurationAssignmentsForResourceGroupClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -256,9 +250,6 @@ func (client *ConfigurationAssignmentsForResourceGroupClient) Update(ctx context
 // updateCreateRequest creates the Update request.
 func (client *ConfigurationAssignmentsForResourceGroupClient) updateCreateRequest(ctx context.Context, resourceGroupName string, configurationAssignmentName string, configurationAssignment ConfigurationAssignment, _ *ConfigurationAssignmentsForResourceGroupClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Maintenance/configurationAssignments/{configurationAssignmentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

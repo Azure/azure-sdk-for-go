@@ -30,6 +30,9 @@ type AccountsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,9 +70,6 @@ func (client *AccountsClient) CreateOrUpdate(ctx context.Context, accountName st
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *AccountsClient) createOrUpdateCreateRequest(ctx context.Context, accountName string, resourceGroupName string, parameters Account, _ *AccountsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerPlatform/accounts/{accountName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if accountName == "" {
 		return nil, errors.New("parameter accountName cannot be empty")
@@ -134,9 +134,6 @@ func (client *AccountsClient) Delete(ctx context.Context, accountName string, re
 // deleteCreateRequest creates the Delete request.
 func (client *AccountsClient) deleteCreateRequest(ctx context.Context, accountName string, resourceGroupName string, _ *AccountsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerPlatform/accounts/{accountName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if accountName == "" {
 		return nil, errors.New("parameter accountName cannot be empty")
@@ -181,9 +178,6 @@ func (client *AccountsClient) Get(ctx context.Context, accountName string, resou
 // getCreateRequest creates the Get request.
 func (client *AccountsClient) getCreateRequest(ctx context.Context, accountName string, resourceGroupName string, _ *AccountsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerPlatform/accounts/{accountName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if accountName == "" {
 		return nil, errors.New("parameter accountName cannot be empty")
@@ -252,9 +246,6 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerPlatform/accounts"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -323,9 +314,6 @@ func (client *AccountsClient) listBySubscriptionCreateRequest(ctx context.Contex
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PowerPlatform/accounts"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -381,9 +369,6 @@ func (client *AccountsClient) Update(ctx context.Context, accountName string, re
 // updateCreateRequest creates the Update request.
 func (client *AccountsClient) updateCreateRequest(ctx context.Context, accountName string, resourceGroupName string, parameters PatchAccount, _ *AccountsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerPlatform/accounts/{accountName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if accountName == "" {
 		return nil, errors.New("parameter accountName cannot be empty")

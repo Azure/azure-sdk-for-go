@@ -174,41 +174,6 @@ func (c *CertificateResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DeviceRegistryNamespaceDescription.
-func (d DeviceRegistryNamespaceDescription) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "authenticationType", d.AuthenticationType)
-	populate(objectMap, "resourceId", d.ResourceID)
-	populate(objectMap, "selectedUserAssignedIdentityResourceId", d.SelectedUserAssignedIdentityResourceID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeviceRegistryNamespaceDescription.
-func (d *DeviceRegistryNamespaceDescription) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", d, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "authenticationType":
-			err = unpopulate(val, "AuthenticationType", &d.AuthenticationType)
-			delete(rawMsg, key)
-		case "resourceId":
-			err = unpopulate(val, "ResourceID", &d.ResourceID)
-			delete(rawMsg, key)
-		case "selectedUserAssignedIdentityResourceId":
-			err = unpopulate(val, "SelectedUserAssignedIdentityResourceID", &d.SelectedUserAssignedIdentityResourceID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", d, err.Error())
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type ErrorMessage.
 func (e ErrorMessage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -367,7 +332,7 @@ func (i IotDpsPropertiesDescription) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "allocationPolicy", i.AllocationPolicy)
 	populate(objectMap, "authorizationPolicies", i.AuthorizationPolicies)
 	populate(objectMap, "deviceProvisioningHostName", i.DeviceProvisioningHostName)
-	populate(objectMap, "deviceRegistryNamespace", i.DeviceRegistryNamespace)
+	populate(objectMap, "disableLocalAuth", i.DisableLocalAuth)
 	populate(objectMap, "enableDataResidency", i.EnableDataResidency)
 	populate(objectMap, "idScope", i.IDScope)
 	populate(objectMap, "ipFilterRules", i.IPFilterRules)
@@ -399,8 +364,8 @@ func (i *IotDpsPropertiesDescription) UnmarshalJSON(data []byte) error {
 		case "deviceProvisioningHostName":
 			err = unpopulate(val, "DeviceProvisioningHostName", &i.DeviceProvisioningHostName)
 			delete(rawMsg, key)
-		case "deviceRegistryNamespace":
-			err = unpopulate(val, "DeviceRegistryNamespace", &i.DeviceRegistryNamespace)
+		case "disableLocalAuth":
+			err = unpopulate(val, "DisableLocalAuth", &i.DisableLocalAuth)
 			delete(rawMsg, key)
 		case "enableDataResidency":
 			err = unpopulate(val, "EnableDataResidency", &i.EnableDataResidency)
@@ -538,9 +503,12 @@ func (i IotHubDefinitionDescription) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "allocationWeight", i.AllocationWeight)
 	populate(objectMap, "applyAllocationPolicy", i.ApplyAllocationPolicy)
+	populate(objectMap, "authenticationType", i.AuthenticationType)
 	populate(objectMap, "connectionString", i.ConnectionString)
+	populate(objectMap, "hostName", i.HostName)
 	populate(objectMap, "location", i.Location)
 	populate(objectMap, "name", i.Name)
+	populate(objectMap, "selectedUserAssignedIdentityResourceId", i.SelectedUserAssignedIdentityResourceID)
 	return json.Marshal(objectMap)
 }
 
@@ -559,14 +527,23 @@ func (i *IotHubDefinitionDescription) UnmarshalJSON(data []byte) error {
 		case "applyAllocationPolicy":
 			err = unpopulate(val, "ApplyAllocationPolicy", &i.ApplyAllocationPolicy)
 			delete(rawMsg, key)
+		case "authenticationType":
+			err = unpopulate(val, "AuthenticationType", &i.AuthenticationType)
+			delete(rawMsg, key)
 		case "connectionString":
 			err = unpopulate(val, "ConnectionString", &i.ConnectionString)
+			delete(rawMsg, key)
+		case "hostName":
+			err = unpopulate(val, "HostName", &i.HostName)
 			delete(rawMsg, key)
 		case "location":
 			err = unpopulate(val, "Location", &i.Location)
 			delete(rawMsg, key)
 		case "name":
 			err = unpopulate(val, "Name", &i.Name)
+			delete(rawMsg, key)
+		case "selectedUserAssignedIdentityResourceId":
+			err = unpopulate(val, "SelectedUserAssignedIdentityResourceID", &i.SelectedUserAssignedIdentityResourceID)
 			delete(rawMsg, key)
 		}
 		if err != nil {

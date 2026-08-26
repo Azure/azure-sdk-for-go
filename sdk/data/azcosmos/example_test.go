@@ -120,16 +120,15 @@ func ExampleContainerClient_CreateItem() {
 		"categoryName": "gear-surf-surfboards",
 	})
 	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
 
-	// The partition key value must match the value of the partition key path in the item.
+	// The partition key value must match the value of the partition key path in the item, and the
+	// id must match the item's own id property.
 	pk := azcosmos.NewPartitionKeyString("gear-surf-surfboards")
 
-	response, err := container.CreateItem(context.TODO(), pk, item, nil)
+	response, err := container.CreateItem(context.TODO(), pk, "item-1", item, nil)
 	if err != nil {
-		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
 	log.Printf("created the item, charged %v RU", response.RequestCharge)

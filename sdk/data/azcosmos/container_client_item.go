@@ -76,15 +76,25 @@ func (c *ContainerClient) ReadItem(ctx context.Context, partitionKey PartitionKe
 // CreateItem creates a new item, failing if one with the same id already exists in the partition.
 //
 // partitionKey is the item's partition key value, and must have one component per path in the
-// container's partition key definition and match the values in item. item is the JSON encoding of
-// the item, which must include an id property. options may be nil.
+// container's partition key definition and match the values in item. id addresses the item being
+// created and must match the item's own id property. item is the JSON encoding of the item.
+// options may be nil.
+//
+// The id is taken separately rather than read out of item because the driver addresses the item by
+// it: passing it explicitly avoids parsing the caller's payload to recover something the caller
+// already knows, and reports a mismatch as a Go error rather than a driver rejection. The Rust SDK
+// takes it the same way for the same reason.
 //
 // When an item with the same id already exists the returned error is an [Error] with [Error.Code]
 // set to [CodeConflict]. The response carries the created item only when content responses are
-// enabled, on the client or through [CreateItemOptions.EnableContentResponseOnWrite].
-func (c *ContainerClient) CreateItem(ctx context.Context, partitionKey PartitionKey, item []byte, options *CreateItemOptions) (ItemResponse, error) {
+// enabled, on the client through [ClientOptions.EnableContentResponseOnWrite] or per operation
+// through [OperationOptions.EnableContentResponseOnWrite].
+func (c *ContainerClient) CreateItem(ctx context.Context, partitionKey PartitionKey, id string, item []byte, options *CreateItemOptions) (ItemResponse, error) {
 	if err := validateItemArguments(partitionKey); err != nil {
 		return ItemResponse{}, err
+	}
+	if id == "" {
+		return ItemResponse{}, errors.New("azcosmos: item id must not be empty")
 	}
 	if len(item) == 0 {
 		return ItemResponse{}, errors.New("azcosmos: item must not be empty")

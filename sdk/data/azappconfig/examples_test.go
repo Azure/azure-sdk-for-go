@@ -31,7 +31,6 @@ func ExampleNewClient() {
 
 	_ = client // ignore
 
-	// Output:
 }
 
 func ExampleNewClientFromConnectionString() {
@@ -49,7 +48,6 @@ func ExampleNewClientFromConnectionString() {
 
 	_ = client // ignore
 
-	// Output:
 }
 
 func ExampleClient_AddSetting() {
@@ -78,7 +76,6 @@ func ExampleClient_AddSetting() {
 
 	_ = resp // TODO: do something with resp
 
-	// Output:
 }
 
 func ExampleClient_GetSetting() {
@@ -106,7 +103,6 @@ func ExampleClient_GetSetting() {
 
 	_ = resp // TODO: do something with resp
 
-	// Output:
 }
 
 func ExampleClient_SetSetting() {
@@ -135,7 +131,6 @@ func ExampleClient_SetSetting() {
 
 	_ = resp // TODO: do something with resp
 
-	// Output:
 }
 
 func ExampleClient_SetReadOnly() {
@@ -175,7 +170,6 @@ func ExampleClient_SetReadOnly() {
 
 	_ = resp // TODO: do something with resp
 
-	// Output:
 }
 
 func ExampleClient_NewListRevisionsPager() {
@@ -212,7 +206,6 @@ func ExampleClient_NewListRevisionsPager() {
 		}
 	}
 
-	// Output:
 }
 
 func ExampleClient_DeleteSetting() {
@@ -240,7 +233,6 @@ func ExampleClient_DeleteSetting() {
 
 	_ = resp // TODO: do something with resp
 
-	// Output:
 }
 
 func ExampleClient_BeginCreateSnapshot() {
@@ -571,7 +563,6 @@ func ExampleNewFeatureFlagClient() {
 
 	_ = client // ignore
 
-	// Output:
 }
 
 func ExampleNewFeatureFlagClientFromConnectionString() {
@@ -589,7 +580,6 @@ func ExampleNewFeatureFlagClientFromConnectionString() {
 
 	_ = client // ignore
 
-	// Output:
 }
 
 func ExampleClient_NewFeatureFlagClient() {
@@ -611,7 +601,6 @@ func ExampleClient_NewFeatureFlagClient() {
 
 	_ = ffClient // TODO: do something with ffClient
 
-	// Output:
 }
 
 func ExampleFeatureFlagClient_AddFeatureFlag() {
@@ -642,7 +631,6 @@ func ExampleFeatureFlagClient_AddFeatureFlag() {
 
 	_ = resp // TODO: do something with resp
 
-	// Output:
 }
 
 func ExampleFeatureFlagClient_SetFeatureFlag() {
@@ -673,7 +661,6 @@ func ExampleFeatureFlagClient_SetFeatureFlag() {
 
 	_ = resp // TODO: do something with resp
 
-	// Output:
 }
 
 func ExampleFeatureFlagClient_SetFeatureFlag_withVariantsAndFilters() {
@@ -738,7 +725,6 @@ func ExampleFeatureFlagClient_SetFeatureFlag_withVariantsAndFilters() {
 
 	_ = resp // TODO: do something with resp
 
-	// Output:
 }
 
 func ExampleFeatureFlagClient_GetFeatureFlag() {
@@ -765,7 +751,6 @@ func ExampleFeatureFlagClient_GetFeatureFlag() {
 
 	_ = resp // TODO: do something with resp
 
-	// Output:
 }
 
 func ExampleFeatureFlagClient_DeleteFeatureFlag() {
@@ -792,7 +777,6 @@ func ExampleFeatureFlagClient_DeleteFeatureFlag() {
 
 	_ = resp // TODO: do something with resp
 
-	// Output:
 }
 
 func ExampleFeatureFlagClient_NewListFeatureFlagsPager() {
@@ -828,7 +812,6 @@ func ExampleFeatureFlagClient_NewListFeatureFlagsPager() {
 		}
 	}
 
-	// Output:
 }
 
 func ExampleFeatureFlagClient_NewListFeatureFlagRevisionsPager() {
@@ -864,5 +847,4 @@ func ExampleFeatureFlagClient_NewListFeatureFlagRevisionsPager() {
 		}
 	}
 
-	// Output:
 }

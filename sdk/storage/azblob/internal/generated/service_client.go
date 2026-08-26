@@ -36,6 +36,6 @@ func (client *ServiceClient) ListContainersSegmentCreateRequest(ctx context.Cont
 }
 
 // ListContainersSegmentHandleResponse handles the ListContainersSegment response.
-func (client *ServiceClient) ListContainersSegmentHandleResponse(resp *http.Response) (ServiceClientListContainersSegmentResponse, error) {
-	return client.listContainersSegmentHandleResponse(resp)
+func (client *ServiceClient) ListContainersSegmentHandleResponse(resp *http.Response, successCodes ...int) (ServiceClientListContainersSegmentResponse, error) {
+	return client.listContainersSegmentHandleResponse(resp, successCodes...)
 }

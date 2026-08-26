@@ -52,8 +52,8 @@ func (client *ContainerClient) ListBlobFlatSegmentCreateRequest(ctx context.Cont
 }
 
 // ListBlobFlatSegmentHandleResponse handles the ListBlobFlatSegment response.
-func (client *ContainerClient) ListBlobFlatSegmentHandleResponse(resp *http.Response) (ContainerClientListBlobFlatSegmentResponse, error) {
-	return client.listBlobFlatSegmentHandleResponse(resp)
+func (client *ContainerClient) ListBlobFlatSegmentHandleResponse(resp *http.Response, successCodes ...int) (ContainerClientListBlobFlatSegmentResponse, error) {
+	return client.listBlobFlatSegmentHandleResponse(resp, successCodes...)
 }
 
 // ListBlobHierarchySegmentCreateRequest creates the ListBlobHierarchySegment request.
@@ -62,6 +62,6 @@ func (client *ContainerClient) ListBlobHierarchySegmentCreateRequest(ctx context
 }
 
 // ListBlobHierarchySegmentHandleResponse handles the ListBlobHierarchySegment response.
-func (client *ContainerClient) ListBlobHierarchySegmentHandleResponse(resp *http.Response) (ContainerClientListBlobHierarchySegmentResponse, error) {
-	return client.listBlobHierarchySegmentHandleResponse(resp)
+func (client *ContainerClient) ListBlobHierarchySegmentHandleResponse(resp *http.Response, successCodes ...int) (ContainerClientListBlobHierarchySegmentResponse, error) {
+	return client.listBlobHierarchySegmentHandleResponse(resp, successCodes...)
 }

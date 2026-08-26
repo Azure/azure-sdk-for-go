@@ -15,6 +15,12 @@ type BlobClientDownloadResponse struct {
 	// Indicates that the service supports requests for partial blob content.
 	AcceptRanges *string
 
+	// The access tier of the blob.
+	AccessTier *string
+
+	// The time the tier was changed on the blob. This is only returned if the tier on the blob was ever set.
+	AccessTierChangeTime *time.Time
+
 	// The number of committed blocks present in the blob. This header is returned only for append blobs.
 	BlobCommittedBlockCount *int32
 

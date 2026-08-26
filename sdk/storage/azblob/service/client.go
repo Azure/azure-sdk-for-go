@@ -233,10 +233,7 @@ func (s *Client) NewListContainersPager(o *ListContainersOptions) *runtime.Pager
 			if err != nil {
 				return ListContainersResponse{}, err
 			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ListContainersResponse{}, runtime.NewResponseError(resp)
-			}
-			return s.generated().ListContainersSegmentHandleResponse(resp)
+			return s.generated().ListContainersSegmentHandleResponse(resp, http.StatusOK)
 		},
 	})
 }

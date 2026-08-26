@@ -82,6 +82,9 @@ func (client *ServiceClient) filterBlobsHandleResponse(resp *http.Response, succ
 	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -220,6 +223,9 @@ func (client *ServiceClient) getPropertiesHandleResponse(resp *http.Response, su
 	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
+	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
 		if err != nil {
@@ -284,6 +290,9 @@ func (client *ServiceClient) getStatisticsHandleResponse(resp *http.Response, su
 	}
 	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
@@ -355,6 +364,9 @@ func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Respo
 	}
 	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
@@ -432,6 +444,9 @@ func (client *ServiceClient) listContainersSegmentHandleResponse(resp *http.Resp
 	}
 	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)

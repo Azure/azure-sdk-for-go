@@ -225,10 +225,7 @@ func (pb *Client) NewGetPageRangesPager(o *GetPageRangesOptions) *runtime.Pager[
 			if err != nil {
 				return GetPageRangesResponse{}, err
 			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GetPageRangesResponse{}, runtime.NewResponseError(resp)
-			}
-			return pb.generated().GetPageRangesHandleResponse(resp)
+			return pb.generated().GetPageRangesHandleResponse(resp, http.StatusOK)
 		},
 	})
 }
@@ -258,10 +255,7 @@ func (pb *Client) NewGetPageRangesDiffPager(o *GetPageRangesDiffOptions) *runtim
 			if err != nil {
 				return GetPageRangesDiffResponse{}, err
 			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return GetPageRangesDiffResponse{}, runtime.NewResponseError(resp)
-			}
-			return pb.generated().GetPageRangesDiffHandleResponse(resp)
+			return pb.generated().GetPageRangesDiffHandleResponse(resp, http.StatusOK)
 		},
 	})
 }

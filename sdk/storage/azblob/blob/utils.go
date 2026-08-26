@@ -25,6 +25,8 @@ type ObjectReplicationPolicy struct {
 func convertDownloadResponse(dr generated.BlobClientDownloadResponseInternal) DownloadResponse {
 	return DownloadResponse{
 		AcceptRanges:                dr.AcceptRanges,
+		AccessTier:                  dr.AccessTier,
+		AccessTierChangeTime:        dr.AccessTierChangeTime,
 		BlobCommittedBlockCount:     dr.BlobCommittedBlockCount,
 		BlobContentMD5:              dr.BlobContentMD5,
 		BlobSequenceNumber:          dr.BlobSequenceNumber,

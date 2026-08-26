@@ -36,8 +36,8 @@ func (client *PageBlobClient) GetPageRangesCreateRequest(ctx context.Context, op
 }
 
 // GetPageRangesHandleResponse handles the GetPageRanges response.
-func (client *PageBlobClient) GetPageRangesHandleResponse(resp *http.Response) (PageBlobClientGetPageRangesResponse, error) {
-	return client.getPageRangesHandleResponse(resp)
+func (client *PageBlobClient) GetPageRangesHandleResponse(resp *http.Response, successCodes ...int) (PageBlobClientGetPageRangesResponse, error) {
+	return client.getPageRangesHandleResponse(resp, successCodes...)
 }
 
 // GetPageRangesDiffCreateRequest creates the GetPageRangesDiff request.
@@ -46,6 +46,6 @@ func (client *PageBlobClient) GetPageRangesDiffCreateRequest(ctx context.Context
 }
 
 // GetPageRangesDiffHandleResponse handles the GetPageRangesDiff response.
-func (client *PageBlobClient) GetPageRangesDiffHandleResponse(resp *http.Response) (PageBlobClientGetPageRangesDiffResponse, error) {
-	return client.getPageRangesDiffHandleResponse(resp)
+func (client *PageBlobClient) GetPageRangesDiffHandleResponse(resp *http.Response, successCodes ...int) (PageBlobClientGetPageRangesDiffResponse, error) {
+	return client.getPageRangesDiffHandleResponse(resp, successCodes...)
 }

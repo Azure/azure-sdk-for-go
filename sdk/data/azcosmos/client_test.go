@@ -5,9 +5,11 @@ package azcosmos
 
 import (
 	"context"
+	"errors"
 	"strings"
 	"sync"
 	"testing"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -232,4 +234,53 @@ func TestEndpointErrorNamesTheEndpoint(t *testing.T) {
 	_, err := NewClientWithKey("notaurl", cred, nil)
 	require.Error(t, err)
 	require.True(t, strings.Contains(err.Error(), "notaurl"))
+}
+
+// After Close the client must refuse work rather than hand a released driver handle to an
+// operation.
+func TestOperationsAfterCloseAreRejected(t *testing.T) {
+	client := newTestClient(t)
+	container, err := client.NewContainer("db", "items")
+	require.NoError(t, err)
+	require.NoError(t, client.Close())
+
+	_, err = container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "item-1", nil)
+	var cosmosErr *Error
+	require.True(t, errors.As(err, &cosmosErr))
+	require.Equal(t, CodeClientClosed, cosmosErr.Code)
+
+	_, err = container.CreateItem(context.Background(), NewPartitionKeyString("pk"), "x", []byte(`{"id":"x"}`), nil)
+	require.True(t, errors.As(err, &cosmosErr))
+	require.Equal(t, CodeClientClosed, cosmosErr.Code)
+}
+
+// Close waits for in-flight operations before releasing anything. This is the safety-critical part
+// of the lifetime contract: an operation still running when the driver's handles are freed is a
+// use-after-free in Rust-owned memory, not a nil panic.
+//
+// Asserting only that operations fail after Close returns would not test this — that passes even
+// with no lock at all. So this holds an operation open, checks Close is blocked, then releases it.
+func TestCloseWaitsForInFlightOperations(t *testing.T) {
+	client := newTestClient(t)
+
+	release, err := client.acquire()
+	require.NoError(t, err)
+
+	closed := make(chan error, 1)
+	go func() { closed <- client.Close() }()
+
+	select {
+	case <-closed:
+		t.Fatal("Close returned while an operation was still in flight")
+	case <-time.After(50 * time.Millisecond):
+	}
+
+	release()
+
+	select {
+	case err := <-closed:
+		require.NoError(t, err)
+	case <-time.After(time.Second):
+		t.Fatal("Close did not return after the in-flight operation finished")
+	}
 }

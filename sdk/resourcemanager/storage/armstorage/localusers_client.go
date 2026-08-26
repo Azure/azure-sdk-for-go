@@ -20,7 +20,7 @@ import (
 // LocalUsersClient contains the methods for the LocalUsers group.
 // Don't use this type directly, use NewLocalUsersClient() instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-06-01
 type LocalUsersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -67,12 +67,7 @@ func (client *LocalUsersClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	if err != nil {
 		return LocalUsersClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LocalUsersClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -99,7 +94,7 @@ func (client *LocalUsersClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -110,8 +105,11 @@ func (client *LocalUsersClient) createOrUpdateCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *LocalUsersClient) createOrUpdateHandleResponse(resp *http.Response) (LocalUsersClientCreateOrUpdateResponse, error) {
+func (client *LocalUsersClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (LocalUsersClientCreateOrUpdateResponse, error) {
 	result := LocalUsersClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocalUser); err != nil {
 		return LocalUsersClientCreateOrUpdateResponse{}, err
 	}
@@ -141,8 +139,7 @@ func (client *LocalUsersClient) Delete(ctx context.Context, resourceGroupName st
 		return LocalUsersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return LocalUsersClientDeleteResponse{}, err
+		return LocalUsersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return LocalUsersClientDeleteResponse{}, nil
 }
@@ -171,7 +168,7 @@ func (client *LocalUsersClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -198,12 +195,7 @@ func (client *LocalUsersClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return LocalUsersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LocalUsersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -230,15 +222,18 @@ func (client *LocalUsersClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *LocalUsersClient) getHandleResponse(resp *http.Response) (LocalUsersClientGetResponse, error) {
+func (client *LocalUsersClient) getHandleResponse(resp *http.Response, successCodes ...int) (LocalUsersClientGetResponse, error) {
 	result := LocalUsersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocalUser); err != nil {
 		return LocalUsersClientGetResponse{}, err
 	}
@@ -261,56 +256,70 @@ func (client *LocalUsersClient) NewListPager(resourceGroupName string, accountNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return LocalUsersClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LocalUsersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *LocalUsersClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *LocalUsersClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/localUsers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LocalUsersClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, options *LocalUsersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/localUsers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Include != nil {
+			reqQP.Set("$include", string(*options.Include))
+		}
+		if options != nil && options.Maxpagesize != nil {
+			reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
+		}
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Include != nil {
-		reqQP.Set("$include", string(*options.Include))
-	}
-	if options != nil && options.Maxpagesize != nil {
-		reqQP.Set("$maxpagesize", strconv.FormatInt(int64(*options.Maxpagesize), 10))
-	}
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *LocalUsersClient) listHandleResponse(resp *http.Response) (LocalUsersClientListResponse, error) {
+func (client *LocalUsersClient) listHandleResponse(resp *http.Response, successCodes ...int) (LocalUsersClientListResponse, error) {
 	result := LocalUsersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocalUsers); err != nil {
 		return LocalUsersClientListResponse{}, err
 	}
@@ -339,12 +348,7 @@ func (client *LocalUsersClient) ListKeys(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return LocalUsersClientListKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LocalUsersClientListKeysResponse{}, err
-	}
-	resp, err := client.listKeysHandleResponse(httpResp)
-	return resp, err
+	return client.listKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // listKeysCreateRequest creates the ListKeys request.
@@ -371,15 +375,18 @@ func (client *LocalUsersClient) listKeysCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listKeysHandleResponse handles the ListKeys response.
-func (client *LocalUsersClient) listKeysHandleResponse(resp *http.Response) (LocalUsersClientListKeysResponse, error) {
+func (client *LocalUsersClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (LocalUsersClientListKeysResponse, error) {
 	result := LocalUsersClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocalUserKeys); err != nil {
 		return LocalUsersClientListKeysResponse{}, err
 	}
@@ -409,12 +416,7 @@ func (client *LocalUsersClient) RegeneratePassword(ctx context.Context, resource
 	if err != nil {
 		return LocalUsersClientRegeneratePasswordResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return LocalUsersClientRegeneratePasswordResponse{}, err
-	}
-	resp, err := client.regeneratePasswordHandleResponse(httpResp)
-	return resp, err
+	return client.regeneratePasswordHandleResponse(httpResp, http.StatusOK)
 }
 
 // regeneratePasswordCreateRequest creates the RegeneratePassword request.
@@ -441,15 +443,18 @@ func (client *LocalUsersClient) regeneratePasswordCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // regeneratePasswordHandleResponse handles the RegeneratePassword response.
-func (client *LocalUsersClient) regeneratePasswordHandleResponse(resp *http.Response) (LocalUsersClientRegeneratePasswordResponse, error) {
+func (client *LocalUsersClient) regeneratePasswordHandleResponse(resp *http.Response, successCodes ...int) (LocalUsersClientRegeneratePasswordResponse, error) {
 	result := LocalUsersClientRegeneratePasswordResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocalUserRegeneratePasswordResult); err != nil {
 		return LocalUsersClientRegeneratePasswordResponse{}, err
 	}

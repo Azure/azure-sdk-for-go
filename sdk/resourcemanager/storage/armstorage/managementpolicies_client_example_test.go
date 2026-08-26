@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01/StorageAccountSetManagementPolicy.json
+// Generated from example definition: 2026-06-01/StorageAccountSetManagementPolicy.json
 func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementPolicies() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
 	// 		Properties: &armstorage.ManagementPolicyProperties{
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-08T02:53:39.0932539Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2018, time.June, 8, 2, 53, 39, 93253900, time.UTC)),
 	// 			Policy: &armstorage.ManagementPolicySchema{
 	// 				Rules: []*armstorage.ManagementPolicyRule{
 	// 					{
@@ -199,7 +199,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountSetManagementPolicyColdTierActions.json
+// Generated from example definition: 2026-06-01/StorageAccountSetManagementPolicyColdTierActions.json
 func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementPolicyColdTierActions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -277,7 +277,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
 	// 		Properties: &armstorage.ManagementPolicyProperties{
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T02:53:39.0932539Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2021, time.June, 8, 2, 53, 39, 93253900, time.UTC)),
 	// 			Policy: &armstorage.ManagementPolicySchema{
 	// 				Rules: []*armstorage.ManagementPolicyRule{
 	// 					{
@@ -334,7 +334,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
+// Generated from example definition: 2026-06-01/StorageAccountSetManagementPolicyForBlockAndAppendBlobs.json
 func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementPolicyForBlockAndAppendBlobs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -398,7 +398,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
 	// 		Properties: &armstorage.ManagementPolicyProperties{
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-08T02:53:39.0932539Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2018, time.June, 8, 2, 53, 39, 93253900, time.UTC)),
 	// 			Policy: &armstorage.ManagementPolicySchema{
 	// 				Rules: []*armstorage.ManagementPolicyRule{
 	// 					{
@@ -441,7 +441,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountSetManagementPolicyHotTierActions.json
+// Generated from example definition: 2026-06-01/StorageAccountSetManagementPolicyHotTierActions.json
 func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementPolicyHotTierActions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -504,7 +504,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
 	// 		Properties: &armstorage.ManagementPolicyProperties{
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T02:53:39.0932539Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2021, time.June, 8, 2, 53, 39, 93253900, time.UTC)),
 	// 			Policy: &armstorage.ManagementPolicySchema{
 	// 				Rules: []*armstorage.ManagementPolicyRule{
 	// 					{
@@ -546,7 +546,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
+// Generated from example definition: 2026-06-01/StorageAccountSetManagementPolicyWithSnapshotAndVersion.json
 func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementPolicyWithSnapshotAndVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -627,7 +627,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
 	// 		Properties: &armstorage.ManagementPolicyProperties{
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-08T02:53:39.0932539Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2018, time.June, 8, 2, 53, 39, 93253900, time.UTC)),
 	// 			Policy: &armstorage.ManagementPolicySchema{
 	// 				Rules: []*armstorage.ManagementPolicyRule{
 	// 					{
@@ -687,7 +687,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.json
+// Generated from example definition: 2026-06-01/StorageAccountSetManagementPolicy_BaseBlobDaysAfterCreationActions.json
 func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementPolicyBaseBlobDaysAfterCreationActions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -746,7 +746,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
 	// 		Properties: &armstorage.ManagementPolicyProperties{
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-06-08T02:53:39.0932539Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2021, time.June, 8, 2, 53, 39, 93253900, time.UTC)),
 	// 			Policy: &armstorage.ManagementPolicySchema{
 	// 				Rules: []*armstorage.ManagementPolicyRule{
 	// 					{
@@ -784,7 +784,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
+// Generated from example definition: 2026-06-01/StorageAccountSetManagementPolicy_LastAccessTimeBasedBlobActions.json
 func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementPolicyLastAccessTimeBasedBlobActions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -849,7 +849,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
 	// 		Properties: &armstorage.ManagementPolicyProperties{
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-08T02:53:39.0932539Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2018, time.June, 8, 2, 53, 39, 93253900, time.UTC)),
 	// 			Policy: &armstorage.ManagementPolicySchema{
 	// 				Rules: []*armstorage.ManagementPolicyRule{
 	// 					{
@@ -893,7 +893,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountSetManagementPolicy_LastTierChangeTimeActions.json
+// Generated from example definition: 2026-06-01/StorageAccountSetManagementPolicy_LastTierChangeTimeActions.json
 func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementPolicyLastTierChangeTimeActions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -965,7 +965,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
 	// 		Properties: &armstorage.ManagementPolicyProperties{
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-08T02:53:39.0932539Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2018, time.June, 8, 2, 53, 39, 93253900, time.UTC)),
 	// 			Policy: &armstorage.ManagementPolicySchema{
 	// 				Rules: []*armstorage.ManagementPolicyRule{
 	// 					{
@@ -1016,7 +1016,7 @@ func ExampleManagementPoliciesClient_CreateOrUpdate_storageAccountSetManagementP
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountDeleteManagementPolicy.json
+// Generated from example definition: 2026-06-01/StorageAccountDeleteManagementPolicy.json
 func ExampleManagementPoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1038,7 +1038,7 @@ func ExampleManagementPoliciesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/StorageAccountGetManagementPolicy.json
+// Generated from example definition: 2026-06-01/StorageAccountGetManagementPolicy.json
 func ExampleManagementPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1062,7 +1062,7 @@ func ExampleManagementPoliciesClient_Get() {
 	// 		Type: to.Ptr("Microsoft.Storage/storageAccounts/managementPolicies"),
 	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/res7231/providers/Microsoft.Storage/storageAccounts/sto288/managementPolicies/default"),
 	// 		Properties: &armstorage.ManagementPolicyProperties{
-	// 			LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-08T03:01:55.7168089Z"); return t}()),
+	// 			LastModifiedTime: to.Ptr(time.Date(2018, time.June, 8, 3, 1, 55, 716808900, time.UTC)),
 	// 			Policy: &armstorage.ManagementPolicySchema{
 	// 				Rules: []*armstorage.ManagementPolicyRule{
 	// 					{

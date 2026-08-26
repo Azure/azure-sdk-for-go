@@ -1,5 +1,50 @@
 # Release History
 
+## 4.2.0 (2026-08-26)
+### Features Added
+
+- New enum type `AiProvider` with values `AiProviderOpenAI`
+- New enum type `ContextCacheAccountKind` with values `ContextCacheAccountKindDataZone`, `ContextCacheAccountKindGlobal`, `ContextCacheAccountKindRegional`
+- New enum type `ContextCacheProvisioningState` with values `ContextCacheProvisioningStateAccepted`, `ContextCacheProvisioningStateCanceled`, `ContextCacheProvisioningStateCreating`, `ContextCacheProvisioningStateDeleting`, `ContextCacheProvisioningStateFailed`, `ContextCacheProvisioningStateSucceeded`, `ContextCacheProvisioningStateUpdating`
+- New enum type `InfrastructureEncryption` with values `InfrastructureEncryptionDisabled`, `InfrastructureEncryptionEnabled`
+- New enum type `KeyEncryptionKeyIdentityType` with values `KeyEncryptionKeyIdentityTypeDelegatedResourceIdentity`, `KeyEncryptionKeyIdentityTypeSystemAssignedIdentity`, `KeyEncryptionKeyIdentityTypeUserAssignedIdentity`
+- New enum type `PolicyViolationAction` with values `PolicyViolationActionBlock`, `PolicyViolationActionLog`, `PolicyViolationActionNone`
+- New enum type `SystemAssignedServiceIdentityType` with values `SystemAssignedServiceIdentityTypeNone`, `SystemAssignedServiceIdentityTypeSystemAssigned`
+- New function `*ClientFactory.NewContextCacheContainersClient() *ContextCacheContainersClient`
+- New function `*ClientFactory.NewContextCachesClient() *ContextCachesClient`
+- New function `NewContextCacheContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContextCacheContainersClient, error)`
+- New function `*ContextCacheContainersClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, resource ContextCacheContainer, options *ContextCacheContainersClientBeginCreateOrUpdateOptions) (*runtime.Poller[ContextCacheContainersClientCreateOrUpdateResponse], error)`
+- New function `*ContextCacheContainersClient.BeginDelete(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, options *ContextCacheContainersClientBeginDeleteOptions) (*runtime.Poller[ContextCacheContainersClientDeleteResponse], error)`
+- New function `*ContextCacheContainersClient.Get(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, options *ContextCacheContainersClientGetOptions) (ContextCacheContainersClientGetResponse, error)`
+- New function `*ContextCacheContainersClient.NewListByContextCachePager(resourceGroupName string, contextCacheName string, options *ContextCacheContainersClientListByContextCacheOptions) *runtime.Pager[ContextCacheContainersClientListByContextCacheResponse]`
+- New function `*ContextCacheContainersClient.BeginUpdate(ctx context.Context, resourceGroupName string, contextCacheName string, contextCacheContainerName string, properties ContextCacheContainerUpdate, options *ContextCacheContainersClientBeginUpdateOptions) (*runtime.Poller[ContextCacheContainersClientUpdateResponse], error)`
+- New function `NewContextCachesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContextCachesClient, error)`
+- New function `*ContextCachesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, contextCacheName string, resource ContextCache, options *ContextCachesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ContextCachesClientCreateOrUpdateResponse], error)`
+- New function `*ContextCachesClient.BeginDelete(ctx context.Context, resourceGroupName string, contextCacheName string, options *ContextCachesClientBeginDeleteOptions) (*runtime.Poller[ContextCachesClientDeleteResponse], error)`
+- New function `*ContextCachesClient.Get(ctx context.Context, resourceGroupName string, contextCacheName string, options *ContextCachesClientGetOptions) (ContextCachesClientGetResponse, error)`
+- New function `*ContextCachesClient.NewListByResourceGroupPager(resourceGroupName string, options *ContextCachesClientListByResourceGroupOptions) *runtime.Pager[ContextCachesClientListByResourceGroupResponse]`
+- New function `*ContextCachesClient.NewListBySubscriptionPager(options *ContextCachesClientListBySubscriptionOptions) *runtime.Pager[ContextCachesClientListBySubscriptionResponse]`
+- New function `*ContextCachesClient.BeginUpdate(ctx context.Context, resourceGroupName string, contextCacheName string, properties ContextCacheUpdate, options *ContextCachesClientBeginUpdateOptions) (*runtime.Poller[ContextCachesClientUpdateResponse], error)`
+- New struct `ContextCache`
+- New struct `ContextCacheContainer`
+- New struct `ContextCacheContainerListResult`
+- New struct `ContextCacheContainerProperties`
+- New struct `ContextCacheContainerPropertiesUpdate`
+- New struct `ContextCacheContainerUpdate`
+- New struct `ContextCacheListResult`
+- New struct `ContextCacheProperties`
+- New struct `ContextCachePropertiesUpdate`
+- New struct `ContextCacheUpdate`
+- New struct `CustomerManagedKeyEncryption`
+- New struct `KeyEncryptionKeyIdentity`
+- New struct `SystemAssignedServiceIdentity`
+- New field `AllowCrossTenantDelegationSas` in struct `AccountProperties`
+- New field `AllowCrossTenantDelegationSas` in struct `AccountPropertiesCreateParameters`
+- New field `AllowCrossTenantDelegationSas` in struct `AccountPropertiesUpdateParameters`
+- New field `CustomerManagedKeyEncryption`, `InfrastructureEncryption` in struct `Encryption`
+- New field `RequireUserBoundUserDelegationSas`, `RequireUserBoundUserDelegationSasAction` in struct `SasPolicy`
+
+
 ## 4.1.0 (2026-06-01)
 ### Features Added
 

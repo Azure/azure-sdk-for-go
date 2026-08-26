@@ -16,10 +16,6 @@
 - New field `ResourceType` in struct `WhatIfChange`
 
 
-## 2.0.1 (2026-08-25)
-### Other Changes
-
-
 ## 2.0.0 (2026-06-24)
 ### Breaking Changes
 

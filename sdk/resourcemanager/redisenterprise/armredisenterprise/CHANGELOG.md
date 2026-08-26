@@ -1,6 +1,10 @@
 # Release History
 
 ## 4.0.0-beta.2 (2026-07-14)
+### Other Changes
+
+- Retract version `v4.0.0-beta.1`. It contains an API spec bug in an operation ID; do not use it.
+
 ### Breaking Changes
 
 - Function `*ClientFactory.NewMigrationClient` has been removed

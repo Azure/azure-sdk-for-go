@@ -86,6 +86,9 @@ type NamespaceForAMQPLinks interface {
 	// connection - the previous connection is always closed.
 	Recover(ctx context.Context, clientRevision uint64) (bool, error)
 
+	// CloseIfNeeded closes the current AMQP connection if it has the given revision.
+	CloseIfNeeded(clientRevision uint64) error
+
 	Close(permanently bool) error
 }
 
@@ -267,6 +270,24 @@ func (ns *Namespace) NewRPCLink(ctx context.Context, managementPath string) (amq
 func (ns *Namespace) Close(permanently bool) error {
 	ns.clientMu.Lock()
 	defer ns.clientMu.Unlock()
+
+	return ns.closeWithoutLocking(permanently)
+}
+
+// CloseIfNeeded closes the current cached client if it has the given revision.
+func (ns *Namespace) CloseIfNeeded(clientRevision uint64) error {
+	ns.clientMu.Lock()
+	defer ns.clientMu.Unlock()
+
+	if ns.connID != clientRevision {
+		log.Writef(exported.EventConn, "Skipping connection close, already recovered: %d vs %d", ns.connID, clientRevision)
+		return nil
+	}
+
+	return ns.closeWithoutLocking(false)
+}
+
+func (ns *Namespace) closeWithoutLocking(permanently bool) error {
 
 	if permanently {
 		ns.closedPermanently = true

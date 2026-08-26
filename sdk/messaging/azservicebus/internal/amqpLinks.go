@@ -451,7 +451,11 @@ func (links *AMQPLinksImpl) closeIfNeeded(ctx context.Context, err error, lastID
 	case RecoveryKindConn:
 		links.Writef(exported.EventConn, "Closing connection AND links for error %s", err.Error())
 		_ = links.closeWithoutLocking(ctx, false)
-		_ = links.ns.Close(false)
+		if lastID != nil {
+			_ = links.ns.CloseIfNeeded(lastID.Conn)
+		} else {
+			_ = links.ns.Close(false)
+		}
 		return rk
 	case RecoveryKindNone:
 		return rk

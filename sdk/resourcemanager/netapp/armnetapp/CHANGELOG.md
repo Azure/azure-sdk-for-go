@@ -1,6 +1,6 @@
 # Release History
 
-## 11.0.0-beta.3 (2026-08-14)
+## 11.0.0-beta.3 (2026-08-26)
 ### Breaking Changes
 
 - Field `LdapOverTLS` of struct `LdapConfiguration` has been removed

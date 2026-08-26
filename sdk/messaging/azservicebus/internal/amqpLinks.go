@@ -384,7 +384,7 @@ func (links *AMQPLinksImpl) Retry(ctx context.Context, eventName azlog.Event, op
 	if err != nil {
 		switch links.getRecoveryKindFunc(err) {
 		case RecoveryKindLink, RecoveryKindConn:
-			links.CloseIfNeeded(context.Background(), err)
+			links.closeIfNeeded(context.Background(), err, &lastID)
 		}
 	}
 
@@ -422,8 +422,16 @@ func (l *AMQPLinksImpl) Close(ctx context.Context, permanent bool) error {
 // if you're trying to exit out of a function quickly but still need to react
 // to a returned error.
 func (links *AMQPLinksImpl) CloseIfNeeded(ctx context.Context, err error) RecoveryKind {
+	return links.closeIfNeeded(ctx, err, nil)
+}
+
+func (links *AMQPLinksImpl) closeIfNeeded(ctx context.Context, err error, lastID *LinkID) RecoveryKind {
 	links.mu.Lock()
 	defer links.mu.Unlock()
+
+	if lastID != nil && links.id != *lastID {
+		return RecoveryKindNone
+	}
 
 	if IsCancelError(err) {
 		links.Writef(exported.EventConn, "No close needed for cancellation")

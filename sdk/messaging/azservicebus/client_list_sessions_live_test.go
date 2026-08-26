@@ -17,9 +17,10 @@ import (
 )
 
 // TestClient_ListSessionsForQueue_Live exercises the get-message-sessions operation
-// end-to-end against a live namespace. It is live-only: active-messages mode relies on
-// the service clamping the far-future sentinel timestamp to DateTime.MaxValue, which
-// cannot be reproduced with recorded responses.
+// end-to-end against a live namespace. It is live-only: default listing mode returns
+// sessions with active messages or stored session state and relies on the service clamping
+// the far-future sentinel timestamp to DateTime.MaxValue, which cannot be reproduced with
+// recorded responses.
 func TestClient_ListSessionsForQueue_Live(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("live-only: session listing exercises service-side sentinel clamping and cannot be recorded")
@@ -53,9 +54,9 @@ func TestClient_ListSessionsForQueue_Live(t *testing.T) {
 	}
 	require.NoError(t, sender.Close(ctx))
 
-	// A session that has session state set but no active message. Active-messages mode must
-	// still list it: the default lists sessions with active messages as well as sessions that
-	// have session state set but no active messages. Without this session the ElementsMatch
+	// A session that has session state set but no active message. Default listing mode must
+	// still list it: the default lists sessions with active messages as well as sessions with
+	// stored session state. Without this session the ElementsMatch
 	// below would pass whether or not state-only sessions are included.
 	const stateOnlySession = "state-only-000"
 	stateReceiver, err := client.AcceptSessionForQueue(ctx, queue, stateOnlySession, nil)
@@ -64,8 +65,8 @@ func TestClient_ListSessionsForQueue_Live(t *testing.T) {
 	require.NoError(t, stateReceiver.Close(ctx))
 	want = append(want, stateOnlySession)
 
-	// Active-messages mode (nil options => far-future sentinel): the service must return the
-	// sessions that have active messages plus the state-only session, across all pages.
+	// Default listing mode (nil options => far-future sentinel): the service must return
+	// sessions with active messages and sessions with stored session state, across all pages.
 	var got []string
 	pager := client.NewListSessionsForQueuePager(queue, nil)
 	for pager.More() {
@@ -79,11 +80,12 @@ func TestClient_ListSessionsForQueue_Live(t *testing.T) {
 
 // TestClient_ListSessionsForQueue_SessionStateUpdatedAfter_Live exercises the
 // SessionStateUpdatedAfter filter (the second listing mode) end-to-end against a live
-// namespace. Unlike active-messages mode, this mode passes a real last-updated-time to the
-// service, so it can only be validated live. Listing with a cutoff on either side of the
-// state update must return opposite sets: a past cutoff lists the state sessions, a future
-// cutoff excludes them. That difference proves the service applies the real last-updated-time
-// rather than ignoring the filter.
+// namespace. Unlike default listing mode, which returns sessions with active messages or
+// stored session state, this mode passes a real last-updated-time to the service, so it can
+// only be validated live. Listing with a cutoff on either side of the state update must
+// return opposite sets: a past cutoff lists the state sessions, a future cutoff excludes
+// them. That difference proves the service applies the real last-updated-time rather than
+// ignoring the filter.
 func TestClient_ListSessionsForQueue_SessionStateUpdatedAfter_Live(t *testing.T) {
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		t.Skip("live-only: session-state-updated-time filtering is a service-side behavior and cannot be recorded")

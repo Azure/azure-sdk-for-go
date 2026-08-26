@@ -18,6 +18,8 @@ import (
 
 // BackupResourceVaultConfigsClient contains the methods for the BackupResourceVaultConfigs group.
 // Don't use this type directly, use NewBackupResourceVaultConfigsClient() instead.
+//
+// Generated from API version 2026-07-01
 type BackupResourceVaultConfigsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewBackupResourceVaultConfigsClient(subscriptionID string, credential azcor
 
 // Get - Fetches resource vault config.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupResourceVaultConfigsClientGetOptions contains the optional parameters for the BackupResourceVaultConfigsClient.Get
 //     method.
@@ -60,12 +60,7 @@ func (client *BackupResourceVaultConfigsClient) Get(ctx context.Context, vaultNa
 	if err != nil {
 		return BackupResourceVaultConfigsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupResourceVaultConfigsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -88,15 +83,18 @@ func (client *BackupResourceVaultConfigsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *BackupResourceVaultConfigsClient) getHandleResponse(resp *http.Response) (BackupResourceVaultConfigsClientGetResponse, error) {
+func (client *BackupResourceVaultConfigsClient) getHandleResponse(resp *http.Response, successCodes ...int) (BackupResourceVaultConfigsClientGetResponse, error) {
 	result := BackupResourceVaultConfigsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupResourceVaultConfigResource); err != nil {
 		return BackupResourceVaultConfigsClientGetResponse{}, err
 	}
@@ -105,8 +103,6 @@ func (client *BackupResourceVaultConfigsClient) getHandleResponse(resp *http.Res
 
 // Put - Updates vault security config.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupResourceVaultConfigsClientPutOptions contains the optional parameters for the BackupResourceVaultConfigsClient.Put
 //     method.
@@ -124,12 +120,7 @@ func (client *BackupResourceVaultConfigsClient) Put(ctx context.Context, vaultNa
 	if err != nil {
 		return BackupResourceVaultConfigsClientPutResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupResourceVaultConfigsClientPutResponse{}, err
-	}
-	resp, err := client.putHandleResponse(httpResp)
-	return resp, err
+	return client.putHandleResponse(httpResp, http.StatusOK)
 }
 
 // putCreateRequest creates the Put request.
@@ -152,8 +143,8 @@ func (client *BackupResourceVaultConfigsClient) putCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
 		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
@@ -166,8 +157,11 @@ func (client *BackupResourceVaultConfigsClient) putCreateRequest(ctx context.Con
 }
 
 // putHandleResponse handles the Put response.
-func (client *BackupResourceVaultConfigsClient) putHandleResponse(resp *http.Response) (BackupResourceVaultConfigsClientPutResponse, error) {
+func (client *BackupResourceVaultConfigsClient) putHandleResponse(resp *http.Response, successCodes ...int) (BackupResourceVaultConfigsClientPutResponse, error) {
 	result := BackupResourceVaultConfigsClientPutResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupResourceVaultConfigResource); err != nil {
 		return BackupResourceVaultConfigsClientPutResponse{}, err
 	}
@@ -176,8 +170,6 @@ func (client *BackupResourceVaultConfigsClient) putHandleResponse(resp *http.Res
 
 // Update - Updates vault security config.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BackupResourceVaultConfigsClientUpdateOptions contains the optional parameters for the BackupResourceVaultConfigsClient.Update
 //     method.
@@ -195,12 +187,7 @@ func (client *BackupResourceVaultConfigsClient) Update(ctx context.Context, vaul
 	if err != nil {
 		return BackupResourceVaultConfigsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BackupResourceVaultConfigsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -223,8 +210,8 @@ func (client *BackupResourceVaultConfigsClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
 		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
@@ -237,8 +224,11 @@ func (client *BackupResourceVaultConfigsClient) updateCreateRequest(ctx context.
 }
 
 // updateHandleResponse handles the Update response.
-func (client *BackupResourceVaultConfigsClient) updateHandleResponse(resp *http.Response) (BackupResourceVaultConfigsClientUpdateResponse, error) {
+func (client *BackupResourceVaultConfigsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (BackupResourceVaultConfigsClientUpdateResponse, error) {
 	result := BackupResourceVaultConfigsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupResourceVaultConfigResource); err != nil {
 		return BackupResourceVaultConfigsClientUpdateResponse{}, err
 	}

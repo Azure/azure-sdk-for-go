@@ -18,6 +18,8 @@ import (
 
 // PrivateEndpointClient contains the methods for the PrivateEndpoint group.
 // Don't use this type directly, use NewPrivateEndpointClient() instead.
+//
+// Generated from API version 2026-07-01
 type PrivateEndpointClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPrivateEndpointClient(subscriptionID string, credential azcore.TokenCred
 
 // GetOperationStatus - Gets the operation status for a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - PrivateEndpointClientGetOperationStatusOptions contains the optional parameters for the PrivateEndpointClient.GetOperationStatus
 //     method.
@@ -60,12 +60,7 @@ func (client *PrivateEndpointClient) GetOperationStatus(ctx context.Context, vau
 	if err != nil {
 		return PrivateEndpointClientGetOperationStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateEndpointClientGetOperationStatusResponse{}, err
-	}
-	resp, err := client.getOperationStatusHandleResponse(httpResp)
-	return resp, err
+	return client.getOperationStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // getOperationStatusCreateRequest creates the GetOperationStatus request.
@@ -96,15 +91,18 @@ func (client *PrivateEndpointClient) getOperationStatusCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getOperationStatusHandleResponse handles the GetOperationStatus response.
-func (client *PrivateEndpointClient) getOperationStatusHandleResponse(resp *http.Response) (PrivateEndpointClientGetOperationStatusResponse, error) {
+func (client *PrivateEndpointClient) getOperationStatusHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointClientGetOperationStatusResponse, error) {
 	result := PrivateEndpointClientGetOperationStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
 		return PrivateEndpointClientGetOperationStatusResponse{}, err
 	}

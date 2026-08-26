@@ -20,7 +20,7 @@ import (
 // VirtualMachineBulkOperationsClient contains the methods for the VirtualMachineBulkOperations group.
 // Don't use this type directly, use NewVirtualMachineBulkOperationsClient() instead.
 //
-// Generated from API version 2026-07-06-preview
+// Generated from API version 2026-08-06-preview
 type VirtualMachineBulkOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,12 +63,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkAcknowledgeOperationErrors
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse{}, err
-	}
-	resp, err := client.bulkAcknowledgeOperationErrorsHandleResponse(httpResp)
-	return resp, err
+	return client.bulkAcknowledgeOperationErrorsHandleResponse(httpResp, http.StatusOK)
 }
 
 // bulkAcknowledgeOperationErrorsCreateRequest creates the BulkAcknowledgeOperationErrors request.
@@ -91,7 +86,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkAcknowledgeOperationErrors
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -102,8 +97,11 @@ func (client *VirtualMachineBulkOperationsClient) bulkAcknowledgeOperationErrors
 }
 
 // bulkAcknowledgeOperationErrorsHandleResponse handles the BulkAcknowledgeOperationErrors response.
-func (client *VirtualMachineBulkOperationsClient) bulkAcknowledgeOperationErrorsHandleResponse(resp *http.Response) (VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse, error) {
+func (client *VirtualMachineBulkOperationsClient) bulkAcknowledgeOperationErrorsHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse, error) {
 	result := VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AcknowledgeBulkOperationErrorsResponse); err != nil {
 		return VirtualMachineBulkOperationsClientBulkAcknowledgeOperationErrorsResponse{}, err
 	}
@@ -131,12 +129,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkCancelOperations(ctx conte
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkCancelOperationsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualMachineBulkOperationsClientBulkCancelOperationsResponse{}, err
-	}
-	resp, err := client.bulkCancelOperationsHandleResponse(httpResp)
-	return resp, err
+	return client.bulkCancelOperationsHandleResponse(httpResp, http.StatusOK)
 }
 
 // bulkCancelOperationsCreateRequest creates the BulkCancelOperations request.
@@ -159,7 +152,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkCancelOperationsCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -170,8 +163,11 @@ func (client *VirtualMachineBulkOperationsClient) bulkCancelOperationsCreateRequ
 }
 
 // bulkCancelOperationsHandleResponse handles the BulkCancelOperations response.
-func (client *VirtualMachineBulkOperationsClient) bulkCancelOperationsHandleResponse(resp *http.Response) (VirtualMachineBulkOperationsClientBulkCancelOperationsResponse, error) {
+func (client *VirtualMachineBulkOperationsClient) bulkCancelOperationsHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkCancelOperationsResponse, error) {
 	result := VirtualMachineBulkOperationsClientBulkCancelOperationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CancelOperationsResponse); err != nil {
 		return VirtualMachineBulkOperationsClientBulkCancelOperationsResponse{}, err
 	}
@@ -200,12 +196,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkCreateOperation(ctx contex
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkCreateOperationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualMachineBulkOperationsClientBulkCreateOperationResponse{}, err
-	}
-	resp, err := client.bulkCreateOperationHandleResponse(httpResp)
-	return resp, err
+	return client.bulkCreateOperationHandleResponse(httpResp, http.StatusOK)
 }
 
 // bulkCreateOperationCreateRequest creates the BulkCreateOperation request.
@@ -228,7 +219,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkCreateOperationCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -239,8 +230,11 @@ func (client *VirtualMachineBulkOperationsClient) bulkCreateOperationCreateReque
 }
 
 // bulkCreateOperationHandleResponse handles the BulkCreateOperation response.
-func (client *VirtualMachineBulkOperationsClient) bulkCreateOperationHandleResponse(resp *http.Response) (VirtualMachineBulkOperationsClientBulkCreateOperationResponse, error) {
+func (client *VirtualMachineBulkOperationsClient) bulkCreateOperationHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkCreateOperationResponse, error) {
 	result := VirtualMachineBulkOperationsClientBulkCreateOperationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreateResourceOperationResponse); err != nil {
 		return VirtualMachineBulkOperationsClientBulkCreateOperationResponse{}, err
 	}
@@ -269,12 +263,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkDeallocateOperation(ctx co
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkDeallocateOperationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualMachineBulkOperationsClientBulkDeallocateOperationResponse{}, err
-	}
-	resp, err := client.bulkDeallocateOperationHandleResponse(httpResp)
-	return resp, err
+	return client.bulkDeallocateOperationHandleResponse(httpResp, http.StatusOK)
 }
 
 // bulkDeallocateOperationCreateRequest creates the BulkDeallocateOperation request.
@@ -297,7 +286,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkDeallocateOperationCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -308,8 +297,11 @@ func (client *VirtualMachineBulkOperationsClient) bulkDeallocateOperationCreateR
 }
 
 // bulkDeallocateOperationHandleResponse handles the BulkDeallocateOperation response.
-func (client *VirtualMachineBulkOperationsClient) bulkDeallocateOperationHandleResponse(resp *http.Response) (VirtualMachineBulkOperationsClientBulkDeallocateOperationResponse, error) {
+func (client *VirtualMachineBulkOperationsClient) bulkDeallocateOperationHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkDeallocateOperationResponse, error) {
 	result := VirtualMachineBulkOperationsClientBulkDeallocateOperationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeallocateResourceOperationResponse); err != nil {
 		return VirtualMachineBulkOperationsClientBulkDeallocateOperationResponse{}, err
 	}
@@ -338,12 +330,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkDeleteOperation(ctx contex
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkDeleteOperationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualMachineBulkOperationsClientBulkDeleteOperationResponse{}, err
-	}
-	resp, err := client.bulkDeleteOperationHandleResponse(httpResp)
-	return resp, err
+	return client.bulkDeleteOperationHandleResponse(httpResp, http.StatusOK)
 }
 
 // bulkDeleteOperationCreateRequest creates the BulkDeleteOperation request.
@@ -366,7 +353,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkDeleteOperationCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -377,8 +364,11 @@ func (client *VirtualMachineBulkOperationsClient) bulkDeleteOperationCreateReque
 }
 
 // bulkDeleteOperationHandleResponse handles the BulkDeleteOperation response.
-func (client *VirtualMachineBulkOperationsClient) bulkDeleteOperationHandleResponse(resp *http.Response) (VirtualMachineBulkOperationsClientBulkDeleteOperationResponse, error) {
+func (client *VirtualMachineBulkOperationsClient) bulkDeleteOperationHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkDeleteOperationResponse, error) {
 	result := VirtualMachineBulkOperationsClientBulkDeleteOperationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeleteResourceOperationResponse); err != nil {
 		return VirtualMachineBulkOperationsClientBulkDeleteOperationResponse{}, err
 	}
@@ -406,12 +396,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkGetOperationsStatus(ctx co
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkGetOperationsStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualMachineBulkOperationsClientBulkGetOperationsStatusResponse{}, err
-	}
-	resp, err := client.bulkGetOperationsStatusHandleResponse(httpResp)
-	return resp, err
+	return client.bulkGetOperationsStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // bulkGetOperationsStatusCreateRequest creates the BulkGetOperationsStatus request.
@@ -434,7 +419,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkGetOperationsStatusCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -445,8 +430,11 @@ func (client *VirtualMachineBulkOperationsClient) bulkGetOperationsStatusCreateR
 }
 
 // bulkGetOperationsStatusHandleResponse handles the BulkGetOperationsStatus response.
-func (client *VirtualMachineBulkOperationsClient) bulkGetOperationsStatusHandleResponse(resp *http.Response) (VirtualMachineBulkOperationsClientBulkGetOperationsStatusResponse, error) {
+func (client *VirtualMachineBulkOperationsClient) bulkGetOperationsStatusHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkGetOperationsStatusResponse, error) {
 	result := VirtualMachineBulkOperationsClientBulkGetOperationsStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetOperationStatusResponse); err != nil {
 		return VirtualMachineBulkOperationsClientBulkGetOperationsStatusResponse{}, err
 	}
@@ -475,12 +463,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkHibernateOperation(ctx con
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkHibernateOperationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualMachineBulkOperationsClientBulkHibernateOperationResponse{}, err
-	}
-	resp, err := client.bulkHibernateOperationHandleResponse(httpResp)
-	return resp, err
+	return client.bulkHibernateOperationHandleResponse(httpResp, http.StatusOK)
 }
 
 // bulkHibernateOperationCreateRequest creates the BulkHibernateOperation request.
@@ -503,7 +486,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkHibernateOperationCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -514,8 +497,11 @@ func (client *VirtualMachineBulkOperationsClient) bulkHibernateOperationCreateRe
 }
 
 // bulkHibernateOperationHandleResponse handles the BulkHibernateOperation response.
-func (client *VirtualMachineBulkOperationsClient) bulkHibernateOperationHandleResponse(resp *http.Response) (VirtualMachineBulkOperationsClientBulkHibernateOperationResponse, error) {
+func (client *VirtualMachineBulkOperationsClient) bulkHibernateOperationHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkHibernateOperationResponse, error) {
 	result := VirtualMachineBulkOperationsClientBulkHibernateOperationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HibernateResourceOperationResponse); err != nil {
 		return VirtualMachineBulkOperationsClientBulkHibernateOperationResponse{}, err
 	}
@@ -538,50 +524,64 @@ func (client *VirtualMachineBulkOperationsClient) NewBulkListOperationErrorsPage
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.bulkListOperationErrorsCreateRequest(ctx, resourceGroupName, location, options)
-			}, nil)
+			req, err := client.bulkListOperationErrorsCreateRequest(ctx, resourceGroupName, location, nextLink, options)
 			if err != nil {
 				return VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}, err
 			}
-			return client.bulkListOperationErrorsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}, err
+			}
+			return client.bulkListOperationErrorsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // bulkListOperationErrorsCreateRequest creates the BulkListOperationErrors request.
-func (client *VirtualMachineBulkOperationsClient) bulkListOperationErrorsCreateRequest(ctx context.Context, resourceGroupName string, location string, options *VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/listBulkOperationErrors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *VirtualMachineBulkOperationsClient) bulkListOperationErrorsCreateRequest(ctx context.Context, resourceGroupName string, location string, nextLink string, options *VirtualMachineBulkOperationsClientBulkListOperationErrorsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/locations/{location}/listBulkOperationErrors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
-	if options != nil && options.LookbackInMinutes != nil {
-		reqQP.Set("lookbackInMinutes", strconv.FormatInt(int64(*options.LookbackInMinutes), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260806Preview)
+		if options != nil && options.LookbackInMinutes != nil {
+			reqQP.Set("lookbackInMinutes", strconv.FormatInt(int64(*options.LookbackInMinutes), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // bulkListOperationErrorsHandleResponse handles the BulkListOperationErrors response.
-func (client *VirtualMachineBulkOperationsClient) bulkListOperationErrorsHandleResponse(resp *http.Response) (VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse, error) {
+func (client *VirtualMachineBulkOperationsClient) bulkListOperationErrorsHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse, error) {
 	result := VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListBulkOperationErrorsResponse); err != nil {
 		return VirtualMachineBulkOperationsClientBulkListOperationErrorsResponse{}, err
 	}
@@ -610,12 +610,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkReimageOperation(ctx conte
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkReimageOperationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualMachineBulkOperationsClientBulkReimageOperationResponse{}, err
-	}
-	resp, err := client.bulkReimageOperationHandleResponse(httpResp)
-	return resp, err
+	return client.bulkReimageOperationHandleResponse(httpResp, http.StatusOK)
 }
 
 // bulkReimageOperationCreateRequest creates the BulkReimageOperation request.
@@ -638,7 +633,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkReimageOperationCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -649,8 +644,11 @@ func (client *VirtualMachineBulkOperationsClient) bulkReimageOperationCreateRequ
 }
 
 // bulkReimageOperationHandleResponse handles the BulkReimageOperation response.
-func (client *VirtualMachineBulkOperationsClient) bulkReimageOperationHandleResponse(resp *http.Response) (VirtualMachineBulkOperationsClientBulkReimageOperationResponse, error) {
+func (client *VirtualMachineBulkOperationsClient) bulkReimageOperationHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkReimageOperationResponse, error) {
 	result := VirtualMachineBulkOperationsClientBulkReimageOperationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReimageResourceOperationResponse); err != nil {
 		return VirtualMachineBulkOperationsClientBulkReimageOperationResponse{}, err
 	}
@@ -679,12 +677,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkStartOperation(ctx context
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkStartOperationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualMachineBulkOperationsClientBulkStartOperationResponse{}, err
-	}
-	resp, err := client.bulkStartOperationHandleResponse(httpResp)
-	return resp, err
+	return client.bulkStartOperationHandleResponse(httpResp, http.StatusOK)
 }
 
 // bulkStartOperationCreateRequest creates the BulkStartOperation request.
@@ -707,7 +700,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkStartOperationCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -718,8 +711,11 @@ func (client *VirtualMachineBulkOperationsClient) bulkStartOperationCreateReques
 }
 
 // bulkStartOperationHandleResponse handles the BulkStartOperation response.
-func (client *VirtualMachineBulkOperationsClient) bulkStartOperationHandleResponse(resp *http.Response) (VirtualMachineBulkOperationsClientBulkStartOperationResponse, error) {
+func (client *VirtualMachineBulkOperationsClient) bulkStartOperationHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkStartOperationResponse, error) {
 	result := VirtualMachineBulkOperationsClientBulkStartOperationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StartResourceOperationResponse); err != nil {
 		return VirtualMachineBulkOperationsClientBulkStartOperationResponse{}, err
 	}
@@ -748,12 +744,7 @@ func (client *VirtualMachineBulkOperationsClient) BulkVdiFlexCreateOperation(ctx
 	if err != nil {
 		return VirtualMachineBulkOperationsClientBulkVdiFlexCreateOperationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualMachineBulkOperationsClientBulkVdiFlexCreateOperationResponse{}, err
-	}
-	resp, err := client.bulkVdiFlexCreateOperationHandleResponse(httpResp)
-	return resp, err
+	return client.bulkVdiFlexCreateOperationHandleResponse(httpResp, http.StatusOK)
 }
 
 // bulkVdiFlexCreateOperationCreateRequest creates the BulkVdiFlexCreateOperation request.
@@ -776,7 +767,7 @@ func (client *VirtualMachineBulkOperationsClient) bulkVdiFlexCreateOperationCrea
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260706Preview)
+	reqQP.Set("api-version", version20260806Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -787,8 +778,11 @@ func (client *VirtualMachineBulkOperationsClient) bulkVdiFlexCreateOperationCrea
 }
 
 // bulkVdiFlexCreateOperationHandleResponse handles the BulkVdiFlexCreateOperation response.
-func (client *VirtualMachineBulkOperationsClient) bulkVdiFlexCreateOperationHandleResponse(resp *http.Response) (VirtualMachineBulkOperationsClientBulkVdiFlexCreateOperationResponse, error) {
+func (client *VirtualMachineBulkOperationsClient) bulkVdiFlexCreateOperationHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineBulkOperationsClientBulkVdiFlexCreateOperationResponse, error) {
 	result := VirtualMachineBulkOperationsClientBulkVdiFlexCreateOperationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreateResourceOperationResponse); err != nil {
 		return VirtualMachineBulkOperationsClientBulkVdiFlexCreateOperationResponse{}, err
 	}

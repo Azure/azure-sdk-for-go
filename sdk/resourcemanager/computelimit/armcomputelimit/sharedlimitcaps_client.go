@@ -62,12 +62,7 @@ func (client *SharedLimitCapsClient) CreateOrUpdate(ctx context.Context, locatio
 	if err != nil {
 		return SharedLimitCapsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SharedLimitCapsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -101,8 +96,11 @@ func (client *SharedLimitCapsClient) createOrUpdateCreateRequest(ctx context.Con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SharedLimitCapsClient) createOrUpdateHandleResponse(resp *http.Response) (SharedLimitCapsClientCreateOrUpdateResponse, error) {
+func (client *SharedLimitCapsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SharedLimitCapsClientCreateOrUpdateResponse, error) {
 	result := SharedLimitCapsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedLimitCap); err != nil {
 		return SharedLimitCapsClientCreateOrUpdateResponse{}, err
 	}
@@ -129,8 +127,7 @@ func (client *SharedLimitCapsClient) Delete(ctx context.Context, location string
 		return SharedLimitCapsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SharedLimitCapsClientDeleteResponse{}, err
+		return SharedLimitCapsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SharedLimitCapsClientDeleteResponse{}, nil
 }
@@ -179,12 +176,7 @@ func (client *SharedLimitCapsClient) Get(ctx context.Context, location string, v
 	if err != nil {
 		return SharedLimitCapsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SharedLimitCapsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -214,8 +206,11 @@ func (client *SharedLimitCapsClient) getCreateRequest(ctx context.Context, locat
 }
 
 // getHandleResponse handles the Get response.
-func (client *SharedLimitCapsClient) getHandleResponse(resp *http.Response) (SharedLimitCapsClientGetResponse, error) {
+func (client *SharedLimitCapsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SharedLimitCapsClientGetResponse, error) {
 	result := SharedLimitCapsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedLimitCap); err != nil {
 		return SharedLimitCapsClientGetResponse{}, err
 	}
@@ -237,43 +232,57 @@ func (client *SharedLimitCapsClient) NewListBySubscriptionLocationResourcePager(
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionLocationResourceCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listBySubscriptionLocationResourceCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return SharedLimitCapsClientListBySubscriptionLocationResourceResponse{}, err
 			}
-			return client.listBySubscriptionLocationResourceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SharedLimitCapsClientListBySubscriptionLocationResourceResponse{}, err
+			}
+			return client.listBySubscriptionLocationResourceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionLocationResourceCreateRequest creates the ListBySubscriptionLocationResource request.
-func (client *SharedLimitCapsClient) listBySubscriptionLocationResourceCreateRequest(ctx context.Context, location string, _ *SharedLimitCapsClientListBySubscriptionLocationResourceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SharedLimitCapsClient) listBySubscriptionLocationResourceCreateRequest(ctx context.Context, location string, nextLink string, _ *SharedLimitCapsClientListBySubscriptionLocationResourceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/sharedLimitCaps"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260731)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260731)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionLocationResourceHandleResponse handles the ListBySubscriptionLocationResource response.
-func (client *SharedLimitCapsClient) listBySubscriptionLocationResourceHandleResponse(resp *http.Response) (SharedLimitCapsClientListBySubscriptionLocationResourceResponse, error) {
+func (client *SharedLimitCapsClient) listBySubscriptionLocationResourceHandleResponse(resp *http.Response, successCodes ...int) (SharedLimitCapsClientListBySubscriptionLocationResourceResponse, error) {
 	result := SharedLimitCapsClientListBySubscriptionLocationResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SharedLimitCapListResult); err != nil {
 		return SharedLimitCapsClientListBySubscriptionLocationResourceResponse{}, err
 	}
@@ -303,12 +312,7 @@ func (client *SharedLimitCapsClient) SetMemberCapOverrides(ctx context.Context, 
 	if err != nil {
 		return SharedLimitCapsClientSetMemberCapOverridesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SharedLimitCapsClientSetMemberCapOverridesResponse{}, err
-	}
-	resp, err := client.setMemberCapOverridesHandleResponse(httpResp)
-	return resp, err
+	return client.setMemberCapOverridesHandleResponse(httpResp, http.StatusOK)
 }
 
 // setMemberCapOverridesCreateRequest creates the SetMemberCapOverrides request.
@@ -342,8 +346,11 @@ func (client *SharedLimitCapsClient) setMemberCapOverridesCreateRequest(ctx cont
 }
 
 // setMemberCapOverridesHandleResponse handles the SetMemberCapOverrides response.
-func (client *SharedLimitCapsClient) setMemberCapOverridesHandleResponse(resp *http.Response) (SharedLimitCapsClientSetMemberCapOverridesResponse, error) {
+func (client *SharedLimitCapsClient) setMemberCapOverridesHandleResponse(resp *http.Response, successCodes ...int) (SharedLimitCapsClientSetMemberCapOverridesResponse, error) {
 	result := SharedLimitCapsClientSetMemberCapOverridesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SetMemberCapOverridesResult); err != nil {
 		return SharedLimitCapsClientSetMemberCapOverridesResponse{}, err
 	}

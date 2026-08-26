@@ -63,12 +63,7 @@ func (client *SoftwareUpdateConfigurationsClient) Create(ctx context.Context, re
 	if err != nil {
 		return SoftwareUpdateConfigurationsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SoftwareUpdateConfigurationsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -109,8 +104,11 @@ func (client *SoftwareUpdateConfigurationsClient) createCreateRequest(ctx contex
 }
 
 // createHandleResponse handles the Create response.
-func (client *SoftwareUpdateConfigurationsClient) createHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationsClientCreateResponse, error) {
+func (client *SoftwareUpdateConfigurationsClient) createHandleResponse(resp *http.Response, successCodes ...int) (SoftwareUpdateConfigurationsClientCreateResponse, error) {
 	result := SoftwareUpdateConfigurationsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfiguration); err != nil {
 		return SoftwareUpdateConfigurationsClientCreateResponse{}, err
 	}
@@ -139,8 +137,7 @@ func (client *SoftwareUpdateConfigurationsClient) Delete(ctx context.Context, re
 		return SoftwareUpdateConfigurationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SoftwareUpdateConfigurationsClientDeleteResponse{}, err
+		return SoftwareUpdateConfigurationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SoftwareUpdateConfigurationsClientDeleteResponse{}, nil
 }
@@ -198,12 +195,7 @@ func (client *SoftwareUpdateConfigurationsClient) GetByName(ctx context.Context,
 	if err != nil {
 		return SoftwareUpdateConfigurationsClientGetByNameResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SoftwareUpdateConfigurationsClientGetByNameResponse{}, err
-	}
-	resp, err := client.getByNameHandleResponse(httpResp)
-	return resp, err
+	return client.getByNameHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByNameCreateRequest creates the GetByName request.
@@ -240,8 +232,11 @@ func (client *SoftwareUpdateConfigurationsClient) getByNameCreateRequest(ctx con
 }
 
 // getByNameHandleResponse handles the GetByName response.
-func (client *SoftwareUpdateConfigurationsClient) getByNameHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationsClientGetByNameResponse, error) {
+func (client *SoftwareUpdateConfigurationsClient) getByNameHandleResponse(resp *http.Response, successCodes ...int) (SoftwareUpdateConfigurationsClientGetByNameResponse, error) {
 	result := SoftwareUpdateConfigurationsClientGetByNameResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfiguration); err != nil {
 		return SoftwareUpdateConfigurationsClientGetByNameResponse{}, err
 	}
@@ -268,12 +263,7 @@ func (client *SoftwareUpdateConfigurationsClient) List(ctx context.Context, reso
 	if err != nil {
 		return SoftwareUpdateConfigurationsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SoftwareUpdateConfigurationsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -309,8 +299,11 @@ func (client *SoftwareUpdateConfigurationsClient) listCreateRequest(ctx context.
 }
 
 // listHandleResponse handles the List response.
-func (client *SoftwareUpdateConfigurationsClient) listHandleResponse(resp *http.Response) (SoftwareUpdateConfigurationsClientListResponse, error) {
+func (client *SoftwareUpdateConfigurationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SoftwareUpdateConfigurationsClientListResponse, error) {
 	result := SoftwareUpdateConfigurationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SoftwareUpdateConfigurationListResult); err != nil {
 		return SoftwareUpdateConfigurationsClientListResponse{}, err
 	}

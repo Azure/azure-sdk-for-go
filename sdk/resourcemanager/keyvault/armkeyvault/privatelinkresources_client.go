@@ -61,12 +61,7 @@ func (client *PrivateLinkResourcesClient) ListByVault(ctx context.Context, resou
 	if err != nil {
 		return PrivateLinkResourcesClientListByVaultResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateLinkResourcesClientListByVaultResponse{}, err
-	}
-	resp, err := client.listByVaultHandleResponse(httpResp)
-	return resp, err
+	return client.listByVaultHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByVaultCreateRequest creates the ListByVault request.
@@ -96,8 +91,11 @@ func (client *PrivateLinkResourcesClient) listByVaultCreateRequest(ctx context.C
 }
 
 // listByVaultHandleResponse handles the ListByVault response.
-func (client *PrivateLinkResourcesClient) listByVaultHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByVaultResponse, error) {
+func (client *PrivateLinkResourcesClient) listByVaultHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinkResourcesClientListByVaultResponse, error) {
 	result := PrivateLinkResourcesClientListByVaultResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return PrivateLinkResourcesClientListByVaultResponse{}, err
 	}

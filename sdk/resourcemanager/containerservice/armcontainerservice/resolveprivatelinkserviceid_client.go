@@ -19,7 +19,7 @@ import (
 // ResolvePrivateLinkServiceIDClient contains the methods for the ResolvePrivateLinkServiceID group.
 // Don't use this type directly, use NewResolvePrivateLinkServiceIDClient() instead.
 //
-// Generated from API version 2026-05-02-preview
+// Generated from API version 2026-06-01
 type ResolvePrivateLinkServiceIDClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -62,12 +62,7 @@ func (client *ResolvePrivateLinkServiceIDClient) POST(ctx context.Context, resou
 	if err != nil {
 		return ResolvePrivateLinkServiceIDClientPOSTResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResolvePrivateLinkServiceIDClientPOSTResponse{}, err
-	}
-	resp, err := client.postHandleResponse(httpResp)
-	return resp, err
+	return client.postHandleResponse(httpResp, http.StatusOK)
 }
 
 // postCreateRequest creates the POST request.
@@ -90,7 +85,7 @@ func (client *ResolvePrivateLinkServiceIDClient) postCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260502Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -101,8 +96,11 @@ func (client *ResolvePrivateLinkServiceIDClient) postCreateRequest(ctx context.C
 }
 
 // postHandleResponse handles the POST response.
-func (client *ResolvePrivateLinkServiceIDClient) postHandleResponse(resp *http.Response) (ResolvePrivateLinkServiceIDClientPOSTResponse, error) {
+func (client *ResolvePrivateLinkServiceIDClient) postHandleResponse(resp *http.Response, successCodes ...int) (ResolvePrivateLinkServiceIDClientPOSTResponse, error) {
 	result := ResolvePrivateLinkServiceIDClientPOSTResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResource); err != nil {
 		return ResolvePrivateLinkServiceIDClientPOSTResponse{}, err
 	}

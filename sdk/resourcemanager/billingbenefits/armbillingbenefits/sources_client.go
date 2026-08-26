@@ -62,12 +62,7 @@ func (client *SourcesClient) Create(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return SourcesClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return SourcesClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -105,8 +100,11 @@ func (client *SourcesClient) createCreateRequest(ctx context.Context, resourceGr
 }
 
 // createHandleResponse handles the Create response.
-func (client *SourcesClient) createHandleResponse(resp *http.Response) (SourcesClientCreateResponse, error) {
+func (client *SourcesClient) createHandleResponse(resp *http.Response, successCodes ...int) (SourcesClientCreateResponse, error) {
 	result := SourcesClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreditSource); err != nil {
 		return SourcesClientCreateResponse{}, err
 	}
@@ -134,8 +132,7 @@ func (client *SourcesClient) Delete(ctx context.Context, resourceGroupName strin
 		return SourcesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SourcesClientDeleteResponse{}, err
+		return SourcesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SourcesClientDeleteResponse{}, nil
 }
@@ -189,12 +186,7 @@ func (client *SourcesClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return SourcesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SourcesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -228,8 +220,11 @@ func (client *SourcesClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *SourcesClient) getHandleResponse(resp *http.Response) (SourcesClientGetResponse, error) {
+func (client *SourcesClient) getHandleResponse(resp *http.Response, successCodes ...int) (SourcesClientGetResponse, error) {
 	result := SourcesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreditSource); err != nil {
 		return SourcesClientGetResponse{}, err
 	}
@@ -252,47 +247,61 @@ func (client *SourcesClient) NewListByCreditPager(resourceGroupName string, cred
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByCreditCreateRequest(ctx, resourceGroupName, creditName, options)
-			}, nil)
+			req, err := client.listByCreditCreateRequest(ctx, resourceGroupName, creditName, nextLink, options)
 			if err != nil {
 				return SourcesClientListByCreditResponse{}, err
 			}
-			return client.listByCreditHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SourcesClientListByCreditResponse{}, err
+			}
+			return client.listByCreditHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByCreditCreateRequest creates the ListByCredit request.
-func (client *SourcesClient) listByCreditCreateRequest(ctx context.Context, resourceGroupName string, creditName string, _ *SourcesClientListByCreditOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/credits/{creditName}/sources"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SourcesClient) listByCreditCreateRequest(ctx context.Context, resourceGroupName string, creditName string, nextLink string, _ *SourcesClientListByCreditOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/credits/{creditName}/sources"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if creditName == "" {
+			return nil, errors.New("parameter creditName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{creditName}", url.PathEscape(creditName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if creditName == "" {
-		return nil, errors.New("parameter creditName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{creditName}", url.PathEscape(creditName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByCreditHandleResponse handles the ListByCredit response.
-func (client *SourcesClient) listByCreditHandleResponse(resp *http.Response) (SourcesClientListByCreditResponse, error) {
+func (client *SourcesClient) listByCreditHandleResponse(resp *http.Response, successCodes ...int) (SourcesClientListByCreditResponse, error) {
 	result := SourcesClientListByCreditResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreditSourcesList); err != nil {
 		return SourcesClientListByCreditResponse{}, err
 	}
@@ -320,12 +329,7 @@ func (client *SourcesClient) Update(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return SourcesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SourcesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -363,8 +367,11 @@ func (client *SourcesClient) updateCreateRequest(ctx context.Context, resourceGr
 }
 
 // updateHandleResponse handles the Update response.
-func (client *SourcesClient) updateHandleResponse(resp *http.Response) (SourcesClientUpdateResponse, error) {
+func (client *SourcesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (SourcesClientUpdateResponse, error) {
 	result := SourcesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreditSource); err != nil {
 		return SourcesClientUpdateResponse{}, err
 	}

@@ -63,12 +63,7 @@ func (client *HybridRunbookWorkerGroupClient) Create(ctx context.Context, resour
 	if err != nil {
 		return HybridRunbookWorkerGroupClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return HybridRunbookWorkerGroupClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -106,8 +101,11 @@ func (client *HybridRunbookWorkerGroupClient) createCreateRequest(ctx context.Co
 }
 
 // createHandleResponse handles the Create response.
-func (client *HybridRunbookWorkerGroupClient) createHandleResponse(resp *http.Response) (HybridRunbookWorkerGroupClientCreateResponse, error) {
+func (client *HybridRunbookWorkerGroupClient) createHandleResponse(resp *http.Response, successCodes ...int) (HybridRunbookWorkerGroupClientCreateResponse, error) {
 	result := HybridRunbookWorkerGroupClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridRunbookWorkerGroup); err != nil {
 		return HybridRunbookWorkerGroupClientCreateResponse{}, err
 	}
@@ -136,8 +134,7 @@ func (client *HybridRunbookWorkerGroupClient) Delete(ctx context.Context, resour
 		return HybridRunbookWorkerGroupClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HybridRunbookWorkerGroupClientDeleteResponse{}, err
+		return HybridRunbookWorkerGroupClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return HybridRunbookWorkerGroupClientDeleteResponse{}, nil
 }
@@ -192,12 +189,7 @@ func (client *HybridRunbookWorkerGroupClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return HybridRunbookWorkerGroupClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HybridRunbookWorkerGroupClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -231,8 +223,11 @@ func (client *HybridRunbookWorkerGroupClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *HybridRunbookWorkerGroupClient) getHandleResponse(resp *http.Response) (HybridRunbookWorkerGroupClientGetResponse, error) {
+func (client *HybridRunbookWorkerGroupClient) getHandleResponse(resp *http.Response, successCodes ...int) (HybridRunbookWorkerGroupClientGetResponse, error) {
 	result := HybridRunbookWorkerGroupClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridRunbookWorkerGroup); err != nil {
 		return HybridRunbookWorkerGroupClientGetResponse{}, err
 	}
@@ -255,50 +250,64 @@ func (client *HybridRunbookWorkerGroupClient) NewListByAutomationAccountPager(re
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, options)
-			}, nil)
+			req, err := client.listByAutomationAccountCreateRequest(ctx, resourceGroupName, automationAccountName, nextLink, options)
 			if err != nil {
 				return HybridRunbookWorkerGroupClientListByAutomationAccountResponse{}, err
 			}
-			return client.listByAutomationAccountHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return HybridRunbookWorkerGroupClientListByAutomationAccountResponse{}, err
+			}
+			return client.listByAutomationAccountHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByAutomationAccountCreateRequest creates the ListByAutomationAccount request.
-func (client *HybridRunbookWorkerGroupClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, options *HybridRunbookWorkerGroupClientListByAutomationAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/hybridRunbookWorkerGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *HybridRunbookWorkerGroupClient) listByAutomationAccountCreateRequest(ctx context.Context, resourceGroupName string, automationAccountName string, nextLink string, options *HybridRunbookWorkerGroupClientListByAutomationAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/hybridRunbookWorkerGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if automationAccountName == "" {
+			return nil, errors.New("parameter automationAccountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if automationAccountName == "" {
-		return nil, errors.New("parameter automationAccountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20241023)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20241023)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByAutomationAccountHandleResponse handles the ListByAutomationAccount response.
-func (client *HybridRunbookWorkerGroupClient) listByAutomationAccountHandleResponse(resp *http.Response) (HybridRunbookWorkerGroupClientListByAutomationAccountResponse, error) {
+func (client *HybridRunbookWorkerGroupClient) listByAutomationAccountHandleResponse(resp *http.Response, successCodes ...int) (HybridRunbookWorkerGroupClientListByAutomationAccountResponse, error) {
 	result := HybridRunbookWorkerGroupClientListByAutomationAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridRunbookWorkerGroupsListResult); err != nil {
 		return HybridRunbookWorkerGroupClientListByAutomationAccountResponse{}, err
 	}
@@ -327,12 +336,7 @@ func (client *HybridRunbookWorkerGroupClient) Update(ctx context.Context, resour
 	if err != nil {
 		return HybridRunbookWorkerGroupClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HybridRunbookWorkerGroupClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -370,8 +374,11 @@ func (client *HybridRunbookWorkerGroupClient) updateCreateRequest(ctx context.Co
 }
 
 // updateHandleResponse handles the Update response.
-func (client *HybridRunbookWorkerGroupClient) updateHandleResponse(resp *http.Response) (HybridRunbookWorkerGroupClientUpdateResponse, error) {
+func (client *HybridRunbookWorkerGroupClient) updateHandleResponse(resp *http.Response, successCodes ...int) (HybridRunbookWorkerGroupClientUpdateResponse, error) {
 	result := HybridRunbookWorkerGroupClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridRunbookWorkerGroup); err != nil {
 		return HybridRunbookWorkerGroupClientUpdateResponse{}, err
 	}

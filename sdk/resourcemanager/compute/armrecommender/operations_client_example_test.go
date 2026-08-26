@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-05/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-05-preview/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,22 +37,37 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSetGen() {
 		// 	OperationListResult: armrecommender.OperationListResult{
 		// 		Value: []*armrecommender.Operation{
 		// 			{
-		// 				Origin: to.Ptr(armrecommender.Origin("aaaaa")),
-		// 				Name: to.Ptr("aaaaaaaaaaaa"),
+		// 				Name: to.Ptr("Microsoft.Compute/locations/skuMixPlacementScores/read"),
+		// 				IsDataAction: to.Ptr(false),
 		// 				Display: &armrecommender.OperationDisplay{
-		// 					Operation: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
-		// 					Resource: to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"),
-		// 					Description: to.Ptr("aaaaaaaaaaaaaaaaaaaaaa"),
-		// 					Provider: to.Ptr("aaaaaaaaaaaaaaaaaa"),
+		// 					Provider: to.Ptr("Microsoft Compute"),
+		// 					Resource: to.Ptr("Mix Placement Scores"),
+		// 					Operation: to.Ptr("Get Mix Placement Scores"),
+		// 					Description: to.Ptr("Gets the metadata of Mix Placement Scores."),
 		// 				},
+		// 				Origin: to.Ptr(armrecommender.OriginUserSystem),
+		// 				ActionType: to.Ptr(armrecommender.ActionTypeInternal),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Microsoft.Compute/locations/skuMixPlacementScores/generate/action"),
+		// 				IsDataAction: to.Ptr(false),
+		// 				Display: &armrecommender.OperationDisplay{
+		// 					Provider: to.Ptr("Microsoft Compute"),
+		// 					Resource: to.Ptr("Mix Placement Scores"),
+		// 					Operation: to.Ptr("Generate Mix Placement Scores"),
+		// 					Description: to.Ptr("Generates placement scores for VM SKU mix placement."),
+		// 				},
+		// 				Origin: to.Ptr(armrecommender.OriginUserSystem),
+		// 				ActionType: to.Ptr(armrecommender.ActionTypeInternal),
 		// 			},
 		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-06-05/Operations_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-05-05-preview/Operations_List_MinimumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMinimumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

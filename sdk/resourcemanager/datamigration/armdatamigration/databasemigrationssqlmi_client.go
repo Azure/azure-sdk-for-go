@@ -84,8 +84,7 @@ func (client *DatabaseMigrationsSQLMiClient) cancel(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -165,8 +164,7 @@ func (client *DatabaseMigrationsSQLMiClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -247,8 +245,7 @@ func (client *DatabaseMigrationsSQLMiClient) cutover(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -327,8 +324,7 @@ func (client *DatabaseMigrationsSQLMiClient) deleteOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -387,12 +383,7 @@ func (client *DatabaseMigrationsSQLMiClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return DatabaseMigrationsSQLMiClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DatabaseMigrationsSQLMiClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -432,8 +423,11 @@ func (client *DatabaseMigrationsSQLMiClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *DatabaseMigrationsSQLMiClient) getHandleResponse(resp *http.Response) (DatabaseMigrationsSQLMiClientGetResponse, error) {
+func (client *DatabaseMigrationsSQLMiClient) getHandleResponse(resp *http.Response, successCodes ...int) (DatabaseMigrationsSQLMiClientGetResponse, error) {
 	result := DatabaseMigrationsSQLMiClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseMigrationSQLMi); err != nil {
 		return DatabaseMigrationsSQLMiClientGetResponse{}, err
 	}

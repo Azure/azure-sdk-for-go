@@ -19,7 +19,7 @@ import (
 // FirewallPolicyIdpsSignaturesFilterValuesClient contains the methods for the FirewallPolicyIdpsSignaturesFilterValues group.
 // Don't use this type directly, use NewFirewallPolicyIdpsSignaturesFilterValuesClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type FirewallPolicyIdpsSignaturesFilterValuesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -61,12 +61,7 @@ func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) List(ctx context.C
 	if err != nil {
 		return FirewallPolicyIdpsSignaturesFilterValuesClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FirewallPolicyIdpsSignaturesFilterValuesClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -89,7 +84,7 @@ func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -100,8 +95,11 @@ func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listCreateRequest(
 }
 
 // listHandleResponse handles the List response.
-func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listHandleResponse(resp *http.Response) (FirewallPolicyIdpsSignaturesFilterValuesClientListResponse, error) {
+func (client *FirewallPolicyIdpsSignaturesFilterValuesClient) listHandleResponse(resp *http.Response, successCodes ...int) (FirewallPolicyIdpsSignaturesFilterValuesClientListResponse, error) {
 	result := FirewallPolicyIdpsSignaturesFilterValuesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SignatureOverridesFilterValuesResponse); err != nil {
 		return FirewallPolicyIdpsSignaturesFilterValuesClientListResponse{}, err
 	}

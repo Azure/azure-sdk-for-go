@@ -83,8 +83,7 @@ func (client *TriggersClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -163,8 +162,7 @@ func (client *TriggersClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -218,12 +216,7 @@ func (client *TriggersClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return TriggersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TriggersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -257,8 +250,11 @@ func (client *TriggersClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *TriggersClient) getHandleResponse(resp *http.Response) (TriggersClientGetResponse, error) {
+func (client *TriggersClient) getHandleResponse(resp *http.Response, successCodes ...int) (TriggersClientGetResponse, error) {
 	result := TriggersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Trigger); err != nil {
 		return TriggersClientGetResponse{}, err
 	}
@@ -281,47 +277,61 @@ func (client *TriggersClient) NewListByImageTemplatePager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByImageTemplateCreateRequest(ctx, resourceGroupName, imageTemplateName, options)
-			}, nil)
+			req, err := client.listByImageTemplateCreateRequest(ctx, resourceGroupName, imageTemplateName, nextLink, options)
 			if err != nil {
 				return TriggersClientListByImageTemplateResponse{}, err
 			}
-			return client.listByImageTemplateHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TriggersClientListByImageTemplateResponse{}, err
+			}
+			return client.listByImageTemplateHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByImageTemplateCreateRequest creates the ListByImageTemplate request.
-func (client *TriggersClient) listByImageTemplateCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, _ *TriggersClientListByImageTemplateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TriggersClient) listByImageTemplateCreateRequest(ctx context.Context, resourceGroupName string, imageTemplateName string, nextLink string, _ *TriggersClientListByImageTemplateOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.VirtualMachineImages/imageTemplates/{imageTemplateName}/triggers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if imageTemplateName == "" {
+			return nil, errors.New("parameter imageTemplateName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{imageTemplateName}", url.PathEscape(imageTemplateName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if imageTemplateName == "" {
-		return nil, errors.New("parameter imageTemplateName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{imageTemplateName}", url.PathEscape(imageTemplateName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251001)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByImageTemplateHandleResponse handles the ListByImageTemplate response.
-func (client *TriggersClient) listByImageTemplateHandleResponse(resp *http.Response) (TriggersClientListByImageTemplateResponse, error) {
+func (client *TriggersClient) listByImageTemplateHandleResponse(resp *http.Response, successCodes ...int) (TriggersClientListByImageTemplateResponse, error) {
 	result := TriggersClientListByImageTemplateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggerCollection); err != nil {
 		return TriggersClientListByImageTemplateResponse{}, err
 	}

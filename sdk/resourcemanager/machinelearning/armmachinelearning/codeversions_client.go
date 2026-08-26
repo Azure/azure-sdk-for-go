@@ -67,12 +67,7 @@ func (client *CodeVersionsClient) CreateOrGetStartPendingUpload(ctx context.Cont
 	if err != nil {
 		return CodeVersionsClientCreateOrGetStartPendingUploadResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CodeVersionsClientCreateOrGetStartPendingUploadResponse{}, err
-	}
-	resp, err := client.createOrGetStartPendingUploadHandleResponse(httpResp)
-	return resp, err
+	return client.createOrGetStartPendingUploadHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrGetStartPendingUploadCreateRequest creates the CreateOrGetStartPendingUpload request.
@@ -114,8 +109,11 @@ func (client *CodeVersionsClient) createOrGetStartPendingUploadCreateRequest(ctx
 }
 
 // createOrGetStartPendingUploadHandleResponse handles the CreateOrGetStartPendingUpload response.
-func (client *CodeVersionsClient) createOrGetStartPendingUploadHandleResponse(resp *http.Response) (CodeVersionsClientCreateOrGetStartPendingUploadResponse, error) {
+func (client *CodeVersionsClient) createOrGetStartPendingUploadHandleResponse(resp *http.Response, successCodes ...int) (CodeVersionsClientCreateOrGetStartPendingUploadResponse, error) {
 	result := CodeVersionsClientCreateOrGetStartPendingUploadResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PendingUploadResponseDto); err != nil {
 		return CodeVersionsClientCreateOrGetStartPendingUploadResponse{}, err
 	}
@@ -147,12 +145,7 @@ func (client *CodeVersionsClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return CodeVersionsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return CodeVersionsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -194,8 +187,11 @@ func (client *CodeVersionsClient) createOrUpdateCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CodeVersionsClient) createOrUpdateHandleResponse(resp *http.Response) (CodeVersionsClientCreateOrUpdateResponse, error) {
+func (client *CodeVersionsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (CodeVersionsClientCreateOrUpdateResponse, error) {
 	result := CodeVersionsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CodeVersion); err != nil {
 		return CodeVersionsClientCreateOrUpdateResponse{}, err
 	}
@@ -226,8 +222,7 @@ func (client *CodeVersionsClient) Delete(ctx context.Context, resourceGroupName 
 		return CodeVersionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return CodeVersionsClientDeleteResponse{}, err
+		return CodeVersionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return CodeVersionsClientDeleteResponse{}, nil
 }
@@ -288,12 +283,7 @@ func (client *CodeVersionsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return CodeVersionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CodeVersionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -331,8 +321,11 @@ func (client *CodeVersionsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *CodeVersionsClient) getHandleResponse(resp *http.Response) (CodeVersionsClientGetResponse, error) {
+func (client *CodeVersionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (CodeVersionsClientGetResponse, error) {
 	result := CodeVersionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CodeVersion); err != nil {
 		return CodeVersionsClientGetResponse{}, err
 	}
@@ -357,66 +350,80 @@ func (client *CodeVersionsClient) NewListPager(resourceGroupName string, workspa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, workspaceName, name, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, name, nextLink, options)
 			if err != nil {
 				return CodeVersionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CodeVersionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *CodeVersionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *CodeVersionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/codes/{name}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CodeVersionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, nextLink string, options *CodeVersionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/codes/{name}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.OrderBy != nil {
-		reqQP.Set("$orderBy", *options.OrderBy)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.OrderBy != nil {
+			reqQP.Set("$orderBy", *options.OrderBy)
+		}
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", *options.Skip)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260315Preview)
+		if options != nil && options.Hash != nil {
+			reqQP.Set("hash", *options.Hash)
+		}
+		if options != nil && options.HashVersion != nil {
+			reqQP.Set("hashVersion", *options.HashVersion)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", *options.Skip)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20260315Preview)
-	if options != nil && options.Hash != nil {
-		reqQP.Set("hash", *options.Hash)
-	}
-	if options != nil && options.HashVersion != nil {
-		reqQP.Set("hashVersion", *options.HashVersion)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *CodeVersionsClient) listHandleResponse(resp *http.Response) (CodeVersionsClientListResponse, error) {
+func (client *CodeVersionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (CodeVersionsClientListResponse, error) {
 	result := CodeVersionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CodeVersionResourceArmPaginatedResult); err != nil {
 		return CodeVersionsClientListResponse{}, err
 	}
@@ -470,8 +477,7 @@ func (client *CodeVersionsClient) publish(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

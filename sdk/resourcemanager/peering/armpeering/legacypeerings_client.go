@@ -19,6 +19,8 @@ import (
 
 // LegacyPeeringsClient contains the methods for the LegacyPeerings group.
 // Don't use this type directly, use NewLegacyPeeringsClient() instead.
+//
+// Generated from API version 2025-05-01
 type LegacyPeeringsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewLegacyPeeringsClient(subscriptionID string, credential azcore.TokenCrede
 }
 
 // NewListPager - Lists all of the legacy peerings under the given subscription matching the specified kind and location.
-//
-// Generated from API version 2025-05-01
 //   - peeringLocation - The location of the peering.
 //   - kind - The kind of the peering.
 //   - options - LegacyPeeringsClientListOptions contains the optional parameters for the LegacyPeeringsClient.NewListPager method.
@@ -57,47 +57,61 @@ func (client *LegacyPeeringsClient) NewListPager(peeringLocation string, kind Le
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, peeringLocation, kind, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, peeringLocation, kind, nextLink, options)
 			if err != nil {
 				return LegacyPeeringsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return LegacyPeeringsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *LegacyPeeringsClient) listCreateRequest(ctx context.Context, peeringLocation string, kind LegacyPeeringsKind, options *LegacyPeeringsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/legacyPeerings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *LegacyPeeringsClient) listCreateRequest(ctx context.Context, peeringLocation string, kind LegacyPeeringsKind, nextLink string, options *LegacyPeeringsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/legacyPeerings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	if options != nil && options.Asn != nil {
-		reqQP.Set("asn", strconv.FormatInt(int64(*options.Asn), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		if options != nil && options.Asn != nil {
+			reqQP.Set("asn", strconv.FormatInt(int64(*options.Asn), 10))
+		}
+		if options != nil && options.DirectPeeringType != nil {
+			reqQP.Set("directPeeringType", string(*options.DirectPeeringType))
+		}
+		reqQP.Set("kind", string(kind))
+		reqQP.Set("peeringLocation", peeringLocation)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.DirectPeeringType != nil {
-		reqQP.Set("directPeeringType", string(*options.DirectPeeringType))
-	}
-	reqQP.Set("kind", string(kind))
-	reqQP.Set("peeringLocation", peeringLocation)
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *LegacyPeeringsClient) listHandleResponse(resp *http.Response) (LegacyPeeringsClientListResponse, error) {
+func (client *LegacyPeeringsClient) listHandleResponse(resp *http.Response, successCodes ...int) (LegacyPeeringsClientListResponse, error) {
 	result := LegacyPeeringsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
 		return LegacyPeeringsClientListResponse{}, err
 	}

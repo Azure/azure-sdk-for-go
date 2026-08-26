@@ -57,10 +57,10 @@ func ExampleProductTemplatesClient_NewListPager() {
 		// 					Version: to.Ptr("1.0.0"),
 		// 				},
 		// 				SystemData: &armsecurityinsights.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-27T21:53:29.0928001Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.April, 27, 21, 53, 29, 92800100, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armsecurityinsights.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-27T21:53:29.0928001Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.April, 27, 21, 53, 29, 92800100, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armsecurityinsights.CreatedByTypeUser),
 		// 				},

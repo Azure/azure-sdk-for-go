@@ -62,12 +62,7 @@ func (client *RunbookDraftClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return RunbookDraftClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RunbookDraftClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -101,8 +96,11 @@ func (client *RunbookDraftClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *RunbookDraftClient) getHandleResponse(resp *http.Response) (RunbookDraftClientGetResponse, error) {
+func (client *RunbookDraftClient) getHandleResponse(resp *http.Response, successCodes ...int) (RunbookDraftClientGetResponse, error) {
 	result := RunbookDraftClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunbookDraft); err != nil {
 		return RunbookDraftClientGetResponse{}, err
 	}
@@ -129,12 +127,7 @@ func (client *RunbookDraftClient) GetContent(ctx context.Context, resourceGroupN
 	if err != nil {
 		return RunbookDraftClientGetContentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RunbookDraftClientGetContentResponse{}, err
-	}
-	resp, err := client.getContentHandleResponse(httpResp)
-	return resp, err
+	return client.getContentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getContentCreateRequest creates the GetContent request.
@@ -168,8 +161,11 @@ func (client *RunbookDraftClient) getContentCreateRequest(ctx context.Context, r
 }
 
 // getContentHandleResponse handles the GetContent response.
-func (client *RunbookDraftClient) getContentHandleResponse(resp *http.Response) (RunbookDraftClientGetContentResponse, error) {
+func (client *RunbookDraftClient) getContentHandleResponse(resp *http.Response, successCodes ...int) (RunbookDraftClientGetContentResponse, error) {
 	result := RunbookDraftClientGetContentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	body, err := runtime.Payload(resp)
 	if err != nil {
 		return RunbookDraftClientGetContentResponse{}, err
@@ -221,8 +217,7 @@ func (client *RunbookDraftClient) replaceContent(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -281,12 +276,7 @@ func (client *RunbookDraftClient) UndoEdit(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return RunbookDraftClientUndoEditResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RunbookDraftClientUndoEditResponse{}, err
-	}
-	resp, err := client.undoEditHandleResponse(httpResp)
-	return resp, err
+	return client.undoEditHandleResponse(httpResp, http.StatusOK)
 }
 
 // undoEditCreateRequest creates the UndoEdit request.
@@ -320,8 +310,11 @@ func (client *RunbookDraftClient) undoEditCreateRequest(ctx context.Context, res
 }
 
 // undoEditHandleResponse handles the UndoEdit response.
-func (client *RunbookDraftClient) undoEditHandleResponse(resp *http.Response) (RunbookDraftClientUndoEditResponse, error) {
+func (client *RunbookDraftClient) undoEditHandleResponse(resp *http.Response, successCodes ...int) (RunbookDraftClientUndoEditResponse, error) {
 	result := RunbookDraftClientUndoEditResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunbookDraftUndoEditResult); err != nil {
 		return RunbookDraftClientUndoEditResponse{}, err
 	}

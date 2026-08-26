@@ -63,8 +63,7 @@ func (client *ManagementClient) Mitigate(ctx context.Context, jobName string, re
 		return ManagementClientMitigateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementClientMitigateResponse{}, err
+		return ManagementClientMitigateResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ManagementClientMitigateResponse{}, nil
 }

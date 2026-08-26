@@ -2751,41 +2751,6 @@ func (l *ListReportDownloadURLRequest) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ListReportDownloadURLResponse.
-func (l ListReportDownloadURLResponse) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "downloadUrl", l.DownloadURL)
-	populateTime[datetime.RFC3339](objectMap, "expiryTimestamp", l.ExpiryTimestamp, true)
-	populate(objectMap, "format", l.Format)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ListReportDownloadURLResponse.
-func (l *ListReportDownloadURLResponse) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", l, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "downloadUrl":
-			err = unpopulate(val, "DownloadURL", &l.DownloadURL)
-			delete(rawMsg, key)
-		case "expiryTimestamp":
-			err = unpopulateTime[datetime.RFC3339](val, "ExpiryTimestamp", &l.ExpiryTimestamp)
-			delete(rawMsg, key)
-		case "format":
-			err = unpopulate(val, "Format", &l.Format)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", l, err.Error())
-		}
-	}
-	return nil
-}
-
 // MarshalJSON implements the json.Marshaller interface for type ManagedServiceIdentity.
 func (m ManagedServiceIdentity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)

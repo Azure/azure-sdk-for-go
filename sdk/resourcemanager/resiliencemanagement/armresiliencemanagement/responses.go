@@ -49,10 +49,9 @@ type DrillRunsClientGetResponse struct {
 	DrillRun
 }
 
-// DrillRunsClientListReportDownloadURLResponse contains the response from method DrillRunsClient.ListReportDownloadURL.
+// DrillRunsClientListReportDownloadURLResponse contains the response from method DrillRunsClient.BeginListReportDownloadURL.
 type DrillRunsClientListReportDownloadURLResponse struct {
-	// Response containing a short-lived, read-only download URL for a Drill Run report.
-	ListReportDownloadURLResponse
+	// placeholder for future response values
 }
 
 // DrillRunsClientListResponse contains the response from method DrillRunsClient.NewListPager.

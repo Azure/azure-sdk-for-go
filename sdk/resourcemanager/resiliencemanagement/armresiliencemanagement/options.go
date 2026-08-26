@@ -50,6 +50,13 @@ type DrillRunsClientBeginGenerateReportOptions struct {
 	ResumeToken string
 }
 
+// DrillRunsClientBeginListReportDownloadURLOptions contains the optional parameters for the DrillRunsClient.BeginListReportDownloadURL
+// method.
+type DrillRunsClientBeginListReportDownloadURLOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // DrillRunsClientBeginMarkAsCompleteOptions contains the optional parameters for the DrillRunsClient.BeginMarkAsComplete
 // method.
 type DrillRunsClientBeginMarkAsCompleteOptions struct {
@@ -80,13 +87,6 @@ type DrillRunsClientGetOptions struct {
 // DrillRunsClientListOptions contains the optional parameters for the DrillRunsClient.NewListPager method.
 type DrillRunsClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// DrillRunsClientListReportDownloadURLOptions contains the optional parameters for the DrillRunsClient.ListReportDownloadURL
-// method.
-type DrillRunsClientListReportDownloadURLOptions struct {
-	// The content of the action request
-	Body *ListReportDownloadURLRequest
 }
 
 // DrillsClientBeginAddOrUpdateResourcesOptions contains the optional parameters for the DrillsClient.BeginAddOrUpdateResources

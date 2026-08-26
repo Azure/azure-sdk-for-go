@@ -42,9 +42,9 @@ type DrillRunsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(serviceGroupName string, drillName string, options *armresiliencemanagement.DrillRunsClientListOptions) (resp azfake.PagerResponder[armresiliencemanagement.DrillRunsClientListResponse])
 
-	// ListReportDownloadURL is the fake for method DrillRunsClient.ListReportDownloadURL
-	// HTTP status codes to indicate success: http.StatusOK
-	ListReportDownloadURL func(ctx context.Context, serviceGroupName string, drillName string, drillRunName string, options *armresiliencemanagement.DrillRunsClientListReportDownloadURLOptions) (resp azfake.Responder[armresiliencemanagement.DrillRunsClientListReportDownloadURLResponse], errResp azfake.ErrorResponder)
+	// BeginListReportDownloadURL is the fake for method DrillRunsClient.BeginListReportDownloadURL
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginListReportDownloadURL func(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, body armresiliencemanagement.ListReportDownloadURLRequest, options *armresiliencemanagement.DrillRunsClientBeginListReportDownloadURLOptions) (resp azfake.PollerResponder[armresiliencemanagement.DrillRunsClientListReportDownloadURLResponse], errResp azfake.ErrorResponder)
 
 	// BeginMarkAsComplete is the fake for method DrillRunsClient.BeginMarkAsComplete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -64,28 +64,30 @@ type DrillRunsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewDrillRunsServerTransport(srv *DrillRunsServer) *DrillRunsServerTransport {
 	return &DrillRunsServerTransport{
-		srv:                 srv,
-		beginAddNotes:       newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientAddNotesResponse]](),
-		beginFailOver:       newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientFailOverResponse]](),
-		beginGenerateReport: newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientGenerateReportResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armresiliencemanagement.DrillRunsClientListResponse]](),
-		beginMarkAsComplete: newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientMarkAsCompleteResponse]](),
-		beginReprotect:      newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientReprotectResponse]](),
-		beginResume:         newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientResumeResponse]](),
+		srv:                        srv,
+		beginAddNotes:              newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientAddNotesResponse]](),
+		beginFailOver:              newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientFailOverResponse]](),
+		beginGenerateReport:        newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientGenerateReportResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armresiliencemanagement.DrillRunsClientListResponse]](),
+		beginListReportDownloadURL: newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientListReportDownloadURLResponse]](),
+		beginMarkAsComplete:        newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientMarkAsCompleteResponse]](),
+		beginReprotect:             newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientReprotectResponse]](),
+		beginResume:                newTracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientResumeResponse]](),
 	}
 }
 
 // DrillRunsServerTransport connects instances of armresiliencemanagement.DrillRunsClient to instances of DrillRunsServer.
 // Don't use this type directly, use NewDrillRunsServerTransport instead.
 type DrillRunsServerTransport struct {
-	srv                 *DrillRunsServer
-	beginAddNotes       *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientAddNotesResponse]]
-	beginFailOver       *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientFailOverResponse]]
-	beginGenerateReport *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientGenerateReportResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armresiliencemanagement.DrillRunsClientListResponse]]
-	beginMarkAsComplete *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientMarkAsCompleteResponse]]
-	beginReprotect      *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientReprotectResponse]]
-	beginResume         *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientResumeResponse]]
+	srv                        *DrillRunsServer
+	beginAddNotes              *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientAddNotesResponse]]
+	beginFailOver              *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientFailOverResponse]]
+	beginGenerateReport        *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientGenerateReportResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armresiliencemanagement.DrillRunsClientListResponse]]
+	beginListReportDownloadURL *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientListReportDownloadURLResponse]]
+	beginMarkAsComplete        *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientMarkAsCompleteResponse]]
+	beginReprotect             *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientReprotectResponse]]
+	beginResume                *tracker[azfake.PollerResponder[armresiliencemanagement.DrillRunsClientResumeResponse]]
 }
 
 // Do implements the policy.Transporter interface for DrillRunsServerTransport.
@@ -119,8 +121,8 @@ func (d *DrillRunsServerTransport) dispatchToMethodFake(req *http.Request, metho
 				res.resp, res.err = d.dispatchGet(req)
 			case "DrillRunsClient.NewListPager":
 				res.resp, res.err = d.dispatchNewListPager(req)
-			case "DrillRunsClient.ListReportDownloadURL":
-				res.resp, res.err = d.dispatchListReportDownloadURL(req)
+			case "DrillRunsClient.BeginListReportDownloadURL":
+				res.resp, res.err = d.dispatchBeginListReportDownloadURL(req)
 			case "DrillRunsClient.BeginMarkAsComplete":
 				res.resp, res.err = d.dispatchBeginMarkAsComplete(req)
 			case "DrillRunsClient.BeginReprotect":
@@ -379,50 +381,55 @@ func (d *DrillRunsServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (d *DrillRunsServerTransport) dispatchListReportDownloadURL(req *http.Request) (*http.Response, error) {
-	if d.srv.ListReportDownloadURL == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListReportDownloadURL not implemented")}
+func (d *DrillRunsServerTransport) dispatchBeginListReportDownloadURL(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginListReportDownloadURL == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginListReportDownloadURL not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns/(?P<drillRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listReportDownloadUrl`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.ListReportDownloadURLRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
-	if err != nil {
-		return nil, err
-	}
-	drillRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillRunName")])
-	if err != nil {
-		return nil, err
-	}
-	var options *armresiliencemanagement.DrillRunsClientListReportDownloadURLOptions
-	if !reflect.ValueOf(body).IsZero() {
-		options = &armresiliencemanagement.DrillRunsClientListReportDownloadURLOptions{
-			Body: &body,
+	beginListReportDownloadURL := d.beginListReportDownloadURL.get(req)
+	if beginListReportDownloadURL == nil {
+		const regexStr = `/providers/Microsoft\.Management/serviceGroups/(?P<serviceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureResilienceManagement/drills/(?P<drillName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/drillRuns/(?P<drillRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listReportDownloadUrl`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		body, err := server.UnmarshalRequestAsJSON[armresiliencemanagement.ListReportDownloadURLRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		serviceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serviceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		drillNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillName")])
+		if err != nil {
+			return nil, err
+		}
+		drillRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("drillRunName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginListReportDownloadURL(req.Context(), serviceGroupNameParam, getHeaderValue(req.Header, "operation-id"), drillNameParam, drillRunNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginListReportDownloadURL = &respr
+		d.beginListReportDownloadURL.add(req, beginListReportDownloadURL)
 	}
-	respr, errRespr := d.srv.ListReportDownloadURL(req.Context(), serviceGroupNameParam, drillNameParam, drillRunNameParam, options)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ListReportDownloadURLResponse, req)
+
+	resp, err := server.PollerResponderNext(beginListReportDownloadURL, req)
 	if err != nil {
 		return nil, err
 	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginListReportDownloadURL.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginListReportDownloadURL) {
+		d.beginListReportDownloadURL.remove(req)
+	}
+
 	return resp, nil
 }
 

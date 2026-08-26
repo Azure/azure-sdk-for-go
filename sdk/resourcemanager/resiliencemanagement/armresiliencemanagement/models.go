@@ -1238,18 +1238,6 @@ type ListReportDownloadURLRequest struct {
 	Format *DrillReportFormat
 }
 
-// ListReportDownloadURLResponse - Response containing a short-lived, read-only download URL for a Drill Run report.
-type ListReportDownloadURLResponse struct {
-	// READ-ONLY; Short-lived, read-only URL to download the report.
-	DownloadURL *string
-
-	// READ-ONLY; Timestamp at which the download URL expires.
-	ExpiryTimestamp *time.Time
-
-	// READ-ONLY; Format of the report the download URL refers to.
-	Format *DrillReportFormat
-}
-
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
 	// REQUIRED; The type of managed identity assigned to this resource.

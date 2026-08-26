@@ -407,33 +407,58 @@ func (client *DrillRunsClient) listHandleResponse(resp *http.Response, successCo
 	return result, nil
 }
 
+// BeginListReportDownloadURL - This returns a short-lived, read-only URL to download the report for this Drill Run. The URL
+// expires at the returned expiryTimestamp and grants access to that single report only.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - serviceGroupName - The name of the service group.
+//   - operationID - A GUID that represents the Long Running OperationId.
+//   - drillName - The name of the Drill
+//   - drillRunName - The name of the DrillRun (GUID).
+//   - body - The content of the action request
+//   - options - DrillRunsClientBeginListReportDownloadURLOptions contains the optional parameters for the DrillRunsClient.BeginListReportDownloadURL
+//     method.
+func (client *DrillRunsClient) BeginListReportDownloadURL(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, body ListReportDownloadURLRequest, options *DrillRunsClientBeginListReportDownloadURLOptions) (*runtime.Poller[DrillRunsClientListReportDownloadURLResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.listReportDownloadURL(ctx, serviceGroupName, operationID, drillName, drillRunName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DrillRunsClientListReportDownloadURLResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DrillRunsClientListReportDownloadURLResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
 // ListReportDownloadURL - This returns a short-lived, read-only URL to download the report for this Drill Run. The URL expires
 // at the returned expiryTimestamp and grants access to that single report only.
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - serviceGroupName - The name of the service group.
-//   - drillName - The name of the Drill
-//   - drillRunName - The name of the DrillRun (GUID).
-//   - options - DrillRunsClientListReportDownloadURLOptions contains the optional parameters for the DrillRunsClient.ListReportDownloadURL
-//     method.
-func (client *DrillRunsClient) ListReportDownloadURL(ctx context.Context, serviceGroupName string, drillName string, drillRunName string, options *DrillRunsClientListReportDownloadURLOptions) (DrillRunsClientListReportDownloadURLResponse, error) {
+func (client *DrillRunsClient) listReportDownloadURL(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, body ListReportDownloadURLRequest, options *DrillRunsClientBeginListReportDownloadURLOptions) (*http.Response, error) {
 	var err error
-	const operationName = "DrillRunsClient.ListReportDownloadURL"
+	const operationName = "DrillRunsClient.BeginListReportDownloadURL"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.listReportDownloadURLCreateRequest(ctx, serviceGroupName, drillName, drillRunName, options)
+	req, err := client.listReportDownloadURLCreateRequest(ctx, serviceGroupName, operationID, drillName, drillRunName, body, options)
 	if err != nil {
-		return DrillRunsClientListReportDownloadURLResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return DrillRunsClientListReportDownloadURLResponse{}, err
+		return nil, err
 	}
-	return client.listReportDownloadURLHandleResponse(httpResp, http.StatusOK)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
 }
 
 // listReportDownloadURLCreateRequest creates the ListReportDownloadURL request.
-func (client *DrillRunsClient) listReportDownloadURLCreateRequest(ctx context.Context, serviceGroupName string, drillName string, drillRunName string, options *DrillRunsClientListReportDownloadURLOptions) (*policy.Request, error) {
+func (client *DrillRunsClient) listReportDownloadURLCreateRequest(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, body ListReportDownloadURLRequest, _ *DrillRunsClientBeginListReportDownloadURLOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.AzureResilienceManagement/drills/{drillName}/drillRuns/{drillRunName}/listReportDownloadUrl"
 	if serviceGroupName == "" {
 		return nil, errors.New("parameter serviceGroupName cannot be empty")
@@ -455,26 +480,12 @@ func (client *DrillRunsClient) listReportDownloadURLCreateRequest(ctx context.Co
 	reqQP.Set("api-version", version20260831Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.Body != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
-			return nil, err
-		}
-		return req, nil
+	req.Raw().Header["operation-id"] = []string{operationID}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
 	}
 	return req, nil
-}
-
-// listReportDownloadURLHandleResponse handles the ListReportDownloadURL response.
-func (client *DrillRunsClient) listReportDownloadURLHandleResponse(resp *http.Response, successCodes ...int) (DrillRunsClientListReportDownloadURLResponse, error) {
-	result := DrillRunsClientListReportDownloadURLResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListReportDownloadURLResponse); err != nil {
-		return DrillRunsClientListReportDownloadURLResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginMarkAsComplete - This enables the user to mark this stage as complete, disabling further retries on it.

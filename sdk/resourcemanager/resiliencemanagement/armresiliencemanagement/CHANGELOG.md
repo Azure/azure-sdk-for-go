@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (2026-08-24)
+## 0.2.0 (2026-08-26)
 ### Breaking Changes
 
 - Function `*DrillRunsClient.BeginFailOver` parameter(s) have been changed from `(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, body DrillRunFailoverRequest, options *DrillRunsClientBeginFailOverOptions)` to `(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, options *DrillRunsClientBeginFailOverOptions)`
@@ -24,14 +24,13 @@
 - New enum type `SliType` with values `SliTypeAvailability`, `SliTypeLatency`
 - New enum type `SliTypeMatchState` with values `SliTypeMatchStateMatched`, `SliTypeMatchStateMismatched`
 - New function `*DrillRunsClient.BeginGenerateReport(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, options *DrillRunsClientBeginGenerateReportOptions) (*runtime.Poller[DrillRunsClientGenerateReportResponse], error)`
-- New function `*DrillRunsClient.ListReportDownloadURL(ctx context.Context, serviceGroupName string, drillName string, drillRunName string, options *DrillRunsClientListReportDownloadURLOptions) (DrillRunsClientListReportDownloadURLResponse, error)`
+- New function `*DrillRunsClient.BeginListReportDownloadURL(ctx context.Context, serviceGroupName string, operationID string, drillName string, drillRunName string, body ListReportDownloadURLRequest, options *DrillRunsClientBeginListReportDownloadURLOptions) (*runtime.Poller[DrillRunsClientListReportDownloadURLResponse], error)`
 - New function `PossibleSliTypeValues() []SliType`
 - New function `*ResourceCrossZoneVMRecoveryProtectionSetting.GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting`
 - New struct `DrillReportSummary`
 - New struct `DrillRunReprotectRequest`
 - New struct `HealthModelMonitoringProperties`
 - New struct `ListReportDownloadURLRequest`
-- New struct `ListReportDownloadURLResponse`
 - New struct `ReportStageStatus`
 - New struct `ResiliencyProperties`
 - New struct `ResourceCrossZoneVMRecoveryProtectionSetting`

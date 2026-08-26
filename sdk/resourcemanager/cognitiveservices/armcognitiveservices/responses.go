@@ -322,7 +322,9 @@ type ComputeOperationsClientGetResponse struct {
 
 // ComputesClientCreateOrUpdateResponse contains the response from method ComputesClient.BeginCreateOrUpdate.
 type ComputesClientCreateOrUpdateResponse struct {
-	// placeholder for future response values
+	// Cognitive Services compute resource. Supports polymorphic compute types
+	// (Cluster, ContainerInstance) via the computeType discriminator in properties.
+	Compute
 }
 
 // ComputesClientDeleteResponse contains the response from method ComputesClient.BeginDelete.

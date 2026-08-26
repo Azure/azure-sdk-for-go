@@ -22,7 +22,7 @@ import (
 // ComputesServer is a fake server for instances of the armcognitiveservices.ComputesClient type.
 type ComputesServer struct {
 	// BeginCreateOrUpdate is the fake for method ComputesClient.BeginCreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, computeName string, resource armcognitiveservices.Compute, options *armcognitiveservices.ComputesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcognitiveservices.ComputesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ComputesClient.BeginDelete
@@ -169,9 +169,9 @@ func (c *ComputesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginCreateOrUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		c.beginCreateOrUpdate.remove(req)

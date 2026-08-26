@@ -1,12 +1,11 @@
 # Release History
 
-## 4.0.0-beta.4 (2026-08-20)
+## 4.0.0-beta.4 (2026-08-26)
 ### Breaking Changes
 
 - `VMPriorityLowPriority` from enum `VMPriority` has been removed
 - Function `*ComputesClient.BeginUpdate` has been removed
 - Field `Location` of struct `Compute` has been removed
-- Field `Compute` of struct `ComputesClientCreateOrUpdateResponse` has been removed
 
 ### Features Added
 

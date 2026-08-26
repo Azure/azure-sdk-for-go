@@ -83,6 +83,9 @@ const (
 	// for example a transport, serialization or configuration failure.
 	CodeClientError Code = "ClientError"
 
+	// CodeClientClosed means the operation was attempted on a [Client] that has been closed.
+	CodeClientClosed Code = "ClientClosed"
+
 	// CodeTransportFailure means the request could not be delivered to the service, for example
 	// because the connection failed or DNS could not be resolved.
 	CodeTransportFailure Code = "TransportFailure"
@@ -98,10 +101,11 @@ const (
 	// service responded. It differs from [CodeRequestTimeout], which the service reports.
 	CodeClientOperationTimeout Code = "ClientOperationTimeout"
 
-	// CodeOperationCancelled means the operation was cancelled before it completed, either
-	// because the caller's context was cancelled or because the client was closed. An [Error]
-	// carrying it unwraps to [context.Canceled], so errors.Is reports it the same way the rest
-	// of the standard library does.
+	// CodeOperationCancelled means an operation already in flight was cancelled before it
+	// completed, because the caller's context was cancelled or because [Client.Close] shut the
+	// driver down underneath it. An [Error] carrying it unwraps to [context.Canceled], so
+	// errors.Is reports it the same way the rest of the standard library does. An operation
+	// started after the client was closed is [CodeClientClosed] instead, since it never ran.
 	CodeOperationCancelled Code = "OperationCancelled"
 )
 

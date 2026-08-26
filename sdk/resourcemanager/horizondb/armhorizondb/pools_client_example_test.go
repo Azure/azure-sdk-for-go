@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-20-preview/Pools_Get.json
+// Generated from example definition: 2026-05-01-preview/Pools_Get.json
 func ExamplePoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExamplePoolsClient_Get() {
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/pools"),
 	// 		Properties: &armhorizondb.PoolProperties{
 	// 			Location: to.Ptr("westus2"),
-	// 			State: to.Ptr(armhorizondb.StateReady),
+	// 			State: to.Ptr(armhorizondb.StateSucceeded),
 	// 			ReplicaCount: to.Ptr[int32](2),
 	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
 	// 		},
@@ -44,7 +44,7 @@ func ExamplePoolsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-20-preview/Pools_List.json
+// Generated from example definition: 2026-05-01-preview/Pools_List.json
 func ExamplePoolsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExamplePoolsClient_NewListPager() {
 		// 				Type: to.Ptr("Microsoft.HorizonDb/clusters/pools"),
 		// 				Properties: &armhorizondb.PoolProperties{
 		// 					Location: to.Ptr("westus2"),
-		// 					State: to.Ptr(armhorizondb.StateReady),
+		// 					State: to.Ptr(armhorizondb.StateSucceeded),
 		// 					ReplicaCount: to.Ptr[int32](2),
 		// 					ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
 		// 				},

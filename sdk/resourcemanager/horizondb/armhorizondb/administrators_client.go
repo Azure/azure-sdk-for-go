@@ -16,67 +16,66 @@ import (
 	"strings"
 )
 
-// FirewallRulesClient contains the methods for the FirewallRules group.
-// Don't use this type directly, use NewFirewallRulesClient() instead.
+// AdministratorsClient contains the methods for the Administrators group.
+// Don't use this type directly, use NewAdministratorsClient() instead.
 //
 // Generated from API version 2026-05-01-preview
-type FirewallRulesClient struct {
+type AdministratorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewFirewallRulesClient creates a new instance of FirewallRulesClient with the specified values.
+// NewAdministratorsClient creates a new instance of AdministratorsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewFirewallRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FirewallRulesClient, error) {
+func NewAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdministratorsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &FirewallRulesClient{
+	client := &AdministratorsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Creates a new HorizonDB firewall rule or updates an existing rule.
+// BeginCreateOrUpdate - Creates a new HorizonDB administrator or updates an existing administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDB cluster.
-//   - poolName - The name of the HorizonDB pool.
-//   - firewallRuleName - The name of the HorizonDB firewall rule.
+//   - objectID - The Entra ID object identifier of the principal (an RFC 4122 GUID).
 //   - resource - Resource create parameters.
-//   - options - FirewallRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the FirewallRulesClient.BeginCreateOrUpdate
+//   - options - AdministratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the AdministratorsClient.BeginCreateOrUpdate
 //     method.
-func (client *FirewallRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, resource FirewallRule, options *FirewallRulesClientBeginCreateOrUpdateOptions) (*runtime.Poller[FirewallRulesClientCreateOrUpdateResponse], error) {
+func (client *AdministratorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, objectID string, resource AdministratorAdd, options *AdministratorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AdministratorsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, poolName, firewallRuleName, resource, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, objectID, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FirewallRulesClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AdministratorsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 			Tracer:        client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FirewallRulesClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AdministratorsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Creates a new HorizonDB firewall rule or updates an existing rule.
+// CreateOrUpdate - Creates a new HorizonDB administrator or updates an existing administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *FirewallRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, resource FirewallRule, options *FirewallRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *AdministratorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, objectID string, resource AdministratorAdd, options *AdministratorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "FirewallRulesClient.BeginCreateOrUpdate"
+	const operationName = "AdministratorsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, poolName, firewallRuleName, resource, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, objectID, resource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -91,8 +90,8 @@ func (client *FirewallRulesClient) createOrUpdate(ctx context.Context, resourceG
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, resource FirewallRule, _ *FirewallRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}/firewallRules/{firewallRuleName}"
+func (client *AdministratorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, objectID string, resource AdministratorAdd, _ *AdministratorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/administrators/{objectId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -105,14 +104,10 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
+	if objectID == "" {
+		return nil, errors.New("parameter objectID cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if firewallRuleName == "" {
-		return nil, errors.New("parameter firewallRuleName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{firewallRuleName}", url.PathEscape(firewallRuleName))
+	urlPath = strings.ReplaceAll(urlPath, "{objectId}", url.PathEscape(objectID))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -128,40 +123,39 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// BeginDelete - Deletes a HorizonDB firewall rule.
+// BeginDelete - Deletes a HorizonDB administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDB cluster.
-//   - poolName - The name of the HorizonDB pool.
-//   - firewallRuleName - The name of the HorizonDB firewall rule.
-//   - options - FirewallRulesClientBeginDeleteOptions contains the optional parameters for the FirewallRulesClient.BeginDelete
+//   - objectID - The Entra ID object identifier of the principal (an RFC 4122 GUID).
+//   - options - AdministratorsClientBeginDeleteOptions contains the optional parameters for the AdministratorsClient.BeginDelete
 //     method.
-func (client *FirewallRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, options *FirewallRulesClientBeginDeleteOptions) (*runtime.Poller[FirewallRulesClientDeleteResponse], error) {
+func (client *AdministratorsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, objectID string, options *AdministratorsClientBeginDeleteOptions) (*runtime.Poller[AdministratorsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, poolName, firewallRuleName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, objectID, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FirewallRulesClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AdministratorsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FirewallRulesClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AdministratorsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Deletes a HorizonDB firewall rule.
+// Delete - Deletes a HorizonDB administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *FirewallRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, options *FirewallRulesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AdministratorsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, objectID string, options *AdministratorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "FirewallRulesClient.BeginDelete"
+	const operationName = "AdministratorsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, poolName, firewallRuleName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, objectID, options)
 	if err != nil {
 		return nil, err
 	}
@@ -176,8 +170,8 @@ func (client *FirewallRulesClient) deleteOperation(ctx context.Context, resource
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, _ *FirewallRulesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}/firewallRules/{firewallRuleName}"
+func (client *AdministratorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, objectID string, _ *AdministratorsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/administrators/{objectId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -190,14 +184,10 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
+	if objectID == "" {
+		return nil, errors.New("parameter objectID cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if firewallRuleName == "" {
-		return nil, errors.New("parameter firewallRuleName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{firewallRuleName}", url.PathEscape(firewallRuleName))
+	urlPath = strings.ReplaceAll(urlPath, "{objectId}", url.PathEscape(objectID))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -208,33 +198,32 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// Get - Gets information about a HorizonDB firewall rule.
+// Get - Gets information about a HorizonDB administrator.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDB cluster.
-//   - poolName - The name of the HorizonDB pool.
-//   - firewallRuleName - The name of the HorizonDB firewall rule.
-//   - options - FirewallRulesClientGetOptions contains the optional parameters for the FirewallRulesClient.Get method.
-func (client *FirewallRulesClient) Get(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, options *FirewallRulesClientGetOptions) (FirewallRulesClientGetResponse, error) {
+//   - objectID - The Entra ID object identifier of the principal (an RFC 4122 GUID).
+//   - options - AdministratorsClientGetOptions contains the optional parameters for the AdministratorsClient.Get method.
+func (client *AdministratorsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, objectID string, options *AdministratorsClientGetOptions) (AdministratorsClientGetResponse, error) {
 	var err error
-	const operationName = "FirewallRulesClient.Get"
+	const operationName = "AdministratorsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, poolName, firewallRuleName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, objectID, options)
 	if err != nil {
-		return FirewallRulesClientGetResponse{}, err
+		return AdministratorsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return FirewallRulesClientGetResponse{}, err
+		return AdministratorsClientGetResponse{}, err
 	}
 	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
-func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, _ *FirewallRulesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}/firewallRules/{firewallRuleName}"
+func (client *AdministratorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, objectID string, _ *AdministratorsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/administrators/{objectId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -247,14 +236,10 @@ func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
+	if objectID == "" {
+		return nil, errors.New("parameter objectID cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	if firewallRuleName == "" {
-		return nil, errors.New("parameter firewallRuleName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{firewallRuleName}", url.PathEscape(firewallRuleName))
+	urlPath = strings.ReplaceAll(urlPath, "{objectId}", url.PathEscape(objectID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -267,40 +252,39 @@ func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *FirewallRulesClient) getHandleResponse(resp *http.Response, successCodes ...int) (FirewallRulesClientGetResponse, error) {
-	result := FirewallRulesClientGetResponse{}
+func (client *AdministratorsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AdministratorsClientGetResponse, error) {
+	result := AdministratorsClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRule); err != nil {
-		return FirewallRulesClientGetResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.Administrator); err != nil {
+		return AdministratorsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - Lists all HorizonDB firewall rules in a pool.
+// NewListPager - Lists all HorizonDB administrators in a cluster.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDB cluster.
-//   - poolName - The name of the HorizonDB pool.
-//   - options - FirewallRulesClientListOptions contains the optional parameters for the FirewallRulesClient.NewListPager method.
-func (client *FirewallRulesClient) NewListPager(resourceGroupName string, clusterName string, poolName string, options *FirewallRulesClientListOptions) *runtime.Pager[FirewallRulesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[FirewallRulesClientListResponse]{
-		More: func(page FirewallRulesClientListResponse) bool {
+//   - options - AdministratorsClientListOptions contains the optional parameters for the AdministratorsClient.NewListPager method.
+func (client *AdministratorsClient) NewListPager(resourceGroupName string, clusterName string, options *AdministratorsClientListOptions) *runtime.Pager[AdministratorsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AdministratorsClientListResponse]{
+		More: func(page AdministratorsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *FirewallRulesClientListResponse) (FirewallRulesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FirewallRulesClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *AdministratorsClientListResponse) (AdministratorsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AdministratorsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.listCreateRequest(ctx, resourceGroupName, clusterName, poolName, nextLink, options)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, clusterName, nextLink, options)
 			if err != nil {
-				return FirewallRulesClientListResponse{}, err
+				return AdministratorsClientListResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return FirewallRulesClientListResponse{}, err
+				return AdministratorsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp, http.StatusOK)
 		},
@@ -309,12 +293,12 @@ func (client *FirewallRulesClient) NewListPager(resourceGroupName string, cluste
 }
 
 // listCreateRequest creates the List request.
-func (client *FirewallRulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, poolName string, nextLink string, _ *FirewallRulesClientListOptions) (*policy.Request, error) {
+func (client *AdministratorsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nextLink string, _ *AdministratorsClientListOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}/firewallRules"
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/administrators"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter client.subscriptionID cannot be empty")
 		}
@@ -327,10 +311,6 @@ func (client *FirewallRulesClient) listCreateRequest(ctx context.Context, resour
 			return nil, errors.New("parameter clusterName cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-		if poolName == "" {
-			return nil, errors.New("parameter poolName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
 		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
@@ -348,13 +328,13 @@ func (client *FirewallRulesClient) listCreateRequest(ctx context.Context, resour
 }
 
 // listHandleResponse handles the List response.
-func (client *FirewallRulesClient) listHandleResponse(resp *http.Response, successCodes ...int) (FirewallRulesClientListResponse, error) {
-	result := FirewallRulesClientListResponse{}
+func (client *AdministratorsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AdministratorsClientListResponse, error) {
+	result := AdministratorsClientListResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRuleListResult); err != nil {
-		return FirewallRulesClientListResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.AdministratorListResult); err != nil {
+		return AdministratorsClientListResponse{}, err
 	}
 	return result, nil
 }

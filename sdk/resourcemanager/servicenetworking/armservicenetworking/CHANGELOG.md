@@ -1,19 +1,41 @@
 # Release History
 
-## 1.2.0-beta.1 (2025-04-23)
+## 1.2.0 (2026-08-27)
 ### Features Added
 
 - New value `PolicyTypeIPAccessRules` added to enum type `PolicyType`
 - New enum type `IPAccessRuleAction` with values `IPAccessRuleActionAllow`, `IPAccessRuleActionDeny`
+- New enum type `PrivateLinkServiceConnectionStatus` with values `PrivateLinkServiceConnectionStatusApproved`, `PrivateLinkServiceConnectionStatusDisconnected`, `PrivateLinkServiceConnectionStatusPending`, `PrivateLinkServiceConnectionStatusRejected`
+- New enum type `PublicNetworkAccess` with values `PublicNetworkAccessDisabled`, `PublicNetworkAccessEnabled`
+- New function `*ClientFactory.NewPrivateEndpointConnectionsInterfaceClient() *PrivateEndpointConnectionsInterfaceClient`
+- New function `*ClientFactory.NewPrivateLinkResourcesInterfaceClient() *PrivateLinkResourcesInterfaceClient`
+- New function `NewPrivateEndpointConnectionsInterfaceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionsInterfaceClient, error)`
+- New function `*PrivateEndpointConnectionsInterfaceClient.BeginDelete(ctx context.Context, resourceGroupName string, trafficControllerName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsInterfaceClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsInterfaceClientDeleteResponse], error)`
+- New function `*PrivateEndpointConnectionsInterfaceClient.Get(ctx context.Context, resourceGroupName string, trafficControllerName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsInterfaceClientGetOptions) (PrivateEndpointConnectionsInterfaceClientGetResponse, error)`
+- New function `*PrivateEndpointConnectionsInterfaceClient.NewListByTrafficControllerPager(resourceGroupName string, trafficControllerName string, options *PrivateEndpointConnectionsInterfaceClientListByTrafficControllerOptions) *runtime.Pager[PrivateEndpointConnectionsInterfaceClientListByTrafficControllerResponse]`
+- New function `*PrivateEndpointConnectionsInterfaceClient.BeginUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, privateEndpointConnectionName string, resource PrivateEndpointConnection, options *PrivateEndpointConnectionsInterfaceClientBeginUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionsInterfaceClientUpdateResponse], error)`
+- New function `NewPrivateLinkResourcesInterfaceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesInterfaceClient, error)`
+- New function `*PrivateLinkResourcesInterfaceClient.Get(ctx context.Context, resourceGroupName string, trafficControllerName string, privateLinkResourceName string, options *PrivateLinkResourcesInterfaceClientGetOptions) (PrivateLinkResourcesInterfaceClientGetResponse, error)`
+- New function `*PrivateLinkResourcesInterfaceClient.NewListByTrafficControllerPager(resourceGroupName string, trafficControllerName string, options *PrivateLinkResourcesInterfaceClientListByTrafficControllerOptions) *runtime.Pager[PrivateLinkResourcesInterfaceClientListByTrafficControllerResponse]`
+- New struct `FrontendAssociation`
 - New struct `FrontendUpdateProperties`
 - New struct `IPAccessRule`
 - New struct `IPAccessRulesPolicy`
 - New struct `IPAccessRulesSecurityPolicy`
-- New field `SecurityPolicyConfigurations` in struct `FrontendProperties`
+- New struct `PrivateEndpointConnection`
+- New struct `PrivateEndpointConnectionListResult`
+- New struct `PrivateEndpointConnectionProperties`
+- New struct `PrivateEndpointReference`
+- New struct `PrivateLinkResource`
+- New struct `PrivateLinkResourceListResult`
+- New struct `PrivateLinkResourceProperties`
+- New struct `PrivateLinkServiceConnectionState`
+- New field `Association`, `PublicNetworkAccess`, `SecurityPolicyConfigurations` in struct `FrontendProperties`
 - New field `Properties` in struct `FrontendUpdate`
 - New field `IPAccessRulesSecurityPolicy` in struct `SecurityPolicyConfigurations`
 - New field `IPAccessRulesPolicy` in struct `SecurityPolicyProperties`
 - New field `IPAccessRulesPolicy` in struct `SecurityPolicyUpdateProperties`
+- New field `PrivateEndpointConnections` in struct `TrafficControllerProperties`
 
 
 ## 1.1.0 (2025-01-23)

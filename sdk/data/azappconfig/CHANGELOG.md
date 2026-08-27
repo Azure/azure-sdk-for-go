@@ -1,6 +1,6 @@
 # Release History
 
-## 2.2.1-beta.1 (Unreleased)
+## 2.2.1-beta.1 (2026-08-27)
 
 ### Features Added
 * Exposed the `Description` property on configuration settings and snapshots.
@@ -14,10 +14,6 @@
   * Added types `FeatureFlag`, `FeatureFlagSelector`, `FeatureFlagAllocation`, `FeatureFlagConditions`, `FeatureFlagFilter`, `FeatureFlagTelemetryConfiguration`, `FeatureFlagVariantDefinition`, `GroupAllocation`, `PercentileAllocation`, and `UserAllocation`.
   * Added option and response types for each feature flag operation.
   * Added field selector constants `FeatureFlagFields*`, and the `RequirementType` and `StatusOverride` enums with corresponding constants.
-
-### Breaking Changes
-
-### Bugs Fixed
 
 ### Other Changes
 * Updated to API version `2026-05-01-preview`.

@@ -19,7 +19,7 @@ import (
 // TokensClient contains the methods for the Tokens group.
 // Don't use this type directly, use NewTokensClient() instead.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-07-01
 type TokensClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type TokensClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTokensClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TokensClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,16 +70,13 @@ func (client *TokensClient) Acquire(ctx context.Context, parameters TokenRequest
 // acquireCreateRequest creates the Acquire request.
 func (client *TokensClient) acquireCreateRequest(ctx context.Context, parameters TokenRequest, _ *TokensClientAcquireOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/acquirePolicyToken"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -135,7 +135,7 @@ func (client *TokensClient) acquireAtManagementGroupCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -153,6 +153,66 @@ func (client *TokensClient) acquireAtManagementGroupHandleResponse(resp *http.Re
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TokenResponse); err != nil {
 		return TokensClientAcquireAtManagementGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// AcquireAtResourceGroup - Acquires a policy token at resource group level.
+//
+// This operation acquires a policy token in the given resource group for the given request body.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - parameters - The policy token properties.
+//   - options - TokensClientAcquireAtResourceGroupOptions contains the optional parameters for the TokensClient.AcquireAtResourceGroup
+//     method.
+func (client *TokensClient) AcquireAtResourceGroup(ctx context.Context, resourceGroupName string, parameters TokenRequest, options *TokensClientAcquireAtResourceGroupOptions) (TokensClientAcquireAtResourceGroupResponse, error) {
+	var err error
+	const operationName = "TokensClient.AcquireAtResourceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.acquireAtResourceGroupCreateRequest(ctx, resourceGroupName, parameters, options)
+	if err != nil {
+		return TokensClientAcquireAtResourceGroupResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return TokensClientAcquireAtResourceGroupResponse{}, err
+	}
+	return client.acquireAtResourceGroupHandleResponse(httpResp, http.StatusOK)
+}
+
+// acquireAtResourceGroupCreateRequest creates the AcquireAtResourceGroup request.
+func (client *TokensClient) acquireAtResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, parameters TokenRequest, _ *TokensClientAcquireAtResourceGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/acquirePolicyToken"
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// acquireAtResourceGroupHandleResponse handles the AcquireAtResourceGroup response.
+func (client *TokensClient) acquireAtResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (TokensClientAcquireAtResourceGroupResponse, error) {
+	result := TokensClientAcquireAtResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TokenResponse); err != nil {
+		return TokensClientAcquireAtResourceGroupResponse{}, err
 	}
 	return result, nil
 }

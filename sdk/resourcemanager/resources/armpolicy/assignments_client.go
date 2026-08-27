@@ -20,7 +20,7 @@ import (
 // AssignmentsClient contains the methods for the Assignments group.
 // Don't use this type directly, use NewAssignmentsClient() instead.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-07-01
 type AssignmentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type AssignmentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssignmentsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -83,7 +86,7 @@ func (client *AssignmentsClient) createCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -146,7 +149,7 @@ func (client *AssignmentsClient) createByIDCreateRequest(ctx context.Context, po
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -207,7 +210,7 @@ func (client *AssignmentsClient) deleteCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -264,7 +267,7 @@ func (client *AssignmentsClient) deleteByIDCreateRequest(ctx context.Context, po
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -323,7 +326,7 @@ func (client *AssignmentsClient) getCreateRequest(ctx context.Context, scope str
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -379,7 +382,7 @@ func (client *AssignmentsClient) getByIDCreateRequest(ctx context.Context, polic
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -441,9 +444,6 @@ func (client *AssignmentsClient) listCreateRequest(ctx context.Context, nextLink
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyAssignments"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -463,7 +463,7 @@ func (client *AssignmentsClient) listCreateRequest(ctx context.Context, nextLink
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260101Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -547,7 +547,7 @@ func (client *AssignmentsClient) listForManagementGroupCreateRequest(ctx context
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260101Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -625,9 +625,6 @@ func (client *AssignmentsClient) listForResourceCreateRequest(ctx context.Contex
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/policyAssignments"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -667,7 +664,7 @@ func (client *AssignmentsClient) listForResourceCreateRequest(ctx context.Contex
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260101Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -730,9 +727,6 @@ func (client *AssignmentsClient) listForResourceGroupCreateRequest(ctx context.C
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/policyAssignments"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -756,7 +750,7 @@ func (client *AssignmentsClient) listForResourceGroupCreateRequest(ctx context.C
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260101Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -816,7 +810,7 @@ func (client *AssignmentsClient) updateCreateRequest(ctx context.Context, scope 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -879,7 +873,7 @@ func (client *AssignmentsClient) updateByIDCreateRequest(ctx context.Context, po
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -20,7 +20,7 @@ import (
 // SetDefinitionVersionsClient contains the methods for the SetDefinitionVersions group.
 // Don't use this type directly, use NewSetDefinitionVersionsClient() instead.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-07-01
 type SetDefinitionVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type SetDefinitionVersionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSetDefinitionVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SetDefinitionVersionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -71,9 +74,6 @@ func (client *SetDefinitionVersionsClient) CreateOrUpdate(ctx context.Context, p
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *SetDefinitionVersionsClient) createOrUpdateCreateRequest(ctx context.Context, policySetDefinitionName string, policyDefinitionVersion string, parameters SetDefinitionVersion, _ *SetDefinitionVersionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if policySetDefinitionName == "" {
 		return nil, errors.New("parameter policySetDefinitionName cannot be empty")
@@ -88,7 +88,7 @@ func (client *SetDefinitionVersionsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -157,7 +157,7 @@ func (client *SetDefinitionVersionsClient) createOrUpdateAtManagementGroupCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -209,9 +209,6 @@ func (client *SetDefinitionVersionsClient) Delete(ctx context.Context, policySet
 // deleteCreateRequest creates the Delete request.
 func (client *SetDefinitionVersionsClient) deleteCreateRequest(ctx context.Context, policySetDefinitionName string, policyDefinitionVersion string, _ *SetDefinitionVersionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if policySetDefinitionName == "" {
 		return nil, errors.New("parameter policySetDefinitionName cannot be empty")
@@ -226,7 +223,7 @@ func (client *SetDefinitionVersionsClient) deleteCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -280,7 +277,7 @@ func (client *SetDefinitionVersionsClient) deleteAtManagementGroupCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -312,9 +309,6 @@ func (client *SetDefinitionVersionsClient) Get(ctx context.Context, policySetDef
 // getCreateRequest creates the Get request.
 func (client *SetDefinitionVersionsClient) getCreateRequest(ctx context.Context, policySetDefinitionName string, policyDefinitionVersion string, options *SetDefinitionVersionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions/{policyDefinitionVersion}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if policySetDefinitionName == "" {
 		return nil, errors.New("parameter policySetDefinitionName cannot be empty")
@@ -332,7 +326,7 @@ func (client *SetDefinitionVersionsClient) getCreateRequest(ctx context.Context,
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -399,7 +393,7 @@ func (client *SetDefinitionVersionsClient) getAtManagementGroupCreateRequest(ctx
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -460,7 +454,7 @@ func (client *SetDefinitionVersionsClient) getBuiltInCreateRequest(ctx context.C
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -514,9 +508,6 @@ func (client *SetDefinitionVersionsClient) listCreateRequest(ctx context.Context
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}/versions"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if policySetDefinitionName == "" {
 			return nil, errors.New("parameter policySetDefinitionName cannot be empty")
@@ -537,7 +528,7 @@ func (client *SetDefinitionVersionsClient) listCreateRequest(ctx context.Context
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260101Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -582,16 +573,13 @@ func (client *SetDefinitionVersionsClient) ListAll(ctx context.Context, options 
 // listAllCreateRequest creates the ListAll request.
 func (client *SetDefinitionVersionsClient) listAllCreateRequest(ctx context.Context, _ *SetDefinitionVersionsClientListAllOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/listPolicySetDefinitionVersions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -645,7 +633,7 @@ func (client *SetDefinitionVersionsClient) listAllAtManagementGroupCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -694,7 +682,7 @@ func (client *SetDefinitionVersionsClient) listAllBuiltinsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -768,7 +756,7 @@ func (client *SetDefinitionVersionsClient) listBuiltInCreateRequest(ctx context.
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260101Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -848,7 +836,7 @@ func (client *SetDefinitionVersionsClient) listByManagementGroupCreateRequest(ct
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260101Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

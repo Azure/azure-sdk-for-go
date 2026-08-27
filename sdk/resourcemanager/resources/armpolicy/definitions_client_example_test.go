@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01-preview/createOrUpdatePolicyDefinition.json
+// Generated from example definition: 2026-07-01/createOrUpdatePolicyDefinition.json
 func ExampleDefinitionsClient_CreateOrUpdate_createOrUpdateAPolicyDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleDefinitionsClient_CreateOrUpdate_createOrUpdateAPolicyDefinition() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/createOrUpdatePolicyDefinitionAdvancedParams.json
+// Generated from example definition: 2026-07-01/createOrUpdatePolicyDefinitionAdvancedParams.json
 func ExampleDefinitionsClient_CreateOrUpdate_createOrUpdateAPolicyDefinitionWithAdvancedParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleDefinitionsClient_CreateOrUpdate_createOrUpdateAPolicyDefinitionWith
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/createOrUpdatePolicyDefinitionExternalEvaluationEnforcementSettings.json
+// Generated from example definition: 2026-07-01/createOrUpdatePolicyDefinitionExternalEvaluationEnforcementSettings.json
 func ExampleDefinitionsClient_CreateOrUpdate_createOrUpdateAPolicyDefinitionWithExternalEvaluationEnforcementSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,7 +191,7 @@ func ExampleDefinitionsClient_CreateOrUpdate_createOrUpdateAPolicyDefinitionWith
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/createOrUpdatePolicyDefinitionAtManagementGroup.json
+// Generated from example definition: 2026-07-01/createOrUpdatePolicyDefinitionAtManagementGroup.json
 func ExampleDefinitionsClient_CreateOrUpdateAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,7 +244,7 @@ func ExampleDefinitionsClient_CreateOrUpdateAtManagementGroup() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/deletePolicyDefinition.json
+// Generated from example definition: 2026-07-01/deletePolicyDefinition.json
 func ExampleDefinitionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,7 +266,7 @@ func ExampleDefinitionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/deletePolicyDefinitionAtManagementGroup.json
+// Generated from example definition: 2026-07-01/deletePolicyDefinitionAtManagementGroup.json
 func ExampleDefinitionsClient_DeleteAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +288,7 @@ func ExampleDefinitionsClient_DeleteAtManagementGroup() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/getPolicyDefinition.json
+// Generated from example definition: 2026-07-01/getPolicyDefinition.json
 func ExampleDefinitionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -356,7 +356,7 @@ func ExampleDefinitionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/getPolicyDefinitionAtManagementGroup.json
+// Generated from example definition: 2026-07-01/getPolicyDefinitionAtManagementGroup.json
 func ExampleDefinitionsClient_GetAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -378,7 +378,7 @@ func ExampleDefinitionsClient_GetAtManagementGroup() {
 	// 	Definition: armpolicy.Definition{
 	// 		Name: to.Ptr("ResourceNaming"),
 	// 		Type: to.Ptr("Microsoft.Authorization/policyDefinitions"),
-	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
+	// 		ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
 	// 		Properties: &armpolicy.DefinitionProperties{
 	// 			Description: to.Ptr("Force resource names to begin with 'prefix' and end with 'suffix'"),
 	// 			DisplayName: to.Ptr("Naming Convention"),
@@ -424,7 +424,7 @@ func ExampleDefinitionsClient_GetAtManagementGroup() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/getBuiltinPolicyDefinition.json
+// Generated from example definition: 2026-07-01/getBuiltinPolicyDefinition.json
 func ExampleDefinitionsClient_GetBuiltIn() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -491,7 +491,7 @@ func ExampleDefinitionsClient_GetBuiltIn() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01-preview/listPolicyDefinitions.json
+// Generated from example definition: 2026-07-01/listPolicyDefinitions.json
 func ExampleDefinitionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -650,7 +650,7 @@ func ExampleDefinitionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/listBuiltInPolicyDefinitions.json
+// Generated from example definition: 2026-07-01/listBuiltInPolicyDefinitions.json
 func ExampleDefinitionsClient_NewListBuiltInPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -812,7 +812,7 @@ func ExampleDefinitionsClient_NewListBuiltInPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01-preview/listPolicyDefinitionsByManagementGroup.json
+// Generated from example definition: 2026-07-01/listPolicyDefinitionsByManagementGroup.json
 func ExampleDefinitionsClient_NewListByManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -885,7 +885,7 @@ func ExampleDefinitionsClient_NewListByManagementGroupPager() {
 		// 			{
 		// 				Name: to.Ptr("ResourceNaming"),
 		// 				Type: to.Ptr("Microsoft.Authorization/policyDefinitions"),
-		// 				ID: to.Ptr("/providers/Microsoft.Management/managementGroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
+		// 				ID: to.Ptr("/providers/Microsoft.Management/managementgroups/MyManagementGroup/providers/Microsoft.Authorization/policyDefinitions/ResourceNaming"),
 		// 				Properties: &armpolicy.DefinitionProperties{
 		// 					Description: to.Ptr("Force resource names to begin with 'prefix' and end with 'suffix'"),
 		// 					DisplayName: to.Ptr("Naming Convention"),

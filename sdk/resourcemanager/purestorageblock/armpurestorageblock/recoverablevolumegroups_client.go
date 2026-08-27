@@ -16,64 +16,64 @@ import (
 	"strings"
 )
 
-// AvsStorageContainersClient contains the methods for the AvsStorageContainers group.
-// Don't use this type directly, use NewAvsStorageContainersClient() instead.
+// RecoverableVolumeGroupsClient contains the methods for the RecoverableVolumeGroups group.
+// Don't use this type directly, use NewRecoverableVolumeGroupsClient() instead.
 //
 // Generated from API version 2026-05-01-preview
-type AvsStorageContainersClient struct {
+type RecoverableVolumeGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewAvsStorageContainersClient creates a new instance of AvsStorageContainersClient with the specified values.
+// NewRecoverableVolumeGroupsClient creates a new instance of RecoverableVolumeGroupsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewAvsStorageContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AvsStorageContainersClient, error) {
+func NewRecoverableVolumeGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecoverableVolumeGroupsClient, error) {
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &AvsStorageContainersClient{
+	client := &RecoverableVolumeGroupsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginDelete - Delete an AVS storage container
+// BeginDelete - Eradicate a recoverable volume group
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
-//   - storageContainerName - Name of the storage container
-//   - options - AvsStorageContainersClientBeginDeleteOptions contains the optional parameters for the AvsStorageContainersClient.BeginDelete
+//   - recoverableVolumeGroupName - Name of the recoverable volume group
+//   - options - RecoverableVolumeGroupsClientBeginDeleteOptions contains the optional parameters for the RecoverableVolumeGroupsClient.BeginDelete
 //     method.
-func (client *AvsStorageContainersClient) BeginDelete(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, options *AvsStorageContainersClientBeginDeleteOptions) (*runtime.Poller[AvsStorageContainersClientDeleteResponse], error) {
+func (client *RecoverableVolumeGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, storagePoolName string, recoverableVolumeGroupName string, options *RecoverableVolumeGroupsClientBeginDeleteOptions) (*runtime.Poller[RecoverableVolumeGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, storagePoolName, storageContainerName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, storagePoolName, recoverableVolumeGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AvsStorageContainersClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RecoverableVolumeGroupsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AvsStorageContainersClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RecoverableVolumeGroupsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete an AVS storage container
+// Delete - Eradicate a recoverable volume group
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AvsStorageContainersClient) deleteOperation(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, options *AvsStorageContainersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RecoverableVolumeGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, storagePoolName string, recoverableVolumeGroupName string, options *RecoverableVolumeGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "AvsStorageContainersClient.BeginDelete"
+	const operationName = "RecoverableVolumeGroupsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, storagePoolName, storageContainerName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, storagePoolName, recoverableVolumeGroupName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -88,8 +88,8 @@ func (client *AvsStorageContainersClient) deleteOperation(ctx context.Context, r
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AvsStorageContainersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, _ *AvsStorageContainersClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers/{storageContainerName}"
+func (client *RecoverableVolumeGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, recoverableVolumeGroupName string, _ *RecoverableVolumeGroupsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/recoverableVolumeGroups/{recoverableVolumeGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -102,10 +102,10 @@ func (client *AvsStorageContainersClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter storagePoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
-	if storageContainerName == "" {
-		return nil, errors.New("parameter storageContainerName cannot be empty")
+	if recoverableVolumeGroupName == "" {
+		return nil, errors.New("parameter recoverableVolumeGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{storageContainerName}", url.PathEscape(storageContainerName))
+	urlPath = strings.ReplaceAll(urlPath, "{recoverableVolumeGroupName}", url.PathEscape(recoverableVolumeGroupName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -116,33 +116,33 @@ func (client *AvsStorageContainersClient) deleteCreateRequest(ctx context.Contex
 	return req, nil
 }
 
-// Get - Get an AVS storage container
+// Get - Get a recoverable volume group
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
-//   - storageContainerName - Name of the storage container
-//   - options - AvsStorageContainersClientGetOptions contains the optional parameters for the AvsStorageContainersClient.Get
+//   - recoverableVolumeGroupName - Name of the recoverable volume group
+//   - options - RecoverableVolumeGroupsClientGetOptions contains the optional parameters for the RecoverableVolumeGroupsClient.Get
 //     method.
-func (client *AvsStorageContainersClient) Get(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, options *AvsStorageContainersClientGetOptions) (AvsStorageContainersClientGetResponse, error) {
+func (client *RecoverableVolumeGroupsClient) Get(ctx context.Context, resourceGroupName string, storagePoolName string, recoverableVolumeGroupName string, options *RecoverableVolumeGroupsClientGetOptions) (RecoverableVolumeGroupsClientGetResponse, error) {
 	var err error
-	const operationName = "AvsStorageContainersClient.Get"
+	const operationName = "RecoverableVolumeGroupsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, storagePoolName, storageContainerName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, storagePoolName, recoverableVolumeGroupName, options)
 	if err != nil {
-		return AvsStorageContainersClientGetResponse{}, err
+		return RecoverableVolumeGroupsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AvsStorageContainersClientGetResponse{}, err
+		return RecoverableVolumeGroupsClientGetResponse{}, err
 	}
 	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
-func (client *AvsStorageContainersClient) getCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, storageContainerName string, _ *AvsStorageContainersClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers/{storageContainerName}"
+func (client *RecoverableVolumeGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, recoverableVolumeGroupName string, _ *RecoverableVolumeGroupsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/recoverableVolumeGroups/{recoverableVolumeGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -155,10 +155,10 @@ func (client *AvsStorageContainersClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter storagePoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
-	if storageContainerName == "" {
-		return nil, errors.New("parameter storageContainerName cannot be empty")
+	if recoverableVolumeGroupName == "" {
+		return nil, errors.New("parameter recoverableVolumeGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{storageContainerName}", url.PathEscape(storageContainerName))
+	urlPath = strings.ReplaceAll(urlPath, "{recoverableVolumeGroupName}", url.PathEscape(recoverableVolumeGroupName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -171,40 +171,40 @@ func (client *AvsStorageContainersClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *AvsStorageContainersClient) getHandleResponse(resp *http.Response, successCodes ...int) (AvsStorageContainersClientGetResponse, error) {
-	result := AvsStorageContainersClientGetResponse{}
+func (client *RecoverableVolumeGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (RecoverableVolumeGroupsClientGetResponse, error) {
+	result := RecoverableVolumeGroupsClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AvsStorageContainer); err != nil {
-		return AvsStorageContainersClientGetResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableVolumeGroup); err != nil {
+		return RecoverableVolumeGroupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByStoragePoolPager - List AVS storage containers by storage pool
+// NewListByStoragePoolPager - List all recoverable volume groups in a storage pool
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
-//   - options - AvsStorageContainersClientListByStoragePoolOptions contains the optional parameters for the AvsStorageContainersClient.NewListByStoragePoolPager
+//   - options - RecoverableVolumeGroupsClientListByStoragePoolOptions contains the optional parameters for the RecoverableVolumeGroupsClient.NewListByStoragePoolPager
 //     method.
-func (client *AvsStorageContainersClient) NewListByStoragePoolPager(resourceGroupName string, storagePoolName string, options *AvsStorageContainersClientListByStoragePoolOptions) *runtime.Pager[AvsStorageContainersClientListByStoragePoolResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AvsStorageContainersClientListByStoragePoolResponse]{
-		More: func(page AvsStorageContainersClientListByStoragePoolResponse) bool {
+func (client *RecoverableVolumeGroupsClient) NewListByStoragePoolPager(resourceGroupName string, storagePoolName string, options *RecoverableVolumeGroupsClientListByStoragePoolOptions) *runtime.Pager[RecoverableVolumeGroupsClientListByStoragePoolResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RecoverableVolumeGroupsClientListByStoragePoolResponse]{
+		More: func(page RecoverableVolumeGroupsClientListByStoragePoolResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AvsStorageContainersClientListByStoragePoolResponse) (AvsStorageContainersClientListByStoragePoolResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AvsStorageContainersClient.NewListByStoragePoolPager")
+		Fetcher: func(ctx context.Context, page *RecoverableVolumeGroupsClientListByStoragePoolResponse) (RecoverableVolumeGroupsClientListByStoragePoolResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RecoverableVolumeGroupsClient.NewListByStoragePoolPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listByStoragePoolCreateRequest(ctx, resourceGroupName, storagePoolName, nextLink, options)
 			if err != nil {
-				return AvsStorageContainersClientListByStoragePoolResponse{}, err
+				return RecoverableVolumeGroupsClientListByStoragePoolResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return AvsStorageContainersClientListByStoragePoolResponse{}, err
+				return RecoverableVolumeGroupsClientListByStoragePoolResponse{}, err
 			}
 			return client.listByStoragePoolHandleResponse(resp, http.StatusOK)
 		},
@@ -213,12 +213,12 @@ func (client *AvsStorageContainersClient) NewListByStoragePoolPager(resourceGrou
 }
 
 // listByStoragePoolCreateRequest creates the ListByStoragePool request.
-func (client *AvsStorageContainersClient) listByStoragePoolCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, nextLink string, _ *AvsStorageContainersClientListByStoragePoolOptions) (*policy.Request, error) {
+func (client *RecoverableVolumeGroupsClient) listByStoragePoolCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, nextLink string, _ *RecoverableVolumeGroupsClientListByStoragePoolOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/avsStorageContainers"
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/recoverableVolumeGroups"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter client.subscriptionID cannot be empty")
 		}
@@ -248,13 +248,13 @@ func (client *AvsStorageContainersClient) listByStoragePoolCreateRequest(ctx con
 }
 
 // listByStoragePoolHandleResponse handles the ListByStoragePool response.
-func (client *AvsStorageContainersClient) listByStoragePoolHandleResponse(resp *http.Response, successCodes ...int) (AvsStorageContainersClientListByStoragePoolResponse, error) {
-	result := AvsStorageContainersClientListByStoragePoolResponse{}
+func (client *RecoverableVolumeGroupsClient) listByStoragePoolHandleResponse(resp *http.Response, successCodes ...int) (RecoverableVolumeGroupsClientListByStoragePoolResponse, error) {
+	result := RecoverableVolumeGroupsClientListByStoragePoolResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AvsStorageContainerListResult); err != nil {
-		return AvsStorageContainersClientListByStoragePoolResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecoverableVolumeGroupListResult); err != nil {
+		return RecoverableVolumeGroupsClientListByStoragePoolResponse{}, err
 	}
 	return result, nil
 }

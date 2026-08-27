@@ -19,7 +19,7 @@ import (
 // ReservationsClient contains the methods for the Reservations group.
 // Don't use this type directly, use NewReservationsClient() instead.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-05-01-preview
 type ReservationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -107,7 +107,7 @@ func (client *ReservationsClient) createCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -182,7 +182,7 @@ func (client *ReservationsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -229,7 +229,7 @@ func (client *ReservationsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -290,7 +290,7 @@ func (client *ReservationsClient) getBillingReportCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -351,7 +351,7 @@ func (client *ReservationsClient) getBillingStatusCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -412,7 +412,7 @@ func (client *ReservationsClient) getResourceLimitsCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -428,6 +428,148 @@ func (client *ReservationsClient) getResourceLimitsHandleResponse(resp *http.Res
 		return ReservationsClientGetResourceLimitsResponse{}, err
 	}
 	return result, nil
+}
+
+// LatestLinkedSaaS - Returns the latest SaaS linked to the reservation.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - reservationName - Name of the reservation.
+//   - options - ReservationsClientLatestLinkedSaaSOptions contains the optional parameters for the ReservationsClient.LatestLinkedSaaS
+//     method.
+func (client *ReservationsClient) LatestLinkedSaaS(ctx context.Context, resourceGroupName string, reservationName string, options *ReservationsClientLatestLinkedSaaSOptions) (ReservationsClientLatestLinkedSaaSResponse, error) {
+	var err error
+	const operationName = "ReservationsClient.LatestLinkedSaaS"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.latestLinkedSaaSCreateRequest(ctx, resourceGroupName, reservationName, options)
+	if err != nil {
+		return ReservationsClientLatestLinkedSaaSResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ReservationsClientLatestLinkedSaaSResponse{}, err
+	}
+	return client.latestLinkedSaaSHandleResponse(httpResp, http.StatusOK)
+}
+
+// latestLinkedSaaSCreateRequest creates the LatestLinkedSaaS request.
+func (client *ReservationsClient) latestLinkedSaaSCreateRequest(ctx context.Context, resourceGroupName string, reservationName string, _ *ReservationsClientLatestLinkedSaaSOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}/latestLinkedSaaS"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if reservationName == "" {
+		return nil, errors.New("parameter reservationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{reservationName}", url.PathEscape(reservationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// latestLinkedSaaSHandleResponse handles the LatestLinkedSaaS response.
+func (client *ReservationsClient) latestLinkedSaaSHandleResponse(resp *http.Response, successCodes ...int) (ReservationsClientLatestLinkedSaaSResponse, error) {
+	result := ReservationsClientLatestLinkedSaaSResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.LatestLinkedSaaSResponse); err != nil {
+		return ReservationsClientLatestLinkedSaaSResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginLinkSaaS - Links a new SaaS to the reservation.
+//
+// A long-running resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - reservationName - Name of the reservation.
+//   - body - The content of the action request
+//   - options - ReservationsClientBeginLinkSaaSOptions contains the optional parameters for the ReservationsClient.BeginLinkSaaS
+//     method.
+func (client *ReservationsClient) BeginLinkSaaS(ctx context.Context, resourceGroupName string, reservationName string, body LinkSaaSRequest, options *ReservationsClientBeginLinkSaaSOptions) (*runtime.Poller[ReservationsClientLinkSaaSResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.linkSaaS(ctx, resourceGroupName, reservationName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReservationsClientLinkSaaSResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReservationsClientLinkSaaSResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// LinkSaaS - Links a new SaaS to the reservation.
+//
+// A long-running resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReservationsClient) linkSaaS(ctx context.Context, resourceGroupName string, reservationName string, body LinkSaaSRequest, options *ReservationsClientBeginLinkSaaSOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReservationsClient.BeginLinkSaaS"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.linkSaaSCreateRequest(ctx, resourceGroupName, reservationName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// linkSaaSCreateRequest creates the LinkSaaS request.
+func (client *ReservationsClient) linkSaaSCreateRequest(ctx context.Context, resourceGroupName string, reservationName string, body LinkSaaSRequest, _ *ReservationsClientBeginLinkSaaSOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}/linkSaaS"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if reservationName == "" {
+		return nil, errors.New("parameter reservationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{reservationName}", url.PathEscape(reservationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // NewListByResourceGroupPager - List reservations by resource group
@@ -483,7 +625,7 @@ func (client *ReservationsClient) listByResourceGroupCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101Preview)
+		reqQP.Set("api-version", version20260501Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -550,7 +692,7 @@ func (client *ReservationsClient) listBySubscriptionCreateRequest(ctx context.Co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101Preview)
+		reqQP.Set("api-version", version20260501Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -635,7 +777,7 @@ func (client *ReservationsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

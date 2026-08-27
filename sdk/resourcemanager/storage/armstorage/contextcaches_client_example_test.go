@@ -91,7 +91,7 @@ func ExampleContextCachesClient_BeginCreateOrUpdate_createAAzureContextCacheAcco
 		Properties: &armstorage.ContextCacheProperties{
 			AccountKind: to.Ptr(armstorage.ContextCacheAccountKindRegional),
 			Description: to.Ptr("Test Azure Context Cache account"),
-			Encryption: &armstorage.Encryption{
+			Encryption: &armstorage.ArmEncryption{
 				CustomerManagedKeyEncryption: &armstorage.CustomerManagedKeyEncryption{
 					KeyEncryptionKeyIdentity: &armstorage.KeyEncryptionKeyIdentity{
 						IdentityType: to.Ptr(armstorage.KeyEncryptionKeyIdentityTypeSystemAssignedIdentity),
@@ -128,7 +128,7 @@ func ExampleContextCachesClient_BeginCreateOrUpdate_createAAzureContextCacheAcco
 	// 		Properties: &armstorage.ContextCacheProperties{
 	// 			AccountKind: to.Ptr(armstorage.ContextCacheAccountKindRegional),
 	// 			Description: to.Ptr("Test Azure Context Cache account"),
-	// 			Encryption: &armstorage.Encryption{
+	// 			Encryption: &armstorage.ArmEncryption{
 	// 				CustomerManagedKeyEncryption: &armstorage.CustomerManagedKeyEncryption{
 	// 					KeyEncryptionKeyIdentity: &armstorage.KeyEncryptionKeyIdentity{
 	// 						IdentityType: to.Ptr(armstorage.KeyEncryptionKeyIdentityTypeSystemAssignedIdentity),
@@ -372,7 +372,7 @@ func ExampleContextCachesClient_BeginUpdate_updateAContextCacheTags() {
 	// 		Properties: &armstorage.ContextCacheProperties{
 	// 			AccountKind: to.Ptr(armstorage.ContextCacheAccountKindRegional),
 	// 			Description: to.Ptr("Updated Prompt Service account description"),
-	// 			Encryption: &armstorage.Encryption{
+	// 			Encryption: &armstorage.ArmEncryption{
 	// 				CustomerManagedKeyEncryption: &armstorage.CustomerManagedKeyEncryption{
 	// 					KeyEncryptionKeyIdentity: &armstorage.KeyEncryptionKeyIdentity{
 	// 						IdentityType: to.Ptr(armstorage.KeyEncryptionKeyIdentityTypeSystemAssignedIdentity),
@@ -415,7 +415,7 @@ func ExampleContextCachesClient_BeginUpdate_updateAAzureContextCacheAccountSCust
 		},
 		Properties: &armstorage.ContextCachePropertiesUpdate{
 			Description: to.Ptr("Updated Prompt Service account description"),
-			Encryption: &armstorage.Encryption{
+			Encryption: &armstorage.ArmEncryption{
 				CustomerManagedKeyEncryption: &armstorage.CustomerManagedKeyEncryption{
 					KeyEncryptionKeyIdentity: &armstorage.KeyEncryptionKeyIdentity{
 						IdentityType: to.Ptr(armstorage.KeyEncryptionKeyIdentityTypeSystemAssignedIdentity),
@@ -453,7 +453,7 @@ func ExampleContextCachesClient_BeginUpdate_updateAAzureContextCacheAccountSCust
 	// 		Properties: &armstorage.ContextCacheProperties{
 	// 			AccountKind: to.Ptr(armstorage.ContextCacheAccountKindRegional),
 	// 			Description: to.Ptr("Updated Prompt Service account description"),
-	// 			Encryption: &armstorage.Encryption{
+	// 			Encryption: &armstorage.ArmEncryption{
 	// 				CustomerManagedKeyEncryption: &armstorage.CustomerManagedKeyEncryption{
 	// 					KeyEncryptionKeyIdentity: &armstorage.KeyEncryptionKeyIdentity{
 	// 						IdentityType: to.Ptr(armstorage.KeyEncryptionKeyIdentityTypeSystemAssignedIdentity),

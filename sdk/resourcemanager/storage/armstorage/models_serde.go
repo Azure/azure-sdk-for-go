@@ -1568,6 +1568,37 @@ func (a *AdvancedPlatformMetricsRuleProperties) UnmarshalJSON(data []byte) error
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ArmEncryption.
+func (a ArmEncryption) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "customerManagedKeyEncryption", a.CustomerManagedKeyEncryption)
+	populate(objectMap, "infrastructureEncryption", a.InfrastructureEncryption)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ArmEncryption.
+func (a *ArmEncryption) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "customerManagedKeyEncryption":
+			err = unpopulate(val, "CustomerManagedKeyEncryption", &a.CustomerManagedKeyEncryption)
+			delete(rawMsg, key)
+		case "infrastructureEncryption":
+			err = unpopulate(val, "InfrastructureEncryption", &a.InfrastructureEncryption)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type AzureFilesIdentityBasedAuthentication.
 func (a AzureFilesIdentityBasedAuthentication) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3948,9 +3979,7 @@ func (d *DualStackEndpointPreference) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Encryption.
 func (e Encryption) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "customerManagedKeyEncryption", e.CustomerManagedKeyEncryption)
 	populate(objectMap, "identity", e.EncryptionIdentity)
-	populate(objectMap, "infrastructureEncryption", e.InfrastructureEncryption)
 	populate(objectMap, "keySource", e.KeySource)
 	populate(objectMap, "keyvaultproperties", e.KeyVaultProperties)
 	populate(objectMap, "requireInfrastructureEncryption", e.RequireInfrastructureEncryption)
@@ -3967,65 +3996,8 @@ func (e *Encryption) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "customerManagedKeyEncryption":
-			err = unpopulate(val, "CustomerManagedKeyEncryption", &e.CustomerManagedKeyEncryption)
-			delete(rawMsg, key)
 		case "identity":
 			err = unpopulate(val, "EncryptionIdentity", &e.EncryptionIdentity)
-			delete(rawMsg, key)
-		case "infrastructureEncryption":
-			err = unpopulate(val, "InfrastructureEncryption", &e.InfrastructureEncryption)
-			delete(rawMsg, key)
-		case "keySource":
-			err = unpopulate(val, "KeySource", &e.KeySource)
-			delete(rawMsg, key)
-		case "keyvaultproperties":
-			err = unpopulate(val, "KeyVaultProperties", &e.KeyVaultProperties)
-			delete(rawMsg, key)
-		case "requireInfrastructureEncryption":
-			err = unpopulate(val, "RequireInfrastructureEncryption", &e.RequireInfrastructureEncryption)
-			delete(rawMsg, key)
-		case "services":
-			err = unpopulate(val, "Services", &e.Services)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Encryption.
-func (e Encryption) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "customerManagedKeyEncryption", e.CustomerManagedKeyEncryption)
-	populate(objectMap, "identity", e.EncryptionIdentity)
-	populate(objectMap, "infrastructureEncryption", e.InfrastructureEncryption)
-	populate(objectMap, "keySource", e.KeySource)
-	populate(objectMap, "keyvaultproperties", e.KeyVaultProperties)
-	populate(objectMap, "requireInfrastructureEncryption", e.RequireInfrastructureEncryption)
-	populate(objectMap, "services", e.Services)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Encryption.
-func (e *Encryption) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "customerManagedKeyEncryption":
-			err = unpopulate(val, "CustomerManagedKeyEncryption", &e.CustomerManagedKeyEncryption)
-			delete(rawMsg, key)
-		case "identity":
-			err = unpopulate(val, "EncryptionIdentity", &e.EncryptionIdentity)
-			delete(rawMsg, key)
-		case "infrastructureEncryption":
-			err = unpopulate(val, "InfrastructureEncryption", &e.InfrastructureEncryption)
 			delete(rawMsg, key)
 		case "keySource":
 			err = unpopulate(val, "KeySource", &e.KeySource)

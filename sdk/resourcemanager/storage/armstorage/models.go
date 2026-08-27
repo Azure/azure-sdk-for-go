@@ -849,6 +849,16 @@ type AdvancedPlatformMetricsRuleProperties struct {
 	RuleType *AdvancedPlatformMetricsRuleType
 }
 
+// ArmEncryption - (Optional) Discouraged to include in resource definition. Only needed where it is possible to disable platform
+// (AKA infrastructure) encryption. Azure SQL TDE is an example of this. Values are enabled and disabled.
+type ArmEncryption struct {
+	// All Customer-managed key encryption properties for the resource.
+	CustomerManagedKeyEncryption *CustomerManagedKeyEncryption
+
+	// Values are enabled and disabled.
+	InfrastructureEncryption *InfrastructureEncryption
+}
+
 // AzureFilesIdentityBasedAuthentication - Settings for Azure Files identity based authentication.
 type AzureFilesIdentityBasedAuthentication struct {
 	// REQUIRED; Indicates the directory service used. Note that this enum may be extended in the future.
@@ -1471,7 +1481,7 @@ type ContextCacheProperties struct {
 	Description *string
 
 	// Encryption settings for the account.
-	Encryption *Encryption
+	Encryption *ArmEncryption
 
 	// READ-ONLY; The status of the last operation.
 	ProvisioningState *ContextCacheProvisioningState
@@ -1483,7 +1493,7 @@ type ContextCachePropertiesUpdate struct {
 	Description *string
 
 	// Encryption settings for the account.
-	Encryption *Encryption
+	Encryption *ArmEncryption
 }
 
 // ContextCacheUpdate - The type used for update operations of the Context Cache.
@@ -1852,39 +1862,8 @@ type DualStackEndpointPreference struct {
 
 // Encryption - The encryption settings on the storage account.
 type Encryption struct {
-	// All Customer-managed key encryption properties for the resource.
-	CustomerManagedKeyEncryption *CustomerManagedKeyEncryption
-
 	// The identity to be used with service-side encryption at rest.
 	EncryptionIdentity *EncryptionIdentity
-
-	// Values are enabled and disabled.
-	InfrastructureEncryption *InfrastructureEncryption
-
-	// The encryption keySource (provider). Possible values (case-insensitive): Microsoft.Storage, Microsoft.Keyvault
-	KeySource *KeySource
-
-	// Properties provided by key vault.
-	KeyVaultProperties *KeyVaultProperties
-
-	// A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for
-	// data at rest.
-	RequireInfrastructureEncryption *bool
-
-	// List of services which support encryption.
-	Services *EncryptionServices
-}
-
-// Encryption - The encryption settings on the storage account.
-type Encryption struct {
-	// All Customer-managed key encryption properties for the resource.
-	CustomerManagedKeyEncryption *CustomerManagedKeyEncryption
-
-	// The identity to be used with service-side encryption at rest.
-	EncryptionIdentity *EncryptionIdentity
-
-	// Values are enabled and disabled.
-	InfrastructureEncryption *InfrastructureEncryption
 
 	// The encryption keySource (provider). Possible values (case-insensitive): Microsoft.Storage, Microsoft.Keyvault
 	KeySource *KeySource

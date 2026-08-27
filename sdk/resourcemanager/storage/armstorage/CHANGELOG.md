@@ -1,6 +1,6 @@
 # Release History
 
-## 4.2.0 (2026-08-26)
+## 4.2.0 (2026-08-27)
 ### Features Added
 
 - New enum type `AiProvider` with values `AiProviderOpenAI`
@@ -25,6 +25,7 @@
 - New function `*ContextCachesClient.NewListByResourceGroupPager(resourceGroupName string, options *ContextCachesClientListByResourceGroupOptions) *runtime.Pager[ContextCachesClientListByResourceGroupResponse]`
 - New function `*ContextCachesClient.NewListBySubscriptionPager(options *ContextCachesClientListBySubscriptionOptions) *runtime.Pager[ContextCachesClientListBySubscriptionResponse]`
 - New function `*ContextCachesClient.BeginUpdate(ctx context.Context, resourceGroupName string, contextCacheName string, properties ContextCacheUpdate, options *ContextCachesClientBeginUpdateOptions) (*runtime.Poller[ContextCachesClientUpdateResponse], error)`
+- New struct `ArmEncryption`
 - New struct `ContextCache`
 - New struct `ContextCacheContainer`
 - New struct `ContextCacheContainerListResult`
@@ -41,7 +42,6 @@
 - New field `AllowCrossTenantDelegationSas` in struct `AccountProperties`
 - New field `AllowCrossTenantDelegationSas` in struct `AccountPropertiesCreateParameters`
 - New field `AllowCrossTenantDelegationSas` in struct `AccountPropertiesUpdateParameters`
-- New field `CustomerManagedKeyEncryption`, `InfrastructureEncryption` in struct `Encryption`
 - New field `RequireUserBoundUserDelegationSas`, `RequireUserBoundUserDelegationSasAction` in struct `SasPolicy`
 
 

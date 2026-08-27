@@ -163,7 +163,7 @@ type SKUMixPlacementCapacityProfile struct {
 	// The OS type. Required when allocationStrategy is LowestPrice because pricing varies by OS.
 	OSType *SKUMixPlacementOSType
 
-	// Required when priority is Spot. Contains spot-specific configuration.
+	// Contains spot-specific configuration.
 	SpotPriorityProfile *SKUMixPlacementSpotPriorityProfile
 
 	// Zone allocation policy. Default: BestEffortBalanced.
@@ -239,7 +239,7 @@ type SKUMixPlacementResponse struct {
 	ValidUntil *time.Time
 }
 
-// SKUMixPlacementSpotPriorityProfile - Spot priority configuration. Required when priority is Spot.
+// SKUMixPlacementSpotPriorityProfile - Spot priority configuration.
 type SKUMixPlacementSpotPriorityProfile struct {
 	// Maximum price per VM the customer is willing to pay. Default: -1 (no price restriction).
 	MaxPricePerVM *float64

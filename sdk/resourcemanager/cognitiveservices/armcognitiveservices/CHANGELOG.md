@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0-beta.4 (2026-08-26)
+## 4.0.0-beta.4 (2026-08-27)
 ### Breaking Changes
 
 - `VMPriorityLowPriority` from enum `VMPriority` has been removed

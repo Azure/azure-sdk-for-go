@@ -19,7 +19,7 @@ import (
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
 //
-// Generated from API version 2025-08-01-preview
+// Generated from API version 2026-06-01-preview
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -108,7 +108,7 @@ func (client *Client) createCreateRequest(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -184,7 +184,7 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -232,7 +232,7 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -297,7 +297,7 @@ func (client *Client) listCreateRequest(ctx context.Context, nextLink string, _ 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801Preview)
+		reqQP.Set("api-version", version20260601Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -369,7 +369,7 @@ func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, reso
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250801Preview)
+		reqQP.Set("api-version", version20260601Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -431,7 +431,7 @@ func (client *Client) listSKUsForScalingCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -516,7 +516,7 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

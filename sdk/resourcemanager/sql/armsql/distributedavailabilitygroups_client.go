@@ -18,6 +18,8 @@ import (
 
 // DistributedAvailabilityGroupsClient contains the methods for the DistributedAvailabilityGroups group.
 // Don't use this type directly, use NewDistributedAvailabilityGroupsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type DistributedAvailabilityGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewDistributedAvailabilityGroupsClient(subscriptionID string, credential az
 
 // BeginCreateOrUpdate - Creates a distributed availability group between Sql On-Prem and Sql Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - distributedAvailabilityGroupName - The distributed availability group name.
@@ -68,8 +68,6 @@ func (client *DistributedAvailabilityGroupsClient) BeginCreateOrUpdate(ctx conte
 
 // CreateOrUpdate - Creates a distributed availability group between Sql On-Prem and Sql Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *DistributedAvailabilityGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, options *DistributedAvailabilityGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DistributedAvailabilityGroupsClient.BeginCreateOrUpdate"
@@ -85,8 +83,7 @@ func (client *DistributedAvailabilityGroupsClient) createOrUpdate(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -115,8 +112,8 @@ func (client *DistributedAvailabilityGroupsClient) createOrUpdateCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -127,8 +124,6 @@ func (client *DistributedAvailabilityGroupsClient) createOrUpdateCreateRequest(c
 
 // BeginDelete - Drops a distributed availability group between Sql On-Prem and Sql Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - distributedAvailabilityGroupName - The distributed availability group name.
@@ -153,8 +148,6 @@ func (client *DistributedAvailabilityGroupsClient) BeginDelete(ctx context.Conte
 
 // Delete - Drops a distributed availability group between Sql On-Prem and Sql Managed Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *DistributedAvailabilityGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, options *DistributedAvailabilityGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DistributedAvailabilityGroupsClient.BeginDelete"
@@ -170,8 +163,7 @@ func (client *DistributedAvailabilityGroupsClient) deleteOperation(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -200,15 +192,13 @@ func (client *DistributedAvailabilityGroupsClient) deleteCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // BeginFailover - Performs requested failover type in this distributed availability group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - distributedAvailabilityGroupName - The distributed availability group name.
@@ -234,8 +224,6 @@ func (client *DistributedAvailabilityGroupsClient) BeginFailover(ctx context.Con
 
 // Failover - Performs requested failover type in this distributed availability group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *DistributedAvailabilityGroupsClient) failover(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroupsFailoverRequest, options *DistributedAvailabilityGroupsClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DistributedAvailabilityGroupsClient.BeginFailover"
@@ -251,8 +239,7 @@ func (client *DistributedAvailabilityGroupsClient) failover(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -281,8 +268,8 @@ func (client *DistributedAvailabilityGroupsClient) failoverCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -293,8 +280,6 @@ func (client *DistributedAvailabilityGroupsClient) failoverCreateRequest(ctx con
 
 // Get - Gets a distributed availability group info.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - distributedAvailabilityGroupName - The distributed availability group name.
@@ -314,12 +299,7 @@ func (client *DistributedAvailabilityGroupsClient) Get(ctx context.Context, reso
 	if err != nil {
 		return DistributedAvailabilityGroupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DistributedAvailabilityGroupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -346,15 +326,18 @@ func (client *DistributedAvailabilityGroupsClient) getCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *DistributedAvailabilityGroupsClient) getHandleResponse(resp *http.Response) (DistributedAvailabilityGroupsClientGetResponse, error) {
+func (client *DistributedAvailabilityGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DistributedAvailabilityGroupsClientGetResponse, error) {
 	result := DistributedAvailabilityGroupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DistributedAvailabilityGroup); err != nil {
 		return DistributedAvailabilityGroupsClientGetResponse{}, err
 	}
@@ -362,8 +345,6 @@ func (client *DistributedAvailabilityGroupsClient) getHandleResponse(resp *http.
 }
 
 // NewListByInstancePager - Gets a list of a distributed availability groups in instance.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - DistributedAvailabilityGroupsClientListByInstanceOptions contains the optional parameters for the DistributedAvailabilityGroupsClient.NewListByInstancePager
@@ -379,47 +360,61 @@ func (client *DistributedAvailabilityGroupsClient) NewListByInstancePager(resour
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
-			}, nil)
+			req, err := client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, nextLink, options)
 			if err != nil {
 				return DistributedAvailabilityGroupsClientListByInstanceResponse{}, err
 			}
-			return client.listByInstanceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DistributedAvailabilityGroupsClientListByInstanceResponse{}, err
+			}
+			return client.listByInstanceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByInstanceCreateRequest creates the ListByInstance request.
-func (client *DistributedAvailabilityGroupsClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, _ *DistributedAvailabilityGroupsClientListByInstanceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DistributedAvailabilityGroupsClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, nextLink string, _ *DistributedAvailabilityGroupsClientListByInstanceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/distributedAvailabilityGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByInstanceHandleResponse handles the ListByInstance response.
-func (client *DistributedAvailabilityGroupsClient) listByInstanceHandleResponse(resp *http.Response) (DistributedAvailabilityGroupsClientListByInstanceResponse, error) {
+func (client *DistributedAvailabilityGroupsClient) listByInstanceHandleResponse(resp *http.Response, successCodes ...int) (DistributedAvailabilityGroupsClientListByInstanceResponse, error) {
 	result := DistributedAvailabilityGroupsClientListByInstanceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DistributedAvailabilityGroupsListResult); err != nil {
 		return DistributedAvailabilityGroupsClientListByInstanceResponse{}, err
 	}
@@ -428,8 +423,6 @@ func (client *DistributedAvailabilityGroupsClient) listByInstanceHandleResponse(
 
 // BeginSetRole - Sets the role for managed instance in a distributed availability group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - distributedAvailabilityGroupName - The distributed availability group name.
@@ -455,8 +448,6 @@ func (client *DistributedAvailabilityGroupsClient) BeginSetRole(ctx context.Cont
 
 // SetRole - Sets the role for managed instance in a distributed availability group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *DistributedAvailabilityGroupsClient) setRole(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroupSetRole, options *DistributedAvailabilityGroupsClientBeginSetRoleOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DistributedAvailabilityGroupsClient.BeginSetRole"
@@ -472,8 +463,7 @@ func (client *DistributedAvailabilityGroupsClient) setRole(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -502,8 +492,8 @@ func (client *DistributedAvailabilityGroupsClient) setRoleCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -514,8 +504,6 @@ func (client *DistributedAvailabilityGroupsClient) setRoleCreateRequest(ctx cont
 
 // BeginUpdate - Updates a distributed availability group replication mode.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - distributedAvailabilityGroupName - The distributed availability group name.
@@ -541,8 +529,6 @@ func (client *DistributedAvailabilityGroupsClient) BeginUpdate(ctx context.Conte
 
 // Update - Updates a distributed availability group replication mode.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *DistributedAvailabilityGroupsClient) update(ctx context.Context, resourceGroupName string, managedInstanceName string, distributedAvailabilityGroupName string, parameters DistributedAvailabilityGroup, options *DistributedAvailabilityGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DistributedAvailabilityGroupsClient.BeginUpdate"
@@ -558,8 +544,7 @@ func (client *DistributedAvailabilityGroupsClient) update(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -588,8 +573,8 @@ func (client *DistributedAvailabilityGroupsClient) updateCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

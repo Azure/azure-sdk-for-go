@@ -18,6 +18,8 @@ import (
 
 // NetworkSecurityPerimeterClient contains the methods for the NetworkSecurityPerimeter group.
 // Don't use this type directly, use NewNetworkSecurityPerimeterClient() instead.
+//
+// Generated from API version 2025-06-01
 type NetworkSecurityPerimeterClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkSecurityPerimeterClient(subscriptionID string, credential azcore.
 
 // GetConfiguration - Gets information about the specified NSP configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -64,12 +64,7 @@ func (client *NetworkSecurityPerimeterClient) GetConfiguration(ctx context.Conte
 	if err != nil {
 		return NetworkSecurityPerimeterClientGetConfigurationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkSecurityPerimeterClientGetConfigurationResponse{}, err
-	}
-	resp, err := client.getConfigurationHandleResponse(httpResp)
-	return resp, err
+	return client.getConfigurationHandleResponse(httpResp, http.StatusOK)
 }
 
 // getConfigurationCreateRequest creates the GetConfiguration request.
@@ -96,15 +91,18 @@ func (client *NetworkSecurityPerimeterClient) getConfigurationCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getConfigurationHandleResponse handles the GetConfiguration response.
-func (client *NetworkSecurityPerimeterClient) getConfigurationHandleResponse(resp *http.Response) (NetworkSecurityPerimeterClientGetConfigurationResponse, error) {
+func (client *NetworkSecurityPerimeterClient) getConfigurationHandleResponse(resp *http.Response, successCodes ...int) (NetworkSecurityPerimeterClientGetConfigurationResponse, error) {
 	result := NetworkSecurityPerimeterClientGetConfigurationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfiguration); err != nil {
 		return NetworkSecurityPerimeterClientGetConfigurationResponse{}, err
 	}
@@ -112,8 +110,6 @@ func (client *NetworkSecurityPerimeterClient) getConfigurationHandleResponse(res
 }
 
 // NewListConfigurationsPager - Lists all of the NSP configurations in the specified account.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -131,47 +127,61 @@ func (client *NetworkSecurityPerimeterClient) NewListConfigurationsPager(resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listConfigurationsCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
+			req, err := client.listConfigurationsCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
 				return NetworkSecurityPerimeterClientListConfigurationsResponse{}, err
 			}
-			return client.listConfigurationsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkSecurityPerimeterClientListConfigurationsResponse{}, err
+			}
+			return client.listConfigurationsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listConfigurationsCreateRequest creates the ListConfigurations request.
-func (client *NetworkSecurityPerimeterClient) listConfigurationsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *NetworkSecurityPerimeterClientListConfigurationsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/networkSecurityPerimeterConfigurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NetworkSecurityPerimeterClient) listConfigurationsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *NetworkSecurityPerimeterClientListConfigurationsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/networkSecurityPerimeterConfigurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listConfigurationsHandleResponse handles the ListConfigurations response.
-func (client *NetworkSecurityPerimeterClient) listConfigurationsHandleResponse(resp *http.Response) (NetworkSecurityPerimeterClientListConfigurationsResponse, error) {
+func (client *NetworkSecurityPerimeterClient) listConfigurationsHandleResponse(resp *http.Response, successCodes ...int) (NetworkSecurityPerimeterClientListConfigurationsResponse, error) {
 	result := NetworkSecurityPerimeterClientListConfigurationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfigurationListResult); err != nil {
 		return NetworkSecurityPerimeterClientListConfigurationsResponse{}, err
 	}
@@ -180,8 +190,6 @@ func (client *NetworkSecurityPerimeterClient) listConfigurationsHandleResponse(r
 
 // BeginReconcileConfiguration - Reconciles the specified NSP configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - A name for the Batch account which must be unique within the region. Batch account names must be between
 //     3 and 24 characters in length and must use only numbers and lowercase letters. This name is used as part of the DNS name
@@ -208,8 +216,6 @@ func (client *NetworkSecurityPerimeterClient) BeginReconcileConfiguration(ctx co
 
 // ReconcileConfiguration - Reconciles the specified NSP configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-06-01
 func (client *NetworkSecurityPerimeterClient) reconcileConfiguration(ctx context.Context, resourceGroupName string, accountName string, networkSecurityPerimeterConfigurationName string, options *NetworkSecurityPerimeterClientBeginReconcileConfigurationOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkSecurityPerimeterClient.BeginReconcileConfiguration"
@@ -225,8 +231,7 @@ func (client *NetworkSecurityPerimeterClient) reconcileConfiguration(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -255,7 +260,7 @@ func (client *NetworkSecurityPerimeterClient) reconcileConfigurationCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-06-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

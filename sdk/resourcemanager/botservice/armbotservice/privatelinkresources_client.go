@@ -18,6 +18,8 @@ import (
 
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
+//
+// Generated from API version 2023-09-15-preview
 type PrivateLinkResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.Toke
 
 // ListByBotResource - Gets the private link resources that need to be created for a Bot.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Bot resource.
 //   - options - PrivateLinkResourcesClientListByBotResourceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByBotResource
@@ -61,12 +61,7 @@ func (client *PrivateLinkResourcesClient) ListByBotResource(ctx context.Context,
 	if err != nil {
 		return PrivateLinkResourcesClientListByBotResourceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateLinkResourcesClientListByBotResourceResponse{}, err
-	}
-	resp, err := client.listByBotResourceHandleResponse(httpResp)
-	return resp, err
+	return client.listByBotResourceHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByBotResourceCreateRequest creates the ListByBotResource request.
@@ -89,15 +84,18 @@ func (client *PrivateLinkResourcesClient) listByBotResourceCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByBotResourceHandleResponse handles the ListByBotResource response.
-func (client *PrivateLinkResourcesClient) listByBotResourceHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByBotResourceResponse, error) {
+func (client *PrivateLinkResourcesClient) listByBotResourceHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinkResourcesClientListByBotResourceResponse, error) {
 	result := PrivateLinkResourcesClientListByBotResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return PrivateLinkResourcesClientListByBotResourceResponse{}, err
 	}

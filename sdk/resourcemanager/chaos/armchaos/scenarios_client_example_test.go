@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/Scenarios_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01-preview/Scenarios_CreateOrUpdate.json
 func ExampleScenariosClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,10 +195,10 @@ func ExampleScenariosClient_CreateOrUpdate() {
 	// 			},
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T10:30:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armchaos.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T10:30:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armchaos.CreatedByTypeUser),
 	// 		},
@@ -206,7 +206,7 @@ func ExampleScenariosClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Scenarios_Delete.json
+// Generated from example definition: 2026-08-01-preview/Scenarios_Delete.json
 func ExampleScenariosClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,7 +228,7 @@ func ExampleScenariosClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Scenarios_Get.json
+// Generated from example definition: 2026-08-01-preview/Scenarios_Get.json
 func ExampleScenariosClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -332,14 +332,14 @@ func ExampleScenariosClient_Get() {
 	// 			},
 	// 			Recommendation: &armchaos.Recommendation{
 	// 				RecommendationStatus: to.Ptr(armchaos.RecommendationStatusRecommended),
-	// 				EvaluationRunAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T10:30:00.000Z"); return t}()),
+	// 				EvaluationRunAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
 	// 			},
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armchaos.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T10:30:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armchaos.CreatedByTypeUser),
 	// 		},
@@ -347,7 +347,7 @@ func ExampleScenariosClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Scenarios_ListAll.json
+// Generated from example definition: 2026-08-01-preview/Scenarios_ListAll.json
 func ExampleScenariosClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -457,14 +457,14 @@ func ExampleScenariosClient_NewListAllPager() {
 		// 					},
 		// 					Recommendation: &armchaos.Recommendation{
 		// 						RecommendationStatus: to.Ptr(armchaos.RecommendationStatusRecommended),
-		// 						EvaluationRunAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T10:30:00.000Z"); return t}()),
+		// 						EvaluationRunAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
 		// 					},
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T00:00:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armchaos.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T10:30:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByTypeUser),
 		// 				},
@@ -512,10 +512,10 @@ func ExampleScenariosClient_NewListAllPager() {
 		// 					},
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-12-15T00:00:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.December, 15, 0, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armchaos.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-10T08:15:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.January, 10, 8, 15, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByTypeUser),
 		// 				},

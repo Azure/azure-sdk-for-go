@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_AddToSharingProfile.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_AddToSharingProfile.json
 func ExampleGallerySharingProfileClient_BeginUpdate_addSharingIdToTheSharingProfileOfAGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleGallerySharingProfileClient_BeginUpdate_addSharingIdToTheSharingProf
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_EnableCommunityGallery.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_EnableCommunityGallery.json
 func ExampleGallerySharingProfileClient_BeginUpdate_shareAGalleryToCommunity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleGallerySharingProfileClient_BeginUpdate_shareAGalleryToCommunity() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryExamples/Gallery_ResetSharingProfile.json
+// Generated from example definition: 2025-12-03/galleryExamples/Gallery_ResetSharingProfile.json
 func ExampleGallerySharingProfileClient_BeginUpdate_resetSharingProfileOfAGallery() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

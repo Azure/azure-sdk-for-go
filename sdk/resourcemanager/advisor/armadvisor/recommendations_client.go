@@ -64,12 +64,7 @@ func (client *RecommendationsClient) Generate(ctx context.Context, options *Reco
 	if err != nil {
 		return RecommendationsClientGenerateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return RecommendationsClientGenerateResponse{}, err
-	}
-	resp, err := client.generateHandleResponse(httpResp)
-	return resp, err
+	return client.generateHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // generateCreateRequest creates the Generate request.
@@ -90,8 +85,11 @@ func (client *RecommendationsClient) generateCreateRequest(ctx context.Context, 
 }
 
 // generateHandleResponse handles the Generate response.
-func (client *RecommendationsClient) generateHandleResponse(resp *http.Response) (RecommendationsClientGenerateResponse, error) {
+func (client *RecommendationsClient) generateHandleResponse(resp *http.Response, successCodes ...int) (RecommendationsClientGenerateResponse, error) {
 	result := RecommendationsClientGenerateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}
@@ -125,12 +123,7 @@ func (client *RecommendationsClient) Get(ctx context.Context, resourceURI string
 	if err != nil {
 		return RecommendationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RecommendationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -156,8 +149,11 @@ func (client *RecommendationsClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecommendationsClient) getHandleResponse(resp *http.Response) (RecommendationsClientGetResponse, error) {
+func (client *RecommendationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (RecommendationsClientGetResponse, error) {
 	result := RecommendationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBase); err != nil {
 		return RecommendationsClientGetResponse{}, err
 	}
@@ -187,12 +183,7 @@ func (client *RecommendationsClient) GetGenerateStatus(ctx context.Context, oper
 	if err != nil {
 		return RecommendationsClientGetGenerateStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return RecommendationsClientGetGenerateStatusResponse{}, err
-	}
-	resp, err := client.getGenerateStatusHandleResponse(httpResp)
-	return resp, err
+	return client.getGenerateStatusHandleResponse(httpResp, http.StatusAccepted, http.StatusNoContent)
 }
 
 // getGenerateStatusCreateRequest creates the GetGenerateStatus request.
@@ -217,8 +208,11 @@ func (client *RecommendationsClient) getGenerateStatusCreateRequest(ctx context.
 }
 
 // getGenerateStatusHandleResponse handles the GetGenerateStatus response.
-func (client *RecommendationsClient) getGenerateStatusHandleResponse(resp *http.Response) (RecommendationsClientGetGenerateStatusResponse, error) {
+func (client *RecommendationsClient) getGenerateStatusHandleResponse(resp *http.Response, successCodes ...int) (RecommendationsClientGetGenerateStatusResponse, error) {
 	result := RecommendationsClientGetGenerateStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Retry-After"); val != "" {
 		retryAfter32, err := strconv.ParseInt(val, 10, 32)
 		retryAfter := int32(retryAfter32)
@@ -245,48 +239,62 @@ func (client *RecommendationsClient) NewListPager(options *RecommendationsClient
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return RecommendationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RecommendationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RecommendationsClient) listCreateRequest(ctx context.Context, options *RecommendationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/recommendations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RecommendationsClient) listCreateRequest(ctx context.Context, nextLink string, options *RecommendationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/recommendations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RecommendationsClient) listHandleResponse(resp *http.Response) (RecommendationsClientListResponse, error) {
+func (client *RecommendationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (RecommendationsClientListResponse, error) {
 	result := RecommendationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBaseListResult); err != nil {
 		return RecommendationsClientListResponse{}, err
 	}
@@ -309,48 +317,62 @@ func (client *RecommendationsClient) NewListByTenantPager(resourceURI string, op
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByTenantCreateRequest(ctx, resourceURI, options)
-			}, nil)
+			req, err := client.listByTenantCreateRequest(ctx, resourceURI, nextLink, options)
 			if err != nil {
 				return RecommendationsClientListByTenantResponse{}, err
 			}
-			return client.listByTenantHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RecommendationsClientListByTenantResponse{}, err
+			}
+			return client.listByTenantHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByTenantCreateRequest creates the ListByTenant request.
-func (client *RecommendationsClient) listByTenantCreateRequest(ctx context.Context, resourceURI string, options *RecommendationsClientListByTenantOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.Advisor/recommendations"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
+func (client *RecommendationsClient) listByTenantCreateRequest(ctx context.Context, resourceURI string, nextLink string, options *RecommendationsClientListByTenantOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.Advisor/recommendations"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByTenantHandleResponse handles the ListByTenant response.
-func (client *RecommendationsClient) listByTenantHandleResponse(resp *http.Response) (RecommendationsClientListByTenantResponse, error) {
+func (client *RecommendationsClient) listByTenantHandleResponse(resp *http.Response, successCodes ...int) (RecommendationsClientListByTenantResponse, error) {
 	result := RecommendationsClientListByTenantResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBaseListResult); err != nil {
 		return RecommendationsClientListByTenantResponse{}, err
 	}
@@ -377,12 +399,7 @@ func (client *RecommendationsClient) Patch(ctx context.Context, resourceURI stri
 	if err != nil {
 		return RecommendationsClientPatchResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RecommendationsClientPatchResponse{}, err
-	}
-	resp, err := client.patchHandleResponse(httpResp)
-	return resp, err
+	return client.patchHandleResponse(httpResp, http.StatusOK)
 }
 
 // patchCreateRequest creates the Patch request.
@@ -412,8 +429,11 @@ func (client *RecommendationsClient) patchCreateRequest(ctx context.Context, res
 }
 
 // patchHandleResponse handles the Patch response.
-func (client *RecommendationsClient) patchHandleResponse(resp *http.Response) (RecommendationsClientPatchResponse, error) {
+func (client *RecommendationsClient) patchHandleResponse(resp *http.Response, successCodes ...int) (RecommendationsClientPatchResponse, error) {
 	result := RecommendationsClientPatchResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBase); err != nil {
 		return RecommendationsClientPatchResponse{}, err
 	}

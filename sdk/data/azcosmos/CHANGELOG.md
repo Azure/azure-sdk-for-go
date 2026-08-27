@@ -2,12 +2,38 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
+## 1.6.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.6.0-beta.2 (2026-08-03)
+
+### Bugs Fixed
+
+* Fixed partition key range cache refreshes failing against containers undergoing physical partition splits. A change-feed drain accumulates every page, so a range that is updated mid-split is re-delivered as a second revision of the same range ID; the routing map now deduplicates by range ID (keeping the latest revision) before validating range continuity, instead of rejecting the set with a "service returned an incomplete set of ranges" error reporting that the range overlaps itself. A full refresh that still observes an incomplete set is now retried up to three times with bounded jittered backoff before failing. See [PR 27282](https://github.com/Azure/azure-sdk-for-go/pull/27282).
+
+## 1.6.0-beta.1 (2026-07-16)
+
+### Features Added
+
+* Restored the query engine feature originally present in 1.5.0-beta releases (but removed for the 1.5.0 GA release).
+
 ## 1.5.0 (2026-07-13)
 
 ### Breaking Changes
 
 * Removed the external query engine integration from `QueryOptions` and deleted the `sdk/data/azcosmos/queryengine` package for the 1.5.0 GA release. This feature will return in the upcoming 1.6.0 preview release. See [PR 27134](https://github.com/Azure/azure-sdk-for-go/pull/27134).
 * Renamed `ChangeFeedResponse.GetContRanges()` to `ChangeFeedResponse.GetContinuationRange()`. This API was previously only present in a beta release. See [PR 27148](https://github.com/Azure/azure-sdk-for-go/pull/27148).
+* Renamed `ChangeFeedResponse.Documents` to `ChangeFeedResponse.Items` and changed its type from `[]json.RawMessage` to `[][]byte`. This API was previously only present in a beta release. See [PR 27175](https://github.com/Azure/azure-sdk-for-go/pull/27175).
+* Renamed `ContainerClient.GetFeedRanges` and `ContainerClient.GetChangeFeed` to `ContainerClient.ReadFeedRanges` and `ContainerClient.ReadChangeFeed`, respectively. This API was previously only present in a beta release. See [PR 27183](https://github.com/Azure/azure-sdk-for-go/pull/27183).
+* Renamed the `ReadManyOptions` type to `ReadManyItemsOptions` to align with the `ReadManyItems` method. This API was previously only present in a beta release. See [PR 27183](https://github.com/Azure/azure-sdk-for-go/pull/27183).
+* Added a `*FeedRangesOptions` parameter to `ContainerClient.ReadFeedRanges`. This API was previously only present in a beta release. See [PR 27175](https://github.com/Azure/azure-sdk-for-go/pull/27175).
 * Renamed `ChangeFeedRangeOptions.EpkMinHeader` and `ChangeFeedRangeOptions.EpkMaxHeader` to `EPKMinHeader` and `EPKMaxHeader`. These fields were previously only present in a beta release. See [PR 27166](https://github.com/Azure/azure-sdk-for-go/pull/27166).
 * `Diagnostics.StartTimeUTC()` now returns a `time.Time` (zero value when no diagnostics are present) instead of a `*time.Time`. This API was previously only present in a beta release. See [PR 27166](https://github.com/Azure/azure-sdk-for-go/pull/27166).
 * Removed the `NewFeedRange` constructor. Construct a `FeedRange` directly using a struct initializer instead. This API was previously only present in a beta release. See [PR 27166](https://github.com/Azure/azure-sdk-for-go/pull/27166).
@@ -117,12 +143,6 @@
 ### Features Added
 
 * Added an initial API for integrating an external client-side Query Engine with the Cosmos DB Go SDK. This API is unstable and not recommended for production use. See [PR 24273](https://github.com/Azure/azure-sdk-for-go/pull/24273) for more details.
-
-## 1.4.1 (2025-08-27)
-
-### Bugs Fixed
-
-* Fixed bug where the correct header was not being sent for writes on multiple write region accounts. See [PR 25127](https://github.com/Azure/azure-sdk-for-go/pull/25127)
 
 ## 1.4.0 (2025-04-29)
 

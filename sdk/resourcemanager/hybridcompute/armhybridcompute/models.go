@@ -394,6 +394,9 @@ type GatewayProperties struct {
 	// Specifies the list of features that are enabled for this Gateway.
 	AllowedFeatures []*string
 
+	// Specifies the list of domain names that should bypass the gateway. Each entry must be a valid DNS hostname.
+	GatewayBypass []*string
+
 	// The type of the Gateway resource.
 	GatewayType *GatewayType
 
@@ -407,7 +410,7 @@ type GatewayProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
-// GatewayUpdate - Describes a License Update.
+// GatewayUpdate - Describes a Gateway Update.
 type GatewayUpdate struct {
 	// Gateway Update properties
 	Properties *GatewayUpdateProperties
@@ -420,6 +423,9 @@ type GatewayUpdate struct {
 type GatewayUpdateProperties struct {
 	// Specifies the list of features that are enabled for this Gateway.
 	AllowedFeatures []*string
+
+	// Specifies the list of domain names that should bypass the gateway. Each entry must be a valid DNS hostname.
+	GatewayBypass []*string
 }
 
 // GatewaysListResult - Paged collection of Gateway items
@@ -453,18 +459,6 @@ type IPAddress struct {
 
 	// READ-ONLY; The subnet to which this IP address belongs.
 	Subnet *Subnet
-}
-
-// Identity for the resource.
-type Identity struct {
-	// The identity type.
-	Type *string
-
-	// READ-ONLY; The principal ID of resource identity. The value must be an UUID.
-	PrincipalID *string
-
-	// READ-ONLY; The tenant ID of resource. The value must be an UUID.
-	TenantID *string
 }
 
 // License - Describes a license in a hybrid machine.
@@ -779,7 +773,7 @@ type Machine struct {
 	Location *string
 
 	// Identity for the resource.
-	Identity *Identity
+	Identity *ManagedServiceIdentity
 
 	// Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware etc.
 	Kind *ArcKindEnum
@@ -1167,6 +1161,10 @@ type MachineProperties struct {
 	// READ-ONLY; The status of the hybrid machine agent.
 	Status *StatusTypes
 
+	// READ-ONLY; Indicates whether the service has detected that this Arc machine is a clone of another onboarded machine. Service-computed;
+	// not settable by the user.
+	StatusReason *MachineStatusReason
+
 	// READ-ONLY; Information about the machine's storage
 	StorageProfile *StorageProfile
 
@@ -1305,7 +1303,7 @@ type MachineRunCommandsListResult struct {
 // MachineUpdate - Describes a hybrid machine Update.
 type MachineUpdate struct {
 	// Identity for the resource.
-	Identity *Identity
+	Identity *ManagedServiceIdentity
 
 	// Indicates which kind of Arc machine placement on-premises, such as HCI, SCVMM or VMware etc.
 	Kind *ArcKindEnum
@@ -1343,6 +1341,22 @@ type MachineUpdateProperties struct {
 	// Endorsement Key Certificate of the Trusted Platform Module (TPM) that the client provides to be used during initial resource
 	// onboarding.
 	TpmEkCertificate *string
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; The type of managed identity assigned to this resource.
+	Type *ManagedServiceIdentityType
+
+	// The identities assigned to this resource by the user.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
 }
 
 // NetworkInterface - Describes a network interface.
@@ -1932,6 +1946,15 @@ type SystemData struct {
 type TagsResource struct {
 	// Resource tags
 	Tags map[string]*string
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
 }
 
 type VolumeLicenseDetails struct {

@@ -975,6 +975,16 @@ type SharedGalleryImagesClientListResponse struct {
 	SharedGalleryImageList
 }
 
+// SharedGalleryInvitesClientGallerySharingAcceptResponse contains the response from method SharedGalleryInvitesClient.BeginGallerySharingAccept.
+type SharedGalleryInvitesClientGallerySharingAcceptResponse struct {
+	// placeholder for future response values
+}
+
+// SharedGalleryInvitesClientGallerySharingRejectResponse contains the response from method SharedGalleryInvitesClient.BeginGallerySharingReject.
+type SharedGalleryInvitesClientGallerySharingRejectResponse struct {
+	// placeholder for future response values
+}
+
 // SnapshotsClientCreateOrUpdateResponse contains the response from method SnapshotsClient.BeginCreateOrUpdate.
 type SnapshotsClientCreateOrUpdateResponse struct {
 	// Snapshot resource.
@@ -1015,6 +1025,18 @@ type SnapshotsClientRevokeAccessResponse struct {
 	// placeholder for future response values
 }
 
+// SnapshotsClientUpdateImmutabilityPolicyLockResponse contains the response from method SnapshotsClient.BeginUpdateImmutabilityPolicyLock.
+type SnapshotsClientUpdateImmutabilityPolicyLockResponse struct {
+	// Snapshot resource.
+	Snapshot
+}
+
+// SnapshotsClientUpdateImmutabilityPolicyResponse contains the response from method SnapshotsClient.BeginUpdateImmutabilityPolicy.
+type SnapshotsClientUpdateImmutabilityPolicyResponse struct {
+	// Snapshot resource.
+	Snapshot
+}
+
 // SnapshotsClientUpdateResponse contains the response from method SnapshotsClient.BeginUpdate.
 type SnapshotsClientUpdateResponse struct {
 	// Snapshot resource.
@@ -1027,10 +1049,47 @@ type SoftDeletedResourceClientListByArtifactNameResponse struct {
 	GallerySoftDeletedResourceList
 }
 
+// TenantLevelSharedGalleryInvitesClientTenantLevelGallerySharingAcceptResponse contains the response from method TenantLevelSharedGalleryInvitesClient.BeginTenantLevelGallerySharingAccept.
+type TenantLevelSharedGalleryInvitesClientTenantLevelGallerySharingAcceptResponse struct {
+	// placeholder for future response values
+}
+
+// TenantLevelSharedGalleryInvitesClientTenantLevelGallerySharingRejectResponse contains the response from method TenantLevelSharedGalleryInvitesClient.BeginTenantLevelGallerySharingReject.
+type TenantLevelSharedGalleryInvitesClientTenantLevelGallerySharingRejectResponse struct {
+	// placeholder for future response values
+}
+
 // UsageClientListResponse contains the response from method UsageClient.NewListPager.
 type UsageClientListResponse struct {
 	// The List Usages operation response.
 	ListUsagesResult
+}
+
+// VirtualMachineDiagnosticRunCommandsClientCreateOrUpdateResponse contains the response from method VirtualMachineDiagnosticRunCommandsClient.BeginCreateOrUpdate.
+type VirtualMachineDiagnosticRunCommandsClientCreateOrUpdateResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualMachineDiagnosticRunCommandsClientDeleteResponse contains the response from method VirtualMachineDiagnosticRunCommandsClient.BeginDelete.
+type VirtualMachineDiagnosticRunCommandsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualMachineDiagnosticRunCommandsClientDiagnosticListByVirtualMachineResponse contains the response from method VirtualMachineDiagnosticRunCommandsClient.NewDiagnosticListByVirtualMachinePager.
+type VirtualMachineDiagnosticRunCommandsClientDiagnosticListByVirtualMachineResponse struct {
+	// The List diagnostic run command operation response
+	VirtualMachineDiagnosticRunCommandsListResult
+}
+
+// VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineResponse contains the response from method VirtualMachineDiagnosticRunCommandsClient.GetByVirtualMachine.
+type VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineResponse struct {
+	// Describes a Virtual Machine diagnostic run command.
+	VirtualMachineDiagnosticRunCommand
+}
+
+// VirtualMachineDiagnosticRunCommandsClientUpdateResponse contains the response from method VirtualMachineDiagnosticRunCommandsClient.BeginUpdate.
+type VirtualMachineDiagnosticRunCommandsClientUpdateResponse struct {
+	// placeholder for future response values
 }
 
 // VirtualMachineExtensionImagesClientGetResponse contains the response from method VirtualMachineExtensionImagesClient.Get.
@@ -1247,6 +1306,33 @@ type VirtualMachineScaleSetRollingUpgradesClientStartExtensionUpgradeResponse st
 
 // VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse contains the response from method VirtualMachineScaleSetRollingUpgradesClient.BeginStartOSUpgrade.
 type VirtualMachineScaleSetRollingUpgradesClientStartOSUpgradeResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualMachineScaleSetVMDiagnosticRunCommandsClientCreateOrUpdateResponse contains the response from method VirtualMachineScaleSetVMDiagnosticRunCommandsClient.BeginCreateOrUpdate.
+type VirtualMachineScaleSetVMDiagnosticRunCommandsClientCreateOrUpdateResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualMachineScaleSetVMDiagnosticRunCommandsClientDeleteResponse contains the response from method VirtualMachineScaleSetVMDiagnosticRunCommandsClient.BeginDelete.
+type VirtualMachineScaleSetVMDiagnosticRunCommandsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse contains the response from method VirtualMachineScaleSetVMDiagnosticRunCommandsClient.NewDiagnosticListPager.
+type VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse struct {
+	// The List diagnostic run command operation response
+	VirtualMachineDiagnosticRunCommandsListResult
+}
+
+// VirtualMachineScaleSetVMDiagnosticRunCommandsClientGetResponse contains the response from method VirtualMachineScaleSetVMDiagnosticRunCommandsClient.Get.
+type VirtualMachineScaleSetVMDiagnosticRunCommandsClientGetResponse struct {
+	// Describes a Virtual Machine diagnostic run command.
+	VirtualMachineDiagnosticRunCommand
+}
+
+// VirtualMachineScaleSetVMDiagnosticRunCommandsClientUpdateResponse contains the response from method VirtualMachineScaleSetVMDiagnosticRunCommandsClient.BeginUpdate.
+type VirtualMachineScaleSetVMDiagnosticRunCommandsClientUpdateResponse struct {
 	// placeholder for future response values
 }
 
@@ -1482,6 +1568,11 @@ type VirtualMachineScaleSetsClientListResponse struct {
 type VirtualMachineScaleSetsClientListSKUsResponse struct {
 	// The Virtual Machine Scale Set List Skus operation response.
 	VirtualMachineScaleSetListSKUsResult
+}
+
+// VirtualMachineScaleSetsClientMigrateVMAvailabilityZoneResponse contains the response from method VirtualMachineScaleSetsClient.BeginMigrateVMAvailabilityZone.
+type VirtualMachineScaleSetsClientMigrateVMAvailabilityZoneResponse struct {
+	// placeholder for future response values
 }
 
 // VirtualMachineScaleSetsClientPerformMaintenanceResponse contains the response from method VirtualMachineScaleSetsClient.BeginPerformMaintenance.

@@ -18,6 +18,8 @@ import (
 
 // MonitoredSubscriptionsClient contains the methods for the MonitoredSubscriptions group.
 // Don't use this type directly, use NewMonitoredSubscriptionsClient() instead.
+//
+// Generated from API version 2025-12-26-preview
 type MonitoredSubscriptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewMonitoredSubscriptionsClient(subscriptionID string, credential azcore.To
 //
 // Add the subscriptions that should be monitored by the Datadog monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - configurationName - The configuration name. Only 'default' value is supported.
@@ -71,8 +71,6 @@ func (client *MonitoredSubscriptionsClient) BeginCreateorUpdate(ctx context.Cont
 //
 // Add the subscriptions that should be monitored by the Datadog monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 func (client *MonitoredSubscriptionsClient) createorUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, body MonitoredSubscriptionProperties, options *MonitoredSubscriptionsClientBeginCreateorUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitoredSubscriptionsClient.BeginCreateorUpdate"
@@ -88,8 +86,7 @@ func (client *MonitoredSubscriptionsClient) createorUpdate(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -118,8 +115,8 @@ func (client *MonitoredSubscriptionsClient) createorUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -132,8 +129,6 @@ func (client *MonitoredSubscriptionsClient) createorUpdateCreateRequest(ctx cont
 //
 // Updates the subscriptions that are being monitored by the Datadog monitor resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - configurationName - The configuration name. Only 'default' value is supported.
@@ -160,8 +155,6 @@ func (client *MonitoredSubscriptionsClient) BeginDelete(ctx context.Context, res
 //
 // Updates the subscriptions that are being monitored by the Datadog monitor resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 func (client *MonitoredSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *MonitoredSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitoredSubscriptionsClient.BeginDelete"
@@ -177,8 +170,7 @@ func (client *MonitoredSubscriptionsClient) deleteOperation(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -207,8 +199,8 @@ func (client *MonitoredSubscriptionsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -216,8 +208,6 @@ func (client *MonitoredSubscriptionsClient) deleteCreateRequest(ctx context.Cont
 //
 // List the subscriptions currently being monitored by the Datadog monitor resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - configurationName - The configuration name. Only 'default' value is supported.
@@ -237,12 +227,7 @@ func (client *MonitoredSubscriptionsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return MonitoredSubscriptionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitoredSubscriptionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -269,15 +254,18 @@ func (client *MonitoredSubscriptionsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *MonitoredSubscriptionsClient) getHandleResponse(resp *http.Response) (MonitoredSubscriptionsClientGetResponse, error) {
+func (client *MonitoredSubscriptionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (MonitoredSubscriptionsClientGetResponse, error) {
 	result := MonitoredSubscriptionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitoredSubscriptionProperties); err != nil {
 		return MonitoredSubscriptionsClientGetResponse{}, err
 	}
@@ -287,8 +275,6 @@ func (client *MonitoredSubscriptionsClient) getHandleResponse(resp *http.Respons
 // NewListPager - List the subscriptions currently being monitored by the Datadog monitor resource.
 //
 // List the subscriptions currently being monitored by the Datadog monitor resource.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - MonitoredSubscriptionsClientListOptions contains the optional parameters for the MonitoredSubscriptionsClient.NewListPager
@@ -304,47 +290,61 @@ func (client *MonitoredSubscriptionsClient) NewListPager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, monitorName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, monitorName, nextLink, options)
 			if err != nil {
 				return MonitoredSubscriptionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MonitoredSubscriptionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *MonitoredSubscriptionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, _ *MonitoredSubscriptionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/monitoredSubscriptions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MonitoredSubscriptionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, nextLink string, _ *MonitoredSubscriptionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Datadog/monitors/{monitorName}/monitoredSubscriptions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if monitorName == "" {
+			return nil, errors.New("parameter monitorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if monitorName == "" {
-		return nil, errors.New("parameter monitorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251226Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *MonitoredSubscriptionsClient) listHandleResponse(resp *http.Response) (MonitoredSubscriptionsClientListResponse, error) {
+func (client *MonitoredSubscriptionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (MonitoredSubscriptionsClientListResponse, error) {
 	result := MonitoredSubscriptionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitoredSubscriptionPropertiesList); err != nil {
 		return MonitoredSubscriptionsClientListResponse{}, err
 	}
@@ -355,8 +355,6 @@ func (client *MonitoredSubscriptionsClient) listHandleResponse(resp *http.Respon
 //
 // Updates the subscriptions that are being monitored by the Datadog monitor resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - configurationName - The configuration name. Only 'default' value is supported.
@@ -383,8 +381,6 @@ func (client *MonitoredSubscriptionsClient) BeginUpdate(ctx context.Context, res
 //
 // Updates the subscriptions that are being monitored by the Datadog monitor resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 func (client *MonitoredSubscriptionsClient) update(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, body MonitoredSubscriptionProperties, options *MonitoredSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MonitoredSubscriptionsClient.BeginUpdate"
@@ -400,8 +396,7 @@ func (client *MonitoredSubscriptionsClient) update(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -430,8 +425,8 @@ func (client *MonitoredSubscriptionsClient) updateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

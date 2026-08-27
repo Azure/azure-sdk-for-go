@@ -332,10 +332,12 @@ type AuthorizeRequest struct {
 // a) retrieving the bucket server certificate, and
 // b) storing the bucket credentials
 // Notes:
-// 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
-// use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
-// is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
-// 2. These properties are mutually exclusive with the server.certificateObject property.
+//
+//  1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
+//     use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
+//     is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
+//
+//  2. These properties are mutually exclusive with the server.certificateObject property.
 type AzureKeyVaultDetails struct {
 	// Specifies the Azure Key Vault settings for retrieving the bucket server certificate.
 	CertificateAkvDetails *CertificateAkvDetails
@@ -719,10 +721,11 @@ type BucketPatchProperties struct {
 	// a) retrieving the bucket server certificate, and
 	// b) storing the bucket credentials
 	// Notes:
-	// 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
-	// use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
-	// is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
-	// 2. These properties are mutually exclusive with the server.certificateObject property.
+	//
+	//  1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
+	//     use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
+	//     is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
+	//  2. These properties are mutually exclusive with the server.certificateObject property.
 	AkvDetails *AzureKeyVaultDetails
 
 	// File System user having access to volume data. For Unix, this is the user's uid and gid. For Windows, this is the user's
@@ -746,10 +749,11 @@ type BucketProperties struct {
 	// a) retrieving the bucket server certificate, and
 	// b) storing the bucket credentials
 	// Notes:
-	// 1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
-	// use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
-	// is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
-	// 2. These properties are mutually exclusive with the server.certificateObject property.
+	//
+	//  1. If a bucket certificate was previously provided directly using the certificateObject property, it is possible to subsequently
+	//     use the Azure Key Vault for certificate management by using these 'akvDetails' properties. However, once Azure Key Vault
+	//     is configured, it is no longer possible to provide the certificate directly via the certificateObject property.
+	//  2. These properties are mutually exclusive with the server.certificateObject property.
 	AkvDetails *AzureKeyVaultDetails
 
 	// File System user having access to volume data. For Unix, this is the user's uid and gid. For Windows, this is the user's
@@ -2273,17 +2277,32 @@ type LdapConfiguration struct {
 	// The CN host name used while generating the certificate, LDAP Over TLS requires the CN host name to create DNS host entry.
 	CertificateCNHost *string
 
+	// List of DNS server IPv4 addresses for resolving the CN host certificate. This parameter is used when LDAP over TLS is enabled.
+	DNSServers []*string
+
 	// Name of the LDAP configuration domain
 	Domain *string
+
+	// This specifies the group DN (Distinguished Name), which overrides the base DN for group lookups.
+	GroupDN *string
 
 	// Specifies whether or not the LDAP traffic needs to be secured via TLS.
 	LdapOverTLS *bool
 
+	// Port number for LDAP communication. Default is 389 for LDAP.
+	LdapPort *int32
+
 	// List of LDAP server IP addresses (IPv4 only) for the LDAP domain.
 	LdapServers []*string
 
+	// This specifies the netgroup DN (Distinguished Name), which overrides the base DN for netgroup lookups.
+	NetGroupDN *string
+
 	// When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded ldap servers CA certificate.
 	ServerCACertificate *string
+
+	// This specifies the user DN (Distinguished Name), which overrides the base DN for user lookups.
+	UserDN *string
 }
 
 // LdapConfigurationPatch - LDAP configuration for PATCH operations (no default values)
@@ -2300,17 +2319,32 @@ type LdapConfigurationPatch struct {
 	// The CN host name used while generating the certificate, LDAP Over TLS requires the CN host name to create DNS host entry.
 	CertificateCNHost *string
 
+	// List of DNS server IPv4 addresses for resolving the CN host certificate. This parameter is used when LDAP over TLS is enabled.
+	DNSServers []*string
+
 	// Name of the LDAP configuration domain
 	Domain *string
+
+	// This specifies the group DN (Distinguished Name), which overrides the base DN for group lookups.
+	GroupDN *string
 
 	// Specifies whether or not the LDAP traffic needs to be secured via TLS.
 	LdapOverTLS *bool
 
+	// Port number for LDAP communication. Default is 389 for LDAP.
+	LdapPort *int32
+
 	// List of LDAP server IP addresses (IPv4 only) for the LDAP domain.
 	LdapServers []*string
 
+	// This specifies the netgroup DN (Distinguished Name), which overrides the base DN for netgroup lookups.
+	NetGroupDN *string
+
 	// When LDAP over SSL/TLS is enabled, the LDAP client is required to have base64 encoded ldap servers CA certificate.
 	ServerCACertificate *string
+
+	// This specifies the user DN (Distinguished Name), which overrides the base DN for user lookups.
+	UserDN *string
 }
 
 // LdapSearchScopeOpt - LDAP search scope
@@ -2331,7 +2365,9 @@ type ListQuotaReportResponse struct {
 	QuotaReportRecords []*QuotaReport
 }
 
-// ListQuotaReportResult - * Result of ListQuotaReportResponse
+// ListQuotaReportResult -
+//
+//   - Result of ListQuotaReportResponse
 type ListQuotaReportResult struct {
 	// Represents the properties of the ListQuotaReport.
 	Properties *ListQuotaReportResponse
@@ -3233,6 +3269,7 @@ type SubscriptionQuotaItemProperties struct {
 }
 
 // SubvolumeInfo - Subvolume Information properties
+// Deprecated. This resource type will be removed in a future API version.
 type SubvolumeInfo struct {
 	// Subvolume Properties
 	Properties *SubvolumeProperties
@@ -3797,6 +3834,7 @@ type VolumeProperties struct {
 	DeleteBaseSnapshot *bool
 
 	// Flag indicating whether subvolume operations are enabled on the volume
+	// Deprecated. Subvolume operations and this flag will be removed in a future API version.
 	EnableSubvolumes *EnableSubvolumes
 
 	// Source of key used to encrypt data in volume. Applicable if NetApp account has encryption.keySource = 'Microsoft.KeyVault'.

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-03/communityGalleryExamples/CommunityGalleryImage_Get.json
+// Generated from example definition: 2025-12-03/communityGalleryExamples/CommunityGalleryImage_Get.json
 func ExampleCommunityGalleryImagesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleCommunityGalleryImagesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/communityGalleryExamples/CommunityGalleryImage_List.json
+// Generated from example definition: 2025-12-03/communityGalleryExamples/CommunityGalleryImage_List.json
 func ExampleCommunityGalleryImagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

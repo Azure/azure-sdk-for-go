@@ -8,19 +8,19 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v3"
 	"log"
 	"time"
 )
 
-// Generated from example definition: 2025-09-16-preview/machine/Machine_AssessPatches.json
+// Generated from example definition: 2026-07-15/machine/Machine_AssessPatches.json
 func ExampleMachinesClient_BeginAssessPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -48,30 +48,30 @@ func ExampleMachinesClient_BeginAssessPatches() {
 	// 			UpdateRollup: to.Ptr[int32](1),
 	// 			Updates: to.Ptr[int32](1),
 	// 		},
-	// 		LastModifiedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-22T02:16:06.9740000Z"); return t}()),
+	// 		LastModifiedDateTime: to.Ptr(time.Date(2021, time.August, 22, 2, 16, 6, 974000000, time.UTC)),
 	// 		OSType: to.Ptr(armhybridcompute.OsTypeWindows),
 	// 		RebootPending: to.Ptr(true),
-	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-22T02:15:20.9340000Z"); return t}()),
+	// 		StartDateTime: to.Ptr(time.Date(2021, time.August, 22, 2, 15, 20, 934000000, time.UTC)),
 	// 		StartedBy: to.Ptr(armhybridcompute.PatchOperationStartedByUser),
 	// 		Status: to.Ptr(armhybridcompute.PatchOperationStatusSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/machine/Machines_CreateOrUpdate.json
+// Generated from example definition: 2026-07-15/machine/Machines_CreateOrUpdate.json
 func ExampleMachinesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewMachinesClient().CreateOrUpdate(ctx, "myResourceGroup", "myMachine", armhybridcompute.Machine{
-		Identity: &armhybridcompute.Identity{
-			Type: to.Ptr("SystemAssigned"),
+		Identity: &armhybridcompute.ManagedServiceIdentity{
+			Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
 		},
 		Location: to.Ptr("eastus2euap"),
 		Properties: &armhybridcompute.MachineProperties{
@@ -87,8 +87,8 @@ func ExampleMachinesClient_CreateOrUpdate() {
 					},
 				},
 			},
-			ParentClusterResourceID:    to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
-			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+			ParentClusterResourceID:    to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
+			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 			TpmEkCertificate:           to.Ptr("string"),
 			VMID:                       to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
 		},
@@ -103,11 +103,11 @@ func ExampleMachinesClient_CreateOrUpdate() {
 	// 	Machine: armhybridcompute.Machine{
 	// 		Name: to.Ptr("myMachine"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/machines"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
-	// 		Identity: &armhybridcompute.Identity{
-	// 			Type: to.Ptr("SystemAssigned"),
-	// 			PrincipalID: to.Ptr("string"),
-	// 			TenantID: to.Ptr("string"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
+	// 		Identity: &armhybridcompute.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armhybridcompute.MachineProperties{
@@ -138,17 +138,17 @@ func ExampleMachinesClient_CreateOrUpdate() {
 	// 				LicenseChannel: to.Ptr("PSG"),
 	// 				LicenseStatus: to.Ptr(armhybridcompute.LicenseStatusLicensed),
 	// 				ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
-	// 					BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 					BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-	// 					DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 					EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 					BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 	// 					ProductFeatures: []*armhybridcompute.ProductFeature{
 	// 						{
 	// 							Name: to.Ptr("Hotpatch"),
-	// 							BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-	// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 							BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 	// 							SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
 	// 						},
 	// 					},
@@ -180,8 +180,8 @@ func ExampleMachinesClient_CreateOrUpdate() {
 	// 					},
 	// 				},
 	// 			},
-	// 			ParentClusterResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
-	// 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+	// 			ParentClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
+	// 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			TpmEkCertificate: to.Ptr("string"),
 	// 			VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
@@ -190,14 +190,14 @@ func ExampleMachinesClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/machine/Machines_Delete.json
+// Generated from example definition: 2026-07-15/machine/Machines_Delete.json
 func ExampleMachinesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -211,14 +211,14 @@ func ExampleMachinesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-09-16-preview/machine/Machines_Get.json
+// Generated from example definition: 2026-07-15/machine/Machines_Get.json
 func ExampleMachinesClient_Get_getMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -233,11 +233,11 @@ func ExampleMachinesClient_Get_getMachine() {
 	// 	Machine: armhybridcompute.Machine{
 	// 		Name: to.Ptr("myMachine"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/machines"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
-	// 		Identity: &armhybridcompute.Identity{
-	// 			Type: to.Ptr("SystemAssigned"),
-	// 			PrincipalID: to.Ptr("string"),
-	// 			TenantID: to.Ptr("string"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
+	// 		Identity: &armhybridcompute.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armhybridcompute.MachineProperties{
@@ -296,17 +296,17 @@ func ExampleMachinesClient_Get_getMachine() {
 	// 				LicenseChannel: to.Ptr("PSG"),
 	// 				LicenseStatus: to.Ptr(armhybridcompute.LicenseStatusLicensed),
 	// 				ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
-	// 					BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 					BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-	// 					DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 					EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 					BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 	// 					ProductFeatures: []*armhybridcompute.ProductFeature{
 	// 						{
 	// 							Name: to.Ptr("Hotpatch"),
-	// 							BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-	// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 							BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 	// 							SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
 	// 						},
 	// 					},
@@ -370,8 +370,8 @@ func ExampleMachinesClient_Get_getMachine() {
 	// 					},
 	// 				},
 	// 			},
-	// 			ParentClusterResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
-	// 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+	// 			ParentClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
+	// 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceStatuses: &armhybridcompute.ServiceStatuses{
 	// 				ExtensionService: &armhybridcompute.ServiceStatus{
@@ -405,14 +405,14 @@ func ExampleMachinesClient_Get_getMachine() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/machine/Machines_Get_LicenseProfileInstanceView.json
+// Generated from example definition: 2026-07-15/machine/Machines_Get_LicenseProfileInstanceView.json
 func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -428,11 +428,11 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 	Machine: armhybridcompute.Machine{
 	// 		Name: to.Ptr("myMachine"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/machines"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
-	// 		Identity: &armhybridcompute.Identity{
-	// 			Type: to.Ptr("SystemAssigned"),
-	// 			PrincipalID: to.Ptr("string"),
-	// 			TenantID: to.Ptr("string"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
+	// 		Identity: &armhybridcompute.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armhybridcompute.MachineProperties{
@@ -475,7 +475,7 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 					AssignedLicense: &armhybridcompute.License{
 	// 						Name: to.Ptr("{licenseName}"),
 	// 						Type: to.Ptr("Microsoft.HybridCompute/licenses"),
-	// 						ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
+	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Licenses/{licenseName}"),
 	// 						Location: to.Ptr("eastus2euap"),
 	// 						Properties: &armhybridcompute.LicenseProperties{
 	// 							LicenseDetails: &armhybridcompute.LicenseDetails{
@@ -488,7 +488,7 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 								Target: to.Ptr(armhybridcompute.LicenseTargetWindowsServer2012),
 	// 							},
 	// 							LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
-	// 							TenantID: to.Ptr("{tenandId}"),
+	// 							TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 						},
 	// 					},
 	// 					EsuEligibility: to.Ptr(armhybridcompute.EsuEligibilityIneligible),
@@ -509,17 +509,17 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 				LicenseChannel: to.Ptr("PSG"),
 	// 				LicenseStatus: to.Ptr(armhybridcompute.LicenseStatusLicensed),
 	// 				ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
-	// 					BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 					BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-	// 					DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 					EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 					BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 	// 					ProductFeatures: []*armhybridcompute.ProductFeature{
 	// 						{
 	// 							Name: to.Ptr("Hotpatch"),
-	// 							BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-	// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 							BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 	// 							SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
 	// 						},
 	// 					},
@@ -583,8 +583,8 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// 					},
 	// 				},
 	// 			},
-	// 			ParentClusterResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
-	// 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+	// 			ParentClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
+	// 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceStatuses: &armhybridcompute.ServiceStatuses{
 	// 				ExtensionService: &armhybridcompute.ServiceStatus{
@@ -617,14 +617,14 @@ func ExampleMachinesClient_Get_getMachineWithLicenseProfileInstanceView() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/machine/Machine_InstallPatches.json
+// Generated from example definition: 2026-07-15/machine/Machine_InstallPatches.json
 func ExampleMachinesClient_BeginInstallPatches() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -636,7 +636,7 @@ func ExampleMachinesClient_BeginInstallPatches() {
 				to.Ptr(armhybridcompute.VMGuestPatchClassificationWindowsCritical),
 				to.Ptr(armhybridcompute.VMGuestPatchClassificationWindowsSecurity),
 			},
-			MaxPatchPublishDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T02:36:43.0539904+00:00"); return t }()),
+			MaxPatchPublishDate: to.Ptr(time.Date(2021, time.August, 19, 2, 36, 43, 53990400, time.UTC)),
 			PatchNameMasksToExclude: []*string{
 				to.Ptr("*Windows*"),
 			},
@@ -661,27 +661,27 @@ func ExampleMachinesClient_BeginInstallPatches() {
 	// 		FailedPatchCount: to.Ptr[int32](0),
 	// 		InstallationActivityID: to.Ptr("68f8b292-dfc2-4646-9781-33cc88631968"),
 	// 		InstalledPatchCount: to.Ptr[int32](3),
-	// 		LastModifiedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-22T02:16:06.9740000Z"); return t}()),
+	// 		LastModifiedDateTime: to.Ptr(time.Date(2021, time.August, 22, 2, 16, 6, 974000000, time.UTC)),
 	// 		MaintenanceWindowExceeded: to.Ptr(false),
 	// 		NotSelectedPatchCount: to.Ptr[int32](0),
 	// 		OSType: to.Ptr(armhybridcompute.OsTypeWindows),
 	// 		PendingPatchCount: to.Ptr[int32](2),
 	// 		RebootStatus: to.Ptr(armhybridcompute.VMGuestPatchRebootStatusCompleted),
-	// 		StartDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-22T02:15:06.9740000Z"); return t}()),
+	// 		StartDateTime: to.Ptr(time.Date(2021, time.August, 22, 2, 15, 6, 974000000, time.UTC)),
 	// 		StartedBy: to.Ptr(armhybridcompute.PatchOperationStartedByUser),
 	// 		Status: to.Ptr(armhybridcompute.PatchOperationStatusSucceeded),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/machine/Machines_ListByResourceGroup.json
+// Generated from example definition: 2026-07-15/machine/Machines_ListByResourceGroup.json
 func ExampleMachinesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -702,11 +702,11 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 			{
 		// 				Name: to.Ptr("myMachine"),
 		// 				Type: to.Ptr("Microsoft.HybridCompute/machines"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
-		// 				Identity: &armhybridcompute.Identity{
-		// 					Type: to.Ptr("SystemAssigned"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
+		// 				Identity: &armhybridcompute.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
 		// 					PrincipalID: to.Ptr("f7a068cc-b0b8-46e8-a203-22f301a62a8f"),
-		// 					TenantID: to.Ptr("c4098cc-91b8-46c2-a205-d82ab1a62a8f"),
+		// 					TenantID: to.Ptr("c4098ccc-91b8-46c2-a205-d82ab1a62a8f"),
 		// 				},
 		// 				Location: to.Ptr("eastus2euap"),
 		// 				Properties: &armhybridcompute.MachineProperties{
@@ -750,17 +750,17 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 						LicenseChannel: to.Ptr("PSG"),
 		// 						LicenseStatus: to.Ptr(armhybridcompute.LicenseStatusLicensed),
 		// 						ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
-		// 							BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-		// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 							BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 		// 							ProductFeatures: []*armhybridcompute.ProductFeature{
 		// 								{
 		// 									Name: to.Ptr("Hotpatch"),
-		// 									BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 									BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-		// 									DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 									EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 									BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 		// 									SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
 		// 								},
 		// 							},
@@ -790,7 +790,7 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+		// 					PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
 		// 				},
@@ -798,11 +798,11 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 			{
 		// 				Name: to.Ptr("myMachine2"),
 		// 				Type: to.Ptr("Microsoft.HybridCompute/machines"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine2"),
-		// 				Identity: &armhybridcompute.Identity{
-		// 					Type: to.Ptr("SystemAssigned"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine2"),
+		// 				Identity: &armhybridcompute.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
 		// 					PrincipalID: to.Ptr("e7a068cc-b0b8-46e8-a203-22f301a62a8f"),
-		// 					TenantID: to.Ptr("c4098cc-91b8-46c2-a205-d82ab1a62a8f"),
+		// 					TenantID: to.Ptr("c4098ccc-91b8-46c2-a205-d82ab1a62a8f"),
 		// 				},
 		// 				Location: to.Ptr("westus2"),
 		// 				Properties: &armhybridcompute.MachineProperties{
@@ -846,17 +846,17 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 						LicenseChannel: to.Ptr("PSG"),
 		// 						LicenseStatus: to.Ptr(armhybridcompute.LicenseStatusLicensed),
 		// 						ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
-		// 							BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-		// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 							BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 		// 							ProductFeatures: []*armhybridcompute.ProductFeature{
 		// 								{
 		// 									Name: to.Ptr("Hotpatch"),
-		// 									BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 									BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-		// 									DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 									EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 									BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 		// 									SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
 		// 								},
 		// 							},
@@ -886,8 +886,8 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					ParentClusterResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
-		// 					PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+		// 					ParentClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
+		// 					PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					VMID: to.Ptr("a4a098cc-b0b8-46e8-a205-62f301a62a8f"),
 		// 				},
@@ -898,14 +898,14 @@ func ExampleMachinesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-16-preview/machine/Machines_ListBySubscription.json
+// Generated from example definition: 2026-07-15/machine/Machines_ListBySubscription.json
 func ExampleMachinesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -922,16 +922,16 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armhybridcompute.MachinesClientListBySubscriptionResponse{
 		// 	MachineListResult: armhybridcompute.MachineListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.HybridCompute/machines?api-version=2025-09-16-preview&$skiptoken=nextPageToken"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.HybridCompute/machines?api-version=2026-07-15&$skiptoken=nextPageToken"),
 		// 		Value: []*armhybridcompute.Machine{
 		// 			{
 		// 				Name: to.Ptr("myMachine"),
 		// 				Type: to.Ptr("Microsoft.HybridCompute/machines"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
-		// 				Identity: &armhybridcompute.Identity{
-		// 					Type: to.Ptr("SystemAssigned"),
-		// 					PrincipalID: to.Ptr("string"),
-		// 					TenantID: to.Ptr("string"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
+		// 				Identity: &armhybridcompute.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
+		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
 		// 				Location: to.Ptr("eastus2euap"),
 		// 				Properties: &armhybridcompute.MachineProperties{
@@ -975,17 +975,17 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// 						LicenseChannel: to.Ptr("PSG"),
 		// 						LicenseStatus: to.Ptr(armhybridcompute.LicenseStatusLicensed),
 		// 						ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
-		// 							BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-		// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 							BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 		// 							ProductFeatures: []*armhybridcompute.ProductFeature{
 		// 								{
 		// 									Name: to.Ptr("Hotpatch"),
-		// 									BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 									BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-		// 									DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 									EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 									BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 		// 									SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
 		// 								},
 		// 							},
@@ -1015,7 +1015,7 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+		// 					PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),
 		// 				},
@@ -1023,11 +1023,11 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// 			{
 		// 				Name: to.Ptr("myMachine2"),
 		// 				Type: to.Ptr("Microsoft.HybridCompute/machines"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup2/providers/Microsoft.HybridCompute/machines/myMachine2"),
-		// 				Identity: &armhybridcompute.Identity{
-		// 					Type: to.Ptr("SystemAssigned"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup2/providers/Microsoft.HybridCompute/machines/myMachine2"),
+		// 				Identity: &armhybridcompute.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
 		// 					PrincipalID: to.Ptr("e7a068cc-b0b8-46e8-a203-22f301a62a8f"),
-		// 					TenantID: to.Ptr("c4098cc-91b8-46c2-a205-d82ab1a62a8f"),
+		// 					TenantID: to.Ptr("c4098ccc-91b8-46c2-a205-d82ab1a62a8f"),
 		// 				},
 		// 				Location: to.Ptr("westus2"),
 		// 				Properties: &armhybridcompute.MachineProperties{
@@ -1071,17 +1071,17 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// 						LicenseChannel: to.Ptr("PSG"),
 		// 						LicenseStatus: to.Ptr(armhybridcompute.LicenseStatusLicensed),
 		// 						ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
-		// 							BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-		// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 							BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 							EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 		// 							ProductFeatures: []*armhybridcompute.ProductFeature{
 		// 								{
 		// 									Name: to.Ptr("Hotpatch"),
-		// 									BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 									BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-		// 									DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-		// 									EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+		// 									BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+		// 									EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 		// 									SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
 		// 								},
 		// 							},
@@ -1111,7 +1111,7 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 		// 							},
 		// 						},
 		// 					},
-		// 					ParentClusterResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
+		// 					ParentClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					VMID: to.Ptr("a4a098cc-b0b8-46e8-a205-62f301a62a8f"),
 		// 				},
@@ -1122,20 +1122,20 @@ func ExampleMachinesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-16-preview/machine/Machines_Update.json
+// Generated from example definition: 2026-07-15/machine/Machines_Update.json
 func ExampleMachinesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscription-id}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewMachinesClient().Update(ctx, "myResourceGroup", "myMachine", armhybridcompute.MachineUpdate{
-		Identity: &armhybridcompute.Identity{
-			Type: to.Ptr("SystemAssigned"),
+		Identity: &armhybridcompute.ManagedServiceIdentity{
+			Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
 		},
 		Properties: &armhybridcompute.MachineUpdateProperties{
 			IdentityKeyStore: to.Ptr("TPM"),
@@ -1157,8 +1157,8 @@ func ExampleMachinesClient_Update() {
 					},
 				},
 			},
-			ParentClusterResourceID:    to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
-			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+			ParentClusterResourceID:    to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
+			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 			TpmEkCertificate:           to.Ptr("string"),
 		},
 	}, nil)
@@ -1172,11 +1172,11 @@ func ExampleMachinesClient_Update() {
 	// 	Machine: armhybridcompute.Machine{
 	// 		Name: to.Ptr("myMachine"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/machines"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
-	// 		Identity: &armhybridcompute.Identity{
-	// 			Type: to.Ptr("SystemAssigned"),
-	// 			PrincipalID: to.Ptr("string"),
-	// 			TenantID: to.Ptr("string"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/machines/myMachine"),
+	// 		Identity: &armhybridcompute.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armhybridcompute.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armhybridcompute.MachineProperties{
@@ -1202,17 +1202,17 @@ func ExampleMachinesClient_Update() {
 	// 				LicenseChannel: to.Ptr("PSG"),
 	// 				LicenseStatus: to.Ptr(armhybridcompute.LicenseStatusLicensed),
 	// 				ProductProfile: &armhybridcompute.LicenseProfileArmProductProfileProperties{
-	// 					BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 					BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-	// 					DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 					EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 					BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 					EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 	// 					ProductFeatures: []*armhybridcompute.ProductFeature{
 	// 						{
 	// 							Name: to.Ptr("Hotpatch"),
-	// 							BillingEndDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 							BillingStartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
-	// 							DisenrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-11-05T20:36:49.745Z"); return t}()),
-	// 							EnrollmentDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-05T20:36:49.745Z"); return t}()),
+	// 							BillingEndDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							BillingStartDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							DisenrollmentDate: to.Ptr(time.Date(2023, time.November, 5, 20, 36, 49, 745000000, time.UTC)),
+	// 							EnrollmentDate: to.Ptr(time.Date(2023, time.October, 5, 20, 36, 49, 745000000, time.UTC)),
 	// 							SubscriptionStatus: to.Ptr(armhybridcompute.LicenseProfileSubscriptionStatusEnabled),
 	// 						},
 	// 					},
@@ -1245,8 +1245,8 @@ func ExampleMachinesClient_Update() {
 	// 					},
 	// 				},
 	// 			},
-	// 			ParentClusterResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
-	// 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
+	// 			ParentClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AzureStackHCI/clusters/myAzureStackHCICluster"),
+	// 			PrivateLinkScopeResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/privateLinkScopes/privateLinkScopeName"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			TpmEkCertificate: to.Ptr("string"),
 	// 			VMID: to.Ptr("b7a098cc-b0b8-46e8-a205-62f301a62a8f"),

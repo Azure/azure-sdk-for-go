@@ -7,11 +7,11 @@ package armchaos_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/Capabilities_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01-preview/Capabilities_CreateOrUpdate.json
 func ExampleCapabilitiesClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,14 +44,14 @@ func ExampleCapabilitiesClient_CreateOrUpdate() {
 	// 			Urn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.4662189Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.4662189Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.May, 14, 5, 8, 38, 466218900, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.May, 14, 5, 8, 38, 466218900, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Capabilities_Delete.json
+// Generated from example definition: 2026-08-01-preview/Capabilities_Delete.json
 func ExampleCapabilitiesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleCapabilitiesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Capabilities_Get.json
+// Generated from example definition: 2026-08-01-preview/Capabilities_Get.json
 func ExampleCapabilitiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,14 +104,14 @@ func ExampleCapabilitiesClient_Get() {
 	// 			Urn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.4662189Z"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.4662189Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.May, 14, 5, 8, 38, 466218900, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.May, 14, 5, 8, 38, 466218900, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Capabilities_List.json
+// Generated from example definition: 2026-08-01-preview/Capabilities_List.json
 func ExampleCapabilitiesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleCapabilitiesClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armchaos.CapabilitiesClientListResponse{
 		// 	CapabilityListResult: armchaos.CapabilityListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine/capabilities?continuationToken=&api-version=2026-05-01-preview"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine/capabilities?continuationToken=&api-version=2026-08-01-preview"),
 		// 		Value: []*armchaos.Capability{
 		// 			{
 		// 				Name: to.Ptr("Shutdown-1.0"),
@@ -149,8 +149,8 @@ func ExampleCapabilitiesClient_NewListPager() {
 		// 					Urn: to.Ptr("urn:csci:microsoft:virtualMachine:shutdown/1.0"),
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.4662189Z"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-05-14T05:08:38.4662189Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.May, 14, 5, 8, 38, 466218900, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.May, 14, 5, 8, 38, 466218900, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

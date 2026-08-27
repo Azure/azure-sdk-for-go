@@ -4,7 +4,9 @@
 package azservicebus_test
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -29,6 +31,68 @@ func ExampleNewClient() {
 
 	if err != nil {
 		panic(err)
+	}
+}
+
+func ExampleClient_NewListSessionsForQueuePager() {
+	// List the IDs of sessions that have active messages or stored session state
+	// in a session-enabled queue. The IDs are returned in pages; call NextPage
+	// until More returns false.
+	pager := client.NewListSessionsForQueuePager("exampleSessionQueue", nil)
+
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+
+		if err != nil {
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+
+		for _, sessionID := range page.Sessions {
+			fmt.Printf("Session ID: %s\n", sessionID)
+		}
+	}
+}
+
+func ExampleClient_NewListSessionsForSubscriptionPager() {
+	// List the IDs of sessions that have active messages or stored session state
+	// in a session-enabled subscription. The IDs are returned in pages; call
+	// NextPage until More returns false.
+	pager := client.NewListSessionsForSubscriptionPager("exampleTopic", "exampleSubscription", nil)
+
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+
+		if err != nil {
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+
+		for _, sessionID := range page.Sessions {
+			fmt.Printf("Session ID: %s\n", sessionID)
+		}
+	}
+}
+
+func ExampleClient_NewListSessionsForQueuePager_filteringBySessionStateUpdateTime() {
+	// List only sessions whose stored session state was set or updated in the
+	// last seven days.
+	stateUpdatedAfter := time.Now().UTC().Add(-7 * 24 * time.Hour)
+	pager := client.NewListSessionsForQueuePager("exampleSessionQueue", &azservicebus.ListSessionsOptions{
+		SessionStateUpdatedAfter: &stateUpdatedAfter,
+	})
+
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+
+		if err != nil {
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", err)
+		}
+
+		for _, sessionID := range page.Sessions {
+			fmt.Printf("Recently updated session ID: %s\n", sessionID)
+		}
 	}
 }
 

@@ -40,7 +40,7 @@ func ExampleDeletedAutomationAccountsClient_ListBySubscription() {
 	// 				Properties: &armautomation.DeletedAutomationAccountProperties{
 	// 					AutomationAccountID: to.Ptr("cb855f13-0223-4fe4-8260-9e6583dfef24"),
 	// 					AutomationAccountResourceID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/msitest/providers/Microsoft.Automation/automationAccounts/myAutomationAccount"),
-	// 					DeletionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-04-24T16:30:55+00:00"); return t}()),
+	// 					DeletionTime: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
 	// 					Location: to.Ptr("westus"),
 	// 				},
 	// 			},

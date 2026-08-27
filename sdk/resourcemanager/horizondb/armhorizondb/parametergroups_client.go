@@ -20,7 +20,7 @@ import (
 // ParameterGroupsClient contains the methods for the ParameterGroups group.
 // Don't use this type directly, use NewParameterGroupsClient() instead.
 //
-// Generated from API version 2026-01-20-preview
+// Generated from API version 2026-05-01-preview
 type ParameterGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,10 +42,10 @@ func NewParameterGroupsClient(subscriptionID string, credential azcore.TokenCred
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Creates a new HorizonDb parameter group or updates an existing parameter group.
+// BeginCreateOrUpdate - Creates a new HorizonDB parameter group or updates an existing parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - parameterGroupName - The name of the HorizonDb parameter group.
+//   - parameterGroupName - The name of the HorizonDB parameter group.
 //   - resource - Resource create parameters.
 //   - options - ParameterGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the ParameterGroupsClient.BeginCreateOrUpdate
 //     method.
@@ -67,7 +67,7 @@ func (client *ParameterGroupsClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Creates a new HorizonDb parameter group or updates an existing parameter group.
+// CreateOrUpdate - Creates a new HorizonDB parameter group or updates an existing parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ParameterGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, parameterGroupName string, resource ParameterGroup, options *ParameterGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -84,8 +84,7 @@ func (client *ParameterGroupsClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -110,7 +109,7 @@ func (client *ParameterGroupsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -120,10 +119,10 @@ func (client *ParameterGroupsClient) createOrUpdateCreateRequest(ctx context.Con
 	return req, nil
 }
 
-// BeginDelete - Deletes a HorizonDb parameter group.
+// BeginDelete - Deletes a HorizonDB parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - parameterGroupName - The name of the HorizonDb parameter group.
+//   - parameterGroupName - The name of the HorizonDB parameter group.
 //   - options - ParameterGroupsClientBeginDeleteOptions contains the optional parameters for the ParameterGroupsClient.BeginDelete
 //     method.
 func (client *ParameterGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, parameterGroupName string, options *ParameterGroupsClientBeginDeleteOptions) (*runtime.Poller[ParameterGroupsClientDeleteResponse], error) {
@@ -143,7 +142,7 @@ func (client *ParameterGroupsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Deletes a HorizonDb parameter group.
+// Delete - Deletes a HorizonDB parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ParameterGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, parameterGroupName string, options *ParameterGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -160,8 +159,7 @@ func (client *ParameterGroupsClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -186,15 +184,15 @@ func (client *ParameterGroupsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// Get - Gets information about a HorizonDb parameter group.
+// Get - Gets information about a HorizonDB parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - parameterGroupName - The name of the HorizonDb parameter group.
+//   - parameterGroupName - The name of the HorizonDB parameter group.
 //   - options - ParameterGroupsClientGetOptions contains the optional parameters for the ParameterGroupsClient.Get method.
 func (client *ParameterGroupsClient) Get(ctx context.Context, resourceGroupName string, parameterGroupName string, options *ParameterGroupsClientGetOptions) (ParameterGroupsClientGetResponse, error) {
 	var err error
@@ -210,12 +208,7 @@ func (client *ParameterGroupsClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ParameterGroupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ParameterGroupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -238,22 +231,25 @@ func (client *ParameterGroupsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ParameterGroupsClient) getHandleResponse(resp *http.Response) (ParameterGroupsClientGetResponse, error) {
+func (client *ParameterGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ParameterGroupsClientGetResponse, error) {
 	result := ParameterGroupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ParameterGroup); err != nil {
 		return ParameterGroupsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListByResourceGroupPager - Lists all HorizonDb parameter groups in a resource group.
+// NewListByResourceGroupPager - Lists all HorizonDB parameter groups in a resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ParameterGroupsClientListByResourceGroupOptions contains the optional parameters for the ParameterGroupsClient.NewListByResourceGroupPager
 //     method.
@@ -268,50 +264,64 @@ func (client *ParameterGroupsClient) NewListByResourceGroupPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return ParameterGroupsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ParameterGroupsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ParameterGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *ParameterGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ParameterGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *ParameterGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ParameterGroupsClient) listByResourceGroupHandleResponse(resp *http.Response) (ParameterGroupsClientListByResourceGroupResponse, error) {
+func (client *ParameterGroupsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ParameterGroupsClientListByResourceGroupResponse, error) {
 	result := ParameterGroupsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ParameterGroupListResult); err != nil {
 		return ParameterGroupsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListBySubscriptionPager - Lists all HorizonDb parameter groups in a subscription.
+// NewListBySubscriptionPager - Lists all HorizonDB parameter groups in a subscription.
 //   - options - ParameterGroupsClientListBySubscriptionOptions contains the optional parameters for the ParameterGroupsClient.NewListBySubscriptionPager
 //     method.
 func (client *ParameterGroupsClient) NewListBySubscriptionPager(options *ParameterGroupsClientListBySubscriptionOptions) *runtime.Pager[ParameterGroupsClientListBySubscriptionResponse] {
@@ -325,39 +335,53 @@ func (client *ParameterGroupsClient) NewListBySubscriptionPager(options *Paramet
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ParameterGroupsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ParameterGroupsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *ParameterGroupsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *ParameterGroupsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HorizonDb/parameterGroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ParameterGroupsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *ParameterGroupsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HorizonDb/parameterGroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *ParameterGroupsClient) listBySubscriptionHandleResponse(resp *http.Response) (ParameterGroupsClientListBySubscriptionResponse, error) {
+func (client *ParameterGroupsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (ParameterGroupsClientListBySubscriptionResponse, error) {
 	result := ParameterGroupsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ParameterGroupListResult); err != nil {
 		return ParameterGroupsClientListBySubscriptionResponse{}, err
 	}
@@ -366,7 +390,7 @@ func (client *ParameterGroupsClient) listBySubscriptionHandleResponse(resp *http
 
 // NewListConnectionsPager - Gets all connections to a parameter group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - parameterGroupName - The name of the HorizonDb parameter group.
+//   - parameterGroupName - The name of the HorizonDB parameter group.
 //   - options - ParameterGroupsClientListConnectionsOptions contains the optional parameters for the ParameterGroupsClient.NewListConnectionsPager
 //     method.
 func (client *ParameterGroupsClient) NewListConnectionsPager(resourceGroupName string, parameterGroupName string, options *ParameterGroupsClientListConnectionsOptions) *runtime.Pager[ParameterGroupsClientListConnectionsResponse] {
@@ -380,47 +404,61 @@ func (client *ParameterGroupsClient) NewListConnectionsPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listConnectionsCreateRequest(ctx, resourceGroupName, parameterGroupName, options)
-			}, nil)
+			req, err := client.listConnectionsCreateRequest(ctx, resourceGroupName, parameterGroupName, nextLink, options)
 			if err != nil {
 				return ParameterGroupsClientListConnectionsResponse{}, err
 			}
-			return client.listConnectionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ParameterGroupsClientListConnectionsResponse{}, err
+			}
+			return client.listConnectionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listConnectionsCreateRequest creates the ListConnections request.
-func (client *ParameterGroupsClient) listConnectionsCreateRequest(ctx context.Context, resourceGroupName string, parameterGroupName string, _ *ParameterGroupsClientListConnectionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups/{parameterGroupName}/connections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ParameterGroupsClient) listConnectionsCreateRequest(ctx context.Context, resourceGroupName string, parameterGroupName string, nextLink string, _ *ParameterGroupsClientListConnectionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups/{parameterGroupName}/connections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if parameterGroupName == "" {
+			return nil, errors.New("parameter parameterGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{parameterGroupName}", url.PathEscape(parameterGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if parameterGroupName == "" {
-		return nil, errors.New("parameter parameterGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{parameterGroupName}", url.PathEscape(parameterGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listConnectionsHandleResponse handles the ListConnections response.
-func (client *ParameterGroupsClient) listConnectionsHandleResponse(resp *http.Response) (ParameterGroupsClientListConnectionsResponse, error) {
+func (client *ParameterGroupsClient) listConnectionsHandleResponse(resp *http.Response, successCodes ...int) (ParameterGroupsClientListConnectionsResponse, error) {
 	result := ParameterGroupsClientListConnectionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ParameterGroupConnectionPropertiesListResult); err != nil {
 		return ParameterGroupsClientListConnectionsResponse{}, err
 	}
@@ -429,7 +467,7 @@ func (client *ParameterGroupsClient) listConnectionsHandleResponse(resp *http.Re
 
 // NewListVersionsPager - Lists parameter groups filtered by version number.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - parameterGroupName - The name of the HorizonDb parameter group.
+//   - parameterGroupName - The name of the HorizonDB parameter group.
 //   - options - ParameterGroupsClientListVersionsOptions contains the optional parameters for the ParameterGroupsClient.NewListVersionsPager
 //     method.
 func (client *ParameterGroupsClient) NewListVersionsPager(resourceGroupName string, parameterGroupName string, options *ParameterGroupsClientListVersionsOptions) *runtime.Pager[ParameterGroupsClientListVersionsResponse] {
@@ -443,60 +481,74 @@ func (client *ParameterGroupsClient) NewListVersionsPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listVersionsCreateRequest(ctx, resourceGroupName, parameterGroupName, options)
-			}, nil)
+			req, err := client.listVersionsCreateRequest(ctx, resourceGroupName, parameterGroupName, nextLink, options)
 			if err != nil {
 				return ParameterGroupsClientListVersionsResponse{}, err
 			}
-			return client.listVersionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ParameterGroupsClientListVersionsResponse{}, err
+			}
+			return client.listVersionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listVersionsCreateRequest creates the ListVersions request.
-func (client *ParameterGroupsClient) listVersionsCreateRequest(ctx context.Context, resourceGroupName string, parameterGroupName string, options *ParameterGroupsClientListVersionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups/{parameterGroupName}/versions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ParameterGroupsClient) listVersionsCreateRequest(ctx context.Context, resourceGroupName string, parameterGroupName string, nextLink string, options *ParameterGroupsClientListVersionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/parameterGroups/{parameterGroupName}/versions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if parameterGroupName == "" {
+			return nil, errors.New("parameter parameterGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{parameterGroupName}", url.PathEscape(parameterGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if parameterGroupName == "" {
-		return nil, errors.New("parameter parameterGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{parameterGroupName}", url.PathEscape(parameterGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
-	if options != nil && options.Version != nil {
-		reqQP.Set("version", strconv.FormatInt(int64(*options.Version), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		if options != nil && options.Version != nil {
+			reqQP.Set("version", strconv.FormatInt(int64(*options.Version), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listVersionsHandleResponse handles the ListVersions response.
-func (client *ParameterGroupsClient) listVersionsHandleResponse(resp *http.Response) (ParameterGroupsClientListVersionsResponse, error) {
+func (client *ParameterGroupsClient) listVersionsHandleResponse(resp *http.Response, successCodes ...int) (ParameterGroupsClientListVersionsResponse, error) {
 	result := ParameterGroupsClientListVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ParameterGroupListResult); err != nil {
 		return ParameterGroupsClientListVersionsResponse{}, err
 	}
 	return result, nil
 }
 
-// BeginUpdate - Updates an existing HorizonDb parameter group.
+// BeginUpdate - Updates an existing HorizonDB parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - parameterGroupName - The name of the HorizonDb parameter group.
+//   - parameterGroupName - The name of the HorizonDB parameter group.
 //   - properties - The resource properties to be updated.
 //   - options - ParameterGroupsClientBeginUpdateOptions contains the optional parameters for the ParameterGroupsClient.BeginUpdate
 //     method.
@@ -517,7 +569,7 @@ func (client *ParameterGroupsClient) BeginUpdate(ctx context.Context, resourceGr
 	}
 }
 
-// Update - Updates an existing HorizonDb parameter group.
+// Update - Updates an existing HorizonDB parameter group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ParameterGroupsClient) update(ctx context.Context, resourceGroupName string, parameterGroupName string, properties ParameterGroupForPatchUpdate, options *ParameterGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -534,8 +586,7 @@ func (client *ParameterGroupsClient) update(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -560,7 +611,7 @@ func (client *ParameterGroupsClient) updateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

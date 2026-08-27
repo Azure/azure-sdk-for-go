@@ -149,10 +149,10 @@ func ExampleGlobalRulestackClient_BeginCreateOrUpdate_globalRulestackCreateOrUpd
 	// 			},
 	// 		},
 	// 		SystemData: &armpanngfw.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.September, 9, 5, 8, 24, 229000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("praval"),
 	// 			CreatedByType: to.Ptr(armpanngfw.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.September, 9, 5, 8, 24, 229000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("praval"),
 	// 			LastModifiedByType: to.Ptr(armpanngfw.CreatedByTypeUser),
 	// 		},
@@ -305,10 +305,10 @@ func ExampleGlobalRulestackClient_Get_globalRulestackGetMaximumSetGen() {
 	// 			},
 	// 		},
 	// 		SystemData: &armpanngfw.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.September, 9, 5, 8, 24, 229000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("praval"),
 	// 			CreatedByType: to.Ptr(armpanngfw.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.September, 9, 5, 8, 24, 229000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("praval"),
 	// 			LastModifiedByType: to.Ptr(armpanngfw.CreatedByTypeUser),
 	// 		},
@@ -367,8 +367,8 @@ func ExampleGlobalRulestackClient_GetChangeLog_globalRulestackGetChangeLogMaximu
 	// 		Changes: []*string{
 	// 			to.Ptr("aaaa"),
 	// 		},
-	// 		LastCommitted: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
-	// 		LastModified: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
+	// 		LastCommitted: to.Ptr(time.Date(2022, time.September, 9, 5, 8, 24, 229000000, time.UTC)),
+	// 		LastModified: to.Ptr(time.Date(2022, time.September, 9, 5, 8, 24, 229000000, time.UTC)),
 	// 	},
 	// }
 }
@@ -465,10 +465,10 @@ func ExampleGlobalRulestackClient_NewListPager_globalRulestackListMaximumSetGen(
 		// 					},
 		// 				},
 		// 				SystemData: &armpanngfw.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.September, 9, 5, 8, 24, 229000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("praval"),
 		// 					CreatedByType: to.Ptr(armpanngfw.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.September, 9, 5, 8, 24, 229000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("praval"),
 		// 					LastModifiedByType: to.Ptr(armpanngfw.CreatedByTypeUser),
 		// 				},
@@ -1013,10 +1013,10 @@ func ExampleGlobalRulestackClient_Update_globalRulestackUpdateMaximumSetGen() {
 	// 			},
 	// 		},
 	// 		SystemData: &armpanngfw.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.September, 9, 5, 8, 24, 229000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("praval"),
 	// 			CreatedByType: to.Ptr(armpanngfw.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-09T05:08:24.229Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.September, 9, 5, 8, 24, 229000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("praval"),
 	// 			LastModifiedByType: to.Ptr(armpanngfw.CreatedByTypeUser),
 	// 		},

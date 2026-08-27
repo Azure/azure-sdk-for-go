@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/FirewallPolicyNatRuleCollectionGroupPut.json
+// Generated from example definition: 2025-09-01/FirewallPolicyNatRuleCollectionGroupPut.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createFirewallPolicyNatRuleCollectionGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createF
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupPut.json
+// Generated from example definition: 2025-09-01/FirewallPolicyRuleCollectionGroupPut.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createFirewallPolicyRuleCollectionGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +212,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createF
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupWithHttpHeadersToInsert.json
+// Generated from example definition: 2025-09-01/FirewallPolicyRuleCollectionGroupWithHttpHeadersToInsert.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createFirewallPolicyRuleCollectionGroupWithHttpHeaderToInsert() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +321,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createF
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupWithIpGroupsPut.json
+// Generated from example definition: 2025-09-01/FirewallPolicyRuleCollectionGroupWithIpGroupsPut.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createFirewallPolicyRuleCollectionGroupWithIPGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -414,7 +414,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createF
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupWithWebCategoriesPut.json
+// Generated from example definition: 2025-09-01/FirewallPolicyRuleCollectionGroupWithWebCategoriesPut.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createFirewallPolicyRuleCollectionGroupWithWebCategories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -511,7 +511,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginCreateOrUpdate_createF
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupDelete.json
+// Generated from example definition: 2025-09-01/FirewallPolicyRuleCollectionGroupDelete.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -537,7 +537,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyNatRuleCollectionGroupGet.json
+// Generated from example definition: 2025-09-01/FirewallPolicyNatRuleCollectionGroupGet.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyNatRuleCollectionGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -601,7 +601,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyNatRul
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupGet.json
+// Generated from example definition: 2025-09-01/FirewallPolicyRuleCollectionGroupGet.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyRuleCollectionGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -661,7 +661,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyRuleCo
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupWithIpGroupsGet.json
+// Generated from example definition: 2025-09-01/FirewallPolicyRuleCollectionGroupWithIpGroupsGet.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyRuleCollectionGroupWithIPGroups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -720,7 +720,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyRuleCo
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupWithWebCategoriesGet.json
+// Generated from example definition: 2025-09-01/FirewallPolicyRuleCollectionGroupWithWebCategoriesGet.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyRuleCollectionGroupWithWebCategories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -781,7 +781,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_Get_getFirewallPolicyRuleCo
 	// }
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupList.json
+// Generated from example definition: 2025-09-01/FirewallPolicyRuleCollectionGroupList.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_NewListPager_listAllFirewallPolicyRuleCollectionGroupsForAGivenFirewallPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -850,7 +850,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_NewListPager_listAllFirewal
 	}
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupWithIpGroupsList.json
+// Generated from example definition: 2025-09-01/FirewallPolicyRuleCollectionGroupWithIpGroupsList.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_NewListPager_listAllFirewallPolicyRuleCollectionGroupsWithIPGroupsForAGivenFirewallPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -919,7 +919,7 @@ func ExampleFirewallPolicyRuleCollectionGroupsClient_NewListPager_listAllFirewal
 	}
 }
 
-// Generated from example definition: 2025-07-01/FirewallPolicyRuleCollectionGroupWithWebCategoriesList.json
+// Generated from example definition: 2025-09-01/FirewallPolicyRuleCollectionGroupWithWebCategoriesList.json
 func ExampleFirewallPolicyRuleCollectionGroupsClient_NewListPager_listAllFirewallPolicyRuleCollectionGroupWithWebCategories() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

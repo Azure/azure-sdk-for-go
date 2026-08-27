@@ -19,7 +19,7 @@ import (
 // PrivateLinkResourcesClient contains the methods for the PrivateLinkResources group.
 // Don't use this type directly, use NewPrivateLinkResourcesClient() instead.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2025-12-01
 type PrivateLinkResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -61,12 +61,7 @@ func (client *PrivateLinkResourcesClient) ListByStorageSyncService(ctx context.C
 	if err != nil {
 		return PrivateLinkResourcesClientListByStorageSyncServiceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateLinkResourcesClientListByStorageSyncServiceResponse{}, err
-	}
-	resp, err := client.listByStorageSyncServiceHandleResponse(httpResp)
-	return resp, err
+	return client.listByStorageSyncServiceHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByStorageSyncServiceCreateRequest creates the ListByStorageSyncService request.
@@ -89,15 +84,18 @@ func (client *PrivateLinkResourcesClient) listByStorageSyncServiceCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220901)
+	reqQP.Set("api-version", version20251201)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByStorageSyncServiceHandleResponse handles the ListByStorageSyncService response.
-func (client *PrivateLinkResourcesClient) listByStorageSyncServiceHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByStorageSyncServiceResponse, error) {
+func (client *PrivateLinkResourcesClient) listByStorageSyncServiceHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinkResourcesClientListByStorageSyncServiceResponse, error) {
 	result := PrivateLinkResourcesClientListByStorageSyncServiceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return PrivateLinkResourcesClientListByStorageSyncServiceResponse{}, err
 	}

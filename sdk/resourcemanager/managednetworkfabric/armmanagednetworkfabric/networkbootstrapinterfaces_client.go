@@ -18,6 +18,8 @@ import (
 
 // NetworkBootstrapInterfacesClient contains the methods for the NetworkBootstrapInterfaces group.
 // Don't use this type directly, use NewNetworkBootstrapInterfacesClient() instead.
+//
+// Generated from API version 2025-07-15
 type NetworkBootstrapInterfacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkBootstrapInterfacesClient(subscriptionID string, credential azcor
 
 // BeginCreate - Create a Network Bootstrap Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkBootstrapDeviceName - Name of the Network Bootstrap Device.
 //   - networkBootstrapInterfaceName - Name of the Network Bootstrap Interface.
@@ -68,8 +68,6 @@ func (client *NetworkBootstrapInterfacesClient) BeginCreate(ctx context.Context,
 
 // Create - Create a Network Bootstrap Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkBootstrapInterfacesClient) create(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, networkBootstrapInterfaceName string, body NetworkBootstrapInterface, options *NetworkBootstrapInterfacesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkBootstrapInterfacesClient.BeginCreate"
@@ -85,8 +83,7 @@ func (client *NetworkBootstrapInterfacesClient) create(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -115,8 +112,8 @@ func (client *NetworkBootstrapInterfacesClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -127,8 +124,6 @@ func (client *NetworkBootstrapInterfacesClient) createCreateRequest(ctx context.
 
 // BeginDelete - Delete the Network Bootstrap Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkBootstrapDeviceName - Name of the Network Bootstrap Device.
 //   - networkBootstrapInterfaceName - Name of the Network Bootstrap Interface.
@@ -153,8 +148,6 @@ func (client *NetworkBootstrapInterfacesClient) BeginDelete(ctx context.Context,
 
 // Delete - Delete the Network Bootstrap Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkBootstrapInterfacesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, networkBootstrapInterfaceName string, options *NetworkBootstrapInterfacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkBootstrapInterfacesClient.BeginDelete"
@@ -170,8 +163,7 @@ func (client *NetworkBootstrapInterfacesClient) deleteOperation(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -200,15 +192,13 @@ func (client *NetworkBootstrapInterfacesClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Get the Network Bootstrap Interface resource details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkBootstrapDeviceName - Name of the Network Bootstrap Device.
 //   - networkBootstrapInterfaceName - Name of the Network Bootstrap Interface.
@@ -228,12 +218,7 @@ func (client *NetworkBootstrapInterfacesClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return NetworkBootstrapInterfacesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkBootstrapInterfacesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -260,15 +245,18 @@ func (client *NetworkBootstrapInterfacesClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *NetworkBootstrapInterfacesClient) getHandleResponse(resp *http.Response) (NetworkBootstrapInterfacesClientGetResponse, error) {
+func (client *NetworkBootstrapInterfacesClient) getHandleResponse(resp *http.Response, successCodes ...int) (NetworkBootstrapInterfacesClientGetResponse, error) {
 	result := NetworkBootstrapInterfacesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkBootstrapInterface); err != nil {
 		return NetworkBootstrapInterfacesClientGetResponse{}, err
 	}
@@ -276,8 +264,6 @@ func (client *NetworkBootstrapInterfacesClient) getHandleResponse(resp *http.Res
 }
 
 // NewListByNetworkBootstrapDevicePager - List all the Network Bootstrap Interface resources in a given resource group.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkBootstrapDeviceName - Name of the Network Bootstrap Device.
 //   - options - NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceOptions contains the optional parameters for the
@@ -293,47 +279,61 @@ func (client *NetworkBootstrapInterfacesClient) NewListByNetworkBootstrapDeviceP
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByNetworkBootstrapDeviceCreateRequest(ctx, resourceGroupName, networkBootstrapDeviceName, options)
-			}, nil)
+			req, err := client.listByNetworkBootstrapDeviceCreateRequest(ctx, resourceGroupName, networkBootstrapDeviceName, nextLink, options)
 			if err != nil {
 				return NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceResponse{}, err
 			}
-			return client.listByNetworkBootstrapDeviceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceResponse{}, err
+			}
+			return client.listByNetworkBootstrapDeviceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByNetworkBootstrapDeviceCreateRequest creates the ListByNetworkBootstrapDevice request.
-func (client *NetworkBootstrapInterfacesClient) listByNetworkBootstrapDeviceCreateRequest(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, _ *NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}/networkBootstrapInterfaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NetworkBootstrapInterfacesClient) listByNetworkBootstrapDeviceCreateRequest(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, nextLink string, _ *NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetworkFabric/networkBootstrapDevices/{networkBootstrapDeviceName}/networkBootstrapInterfaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if networkBootstrapDeviceName == "" {
+			return nil, errors.New("parameter networkBootstrapDeviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{networkBootstrapDeviceName}", url.PathEscape(networkBootstrapDeviceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkBootstrapDeviceName == "" {
-		return nil, errors.New("parameter networkBootstrapDeviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkBootstrapDeviceName}", url.PathEscape(networkBootstrapDeviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByNetworkBootstrapDeviceHandleResponse handles the ListByNetworkBootstrapDevice response.
-func (client *NetworkBootstrapInterfacesClient) listByNetworkBootstrapDeviceHandleResponse(resp *http.Response) (NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceResponse, error) {
+func (client *NetworkBootstrapInterfacesClient) listByNetworkBootstrapDeviceHandleResponse(resp *http.Response, successCodes ...int) (NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceResponse, error) {
 	result := NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkBootstrapInterfaceListResult); err != nil {
 		return NetworkBootstrapInterfacesClientListByNetworkBootstrapDeviceResponse{}, err
 	}
@@ -342,8 +342,6 @@ func (client *NetworkBootstrapInterfacesClient) listByNetworkBootstrapDeviceHand
 
 // BeginUpdate - Update certain properties of the Network Bootstrap Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkBootstrapDeviceName - Name of the Network Bootstrap Device.
 //   - networkBootstrapInterfaceName - Name of the Network Bootstrap Interface.
@@ -369,8 +367,6 @@ func (client *NetworkBootstrapInterfacesClient) BeginUpdate(ctx context.Context,
 
 // Update - Update certain properties of the Network Bootstrap Interface resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkBootstrapInterfacesClient) update(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, networkBootstrapInterfaceName string, body NetworkBootstrapInterfacePatch, options *NetworkBootstrapInterfacesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkBootstrapInterfacesClient.BeginUpdate"
@@ -386,8 +382,7 @@ func (client *NetworkBootstrapInterfacesClient) update(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -416,8 +411,8 @@ func (client *NetworkBootstrapInterfacesClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -428,8 +423,6 @@ func (client *NetworkBootstrapInterfacesClient) updateCreateRequest(ctx context.
 
 // BeginUpdateAdministrativeState - Update the admin state of the Network Interface.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - networkBootstrapDeviceName - Name of the Network Bootstrap Device.
 //   - networkBootstrapInterfaceName - Name of the Network Bootstrap Interface.
@@ -455,8 +448,6 @@ func (client *NetworkBootstrapInterfacesClient) BeginUpdateAdministrativeState(c
 
 // UpdateAdministrativeState - Update the admin state of the Network Interface.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-07-15
 func (client *NetworkBootstrapInterfacesClient) updateAdministrativeState(ctx context.Context, resourceGroupName string, networkBootstrapDeviceName string, networkBootstrapInterfaceName string, body UpdateAdministrativeState, options *NetworkBootstrapInterfacesClientBeginUpdateAdministrativeStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkBootstrapInterfacesClient.BeginUpdateAdministrativeState"
@@ -472,8 +463,7 @@ func (client *NetworkBootstrapInterfacesClient) updateAdministrativeState(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -502,8 +492,8 @@ func (client *NetworkBootstrapInterfacesClient) updateAdministrativeStateCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-07-15")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {

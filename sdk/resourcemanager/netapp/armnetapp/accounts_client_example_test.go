@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-15-preview/Accounts_ChangeKeyVault.json
+// Generated from example definition: 2026-05-15-preview/Accounts_ChangeKeyVault.json
 func ExampleAccountsClient_BeginChangeKeyVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleAccountsClient_BeginChangeKeyVault() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/Accounts_CreateOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Accounts_CreateOrUpdate.json
 func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Accounts_CreateOrUpdateAD.json
+// Generated from example definition: 2026-05-15-preview/Accounts_CreateOrUpdateAD.json
 func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveDirectory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateWithActiveD
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Accounts_CreateOrUpdateLdapConfig.json
+// Generated from example definition: 2026-05-15-preview/Accounts_CreateOrUpdateLdapConfig.json
 func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateLdapConfig() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,6 +172,10 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateLdapConfig(
 				LdapOverTLS:             to.Ptr(false),
 				ServerCACertificate:     to.Ptr("<REDACTED>"),
 				CertificateCNHost:       to.Ptr("ldap.krypton.com"),
+				LdapPort:                to.Ptr[int32](636),
+				UserDN:                  to.Ptr("OU=subdirectory,OU=directory,DC=example,DC=com"),
+				GroupDN:                 to.Ptr("OU=subdirectory,OU=directory,DC=example,DC=com"),
+				NetGroupDN:              to.Ptr("OU=subdirectory,OU=directory,DC=example,DC=com"),
 				BindAuthenticationLevel: to.Ptr(armnetapp.BindAuthenticationLevelSimple),
 				BindDN:                  to.Ptr("cn=user,dc=domain,dc=com"),
 				BindPasswordAkvConfig: &armnetapp.BindPasswordAkvConfig{
@@ -208,6 +212,10 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateLdapConfig(
 	// 				},
 	// 				LdapOverTLS: to.Ptr(false),
 	// 				CertificateCNHost: to.Ptr("ldap.krypton.com"),
+	// 				LdapPort: to.Ptr[int32](636),
+	// 				UserDN: to.Ptr("OU=subdirectory,OU=directory,DC=example,DC=com"),
+	// 				GroupDN: to.Ptr("OU=subdirectory,OU=directory,DC=example,DC=com"),
+	// 				NetGroupDN: to.Ptr("OU=subdirectory,OU=directory,DC=example,DC=com"),
 	// 				BindAuthenticationLevel: to.Ptr(armnetapp.BindAuthenticationLevelSimple),
 	// 				BindDN: to.Ptr("cn=user,dc=domain,dc=com"),
 	// 				BindPasswordAkvConfig: &armnetapp.BindPasswordAkvConfig{
@@ -221,7 +229,7 @@ func ExampleAccountsClient_BeginCreateOrUpdate_accountsCreateOrUpdateLdapConfig(
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Accounts_Delete.json
+// Generated from example definition: 2026-05-15-preview/Accounts_Delete.json
 func ExampleAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -242,7 +250,7 @@ func ExampleAccountsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/Accounts_Get.json
+// Generated from example definition: 2026-05-15-preview/Accounts_Get.json
 func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +296,7 @@ func ExampleAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Accounts_GetChangeKeyVaultInformation.json
+// Generated from example definition: 2026-05-15-preview/Accounts_GetChangeKeyVaultInformation.json
 func ExampleAccountsClient_BeginGetChangeKeyVaultInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -327,7 +335,7 @@ func ExampleAccountsClient_BeginGetChangeKeyVaultInformation() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Accounts_List.json
+// Generated from example definition: 2026-05-15-preview/Accounts_List.json
 func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -367,7 +375,7 @@ func ExampleAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/Accounts_ListBySubscription.json
+// Generated from example definition: 2026-05-15-preview/Accounts_ListBySubscription.json
 func ExampleAccountsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -407,7 +415,28 @@ func ExampleAccountsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/Accounts_RenewCredentials.json
+// Generated from example definition: 2026-05-15-preview/Accounts_RefreshLdapBindPassword.json
+func ExampleAccountsClient_BeginRefreshLdapBindPassword() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginRefreshLdapBindPassword(ctx, "myRG", "account1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-05-15-preview/Accounts_RenewCredentials.json
 func ExampleAccountsClient_BeginRenewCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -433,7 +462,7 @@ func ExampleAccountsClient_BeginRenewCredentials() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Accounts_TransitionEncryptionKey.json
+// Generated from example definition: 2026-05-15-preview/Accounts_TransitionEncryptionKey.json
 func ExampleAccountsClient_BeginTransitionToCmk() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -458,7 +487,7 @@ func ExampleAccountsClient_BeginTransitionToCmk() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/Accounts_Update.json
+// Generated from example definition: 2026-05-15-preview/Accounts_Update.json
 func ExampleAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

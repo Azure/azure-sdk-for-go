@@ -19,7 +19,7 @@ import (
 // EnvironmentClient contains the methods for the Environment group.
 // Don't use this type directly, use NewEnvironmentClient() instead.
 //
-// Generated from API version 2025-08-18-preview
+// Generated from API version 2026-06-02-preview
 type EnvironmentClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,12 +63,7 @@ func (client *EnvironmentClient) CreateOrUpdate(ctx context.Context, resourceGro
 	if err != nil {
 		return EnvironmentClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return EnvironmentClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -95,7 +90,7 @@ func (client *EnvironmentClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -106,8 +101,11 @@ func (client *EnvironmentClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *EnvironmentClient) createOrUpdateHandleResponse(resp *http.Response) (EnvironmentClientCreateOrUpdateResponse, error) {
+func (client *EnvironmentClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (EnvironmentClientCreateOrUpdateResponse, error) {
 	result := EnvironmentClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SCEnvironmentRecord); err != nil {
 		return EnvironmentClientCreateOrUpdateResponse{}, err
 	}
@@ -154,8 +152,7 @@ func (client *EnvironmentClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -184,7 +181,7 @@ func (client *EnvironmentClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

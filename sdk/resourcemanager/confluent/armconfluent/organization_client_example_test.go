@@ -12,7 +12,79 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-18-preview/Organization_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_ActivateResource_MaximumSet_Gen.json
+func ExampleOrganizationClient_BeginActivateResource_organizationActivateResourceMaximumSetGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOrganizationClient().BeginActivateResource(ctx, armconfluent.ActivateSaaSParameterRequest{
+		SaasGUID:    to.Ptr("a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+		PublisherID: to.Ptr("confluent"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armconfluent.OrganizationClientActivateResourceResponse{
+	// 	SaaSResourceDetailsResponse: armconfluent.SaaSResourceDetailsResponse{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Confluent/saasResources/contosoSaaS"),
+	// 		Name: to.Ptr("contosoSaaS"),
+	// 		Type: to.Ptr("Microsoft.Confluent/saasResources"),
+	// 		SystemData: &armconfluent.SystemData{
+	// 			CreatedBy: to.Ptr("john.doe@contoso.com"),
+	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 22, 20, 14, 1, 830000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("john.doe@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 22, 20, 14, 1, 830000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-02-preview/Organization_ActivateResource_MinimumSet_Gen.json
+func ExampleOrganizationClient_BeginActivateResource_organizationActivateResourceMinimumSetGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOrganizationClient().BeginActivateResource(ctx, armconfluent.ActivateSaaSParameterRequest{
+		SaasGUID: to.Ptr("a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armconfluent.OrganizationClientActivateResourceResponse{
+	// 	SaaSResourceDetailsResponse: armconfluent.SaaSResourceDetailsResponse{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-02-preview/Organization_Create_MaximumSet_Gen.json
 func ExampleOrganizationClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +138,7 @@ func ExampleOrganizationClient_BeginCreate() {
 	// res = armconfluent.OrganizationClientCreateResponse{
 	// 	OrganizationResource: armconfluent.OrganizationResource{
 	// 		Properties: &armconfluent.OrganizationResourceProperties{
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.430Z"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 430000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),
 	// 			OrganizationID: to.Ptr("rcmkel"),
 	// 			SsoURL: to.Ptr("anhodmdyanjbkwvtkngyxvwdxupng"),
@@ -103,16 +175,16 @@ func ExampleOrganizationClient_BeginCreate() {
 	// 		SystemData: &armconfluent.SystemData{
 	// 			CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_CreateAPIKey_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_CreateAPIKey_MaximumSet_Gen.json
 func ExampleOrganizationClient_CreateAPIKey_organizationCreateApiKeyMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +239,7 @@ func ExampleOrganizationClient_CreateAPIKey_organizationCreateApiKeyMaximumSet()
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_CreateAPIKey_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_CreateAPIKey_MinimumSet_Gen.json
 func ExampleOrganizationClient_CreateAPIKey_organizationCreateApiKeyMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,7 +263,7 @@ func ExampleOrganizationClient_CreateAPIKey_organizationCreateApiKeyMinimumSet()
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_Delete_MaximumSet_Gen.json
 func ExampleOrganizationClient_BeginDelete_organizationDeleteMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -217,7 +289,7 @@ func ExampleOrganizationClient_BeginDelete_organizationDeleteMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_Delete_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_Delete_MinimumSet_Gen.json
 func ExampleOrganizationClient_BeginDelete_organizationDeleteMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +315,7 @@ func ExampleOrganizationClient_BeginDelete_organizationDeleteMinimumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_DeleteClusterAPIKey_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_DeleteClusterAPIKey_MaximumSet_Gen.json
 func ExampleOrganizationClient_DeleteClusterAPIKey_organizationDeleteClusterApiKeyMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -265,7 +337,7 @@ func ExampleOrganizationClient_DeleteClusterAPIKey_organizationDeleteClusterApiK
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_DeleteClusterAPIKey_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_DeleteClusterAPIKey_MinimumSet_Gen.json
 func ExampleOrganizationClient_DeleteClusterAPIKey_organizationDeleteClusterApiKeyMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -287,7 +359,7 @@ func ExampleOrganizationClient_DeleteClusterAPIKey_organizationDeleteClusterApiK
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_Get_MaximumSet_Gen.json
 func ExampleOrganizationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -308,7 +380,7 @@ func ExampleOrganizationClient_Get() {
 	// res = armconfluent.OrganizationClientGetResponse{
 	// 	OrganizationResource: armconfluent.OrganizationResource{
 	// 		Properties: &armconfluent.OrganizationResourceProperties{
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.430Z"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 430000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),
 	// 			OrganizationID: to.Ptr("rcmkel"),
 	// 			SsoURL: to.Ptr("anhodmdyanjbkwvtkngyxvwdxupng"),
@@ -345,16 +417,16 @@ func ExampleOrganizationClient_Get() {
 	// 		SystemData: &armconfluent.SystemData{
 	// 			CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_GetClusterAPIKey_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_GetClusterAPIKey_MaximumSet_Gen.json
 func ExampleOrganizationClient_GetClusterAPIKey_organizationGetClusterApiKeyMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -406,7 +478,7 @@ func ExampleOrganizationClient_GetClusterAPIKey_organizationGetClusterApiKeyMaxi
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_GetClusterAPIKey_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_GetClusterAPIKey_MinimumSet_Gen.json
 func ExampleOrganizationClient_GetClusterAPIKey_organizationGetClusterApiKeyMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -430,7 +502,7 @@ func ExampleOrganizationClient_GetClusterAPIKey_organizationGetClusterApiKeyMini
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_GetClusterById_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_GetClusterById_MaximumSet_Gen.json
 func ExampleOrganizationClient_GetClusterByID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -501,16 +573,16 @@ func ExampleOrganizationClient_GetClusterByID() {
 	// 		SystemData: &armconfluent.SystemData{
 	// 			CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_GetEnvironmentById_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_GetEnvironmentById_MaximumSet_Gen.json
 func ExampleOrganizationClient_GetEnvironmentByID() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -549,16 +621,16 @@ func ExampleOrganizationClient_GetEnvironmentByID() {
 	// 		SystemData: &armconfluent.SystemData{
 	// 			CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_GetSchemaRegistryClusterById_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_GetSchemaRegistryClusterById_MaximumSet_Gen.json
 func ExampleOrganizationClient_GetSchemaRegistryClusterByID_organizationGetSchemaRegistryClusterByIdMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -612,7 +684,7 @@ func ExampleOrganizationClient_GetSchemaRegistryClusterByID_organizationGetSchem
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_GetSchemaRegistryClusterById_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_GetSchemaRegistryClusterById_MinimumSet_Gen.json
 func ExampleOrganizationClient_GetSchemaRegistryClusterByID_organizationGetSchemaRegistryClusterByIdMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -636,7 +708,100 @@ func ExampleOrganizationClient_GetSchemaRegistryClusterByID_organizationGetSchem
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_LatestLinkedSaaS_MaximumSet_Gen.json
+func ExampleOrganizationClient_LatestLinkedSaaS() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOrganizationClient().LatestLinkedSaaS(ctx, "myResourceGroup", "myOrganization", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armconfluent.OrganizationClientLatestLinkedSaaSResponse{
+	// 	LatestLinkedSaaSResponse: armconfluent.LatestLinkedSaaSResponse{
+	// 		SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SaaS/resources/contosoSaaS"),
+	// 		IsHiddenSaaS: to.Ptr(false),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-02-preview/Organization_LinkSaaS_MaximumSet_Gen.json
+func ExampleOrganizationClient_BeginLinkSaaS() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewOrganizationClient().BeginLinkSaaS(ctx, "myResourceGroup", "myOrganization", armconfluent.SaaSData{
+		SaaSResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SaaS/resources/contosoSaaS"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armconfluent.OrganizationClientLinkSaaSResponse{
+	// 	OrganizationResource: armconfluent.OrganizationResource{
+	// 		Properties: &armconfluent.OrganizationResourceProperties{
+	// 			CreatedTime: to.Ptr(time.Date(2021, time.July, 22, 20, 14, 1, 830000000, time.UTC)),
+	// 			ProvisioningState: to.Ptr(armconfluent.ProvisionStateSucceeded),
+	// 			OrganizationID: to.Ptr("org-12345"),
+	// 			SsoURL: to.Ptr("https://confluent.cloud/login/sso/contoso"),
+	// 			OfferDetail: &armconfluent.OfferDetail{
+	// 				PublisherID: to.Ptr("confluent"),
+	// 				ID: to.Ptr("confluent-cloud-azure-prod"),
+	// 				PlanID: to.Ptr("confluent-cloud-azure-payg-prod"),
+	// 				PlanName: to.Ptr("Confluent Cloud - Pay as you Go"),
+	// 				TermUnit: to.Ptr("P1M"),
+	// 				TermID: to.Ptr("monthly-term-001"),
+	// 				Status: to.Ptr(armconfluent.SaaSOfferStatusSubscribed),
+	// 			},
+	// 			UserDetail: &armconfluent.UserDetail{
+	// 				FirstName: to.Ptr("John"),
+	// 				LastName: to.Ptr("Doe"),
+	// 				EmailAddress: to.Ptr("john.doe@contoso.com"),
+	// 				UserPrincipalName: to.Ptr("john.doe@contoso.com"),
+	// 				AADEmail: to.Ptr("john.doe@contoso.com"),
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"Environment": to.Ptr("Dev"),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Confluent/organizations/myOrganization"),
+	// 		Name: to.Ptr("myOrganization"),
+	// 		Type: to.Ptr("Microsoft.Confluent/organizations"),
+	// 		SystemData: &armconfluent.SystemData{
+	// 			CreatedBy: to.Ptr("john.doe@contoso.com"),
+	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 22, 20, 14, 1, 830000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("john.doe@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 22, 20, 14, 1, 830000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-02-preview/Organization_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleOrganizationClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -663,7 +828,7 @@ func ExampleOrganizationClient_NewListByResourceGroupPager() {
 		// 		Value: []*armconfluent.OrganizationResource{
 		// 			{
 		// 				Properties: &armconfluent.OrganizationResourceProperties{
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.430Z"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 430000000, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),
 		// 					OrganizationID: to.Ptr("rcmkel"),
 		// 					SsoURL: to.Ptr("anhodmdyanjbkwvtkngyxvwdxupng"),
@@ -700,10 +865,10 @@ func ExampleOrganizationClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armconfluent.SystemData{
 		// 					CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 		// 					CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 		// 					LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -713,7 +878,7 @@ func ExampleOrganizationClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_ListBySubscription_MaximumSet_Gen.json
 func ExampleOrganizationClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -740,7 +905,7 @@ func ExampleOrganizationClient_NewListBySubscriptionPager() {
 		// 		Value: []*armconfluent.OrganizationResource{
 		// 			{
 		// 				Properties: &armconfluent.OrganizationResourceProperties{
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.430Z"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 430000000, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),
 		// 					OrganizationID: to.Ptr("rcmkel"),
 		// 					SsoURL: to.Ptr("anhodmdyanjbkwvtkngyxvwdxupng"),
@@ -777,10 +942,10 @@ func ExampleOrganizationClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armconfluent.SystemData{
 		// 					CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 		// 					CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 		// 					LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -790,7 +955,7 @@ func ExampleOrganizationClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_ListClusters_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_ListClusters_MaximumSet_Gen.json
 func ExampleOrganizationClient_NewListClustersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -869,10 +1034,10 @@ func ExampleOrganizationClient_NewListClustersPager() {
 		// 				SystemData: &armconfluent.SystemData{
 		// 					CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 		// 					CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 		// 					LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -882,7 +1047,7 @@ func ExampleOrganizationClient_NewListClustersPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_ListEnvironments_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_ListEnvironments_MaximumSet_Gen.json
 func ExampleOrganizationClient_NewListEnvironmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -929,10 +1094,10 @@ func ExampleOrganizationClient_NewListEnvironmentsPager() {
 		// 				SystemData: &armconfluent.SystemData{
 		// 					CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 		// 					CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 		// 					LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -942,7 +1107,7 @@ func ExampleOrganizationClient_NewListEnvironmentsPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_ListRegions_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_ListRegions_MaximumSet_Gen.json
 func ExampleOrganizationClient_ListRegions_organizationListRegionsMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -993,7 +1158,7 @@ func ExampleOrganizationClient_ListRegions_organizationListRegionsMaximumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_ListRegions_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_ListRegions_MinimumSet_Gen.json
 func ExampleOrganizationClient_ListRegions_organizationListRegionsMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1017,7 +1182,7 @@ func ExampleOrganizationClient_ListRegions_organizationListRegionsMinimumSet() {
 	// }
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_ListSchemaRegistryClusters_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_ListSchemaRegistryClusters_MaximumSet_Gen.json
 func ExampleOrganizationClient_NewListSchemaRegistryClustersPager_organizationListSchemaRegistryClustersMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1083,7 +1248,7 @@ func ExampleOrganizationClient_NewListSchemaRegistryClustersPager_organizationLi
 	}
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_ListSchemaRegistryClusters_MinimumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_ListSchemaRegistryClusters_MinimumSet_Gen.json
 func ExampleOrganizationClient_NewListSchemaRegistryClustersPager_organizationListSchemaRegistryClustersMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1116,7 +1281,7 @@ func ExampleOrganizationClient_NewListSchemaRegistryClustersPager_organizationLi
 	}
 }
 
-// Generated from example definition: 2025-08-18-preview/Organization_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-02-preview/Organization_Update_MaximumSet_Gen.json
 func ExampleOrganizationClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1141,7 +1306,7 @@ func ExampleOrganizationClient_Update() {
 	// res = armconfluent.OrganizationClientUpdateResponse{
 	// 	OrganizationResource: armconfluent.OrganizationResource{
 	// 		Properties: &armconfluent.OrganizationResourceProperties{
-	// 			CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.430Z"); return t}()),
+	// 			CreatedTime: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 430000000, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armconfluent.ProvisionStateAccepted),
 	// 			OrganizationID: to.Ptr("rcmkel"),
 	// 			SsoURL: to.Ptr("anhodmdyanjbkwvtkngyxvwdxupng"),
@@ -1178,10 +1343,10 @@ func ExampleOrganizationClient_Update() {
 	// 		SystemData: &armconfluent.SystemData{
 	// 			CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

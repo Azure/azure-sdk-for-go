@@ -62,12 +62,7 @@ func (client *CheckNameAvailabilityClient) Post(ctx context.Context, location st
 	if err != nil {
 		return CheckNameAvailabilityClientPostResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CheckNameAvailabilityClientPostResponse{}, err
-	}
-	resp, err := client.postHandleResponse(httpResp)
-	return resp, err
+	return client.postHandleResponse(httpResp, http.StatusOK)
 }
 
 // postCreateRequest creates the Post request.
@@ -100,8 +95,11 @@ func (client *CheckNameAvailabilityClient) postCreateRequest(ctx context.Context
 }
 
 // postHandleResponse handles the Post response.
-func (client *CheckNameAvailabilityClient) postHandleResponse(resp *http.Response) (CheckNameAvailabilityClientPostResponse, error) {
+func (client *CheckNameAvailabilityClient) postHandleResponse(resp *http.Response, successCodes ...int) (CheckNameAvailabilityClientPostResponse, error) {
 	result := CheckNameAvailabilityClientPostResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResponseModel); err != nil {
 		return CheckNameAvailabilityClientPostResponse{}, err
 	}

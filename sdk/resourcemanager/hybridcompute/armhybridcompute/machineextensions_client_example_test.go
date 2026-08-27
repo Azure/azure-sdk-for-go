@@ -8,18 +8,18 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridcompute/armhybridcompute/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-09-16-preview/extension/Extension_CreateOrUpdate.json
+// Generated from example definition: 2026-07-15/extension/Extension_CreateOrUpdate.json
 func ExampleMachineExtensionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -48,7 +48,7 @@ func ExampleMachineExtensionsClient_BeginCreateOrUpdate() {
 	// 	MachineExtension: armhybridcompute.MachineExtension{
 	// 		Name: to.Ptr("CustomScriptExtension"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/machines/extensions"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/Extensions/CustomScriptExtension"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/Extensions/CustomScriptExtension"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armhybridcompute.MachineExtensionProperties{
 	// 			Type: to.Ptr("string"),
@@ -60,7 +60,7 @@ func ExampleMachineExtensionsClient_BeginCreateOrUpdate() {
 	// 					Code: to.Ptr("success"),
 	// 					Level: to.Ptr(armhybridcompute.StatusLevelTypes("Information")),
 	// 					Message: to.Ptr("Finished executing command, StdOut: , StdErr:"),
-	// 					Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-08T20:42:10.999Z"); return t}()),
+	// 					Time: to.Ptr(time.Date(2020, time.August, 8, 20, 42, 10, 999000000, time.UTC)),
 	// 				},
 	// 				TypeHandlerVersion: to.Ptr("1.10.3"),
 	// 			},
@@ -77,14 +77,14 @@ func ExampleMachineExtensionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/extension/Extension_Delete.json
+// Generated from example definition: 2026-07-15/extension/Extension_Delete.json
 func ExampleMachineExtensionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -103,14 +103,14 @@ func ExampleMachineExtensionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/extension/Extension_Get.json
+// Generated from example definition: 2026-07-15/extension/Extension_Get.json
 func ExampleMachineExtensionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -125,7 +125,7 @@ func ExampleMachineExtensionsClient_Get() {
 	// 	MachineExtension: armhybridcompute.MachineExtension{
 	// 		Name: to.Ptr("CustomScriptExtension"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/machines/extensions"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/Extensions/CustomScriptExtension"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/Extensions/CustomScriptExtension"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armhybridcompute.MachineExtensionProperties{
 	// 			Type: to.Ptr("string"),
@@ -138,7 +138,7 @@ func ExampleMachineExtensionsClient_Get() {
 	// 					DisplayStatus: to.Ptr("Provisioning succeeded"),
 	// 					Level: to.Ptr(armhybridcompute.StatusLevelTypes("Information")),
 	// 					Message: to.Ptr("Finished executing command, StdOut: , StdErr:"),
-	// 					Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-08-08T20:42:10.999Z"); return t}()),
+	// 					Time: to.Ptr(time.Date(2019, time.August, 8, 20, 42, 10, 999000000, time.UTC)),
 	// 				},
 	// 				TypeHandlerVersion: to.Ptr("1.10.3"),
 	// 			},
@@ -155,14 +155,14 @@ func ExampleMachineExtensionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-09-16-preview/extension/Extension_List.json
+// Generated from example definition: 2026-07-15/extension/Extension_List.json
 func ExampleMachineExtensionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -183,7 +183,7 @@ func ExampleMachineExtensionsClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("CustomScriptExtension"),
 		// 				Type: to.Ptr("Microsoft.HybridCompute/machines/extensions"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/Extensions/CustomScriptExtension"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/Extensions/CustomScriptExtension"),
 		// 				Location: to.Ptr("eastus2euap"),
 		// 				Properties: &armhybridcompute.MachineExtensionProperties{
 		// 					Type: to.Ptr("CustomScriptExtension"),
@@ -196,7 +196,7 @@ func ExampleMachineExtensionsClient_NewListPager() {
 		// 							DisplayStatus: to.Ptr("Provisioning succeeded"),
 		// 							Level: to.Ptr(armhybridcompute.StatusLevelTypes("Information")),
 		// 							Message: to.Ptr("formattedMessage: Finished executing command, StdOut: , StdErr: "),
-		// 							Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-08-13T17:18:57.405Z"); return t}()),
+		// 							Time: to.Ptr(time.Date(2020, time.August, 13, 17, 18, 57, 405000000, time.UTC)),
 		// 						},
 		// 						TypeHandlerVersion: to.Ptr("1.10.3"),
 		// 					},
@@ -211,7 +211,7 @@ func ExampleMachineExtensionsClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("winosupdateextension"),
 		// 				Type: to.Ptr("Microsoft.HybridCompute/machines/extensions"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/Extensions/winosupdateextension"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/Extensions/winosupdateextension"),
 		// 				Location: to.Ptr("eastus2euap"),
 		// 				Properties: &armhybridcompute.MachineExtensionProperties{
 		// 					Type: to.Ptr("windowsosupdateextension"),
@@ -236,14 +236,14 @@ func ExampleMachineExtensionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-16-preview/extension/Extension_Update.json
+// Generated from example definition: 2026-07-15/extension/Extension_Update.json
 func ExampleMachineExtensionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armhybridcompute.NewClientFactory("{subscriptionId}", cred, nil)
+	clientFactory, err := armhybridcompute.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -272,7 +272,7 @@ func ExampleMachineExtensionsClient_BeginUpdate() {
 	// 	MachineExtension: armhybridcompute.MachineExtension{
 	// 		Name: to.Ptr("CustomScriptExtension"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/machines/extensions"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/Extensions/CustomScriptExtension"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HybridCompute/Machines/myMachine/Extensions/CustomScriptExtension"),
 	// 		Location: to.Ptr("eastus2euap"),
 	// 		Properties: &armhybridcompute.MachineExtensionProperties{
 	// 			Type: to.Ptr("string"),
@@ -285,7 +285,7 @@ func ExampleMachineExtensionsClient_BeginUpdate() {
 	// 					Code: to.Ptr("success"),
 	// 					Level: to.Ptr(armhybridcompute.StatusLevelTypes("Information")),
 	// 					Message: to.Ptr("Finished executing command, StdOut: , StdErr:"),
-	// 					Time: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-08T20:42:10.999Z"); return t}()),
+	// 					Time: to.Ptr(time.Date(2020, time.January, 8, 20, 42, 10, 999000000, time.UTC)),
 	// 				},
 	// 				TypeHandlerVersion: to.Ptr("1.10.3"),
 	// 			},

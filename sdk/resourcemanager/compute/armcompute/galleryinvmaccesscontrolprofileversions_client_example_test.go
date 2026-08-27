@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfileVersion_Create.json
+// Generated from example definition: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfileVersion_Create.json
 func ExampleGalleryInVMAccessControlProfileVersionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleGalleryInVMAccessControlProfileVersionsClient_BeginCreateOrUpdate() 
 	// 				},
 	// 			},
 	// 			ExcludeFromLatest: to.Ptr(false),
-	// 			PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00Z"); return t}()),
+	// 			PublishedDate: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateUpdating),
 	// 		},
 	// 		Location: to.Ptr("West US"),
@@ -145,7 +145,7 @@ func ExampleGalleryInVMAccessControlProfileVersionsClient_BeginCreateOrUpdate() 
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfileVersion_Delete.json
+// Generated from example definition: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfileVersion_Delete.json
 func ExampleGalleryInVMAccessControlProfileVersionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleGalleryInVMAccessControlProfileVersionsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfileVersion_Get.json
+// Generated from example definition: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfileVersion_Get.json
 func ExampleGalleryInVMAccessControlProfileVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +238,7 @@ func ExampleGalleryInVMAccessControlProfileVersionsClient_Get() {
 	// 				},
 	// 			},
 	// 			ExcludeFromLatest: to.Ptr(false),
-	// 			PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00Z"); return t}()),
+	// 			PublishedDate: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
 	// 		},
 	// 		Location: to.Ptr("West US"),
@@ -247,7 +247,7 @@ func ExampleGalleryInVMAccessControlProfileVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfileVersion_ListByGalleryInVMAccessControlProfile.json
+// Generated from example definition: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfileVersion_ListByGalleryInVMAccessControlProfile.json
 func ExampleGalleryInVMAccessControlProfileVersionsClient_NewListByGalleryInVMAccessControlProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -325,7 +325,7 @@ func ExampleGalleryInVMAccessControlProfileVersionsClient_NewListByGalleryInVMAc
 		// 						},
 		// 					},
 		// 					ExcludeFromLatest: to.Ptr(false),
-		// 					PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00Z"); return t}()),
+		// 					PublishedDate: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateSucceeded),
 		// 				},
 		// 				Location: to.Ptr("West US"),
@@ -338,7 +338,7 @@ func ExampleGalleryInVMAccessControlProfileVersionsClient_NewListByGalleryInVMAc
 	}
 }
 
-// Generated from example definition: 2025-03-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfileVersion_Update.json
+// Generated from example definition: 2025-12-03/galleryResourceProfileExamples/GalleryInVMAccessControlProfileVersion_Update.json
 func ExampleGalleryInVMAccessControlProfileVersionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -431,7 +431,7 @@ func ExampleGalleryInVMAccessControlProfileVersionsClient_BeginUpdate() {
 	// 				},
 	// 			},
 	// 			ExcludeFromLatest: to.Ptr(false),
-	// 			PublishedDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00Z"); return t}()),
+	// 			PublishedDate: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr(armcompute.GalleryProvisioningStateUpdating),
 	// 		},
 	// 		Location: to.Ptr("West US"),

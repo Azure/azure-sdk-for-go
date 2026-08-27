@@ -64,12 +64,7 @@ func (client *SuppressionsClient) Create(ctx context.Context, resourceURI string
 	if err != nil {
 		return SuppressionsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SuppressionsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK)
 }
 
 // createCreateRequest creates the Create request.
@@ -103,8 +98,11 @@ func (client *SuppressionsClient) createCreateRequest(ctx context.Context, resou
 }
 
 // createHandleResponse handles the Create response.
-func (client *SuppressionsClient) createHandleResponse(resp *http.Response) (SuppressionsClientCreateResponse, error) {
+func (client *SuppressionsClient) createHandleResponse(resp *http.Response, successCodes ...int) (SuppressionsClientCreateResponse, error) {
 	result := SuppressionsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SuppressionContract); err != nil {
 		return SuppressionsClientCreateResponse{}, err
 	}
@@ -133,8 +131,7 @@ func (client *SuppressionsClient) Delete(ctx context.Context, resourceURI string
 		return SuppressionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SuppressionsClientDeleteResponse{}, err
+		return SuppressionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SuppressionsClientDeleteResponse{}, nil
 }
@@ -184,12 +181,7 @@ func (client *SuppressionsClient) Get(ctx context.Context, resourceURI string, r
 	if err != nil {
 		return SuppressionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SuppressionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -219,8 +211,11 @@ func (client *SuppressionsClient) getCreateRequest(ctx context.Context, resource
 }
 
 // getHandleResponse handles the Get response.
-func (client *SuppressionsClient) getHandleResponse(resp *http.Response) (SuppressionsClientGetResponse, error) {
+func (client *SuppressionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (SuppressionsClientGetResponse, error) {
 	result := SuppressionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SuppressionContract); err != nil {
 		return SuppressionsClientGetResponse{}, err
 	}
@@ -241,45 +236,59 @@ func (client *SuppressionsClient) NewListPager(options *SuppressionsClientListOp
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return SuppressionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SuppressionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *SuppressionsClient) listCreateRequest(ctx context.Context, options *SuppressionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/suppressions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SuppressionsClient) listCreateRequest(ctx context.Context, nextLink string, options *SuppressionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/suppressions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *SuppressionsClient) listHandleResponse(resp *http.Response) (SuppressionsClientListResponse, error) {
+func (client *SuppressionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SuppressionsClientListResponse, error) {
 	result := SuppressionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SuppressionContractListResult); err != nil {
 		return SuppressionsClientListResponse{}, err
 	}

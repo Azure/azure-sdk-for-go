@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-15-preview/Snapshots_Create.json
+// Generated from example definition: 2026-05-15-preview/Snapshots_Create.json
 func ExampleSnapshotsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleSnapshotsClient_BeginCreate() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/Snapshots_Delete.json
+// Generated from example definition: 2026-05-15-preview/Snapshots_Delete.json
 func ExampleSnapshotsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleSnapshotsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Snapshots_Get.json
+// Generated from example definition: 2026-05-15-preview/Snapshots_Get.json
 func ExampleSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleSnapshotsClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/snapshots/snapshot1"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armnetapp.SnapshotProperties{
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
+	// 			Created: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			SnapshotID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca3333"),
 	// 		},
@@ -94,7 +94,7 @@ func ExampleSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Snapshots_List.json
+// Generated from example definition: 2026-05-15-preview/Snapshots_List.json
 func ExampleSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleSnapshotsClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/snapshots/snapshot1"),
 		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armnetapp.SnapshotProperties{
-		// 					Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
+		// 					Created: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					SnapshotID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca3333"),
 		// 				},
@@ -136,7 +136,7 @@ func ExampleSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-15-preview/Snapshots_SingleFileRestore.json
+// Generated from example definition: 2026-05-15-preview/Snapshots_SingleFileRestore.json
 func ExampleSnapshotsClient_BeginRestoreFiles() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +167,7 @@ func ExampleSnapshotsClient_BeginRestoreFiles() {
 	// }
 }
 
-// Generated from example definition: 2026-04-15-preview/Snapshots_Update.json
+// Generated from example definition: 2026-05-15-preview/Snapshots_Update.json
 func ExampleSnapshotsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleSnapshotsClient_BeginUpdate() {
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/snapshots/snapshot1"),
 	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armnetapp.SnapshotProperties{
-	// 			Created: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-08-15T13:23:33Z"); return t}()),
+	// 			Created: to.Ptr(time.Date(2017, time.August, 15, 13, 23, 33, 0, time.UTC)),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			SnapshotID: to.Ptr("9760acf5-4638-11e7-9bdb-020073ca3333"),
 	// 		},

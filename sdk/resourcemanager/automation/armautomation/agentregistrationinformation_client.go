@@ -61,12 +61,7 @@ func (client *AgentRegistrationInformationClient) Get(ctx context.Context, resou
 	if err != nil {
 		return AgentRegistrationInformationClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AgentRegistrationInformationClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -96,8 +91,11 @@ func (client *AgentRegistrationInformationClient) getCreateRequest(ctx context.C
 }
 
 // getHandleResponse handles the Get response.
-func (client *AgentRegistrationInformationClient) getHandleResponse(resp *http.Response) (AgentRegistrationInformationClientGetResponse, error) {
+func (client *AgentRegistrationInformationClient) getHandleResponse(resp *http.Response, successCodes ...int) (AgentRegistrationInformationClientGetResponse, error) {
 	result := AgentRegistrationInformationClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentRegistration); err != nil {
 		return AgentRegistrationInformationClientGetResponse{}, err
 	}
@@ -125,12 +123,7 @@ func (client *AgentRegistrationInformationClient) RegenerateKey(ctx context.Cont
 	if err != nil {
 		return AgentRegistrationInformationClientRegenerateKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AgentRegistrationInformationClientRegenerateKeyResponse{}, err
-	}
-	resp, err := client.regenerateKeyHandleResponse(httpResp)
-	return resp, err
+	return client.regenerateKeyHandleResponse(httpResp, http.StatusOK)
 }
 
 // regenerateKeyCreateRequest creates the RegenerateKey request.
@@ -164,8 +157,11 @@ func (client *AgentRegistrationInformationClient) regenerateKeyCreateRequest(ctx
 }
 
 // regenerateKeyHandleResponse handles the RegenerateKey response.
-func (client *AgentRegistrationInformationClient) regenerateKeyHandleResponse(resp *http.Response) (AgentRegistrationInformationClientRegenerateKeyResponse, error) {
+func (client *AgentRegistrationInformationClient) regenerateKeyHandleResponse(resp *http.Response, successCodes ...int) (AgentRegistrationInformationClientRegenerateKeyResponse, error) {
 	result := AgentRegistrationInformationClientRegenerateKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AgentRegistration); err != nil {
 		return AgentRegistrationInformationClientRegenerateKeyResponse{}, err
 	}

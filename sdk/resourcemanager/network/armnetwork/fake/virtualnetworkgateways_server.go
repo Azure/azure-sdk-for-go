@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -54,6 +54,10 @@ type VirtualNetworkGatewaysServer struct {
 	// BeginGetBgpPeerStatus is the fake for method VirtualNetworkGatewaysClient.BeginGetBgpPeerStatus
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetBgpPeerStatus func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientBeginGetBgpPeerStatusOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetBgpPeerStatusResponse], errResp azfake.ErrorResponder)
+
+	// BeginGetEffectiveRoutes is the fake for method VirtualNetworkGatewaysClient.BeginGetEffectiveRoutes
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginGetEffectiveRoutes func(ctx context.Context, resourceGroupName string, virtualNetworkGatewayName string, options *armnetwork.VirtualNetworkGatewaysClientBeginGetEffectiveRoutesOptions) (resp azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetEffectiveRoutesResponse], errResp azfake.ErrorResponder)
 
 	// BeginGetFailoverAllTestDetails is the fake for method VirtualNetworkGatewaysClient.BeginGetFailoverAllTestDetails
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
@@ -169,6 +173,7 @@ func NewVirtualNetworkGatewaysServerTransport(srv *VirtualNetworkGatewaysServer)
 		beginGeneratevpnclientpackage:                      newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse]](),
 		beginGetAdvertisedRoutes:                           newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse]](),
 		beginGetBgpPeerStatus:                              newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetBgpPeerStatusResponse]](),
+		beginGetEffectiveRoutes:                            newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetEffectiveRoutesResponse]](),
 		beginGetFailoverAllTestDetails:                     newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse]](),
 		beginGetFailoverSingleTestDetails:                  newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse]](),
 		beginGetLearnedRoutes:                              newTracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetLearnedRoutesResponse]](),
@@ -205,6 +210,7 @@ type VirtualNetworkGatewaysServerTransport struct {
 	beginGeneratevpnclientpackage                      *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGeneratevpnclientpackageResponse]]
 	beginGetAdvertisedRoutes                           *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetAdvertisedRoutesResponse]]
 	beginGetBgpPeerStatus                              *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetBgpPeerStatusResponse]]
+	beginGetEffectiveRoutes                            *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetEffectiveRoutesResponse]]
 	beginGetFailoverAllTestDetails                     *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetFailoverAllTestDetailsResponse]]
 	beginGetFailoverSingleTestDetails                  *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetFailoverSingleTestDetailsResponse]]
 	beginGetLearnedRoutes                              *tracker[azfake.PollerResponder[armnetwork.VirtualNetworkGatewaysClientGetLearnedRoutesResponse]]
@@ -266,6 +272,8 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = v.dispatchBeginGetAdvertisedRoutes(req)
 			case "VirtualNetworkGatewaysClient.BeginGetBgpPeerStatus":
 				res.resp, res.err = v.dispatchBeginGetBgpPeerStatus(req)
+			case "VirtualNetworkGatewaysClient.BeginGetEffectiveRoutes":
+				res.resp, res.err = v.dispatchBeginGetEffectiveRoutes(req)
 			case "VirtualNetworkGatewaysClient.BeginGetFailoverAllTestDetails":
 				res.resp, res.err = v.dispatchBeginGetFailoverAllTestDetails(req)
 			case "VirtualNetworkGatewaysClient.BeginGetFailoverSingleTestDetails":
@@ -693,6 +701,50 @@ func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetBgpPeerStatus(re
 	}
 	if !server.PollerResponderMore(beginGetBgpPeerStatus) {
 		v.beginGetBgpPeerStatus.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (v *VirtualNetworkGatewaysServerTransport) dispatchBeginGetEffectiveRoutes(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginGetEffectiveRoutes == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginGetEffectiveRoutes not implemented")}
+	}
+	beginGetEffectiveRoutes := v.beginGetEffectiveRoutes.get(req)
+	if beginGetEffectiveRoutes == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/virtualNetworkGateways/(?P<virtualNetworkGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getEffectiveRoutes`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		virtualNetworkGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualNetworkGatewayName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginGetEffectiveRoutes(req.Context(), resourceGroupNameParam, virtualNetworkGatewayNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginGetEffectiveRoutes = &respr
+		v.beginGetEffectiveRoutes.add(req, beginGetEffectiveRoutes)
+	}
+
+	resp, err := server.PollerResponderNext(beginGetEffectiveRoutes, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginGetEffectiveRoutes.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginGetEffectiveRoutes) {
+		v.beginGetEffectiveRoutes.remove(req)
 	}
 
 	return resp, nil

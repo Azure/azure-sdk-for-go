@@ -30,6 +30,9 @@ type SitesBySubscriptionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSitesBySubscriptionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SitesBySubscriptionClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -89,9 +92,6 @@ func (client *SitesBySubscriptionClient) createOrUpdate(ctx context.Context, sit
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *SitesBySubscriptionClient) createOrUpdateCreateRequest(ctx context.Context, siteName string, resource Site, _ *SitesBySubscriptionClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Edge/sites/{siteName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if siteName == "" {
 		return nil, errors.New("parameter siteName cannot be empty")
@@ -140,9 +140,6 @@ func (client *SitesBySubscriptionClient) Delete(ctx context.Context, siteName st
 // deleteCreateRequest creates the Delete request.
 func (client *SitesBySubscriptionClient) deleteCreateRequest(ctx context.Context, siteName string, _ *SitesBySubscriptionClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Edge/sites/{siteName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if siteName == "" {
 		return nil, errors.New("parameter siteName cannot be empty")
@@ -182,9 +179,6 @@ func (client *SitesBySubscriptionClient) Get(ctx context.Context, siteName strin
 // getCreateRequest creates the Get request.
 func (client *SitesBySubscriptionClient) getCreateRequest(ctx context.Context, siteName string, _ *SitesBySubscriptionClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Edge/sites/{siteName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if siteName == "" {
 		return nil, errors.New("parameter siteName cannot be empty")
@@ -248,9 +242,6 @@ func (client *SitesBySubscriptionClient) listCreateRequest(ctx context.Context, 
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Edge/sites"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -306,9 +297,6 @@ func (client *SitesBySubscriptionClient) Update(ctx context.Context, siteName st
 // updateCreateRequest creates the Update request.
 func (client *SitesBySubscriptionClient) updateCreateRequest(ctx context.Context, siteName string, properties SiteUpdate, _ *SitesBySubscriptionClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Edge/sites/{siteName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if siteName == "" {
 		return nil, errors.New("parameter siteName cannot be empty")

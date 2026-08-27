@@ -31,6 +31,9 @@ type SetDefinitionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSetDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SetDefinitionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,9 +71,6 @@ func (client *SetDefinitionsClient) CreateOrUpdate(ctx context.Context, policySe
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *SetDefinitionsClient) createOrUpdateCreateRequest(ctx context.Context, policySetDefinitionName string, parameters SetDefinition, _ *SetDefinitionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if policySetDefinitionName == "" {
 		return nil, errors.New("parameter policySetDefinitionName cannot be empty")
@@ -193,9 +193,6 @@ func (client *SetDefinitionsClient) Delete(ctx context.Context, policySetDefinit
 // deleteCreateRequest creates the Delete request.
 func (client *SetDefinitionsClient) deleteCreateRequest(ctx context.Context, policySetDefinitionName string, _ *SetDefinitionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if policySetDefinitionName == "" {
 		return nil, errors.New("parameter policySetDefinitionName cannot be empty")
@@ -283,9 +280,6 @@ func (client *SetDefinitionsClient) Get(ctx context.Context, policySetDefinition
 // getCreateRequest creates the Get request.
 func (client *SetDefinitionsClient) getCreateRequest(ctx context.Context, policySetDefinitionName string, options *SetDefinitionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions/{policySetDefinitionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if policySetDefinitionName == "" {
 		return nil, errors.New("parameter policySetDefinitionName cannot be empty")
@@ -474,9 +468,6 @@ func (client *SetDefinitionsClient) listCreateRequest(ctx context.Context, nextL
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {

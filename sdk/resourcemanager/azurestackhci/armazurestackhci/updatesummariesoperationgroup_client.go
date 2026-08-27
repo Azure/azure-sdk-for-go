@@ -30,6 +30,9 @@ type UpdateSummariesOperationGroupClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewUpdateSummariesOperationGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UpdateSummariesOperationGroupClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -89,9 +92,6 @@ func (client *UpdateSummariesOperationGroupClient) checkHealth(ctx context.Conte
 // checkHealthCreateRequest creates the CheckHealth request.
 func (client *UpdateSummariesOperationGroupClient) checkHealthCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *UpdateSummariesOperationGroupClientBeginCheckHealthOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updateSummaries/default/checkHealth"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -160,9 +160,6 @@ func (client *UpdateSummariesOperationGroupClient) checkUpdates(ctx context.Cont
 // checkUpdatesCreateRequest creates the CheckUpdates request.
 func (client *UpdateSummariesOperationGroupClient) checkUpdatesCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, body CheckUpdatesRequest, _ *UpdateSummariesOperationGroupClientBeginCheckUpdatesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updateSummaries/default/checkUpdates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

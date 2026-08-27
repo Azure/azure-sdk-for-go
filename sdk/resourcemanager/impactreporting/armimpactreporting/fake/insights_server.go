@@ -104,7 +104,7 @@ func (i *InsightsServerTransport) dispatchCreate(req *http.Request) (*http.Respo
 	if i.srv.Create == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Impact/workloadImpacts/(?P<workloadImpactName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/insights/(?P<insightName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Impact/workloadImpacts/(?P<workloadImpactName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/insights/(?P<insightName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -141,7 +141,7 @@ func (i *InsightsServerTransport) dispatchDelete(req *http.Request) (*http.Respo
 	if i.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Impact/workloadImpacts/(?P<workloadImpactName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/insights/(?P<insightName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Impact/workloadImpacts/(?P<workloadImpactName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/insights/(?P<insightName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -174,7 +174,7 @@ func (i *InsightsServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Impact/workloadImpacts/(?P<workloadImpactName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/insights/(?P<insightName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Impact/workloadImpacts/(?P<workloadImpactName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/insights/(?P<insightName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -209,7 +209,7 @@ func (i *InsightsServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	}
 	newListBySubscriptionPager := i.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Impact/workloadImpacts/(?P<workloadImpactName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/insights`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Impact/workloadImpacts/(?P<workloadImpactName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/insights`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

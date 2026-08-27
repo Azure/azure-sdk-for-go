@@ -30,6 +30,9 @@ type EnterprisePoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewEnterprisePoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EnterprisePoliciesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,9 +71,6 @@ func (client *EnterprisePoliciesClient) CreateOrUpdate(ctx context.Context, ente
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *EnterprisePoliciesClient) createOrUpdateCreateRequest(ctx context.Context, enterprisePolicyName string, resourceGroupName string, parameters EnterprisePolicy, _ *EnterprisePoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerPlatform/enterprisePolicies/{enterprisePolicyName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if enterprisePolicyName == "" {
 		return nil, errors.New("parameter enterprisePolicyName cannot be empty")
@@ -136,9 +136,6 @@ func (client *EnterprisePoliciesClient) Delete(ctx context.Context, resourceGrou
 // deleteCreateRequest creates the Delete request.
 func (client *EnterprisePoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, enterprisePolicyName string, _ *EnterprisePoliciesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerPlatform/enterprisePolicies/{enterprisePolicyName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -183,9 +180,6 @@ func (client *EnterprisePoliciesClient) Get(ctx context.Context, enterprisePolic
 // getCreateRequest creates the Get request.
 func (client *EnterprisePoliciesClient) getCreateRequest(ctx context.Context, enterprisePolicyName string, resourceGroupName string, _ *EnterprisePoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerPlatform/enterprisePolicies/{enterprisePolicyName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if enterprisePolicyName == "" {
 		return nil, errors.New("parameter enterprisePolicyName cannot be empty")
@@ -254,9 +248,6 @@ func (client *EnterprisePoliciesClient) listByResourceGroupCreateRequest(ctx con
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerPlatform/enterprisePolicies"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -325,9 +316,6 @@ func (client *EnterprisePoliciesClient) listBySubscriptionCreateRequest(ctx cont
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PowerPlatform/enterprisePolicies"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -384,9 +372,6 @@ func (client *EnterprisePoliciesClient) Update(ctx context.Context, enterprisePo
 // updateCreateRequest creates the Update request.
 func (client *EnterprisePoliciesClient) updateCreateRequest(ctx context.Context, enterprisePolicyName string, resourceGroupName string, parameters PatchEnterprisePolicy, _ *EnterprisePoliciesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerPlatform/enterprisePolicies/{enterprisePolicyName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if enterprisePolicyName == "" {
 		return nil, errors.New("parameter enterprisePolicyName cannot be empty")

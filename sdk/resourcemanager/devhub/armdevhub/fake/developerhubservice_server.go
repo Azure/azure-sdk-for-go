@@ -106,7 +106,7 @@ func (d *DeveloperHubServiceServerTransport) dispatchGeneratePreviewArtifacts(re
 	if d.srv.GeneratePreviewArtifacts == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GeneratePreviewArtifacts not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevHub/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generatePreviewArtifacts`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevHub/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generatePreviewArtifacts`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -139,7 +139,7 @@ func (d *DeveloperHubServiceServerTransport) dispatchGetADOOAuthInfo(req *http.R
 	if d.srv.GetADOOAuthInfo == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetADOOAuthInfo not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevHub/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/adooauth/default/getADOOAuthInfo`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevHub/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/adooauth/default/getADOOAuthInfo`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -178,7 +178,7 @@ func (d *DeveloperHubServiceServerTransport) dispatchGitHubOAuth(req *http.Reque
 	if d.srv.GitHubOAuth == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GitHubOAuth not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevHub/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/githuboauth/default/getGitHubOAuthInfo`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevHub/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/githuboauth/default/getGitHubOAuthInfo`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -217,7 +217,7 @@ func (d *DeveloperHubServiceServerTransport) dispatchGitHubOAuthCallback(req *ht
 	if d.srv.GitHubOAuthCallback == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GitHubOAuthCallback not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevHub/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/githuboauth/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevHub/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/githuboauth/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -247,7 +247,7 @@ func (d *DeveloperHubServiceServerTransport) dispatchListGitHubOAuth(req *http.R
 	if d.srv.ListGitHubOAuth == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListGitHubOAuth not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevHub/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/githuboauth`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevHub/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/githuboauth`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

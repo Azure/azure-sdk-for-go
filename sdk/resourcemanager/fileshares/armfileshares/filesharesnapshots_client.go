@@ -30,6 +30,9 @@ type FileShareSnapshotsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFileShareSnapshotsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FileShareSnapshotsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -91,9 +94,6 @@ func (client *FileShareSnapshotsClient) createOrUpdateFileShareSnapshot(ctx cont
 // createOrUpdateFileShareSnapshotCreateRequest creates the CreateOrUpdateFileShareSnapshot request.
 func (client *FileShareSnapshotsClient) createOrUpdateFileShareSnapshotCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, name string, resource FileShareSnapshot, _ *FileShareSnapshotsClientBeginCreateOrUpdateFileShareSnapshotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}/fileShareSnapshots/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -170,9 +170,6 @@ func (client *FileShareSnapshotsClient) deleteFileShareSnapshot(ctx context.Cont
 // deleteFileShareSnapshotCreateRequest creates the DeleteFileShareSnapshot request.
 func (client *FileShareSnapshotsClient) deleteFileShareSnapshotCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, name string, _ *FileShareSnapshotsClientBeginDeleteFileShareSnapshotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}/fileShareSnapshots/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -223,9 +220,6 @@ func (client *FileShareSnapshotsClient) GetFileShareSnapshot(ctx context.Context
 // getFileShareSnapshotCreateRequest creates the GetFileShareSnapshot request.
 func (client *FileShareSnapshotsClient) getFileShareSnapshotCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, name string, _ *FileShareSnapshotsClientGetFileShareSnapshotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}/fileShareSnapshots/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -299,9 +293,6 @@ func (client *FileShareSnapshotsClient) listByFileShareCreateRequest(ctx context
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}/fileShareSnapshots"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -389,9 +380,6 @@ func (client *FileShareSnapshotsClient) updateFileShareSnapshot(ctx context.Cont
 // updateFileShareSnapshotCreateRequest creates the UpdateFileShareSnapshot request.
 func (client *FileShareSnapshotsClient) updateFileShareSnapshotCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, name string, properties FileShareSnapshotUpdate, _ *FileShareSnapshotsClientBeginUpdateFileShareSnapshotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.FileShares/fileShares/{resourceName}/fileShareSnapshots/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

@@ -30,6 +30,9 @@ type AutonomousDatabasesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAutonomousDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutonomousDatabasesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -90,9 +93,6 @@ func (client *AutonomousDatabasesClient) action(ctx context.Context, resourceGro
 // actionCreateRequest creates the Action request.
 func (client *AutonomousDatabasesClient) actionCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body AutonomousDatabaseLifecycleAction, _ *AutonomousDatabasesClientBeginActionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/action"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -166,9 +166,6 @@ func (client *AutonomousDatabasesClient) changeDisasterRecoveryConfiguration(ctx
 // changeDisasterRecoveryConfigurationCreateRequest creates the ChangeDisasterRecoveryConfiguration request.
 func (client *AutonomousDatabasesClient) changeDisasterRecoveryConfigurationCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body DisasterRecoveryConfigurationDetails, _ *AutonomousDatabasesClientBeginChangeDisasterRecoveryConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/changeDisasterRecoveryConfiguration"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -242,9 +239,6 @@ func (client *AutonomousDatabasesClient) createOrUpdate(ctx context.Context, res
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *AutonomousDatabasesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, resource AutonomousDatabase, _ *AutonomousDatabasesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -317,9 +311,6 @@ func (client *AutonomousDatabasesClient) deleteOperation(ctx context.Context, re
 // deleteCreateRequest creates the Delete request.
 func (client *AutonomousDatabasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, _ *AutonomousDatabasesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -388,9 +379,6 @@ func (client *AutonomousDatabasesClient) failover(ctx context.Context, resourceG
 // failoverCreateRequest creates the Failover request.
 func (client *AutonomousDatabasesClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body PeerDbDetails, _ *AutonomousDatabasesClientBeginFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/failover"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -442,9 +430,6 @@ func (client *AutonomousDatabasesClient) GenerateWallet(ctx context.Context, res
 // generateWalletCreateRequest creates the GenerateWallet request.
 func (client *AutonomousDatabasesClient) generateWalletCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body GenerateAutonomousDatabaseWalletDetails, _ *AutonomousDatabasesClientGenerateWalletOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/generateWallet"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -506,9 +491,6 @@ func (client *AutonomousDatabasesClient) Get(ctx context.Context, resourceGroupN
 // getCreateRequest creates the Get request.
 func (client *AutonomousDatabasesClient) getCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, _ *AutonomousDatabasesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -577,9 +559,6 @@ func (client *AutonomousDatabasesClient) listByResourceGroupCreateRequest(ctx co
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -648,9 +627,6 @@ func (client *AutonomousDatabasesClient) listBySubscriptionCreateRequest(ctx con
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/autonomousDatabases"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
@@ -729,9 +705,6 @@ func (client *AutonomousDatabasesClient) restore(ctx context.Context, resourceGr
 // restoreCreateRequest creates the Restore request.
 func (client *AutonomousDatabasesClient) restoreCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body RestoreAutonomousDatabaseDetails, _ *AutonomousDatabasesClientBeginRestoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/restore"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -804,9 +777,6 @@ func (client *AutonomousDatabasesClient) shrink(ctx context.Context, resourceGro
 // shrinkCreateRequest creates the Shrink request.
 func (client *AutonomousDatabasesClient) shrinkCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, _ *AutonomousDatabasesClientBeginShrinkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/shrink"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -876,9 +846,6 @@ func (client *AutonomousDatabasesClient) switchover(ctx context.Context, resourc
 // switchoverCreateRequest creates the Switchover request.
 func (client *AutonomousDatabasesClient) switchoverCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body PeerDbDetails, _ *AutonomousDatabasesClientBeginSwitchoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/switchover"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -952,9 +919,6 @@ func (client *AutonomousDatabasesClient) update(ctx context.Context, resourceGro
 // updateCreateRequest creates the Update request.
 func (client *AutonomousDatabasesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, properties AutonomousDatabaseUpdate, _ *AutonomousDatabasesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

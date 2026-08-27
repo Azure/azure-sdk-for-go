@@ -19,7 +19,7 @@ import (
 // SpotPlacementScoresClient contains the methods for the SpotPlacementScores group.
 // Don't use this type directly, use NewSpotPlacementScoresClient() instead.
 //
-// Generated from API version 2026-05-05-preview
+// Generated from API version 2026-09-05-preview
 type SpotPlacementScoresClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type SpotPlacementScoresClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSpotPlacementScoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SpotPlacementScoresClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,9 +68,6 @@ func (client *SpotPlacementScoresClient) Get(ctx context.Context, location strin
 // getCreateRequest creates the Get request.
 func (client *SpotPlacementScoresClient) getCreateRequest(ctx context.Context, location string, _ *SpotPlacementScoresClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/placementScores/spot"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -78,7 +78,7 @@ func (client *SpotPlacementScoresClient) getCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260505Preview)
+	reqQP.Set("api-version", version20260905Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -122,9 +122,6 @@ func (client *SpotPlacementScoresClient) Post(ctx context.Context, location stri
 // postCreateRequest creates the Post request.
 func (client *SpotPlacementScoresClient) postCreateRequest(ctx context.Context, location string, spotPlacementScoresInput SpotPlacementScoresInput, _ *SpotPlacementScoresClientPostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/placementScores/spot/generate"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -135,7 +132,7 @@ func (client *SpotPlacementScoresClient) postCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260505Preview)
+	reqQP.Set("api-version", version20260905Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

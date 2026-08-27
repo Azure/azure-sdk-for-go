@@ -124,6 +124,28 @@ type SKUMixPlacementBase struct {
 	Type *string
 }
 
+// SKUMixPlacementCapacityLimit - Capacity availability for a single requested (VM size, zone) combination, independent of
+// the
+// recommended placement.
+type SKUMixPlacementCapacityLimit struct {
+	// REQUIRED; Upper bound, in VMs, on how much capacity can be allocated for this (VM size, zone): the smallest of
+	// the requested capacity, the available capacity, and the available quota, but never below the capacity
+	// already recommended for the slot. 0 when nothing is available.
+	Limit *int32
+
+	// REQUIRED; VM size name (e.g. Standard_D2s_v3).
+	Name *string
+
+	// REQUIRED; Priority of this entry (Regular or Spot).
+	Priority *SKUMixPlacementPriority
+
+	// REQUIRED; Why the limit is below the requested capacity, or None when the request is fully available.
+	Reason *SKUMixPlacementCapacityLimitReason
+
+	// Logical zone (e.g. "1", "2", "3"). Omitted or empty for regional requests.
+	Zone *string
+}
+
 // SKUMixPlacementCapacityProfile - Capacity-related properties for the placement request.
 type SKUMixPlacementCapacityProfile struct {
 	// REQUIRED; The capacity to run the workload. For VMs: [1..10,000]. For vCPUs: [1..100,000].
@@ -150,9 +172,6 @@ type SKUMixPlacementCapacityProfile struct {
 
 // SKUMixPlacementDeploymentChoice - A single deployment choice recommendation.
 type SKUMixPlacementDeploymentChoice struct {
-	// REQUIRED; Unique identifier for this deployment choice.
-	ID *string
-
 	// REQUIRED; The list of VM size / zone allocations that make up this deployment choice.
 	SKUSplit []*SKUMixPlacementItem
 
@@ -176,9 +195,6 @@ type SKUMixPlacementItem struct {
 
 	// REQUIRED; Priority of this allocation (Regular or Spot).
 	Priority *SKUMixPlacementPriority
-
-	// Upper range of recommended allocation capacity.
-	CapacityMax *int32
 
 	// Logical zone (e.g. "1", "2", "3"). Omitted or empty for regional deployments.
 	Zone *string
@@ -204,11 +220,20 @@ type SKUMixPlacementRequest struct {
 
 // SKUMixPlacementResponse - Sku Mix Placement API response.
 type SKUMixPlacementResponse struct {
+	// REQUIRED; Unique identifier for this placement response, including responses that contain no placement choices.
+	// Replaces the per-choice id that was present on placementChoices in earlier API versions.
+	ID *string
+
 	// REQUIRED; Indicates whether the response is a complete or partial fulfillment.
 	PartialFulfillmentReason *SKUMixPlacementPartialFulfillmentReason
 
 	// REQUIRED; List of placement choice recommendations.
 	PlacementChoices []*SKUMixPlacementDeploymentChoice
+
+	// Capacity availability for each requested (VM size, zone) combination, independent of the recommended
+	// placement. An entry is present for every requested combination, including those excluded by capacity
+	// or quota. Only returned for requests that describe instances by VM sizes.
+	CapacityLimits []*SKUMixPlacementCapacityLimit
 
 	// Date/time until which the recommendations are valid. Callers should request fresh recommendations after this time.
 	ValidUntil *time.Time

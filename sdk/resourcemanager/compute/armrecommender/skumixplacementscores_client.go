@@ -19,7 +19,7 @@ import (
 // SKUMixPlacementScoresClient contains the methods for the SKUMixPlacementScores group.
 // Don't use this type directly, use NewSKUMixPlacementScoresClient() instead.
 //
-// Generated from API version 2026-05-05-preview
+// Generated from API version 2026-09-05-preview
 type SKUMixPlacementScoresClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type SKUMixPlacementScoresClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSKUMixPlacementScoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SKUMixPlacementScoresClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,9 +69,6 @@ func (client *SKUMixPlacementScoresClient) Get(ctx context.Context, location str
 // getCreateRequest creates the Get request.
 func (client *SKUMixPlacementScoresClient) getCreateRequest(ctx context.Context, location string, _ *SKUMixPlacementScoresClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/skuMixPlacementScores/recommendations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -79,7 +79,7 @@ func (client *SKUMixPlacementScoresClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260505Preview)
+	reqQP.Set("api-version", version20260905Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -123,9 +123,6 @@ func (client *SKUMixPlacementScoresClient) Post(ctx context.Context, location st
 // postCreateRequest creates the Post request.
 func (client *SKUMixPlacementScoresClient) postCreateRequest(ctx context.Context, location string, skuMixPlacementRequest SKUMixPlacementRequest, _ *SKUMixPlacementScoresClientPostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/skuMixPlacementScores/recommendations/generate"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -136,7 +133,7 @@ func (client *SKUMixPlacementScoresClient) postCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260505Preview)
+	reqQP.Set("api-version", version20260905Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

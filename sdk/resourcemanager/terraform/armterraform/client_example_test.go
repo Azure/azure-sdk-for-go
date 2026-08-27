@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2023-07-01-preview/ExportTerraform.json
+// Generated from example definition: 2026-09-01-preview/ExportTerraform.json
 func ExampleClient_BeginExportTerraform() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,8 +30,24 @@ func ExampleClient_BeginExportTerraform() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to poll the result: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armterraform.ClientExportTerraformResponse{
+	// 	OperationStatus: armterraform.OperationStatus{
+	// 		StartTime: to.Ptr(time.Date(2026, time.August, 6, 6, 26, 16, 724391900, time.UTC)),
+	// 		EndTime: to.Ptr(time.Date(2026, time.August, 6, 6, 26, 32, 829790100, time.UTC)),
+	// 		Status: to.Ptr(armterraform.ResourceProvisioningStateSucceeded),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.AzureTerraform/operationStatuses/00000000-0000-0000-0000-000000000000"),
+	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		Properties: &armterraform.ExportResult{
+	// 			Configuration: to.Ptr("terraform {\n  required_providers {\n    azurerm = {\n      source  = \"azurerm\"\n      version = \"4.80.0\"\n    }\n  }\n}\nprovider \"azurerm\" {\n  features {}\n}\nresource \"azurerm_resource_group\" \"res-1\" {\n  location   = \"australiaeast\"\n  managed_by = \"\"\n  name       = \"rg1\"\n  tags       = {}\n}\n"),
+	// 			Import: to.Ptr("import {\n  id = \"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-1\"\n  to = azurerm_resource_group.res-1\n}\n"),
+	// 		},
+	// 	},
+	// }
 }

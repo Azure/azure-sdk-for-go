@@ -38,27 +38,28 @@ yet, so obtaining the library is currently a manual step.
 ### Running the end-to-end tests
 
 The tests in `emulator_test.go` run real operations against a service. They need a driver-backed
-build and the `EMULATOR` environment variable, which is what the module's emulator CI stage already
-sets, and they skip otherwise. A database and container have to exist first, because container
-management is not bound yet; their ids default to `itemdb` and `items` and can be overridden with
-`AZCOSMOS_DATABASE` and `AZCOSMOS_CONTAINER`, alongside `AZCOSMOS_ENDPOINT`.
+build and the `EMULATOR` environment variable, and they skip otherwise.
+
+They run against the driver's own in-memory emulator, which is the same one the driver's Rust tests
+use, so the binding is exercised against what the driver is developed against. It is a plain
+process rather than a container, it creates the test database and container from its config, and it
+reports its endpoints as JSON on stdout, so the endpoint is read rather than assumed:
 
 ```sh
-EMULATOR=1 CGO_ENABLED=1 CGO_LDFLAGS="-L/path/to/driver" \
+cargo build --release -p azure_data_cosmos_driver_native -p azure_data_cosmos_emulator
+
+target/release/azure_data_cosmos_emulator \
+  --config path/to/azcosmos/internal/testdata/emulator-config.json
+# {"event":"ready","accountEndpoint":"http://127.0.0.1:49151/", ...}
+
+EMULATOR=1 AZCOSMOS_ENDPOINT=http://127.0.0.1:49151/ \
+  CGO_ENABLED=1 CGO_LDFLAGS="-L/path/to/driver" \
   go test -tags azcosmos_driver -run TestEmulator ./...
 ```
 
-The Linux emulator runs anywhere Docker does, including arm64, which the Windows emulator does not:
-
-```sh
-docker run -d -p 8081:8081 \
-  mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
-```
-
-Note that the vNext preview serves plain HTTP on 8081, so point `AZCOSMOS_ENDPOINT` at
-`http://localhost:8081` rather than https. It also does not evaluate `If-None-Match` on a point
-read, so the conditional-read path is only partly observable against it; see
-`TestEmulatorReadItemIfNoneMatch`.
+The container the tests use is declared in `internal/testdata/emulator-config.json`; its ids
+default to `itemdb` and `items` and can be overridden with `AZCOSMOS_DATABASE` and
+`AZCOSMOS_CONTAINER`.
 
 Two limits apply to the driver-backed build today, both of which are upstream gaps rather than
 choices this module makes:

@@ -185,13 +185,9 @@ func TestEmulatorCreateItemContentResponse(t *testing.T) {
 	}
 }
 
-// A conditional read carries its precondition through to the service.
-//
-// Against real Cosmos DB an unchanged item comes back as 304 with no payload, which is what makes
-// a conditional read cheaper than an unconditional one. The vNext preview emulator does not
-// evaluate If-None-Match on a point read: it returns the item whatever ETag is supplied, including
-// one that cannot match. So this pins what can be observed here — the precondition is accepted and
-// the read succeeds — and leaves the 304 itself to be verified against a real account.
+// A conditional read of an unchanged item comes back with no payload, which is what makes it
+// cheaper than an unconditional one. An ETag that cannot match still returns the item, which is
+// what pins that the precondition is being evaluated rather than the read simply returning nothing.
 func TestEmulatorReadItemIfNoneMatch(t *testing.T) {
 	container := emulatorContainer(t)
 	ctx := context.Background()
@@ -205,19 +201,15 @@ func TestEmulatorReadItemIfNoneMatch(t *testing.T) {
 	require.NoError(t, err)
 	require.NotEmpty(t, created.ETag)
 
-	etag := azcore.ETag(created.ETag)
-	response, err := container.ReadItem(ctx, pk, id, &ReadItemOptions{IfNoneMatchETag: &etag})
+	unchanged := created.ETag
+	response, err := container.ReadItem(ctx, pk, id, &ReadItemOptions{IfNoneMatchETag: &unchanged})
 	require.NoError(t, err, "an unchanged item is not an error")
+	require.Empty(t, response.Value, "the item has not changed, so it is not sent")
 
-	if len(response.Value) == 0 {
-		// A service that does evaluate the precondition, so the cheap path is exercised.
-		return
-	}
-	// A service that does not; the item still has to come back intact rather than truncated by
-	// the precondition having been half-applied.
-	var roundTripped map[string]any
-	require.NoError(t, json.Unmarshal(response.Value, &roundTripped))
-	require.Equal(t, id, roundTripped["id"])
+	stale := azcore.ETag("\"00000000-0000-0000-0000-000000000000\"")
+	response, err = container.ReadItem(ctx, pk, id, &ReadItemOptions{IfNoneMatchETag: &stale})
+	require.NoError(t, err)
+	require.NotEmpty(t, response.Value, "the ETag does not match, so the item is sent")
 }
 
 // The session token a write produces has to be usable on a later read, which is how a caller reads

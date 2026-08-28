@@ -76,10 +76,12 @@ extends:
       # The v2 driver binding needs a native library, a C toolchain and a build tag, none of which
       # the stage above provides, so it runs separately rather than complicating that one.
       #
-      # It is Linux rather than Windows because the driver has to be built from source: there is no
-      # published binary yet, and cross-compiling one for Windows needs a toolchain the agents do
-      # not carry. The vNext emulator ships as a Linux container, so the whole stage stays on one
-      # platform.
+      # It runs against the driver's own in-memory emulator rather than the containerized one. That
+      # emulator is the same one the driver's Rust tests use, so the binding is exercised against
+      # what the driver is developed against; it is a plain process, so the stage needs no
+      # container runtime; it creates its databases and containers from its config, so nothing has
+      # to be provisioned separately; and it reports its endpoints as JSON on stdout, so they are
+      # read rather than assumed. It builds from the same checkout as the driver.
       - stage: DriverEmulator
         displayName: 'Cosmos Emulator (v2 driver)'
         variables:
@@ -89,6 +91,8 @@ extends:
         # and this has to move in lockstep with nativeDriverVersion in driver.go.
         - name: DriverRepoCommit
           value: 2bc179cf6ff5c22e249fd10d944c8e946bb712d2
+        - name: DriverRepoDir
+          value: $(Agent.TempDirectory)/cosmos-driver
         - name: DriverLibDir
           value: $(Agent.TempDirectory)/cosmos-driver/target/release
         jobs:
@@ -108,19 +112,22 @@ extends:
           - script: |
               set -euo pipefail
               git clone --filter=blob:none --no-checkout \
-                https://github.com/Azure/azure-sdk-for-rust.git "$(Agent.TempDirectory)/cosmos-driver"
-              cd "$(Agent.TempDirectory)/cosmos-driver"
+                https://github.com/Azure/azure-sdk-for-rust.git "$(DriverRepoDir)"
+              cd "$(DriverRepoDir)"
               git checkout $(DriverRepoCommit)
             displayName: 'Fetch the Cosmos driver source'
 
           - script: |
               set -euo pipefail
-              cd "$(Agent.TempDirectory)/cosmos-driver/sdk/cosmos/azure_data_cosmos_driver_native"
-              cargo build --release
-              # Fail loudly here rather than leaving the tests to fail at link time with a less
-              # obvious message.
+              cd "$(DriverRepoDir)"
+              cargo build --release \
+                -p azure_data_cosmos_driver_native \
+                -p azure_data_cosmos_emulator
+              # Fail loudly here rather than leaving the tests to fail at link time, or the
+              # emulator step to fail on a missing binary, with a less obvious message.
               test -f "$(DriverLibDir)/libazurecosmosdriver.so"
-            displayName: 'Build the Cosmos driver'
+              test -x "$(DriverLibDir)/azure_data_cosmos_emulator"
+            displayName: 'Build the Cosmos driver and emulator'
 
           # The header the binding compiles against is vendored, so it has to match the library it
           # links against. A mismatch is an ABI mismatch, which fails at runtime rather than at
@@ -128,7 +135,7 @@ extends:
           - script: |
               set -euo pipefail
               vendored='sdk/data/azcosmos/internal/native/azurecosmosdriver.h'
-              upstream="$(Agent.TempDirectory)/cosmos-driver/sdk/cosmos/azure_data_cosmos_driver_native/include/azurecosmosdriver.h"
+              upstream="$(DriverRepoDir)/sdk/cosmos/azure_data_cosmos_driver_native/include/azurecosmosdriver.h"
               if ! diff -u "$vendored" "$upstream"; then
                 echo "##[error] The vendored header does not match the driver at $(DriverRepoCommit)."
                 echo "##[error] Re-vendor it and update nativeDriverVersion in driver.go."
@@ -136,28 +143,30 @@ extends:
               fi
             displayName: 'Verify the vendored header matches the driver'
 
+          # The emulator writes one JSON record to stdout once every listener is bound, and logs to
+          # stderr, so the endpoint is read from that record rather than guessed. Its config asks
+          # for an OS-assigned port, so nothing collides with whatever else is on the agent.
           - script: |
               set -euo pipefail
-              docker run -d --name cosmos-emulator -p 8081:8081 \
-                mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
-              # The gateway reports ready well after the container starts, so poll rather than
-              # sleeping for a fixed time.
-              #
-              # The log is written to a file rather than piped into grep: grep -q closes the pipe
-              # on its first match, which kills docker logs with SIGPIPE, and under pipefail that
-              # 141 becomes the pipeline's status. A ready emulator would read as not ready.
+              config='sdk/data/azcosmos/internal/testdata/emulator-config.json'
+              nohup "$(DriverLibDir)/azure_data_cosmos_emulator" --config "$config" \
+                > "$(Agent.TempDirectory)/emulator-ready.json" \
+                2> "$(Agent.TempDirectory)/emulator.log" &
+
               for _ in $(seq 1 60); do
-                docker logs cosmos-emulator > emulator.log 2>&1 || true
-                if grep -q 'Gateway=OK' emulator.log; then
-                  echo 'emulator ready'
+                if grep -q '"event":"ready"' "$(Agent.TempDirectory)/emulator-ready.json" 2>/dev/null; then
+                  endpoint=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['accountEndpoint'])" \
+                    "$(Agent.TempDirectory)/emulator-ready.json")
+                  echo "emulator ready at $endpoint"
+                  echo "##vso[task.setvariable variable=EmulatorEndpoint]$endpoint"
                   exit 0
                 fi
-                sleep 5
+                sleep 1
               done
               echo '##[error] The emulator did not become ready.'
-              tail -50 emulator.log
+              tail -50 "$(Agent.TempDirectory)/emulator.log" || true
               exit 1
-            displayName: 'Start the Cosmos emulator'
+            displayName: 'Start the in-memory Cosmos emulator'
 
           - task: GoTool@0
             inputs:
@@ -165,18 +174,6 @@ extends:
             displayName: "Select Go Version"
 
           - template: /eng/pipelines/templates/steps/create-go-workspace.yml@self
-
-          # The tests operate on an existing container, because container management is not bound
-          # yet. This provisions it through the REST API so it does not depend on the code it is
-          # about to exercise.
-          - script: |
-              set -euo pipefail
-              # Run from the module directory: the repository root is not itself a module.
-              cd sdk/data/azcosmos
-              go run ./internal/testdata/provision
-            displayName: 'Provision the test database and container'
-            env:
-              AZCOSMOS_ENDPOINT: 'http://localhost:8081'
 
           # The shared template forwards EnvVars only to its test step, so its own build and vet
           # steps would compile the stub and leave the binding unchecked. Nothing else in the
@@ -200,8 +197,7 @@ extends:
               EnableRaceDetector: true
               EnvVars:
                 EMULATOR: 'true'
-                # The vNext emulator serves plain HTTP, unlike the Windows one.
-                AZCOSMOS_ENDPOINT: 'http://localhost:8081'
+                AZCOSMOS_ENDPOINT: $(EmulatorEndpoint)
                 # The binding is behind a build tag, and the shared test template has no parameter
                 # for one, so it is injected through the go command's own environment variable
                 # rather than by changing a template the Go central team owns.

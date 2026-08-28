@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.2 (2026-08-27)
+## 2.0.0-beta.2 (2026-08-28)
 ### Breaking Changes
 
 - Enum `AssignmentScopeValidation` has been removed

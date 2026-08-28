@@ -250,10 +250,10 @@ func TestErrorAsRetrievesFields(t *testing.T) {
 	require.Equal(t, []byte(`{"code":"TooManyRequests"}`), cosmosErr.Body)
 }
 
-// The preview returns errNotImplemented from every operation, so it has to satisfy the errors.As
+// A build that cannot reach the driver reports that from every operation, so it has to satisfy the errors.As
 // idiom the package documents; a bare errors.New would not.
 func TestNotImplementedIsRetrievableAsError(t *testing.T) {
-	err := fmt.Errorf("reading item: %w", error(errNotImplemented))
+	err := fmt.Errorf("reading item: %w", error(errDriverUnavailable))
 
 	var cosmosErr *Error
 	require.True(t, errors.As(err, &cosmosErr))

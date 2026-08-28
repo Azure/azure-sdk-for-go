@@ -6,9 +6,6 @@
 package azcosmos
 
 /*
-#cgo CFLAGS: -I${SRCDIR}/internal/native
-#cgo LDFLAGS: -lazurecosmosdriver
-
 #include <stdlib.h>
 #include "azurecosmosdriver.h"
 */
@@ -81,6 +78,31 @@ var errTokenCredentialUnsupported = &Error{
 	Message: "token credentials are not supported by the Cosmos driver yet; use NewClientWithKey",
 }
 
+// verifyDriverVersion reports whether the library that was linked is the one this package was
+// built against.
+//
+// The header is vendored, so the binding compiles against one version and links against whatever
+// archive it was given. A mismatch is not a compile error: it is a struct layout or a calling
+// convention that has quietly moved, which surfaces as corrupted values or a crash somewhere far
+// from the cause. Checking once at construction turns that into a message that names the problem.
+//
+// The ABI carries no major-version concept yet, so this compares the whole version. Once it does,
+// this should relax to a compatible range rather than an exact match, which is what the
+// distribution design calls for.
+func verifyDriverVersion() error {
+	linked := C.GoString(C.cosmos_version())
+	if linked == nativeDriverVersion {
+		return nil
+	}
+	return &Error{
+		Code: CodeClientError,
+		Message: fmt.Sprintf(
+			"azcosmos: the linked Cosmos driver is version %q, but this package was built against %q; "+
+				"the vendored header and the driver library have to come from the same version",
+			linked, nativeDriverVersion),
+	}
+}
+
 // openDriver acquires the resources a client can acquire locally: the runtime and the account
 // reference, which together validate the endpoint and the key. The driver itself is created on
 // first use; see [nativeDriver].
@@ -118,6 +140,12 @@ func (d *nativeDriver) ensureDriver() (*C.cosmos_driver_t, error) {
 		return d.driver, d.driverErr
 	}
 	d.created = true
+
+	// Checked here rather than in openDriver so it runs once per client and on the path that
+	// actually calls into the driver, rather than on every construction.
+	if d.driverErr = verifyDriverVersion(); d.driverErr != nil {
+		return nil, d.driverErr
+	}
 
 	var richErr *C.cosmos_error_t
 	// NULL driver options selects the defaults; per-client options are applied per operation.

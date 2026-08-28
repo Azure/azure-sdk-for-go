@@ -12,16 +12,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
-// errNotImplemented is returned by operations whose driver binding has not landed yet. It is
-// temporary scaffolding for the incremental v2 rollout and will be removed once every operation
-// is wired up. It is an [Error] so that the documented errors.As idiom works during the preview.
-//
-//nolint:unused // returned by the operations that land in later changes.
-var errNotImplemented = &Error{
-	Code:    CodeClientError,
-	Message: "not implemented yet in this preview of v2",
-}
-
 // Code classifies a Cosmos DB failure so that callers can branch on it programmatically instead
 // of interpreting status and sub-status codes themselves.
 //

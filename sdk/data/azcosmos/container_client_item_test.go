@@ -27,7 +27,7 @@ func TestReadItemRejectsEmptyID(t *testing.T) {
 
 	_, err := container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "", nil)
 	require.Error(t, err)
-	require.NotErrorIs(t, err, errNotImplemented, "argument validation should run before the operation is attempted")
+	require.NotErrorIs(t, err, errDriverUnavailable, "argument validation should run before the operation is attempted")
 }
 
 func TestCreateItemRejectsEmptyItem(t *testing.T) {
@@ -36,7 +36,7 @@ func TestCreateItemRejectsEmptyItem(t *testing.T) {
 	for _, item := range [][]byte{nil, {}} {
 		_, err := container.CreateItem(context.Background(), NewPartitionKeyString("pk"), "item-1", item, nil)
 		require.Error(t, err)
-		require.NotErrorIs(t, err, errNotImplemented, "argument validation should run before the operation is attempted")
+		require.NotErrorIs(t, err, errDriverUnavailable, "argument validation should run before the operation is attempted")
 	}
 }
 
@@ -47,7 +47,7 @@ func TestCreateItemRejectsEmptyID(t *testing.T) {
 
 	_, err := container.CreateItem(context.Background(), NewPartitionKeyString("pk"), "", []byte(`{"id":"item-1"}`), nil)
 	require.Error(t, err)
-	require.NotErrorIs(t, err, errNotImplemented, "argument validation should run before the operation is attempted")
+	require.NotErrorIs(t, err, errDriverUnavailable, "argument validation should run before the operation is attempted")
 }
 
 // Argument validation runs before the context is consulted, so a caller's deterministic mistake is
@@ -74,11 +74,11 @@ func TestItemOperationsRejectEmptyPartitionKey(t *testing.T) {
 
 	_, err := container.ReadItem(context.Background(), PartitionKey{}, "item-1", nil)
 	require.Error(t, err)
-	require.NotErrorIs(t, err, errNotImplemented)
+	require.NotErrorIs(t, err, errDriverUnavailable)
 
 	_, err = container.CreateItem(context.Background(), PartitionKey{}, "item-1", []byte(`{"id":"item-1"}`), nil)
 	require.Error(t, err)
-	require.NotErrorIs(t, err, errNotImplemented)
+	require.NotErrorIs(t, err, errDriverUnavailable)
 }
 
 // An already-cancelled context must be honored rather than starting work that is bound to fail,

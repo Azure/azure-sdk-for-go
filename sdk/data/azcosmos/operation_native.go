@@ -6,9 +6,6 @@
 package azcosmos
 
 /*
-#cgo CFLAGS: -I${SRCDIR}/internal/native
-#cgo LDFLAGS: -lazurecosmosdriver
-
 #include <stdlib.h>
 #include "azurecosmosdriver.h"
 */

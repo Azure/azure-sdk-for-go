@@ -29,3 +29,12 @@ type itemRequest struct {
 	// ifNoneMatchETag is the conditional-read precondition. Empty means unconditional.
 	ifNoneMatchETag string
 }
+
+// errDriverUnavailable says what this build is missing, rather than reporting the operation as
+// merely unimplemented: the operation is implemented, but not in a build that cannot reach the
+// driver.
+var errDriverUnavailable = &Error{
+	Code: CodeClientError,
+	Message: "azcosmos: this build cannot reach the Cosmos driver. " +
+		"v2 requires CGO_ENABLED=1, a target-compatible C toolchain, and the azcosmos_driver build tag",
+}

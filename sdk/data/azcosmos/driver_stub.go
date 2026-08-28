@@ -7,13 +7,14 @@ package azcosmos
 
 import "context"
 
-// This is the build of the package that is not bound to the Cosmos driver. It is what `go build`
-// selects by default, so the package stays usable for compiling against the API and for tooling
-// that cannot link a native library: no C toolchain is needed and CGO_ENABLED=0 works.
+// This is the build of the package that is not bound to the Cosmos driver. It is a diagnostic
+// path, not an alternative implementation: v2 executes every operation through the driver, so
+// there is no pure-Go mode, no degraded mode and no fallback.
 //
-// Operations report [CodeClientError] with a not-implemented message rather than reaching a
-// driver. Build with `-tags azcosmos_driver` and CGO_ENABLED=1 to select the binding in
-// driver_native.go instead.
+// It exists so that a build without cgo fails with something that names the cause. Without it a
+// caller would get `build constraints exclude all Go files`, which says nothing about what is
+// wrong or how to fix it. Construction still succeeds, so the API can be compiled and explored
+// against, and operations report why they cannot run.
 
 // driverAvailable reports whether this build can reach the Cosmos driver.
 const driverAvailable = false
@@ -21,8 +22,8 @@ const driverAvailable = false
 // nativeDriver holds no resources in this build.
 type nativeDriver struct{}
 
-// openDriver reports success without acquiring anything, so that a client can still be constructed
-// and its surface explored. Operations fail when they are called, not here.
+// openDriver reports success without acquiring anything. Operations fail when they are called,
+// with a message that says what the build is missing, rather than at construction.
 func openDriver(driverConfig) (*nativeDriver, error) {
 	return nil, nil
 }
@@ -32,8 +33,8 @@ func (d *nativeDriver) close() error {
 	return nil
 }
 
-// execute reports that operations are not implemented in this build. The driver-backed build in
-// driver_native.go runs them instead.
+// execute reports that this build cannot reach the driver. The driver-backed build in
+// driver_native.go runs the operation instead.
 func (c *Client) execute(context.Context, itemRequest) (ItemResponse, []byte, error) {
-	return ItemResponse{}, nil, errNotImplemented
+	return ItemResponse{}, nil, errDriverUnavailable
 }

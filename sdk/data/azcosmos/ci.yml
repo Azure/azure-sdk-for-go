@@ -125,9 +125,19 @@ extends:
                 -p azure_data_cosmos_emulator
               # Fail loudly here rather than leaving the tests to fail at link time, or the
               # emulator step to fail on a missing binary, with a less obvious message.
-              test -f "$(DriverLibDir)/libazurecosmosdriver.so"
+              test -f "$(DriverLibDir)/libazurecosmosdriver.a"
               test -x "$(DriverLibDir)/azure_data_cosmos_emulator"
             displayName: 'Build the Cosmos driver and emulator'
+
+          # The binding links the archive from a fixed path inside the module, because a cgo
+          # directive cannot take a path from the environment. Staging it here is what stands in
+          # for the per-target driver modules until they exist.
+          - script: |
+              set -euo pipefail
+              mkdir -p sdk/data/azcosmos/internal/native/lib
+              cp "$(DriverLibDir)/libazurecosmosdriver.a" \
+                sdk/data/azcosmos/internal/native/lib/
+            displayName: 'Stage the driver archive'
 
           # The header the binding compiles against is vendored, so it has to match the library it
           # links against. A mismatch is an ABI mismatch, which fails at runtime rather than at
@@ -187,7 +197,6 @@ extends:
             displayName: 'Build and vet the driver binding'
             env:
               CGO_ENABLED: '1'
-              CGO_LDFLAGS: '-L$(DriverLibDir)'
 
           - template:  /eng/pipelines/templates/steps/build-test.yml@self
             parameters:
@@ -203,5 +212,3 @@ extends:
                 # rather than by changing a template the Go central team owns.
                 GOFLAGS: '-tags=azcosmos_driver'
                 CGO_ENABLED: '1'
-                CGO_LDFLAGS: '-L$(DriverLibDir)'
-                LD_LIBRARY_PATH: '$(DriverLibDir)'

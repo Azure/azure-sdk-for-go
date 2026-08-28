@@ -22,18 +22,34 @@ The driver binding is behind the `azcosmos_driver` build tag and is **off by def
 default build needs no C toolchain and works with `CGO_ENABLED=0`. In that build the client can be
 constructed and the API compiled against, and operations report that they are not implemented.
 
-Selecting the binding needs cgo, the `azcosmos_driver` tag, and `libazurecosmosdriver` on the
-linker path:
+Selecting the binding needs cgo, the `azcosmos_driver` tag, and the driver archive staged where the
+build expects it:
 
 ```sh
-CGO_ENABLED=1 CGO_LDFLAGS="-L/path/to/driver" go build -tags azcosmos_driver ./...
+cargo build --release -p azure_data_cosmos_driver_native
+cp target/release/libazurecosmosdriver.a path/to/azcosmos/internal/native/lib/
+
+CGO_ENABLED=1 go build -tags azcosmos_driver ./...
 ```
 
-The library is built from
-[`azure_data_cosmos_driver_native`](https://github.com/Azure/azure-sdk-for-rust/tree/main/sdk/cosmos/azure_data_cosmos_driver_native)
-with `cargo build --release`, and `internal/native/azurecosmosdriver.h` is the header it generates,
-vendored here and pinned to the version in `driver.go`. There is no published binary to depend on
-yet, so obtaining the library is currently a manual step.
+The driver is linked **statically**, so the resulting program carries it: nothing has to be
+installed on the machine that runs the binary and nothing has to be on a library search path. The
+archive is not committed — the distribution design puts the per-target binaries in their own
+modules in a separate repository, and `internal/native/lib` is where a locally built one goes until
+those exist.
+
+`internal/native/azurecosmosdriver.h` is the header the driver generates, vendored here and pinned
+to the version in `driver.go`. That version is checked against the linked library when a client
+first reaches the driver, because a header and an archive from different versions do not fail to
+compile — they fail as moved struct offsets somewhere far from the cause.
+
+Three limits apply to the driver-backed build today, all of which are upstream gaps rather than
+choices this module makes:
+
+* There is no published driver binary, so building it from source is currently the only way in.
+* Only account keys work. The C ABI has no constructor for a token credential, so [`NewClient`]
+  reports that it is unsupported and [`NewClientWithKey`] is the working path.
+* v1's WebAssembly support does not carry over.
 
 ### Running the end-to-end tests
 
@@ -52,21 +68,13 @@ target/release/azure_data_cosmos_emulator \
   --config path/to/azcosmos/internal/testdata/emulator-config.json
 # {"event":"ready","accountEndpoint":"http://127.0.0.1:49151/", ...}
 
-EMULATOR=1 AZCOSMOS_ENDPOINT=http://127.0.0.1:49151/ \
-  CGO_ENABLED=1 CGO_LDFLAGS="-L/path/to/driver" \
+EMULATOR=1 AZCOSMOS_ENDPOINT=http://127.0.0.1:49151/ CGO_ENABLED=1 \
   go test -tags azcosmos_driver -run TestEmulator ./...
 ```
 
 The container the tests use is declared in `internal/testdata/emulator-config.json`; its ids
 default to `itemdb` and `items` and can be overridden with `AZCOSMOS_DATABASE` and
 `AZCOSMOS_CONTAINER`.
-
-Two limits apply to the driver-backed build today, both of which are upstream gaps rather than
-choices this module makes:
-
-* Only account keys work. The C ABI has no constructor for a token credential, so [`NewClient`]
-  reports that it is unsupported and [`NewClientWithKey`] is the working path.
-* v1's WebAssembly support does not carry over.
 
 ## Getting Started
 

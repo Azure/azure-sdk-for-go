@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/VirtualEnclave_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/VirtualEnclave_CreateOrUpdate.json
 func ExampleVirtualEnclaveClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,7 +320,7 @@ func ExampleVirtualEnclaveClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/VirtualEnclave_Delete.json
+// Generated from example definition: 2026-04-01/VirtualEnclave_Delete.json
 func ExampleVirtualEnclaveClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -341,7 +341,7 @@ func ExampleVirtualEnclaveClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/VirtualEnclave_Get.json
+// Generated from example definition: 2026-04-01/VirtualEnclave_Get.json
 func ExampleVirtualEnclaveClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -514,7 +514,7 @@ func ExampleVirtualEnclaveClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/VirtualEnclave_HandleApprovalCreation.json
+// Generated from example definition: 2026-04-01/VirtualEnclave_HandleApprovalCreation.json
 func ExampleVirtualEnclaveClient_BeginHandleApprovalCreation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -547,7 +547,7 @@ func ExampleVirtualEnclaveClient_BeginHandleApprovalCreation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/VirtualEnclave_HandleApprovalDeletion.json
+// Generated from example definition: 2026-04-01/VirtualEnclave_HandleApprovalDeletion.json
 func ExampleVirtualEnclaveClient_BeginHandleApprovalDeletion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -578,7 +578,7 @@ func ExampleVirtualEnclaveClient_BeginHandleApprovalDeletion() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/VirtualEnclave_ListByResourceGroup.json
+// Generated from example definition: 2026-04-01/VirtualEnclave_ListByResourceGroup.json
 func ExampleVirtualEnclaveClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -728,7 +728,7 @@ func ExampleVirtualEnclaveClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/VirtualEnclave_ListBySubscription.json
+// Generated from example definition: 2026-04-01/VirtualEnclave_ListBySubscription.json
 func ExampleVirtualEnclaveClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -878,7 +878,7 @@ func ExampleVirtualEnclaveClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/VirtualEnclave_Update.json
+// Generated from example definition: 2026-04-01/VirtualEnclave_Update.json
 func ExampleVirtualEnclaveClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

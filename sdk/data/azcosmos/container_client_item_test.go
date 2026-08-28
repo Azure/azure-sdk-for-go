@@ -166,3 +166,39 @@ func TestReadConsistencyStrategyUnsetIsNotDefault(t *testing.T) {
 	var zero ReadConsistencyStrategy
 	require.Equal(t, ReadConsistencyStrategyUnset, zero, "the zero value must mean inherit")
 }
+
+// The driver's budget is what guarantees an operation terminates: cancelling the context stops it
+// only once the driver notices, while without a budget it is bounded by transport timeouts times a
+// retry budget. Passing the caller's deadline down is what makes one number bound every layer.
+func TestEndToEndTimeoutFollowsTheContextDeadline(t *testing.T) {
+	t.Run("no deadline leaves the driver default", func(t *testing.T) {
+		require.Zero(t, endToEndTimeout(context.Background(), 0))
+	})
+
+	t.Run("deadline becomes the budget", func(t *testing.T) {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+
+		got := endToEndTimeout(ctx, 0)
+		require.Positive(t, got)
+		require.LessOrEqual(t, got, time.Minute)
+		require.Greater(t, got, 59*time.Second, "should be what remains, not a fixed value")
+	})
+
+	t.Run("an explicit setting wins over the deadline", func(t *testing.T) {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Minute)
+		defer cancel()
+
+		// The caller is describing how long the operation may spend, which is a different thing
+		// from when they stop waiting, so it is not second-guessed.
+		require.Equal(t, 5*time.Second, endToEndTimeout(ctx, 5*time.Second))
+	})
+
+	t.Run("an expired deadline stays positive", func(t *testing.T) {
+		ctx, cancel := context.WithTimeout(context.Background(), -time.Second)
+		defer cancel()
+
+		// Zero would read as unset at the ABI, which would remove the bound rather than tighten it.
+		require.Positive(t, endToEndTimeout(ctx, 0))
+	})
+}

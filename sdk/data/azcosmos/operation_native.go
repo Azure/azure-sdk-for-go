@@ -50,6 +50,8 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 		return ItemResponse{}, nil, err
 	}
 
+	req.options.EndToEndTimeout = endToEndTimeout(ctx, req.options.EndToEndTimeout)
+
 	// Buffered so the reactor can always deliver without blocking, even after this goroutine has
 	// stopped waiting because the context was cancelled.
 	pending := &pendingOperation{result: make(chan completionResult, 1)}

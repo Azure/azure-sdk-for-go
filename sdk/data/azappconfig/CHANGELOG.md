@@ -14,6 +14,7 @@
 ### Other Changes
 * Updated to API version `2026-04-01`.
 * Updated dependencies.
+* Improved authentication for sovereign clouds when using a token credential. When `ClientOptions.Cloud` doesn't specify an audience, the client now infers it from the App Configuration endpoint instead of using the full store endpoint.
 
 ## 2.2.0 (2026-04-14)
 

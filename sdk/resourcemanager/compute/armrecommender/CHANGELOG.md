@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.0 (2026-08-27)
+## 0.3.0 (2026-08-28)
 ### Breaking Changes
 
 - Field `ID` of struct `SKUMixPlacementDeploymentChoice` has been removed

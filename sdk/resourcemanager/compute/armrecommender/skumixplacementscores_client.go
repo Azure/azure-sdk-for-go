@@ -69,6 +69,9 @@ func (client *SKUMixPlacementScoresClient) Get(ctx context.Context, location str
 // getCreateRequest creates the Get request.
 func (client *SKUMixPlacementScoresClient) getCreateRequest(ctx context.Context, location string, _ *SKUMixPlacementScoresClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/skuMixPlacementScores/recommendations"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -123,6 +126,9 @@ func (client *SKUMixPlacementScoresClient) Post(ctx context.Context, location st
 // postCreateRequest creates the Post request.
 func (client *SKUMixPlacementScoresClient) postCreateRequest(ctx context.Context, location string, skuMixPlacementRequest SKUMixPlacementRequest, _ *SKUMixPlacementScoresClientPostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/skuMixPlacementScores/recommendations/generate"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")

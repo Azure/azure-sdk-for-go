@@ -68,6 +68,9 @@ func (client *SpotPlacementScoresClient) Get(ctx context.Context, location strin
 // getCreateRequest creates the Get request.
 func (client *SpotPlacementScoresClient) getCreateRequest(ctx context.Context, location string, _ *SpotPlacementScoresClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/placementScores/spot"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
@@ -122,6 +125,9 @@ func (client *SpotPlacementScoresClient) Post(ctx context.Context, location stri
 // postCreateRequest creates the Post request.
 func (client *SpotPlacementScoresClient) postCreateRequest(ctx context.Context, location string, spotPlacementScoresInput SpotPlacementScoresInput, _ *SpotPlacementScoresClientPostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/placementScores/spot/generate"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")

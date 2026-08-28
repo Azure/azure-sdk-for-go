@@ -19,7 +19,7 @@ import (
 // ElasticVolumesClient contains the methods for the ElasticVolumes group.
 // Don't use this type directly, use NewElasticVolumesClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-06-15-preview
 type ElasticVolumesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -117,7 +117,7 @@ func (client *ElasticVolumesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -202,7 +202,7 @@ func (client *ElasticVolumesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -259,7 +259,7 @@ func (client *ElasticVolumesClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -340,7 +340,7 @@ func (client *ElasticVolumesClient) listByElasticPoolCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260515Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -435,7 +435,7 @@ func (client *ElasticVolumesClient) revertCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -521,7 +521,7 @@ func (client *ElasticVolumesClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

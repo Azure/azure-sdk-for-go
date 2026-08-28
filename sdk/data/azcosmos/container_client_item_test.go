@@ -34,10 +34,20 @@ func TestCreateItemRejectsEmptyItem(t *testing.T) {
 	container := newTestContainer(t)
 
 	for _, item := range [][]byte{nil, {}} {
-		_, err := container.CreateItem(context.Background(), NewPartitionKeyString("pk"), item, nil)
+		_, err := container.CreateItem(context.Background(), NewPartitionKeyString("pk"), "item-1", item, nil)
 		require.Error(t, err)
 		require.NotErrorIs(t, err, errNotImplemented, "argument validation should run before the operation is attempted")
 	}
+}
+
+// The id addresses the item being created, so an empty one is a caller mistake that has to be
+// reported as itself rather than reaching the driver as a null argument.
+func TestCreateItemRejectsEmptyID(t *testing.T) {
+	container := newTestContainer(t)
+
+	_, err := container.CreateItem(context.Background(), NewPartitionKeyString("pk"), "", []byte(`{"id":"item-1"}`), nil)
+	require.Error(t, err)
+	require.NotErrorIs(t, err, errNotImplemented, "argument validation should run before the operation is attempted")
 }
 
 // Argument validation runs before the context is consulted, so a caller's deterministic mistake is
@@ -51,7 +61,7 @@ func TestItemOperationsValidateArgumentsBeforeContext(t *testing.T) {
 	require.Error(t, err)
 	require.NotErrorIs(t, err, context.Canceled)
 
-	_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), nil, nil)
+	_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), "item-1", nil, nil)
 	require.Error(t, err)
 	require.NotErrorIs(t, err, context.Canceled)
 }
@@ -66,7 +76,7 @@ func TestItemOperationsRejectEmptyPartitionKey(t *testing.T) {
 	require.Error(t, err)
 	require.NotErrorIs(t, err, errNotImplemented)
 
-	_, err = container.CreateItem(context.Background(), PartitionKey{}, []byte(`{"id":"item-1"}`), nil)
+	_, err = container.CreateItem(context.Background(), PartitionKey{}, "item-1", []byte(`{"id":"item-1"}`), nil)
 	require.Error(t, err)
 	require.NotErrorIs(t, err, errNotImplemented)
 }
@@ -81,7 +91,7 @@ func TestItemOperationsHonorCancelledContext(t *testing.T) {
 	_, err := container.ReadItem(ctx, NewPartitionKeyString("pk"), "item-1", nil)
 	require.ErrorIs(t, err, context.Canceled)
 
-	_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), []byte(`{"id":"item-1"}`), nil)
+	_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), "item-1", []byte(`{"id":"item-1"}`), nil)
 	require.ErrorIs(t, err, context.Canceled)
 }
 
@@ -92,7 +102,7 @@ func TestItemOperationsReportNotImplemented(t *testing.T) {
 	pk := NewPartitionKeyString("pk")
 
 	_, readErr := container.ReadItem(context.Background(), pk, "item-1", nil)
-	_, createErr := container.CreateItem(context.Background(), pk, []byte(`{"id":"item-1"}`), nil)
+	_, createErr := container.CreateItem(context.Background(), pk, "item-1", []byte(`{"id":"item-1"}`), nil)
 
 	for _, err := range []error{readErr, createErr} {
 		var cosmosErr *Error
@@ -136,7 +146,7 @@ func TestClosedClientReportedAheadOfCancelledContext(t *testing.T) {
 	require.Equal(t, CodeClientClosed, cosmosErr.Code)
 	require.NotErrorIs(t, err, context.Canceled)
 
-	_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), []byte(`{"id":"x"}`), nil)
+	_, err = container.CreateItem(ctx, NewPartitionKeyString("pk"), "x", []byte(`{"id":"x"}`), nil)
 	require.True(t, errors.As(err, &cosmosErr))
 	require.Equal(t, CodeClientClosed, cosmosErr.Code)
 }

@@ -36,8 +36,9 @@
 * Added `ContainerClient.ReadItem` and `ContainerClient.CreateItem` with `ReadItemOptions` and
   `CreateItemOptions`. Both carry an `OperationOptions`, which holds the settings every operation
   accepts: the read consistency strategy, whether writes return content, excluded regions and the
-  end-to-end timeout. Each options type adds only what is specific to it. These operations are not
-  implemented yet.
+  end-to-end timeout. Each options type adds only what is specific to it. `CreateItem` takes the
+  item's id alongside its body, because the driver addresses the item by it; the Rust SDK takes it
+  the same way. These operations are not implemented yet.
   See [PR 27336](https://github.com/Azure/azure-sdk-for-go/pull/27336).
 * Added the driver binding behind the `azcosmos_driver` build tag, covering the runtime, account
   reference and driver handles and their release through `Client.Close`. The tag is off by default,

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/ActiveDirectoryConfigs_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/ActiveDirectoryConfigs_CreateOrUpdate.json
 func ExampleActiveDirectoryConfigsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleActiveDirectoryConfigsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ActiveDirectoryConfigs_Delete.json
+// Generated from example definition: 2026-06-15-preview/ActiveDirectoryConfigs_Delete.json
 func ExampleActiveDirectoryConfigsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleActiveDirectoryConfigsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ActiveDirectoryConfigs_Get.json
+// Generated from example definition: 2026-06-15-preview/ActiveDirectoryConfigs_Get.json
 func ExampleActiveDirectoryConfigsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExampleActiveDirectoryConfigsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ActiveDirectoryConfigs_ListByResourceGroup.json
+// Generated from example definition: 2026-06-15-preview/ActiveDirectoryConfigs_ListByResourceGroup.json
 func ExampleActiveDirectoryConfigsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,7 +302,7 @@ func ExampleActiveDirectoryConfigsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ActiveDirectoryConfigs_ListBySubscription.json
+// Generated from example definition: 2026-06-15-preview/ActiveDirectoryConfigs_ListBySubscription.json
 func ExampleActiveDirectoryConfigsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -380,7 +380,7 @@ func ExampleActiveDirectoryConfigsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ActiveDirectoryConfigs_Update.json
+// Generated from example definition: 2026-06-15-preview/ActiveDirectoryConfigs_Update.json
 func ExampleActiveDirectoryConfigsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -5423,10 +5423,10 @@ func (l LdapConfiguration) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "dnsServers", l.DNSServers)
 	populate(objectMap, "domain", l.Domain)
 	populate(objectMap, "groupDN", l.GroupDN)
-	populate(objectMap, "ldapOverTLS", l.LdapOverTLS)
 	populate(objectMap, "ldapPort", l.LdapPort)
 	populate(objectMap, "ldapServers", l.LdapServers)
 	populate(objectMap, "netGroupDN", l.NetGroupDN)
+	populate(objectMap, "secureLdapType", l.SecureLdapType)
 	populate(objectMap, "serverCACertificate", l.ServerCACertificate)
 	populate(objectMap, "userDN", l.UserDN)
 	return json.Marshal(objectMap)
@@ -5462,9 +5462,6 @@ func (l *LdapConfiguration) UnmarshalJSON(data []byte) error {
 		case "groupDN":
 			err = unpopulate(val, "GroupDN", &l.GroupDN)
 			delete(rawMsg, key)
-		case "ldapOverTLS":
-			err = unpopulate(val, "LdapOverTLS", &l.LdapOverTLS)
-			delete(rawMsg, key)
 		case "ldapPort":
 			err = unpopulate(val, "LdapPort", &l.LdapPort)
 			delete(rawMsg, key)
@@ -5473,6 +5470,9 @@ func (l *LdapConfiguration) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "netGroupDN":
 			err = unpopulate(val, "NetGroupDN", &l.NetGroupDN)
+			delete(rawMsg, key)
+		case "secureLdapType":
+			err = unpopulate(val, "SecureLdapType", &l.SecureLdapType)
 			delete(rawMsg, key)
 		case "serverCACertificate":
 			err = unpopulate(val, "ServerCACertificate", &l.ServerCACertificate)
@@ -5498,10 +5498,10 @@ func (l LdapConfigurationPatch) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "dnsServers", l.DNSServers)
 	populate(objectMap, "domain", l.Domain)
 	populate(objectMap, "groupDN", l.GroupDN)
-	populate(objectMap, "ldapOverTLS", l.LdapOverTLS)
 	populate(objectMap, "ldapPort", l.LdapPort)
 	populate(objectMap, "ldapServers", l.LdapServers)
 	populate(objectMap, "netGroupDN", l.NetGroupDN)
+	populate(objectMap, "secureLdapType", l.SecureLdapType)
 	populate(objectMap, "serverCACertificate", l.ServerCACertificate)
 	populate(objectMap, "userDN", l.UserDN)
 	return json.Marshal(objectMap)
@@ -5537,9 +5537,6 @@ func (l *LdapConfigurationPatch) UnmarshalJSON(data []byte) error {
 		case "groupDN":
 			err = unpopulate(val, "GroupDN", &l.GroupDN)
 			delete(rawMsg, key)
-		case "ldapOverTLS":
-			err = unpopulate(val, "LdapOverTLS", &l.LdapOverTLS)
-			delete(rawMsg, key)
 		case "ldapPort":
 			err = unpopulate(val, "LdapPort", &l.LdapPort)
 			delete(rawMsg, key)
@@ -5548,6 +5545,9 @@ func (l *LdapConfigurationPatch) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "netGroupDN":
 			err = unpopulate(val, "NetGroupDN", &l.NetGroupDN)
+			delete(rawMsg, key)
+		case "secureLdapType":
+			err = unpopulate(val, "SecureLdapType", &l.SecureLdapType)
 			delete(rawMsg, key)
 		case "serverCACertificate":
 			err = unpopulate(val, "ServerCACertificate", &l.ServerCACertificate)

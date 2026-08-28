@@ -48,6 +48,18 @@ EMULATOR=1 CGO_ENABLED=1 CGO_LDFLAGS="-L/path/to/driver" \
   go test -tags azcosmos_driver -run TestEmulator ./...
 ```
 
+The Linux emulator runs anywhere Docker does, including arm64, which the Windows emulator does not:
+
+```sh
+docker run -d -p 8081:8081 \
+  mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
+```
+
+Note that the vNext preview serves plain HTTP on 8081, so point `AZCOSMOS_ENDPOINT` at
+`http://localhost:8081` rather than https. It also does not evaluate `If-None-Match` on a point
+read, so the conditional-read path is only partly observable against it; see
+`TestEmulatorReadItemIfNoneMatch`.
+
 Two limits apply to the driver-backed build today, both of which are upstream gaps rather than
 choices this module makes:
 

@@ -52,6 +52,8 @@ func run(m *testing.M) int {
 
 		err = recording.RemoveRegisteredSanitizers([]string{
 			"AZSDK2030", // operation-location header
+			"AZSDK3424", // $..to (used by feature flag PercentileAllocation bounds)
+			"AZSDK3425", // $..from (used by feature flag PercentileAllocation bounds)
 			"AZSDK3447", // $.key
 			"AZSDK3490", // $..etag
 			"AZSDK3493", // $..name

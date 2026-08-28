@@ -69,8 +69,27 @@ func (c *ContainerClient) ReadItem(ctx context.Context, partitionKey PartitionKe
 		return ItemResponse{}, err
 	}
 
-	_ = options
-	return ItemResponse{}, errNotImplemented
+	req := itemRequest{
+		kind:         operationKindReadItem,
+		databaseID:   c.database.id,
+		containerID:  c.id,
+		itemID:       itemID,
+		partitionKey: partitionKey,
+	}
+	if options != nil {
+		req.options = options.Operation
+		req.sessionToken = options.SessionToken
+		if options.IfNoneMatchETag != nil {
+			req.ifNoneMatchETag = string(*options.IfNoneMatchETag)
+		}
+	}
+
+	response, body, err := c.database.client.execute(ctx, req)
+	if err != nil {
+		return ItemResponse{}, err
+	}
+	response.Value = body
+	return response, nil
 }
 
 // CreateItem creates a new item, failing if one with the same id already exists in the partition.
@@ -112,8 +131,25 @@ func (c *ContainerClient) CreateItem(ctx context.Context, partitionKey Partition
 		return ItemResponse{}, err
 	}
 
-	_ = options
-	return ItemResponse{}, errNotImplemented
+	req := itemRequest{
+		kind:         operationKindCreateItem,
+		databaseID:   c.database.id,
+		containerID:  c.id,
+		itemID:       id,
+		partitionKey: partitionKey,
+		body:         item,
+	}
+	if options != nil {
+		req.options = options.Operation
+		req.sessionToken = options.SessionToken
+	}
+
+	response, body, err := c.database.client.execute(ctx, req)
+	if err != nil {
+		return ItemResponse{}, err
+	}
+	response.Value = body
+	return response, nil
 }
 
 // validateItemArguments rejects a partition key with no components. No container has a partition

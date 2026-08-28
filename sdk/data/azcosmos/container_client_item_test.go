@@ -95,9 +95,15 @@ func TestItemOperationsHonorCancelledContext(t *testing.T) {
 	require.ErrorIs(t, err, context.Canceled)
 }
 
-// Until the driver binding lands, a well-formed call reports that it is not implemented, and does
-// so as an *Error so the documented errors.As idiom works.
-func TestItemOperationsReportNotImplemented(t *testing.T) {
+// A well-formed call reaches the driver in a driver-backed build and reports that it is not
+// implemented otherwise. Either way it fails as an *Error, so the documented errors.As idiom works
+// whichever build a caller has.
+func TestItemOperationsReportErrorsAsCosmosErrors(t *testing.T) {
+	if driverAvailable {
+		// The driver would try to reach the endpoint, which is what the emulator tests cover.
+		t.Skip("driver-backed build: covered by the emulator tests")
+	}
+
 	container := newTestContainer(t)
 	pk := NewPartitionKeyString("pk")
 

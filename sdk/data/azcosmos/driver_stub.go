@@ -5,6 +5,8 @@
 
 package azcosmos
 
+import "context"
+
 // This is the build of the package that is not bound to the Cosmos driver. It is what `go build`
 // selects by default, so the package stays usable for compiling against the API and for tooling
 // that cannot link a native library: no C toolchain is needed and CGO_ENABLED=0 works.
@@ -28,4 +30,10 @@ func openDriver(driverConfig) (*nativeDriver, error) {
 // close is a no-op. It tolerates a nil receiver because openDriver returns one.
 func (d *nativeDriver) close() error {
 	return nil
+}
+
+// execute reports that operations are not implemented in this build. The driver-backed build in
+// driver_native.go runs them instead.
+func (c *Client) execute(context.Context, itemRequest) (ItemResponse, []byte, error) {
+	return ItemResponse{}, nil, errNotImplemented
 }

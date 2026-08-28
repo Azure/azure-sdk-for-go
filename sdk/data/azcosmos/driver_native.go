@@ -60,6 +60,15 @@ type nativeDriver struct {
 	closed    bool
 	driver    *C.cosmos_driver_t
 	driverErr error
+
+	// reactor drains the completion queue operations are answered through. It is created with
+	// the driver, because the queue is bound to the runtime and only operations need it.
+	reactor *reactor
+
+	// containers caches resolved container handles by "database/container". Resolving reads
+	// container metadata from the gateway on a miss, so an item operation would otherwise pay
+	// for that lookup on every call.
+	containers map[string]*C.cosmos_container_ref_t
 }
 
 // errTokenCredentialUnsupported is returned when a client is created with a token credential.
@@ -113,8 +122,16 @@ func (d *nativeDriver) ensureDriver() (*C.cosmos_driver_t, error) {
 	var richErr *C.cosmos_error_t
 	// NULL driver options selects the defaults; per-client options are applied per operation.
 	status := C.cosmos_driver_get_or_create_blocking(d.runtime, d.account, nil, &d.driver, &richErr) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
-	d.driverErr = statusError(status, richErr, "creating the driver")
-	return d.driver, d.driverErr
+	if d.driverErr = statusError(status, richErr, "creating the driver"); d.driverErr != nil {
+		return nil, d.driverErr
+	}
+
+	// The queue is only needed once operations can run, so it is created with the driver rather
+	// than at construction.
+	if d.reactor, d.driverErr = newReactor(d.runtime); d.driverErr != nil {
+		return nil, d.driverErr
+	}
+	return d.driver, nil
 }
 
 // buildRuntime creates the Tokio runtime the driver executes on.
@@ -152,6 +169,16 @@ func (d *nativeDriver) close() error {
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	d.closed = true
+
+	// The reactor goes first: it holds the completion queue, and stopping it is what guarantees
+	// no thread is still reading completions that reference the driver.
+	d.reactor.close()
+	d.reactor = nil
+
+	for key, container := range d.containers {
+		C.cosmos_container_ref_free(container)
+		delete(d.containers, key)
+	}
 
 	C.cosmos_driver_free(d.driver)
 	d.driver = nil

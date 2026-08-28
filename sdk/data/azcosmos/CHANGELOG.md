@@ -49,6 +49,13 @@
   status the driver pairs them with, so a failed connection reports `CodeTransportFailure` instead
   of `CodeServiceUnavailable`. Token credentials are not supported by the driver binding yet,
   because the C ABI exposes no constructor for one.
+* `ReadItem` and `CreateItem` now run against the driver in the `azcosmos_driver` build. Operations
+  are submitted to a completion queue and answered asynchronously, so many can be in flight against
+  one client without holding a thread each, and cancelling the caller's context cancels the
+  operation at the driver rather than abandoning it. Container references are resolved once per
+  client and cached, since resolving reads container metadata from the gateway. End-to-end tests
+  run against the Cosmos DB emulator, gated on the `EMULATOR` environment variable that the
+  module's existing emulator CI stage already sets.
 
 ### Breaking Changes
 

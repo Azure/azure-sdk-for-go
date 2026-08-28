@@ -35,6 +35,19 @@ with `cargo build --release`, and `internal/native/azurecosmosdriver.h` is the h
 vendored here and pinned to the version in `driver.go`. There is no published binary to depend on
 yet, so obtaining the library is currently a manual step.
 
+### Running the end-to-end tests
+
+The tests in `emulator_test.go` run real operations against a service. They need a driver-backed
+build and the `EMULATOR` environment variable, which is what the module's emulator CI stage already
+sets, and they skip otherwise. A database and container have to exist first, because container
+management is not bound yet; their ids default to `itemdb` and `items` and can be overridden with
+`AZCOSMOS_DATABASE` and `AZCOSMOS_CONTAINER`, alongside `AZCOSMOS_ENDPOINT`.
+
+```sh
+EMULATOR=1 CGO_ENABLED=1 CGO_LDFLAGS="-L/path/to/driver" \
+  go test -tags azcosmos_driver -run TestEmulator ./...
+```
+
 Two limits apply to the driver-backed build today, both of which are upstream gaps rather than
 choices this module makes:
 

@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.ServiceNetworking": "2026-03-01"
   },
-  "emitterVersion": "0.17.2"
+  "emitterVersion": "0.17.3"
 }

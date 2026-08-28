@@ -93,6 +93,9 @@ func (client *PrivateEndpointConnectionsInterfaceClient) deleteOperation(ctx con
 // deleteCreateRequest creates the Delete request.
 func (client *PrivateEndpointConnectionsInterfaceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, privateEndpointConnectionName string, _ *PrivateEndpointConnectionsInterfaceClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/privateEndpointConnections/{privateEndpointConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -143,6 +146,9 @@ func (client *PrivateEndpointConnectionsInterfaceClient) Get(ctx context.Context
 // getCreateRequest creates the Get request.
 func (client *PrivateEndpointConnectionsInterfaceClient) getCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, privateEndpointConnectionName string, _ *PrivateEndpointConnectionsInterfaceClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/privateEndpointConnections/{privateEndpointConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -216,6 +222,9 @@ func (client *PrivateEndpointConnectionsInterfaceClient) listByTrafficController
 	var err error
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/privateEndpointConnections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
 			return nil, errors.New("parameter resourceGroupName cannot be empty")
@@ -303,6 +312,9 @@ func (client *PrivateEndpointConnectionsInterfaceClient) update(ctx context.Cont
 // updateCreateRequest creates the Update request.
 func (client *PrivateEndpointConnectionsInterfaceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, privateEndpointConnectionName string, resource PrivateEndpointConnection, _ *PrivateEndpointConnectionsInterfaceClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/privateEndpointConnections/{privateEndpointConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")

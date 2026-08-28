@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0 (2026-08-27)
+## 1.2.0 (2026-08-28)
 ### Features Added
 
 - New value `PolicyTypeIPAccessRules` added to enum type `PolicyType`

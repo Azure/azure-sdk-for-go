@@ -214,6 +214,12 @@ type GetTieringCostOperationResultClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultOptions contains the optional parameters for the
+// ItemLevelRecoveryConnectionsClient.ListInstantItemRecoveryOperationResult method.
+type ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ItemLevelRecoveryConnectionsClientProvisionOptions contains the optional parameters for the ItemLevelRecoveryConnectionsClient.Provision
 // method.
 type ItemLevelRecoveryConnectionsClientProvisionOptions struct {

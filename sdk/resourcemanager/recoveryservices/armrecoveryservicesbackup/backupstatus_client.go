@@ -19,7 +19,7 @@ import (
 // BackupStatusClient contains the methods for the BackupStatus group.
 // Don't use this type directly, use NewBackupStatusClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-08-01
 type BackupStatusClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type BackupStatusClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBackupStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupStatusClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,7 +72,7 @@ func (client *BackupStatusClient) Get(ctx context.Context, azureRegion string, p
 func (client *BackupStatusClient) getCreateRequest(ctx context.Context, azureRegion string, parameters BackupStatusRequest, _ *BackupStatusClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.RecoveryServices/locations/{azureRegion}/backupStatus"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if azureRegion == "" {
@@ -81,7 +84,7 @@ func (client *BackupStatusClient) getCreateRequest(ctx context.Context, azureReg
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

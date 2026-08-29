@@ -81,7 +81,7 @@ func (f *FeatureSupportServerTransport) dispatchValidate(req *http.Request) (*ht
 	if f.srv.Validate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Validate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/locations/(?P<azureRegion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupValidateFeatures`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/locations/(?P<azureRegion>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupValidateFeatures`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

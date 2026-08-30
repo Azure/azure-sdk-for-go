@@ -44,7 +44,7 @@ func (p *perRetryAuthPolicy) Do(req *policy.Request) (*http.Response, error) {
 }
 
 func (p *perRetryAuthPolicy) AddTokenHeader(headerName string, req *http.Request, targetURI string) error {
-	signature, err := p.tp.GetToken(targetURI)
+	signature, err := p.tp.GetToken(req.Context(), targetURI)
 
 	if err != nil {
 		return err

@@ -3,6 +3,7 @@
 package sas
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"strconv"
@@ -53,7 +54,7 @@ func TestTokenProviderWithSAS(t *testing.T) {
 	tp, err := NewTokenProvider(TokenProviderWithSAS("hello"))
 	require.NoError(t, err)
 
-	token, err := tp.GetToken("audience")
+	token, err := tp.GetToken(context.Background(), "audience")
 	require.NoError(t, err)
 
 	require.Equal(t, &auth.Token{
@@ -75,7 +76,7 @@ func TestTokenProviderWithKey(t *testing.T) {
 		return now
 	}
 
-	token, err := tp.GetToken("audience")
+	token, err := tp.GetToken(context.Background(), "audience")
 	require.NoError(t, err)
 
 	require.Equal(t, &auth.Token{

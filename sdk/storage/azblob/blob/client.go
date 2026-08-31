@@ -364,19 +364,19 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	if dr.ContentRange != nil {
 		totalSize = parseContentRangeTotal(*dr.ContentRange)
 		if totalSize <= 0 {
-			dr.Body.Close()
+			_ = dr.Body.Close()
 			return 0, fmt.Errorf("unable to parse total size from Content-Range header: %s", *dr.ContentRange)
 		}
 	} else if dr.ContentLength != nil {
 		totalSize = *dr.ContentLength + o.Range.Offset
 	} else {
-		dr.Body.Close()
+		_ = dr.Body.Close()
 		return 0, fmt.Errorf("response missing both Content-Range and Content-Length headers")
 	}
 
 	count = totalSize - o.Range.Offset
 	if count <= 0 {
-		dr.Body.Close()
+		_ = dr.Body.Close()
 		return 0, nil
 	}
 
@@ -386,12 +386,15 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 			clone := *o.AccessConditions
 			ac = &clone
 		}
-		if ac.ModifiedAccessConditions == nil {
-			ac.ModifiedAccessConditions = &ModifiedAccessConditions{}
+		mac := &ModifiedAccessConditions{}
+		if ac.ModifiedAccessConditions != nil {
+			macClone := *ac.ModifiedAccessConditions
+			mac = &macClone
 		}
-		if ac.ModifiedAccessConditions.IfMatch == nil {
-			ac.ModifiedAccessConditions.IfMatch = dr.ETag
+		if mac.IfMatch == nil {
+			mac.IfMatch = dr.ETag
 		}
+		ac.ModifiedAccessConditions = mac
 		o.AccessConditions = ac
 	}
 
@@ -402,7 +405,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		initialChunkSize = *dr.ContentLength
 	}
 	if initialChunkSize <= 0 {
-		dr.Body.Close()
+		_ = dr.Body.Close()
 		return 0, nil
 	}
 
@@ -419,7 +422,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	}
 	_, err = io.Copy(shared.NewSectionWriter(writer, 0, initialChunkSize), body)
 	if err != nil {
-		body.Close()
+		_ = body.Close()
 		return 0, err
 	}
 	if err = body.Close(); err != nil {
@@ -473,7 +476,7 @@ func (b *Client) parallelDownload(ctx context.Context, writer io.WriterAt, o dow
 				})
 			}
 			if _, err = io.Copy(shared.NewSectionWriter(writer, chunkStart, count), body); err != nil {
-				body.Close()
+				_ = body.Close()
 				return err
 			}
 			if dr.StructuredBodyType != nil && *dr.StructuredBodyType != "" && dr.ContentRange != nil {
@@ -518,7 +521,7 @@ func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o
 				})
 			}
 			if _, err = io.Copy(shared.NewSectionWriter(writer, chunkStart+writerOffset, count), body); err != nil {
-				body.Close()
+				_ = body.Close()
 				return err
 			}
 			if dr.StructuredBodyType != nil && *dr.StructuredBodyType != "" && dr.ContentRange != nil {

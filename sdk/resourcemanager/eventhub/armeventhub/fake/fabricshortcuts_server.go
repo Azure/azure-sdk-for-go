@@ -116,7 +116,7 @@ func (f *FabricShortcutsServerTransport) dispatchApprove(req *http.Request) (*ht
 	if f.srv.Approve == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Approve not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventhubs/(?P<eventHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fabricShortcuts/(?P<fabricShortcutName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/approve`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventhubs/(?P<eventHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fabricShortcuts/(?P<fabricShortcutName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/approve`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -157,7 +157,7 @@ func (f *FabricShortcutsServerTransport) dispatchCreateOrUpdate(req *http.Reques
 	if f.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventhubs/(?P<eventHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fabricShortcuts/(?P<fabricShortcutName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventhubs/(?P<eventHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fabricShortcuts/(?P<fabricShortcutName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -202,7 +202,7 @@ func (f *FabricShortcutsServerTransport) dispatchDelete(req *http.Request) (*htt
 	if f.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventhubs/(?P<eventHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fabricShortcuts/(?P<fabricShortcutName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventhubs/(?P<eventHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fabricShortcuts/(?P<fabricShortcutName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -243,7 +243,7 @@ func (f *FabricShortcutsServerTransport) dispatchGet(req *http.Request) (*http.R
 	if f.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventhubs/(?P<eventHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fabricShortcuts/(?P<fabricShortcutName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventhubs/(?P<eventHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fabricShortcuts/(?P<fabricShortcutName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -286,7 +286,7 @@ func (f *FabricShortcutsServerTransport) dispatchNewListByEventHubPager(req *htt
 	}
 	newListByEventHubPager := f.newListByEventHubPager.get(req)
 	if newListByEventHubPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventhubs/(?P<eventHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fabricShortcuts`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventhubs/(?P<eventHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fabricShortcuts`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -329,7 +329,7 @@ func (f *FabricShortcutsServerTransport) dispatchReject(req *http.Request) (*htt
 	if f.srv.Reject == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Reject not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/eventhubs/(?P<eventHubName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/fabricShortcuts/(?P<fabricShortcutName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reject`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EventHub/namespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventhubs/(?P<eventHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/fabricShortcuts/(?P<fabricShortcutName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reject`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {

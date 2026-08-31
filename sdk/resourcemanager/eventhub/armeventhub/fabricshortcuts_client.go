@@ -30,6 +30,9 @@ type FabricShortcutsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFabricShortcutsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FabricShortcutsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *FabricShortcutsClient) Approve(ctx context.Context, resourceGroupN
 	if err != nil {
 		return FabricShortcutsClientApproveResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FabricShortcutsClientApproveResponse{}, err
-	}
-	resp, err := client.approveHandleResponse(httpResp)
-	return resp, err
+	return client.approveHandleResponse(httpResp, http.StatusOK)
 }
 
 // approveCreateRequest creates the Approve request.
 func (client *FabricShortcutsClient) approveCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, fabricShortcutName string, _ *FabricShortcutsClientApproveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/fabricShortcuts/{fabricShortcutName}/approve"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -105,8 +103,11 @@ func (client *FabricShortcutsClient) approveCreateRequest(ctx context.Context, r
 }
 
 // approveHandleResponse handles the Approve response.
-func (client *FabricShortcutsClient) approveHandleResponse(resp *http.Response) (FabricShortcutsClientApproveResponse, error) {
+func (client *FabricShortcutsClient) approveHandleResponse(resp *http.Response, successCodes ...int) (FabricShortcutsClientApproveResponse, error) {
 	result := FabricShortcutsClientApproveResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FabricShortcut); err != nil {
 		return FabricShortcutsClientApproveResponse{}, err
 	}
@@ -136,19 +137,14 @@ func (client *FabricShortcutsClient) CreateOrUpdate(ctx context.Context, resourc
 	if err != nil {
 		return FabricShortcutsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FabricShortcutsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *FabricShortcutsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, fabricShortcutName string, resource FabricShortcut, _ *FabricShortcutsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/fabricShortcuts/{fabricShortcutName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -183,8 +179,11 @@ func (client *FabricShortcutsClient) createOrUpdateCreateRequest(ctx context.Con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *FabricShortcutsClient) createOrUpdateHandleResponse(resp *http.Response) (FabricShortcutsClientCreateOrUpdateResponse, error) {
+func (client *FabricShortcutsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (FabricShortcutsClientCreateOrUpdateResponse, error) {
 	result := FabricShortcutsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FabricShortcut); err != nil {
 		return FabricShortcutsClientCreateOrUpdateResponse{}, err
 	}
@@ -213,8 +212,7 @@ func (client *FabricShortcutsClient) Delete(ctx context.Context, resourceGroupNa
 		return FabricShortcutsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FabricShortcutsClientDeleteResponse{}, err
+		return FabricShortcutsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return FabricShortcutsClientDeleteResponse{}, nil
 }
@@ -223,7 +221,7 @@ func (client *FabricShortcutsClient) Delete(ctx context.Context, resourceGroupNa
 func (client *FabricShortcutsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, fabricShortcutName string, _ *FabricShortcutsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/fabricShortcuts/{fabricShortcutName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -273,19 +271,14 @@ func (client *FabricShortcutsClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return FabricShortcutsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FabricShortcutsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *FabricShortcutsClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, fabricShortcutName string, _ *FabricShortcutsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/fabricShortcuts/{fabricShortcutName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -316,8 +309,11 @@ func (client *FabricShortcutsClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *FabricShortcutsClient) getHandleResponse(resp *http.Response) (FabricShortcutsClientGetResponse, error) {
+func (client *FabricShortcutsClient) getHandleResponse(resp *http.Response, successCodes ...int) (FabricShortcutsClientGetResponse, error) {
 	result := FabricShortcutsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FabricShortcut); err != nil {
 		return FabricShortcutsClientGetResponse{}, err
 	}
@@ -341,51 +337,65 @@ func (client *FabricShortcutsClient) NewListByEventHubPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByEventHubCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, options)
-			}, nil)
+			req, err := client.listByEventHubCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, nextLink, options)
 			if err != nil {
 				return FabricShortcutsClientListByEventHubResponse{}, err
 			}
-			return client.listByEventHubHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FabricShortcutsClientListByEventHubResponse{}, err
+			}
+			return client.listByEventHubHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByEventHubCreateRequest creates the ListByEventHub request.
-func (client *FabricShortcutsClient) listByEventHubCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, _ *FabricShortcutsClientListByEventHubOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/fabricShortcuts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FabricShortcutsClient) listByEventHubCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, nextLink string, _ *FabricShortcutsClientListByEventHubOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/fabricShortcuts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		if eventHubName == "" {
+			return nil, errors.New("parameter eventHubName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{eventHubName}", url.PathEscape(eventHubName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if eventHubName == "" {
-		return nil, errors.New("parameter eventHubName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{eventHubName}", url.PathEscape(eventHubName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByEventHubHandleResponse handles the ListByEventHub response.
-func (client *FabricShortcutsClient) listByEventHubHandleResponse(resp *http.Response) (FabricShortcutsClientListByEventHubResponse, error) {
+func (client *FabricShortcutsClient) listByEventHubHandleResponse(resp *http.Response, successCodes ...int) (FabricShortcutsClientListByEventHubResponse, error) {
 	result := FabricShortcutsClientListByEventHubResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FabricShortcutListResult); err != nil {
 		return FabricShortcutsClientListByEventHubResponse{}, err
 	}
@@ -413,19 +423,14 @@ func (client *FabricShortcutsClient) Reject(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return FabricShortcutsClientRejectResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FabricShortcutsClientRejectResponse{}, err
-	}
-	resp, err := client.rejectHandleResponse(httpResp)
-	return resp, err
+	return client.rejectHandleResponse(httpResp, http.StatusOK)
 }
 
 // rejectCreateRequest creates the Reject request.
 func (client *FabricShortcutsClient) rejectCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, fabricShortcutName string, _ *FabricShortcutsClientRejectOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/fabricShortcuts/{fabricShortcutName}/reject"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -456,8 +461,11 @@ func (client *FabricShortcutsClient) rejectCreateRequest(ctx context.Context, re
 }
 
 // rejectHandleResponse handles the Reject response.
-func (client *FabricShortcutsClient) rejectHandleResponse(resp *http.Response) (FabricShortcutsClientRejectResponse, error) {
+func (client *FabricShortcutsClient) rejectHandleResponse(resp *http.Response, successCodes ...int) (FabricShortcutsClientRejectResponse, error) {
 	result := FabricShortcutsClientRejectResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FabricShortcut); err != nil {
 		return FabricShortcutsClientRejectResponse{}, err
 	}

@@ -29,7 +29,7 @@ func ExampleUpgradePreferencesOperationsClient_CreateOrUpdate() {
 			ExceptionWindows: []*armeventhub.ExceptionWindow{
 				{
 					Action:          to.Ptr(armeventhub.ExceptionWindowActionAllow),
-					Date:            to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-08-22"); return t }()),
+					Date:            to.Ptr(time.Date(2026, time.August, 22, 0, 0, 0, 0, time.UTC)),
 					DurationMinutes: to.Ptr[int32](480),
 					StartTimeOfDay:  to.Ptr("PT4H"),
 				},
@@ -62,7 +62,7 @@ func ExampleUpgradePreferencesOperationsClient_CreateOrUpdate() {
 	// 			ExceptionWindows: []*armeventhub.ExceptionWindow{
 	// 				{
 	// 					Action: to.Ptr(armeventhub.ExceptionWindowActionAllow),
-	// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-08-22"); return t}()),
+	// 					Date: to.Ptr(time.Date(2026, time.August, 22, 0, 0, 0, 0, time.UTC)),
 	// 					DurationMinutes: to.Ptr[int32](480),
 	// 					StartTimeOfDay: to.Ptr("PT4H"),
 	// 				},
@@ -115,7 +115,7 @@ func ExampleUpgradePreferencesOperationsClient_Get() {
 	// 			ExceptionWindows: []*armeventhub.ExceptionWindow{
 	// 				{
 	// 					Action: to.Ptr(armeventhub.ExceptionWindowActionBlock),
-	// 					Date: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2026-08-15"); return t}()),
+	// 					Date: to.Ptr(time.Date(2026, time.August, 15, 0, 0, 0, 0, time.UTC)),
 	// 					DurationMinutes: to.Ptr[int32](1440),
 	// 					StartTimeOfDay: to.Ptr("PT0S"),
 	// 				},
@@ -128,7 +128,7 @@ func ExampleUpgradePreferencesOperationsClient_Get() {
 	// 				},
 	// 			},
 	// 			UpgradeStatus: &armeventhub.UpgradeStatus{
-	// 				CompletesAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-02T20:00:00Z"); return t}()),
+	// 				CompletesAt: to.Ptr(time.Date(2026, time.July, 2, 20, 0, 0, 0, time.UTC)),
 	// 				InProgress: to.Ptr(true),
 	// 				PendingUpgrade: to.Ptr(true),
 	// 			},
@@ -169,7 +169,7 @@ func ExampleUpgradePreferencesOperationsClient_UpgradeNow() {
 	// 				},
 	// 			},
 	// 			UpgradeStatus: &armeventhub.UpgradeStatus{
-	// 				CompletesAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-07-02T20:00:00Z"); return t}()),
+	// 				CompletesAt: to.Ptr(time.Date(2026, time.July, 2, 20, 0, 0, 0, time.UTC)),
 	// 				InProgress: to.Ptr(true),
 	// 				PendingUpgrade: to.Ptr(true),
 	// 			},

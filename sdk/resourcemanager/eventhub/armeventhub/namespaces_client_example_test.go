@@ -268,7 +268,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate_namespaceCreateWithIPAddressTyp
 	// 		Location: to.Ptr("East US"),
 	// 		Properties: &armeventhub.EHNamespaceProperties{
 	// 			ClusterArmID: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/clusters/enc-test"),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-16T22:36:06.107Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.February, 16, 22, 36, 6, 107000000, time.UTC)),
 	// 			DisableLocalAuth: to.Ptr(false),
 	// 			Encryption: &armeventhub.Encryption{
 	// 				KeySource: to.Ptr("Microsoft.KeyVault"),
@@ -311,7 +311,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate_namespaceCreateWithIPAddressTyp
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			PublicNetworkAccess: to.Ptr(armeventhub.PublicNetworkAccessEnabled),
 	// 			ServiceBusEndpoint: to.Ptr("https://NamespaceSample.servicebus.windows-int.net:443/"),
-	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-02-16T22:37:42.29Z"); return t}()),
+	// 			UpdatedAt: to.Ptr(time.Date(2021, time.February, 16, 22, 37, 42, 290000000, time.UTC)),
 	// 			ZoneRedundant: to.Ptr(false),
 	// 		},
 	// 		SKU: &armeventhub.SKU{

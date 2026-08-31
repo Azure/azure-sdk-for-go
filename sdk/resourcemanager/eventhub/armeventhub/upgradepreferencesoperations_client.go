@@ -30,6 +30,9 @@ type UpgradePreferencesOperationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewUpgradePreferencesOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UpgradePreferencesOperationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,19 +65,14 @@ func (client *UpgradePreferencesOperationsClient) CreateOrUpdate(ctx context.Con
 	if err != nil {
 		return UpgradePreferencesOperationsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpgradePreferencesOperationsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *UpgradePreferencesOperationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, resource UpgradePreferences, _ *UpgradePreferencesOperationsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}/upgradePreferences/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +99,11 @@ func (client *UpgradePreferencesOperationsClient) createOrUpdateCreateRequest(ct
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *UpgradePreferencesOperationsClient) createOrUpdateHandleResponse(resp *http.Response) (UpgradePreferencesOperationsClientCreateOrUpdateResponse, error) {
+func (client *UpgradePreferencesOperationsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (UpgradePreferencesOperationsClientCreateOrUpdateResponse, error) {
 	result := UpgradePreferencesOperationsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UpgradePreferences); err != nil {
 		return UpgradePreferencesOperationsClientCreateOrUpdateResponse{}, err
 	}
@@ -129,19 +130,14 @@ func (client *UpgradePreferencesOperationsClient) Get(ctx context.Context, resou
 	if err != nil {
 		return UpgradePreferencesOperationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return UpgradePreferencesOperationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *UpgradePreferencesOperationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *UpgradePreferencesOperationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}/upgradePreferences/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -164,8 +160,11 @@ func (client *UpgradePreferencesOperationsClient) getCreateRequest(ctx context.C
 }
 
 // getHandleResponse handles the Get response.
-func (client *UpgradePreferencesOperationsClient) getHandleResponse(resp *http.Response) (UpgradePreferencesOperationsClientGetResponse, error) {
+func (client *UpgradePreferencesOperationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (UpgradePreferencesOperationsClientGetResponse, error) {
 	result := UpgradePreferencesOperationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UpgradePreferences); err != nil {
 		return UpgradePreferencesOperationsClientGetResponse{}, err
 	}
@@ -192,19 +191,14 @@ func (client *UpgradePreferencesOperationsClient) UpgradeNow(ctx context.Context
 	if err != nil {
 		return UpgradePreferencesOperationsClientUpgradeNowResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return UpgradePreferencesOperationsClientUpgradeNowResponse{}, err
-	}
-	resp, err := client.upgradeNowHandleResponse(httpResp)
-	return resp, err
+	return client.upgradeNowHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
 }
 
 // upgradeNowCreateRequest creates the UpgradeNow request.
 func (client *UpgradePreferencesOperationsClient) upgradeNowCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *UpgradePreferencesOperationsClientUpgradeNowOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/clusters/{clusterName}/upgradePreferences/default/upgradeNow"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -227,8 +221,11 @@ func (client *UpgradePreferencesOperationsClient) upgradeNowCreateRequest(ctx co
 }
 
 // upgradeNowHandleResponse handles the UpgradeNow response.
-func (client *UpgradePreferencesOperationsClient) upgradeNowHandleResponse(resp *http.Response) (UpgradePreferencesOperationsClientUpgradeNowResponse, error) {
+func (client *UpgradePreferencesOperationsClient) upgradeNowHandleResponse(resp *http.Response, successCodes ...int) (UpgradePreferencesOperationsClientUpgradeNowResponse, error) {
 	result := UpgradePreferencesOperationsClientUpgradeNowResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UpgradePreferences); err != nil {
 		return UpgradePreferencesOperationsClientUpgradeNowResponse{}, err
 	}

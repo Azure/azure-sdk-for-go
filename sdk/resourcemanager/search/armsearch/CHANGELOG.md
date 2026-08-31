@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.3 (2026-07-16)
+## 2.0.0-beta.3 (2026-08-31)
 ### Breaking Changes
 
 - Function `*OfferingsClient.List` has been removed

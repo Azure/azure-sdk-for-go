@@ -719,10 +719,10 @@ func ExampleServicesClient_BeginCreateOrUpdate_searchCreateOrUpdateServiceWithAu
 	// 		SystemData: &armsearch.SystemData{
 	// 			CreatedBy: to.Ptr("My e-commerce app"),
 	// 			CreatedByType: to.Ptr(armsearch.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("fakeuser@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armsearch.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-11-01T00:00:00Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.November, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }

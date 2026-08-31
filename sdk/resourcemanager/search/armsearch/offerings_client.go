@@ -56,12 +56,7 @@ func (client *OfferingsClient) Fetch(ctx context.Context, options *OfferingsClie
 	if err != nil {
 		return OfferingsClientFetchResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OfferingsClientFetchResponse{}, err
-	}
-	resp, err := client.fetchHandleResponse(httpResp)
-	return resp, err
+	return client.fetchHandleResponse(httpResp, http.StatusOK)
 }
 
 // fetchCreateRequest creates the Fetch request.
@@ -79,8 +74,11 @@ func (client *OfferingsClient) fetchCreateRequest(ctx context.Context, _ *Offeri
 }
 
 // fetchHandleResponse handles the Fetch response.
-func (client *OfferingsClient) fetchHandleResponse(resp *http.Response) (OfferingsClientFetchResponse, error) {
+func (client *OfferingsClient) fetchHandleResponse(resp *http.Response, successCodes ...int) (OfferingsClientFetchResponse, error) {
 	result := OfferingsClientFetchResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OfferingsResult); err != nil {
 		return OfferingsClientFetchResponse{}, err
 	}

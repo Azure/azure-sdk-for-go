@@ -81,7 +81,7 @@ func (m *ManagementServerTransport) dispatchUsageBySubscriptionSKU(req *http.Req
 	if m.srv.UsageBySubscriptionSKU == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UsageBySubscriptionSKU not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Search/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages/(?P<skuName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Search/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/usages/(?P<skuName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

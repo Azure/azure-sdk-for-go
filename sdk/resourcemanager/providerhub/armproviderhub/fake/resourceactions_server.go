@@ -87,7 +87,7 @@ func (r *ResourceActionsServerTransport) dispatchBeginDeleteResources(req *http.
 	}
 	beginDeleteResources := r.beginDeleteResources.get(req)
 	if beginDeleteResources == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceActions/(?P<resourceActionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/deleteResources`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceActions/(?P<resourceActionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deleteResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

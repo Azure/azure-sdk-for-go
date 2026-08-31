@@ -2,15 +2,11 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
-## 1.6.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.6.0-beta.3 (2026-09-01)
 
 ### Other Changes
+
+* Updated dependencies.
 
 ## 1.6.0-beta.2 (2026-08-03)
 

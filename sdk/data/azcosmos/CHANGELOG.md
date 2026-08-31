@@ -6,56 +6,41 @@
 
 ### Features Added
 
-* Added the v2 error and response model. `Error` reports a `Code` classifying the failure, along
-  with the status and sub-status codes, message, request charge, activity ID, session token, ETag,
-  retry-after and error document, and whether the service or the client produced it. Retrieve it
-  with `errors.As` and branch on `Code`, following the same shape as `azservicebus`. `Code` is
-  derived from the coarse status the driver reports on every completion rather than from the HTTP
-  status, so failures the client produced -- which carry no HTTP status -- stay classified:
-  transport failures, serialization failures, authentication failures and client-side operation
-  timeouts each have their own code, and a cancelled operation reports `CodeOperationCancelled` and
-  unwraps to `context.Canceled` so `errors.Is` works. Codes the driver adds later are classified by
-  band rather than collapsing to `CodeUnknown`. A failed operation returns the zero response value,
-  so `Error` is what carries the request charge for requests that are billed but do not succeed.
-  Request charges are `float64`, matching the driver, so no precision is lost. `Response` carries
-  the request charge and activity ID common to every operation, and `ItemResponse` adds the ETag,
-  session token and item content. Session tokens are carried as a named `SessionToken` type rather
-  than a bare string. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
-* Added `PartitionKey`, including support for hierarchical partition keys via the `Append*`
-  methods. Null and undefined components are now distinct: `AppendNull` produces an explicitly
-  JSON null component and `AppendUndefined` produces one whose value is missing from the item,
-  which route differently. See [PR 27333](https://github.com/Azure/azure-sdk-for-go/pull/27333).
-* Added `Client`, `DatabaseClient` and `ContainerClient`, along with `ClientOptions` and the
-  `NewClient` and `NewClientWithKey` constructors. Region preference is expressed as a
-  `RoutingStrategy`, built with either `ProximityTo` for the SDK to order regions by proximity to
-  where the application runs, or `PreferredRegions` for an explicit order; both take a typed
-  `Region`. Account keys are supplied through `NewKeyCredential`, which validates the key so a
-  malformed one is reported at construction rather than as an authentication failure on every
-  operation. Operations on these clients are not implemented yet.
+* Added the error and response model. `Error` classifies a failure with a `Code`, alongside the
+  status and sub-status, message, request charge, activity ID, session token, ETag, retry-after and
+  error document, and whether the service or the client produced it. Retrieve it with `errors.As`
+  and branch on `Code`; a cancelled operation also unwraps to `context.Canceled`. `Response` and
+  `ItemResponse` carry the values an operation reports.
+  See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
+* Added `PartitionKey`, including hierarchical keys via the `Append*` methods. Null and undefined
+  components are distinct, because they route differently.
+  See [PR 27333](https://github.com/Azure/azure-sdk-for-go/pull/27333).
+* Added `Client`, `DatabaseClient` and `ContainerClient` with `ClientOptions` and the `NewClient`
+  and `NewClientWithKey` constructors. `NewKeyCredential` validates the account key, so a malformed
+  one is reported at construction rather than on every operation.
   See [PR 27334](https://github.com/Azure/azure-sdk-for-go/pull/27334).
-* Added `ContainerClient.ReadItem` and `ContainerClient.CreateItem` with `ReadItemOptions` and
-  `CreateItemOptions`. Both carry an `OperationOptions`, which holds the settings every operation
-  accepts: the read consistency strategy, whether writes return content, excluded regions and the
-  end-to-end timeout. Each options type adds only what is specific to it. `CreateItem` takes the
-  item's id alongside its body, because the driver addresses the item by it; the Rust SDK takes it
-  the same way. These operations are not implemented yet.
+* Added `ContainerClient.ReadItem` and `ContainerClient.CreateItem` with their options types, which
+  share an `OperationOptions`. `CreateItem` takes the item's id alongside its body, because the
+  driver addresses the item by it.
   See [PR 27336](https://github.com/Azure/azure-sdk-for-go/pull/27336).
-* Added the driver binding behind the `azcosmos_driver` build tag, covering the runtime, account
-  reference and driver handles and their release through `Client.Close`. The tag is off by default,
-  so the default build needs no C toolchain and works with `CGO_ENABLED=0`. Creating the driver
-  fetches the account's properties, so it is deferred to first use rather than done in the
-  constructor: client construction stays local and an unreachable account is an operation failure.
-  Failures the client produced are classified by their sub-status rather than the synthetic HTTP
-  status the driver pairs them with, so a failed connection reports `CodeTransportFailure` instead
-  of `CodeServiceUnavailable`. Token credentials are not supported by the driver binding yet,
-  because the C ABI exposes no constructor for one.
-* `ReadItem` and `CreateItem` now run against the driver in the `azcosmos_driver` build. Operations
-  are submitted to a completion queue and answered asynchronously, so many can be in flight against
-  one client without holding a thread each, and cancelling the caller's context cancels the
-  operation at the driver rather than abandoning it. Container references are resolved once per
-  client and cached, since resolving reads container metadata from the gateway. End-to-end tests
-  run against the Cosmos DB emulator, gated on the `EMULATOR` environment variable that the
-  module's existing emulator CI stage already sets.
+* Added the driver binding behind the `azcosmos_driver` build tag, which is off by default so the
+  default build needs no C toolchain and works with `CGO_ENABLED=0`. The driver is created on first
+  use rather than at construction, because creating it reads the account's properties.
+  See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
+* `ReadItem` and `CreateItem` run against the driver in that build. Operations are answered through
+  a completion queue, so many can be in flight against one client without holding a thread each,
+  and the caller's context both cancels the operation and bounds it.
+  See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
+
+### Known Issues
+
+* `ClientOptions.Routing`, `ClientOptions.ApplicationID` and
+  `ClientOptions.EnableContentResponseOnWrite` are accepted but not yet applied: the binding passes
+  the driver its defaults, so these have no effect. `OperationOptions.EnableContentResponseOnWrite`
+  does apply. See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
+* Token credentials are not supported by the driver binding. The C ABI exposes no constructor for
+  one, so `NewClient` reports it as unsupported and `NewClientWithKey` is the working path.
+  See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
 
 ### Breaking Changes
 

@@ -16,8 +16,13 @@ import (
 //
 // This does not embed [azcore.ClientOptions]. v2 executes operations through the Cosmos driver
 // rather than an azcore HTTP pipeline, so the transport, retry and per-call policy knobs on that
-// type have no effect here. Advertising options the client would silently ignore is worse than not
-// offering them, so the fields below are only the ones the driver honors.
+// type have no effect here, and advertising options the client would silently ignore is worse than
+// not offering them. Every field below is one the driver honors.
+//
+// Honoring them is not yet wired up, though: the binding hands the driver its own defaults rather
+// than building driver options from these, so Routing, ApplicationID and
+// EnableContentResponseOnWrite currently have no effect. That is a gap in the binding rather than
+// in the driver, tracked as a known issue in the changelog.
 //
 // A nil *ClientOptions selects the defaults for every field.
 type ClientOptions struct {

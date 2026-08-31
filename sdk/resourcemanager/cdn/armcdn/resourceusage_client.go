@@ -19,7 +19,7 @@ import (
 // ResourceUsageClient contains the methods for the ResourceUsage group.
 // Don't use this type directly, use NewResourceUsageClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-07-01
 type ResourceUsageClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -88,7 +88,7 @@ func (client *ResourceUsageClient) listCreateRequest(ctx context.Context, nextLi
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

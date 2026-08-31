@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/AFDEndpoints_Create.json
+// Generated from example definition: 2026-07-01/AFDEndpoints_Create.json
 func ExampleAFDEndpointsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleAFDEndpointsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/AFDEndpoints_Delete.json
+// Generated from example definition: 2026-07-01/AFDEndpoints_Delete.json
 func ExampleAFDEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleAFDEndpointsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/AFDEndpoints_Get.json
+// Generated from example definition: 2026-07-01/AFDEndpoints_Get.json
 func ExampleAFDEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +123,7 @@ func ExampleAFDEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/AFDEndpoints_ListByProfile.json
+// Generated from example definition: 2026-07-01/AFDEndpoints_ListByProfile.json
 func ExampleAFDEndpointsClient_NewListByProfilePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,7 +169,7 @@ func ExampleAFDEndpointsClient_NewListByProfilePager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/AFDEndpoints_ListResourceUsage.json
+// Generated from example definition: 2026-07-01/AFDEndpoints_ListResourceUsage.json
 func ExampleAFDEndpointsClient_NewListResourceUsagePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleAFDEndpointsClient_NewListResourceUsagePager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/AFDEndpoints_PurgeContent.json
+// Generated from example definition: 2026-07-01/AFDEndpoints_PurgeContent.json
 func ExampleAFDEndpointsClient_BeginPurgeContent() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +243,7 @@ func ExampleAFDEndpointsClient_BeginPurgeContent() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/AFDEndpoints_Update.json
+// Generated from example definition: 2026-07-01/AFDEndpoints_Update.json
 func ExampleAFDEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,7 +289,7 @@ func ExampleAFDEndpointsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01/AFDEndpoints_ValidateCustomDomain.json
+// Generated from example definition: 2026-07-01/AFDEndpoints_ValidateCustomDomain.json
 func ExampleAFDEndpointsClient_ValidateCustomDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

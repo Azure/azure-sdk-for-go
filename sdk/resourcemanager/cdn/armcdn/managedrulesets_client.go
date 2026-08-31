@@ -19,7 +19,7 @@ import (
 // ManagedRuleSetsClient contains the methods for the ManagedRuleSets group.
 // Don't use this type directly, use NewManagedRuleSetsClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-07-01
 type ManagedRuleSetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -89,7 +89,7 @@ func (client *ManagedRuleSetsClient) listCreateRequest(ctx context.Context, next
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

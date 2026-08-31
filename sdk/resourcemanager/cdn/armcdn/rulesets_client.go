@@ -13,14 +13,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 )
 
 // RuleSetsClient contains the methods for the RuleSets group.
 // Don't use this type directly, use NewRuleSetsClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-07-01
 type RuleSetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,32 +41,56 @@ func NewRuleSetsClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// Create - Creates a new rule set within the specified profile.
+// BeginCreate - Creates or update a batch rule set within the specified profile along with the rules associate to it.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
 //     resource group.
 //   - ruleSetName - Name of the rule set under the profile which is unique globally.
-//   - options - RuleSetsClientCreateOptions contains the optional parameters for the RuleSetsClient.Create method.
-func (client *RuleSetsClient) Create(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, options *RuleSetsClientCreateOptions) (RuleSetsClientCreateResponse, error) {
+//   - resource - Resource create parameters.
+//   - options - RuleSetsClientBeginCreateOptions contains the optional parameters for the RuleSetsClient.BeginCreate method.
+func (client *RuleSetsClient) BeginCreate(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, resource RuleSet, options *RuleSetsClientBeginCreateOptions) (*runtime.Poller[RuleSetsClientCreateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.create(ctx, resourceGroupName, profileName, ruleSetName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RuleSetsClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RuleSetsClientCreateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Create - Creates or update a batch rule set within the specified profile along with the rules associate to it.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RuleSetsClient) create(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, resource RuleSet, options *RuleSetsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "RuleSetsClient.Create"
+	const operationName = "RuleSetsClient.BeginCreate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, options)
+	req, err := client.createCreateRequest(ctx, resourceGroupName, profileName, ruleSetName, resource, options)
 	if err != nil {
-		return RuleSetsClientCreateResponse{}, err
+		return nil, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return RuleSetsClientCreateResponse{}, err
+		return nil, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
 }
 
 // createCreateRequest creates the Create request.
-func (client *RuleSetsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, _ *RuleSetsClientCreateOptions) (*policy.Request, error) {
+func (client *RuleSetsClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, resource RuleSet, _ *RuleSetsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/ruleSets/{ruleSetName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
@@ -90,30 +113,14 @@ func (client *RuleSetsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
+		return nil, err
+	}
 	return req, nil
-}
-
-// createHandleResponse handles the Create response.
-func (client *RuleSetsClient) createHandleResponse(resp *http.Response, successCodes ...int) (RuleSetsClientCreateResponse, error) {
-	result := RuleSetsClientCreateResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if val := resp.Header.Get("Retry-After"); val != "" {
-		retryAfter32, err := strconv.ParseInt(val, 10, 32)
-		retryAfter := int32(retryAfter32)
-		if err != nil {
-			return RuleSetsClientCreateResponse{}, err
-		}
-		result.RetryAfter = &retryAfter
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RuleSet); err != nil {
-		return RuleSetsClientCreateResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginDelete - Deletes an existing AzureFrontDoor rule set with the specified rule set name under the specified subscription,
@@ -189,7 +196,7 @@ func (client *RuleSetsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -243,7 +250,7 @@ func (client *RuleSetsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -320,7 +327,7 @@ func (client *RuleSetsClient) listByProfileCreateRequest(ctx context.Context, re
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -403,7 +410,7 @@ func (client *RuleSetsClient) listResourceUsageCreateRequest(ctx context.Context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

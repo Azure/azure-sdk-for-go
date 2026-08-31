@@ -1,0 +1,5 @@
+# The repository root ignores *.a and *.so so that build output never gets committed by accident.
+# The driver libraries here are deliberate: they are checked in until the per-target driver modules
+# exist, so they have to be exempted or `git add` skips them silently.
+!*.a
+!*.so

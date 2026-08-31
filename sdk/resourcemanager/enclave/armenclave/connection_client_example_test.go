@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/EnclaveConnection_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/EnclaveConnection_CreateOrUpdate.json
 func ExampleConnectionClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleConnectionClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EnclaveConnection_Delete.json
+// Generated from example definition: 2026-04-01/EnclaveConnection_Delete.json
 func ExampleConnectionClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleConnectionClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/EnclaveConnection_Get.json
+// Generated from example definition: 2026-04-01/EnclaveConnection_Get.json
 func ExampleConnectionClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleConnectionClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EnclaveConnection_HandleApprovalCreation.json
+// Generated from example definition: 2026-04-01/EnclaveConnection_HandleApprovalCreation.json
 func ExampleConnectionClient_BeginHandleApprovalCreation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +175,7 @@ func ExampleConnectionClient_BeginHandleApprovalCreation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EnclaveConnection_HandleApprovalDeletion.json
+// Generated from example definition: 2026-04-01/EnclaveConnection_HandleApprovalDeletion.json
 func ExampleConnectionClient_BeginHandleApprovalDeletion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,7 +206,7 @@ func ExampleConnectionClient_BeginHandleApprovalDeletion() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EnclaveConnection_ListByResourceGroup.json
+// Generated from example definition: 2026-04-01/EnclaveConnection_ListByResourceGroup.json
 func ExampleConnectionClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -263,7 +263,7 @@ func ExampleConnectionClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/EnclaveConnection_ListBySubscription.json
+// Generated from example definition: 2026-04-01/EnclaveConnection_ListBySubscription.json
 func ExampleConnectionClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,7 +320,7 @@ func ExampleConnectionClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/EnclaveConnection_Update.json
+// Generated from example definition: 2026-04-01/EnclaveConnection_Update.json
 func ExampleConnectionClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/Workload_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/Workload_CreateOrUpdate.json
 func ExampleWorkloadClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -68,7 +68,7 @@ func ExampleWorkloadClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Workload_Delete.json
+// Generated from example definition: 2026-04-01/Workload_Delete.json
 func ExampleWorkloadClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleWorkloadClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Workload_Get.json
+// Generated from example definition: 2026-04-01/Workload_Get.json
 func ExampleWorkloadClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +141,7 @@ func ExampleWorkloadClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Workload_ListByEnclaveResource.json
+// Generated from example definition: 2026-04-01/Workload_ListByEnclaveResource.json
 func ExampleWorkloadClient_NewListByEnclaveResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleWorkloadClient_NewListByEnclaveResourcePager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Workload_ListBySubscription.json
+// Generated from example definition: 2026-04-01/Workload_ListBySubscription.json
 func ExampleWorkloadClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,7 +251,7 @@ func ExampleWorkloadClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Workload_Update.json
+// Generated from example definition: 2026-04-01/Workload_Update.json
 func ExampleWorkloadClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

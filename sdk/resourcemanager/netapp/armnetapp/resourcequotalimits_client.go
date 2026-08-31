@@ -19,7 +19,7 @@ import (
 // ResourceQuotaLimitsClient contains the methods for the ResourceQuotaLimits group.
 // Don't use this type directly, use NewResourceQuotaLimitsClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-06-15-preview
 type ResourceQuotaLimitsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -83,7 +83,7 @@ func (client *ResourceQuotaLimitsClient) getCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260615Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -154,7 +154,7 @@ func (client *ResourceQuotaLimitsClient) listCreateRequest(ctx context.Context, 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260515Preview)
+		reqQP.Set("api-version", version20260615Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -63,12 +63,7 @@ func (client *DataFlowsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return DataFlowsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DataFlowsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -109,8 +104,11 @@ func (client *DataFlowsClient) createOrUpdateCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DataFlowsClient) createOrUpdateHandleResponse(resp *http.Response) (DataFlowsClientCreateOrUpdateResponse, error) {
+func (client *DataFlowsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DataFlowsClientCreateOrUpdateResponse, error) {
 	result := DataFlowsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataFlowResource); err != nil {
 		return DataFlowsClientCreateOrUpdateResponse{}, err
 	}
@@ -138,8 +136,7 @@ func (client *DataFlowsClient) Delete(ctx context.Context, resourceGroupName str
 		return DataFlowsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DataFlowsClientDeleteResponse{}, err
+		return DataFlowsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DataFlowsClientDeleteResponse{}, nil
 }
@@ -193,12 +190,7 @@ func (client *DataFlowsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return DataFlowsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DataFlowsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -235,8 +227,11 @@ func (client *DataFlowsClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataFlowsClient) getHandleResponse(resp *http.Response) (DataFlowsClientGetResponse, error) {
+func (client *DataFlowsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DataFlowsClientGetResponse, error) {
 	result := DataFlowsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataFlowResource); err != nil {
 		return DataFlowsClientGetResponse{}, err
 	}
@@ -259,47 +254,61 @@ func (client *DataFlowsClient) NewListByFactoryPager(resourceGroupName string, f
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
-			}, nil)
+			req, err := client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, nextLink, options)
 			if err != nil {
 				return DataFlowsClientListByFactoryResponse{}, err
 			}
-			return client.listByFactoryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DataFlowsClientListByFactoryResponse{}, err
+			}
+			return client.listByFactoryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
-func (client *DataFlowsClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, _ *DataFlowsClientListByFactoryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/dataflows"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DataFlowsClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, nextLink string, _ *DataFlowsClientListByFactoryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/dataflows"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if factoryName == "" {
+			return nil, errors.New("parameter factoryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if factoryName == "" {
-		return nil, errors.New("parameter factoryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20180601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByFactoryHandleResponse handles the ListByFactory response.
-func (client *DataFlowsClient) listByFactoryHandleResponse(resp *http.Response) (DataFlowsClientListByFactoryResponse, error) {
+func (client *DataFlowsClient) listByFactoryHandleResponse(resp *http.Response, successCodes ...int) (DataFlowsClientListByFactoryResponse, error) {
 	result := DataFlowsClientListByFactoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataFlowListResponse); err != nil {
 		return DataFlowsClientListByFactoryResponse{}, err
 	}

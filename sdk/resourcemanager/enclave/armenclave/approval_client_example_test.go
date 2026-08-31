@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-03-01-preview/Approvals_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/Approvals_CreateOrUpdate.json
 func ExampleApprovalClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,12 +38,12 @@ func ExampleApprovalClient_BeginCreateOrUpdate() {
 				{
 					ApproverEntraID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 					ActionPerformed: to.Ptr(armenclave.ActionPerformedApproved),
-					LastUpdatedAt:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t }()),
+					LastUpdatedAt:   to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 				},
 			},
 			TicketID:       to.Ptr("string"),
-			CreatedAt:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t }()),
-			StateChangedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t }()),
+			CreatedAt:      to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
+			StateChangedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		},
 	}, nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleApprovalClient_BeginCreateOrUpdate() {
 	// 				{
 	// 					ApproverEntraID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 					ActionPerformed: to.Ptr(armenclave.ActionPerformedApproved),
-	// 					LastUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 					LastUpdatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 					MandatoryApprovalGroupMembershipIDs: []*string{
 	// 						to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 						to.Ptr("22222222-2222-2222-2222-222222222222"),
@@ -93,8 +93,8 @@ func ExampleApprovalClient_BeginCreateOrUpdate() {
 	// 				to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			},
 	// 			TicketID: to.Ptr("string"),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
-	// 			StateChangedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
+	// 			StateChangedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/approvals/TestApprovals"),
 	// 		Name: to.Ptr("TestApprovals"),
@@ -102,16 +102,16 @@ func ExampleApprovalClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
 	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myAlias"),
 	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Approvals_Delete.json
+// Generated from example definition: 2026-04-01/Approvals_Delete.json
 func ExampleApprovalClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,7 +132,7 @@ func ExampleApprovalClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Approvals_Get.json
+// Generated from example definition: 2026-04-01/Approvals_Get.json
 func ExampleApprovalClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,7 +166,7 @@ func ExampleApprovalClient_Get() {
 	// 				{
 	// 					ApproverEntraID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 					ActionPerformed: to.Ptr(armenclave.ActionPerformedApproved),
-	// 					LastUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 					LastUpdatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 					MandatoryApprovalGroupMembershipIDs: []*string{
 	// 						to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 						to.Ptr("22222222-2222-2222-2222-222222222222"),
@@ -188,8 +188,8 @@ func ExampleApprovalClient_Get() {
 	// 				to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			},
 	// 			TicketID: to.Ptr("string"),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
-	// 			StateChangedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
+	// 			StateChangedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/approvals/TestApprovals"),
 	// 		Name: to.Ptr("TestApprovals"),
@@ -197,16 +197,16 @@ func ExampleApprovalClient_Get() {
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
 	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myAlias"),
 	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Approvals_ListByParent.json
+// Generated from example definition: 2026-04-01/Approvals_ListByParent.json
 func ExampleApprovalClient_NewListByParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleApprovalClient_NewListByParentPager() {
 		// 						{
 		// 							ApproverEntraID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 							ActionPerformed: to.Ptr(armenclave.ActionPerformedApproved),
-		// 							LastUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 							LastUpdatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 							MandatoryApprovalGroupMembershipIDs: []*string{
 		// 								to.Ptr("11111111-1111-1111-1111-111111111111"),
 		// 								to.Ptr("22222222-2222-2222-2222-222222222222"),
@@ -268,8 +268,8 @@ func ExampleApprovalClient_NewListByParentPager() {
 		// 						to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					},
 		// 					TicketID: to.Ptr("string"),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
-		// 					StateChangedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
+		// 					StateChangedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/approvals/TestApprovals"),
 		// 				Name: to.Ptr("TestApprovals"),
@@ -277,10 +277,10 @@ func ExampleApprovalClient_NewListByParentPager() {
 		// 				SystemData: &armenclave.SystemData{
 		// 					CreatedBy: to.Ptr("myAlias"),
 		// 					CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("myAlias"),
 		// 					LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -290,7 +290,7 @@ func ExampleApprovalClient_NewListByParentPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/Approvals_NotifyInitiator.json
+// Generated from example definition: 2026-04-01/Approvals_NotifyInitiator.json
 func ExampleApprovalClient_BeginNotifyInitiator() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -321,7 +321,7 @@ func ExampleApprovalClient_BeginNotifyInitiator() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/Approvals_Update.json
+// Generated from example definition: 2026-04-01/Approvals_Update.json
 func ExampleApprovalClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -346,12 +346,12 @@ func ExampleApprovalClient_BeginUpdate() {
 				{
 					ApproverEntraID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 					ActionPerformed: to.Ptr(armenclave.ActionPerformedApproved),
-					LastUpdatedAt:   to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t }()),
+					LastUpdatedAt:   to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 				},
 			},
 			TicketID:       to.Ptr("string"),
-			CreatedAt:      to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t }()),
-			StateChangedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t }()),
+			CreatedAt:      to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
+			StateChangedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		},
 	}, nil)
 	if err != nil {
@@ -379,7 +379,7 @@ func ExampleApprovalClient_BeginUpdate() {
 	// 				{
 	// 					ApproverEntraID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 					ActionPerformed: to.Ptr(armenclave.ActionPerformedApproved),
-	// 					LastUpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 					LastUpdatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 					MandatoryApprovalGroupMembershipIDs: []*string{
 	// 						to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 						to.Ptr("22222222-2222-2222-2222-222222222222"),
@@ -401,8 +401,8 @@ func ExampleApprovalClient_BeginUpdate() {
 	// 				to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			},
 	// 			TicketID: to.Ptr("string"),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
-	// 			StateChangedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
+	// 			StateChangedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/approvals/TestApprovals"),
 	// 		Name: to.Ptr("TestApprovals"),
@@ -410,10 +410,10 @@ func ExampleApprovalClient_BeginUpdate() {
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
 	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myAlias"),
 	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

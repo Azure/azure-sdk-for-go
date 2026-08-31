@@ -43,7 +43,7 @@ func ExampleJobRunsClient_Get_jobRunsGet() {
 	// 			BytesScanned: to.Ptr[int64](49951162777600),
 	// 			BytesTransferred: to.Ptr[int64](1995116277760),
 	// 			BytesUnsupported: to.Ptr[int64](495116277760),
-	// 			ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.1075056Z"); return t}()),
+	// 			ExecutionStartTime: to.Ptr(time.Date(2023, time.July, 1, 2, 11, 1, 107505600, time.UTC)),
 	// 			ItemsExcluded: to.Ptr[int64](50),
 	// 			ItemsFailed: to.Ptr[int64](3),
 	// 			ItemsNoTransferNeeded: to.Ptr[int64](150),
@@ -52,7 +52,7 @@ func ExampleJobRunsClient_Get_jobRunsGet() {
 	// 			ItemsUnsupported: to.Ptr[int64](27),
 	// 			JobDefinitionProperties: map[string]any{
 	// 			},
-	// 			LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.1075056Z"); return t}()),
+	// 			LastStatusUpdate: to.Ptr(time.Date(2023, time.July, 1, 2, 21, 1, 107505600, time.UTC)),
 	// 			ScanStatus: to.Ptr(armstoragemover.JobRunScanStatusScanning),
 	// 			SourceName: to.Ptr("sourceEndpoint"),
 	// 			SourceProperties: map[string]any{
@@ -100,7 +100,7 @@ func ExampleJobRunsClient_Get_jobRunsGetWithSchedule() {
 	// 			BytesScanned: to.Ptr[int64](49951162777600),
 	// 			BytesTransferred: to.Ptr[int64](1995116277760),
 	// 			BytesUnsupported: to.Ptr[int64](495116277760),
-	// 			ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.1075056Z"); return t}()),
+	// 			ExecutionStartTime: to.Ptr(time.Date(2023, time.July, 1, 2, 11, 1, 107505600, time.UTC)),
 	// 			ItemsExcluded: to.Ptr[int64](50),
 	// 			ItemsFailed: to.Ptr[int64](3),
 	// 			ItemsNoTransferNeeded: to.Ptr[int64](150),
@@ -109,7 +109,7 @@ func ExampleJobRunsClient_Get_jobRunsGetWithSchedule() {
 	// 			ItemsUnsupported: to.Ptr[int64](27),
 	// 			JobDefinitionProperties: map[string]any{
 	// 			},
-	// 			LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.1075056Z"); return t}()),
+	// 			LastStatusUpdate: to.Ptr(time.Date(2023, time.July, 1, 2, 21, 1, 107505600, time.UTC)),
 	// 			ScanStatus: to.Ptr(armstoragemover.JobRunScanStatusScanning),
 	// 			SourceName: to.Ptr("sourceEndpoint"),
 	// 			SourceProperties: map[string]any{
@@ -121,7 +121,7 @@ func ExampleJobRunsClient_Get_jobRunsGetWithSchedule() {
 	// 			},
 	// 			TargetResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/targetEndpoint"),
 	// 			TriggerType: to.Ptr(armstoragemover.TriggerTypeScheduled),
-	// 			ScheduledExecutionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-01T10:00:00Z"); return t}()),
+	// 			ScheduledExecutionTime: to.Ptr(time.Date(2025, time.December, 1, 10, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -166,7 +166,7 @@ func ExampleJobRunsClient_NewListPager() {
 		// 					BytesScanned: to.Ptr[int64](49951162777600),
 		// 					BytesTransferred: to.Ptr[int64](1995116277760),
 		// 					BytesUnsupported: to.Ptr[int64](495116277760),
-		// 					ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.1075056Z"); return t}()),
+		// 					ExecutionStartTime: to.Ptr(time.Date(2023, time.July, 1, 2, 11, 1, 107505600, time.UTC)),
 		// 					ItemsExcluded: to.Ptr[int64](50),
 		// 					ItemsFailed: to.Ptr[int64](3),
 		// 					ItemsNoTransferNeeded: to.Ptr[int64](150),
@@ -175,7 +175,7 @@ func ExampleJobRunsClient_NewListPager() {
 		// 					ItemsUnsupported: to.Ptr[int64](27),
 		// 					JobDefinitionProperties: map[string]any{
 		// 					},
-		// 					LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.1075056Z"); return t}()),
+		// 					LastStatusUpdate: to.Ptr(time.Date(2023, time.July, 1, 2, 21, 1, 107505600, time.UTC)),
 		// 					ScanStatus: to.Ptr(armstoragemover.JobRunScanStatusScanning),
 		// 					SourceName: to.Ptr("sourceEndpoint"),
 		// 					SourceProperties: map[string]any{
@@ -201,7 +201,7 @@ func ExampleJobRunsClient_NewListPager() {
 		// 					BytesScanned: to.Ptr[int64](49951162777600),
 		// 					BytesTransferred: to.Ptr[int64](1995116277760),
 		// 					BytesUnsupported: to.Ptr[int64](495116277760),
-		// 					ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.1075056Z"); return t}()),
+		// 					ExecutionStartTime: to.Ptr(time.Date(2023, time.July, 1, 2, 11, 1, 107505600, time.UTC)),
 		// 					ItemsExcluded: to.Ptr[int64](50),
 		// 					ItemsFailed: to.Ptr[int64](3),
 		// 					ItemsNoTransferNeeded: to.Ptr[int64](150),
@@ -210,7 +210,7 @@ func ExampleJobRunsClient_NewListPager() {
 		// 					ItemsUnsupported: to.Ptr[int64](27),
 		// 					JobDefinitionProperties: map[string]any{
 		// 					},
-		// 					LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.1075056Z"); return t}()),
+		// 					LastStatusUpdate: to.Ptr(time.Date(2023, time.July, 1, 2, 21, 1, 107505600, time.UTC)),
 		// 					ScanStatus: to.Ptr(armstoragemover.JobRunScanStatusScanning),
 		// 					SourceName: to.Ptr("sourceEndpoint"),
 		// 					SourceProperties: map[string]any{
@@ -236,7 +236,7 @@ func ExampleJobRunsClient_NewListPager() {
 		// 					BytesScanned: to.Ptr[int64](49951162777600),
 		// 					BytesTransferred: to.Ptr[int64](1995116277760),
 		// 					BytesUnsupported: to.Ptr[int64](495116277760),
-		// 					ExecutionStartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:11:01.1075056Z"); return t}()),
+		// 					ExecutionStartTime: to.Ptr(time.Date(2023, time.July, 1, 2, 11, 1, 107505600, time.UTC)),
 		// 					ItemsExcluded: to.Ptr[int64](50),
 		// 					ItemsFailed: to.Ptr[int64](3),
 		// 					ItemsNoTransferNeeded: to.Ptr[int64](150),
@@ -245,7 +245,7 @@ func ExampleJobRunsClient_NewListPager() {
 		// 					ItemsUnsupported: to.Ptr[int64](27),
 		// 					JobDefinitionProperties: map[string]any{
 		// 					},
-		// 					LastStatusUpdate: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-07-01T02:21:01.1075056Z"); return t}()),
+		// 					LastStatusUpdate: to.Ptr(time.Date(2023, time.July, 1, 2, 21, 1, 107505600, time.UTC)),
 		// 					ScanStatus: to.Ptr(armstoragemover.JobRunScanStatusScanning),
 		// 					SourceName: to.Ptr("sourceEndpoint"),
 		// 					SourceProperties: map[string]any{

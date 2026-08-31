@@ -19,7 +19,7 @@ import (
 // IspCacheNodesOperationsClient contains the methods for the IspCacheNodesOperations group.
 // Don't use this type directly, use NewIspCacheNodesOperationsClient() instead.
 //
-// Generated from API version 2024-11-30-preview
+// Generated from API version 2026-06-01
 type IspCacheNodesOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -83,8 +83,7 @@ func (client *IspCacheNodesOperationsClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -113,7 +112,7 @@ func (client *IspCacheNodesOperationsClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -164,8 +163,7 @@ func (client *IspCacheNodesOperationsClient) deleteOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -194,7 +192,7 @@ func (client *IspCacheNodesOperationsClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -220,12 +218,7 @@ func (client *IspCacheNodesOperationsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return IspCacheNodesOperationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IspCacheNodesOperationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -252,15 +245,18 @@ func (client *IspCacheNodesOperationsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *IspCacheNodesOperationsClient) getHandleResponse(resp *http.Response) (IspCacheNodesOperationsClientGetResponse, error) {
+func (client *IspCacheNodesOperationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (IspCacheNodesOperationsClientGetResponse, error) {
 	result := IspCacheNodesOperationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IspCacheNodeResource); err != nil {
 		return IspCacheNodesOperationsClientGetResponse{}, err
 	}
@@ -288,12 +284,7 @@ func (client *IspCacheNodesOperationsClient) GetBgpCidrs(ctx context.Context, re
 	if err != nil {
 		return IspCacheNodesOperationsClientGetBgpCidrsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IspCacheNodesOperationsClientGetBgpCidrsResponse{}, err
-	}
-	resp, err := client.getBgpCidrsHandleResponse(httpResp)
-	return resp, err
+	return client.getBgpCidrsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getBgpCidrsCreateRequest creates the GetBgpCidrs request.
@@ -320,15 +311,18 @@ func (client *IspCacheNodesOperationsClient) getBgpCidrsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getBgpCidrsHandleResponse handles the GetBgpCidrs response.
-func (client *IspCacheNodesOperationsClient) getBgpCidrsHandleResponse(resp *http.Response) (IspCacheNodesOperationsClientGetBgpCidrsResponse, error) {
+func (client *IspCacheNodesOperationsClient) getBgpCidrsHandleResponse(resp *http.Response, successCodes ...int) (IspCacheNodesOperationsClientGetBgpCidrsResponse, error) {
 	result := IspCacheNodesOperationsClientGetBgpCidrsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MccCacheNodeBgpCidrDetails); err != nil {
 		return IspCacheNodesOperationsClientGetBgpCidrsResponse{}, err
 	}
@@ -356,12 +350,7 @@ func (client *IspCacheNodesOperationsClient) GetCacheNodeAutoUpdateHistory(ctx c
 	if err != nil {
 		return IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{}, err
-	}
-	resp, err := client.getCacheNodeAutoUpdateHistoryHandleResponse(httpResp)
-	return resp, err
+	return client.getCacheNodeAutoUpdateHistoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCacheNodeAutoUpdateHistoryCreateRequest creates the GetCacheNodeAutoUpdateHistory request.
@@ -388,15 +377,18 @@ func (client *IspCacheNodesOperationsClient) getCacheNodeAutoUpdateHistoryCreate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getCacheNodeAutoUpdateHistoryHandleResponse handles the GetCacheNodeAutoUpdateHistory response.
-func (client *IspCacheNodesOperationsClient) getCacheNodeAutoUpdateHistoryHandleResponse(resp *http.Response) (IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse, error) {
+func (client *IspCacheNodesOperationsClient) getCacheNodeAutoUpdateHistoryHandleResponse(resp *http.Response, successCodes ...int) (IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse, error) {
 	result := IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MccCacheNodeAutoUpdateHistory); err != nil {
 		return IspCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{}, err
 	}
@@ -424,12 +416,7 @@ func (client *IspCacheNodesOperationsClient) GetCacheNodeInstallDetails(ctx cont
 	if err != nil {
 		return IspCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IspCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse{}, err
-	}
-	resp, err := client.getCacheNodeInstallDetailsHandleResponse(httpResp)
-	return resp, err
+	return client.getCacheNodeInstallDetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCacheNodeInstallDetailsCreateRequest creates the GetCacheNodeInstallDetails request.
@@ -456,15 +443,18 @@ func (client *IspCacheNodesOperationsClient) getCacheNodeInstallDetailsCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getCacheNodeInstallDetailsHandleResponse handles the GetCacheNodeInstallDetails response.
-func (client *IspCacheNodesOperationsClient) getCacheNodeInstallDetailsHandleResponse(resp *http.Response) (IspCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse, error) {
+func (client *IspCacheNodesOperationsClient) getCacheNodeInstallDetailsHandleResponse(resp *http.Response, successCodes ...int) (IspCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse, error) {
 	result := IspCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MccCacheNodeInstallDetails); err != nil {
 		return IspCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse{}, err
 	}
@@ -492,12 +482,7 @@ func (client *IspCacheNodesOperationsClient) GetCacheNodeMccIssueDetailsHistory(
 	if err != nil {
 		return IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{}, err
-	}
-	resp, err := client.getCacheNodeMccIssueDetailsHistoryHandleResponse(httpResp)
-	return resp, err
+	return client.getCacheNodeMccIssueDetailsHistoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCacheNodeMccIssueDetailsHistoryCreateRequest creates the GetCacheNodeMccIssueDetailsHistory request.
@@ -524,15 +509,18 @@ func (client *IspCacheNodesOperationsClient) getCacheNodeMccIssueDetailsHistoryC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getCacheNodeMccIssueDetailsHistoryHandleResponse handles the GetCacheNodeMccIssueDetailsHistory response.
-func (client *IspCacheNodesOperationsClient) getCacheNodeMccIssueDetailsHistoryHandleResponse(resp *http.Response) (IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse, error) {
+func (client *IspCacheNodesOperationsClient) getCacheNodeMccIssueDetailsHistoryHandleResponse(resp *http.Response, successCodes ...int) (IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse, error) {
 	result := IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MccCacheNodeIssueHistory); err != nil {
 		return IspCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{}, err
 	}
@@ -556,47 +544,61 @@ func (client *IspCacheNodesOperationsClient) NewListByIspCustomerResourcePager(r
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByIspCustomerResourceCreateRequest(ctx, resourceGroupName, customerResourceName, options)
-			}, nil)
+			req, err := client.listByIspCustomerResourceCreateRequest(ctx, resourceGroupName, customerResourceName, nextLink, options)
 			if err != nil {
 				return IspCacheNodesOperationsClientListByIspCustomerResourceResponse{}, err
 			}
-			return client.listByIspCustomerResourceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return IspCacheNodesOperationsClientListByIspCustomerResourceResponse{}, err
+			}
+			return client.listByIspCustomerResourceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByIspCustomerResourceCreateRequest creates the ListByIspCustomerResource request.
-func (client *IspCacheNodesOperationsClient) listByIspCustomerResourceCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, _ *IspCacheNodesOperationsClientListByIspCustomerResourceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *IspCacheNodesOperationsClient) listByIspCustomerResourceCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, nextLink string, _ *IspCacheNodesOperationsClientListByIspCustomerResourceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/ispCustomers/{customerResourceName}/ispCacheNodes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if customerResourceName == "" {
+			return nil, errors.New("parameter customerResourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{customerResourceName}", url.PathEscape(customerResourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if customerResourceName == "" {
-		return nil, errors.New("parameter customerResourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{customerResourceName}", url.PathEscape(customerResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByIspCustomerResourceHandleResponse handles the ListByIspCustomerResource response.
-func (client *IspCacheNodesOperationsClient) listByIspCustomerResourceHandleResponse(resp *http.Response) (IspCacheNodesOperationsClientListByIspCustomerResourceResponse, error) {
+func (client *IspCacheNodesOperationsClient) listByIspCustomerResourceHandleResponse(resp *http.Response, successCodes ...int) (IspCacheNodesOperationsClientListByIspCustomerResourceResponse, error) {
 	result := IspCacheNodesOperationsClientListByIspCustomerResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IspCacheNodeResourceListResult); err != nil {
 		return IspCacheNodesOperationsClientListByIspCustomerResourceResponse{}, err
 	}
@@ -625,12 +627,7 @@ func (client *IspCacheNodesOperationsClient) Update(ctx context.Context, resourc
 	if err != nil {
 		return IspCacheNodesOperationsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IspCacheNodesOperationsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -657,7 +654,7 @@ func (client *IspCacheNodesOperationsClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241130Preview)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -668,8 +665,11 @@ func (client *IspCacheNodesOperationsClient) updateCreateRequest(ctx context.Con
 }
 
 // updateHandleResponse handles the Update response.
-func (client *IspCacheNodesOperationsClient) updateHandleResponse(resp *http.Response) (IspCacheNodesOperationsClientUpdateResponse, error) {
+func (client *IspCacheNodesOperationsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (IspCacheNodesOperationsClientUpdateResponse, error) {
 	result := IspCacheNodesOperationsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IspCacheNodeResource); err != nil {
 		return IspCacheNodesOperationsClientUpdateResponse{}, err
 	}

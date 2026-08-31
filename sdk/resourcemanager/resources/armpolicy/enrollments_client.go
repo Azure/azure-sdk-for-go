@@ -66,12 +66,7 @@ func (client *EnrollmentsClient) CreateOrUpdate(ctx context.Context, scope strin
 	if err != nil {
 		return EnrollmentsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return EnrollmentsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -101,8 +96,11 @@ func (client *EnrollmentsClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *EnrollmentsClient) createOrUpdateHandleResponse(resp *http.Response) (EnrollmentsClientCreateOrUpdateResponse, error) {
+func (client *EnrollmentsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (EnrollmentsClientCreateOrUpdateResponse, error) {
 	result := EnrollmentsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Enrollment); err != nil {
 		return EnrollmentsClientCreateOrUpdateResponse{}, err
 	}
@@ -132,8 +130,7 @@ func (client *EnrollmentsClient) Delete(ctx context.Context, scope string, polic
 		return EnrollmentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return EnrollmentsClientDeleteResponse{}, err
+		return EnrollmentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return EnrollmentsClientDeleteResponse{}, nil
 }
@@ -180,12 +177,7 @@ func (client *EnrollmentsClient) Get(ctx context.Context, scope string, policyEn
 	if err != nil {
 		return EnrollmentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnrollmentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -211,8 +203,11 @@ func (client *EnrollmentsClient) getCreateRequest(ctx context.Context, scope str
 }
 
 // getHandleResponse handles the Get response.
-func (client *EnrollmentsClient) getHandleResponse(resp *http.Response) (EnrollmentsClientGetResponse, error) {
+func (client *EnrollmentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (EnrollmentsClientGetResponse, error) {
 	result := EnrollmentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Enrollment); err != nil {
 		return EnrollmentsClientGetResponse{}, err
 	}
@@ -237,42 +232,56 @@ func (client *EnrollmentsClient) NewListPager(options *EnrollmentsClientListOpti
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return EnrollmentsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnrollmentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *EnrollmentsClient) listCreateRequest(ctx context.Context, options *EnrollmentsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyEnrollments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EnrollmentsClient) listCreateRequest(ctx context.Context, nextLink string, options *EnrollmentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyEnrollments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *EnrollmentsClient) listHandleResponse(resp *http.Response) (EnrollmentsClientListResponse, error) {
+func (client *EnrollmentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (EnrollmentsClientListResponse, error) {
 	result := EnrollmentsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnrollmentListResult); err != nil {
 		return EnrollmentsClientListResponse{}, err
 	}
@@ -298,42 +307,56 @@ func (client *EnrollmentsClient) NewListForManagementGroupPager(managementGroupI
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listForManagementGroupCreateRequest(ctx, managementGroupID, options)
-			}, nil)
+			req, err := client.listForManagementGroupCreateRequest(ctx, managementGroupID, nextLink, options)
 			if err != nil {
 				return EnrollmentsClientListForManagementGroupResponse{}, err
 			}
-			return client.listForManagementGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnrollmentsClientListForManagementGroupResponse{}, err
+			}
+			return client.listForManagementGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listForManagementGroupCreateRequest creates the ListForManagementGroup request.
-func (client *EnrollmentsClient) listForManagementGroupCreateRequest(ctx context.Context, managementGroupID string, options *EnrollmentsClientListForManagementGroupOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization/policyEnrollments"
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
+func (client *EnrollmentsClient) listForManagementGroupCreateRequest(ctx context.Context, managementGroupID string, nextLink string, options *EnrollmentsClientListForManagementGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Authorization/policyEnrollments"
+		if managementGroupID == "" {
+			return nil, errors.New("parameter managementGroupID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listForManagementGroupHandleResponse handles the ListForManagementGroup response.
-func (client *EnrollmentsClient) listForManagementGroupHandleResponse(resp *http.Response) (EnrollmentsClientListForManagementGroupResponse, error) {
+func (client *EnrollmentsClient) listForManagementGroupHandleResponse(resp *http.Response, successCodes ...int) (EnrollmentsClientListForManagementGroupResponse, error) {
 	result := EnrollmentsClientListForManagementGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnrollmentListResult); err != nil {
 		return EnrollmentsClientListForManagementGroupResponse{}, err
 	}
@@ -374,62 +397,76 @@ func (client *EnrollmentsClient) NewListForResourcePager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listForResourceCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, options)
-			}, nil)
+			req, err := client.listForResourceCreateRequest(ctx, resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, nextLink, options)
 			if err != nil {
 				return EnrollmentsClientListForResourceResponse{}, err
 			}
-			return client.listForResourceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnrollmentsClientListForResourceResponse{}, err
+			}
+			return client.listForResourceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listForResourceCreateRequest creates the ListForResource request.
-func (client *EnrollmentsClient) listForResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *EnrollmentsClientListForResourceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/policyEnrollments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EnrollmentsClient) listForResourceCreateRequest(ctx context.Context, resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, nextLink string, options *EnrollmentsClientListForResourceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/policyEnrollments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceProviderNamespace == "" {
+			return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
+		if parentResourcePath == "" {
+			return nil, errors.New("parameter parentResourcePath cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
+		if resourceType == "" {
+			return nil, errors.New("parameter resourceType cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceProviderNamespace == "" {
-		return nil, errors.New("parameter resourceProviderNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderNamespace}", url.PathEscape(resourceProviderNamespace))
-	if parentResourcePath == "" {
-		return nil, errors.New("parameter parentResourcePath cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{parentResourcePath}", parentResourcePath)
-	if resourceType == "" {
-		return nil, errors.New("parameter resourceType cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceType}", resourceType)
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listForResourceHandleResponse handles the ListForResource response.
-func (client *EnrollmentsClient) listForResourceHandleResponse(resp *http.Response) (EnrollmentsClientListForResourceResponse, error) {
+func (client *EnrollmentsClient) listForResourceHandleResponse(resp *http.Response, successCodes ...int) (EnrollmentsClientListForResourceResponse, error) {
 	result := EnrollmentsClientListForResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnrollmentListResult); err != nil {
 		return EnrollmentsClientListForResourceResponse{}, err
 	}
@@ -456,46 +493,60 @@ func (client *EnrollmentsClient) NewListForResourceGroupPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listForResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listForResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return EnrollmentsClientListForResourceGroupResponse{}, err
 			}
-			return client.listForResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EnrollmentsClientListForResourceGroupResponse{}, err
+			}
+			return client.listForResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listForResourceGroupCreateRequest creates the ListForResourceGroup request.
-func (client *EnrollmentsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *EnrollmentsClientListForResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/policyEnrollments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EnrollmentsClient) listForResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, options *EnrollmentsClientListForResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/policyEnrollments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listForResourceGroupHandleResponse handles the ListForResourceGroup response.
-func (client *EnrollmentsClient) listForResourceGroupHandleResponse(resp *http.Response) (EnrollmentsClientListForResourceGroupResponse, error) {
+func (client *EnrollmentsClient) listForResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (EnrollmentsClientListForResourceGroupResponse, error) {
 	result := EnrollmentsClientListForResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EnrollmentListResult); err != nil {
 		return EnrollmentsClientListForResourceGroupResponse{}, err
 	}
@@ -524,12 +575,7 @@ func (client *EnrollmentsClient) Update(ctx context.Context, scope string, polic
 	if err != nil {
 		return EnrollmentsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EnrollmentsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -559,8 +605,11 @@ func (client *EnrollmentsClient) updateCreateRequest(ctx context.Context, scope 
 }
 
 // updateHandleResponse handles the Update response.
-func (client *EnrollmentsClient) updateHandleResponse(resp *http.Response) (EnrollmentsClientUpdateResponse, error) {
+func (client *EnrollmentsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (EnrollmentsClientUpdateResponse, error) {
 	result := EnrollmentsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Enrollment); err != nil {
 		return EnrollmentsClientUpdateResponse{}, err
 	}

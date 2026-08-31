@@ -199,12 +199,14 @@ func (v *VirtualMachineExtensionImagesServerTransport) dispatchListVersions(req 
 		return nil, err
 	}
 	orderbyParam := getOptional(qp.Get("$orderby"))
+	expandParam := getOptional(armcompute.ListVersionsExpandOptions(qp.Get("$expand")))
 	var options *armcompute.VirtualMachineExtensionImagesClientListVersionsOptions
-	if filterParam != nil || topParam != nil || orderbyParam != nil {
+	if filterParam != nil || topParam != nil || orderbyParam != nil || expandParam != nil {
 		options = &armcompute.VirtualMachineExtensionImagesClientListVersionsOptions{
 			Filter:  filterParam,
 			Top:     topParam,
 			Orderby: orderbyParam,
+			Expand:  expandParam,
 		}
 	}
 	respr, errRespr := v.srv.ListVersions(req.Context(), locationParam, publisherNameParam, typeParamParam, options)

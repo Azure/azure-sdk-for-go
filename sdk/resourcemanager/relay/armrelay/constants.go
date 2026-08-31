@@ -4,6 +4,10 @@
 
 package armrelay
 
+const (
+	version20240101 string = "2024-01-01"
+)
+
 type AccessRights string
 
 const (

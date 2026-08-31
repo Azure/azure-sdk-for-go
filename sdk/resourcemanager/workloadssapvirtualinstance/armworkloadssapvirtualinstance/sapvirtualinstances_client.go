@@ -82,8 +82,7 @@ func (client *SAPVirtualInstancesClient) create(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -160,8 +159,7 @@ func (client *SAPVirtualInstancesClient) deleteOperation(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -210,12 +208,7 @@ func (client *SAPVirtualInstancesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return SAPVirtualInstancesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SAPVirtualInstancesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -245,8 +238,11 @@ func (client *SAPVirtualInstancesClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *SAPVirtualInstancesClient) getHandleResponse(resp *http.Response) (SAPVirtualInstancesClientGetResponse, error) {
+func (client *SAPVirtualInstancesClient) getHandleResponse(resp *http.Response, successCodes ...int) (SAPVirtualInstancesClientGetResponse, error) {
 	result := SAPVirtualInstancesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SAPVirtualInstance); err != nil {
 		return SAPVirtualInstancesClientGetResponse{}, err
 	}
@@ -273,12 +269,7 @@ func (client *SAPVirtualInstancesClient) GetAvailabilityZoneDetails(ctx context.
 	if err != nil {
 		return SAPVirtualInstancesClientGetAvailabilityZoneDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SAPVirtualInstancesClientGetAvailabilityZoneDetailsResponse{}, err
-	}
-	resp, err := client.getAvailabilityZoneDetailsHandleResponse(httpResp)
-	return resp, err
+	return client.getAvailabilityZoneDetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAvailabilityZoneDetailsCreateRequest creates the GetAvailabilityZoneDetails request.
@@ -308,8 +299,11 @@ func (client *SAPVirtualInstancesClient) getAvailabilityZoneDetailsCreateRequest
 }
 
 // getAvailabilityZoneDetailsHandleResponse handles the GetAvailabilityZoneDetails response.
-func (client *SAPVirtualInstancesClient) getAvailabilityZoneDetailsHandleResponse(resp *http.Response) (SAPVirtualInstancesClientGetAvailabilityZoneDetailsResponse, error) {
+func (client *SAPVirtualInstancesClient) getAvailabilityZoneDetailsHandleResponse(resp *http.Response, successCodes ...int) (SAPVirtualInstancesClientGetAvailabilityZoneDetailsResponse, error) {
 	result := SAPVirtualInstancesClientGetAvailabilityZoneDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SAPAvailabilityZoneDetailsResult); err != nil {
 		return SAPVirtualInstancesClientGetAvailabilityZoneDetailsResponse{}, err
 	}
@@ -336,12 +330,7 @@ func (client *SAPVirtualInstancesClient) GetDiskConfigurations(ctx context.Conte
 	if err != nil {
 		return SAPVirtualInstancesClientGetDiskConfigurationsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SAPVirtualInstancesClientGetDiskConfigurationsResponse{}, err
-	}
-	resp, err := client.getDiskConfigurationsHandleResponse(httpResp)
-	return resp, err
+	return client.getDiskConfigurationsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDiskConfigurationsCreateRequest creates the GetDiskConfigurations request.
@@ -371,8 +360,11 @@ func (client *SAPVirtualInstancesClient) getDiskConfigurationsCreateRequest(ctx 
 }
 
 // getDiskConfigurationsHandleResponse handles the GetDiskConfigurations response.
-func (client *SAPVirtualInstancesClient) getDiskConfigurationsHandleResponse(resp *http.Response) (SAPVirtualInstancesClientGetDiskConfigurationsResponse, error) {
+func (client *SAPVirtualInstancesClient) getDiskConfigurationsHandleResponse(resp *http.Response, successCodes ...int) (SAPVirtualInstancesClientGetDiskConfigurationsResponse, error) {
 	result := SAPVirtualInstancesClientGetDiskConfigurationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SAPDiskConfigurationsResult); err != nil {
 		return SAPVirtualInstancesClientGetDiskConfigurationsResponse{}, err
 	}
@@ -399,12 +391,7 @@ func (client *SAPVirtualInstancesClient) GetSapSupportedSKU(ctx context.Context,
 	if err != nil {
 		return SAPVirtualInstancesClientGetSapSupportedSKUResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SAPVirtualInstancesClientGetSapSupportedSKUResponse{}, err
-	}
-	resp, err := client.getSapSupportedSKUHandleResponse(httpResp)
-	return resp, err
+	return client.getSapSupportedSKUHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSapSupportedSKUCreateRequest creates the GetSapSupportedSKU request.
@@ -434,8 +421,11 @@ func (client *SAPVirtualInstancesClient) getSapSupportedSKUCreateRequest(ctx con
 }
 
 // getSapSupportedSKUHandleResponse handles the GetSapSupportedSKU response.
-func (client *SAPVirtualInstancesClient) getSapSupportedSKUHandleResponse(resp *http.Response) (SAPVirtualInstancesClientGetSapSupportedSKUResponse, error) {
+func (client *SAPVirtualInstancesClient) getSapSupportedSKUHandleResponse(resp *http.Response, successCodes ...int) (SAPVirtualInstancesClientGetSapSupportedSKUResponse, error) {
 	result := SAPVirtualInstancesClientGetSapSupportedSKUResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SAPSupportedResourceSKUsResult); err != nil {
 		return SAPVirtualInstancesClientGetSapSupportedSKUResponse{}, err
 	}
@@ -462,12 +452,7 @@ func (client *SAPVirtualInstancesClient) GetSizingRecommendations(ctx context.Co
 	if err != nil {
 		return SAPVirtualInstancesClientGetSizingRecommendationsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SAPVirtualInstancesClientGetSizingRecommendationsResponse{}, err
-	}
-	resp, err := client.getSizingRecommendationsHandleResponse(httpResp)
-	return resp, err
+	return client.getSizingRecommendationsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSizingRecommendationsCreateRequest creates the GetSizingRecommendations request.
@@ -497,8 +482,11 @@ func (client *SAPVirtualInstancesClient) getSizingRecommendationsCreateRequest(c
 }
 
 // getSizingRecommendationsHandleResponse handles the GetSizingRecommendations response.
-func (client *SAPVirtualInstancesClient) getSizingRecommendationsHandleResponse(resp *http.Response) (SAPVirtualInstancesClientGetSizingRecommendationsResponse, error) {
+func (client *SAPVirtualInstancesClient) getSizingRecommendationsHandleResponse(resp *http.Response, successCodes ...int) (SAPVirtualInstancesClientGetSizingRecommendationsResponse, error) {
 	result := SAPVirtualInstancesClientGetSizingRecommendationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return SAPVirtualInstancesClientGetSizingRecommendationsResponse{}, err
 	}
@@ -520,43 +508,57 @@ func (client *SAPVirtualInstancesClient) NewListByResourceGroupPager(resourceGro
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return SAPVirtualInstancesClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SAPVirtualInstancesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *SAPVirtualInstancesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *SAPVirtualInstancesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SAPVirtualInstancesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *SAPVirtualInstancesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *SAPVirtualInstancesClient) listByResourceGroupHandleResponse(resp *http.Response) (SAPVirtualInstancesClientListByResourceGroupResponse, error) {
+func (client *SAPVirtualInstancesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (SAPVirtualInstancesClientListByResourceGroupResponse, error) {
 	result := SAPVirtualInstancesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SAPVirtualInstanceListResult); err != nil {
 		return SAPVirtualInstancesClientListByResourceGroupResponse{}, err
 	}
@@ -577,39 +579,53 @@ func (client *SAPVirtualInstancesClient) NewListBySubscriptionPager(options *SAP
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return SAPVirtualInstancesClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SAPVirtualInstancesClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *SAPVirtualInstancesClient) listBySubscriptionCreateRequest(ctx context.Context, _ *SAPVirtualInstancesClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/sapVirtualInstances"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *SAPVirtualInstancesClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *SAPVirtualInstancesClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Workloads/sapVirtualInstances"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *SAPVirtualInstancesClient) listBySubscriptionHandleResponse(resp *http.Response) (SAPVirtualInstancesClientListBySubscriptionResponse, error) {
+func (client *SAPVirtualInstancesClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (SAPVirtualInstancesClientListBySubscriptionResponse, error) {
 	result := SAPVirtualInstancesClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SAPVirtualInstanceListResult); err != nil {
 		return SAPVirtualInstancesClientListBySubscriptionResponse{}, err
 	}
@@ -656,8 +672,7 @@ func (client *SAPVirtualInstancesClient) start(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -735,8 +750,7 @@ func (client *SAPVirtualInstancesClient) stop(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -815,8 +829,7 @@ func (client *SAPVirtualInstancesClient) update(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/SharedLimitCaps_CreateOrUpdate.json
+// Generated from example definition: 2026-07-31/SharedLimitCaps_CreateOrUpdate.json
 func ExampleSharedLimitCapsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,7 +49,7 @@ func ExampleSharedLimitCapsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/SharedLimitCaps_Delete.json
+// Generated from example definition: 2026-07-31/SharedLimitCaps_Delete.json
 func ExampleSharedLimitCapsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleSharedLimitCapsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/SharedLimitCaps_Get.json
+// Generated from example definition: 2026-07-31/SharedLimitCaps_Get.json
 func ExampleSharedLimitCapsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleSharedLimitCapsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/SharedLimitCaps_List.json
+// Generated from example definition: 2026-07-31/SharedLimitCaps_List.json
 func ExampleSharedLimitCapsClient_NewListBySubscriptionLocationResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleSharedLimitCapsClient_NewListBySubscriptionLocationResourcePager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/SharedLimitCaps_SetMemberCapOverrides.json
+// Generated from example definition: 2026-07-31/SharedLimitCaps_SetMemberCapOverrides.json
 func ExampleSharedLimitCapsClient_SetMemberCapOverrides_replaceTheFullSetOfMemberCapOverridesForASharedLimitCap() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +199,7 @@ func ExampleSharedLimitCapsClient_SetMemberCapOverrides_replaceTheFullSetOfMembe
 	// }
 }
 
-// Generated from example definition: 2026-07-01/SharedLimitCaps_SetMemberCapOverrides_ClearAll.json
+// Generated from example definition: 2026-07-31/SharedLimitCaps_SetMemberCapOverrides_ClearAll.json
 func ExampleSharedLimitCapsClient_SetMemberCapOverrides_clearAllMemberCapOverridesSupplyAnEmptyArray() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

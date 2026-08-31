@@ -96,7 +96,7 @@ func (a AgentProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "arcVmUuid", a.ArcVMUUID)
 	populate(objectMap, "description", a.Description)
 	populate(objectMap, "errorDetails", a.ErrorDetails)
-	populateTime[datetime.RFC3339](objectMap, "lastStatusUpdate", a.LastStatusUpdate)
+	populateTime[datetime.RFC3339](objectMap, "lastStatusUpdate", a.LastStatusUpdate, true)
 	populate(objectMap, "localIPAddress", a.LocalIPAddress)
 	populate(objectMap, "memoryInMB", a.MemoryInMB)
 	populate(objectMap, "numberOfCores", a.NumberOfCores)
@@ -1090,7 +1090,7 @@ func (j JobDefinitionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "latestJobRunName", j.LatestJobRunName)
 	populate(objectMap, "latestJobRunResourceId", j.LatestJobRunResourceID)
 	populate(objectMap, "latestJobRunStatus", j.LatestJobRunStatus)
-	populateTime[datetime.RFC3339](objectMap, "moverSyncedUntil", j.MoverSyncedUntil)
+	populateTime[datetime.RFC3339](objectMap, "moverSyncedUntil", j.MoverSyncedUntil, true)
 	populate(objectMap, "preservePermissions", j.PreservePermissions)
 	populate(objectMap, "provisioningState", j.ProvisioningState)
 	populate(objectMap, "schedule", j.Schedule)
@@ -1259,7 +1259,7 @@ func (j JobDefinitionUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "copyMode", j.CopyMode)
 	populate(objectMap, "dataIntegrityValidation", j.DataIntegrityValidation)
 	populate(objectMap, "description", j.Description)
-	populateTime[datetime.RFC3339](objectMap, "moverSyncedUntil", j.MoverSyncedUntil)
+	populateTime[datetime.RFC3339](objectMap, "moverSyncedUntil", j.MoverSyncedUntil, true)
 	populate(objectMap, "schedule", j.Schedule)
 	populate(objectMap, "syncMode", j.SyncMode)
 	return json.Marshal(objectMap)
@@ -1427,8 +1427,8 @@ func (j JobRunProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "bytesTransferred", j.BytesTransferred)
 	populate(objectMap, "bytesUnsupported", j.BytesUnsupported)
 	populate(objectMap, "error", j.Error)
-	populateTime[datetime.RFC3339](objectMap, "executionEndTime", j.ExecutionEndTime)
-	populateTime[datetime.RFC3339](objectMap, "executionStartTime", j.ExecutionStartTime)
+	populateTime[datetime.RFC3339](objectMap, "executionEndTime", j.ExecutionEndTime, true)
+	populateTime[datetime.RFC3339](objectMap, "executionStartTime", j.ExecutionStartTime, true)
 	populate(objectMap, "itemsExcluded", j.ItemsExcluded)
 	populate(objectMap, "itemsFailed", j.ItemsFailed)
 	populate(objectMap, "itemsNoTransferNeeded", j.ItemsNoTransferNeeded)
@@ -1436,10 +1436,10 @@ func (j JobRunProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "itemsTransferred", j.ItemsTransferred)
 	populate(objectMap, "itemsUnsupported", j.ItemsUnsupported)
 	populateAny(objectMap, "jobDefinitionProperties", j.JobDefinitionProperties)
-	populateTime[datetime.RFC3339](objectMap, "lastStatusUpdate", j.LastStatusUpdate)
+	populateTime[datetime.RFC3339](objectMap, "lastStatusUpdate", j.LastStatusUpdate, true)
 	populate(objectMap, "provisioningState", j.ProvisioningState)
 	populate(objectMap, "scanStatus", j.ScanStatus)
-	populateTime[datetime.RFC3339](objectMap, "scheduledExecutionTime", j.ScheduledExecutionTime)
+	populateTime[datetime.RFC3339](objectMap, "scheduledExecutionTime", j.ScheduledExecutionTime, true)
 	populate(objectMap, "sourceName", j.SourceName)
 	populateAny(objectMap, "sourceProperties", j.SourceProperties)
 	populate(objectMap, "sourceResourceId", j.SourceResourceID)
@@ -2179,12 +2179,11 @@ func (s ScheduleInfo) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "cronExpression", s.CronExpression)
 	populate(objectMap, "daysOfMonth", s.DaysOfMonth)
 	populate(objectMap, "daysOfWeek", s.DaysOfWeek)
-	populateTime[datetime.RFC3339](objectMap, "endDate", s.EndDate)
+	populateTime[datetime.RFC3339](objectMap, "endDate", s.EndDate, true)
 	populate(objectMap, "executionTime", s.ExecutionTime)
 	populate(objectMap, "frequency", s.Frequency)
 	populate(objectMap, "isActive", s.IsActive)
-	populate(objectMap, "repeatInterval", s.RepeatInterval)
-	populateTime[datetime.RFC3339](objectMap, "startDate", s.StartDate)
+	populateTime[datetime.RFC3339](objectMap, "startDate", s.StartDate, true)
 	return json.Marshal(objectMap)
 }
 
@@ -2500,10 +2499,10 @@ func (s *StorageMover) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt, true)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt, true)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -2806,13 +2805,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time, utc bool) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
 		m[k] = nil
 	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
+		tt := *t
+		if utc {
+			tt = tt.UTC()
+		}
+		newTime := T(tt)
 		m[k] = (*T)(&newTime)
 	}
 }
@@ -2832,7 +2835,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }
@@ -2843,7 +2846,7 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 	}
 	var aux T
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	newTime := time.Time(aux)
 	*t = &newTime

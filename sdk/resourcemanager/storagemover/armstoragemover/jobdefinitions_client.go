@@ -64,12 +64,7 @@ func (client *JobDefinitionsClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return JobDefinitionsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return JobDefinitionsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -111,8 +106,11 @@ func (client *JobDefinitionsClient) createOrUpdateCreateRequest(ctx context.Cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *JobDefinitionsClient) createOrUpdateHandleResponse(resp *http.Response) (JobDefinitionsClientCreateOrUpdateResponse, error) {
+func (client *JobDefinitionsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (JobDefinitionsClientCreateOrUpdateResponse, error) {
 	result := JobDefinitionsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobDefinition); err != nil {
 		return JobDefinitionsClientCreateOrUpdateResponse{}, err
 	}
@@ -161,8 +159,7 @@ func (client *JobDefinitionsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -221,12 +218,7 @@ func (client *JobDefinitionsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return JobDefinitionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return JobDefinitionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -264,8 +256,11 @@ func (client *JobDefinitionsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobDefinitionsClient) getHandleResponse(resp *http.Response) (JobDefinitionsClientGetResponse, error) {
+func (client *JobDefinitionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (JobDefinitionsClientGetResponse, error) {
 	result := JobDefinitionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobDefinition); err != nil {
 		return JobDefinitionsClientGetResponse{}, err
 	}
@@ -288,51 +283,65 @@ func (client *JobDefinitionsClient) NewListPager(resourceGroupName string, stora
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, storageMoverName, projectName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, storageMoverName, projectName, nextLink, options)
 			if err != nil {
 				return JobDefinitionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return JobDefinitionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *JobDefinitionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, _ *JobDefinitionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *JobDefinitionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, nextLink string, _ *JobDefinitionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if storageMoverName == "" {
+			return nil, errors.New("parameter storageMoverName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{storageMoverName}", url.PathEscape(storageMoverName))
+		if projectName == "" {
+			return nil, errors.New("parameter projectName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storageMoverName == "" {
-		return nil, errors.New("parameter storageMoverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storageMoverName}", url.PathEscape(storageMoverName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *JobDefinitionsClient) listHandleResponse(resp *http.Response) (JobDefinitionsClientListResponse, error) {
+func (client *JobDefinitionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (JobDefinitionsClientListResponse, error) {
 	result := JobDefinitionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobDefinitionList); err != nil {
 		return JobDefinitionsClientListResponse{}, err
 	}
@@ -433,12 +442,7 @@ func (client *JobDefinitionsClient) StartJob(ctx context.Context, resourceGroupN
 	if err != nil {
 		return JobDefinitionsClientStartJobResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return JobDefinitionsClientStartJobResponse{}, err
-	}
-	resp, err := client.startJobHandleResponse(httpResp)
-	return resp, err
+	return client.startJobHandleResponse(httpResp, http.StatusOK)
 }
 
 // startJobCreateRequest creates the StartJob request.
@@ -476,8 +480,11 @@ func (client *JobDefinitionsClient) startJobCreateRequest(ctx context.Context, r
 }
 
 // startJobHandleResponse handles the StartJob response.
-func (client *JobDefinitionsClient) startJobHandleResponse(resp *http.Response) (JobDefinitionsClientStartJobResponse, error) {
+func (client *JobDefinitionsClient) startJobHandleResponse(resp *http.Response, successCodes ...int) (JobDefinitionsClientStartJobResponse, error) {
 	result := JobDefinitionsClientStartJobResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobRunResourceID); err != nil {
 		return JobDefinitionsClientStartJobResponse{}, err
 	}
@@ -505,12 +512,7 @@ func (client *JobDefinitionsClient) StopJob(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return JobDefinitionsClientStopJobResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return JobDefinitionsClientStopJobResponse{}, err
-	}
-	resp, err := client.stopJobHandleResponse(httpResp)
-	return resp, err
+	return client.stopJobHandleResponse(httpResp, http.StatusOK)
 }
 
 // stopJobCreateRequest creates the StopJob request.
@@ -548,8 +550,11 @@ func (client *JobDefinitionsClient) stopJobCreateRequest(ctx context.Context, re
 }
 
 // stopJobHandleResponse handles the StopJob response.
-func (client *JobDefinitionsClient) stopJobHandleResponse(resp *http.Response) (JobDefinitionsClientStopJobResponse, error) {
+func (client *JobDefinitionsClient) stopJobHandleResponse(resp *http.Response, successCodes ...int) (JobDefinitionsClientStopJobResponse, error) {
 	result := JobDefinitionsClientStopJobResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobRunResourceID); err != nil {
 		return JobDefinitionsClientStopJobResponse{}, err
 	}
@@ -577,12 +582,7 @@ func (client *JobDefinitionsClient) Update(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return JobDefinitionsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return JobDefinitionsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -624,8 +624,11 @@ func (client *JobDefinitionsClient) updateCreateRequest(ctx context.Context, res
 }
 
 // updateHandleResponse handles the Update response.
-func (client *JobDefinitionsClient) updateHandleResponse(resp *http.Response) (JobDefinitionsClientUpdateResponse, error) {
+func (client *JobDefinitionsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (JobDefinitionsClientUpdateResponse, error) {
 	result := JobDefinitionsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JobDefinition); err != nil {
 		return JobDefinitionsClientUpdateResponse{}, err
 	}

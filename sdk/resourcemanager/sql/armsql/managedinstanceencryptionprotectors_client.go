@@ -18,6 +18,8 @@ import (
 
 // ManagedInstanceEncryptionProtectorsClient contains the methods for the ManagedInstanceEncryptionProtectors group.
 // Don't use this type directly, use NewManagedInstanceEncryptionProtectorsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ManagedInstanceEncryptionProtectorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewManagedInstanceEncryptionProtectorsClient(subscriptionID string, credent
 
 // BeginCreateOrUpdate - Updates an existing encryption protector.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - encryptionProtectorName - The name of the encryption protector to be retrieved.
@@ -68,8 +68,6 @@ func (client *ManagedInstanceEncryptionProtectorsClient) BeginCreateOrUpdate(ctx
 
 // CreateOrUpdate - Updates an existing encryption protector.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ManagedInstanceEncryptionProtectorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, encryptionProtectorName EncryptionProtectorName, parameters ManagedInstanceEncryptionProtector, options *ManagedInstanceEncryptionProtectorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstanceEncryptionProtectorsClient.BeginCreateOrUpdate"
@@ -85,8 +83,7 @@ func (client *ManagedInstanceEncryptionProtectorsClient) createOrUpdate(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -115,8 +112,8 @@ func (client *ManagedInstanceEncryptionProtectorsClient) createOrUpdateCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -127,8 +124,6 @@ func (client *ManagedInstanceEncryptionProtectorsClient) createOrUpdateCreateReq
 
 // Get - Gets a managed instance encryption protector.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - encryptionProtectorName - The name of the encryption protector to be retrieved.
@@ -148,12 +143,7 @@ func (client *ManagedInstanceEncryptionProtectorsClient) Get(ctx context.Context
 	if err != nil {
 		return ManagedInstanceEncryptionProtectorsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedInstanceEncryptionProtectorsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -180,15 +170,18 @@ func (client *ManagedInstanceEncryptionProtectorsClient) getCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedInstanceEncryptionProtectorsClient) getHandleResponse(resp *http.Response) (ManagedInstanceEncryptionProtectorsClientGetResponse, error) {
+func (client *ManagedInstanceEncryptionProtectorsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedInstanceEncryptionProtectorsClientGetResponse, error) {
 	result := ManagedInstanceEncryptionProtectorsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceEncryptionProtector); err != nil {
 		return ManagedInstanceEncryptionProtectorsClientGetResponse{}, err
 	}
@@ -196,8 +189,6 @@ func (client *ManagedInstanceEncryptionProtectorsClient) getHandleResponse(resp 
 }
 
 // NewListByInstancePager - Gets a list of managed instance encryption protectors
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedInstanceEncryptionProtectorsClientListByInstanceOptions contains the optional parameters for the ManagedInstanceEncryptionProtectorsClient.NewListByInstancePager
@@ -213,47 +204,61 @@ func (client *ManagedInstanceEncryptionProtectorsClient) NewListByInstancePager(
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
-			}, nil)
+			req, err := client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, nextLink, options)
 			if err != nil {
 				return ManagedInstanceEncryptionProtectorsClientListByInstanceResponse{}, err
 			}
-			return client.listByInstanceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedInstanceEncryptionProtectorsClientListByInstanceResponse{}, err
+			}
+			return client.listByInstanceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByInstanceCreateRequest creates the ListByInstance request.
-func (client *ManagedInstanceEncryptionProtectorsClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, _ *ManagedInstanceEncryptionProtectorsClientListByInstanceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedInstanceEncryptionProtectorsClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, nextLink string, _ *ManagedInstanceEncryptionProtectorsClientListByInstanceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/encryptionProtector"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByInstanceHandleResponse handles the ListByInstance response.
-func (client *ManagedInstanceEncryptionProtectorsClient) listByInstanceHandleResponse(resp *http.Response) (ManagedInstanceEncryptionProtectorsClientListByInstanceResponse, error) {
+func (client *ManagedInstanceEncryptionProtectorsClient) listByInstanceHandleResponse(resp *http.Response, successCodes ...int) (ManagedInstanceEncryptionProtectorsClientListByInstanceResponse, error) {
 	result := ManagedInstanceEncryptionProtectorsClientListByInstanceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedInstanceEncryptionProtectorListResult); err != nil {
 		return ManagedInstanceEncryptionProtectorsClientListByInstanceResponse{}, err
 	}
@@ -262,8 +267,6 @@ func (client *ManagedInstanceEncryptionProtectorsClient) listByInstanceHandleRes
 
 // BeginRevalidate - Revalidates an existing encryption protector.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - encryptionProtectorName - The name of the encryption protector to be retrieved.
@@ -288,8 +291,6 @@ func (client *ManagedInstanceEncryptionProtectorsClient) BeginRevalidate(ctx con
 
 // Revalidate - Revalidates an existing encryption protector.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ManagedInstanceEncryptionProtectorsClient) revalidate(ctx context.Context, resourceGroupName string, managedInstanceName string, encryptionProtectorName EncryptionProtectorName, options *ManagedInstanceEncryptionProtectorsClientBeginRevalidateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedInstanceEncryptionProtectorsClient.BeginRevalidate"
@@ -305,8 +306,7 @@ func (client *ManagedInstanceEncryptionProtectorsClient) revalidate(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -335,7 +335,7 @@ func (client *ManagedInstanceEncryptionProtectorsClient) revalidateCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

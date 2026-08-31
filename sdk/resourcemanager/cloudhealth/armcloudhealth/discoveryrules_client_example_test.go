@@ -67,10 +67,10 @@ func ExampleDiscoveryRulesClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armcloudhealth.SystemData{
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -143,10 +143,10 @@ func ExampleDiscoveryRulesClient_Get() {
 	// 		SystemData: &armcloudhealth.SystemData{
 	// 			CreatedBy: to.Ptr("admin@contoso.com"),
 	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
 	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -197,10 +197,10 @@ func ExampleDiscoveryRulesClient_NewListByHealthModelPager() {
 		// 				SystemData: &armcloudhealth.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -223,10 +223,10 @@ func ExampleDiscoveryRulesClient_NewListByHealthModelPager() {
 		// 				SystemData: &armcloudhealth.SystemData{
 		// 					CreatedBy: to.Ptr("admin@contoso.com"),
 		// 					CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T08:15:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
 		// 					LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-04T09:30:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

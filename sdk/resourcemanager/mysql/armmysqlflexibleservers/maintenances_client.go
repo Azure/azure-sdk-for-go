@@ -56,47 +56,61 @@ func (client *MaintenancesClient) NewListPager(resourceGroupName string, serverN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, serverName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, serverName, nextLink, options)
 			if err != nil {
 				return MaintenancesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MaintenancesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *MaintenancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, serverName string, _ *MaintenancesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/maintenances"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MaintenancesClient) listCreateRequest(ctx context.Context, resourceGroupName string, serverName string, nextLink string, _ *MaintenancesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/maintenances"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if serverName == "" {
+			return nil, errors.New("parameter serverName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241230)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241230)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *MaintenancesClient) listHandleResponse(resp *http.Response) (MaintenancesClientListResponse, error) {
+func (client *MaintenancesClient) listHandleResponse(resp *http.Response, successCodes ...int) (MaintenancesClientListResponse, error) {
 	result := MaintenancesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MaintenanceListResult); err != nil {
 		return MaintenancesClientListResponse{}, err
 	}
@@ -123,12 +137,7 @@ func (client *MaintenancesClient) Read(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return MaintenancesClientReadResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MaintenancesClientReadResponse{}, err
-	}
-	resp, err := client.readHandleResponse(httpResp)
-	return resp, err
+	return client.readHandleResponse(httpResp, http.StatusOK)
 }
 
 // readCreateRequest creates the Read request.
@@ -162,8 +171,11 @@ func (client *MaintenancesClient) readCreateRequest(ctx context.Context, resourc
 }
 
 // readHandleResponse handles the Read response.
-func (client *MaintenancesClient) readHandleResponse(resp *http.Response) (MaintenancesClientReadResponse, error) {
+func (client *MaintenancesClient) readHandleResponse(resp *http.Response, successCodes ...int) (MaintenancesClientReadResponse, error) {
 	result := MaintenancesClientReadResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Maintenance); err != nil {
 		return MaintenancesClientReadResponse{}, err
 	}
@@ -213,8 +225,7 @@ func (client *MaintenancesClient) update(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

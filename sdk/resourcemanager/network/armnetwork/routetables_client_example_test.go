@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/RouteTableCreate.json
+// Generated from example definition: 2025-09-01/RouteTableCreate.json
 func ExampleRouteTablesClient_BeginCreateOrUpdate_createRouteTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleRouteTablesClient_BeginCreateOrUpdate_createRouteTable() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/RouteTableCreateWithDisablePeeringRoute.json
+// Generated from example definition: 2025-09-01/RouteTableCreateWithDisablePeeringRoute.json
 func ExampleRouteTablesClient_BeginCreateOrUpdate_createRouteTableWithDisablePeeringRoute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleRouteTablesClient_BeginCreateOrUpdate_createRouteTableWithDisablePee
 	// }
 }
 
-// Generated from example definition: 2025-07-01/RouteTableCreateWithEcmpRoute.json
+// Generated from example definition: 2025-09-01/RouteTableCreateWithEcmpRoute.json
 func ExampleRouteTablesClient_BeginCreateOrUpdate_createRouteTableWithEcmpRoute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +172,7 @@ func ExampleRouteTablesClient_BeginCreateOrUpdate_createRouteTableWithEcmpRoute(
 	// }
 }
 
-// Generated from example definition: 2025-07-01/RouteTableCreateWithRoute.json
+// Generated from example definition: 2025-09-01/RouteTableCreateWithRoute.json
 func ExampleRouteTablesClient_BeginCreateOrUpdate_createRouteTableWithRoute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleRouteTablesClient_BeginCreateOrUpdate_createRouteTableWithRoute() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/RouteTableDelete.json
+// Generated from example definition: 2025-09-01/RouteTableDelete.json
 func ExampleRouteTablesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -259,7 +259,7 @@ func ExampleRouteTablesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/RouteTableGet.json
+// Generated from example definition: 2025-09-01/RouteTableGet.json
 func ExampleRouteTablesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,7 +302,7 @@ func ExampleRouteTablesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/RouteTableList.json
+// Generated from example definition: 2025-09-01/RouteTableList.json
 func ExampleRouteTablesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -366,7 +366,7 @@ func ExampleRouteTablesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/RouteTableListAll.json
+// Generated from example definition: 2025-09-01/RouteTableListAll.json
 func ExampleRouteTablesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,7 +428,7 @@ func ExampleRouteTablesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/RouteTableUpdateTags.json
+// Generated from example definition: 2025-09-01/RouteTableUpdateTags.json
 func ExampleRouteTablesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

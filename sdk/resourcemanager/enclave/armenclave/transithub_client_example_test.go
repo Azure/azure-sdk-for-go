@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/TransitHub_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/TransitHub_CreateOrUpdate.json
 func ExampleTransitHubClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,16 +75,16 @@ func ExampleTransitHubClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
 	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myAlias"),
 	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/TransitHub_Delete.json
+// Generated from example definition: 2026-04-01/TransitHub_Delete.json
 func ExampleTransitHubClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleTransitHubClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/TransitHub_Get.json
+// Generated from example definition: 2026-04-01/TransitHub_Get.json
 func ExampleTransitHubClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,16 +149,16 @@ func ExampleTransitHubClient_Get() {
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
 	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myAlias"),
 	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/TransitHub_ListByCommunityResource.json
+// Generated from example definition: 2026-04-01/TransitHub_ListByCommunityResource.json
 func ExampleTransitHubClient_NewListByCommunityResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,10 +208,10 @@ func ExampleTransitHubClient_NewListByCommunityResourcePager() {
 		// 				SystemData: &armenclave.SystemData{
 		// 					CreatedBy: to.Ptr("myAlias"),
 		// 					CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("myAlias"),
 		// 					LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -221,7 +221,7 @@ func ExampleTransitHubClient_NewListByCommunityResourcePager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/TransitHub_ListBySubscription.json
+// Generated from example definition: 2026-04-01/TransitHub_ListBySubscription.json
 func ExampleTransitHubClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -271,10 +271,10 @@ func ExampleTransitHubClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armenclave.SystemData{
 		// 					CreatedBy: to.Ptr("myAlias"),
 		// 					CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("myAlias"),
 		// 					LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -284,7 +284,7 @@ func ExampleTransitHubClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/TransitHub_Update.json
+// Generated from example definition: 2026-04-01/TransitHub_Update.json
 func ExampleTransitHubClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -346,10 +346,10 @@ func ExampleTransitHubClient_BeginUpdate() {
 	// 		SystemData: &armenclave.SystemData{
 	// 			CreatedBy: to.Ptr("myAlias"),
 	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("myAlias"),
 	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-17T20:43:17.760Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

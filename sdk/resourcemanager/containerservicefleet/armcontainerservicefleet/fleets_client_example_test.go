@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-02-preview/Fleets_CreateOrUpdate.json
+// Generated from example definition: 2026-06-01/Fleets_CreateOrUpdate.json
 func ExampleFleetsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,16 +100,16 @@ func ExampleFleetsClient_BeginCreate() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("someUser"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("someOtherUser"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/Fleets_Delete.json
+// Generated from example definition: 2026-06-01/Fleets_Delete.json
 func ExampleFleetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleFleetsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/Fleets_Get.json
+// Generated from example definition: 2026-06-01/Fleets_Get.json
 func ExampleFleetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,16 +194,16 @@ func ExampleFleetsClient_Get() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("someUser"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("someOtherUser"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/Fleets_ListByResourceGroup.json
+// Generated from example definition: 2026-06-01/Fleets_ListByResourceGroup.json
 func ExampleFleetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -235,10 +235,10 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armcontainerservicefleet.SystemData{
 		// 					CreatedBy: to.Ptr("someUser"),
 		// 					CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("someOtherUser"),
 		// 					LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -281,7 +281,7 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-02-preview/Fleets_ListBySub.json
+// Generated from example definition: 2026-06-01/Fleets_ListBySub.json
 func ExampleFleetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -313,10 +313,10 @@ func ExampleFleetsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armcontainerservicefleet.SystemData{
 		// 					CreatedBy: to.Ptr("someUser"),
 		// 					CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("someOtherUser"),
 		// 					LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 				},
@@ -359,7 +359,7 @@ func ExampleFleetsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-02-preview/Fleets_ListCredentialsResult.json
+// Generated from example definition: 2026-06-01/Fleets_ListCredentialsResult.json
 func ExampleFleetsClient_ListCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +389,7 @@ func ExampleFleetsClient_ListCredentials() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/Fleets_PatchTags.json
+// Generated from example definition: 2026-06-01/Fleets_PatchTags.json
 func ExampleFleetsClient_BeginUpdateAsync_patchTagsOfAFleetDuringUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -425,10 +425,10 @@ func ExampleFleetsClient_BeginUpdateAsync_patchTagsOfAFleetDuringUpdate() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("someUser"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("someOtherUser"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"tier": to.Ptr("secure"),
@@ -459,7 +459,7 @@ func ExampleFleetsClient_BeginUpdateAsync_patchTagsOfAFleetDuringUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-02-preview/Fleets_Update.json
+// Generated from example definition: 2026-06-01/Fleets_Update.json
 func ExampleFleetsClient_BeginUpdateAsync_updateAFleet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -531,10 +531,10 @@ func ExampleFleetsClient_BeginUpdateAsync_updateAFleet() {
 	// 		SystemData: &armcontainerservicefleet.SystemData{
 	// 			CreatedBy: to.Ptr("someUser"),
 	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("someOtherUser"),
 	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-03-23T05:40:40.657Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

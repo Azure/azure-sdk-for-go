@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-31-preview/AzureIaasVm/ValidateOperationStatus.json
+// Generated from example definition: 2026-07-01/AzureIaasVm/ValidateOperationStatus.json
 func ExampleValidateOperationStatusesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleValidateOperationStatusesClient_Get() {
 	// res = armrecoveryservicesbackup.ValidateOperationStatusesClientGetResponse{
 	// 	OperationStatus: armrecoveryservicesbackup.OperationStatus{
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-29T06:04:18.207325Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2017, time.October, 29, 6, 4, 18, 207325000, time.UTC)),
 	// 		ID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		Properties: &armrecoveryservicesbackup.OperationStatusValidateOperationExtendedInfo{
 	// 			ObjectType: to.Ptr("OperationStatusValidateOperationExtendedInfo"),
@@ -48,7 +48,7 @@ func ExampleValidateOperationStatusesClient_Get() {
 	// 				},
 	// 			},
 	// 		},
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-10-29T06:04:18.207325Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2017, time.October, 29, 6, 4, 18, 207325000, time.UTC)),
 	// 		Status: to.Ptr(armrecoveryservicesbackup.OperationStatusValuesSucceeded),
 	// 	},
 	// }

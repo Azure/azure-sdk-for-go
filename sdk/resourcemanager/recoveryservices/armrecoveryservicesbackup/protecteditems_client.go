@@ -18,6 +18,8 @@ import (
 
 // ProtectedItemsClient contains the methods for the ProtectedItems group.
 // Don't use this type directly, use NewProtectedItemsClient() instead.
+//
+// Generated from API version 2026-07-01
 type ProtectedItemsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewProtectedItemsClient(subscriptionID string, credential azcore.TokenCrede
 // This is an
 // asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectedItemsClientBeginCreateOrUpdateOptions contains the optional parameters for the ProtectedItemsClient.BeginCreateOrUpdate
 //     method.
@@ -69,8 +69,6 @@ func (client *ProtectedItemsClient) BeginCreateOrUpdate(ctx context.Context, vau
 // is an
 // asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 func (client *ProtectedItemsClient) createOrUpdate(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters ProtectedItemResource, options *ProtectedItemsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProtectedItemsClient.BeginCreateOrUpdate"
@@ -86,8 +84,7 @@ func (client *ProtectedItemsClient) createOrUpdate(ctx context.Context, vaultNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -124,8 +121,8 @@ func (client *ProtectedItemsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.XMSAuthorizationAuxiliary != nil {
 		req.Raw().Header["x-ms-authorization-auxiliary"] = []string{*options.XMSAuthorizationAuxiliary}
@@ -141,8 +138,6 @@ func (client *ProtectedItemsClient) createOrUpdateCreateRequest(ctx context.Cont
 // the
 // request, call the GetItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectedItemsClientDeleteOptions contains the optional parameters for the ProtectedItemsClient.Delete method.
 func (client *ProtectedItemsClient) Delete(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, options *ProtectedItemsClientDeleteOptions) (ProtectedItemsClientDeleteResponse, error) {
@@ -160,8 +155,7 @@ func (client *ProtectedItemsClient) Delete(ctx context.Context, vaultName string
 		return ProtectedItemsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectedItemsClientDeleteResponse{}, err
+		return ProtectedItemsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ProtectedItemsClientDeleteResponse{}, nil
 }
@@ -198,16 +192,14 @@ func (client *ProtectedItemsClient) deleteCreateRequest(ctx context.Context, vau
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Provides the details of the backed up item. This is an asynchronous operation. To know the status of the operation,
 // call the GetItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectedItemsClientGetOptions contains the optional parameters for the ProtectedItemsClient.Get method.
 func (client *ProtectedItemsClient) Get(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, options *ProtectedItemsClientGetOptions) (ProtectedItemsClientGetResponse, error) {
@@ -224,12 +216,7 @@ func (client *ProtectedItemsClient) Get(ctx context.Context, vaultName string, r
 	if err != nil {
 		return ProtectedItemsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectedItemsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -267,15 +254,18 @@ func (client *ProtectedItemsClient) getCreateRequest(ctx context.Context, vaultN
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProtectedItemsClient) getHandleResponse(resp *http.Response) (ProtectedItemsClientGetResponse, error) {
+func (client *ProtectedItemsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProtectedItemsClientGetResponse, error) {
 	result := ProtectedItemsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectedItemResource); err != nil {
 		return ProtectedItemsClientGetResponse{}, err
 	}

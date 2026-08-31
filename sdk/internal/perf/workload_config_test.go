@@ -66,3 +66,50 @@ func TestResolveRunInvocationCLITakesPrecedence(t *testing.T) {
 	require.Contains(t, invocationArgs, "--duration")
 	require.Contains(t, invocationArgs, "9")
 }
+
+func TestResolveRunInvocationErrors(t *testing.T) {
+	require.Error(t, func() error { _, err := resolveRunInvocation([]string{"--config"}); return err }())
+	require.Error(t, func() error { _, err := resolveRunInvocation([]string{"--workload"}); return err }())
+
+	cases := []struct {
+		name string
+		body string
+		args []string
+	}{
+		{"malformed", `{`, nil},
+		{"no workload selected", `{"workloads":{}}`, nil},
+		{"unknown workload", `{"workloads":{}}`, []string{"--workload", "missing"}},
+		{"missing test", `{"defaultWorkload":"w","workloads":{"w":{}}}`, nil},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			path := filepath.Join(t.TempDir(), "workloads.json")
+			require.NoError(t, os.WriteFile(path, []byte(tc.body), 0o600))
+			args := append([]string{"--config", path}, tc.args...)
+			_, err := resolveRunInvocation(args)
+			require.Error(t, err)
+		})
+	}
+}
+
+func TestNormalizeAndValidateOptions(t *testing.T) {
+	defer snapshotFlags(t)()
+	duration, warmUpDuration, parallelInstances, maxResults = 1, 0, 1, 10
+	iterations, targetRate, statusInterval = 0, -1, 0
+	profile, profilePath = true, ""
+	require.NoError(t, normalizeAndValidateOptions())
+	require.Equal(t, 1, iterations)
+	require.Zero(t, targetRate)
+	require.Equal(t, 1, statusInterval)
+	require.Equal(t, "cpu.pprof", profilePath)
+
+	for _, mutate := range []func(){
+		func() { duration = 0 },
+		func() { duration = 1; warmUpDuration = -1 },
+		func() { warmUpDuration = 0; parallelInstances = 0 },
+		func() { parallelInstances = 1; maxResults = -1 },
+	} {
+		mutate()
+		require.Error(t, normalizeAndValidateOptions())
+	}
+}

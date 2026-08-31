@@ -90,8 +90,7 @@ func (client *PartnerTopicEventSubscriptionsClient) createOrUpdate(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -175,8 +174,7 @@ func (client *PartnerTopicEventSubscriptionsClient) deleteOperation(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -233,12 +231,7 @@ func (client *PartnerTopicEventSubscriptionsClient) Get(ctx context.Context, res
 	if err != nil {
 		return PartnerTopicEventSubscriptionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PartnerTopicEventSubscriptionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -272,8 +265,11 @@ func (client *PartnerTopicEventSubscriptionsClient) getCreateRequest(ctx context
 }
 
 // getHandleResponse handles the Get response.
-func (client *PartnerTopicEventSubscriptionsClient) getHandleResponse(resp *http.Response) (PartnerTopicEventSubscriptionsClientGetResponse, error) {
+func (client *PartnerTopicEventSubscriptionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (PartnerTopicEventSubscriptionsClientGetResponse, error) {
 	result := PartnerTopicEventSubscriptionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscription); err != nil {
 		return PartnerTopicEventSubscriptionsClientGetResponse{}, err
 	}
@@ -303,12 +299,7 @@ func (client *PartnerTopicEventSubscriptionsClient) GetDeliveryAttributes(ctx co
 	if err != nil {
 		return PartnerTopicEventSubscriptionsClientGetDeliveryAttributesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PartnerTopicEventSubscriptionsClientGetDeliveryAttributesResponse{}, err
-	}
-	resp, err := client.getDeliveryAttributesHandleResponse(httpResp)
-	return resp, err
+	return client.getDeliveryAttributesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDeliveryAttributesCreateRequest creates the GetDeliveryAttributes request.
@@ -342,8 +333,11 @@ func (client *PartnerTopicEventSubscriptionsClient) getDeliveryAttributesCreateR
 }
 
 // getDeliveryAttributesHandleResponse handles the GetDeliveryAttributes response.
-func (client *PartnerTopicEventSubscriptionsClient) getDeliveryAttributesHandleResponse(resp *http.Response) (PartnerTopicEventSubscriptionsClientGetDeliveryAttributesResponse, error) {
+func (client *PartnerTopicEventSubscriptionsClient) getDeliveryAttributesHandleResponse(resp *http.Response, successCodes ...int) (PartnerTopicEventSubscriptionsClientGetDeliveryAttributesResponse, error) {
 	result := PartnerTopicEventSubscriptionsClientGetDeliveryAttributesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeliveryAttributeListResult); err != nil {
 		return PartnerTopicEventSubscriptionsClientGetDeliveryAttributesResponse{}, err
 	}
@@ -373,12 +367,7 @@ func (client *PartnerTopicEventSubscriptionsClient) GetFullURL(ctx context.Conte
 	if err != nil {
 		return PartnerTopicEventSubscriptionsClientGetFullURLResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PartnerTopicEventSubscriptionsClientGetFullURLResponse{}, err
-	}
-	resp, err := client.getFullURLHandleResponse(httpResp)
-	return resp, err
+	return client.getFullURLHandleResponse(httpResp, http.StatusOK)
 }
 
 // getFullURLCreateRequest creates the GetFullURL request.
@@ -412,8 +401,11 @@ func (client *PartnerTopicEventSubscriptionsClient) getFullURLCreateRequest(ctx 
 }
 
 // getFullURLHandleResponse handles the GetFullURL response.
-func (client *PartnerTopicEventSubscriptionsClient) getFullURLHandleResponse(resp *http.Response) (PartnerTopicEventSubscriptionsClientGetFullURLResponse, error) {
+func (client *PartnerTopicEventSubscriptionsClient) getFullURLHandleResponse(resp *http.Response, successCodes ...int) (PartnerTopicEventSubscriptionsClientGetFullURLResponse, error) {
 	result := PartnerTopicEventSubscriptionsClientGetFullURLResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionFullURL); err != nil {
 		return PartnerTopicEventSubscriptionsClientGetFullURLResponse{}, err
 	}
@@ -438,53 +430,67 @@ func (client *PartnerTopicEventSubscriptionsClient) NewListByPartnerTopicPager(r
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByPartnerTopicCreateRequest(ctx, resourceGroupName, partnerTopicName, options)
-			}, nil)
+			req, err := client.listByPartnerTopicCreateRequest(ctx, resourceGroupName, partnerTopicName, nextLink, options)
 			if err != nil {
 				return PartnerTopicEventSubscriptionsClientListByPartnerTopicResponse{}, err
 			}
-			return client.listByPartnerTopicHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PartnerTopicEventSubscriptionsClientListByPartnerTopicResponse{}, err
+			}
+			return client.listByPartnerTopicHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByPartnerTopicCreateRequest creates the ListByPartnerTopic request.
-func (client *PartnerTopicEventSubscriptionsClient) listByPartnerTopicCreateRequest(ctx context.Context, resourceGroupName string, partnerTopicName string, options *PartnerTopicEventSubscriptionsClientListByPartnerTopicOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerTopics/{partnerTopicName}/eventSubscriptions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PartnerTopicEventSubscriptionsClient) listByPartnerTopicCreateRequest(ctx context.Context, resourceGroupName string, partnerTopicName string, nextLink string, options *PartnerTopicEventSubscriptionsClientListByPartnerTopicOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerTopics/{partnerTopicName}/eventSubscriptions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if partnerTopicName == "" {
+			return nil, errors.New("parameter partnerTopicName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{partnerTopicName}", url.PathEscape(partnerTopicName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if partnerTopicName == "" {
-		return nil, errors.New("parameter partnerTopicName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{partnerTopicName}", url.PathEscape(partnerTopicName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByPartnerTopicHandleResponse handles the ListByPartnerTopic response.
-func (client *PartnerTopicEventSubscriptionsClient) listByPartnerTopicHandleResponse(resp *http.Response) (PartnerTopicEventSubscriptionsClientListByPartnerTopicResponse, error) {
+func (client *PartnerTopicEventSubscriptionsClient) listByPartnerTopicHandleResponse(resp *http.Response, successCodes ...int) (PartnerTopicEventSubscriptionsClientListByPartnerTopicResponse, error) {
 	result := PartnerTopicEventSubscriptionsClientListByPartnerTopicResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventSubscriptionsListResult); err != nil {
 		return PartnerTopicEventSubscriptionsClientListByPartnerTopicResponse{}, err
 	}
@@ -537,8 +543,7 @@ func (client *PartnerTopicEventSubscriptionsClient) update(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

@@ -19,7 +19,7 @@ import (
 // ActionsClient contains the methods for the Actions group.
 // Don't use this type directly, use NewActionsClient() instead.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2026-08-01-preview
 type ActionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -60,12 +60,7 @@ func (client *ActionsClient) Get(ctx context.Context, location string, actionNam
 	if err != nil {
 		return ActionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ActionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -88,15 +83,18 @@ func (client *ActionsClient) getCreateRequest(ctx context.Context, location stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ActionsClient) getHandleResponse(resp *http.Response) (ActionsClientGetResponse, error) {
+func (client *ActionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ActionsClientGetResponse, error) {
 	result := ActionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Action); err != nil {
 		return ActionsClientGetResponse{}, err
 	}
@@ -117,46 +115,60 @@ func (client *ActionsClient) NewListPager(location string, options *ActionsClien
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return ActionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ActionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ActionsClient) listCreateRequest(ctx context.Context, location string, options *ActionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{location}/actions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ActionsClient) listCreateRequest(ctx context.Context, location string, nextLink string, options *ActionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{location}/actions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	if options != nil && options.ContinuationToken != nil {
-		reqQP.Set("continuationToken", *options.ContinuationToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260801Preview)
+		if options != nil && options.ContinuationToken != nil {
+			reqQP.Set("continuationToken", *options.ContinuationToken)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ActionsClient) listHandleResponse(resp *http.Response) (ActionsClientListResponse, error) {
+func (client *ActionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ActionsClientListResponse, error) {
 	result := ActionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ActionListResult); err != nil {
 		return ActionsClientListResponse{}, err
 	}

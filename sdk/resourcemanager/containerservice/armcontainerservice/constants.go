@@ -5,7 +5,7 @@
 package armcontainerservice
 
 const (
-	version20260501 string = "2026-05-01"
+	version20260601 string = "2026-06-01"
 )
 
 // AccelerationMode - Enable advanced network acceleration options. This allows users to configure acceleration using BPF
@@ -105,6 +105,8 @@ type AgentPoolSSHAccess string
 const (
 	// AgentPoolSSHAccessDisabled - SSH service will be turned off on the node.
 	AgentPoolSSHAccessDisabled AgentPoolSSHAccess = "Disabled"
+	// AgentPoolSSHAccessEntraID - SSH to node with EntraId integration. More information can be found under https://aka.ms/aks/ssh/aad
+	AgentPoolSSHAccessEntraID AgentPoolSSHAccess = "EntraId"
 	// AgentPoolSSHAccessLocalUser - Can SSH onto the node as a local user using private key.
 	AgentPoolSSHAccessLocalUser AgentPoolSSHAccess = "LocalUser"
 )
@@ -113,6 +115,7 @@ const (
 func PossibleAgentPoolSSHAccessValues() []AgentPoolSSHAccess {
 	return []AgentPoolSSHAccess{
 		AgentPoolSSHAccessDisabled,
+		AgentPoolSSHAccessEntraID,
 		AgentPoolSSHAccessLocalUser,
 	}
 }
@@ -216,6 +219,26 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 	}
 }
 
+// ContainerNetworkLogs - Allowed values for container network logs ingestion with Azure Monitor. When `Enabled`, the specific
+// log types ingested are controlled by the associated CRD; defaults to `Disabled`. See https://aka.ms/ContainerNetworkLogsDoc
+// and https://aka.ms/acns/howtoenablecnl for details.
+type ContainerNetworkLogs string
+
+const (
+	// ContainerNetworkLogsDisabled - Azure monitor ingestion of container network logs is disabled
+	ContainerNetworkLogsDisabled ContainerNetworkLogs = "Disabled"
+	// ContainerNetworkLogsEnabled - Azure monitor ingestion of container network logs is enabled
+	ContainerNetworkLogsEnabled ContainerNetworkLogs = "Enabled"
+)
+
+// PossibleContainerNetworkLogsValues returns the possible values for the ContainerNetworkLogs const type.
+func PossibleContainerNetworkLogsValues() []ContainerNetworkLogs {
+	return []ContainerNetworkLogs{
+		ContainerNetworkLogsDisabled,
+		ContainerNetworkLogsEnabled,
+	}
+}
+
 // CreatedByType - The kind of entity that created the resource.
 type CreatedByType string
 
@@ -237,6 +260,24 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// DRANETMode - The DRANET mode for the agent pool.
+type DRANETMode string
+
+const (
+	// DRANETModeManaged - DRANET is managed by AKS.
+	DRANETModeManaged DRANETMode = "Managed"
+	// DRANETModeUnmanaged - DRANET is not managed by AKS.
+	DRANETModeUnmanaged DRANETMode = "Unmanaged"
+)
+
+// PossibleDRANETModeValues returns the possible values for the DRANETMode const type.
+func PossibleDRANETModeValues() []DRANETMode {
+	return []DRANETMode{
+		DRANETModeManaged,
+		DRANETModeUnmanaged,
 	}
 }
 
@@ -690,6 +731,25 @@ func PossibleLocalDNSStateValues() []LocalDNSState {
 	return []LocalDNSState{
 		LocalDNSStateDisabled,
 		LocalDNSStateEnabled,
+	}
+}
+
+// ManagedClusterNATGatewaySKU - The SKU of a managed cluster NAT Gateway.
+type ManagedClusterNATGatewaySKU string
+
+const (
+	// ManagedClusterNATGatewaySKUStandard - Use a Standard SKU NAT Gateway.
+	ManagedClusterNATGatewaySKUStandard ManagedClusterNATGatewaySKU = "Standard"
+	// ManagedClusterNATGatewaySKUStandardV2 - Use a StandardV2 SKU NAT Gateway. This is the default for new clusters in regions
+	// where it is available.
+	ManagedClusterNATGatewaySKUStandardV2 ManagedClusterNATGatewaySKU = "StandardV2"
+)
+
+// PossibleManagedClusterNATGatewaySKUValues returns the possible values for the ManagedClusterNATGatewaySKU const type.
+func PossibleManagedClusterNATGatewaySKUValues() []ManagedClusterNATGatewaySKU {
+	return []ManagedClusterNATGatewaySKU{
+		ManagedClusterNATGatewaySKUStandard,
+		ManagedClusterNATGatewaySKUStandardV2,
 	}
 }
 

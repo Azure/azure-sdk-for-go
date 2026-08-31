@@ -65,12 +65,7 @@ func (client *ContainerAppsRevisionReplicasClient) GetReplica(ctx context.Contex
 	if err != nil {
 		return ContainerAppsRevisionReplicasClientGetReplicaResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerAppsRevisionReplicasClientGetReplicaResponse{}, err
-	}
-	resp, err := client.getReplicaHandleResponse(httpResp)
-	return resp, err
+	return client.getReplicaHandleResponse(httpResp, http.StatusOK)
 }
 
 // getReplicaCreateRequest creates the GetReplica request.
@@ -108,8 +103,11 @@ func (client *ContainerAppsRevisionReplicasClient) getReplicaCreateRequest(ctx c
 }
 
 // getReplicaHandleResponse handles the GetReplica response.
-func (client *ContainerAppsRevisionReplicasClient) getReplicaHandleResponse(resp *http.Response) (ContainerAppsRevisionReplicasClientGetReplicaResponse, error) {
+func (client *ContainerAppsRevisionReplicasClient) getReplicaHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsRevisionReplicasClientGetReplicaResponse, error) {
 	result := ContainerAppsRevisionReplicasClientGetReplicaResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Replica); err != nil {
 		return ContainerAppsRevisionReplicasClientGetReplicaResponse{}, err
 	}
@@ -139,12 +137,7 @@ func (client *ContainerAppsRevisionReplicasClient) ListReplicas(ctx context.Cont
 	if err != nil {
 		return ContainerAppsRevisionReplicasClientListReplicasResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ContainerAppsRevisionReplicasClientListReplicasResponse{}, err
-	}
-	resp, err := client.listReplicasHandleResponse(httpResp)
-	return resp, err
+	return client.listReplicasHandleResponse(httpResp, http.StatusOK)
 }
 
 // listReplicasCreateRequest creates the ListReplicas request.
@@ -178,8 +171,11 @@ func (client *ContainerAppsRevisionReplicasClient) listReplicasCreateRequest(ctx
 }
 
 // listReplicasHandleResponse handles the ListReplicas response.
-func (client *ContainerAppsRevisionReplicasClient) listReplicasHandleResponse(resp *http.Response) (ContainerAppsRevisionReplicasClientListReplicasResponse, error) {
+func (client *ContainerAppsRevisionReplicasClient) listReplicasHandleResponse(resp *http.Response, successCodes ...int) (ContainerAppsRevisionReplicasClientListReplicasResponse, error) {
 	result := ContainerAppsRevisionReplicasClientListReplicasResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ReplicaCollection); err != nil {
 		return ContainerAppsRevisionReplicasClientListReplicasResponse{}, err
 	}

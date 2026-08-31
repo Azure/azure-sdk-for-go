@@ -19,7 +19,7 @@ import (
 // FirewallRulesClient contains the methods for the FirewallRules group.
 // Don't use this type directly, use NewFirewallRulesClient() instead.
 //
-// Generated from API version 2026-01-20-preview
+// Generated from API version 2026-05-01-preview
 type FirewallRulesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,12 +41,12 @@ func NewFirewallRulesClient(subscriptionID string, credential azcore.TokenCreden
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Creates a new HorizonDb firewall rule or updates an existing rule.
+// BeginCreateOrUpdate - Creates a new HorizonDB firewall rule or updates an existing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the HorizonDb cluster.
-//   - poolName - The name of the HorizonDb pool.
-//   - firewallRuleName - The name of the HorizonDb firewall rule.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
+//   - firewallRuleName - The name of the HorizonDB firewall rule.
 //   - resource - Resource create parameters.
 //   - options - FirewallRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the FirewallRulesClient.BeginCreateOrUpdate
 //     method.
@@ -68,7 +68,7 @@ func (client *FirewallRulesClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Creates a new HorizonDb firewall rule or updates an existing rule.
+// CreateOrUpdate - Creates a new HorizonDB firewall rule or updates an existing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FirewallRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, resource FirewallRule, options *FirewallRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,8 +85,7 @@ func (client *FirewallRulesClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -119,7 +118,7 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -129,12 +128,12 @@ func (client *FirewallRulesClient) createOrUpdateCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// BeginDelete - Deletes a HorizonDb firewall rule.
+// BeginDelete - Deletes a HorizonDB firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the HorizonDb cluster.
-//   - poolName - The name of the HorizonDb pool.
-//   - firewallRuleName - The name of the HorizonDb firewall rule.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
+//   - firewallRuleName - The name of the HorizonDB firewall rule.
 //   - options - FirewallRulesClientBeginDeleteOptions contains the optional parameters for the FirewallRulesClient.BeginDelete
 //     method.
 func (client *FirewallRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, options *FirewallRulesClientBeginDeleteOptions) (*runtime.Poller[FirewallRulesClientDeleteResponse], error) {
@@ -154,7 +153,7 @@ func (client *FirewallRulesClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Deletes a HorizonDb firewall rule.
+// Delete - Deletes a HorizonDB firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FirewallRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, options *FirewallRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,8 +170,7 @@ func (client *FirewallRulesClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -205,17 +203,17 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// Get - Gets information about a HorizonDb firewall rule.
+// Get - Gets information about a HorizonDB firewall rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the HorizonDb cluster.
-//   - poolName - The name of the HorizonDb pool.
-//   - firewallRuleName - The name of the HorizonDb firewall rule.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
+//   - firewallRuleName - The name of the HorizonDB firewall rule.
 //   - options - FirewallRulesClientGetOptions contains the optional parameters for the FirewallRulesClient.Get method.
 func (client *FirewallRulesClient) Get(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, options *FirewallRulesClientGetOptions) (FirewallRulesClientGetResponse, error) {
 	var err error
@@ -231,12 +229,7 @@ func (client *FirewallRulesClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return FirewallRulesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FirewallRulesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -267,25 +260,28 @@ func (client *FirewallRulesClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *FirewallRulesClient) getHandleResponse(resp *http.Response) (FirewallRulesClientGetResponse, error) {
+func (client *FirewallRulesClient) getHandleResponse(resp *http.Response, successCodes ...int) (FirewallRulesClientGetResponse, error) {
 	result := FirewallRulesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRule); err != nil {
 		return FirewallRulesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - Lists all HorizonDb firewall rules in a pool.
+// NewListPager - Lists all HorizonDB firewall rules in a pool.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the HorizonDb cluster.
-//   - poolName - The name of the HorizonDb pool.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
 //   - options - FirewallRulesClientListOptions contains the optional parameters for the FirewallRulesClient.NewListPager method.
 func (client *FirewallRulesClient) NewListPager(resourceGroupName string, clusterName string, poolName string, options *FirewallRulesClientListOptions) *runtime.Pager[FirewallRulesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[FirewallRulesClientListResponse]{
@@ -298,51 +294,65 @@ func (client *FirewallRulesClient) NewListPager(resourceGroupName string, cluste
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, clusterName, poolName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, clusterName, poolName, nextLink, options)
 			if err != nil {
 				return FirewallRulesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FirewallRulesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *FirewallRulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, poolName string, _ *FirewallRulesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}/firewallRules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FirewallRulesClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, poolName string, nextLink string, _ *FirewallRulesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools/{poolName}/firewallRules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if clusterName == "" {
+			return nil, errors.New("parameter clusterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+		if poolName == "" {
+			return nil, errors.New("parameter poolName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if poolName == "" {
-		return nil, errors.New("parameter poolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{poolName}", url.PathEscape(poolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *FirewallRulesClient) listHandleResponse(resp *http.Response) (FirewallRulesClientListResponse, error) {
+func (client *FirewallRulesClient) listHandleResponse(resp *http.Response, successCodes ...int) (FirewallRulesClientListResponse, error) {
 	result := FirewallRulesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FirewallRuleListResult); err != nil {
 		return FirewallRulesClientListResponse{}, err
 	}

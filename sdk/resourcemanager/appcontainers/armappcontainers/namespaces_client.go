@@ -64,12 +64,7 @@ func (client *NamespacesClient) CheckNameAvailability(ctx context.Context, resou
 	if err != nil {
 		return NamespacesClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NamespacesClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -103,8 +98,11 @@ func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.C
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *NamespacesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (NamespacesClientCheckNameAvailabilityResponse, error) {
+func (client *NamespacesClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (NamespacesClientCheckNameAvailabilityResponse, error) {
 	result := NamespacesClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResponse); err != nil {
 		return NamespacesClientCheckNameAvailabilityResponse{}, err
 	}

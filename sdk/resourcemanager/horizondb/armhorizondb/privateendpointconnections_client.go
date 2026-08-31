@@ -19,7 +19,7 @@ import (
 // PrivateEndpointConnectionsClient contains the methods for the PrivateEndpointConnections group.
 // Don't use this type directly, use NewPrivateEndpointConnectionsClient() instead.
 //
-// Generated from API version 2026-01-20-preview
+// Generated from API version 2026-05-01-preview
 type PrivateEndpointConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,12 +44,13 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 // BeginDelete - Deletes a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the HorizonDB cluster.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
 //   - options - PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 //     method.
-func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error) {
+func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, privateEndpointConnectionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, privateEndpointConnectionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -66,13 +67,13 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 
 // Delete - Deletes a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateEndpointConnectionName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, privateEndpointConnectionName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -81,15 +82,14 @@ func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, _ *PrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/privateEndpointConnections/{privateEndpointConnectionName}"
+func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, _ *PrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -98,6 +98,10 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
 	if privateEndpointConnectionName == "" {
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
@@ -107,7 +111,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -115,7 +119,7 @@ func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.
 // Get - Gets a private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the HorizonDb cluster.
+//   - clusterName - The name of the HorizonDB cluster.
 //   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
 //   - options - PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
 //     method.
@@ -133,12 +137,7 @@ func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return PrivateEndpointConnectionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateEndpointConnectionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -165,24 +164,27 @@ func (client *PrivateEndpointConnectionsClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientGetResponse, error) {
+func (client *PrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionsClientGetResponse, error) {
 	result := PrivateEndpointConnectionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionResource); err != nil {
 		return PrivateEndpointConnectionsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - Lists private endpoint connections in a HorizonDb cluster.
+// NewListPager - Lists private endpoint connections in a HorizonDB cluster.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the HorizonDb cluster.
+//   - clusterName - The name of the HorizonDB cluster.
 //   - options - PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
 //     method.
 func (client *PrivateEndpointConnectionsClient) NewListPager(resourceGroupName string, clusterName string, options *PrivateEndpointConnectionsClientListOptions) *runtime.Pager[PrivateEndpointConnectionsClientListResponse] {
@@ -196,21 +198,95 @@ func (client *PrivateEndpointConnectionsClient) NewListPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, clusterName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, clusterName, nextLink, options)
 			if err != nil {
 				return PrivateEndpointConnectionsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrivateEndpointConnectionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *PrivateEndpointConnectionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/privateEndpointConnections"
+func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nextLink string, _ *PrivateEndpointConnectionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/privateEndpointConnections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if clusterName == "" {
+			return nil, errors.New("parameter clusterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *PrivateEndpointConnectionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionsClientListResponse, error) {
+	result := PrivateEndpointConnectionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionResourceListResult); err != nil {
+		return PrivateEndpointConnectionsClientListResponse{}, err
+	}
+	return result, nil
+}
+
+// UpdateStatus - Approves or rejects a private endpoint connection.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
+//   - resource - Resource create parameters.
+//   - options - PrivateEndpointConnectionsClientUpdateStatusOptions contains the optional parameters for the PrivateEndpointConnectionsClient.UpdateStatus
+//     method.
+func (client *PrivateEndpointConnectionsClient) UpdateStatus(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, resource PrivateEndpointConnectionResource, options *PrivateEndpointConnectionsClientUpdateStatusOptions) (PrivateEndpointConnectionsClientUpdateStatusResponse, error) {
+	var err error
+	const operationName = "PrivateEndpointConnectionsClient.UpdateStatus"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateStatusCreateRequest(ctx, resourceGroupName, clusterName, privateEndpointConnectionName, resource, options)
+	if err != nil {
+		return PrivateEndpointConnectionsClientUpdateStatusResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PrivateEndpointConnectionsClientUpdateStatusResponse{}, err
+	}
+	return client.updateStatusHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+}
+
+// updateStatusCreateRequest creates the UpdateStatus request.
+func (client *PrivateEndpointConnectionsClient) updateStatusCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, resource PrivateEndpointConnectionResource, _ *PrivateEndpointConnectionsClientUpdateStatusOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -223,99 +299,33 @@ func (client *PrivateEndpointConnectionsClient) listCreateRequest(ctx context.Co
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *PrivateEndpointConnectionsClient) listHandleResponse(resp *http.Response) (PrivateEndpointConnectionsClientListResponse, error) {
-	result := PrivateEndpointConnectionsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionResourceListResult); err != nil {
-		return PrivateEndpointConnectionsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginUpdate - Updates a private endpoint connection.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - privateEndpointConnectionName - The name of the private endpoint connection associated with the Azure resource.
-//   - properties - The resource properties to be updated.
-//   - options - PrivateEndpointConnectionsClientBeginUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginUpdate
-//     method.
-func (client *PrivateEndpointConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionUpdate, options *PrivateEndpointConnectionsClientBeginUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, privateEndpointConnectionName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateEndpointConnectionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateEndpointConnectionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a private endpoint connection.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *PrivateEndpointConnectionsClient) update(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionUpdate, options *PrivateEndpointConnectionsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "PrivateEndpointConnectionsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, privateEndpointConnectionName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *PrivateEndpointConnectionsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, properties PrivateEndpointConnectionUpdate, _ *PrivateEndpointConnectionsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/privateEndpointConnections/{privateEndpointConnectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if privateEndpointConnectionName == "" {
 		return nil, errors.New("parameter privateEndpointConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateEndpointConnectionName}", url.PathEscape(privateEndpointConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
 		return nil, err
 	}
 	return req, nil
+}
+
+// updateStatusHandleResponse handles the UpdateStatus response.
+func (client *PrivateEndpointConnectionsClient) updateStatusHandleResponse(resp *http.Response, successCodes ...int) (PrivateEndpointConnectionsClientUpdateStatusResponse, error) {
+	result := PrivateEndpointConnectionsClientUpdateStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionResource); err != nil {
+		return PrivateEndpointConnectionsClientUpdateStatusResponse{}, err
+	}
+	return result, nil
 }

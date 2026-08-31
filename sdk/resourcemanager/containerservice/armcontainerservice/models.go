@@ -171,6 +171,9 @@ type AgentPoolNetworkProfile struct {
 	// The IDs of the application security groups which agent pool will associate when created.
 	ApplicationSecurityGroups []*string
 
+	// DRANET settings of an agent pool.
+	Dranet *DRANETProfile
+
 	// IPTags of instance-level public IPs.
 	NodePublicIPTags []*IPTag
 }
@@ -376,6 +379,12 @@ type CredentialResult struct {
 type CredentialResults struct {
 	// READ-ONLY; Base64-encoded Kubernetes configuration file.
 	Kubeconfigs []*CredentialResult
+}
+
+// DRANETProfile - DRANET settings of an agent pool.
+type DRANETProfile struct {
+	// The DRANET mode for the agent pool.
+	Mode *DRANETMode
 }
 
 // DailySchedule - For schedules like: 'recur every day' or 'recur every 3 days'.
@@ -1495,6 +1504,10 @@ type ManagedClusterAzureMonitorProfile struct {
 	// for an overview.
 	AppMonitoring *ManagedClusterAzureMonitorProfileAppMonitoring
 
+	// Set this to enable and configure Azure Monitor Container Insights for the cluster, which collects Kubernetes events, inventory,
+	// and container stdout & stderr logs. See aka.ms/AzureMonitorContainerInsights for an overview.
+	ContainerInsights *ManagedClusterAzureMonitorProfileContainerInsights
+
 	// Metrics profile for the Azure Monitor managed service for Prometheus addon. Collect out-of-the-box Kubernetes infrastructure
 	// metrics to send to an Azure Monitor Workspace and configure additional scraping for custom targets. See aka.ms/AzureManagedPrometheus
 	// for an overview.
@@ -1507,6 +1520,16 @@ type ManagedClusterAzureMonitorProfileAppMonitoring struct {
 	// Distros to collect OpenTelemetry metrics, logs, and traces. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring
 	// for an overview.
 	AutoInstrumentation *ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation
+
+	// Application Monitoring OpenTelemetry logs and traces profile for AKS. Collects OpenTelemetry logs and traces of the application
+	// using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring
+	// for an overview.
+	OpenTelemetryLogsAndTraces *ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces
+
+	// Application Monitoring OpenTelemetry Metrics Profile for AKS. Collects OpenTelemetry metrics of the application using Azure
+	// Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring
+	// for an overview.
+	OpenTelemetryMetrics *ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics
 }
 
 // ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation - Application Monitoring auto-instrumentation for AKS.
@@ -1515,6 +1538,57 @@ type ManagedClusterAzureMonitorProfileAppMonitoring struct {
 type ManagedClusterAzureMonitorProfileAppMonitoringAutoInstrumentation struct {
 	// Indicates if Application Monitoring Auto-instrumentation is enabled or not.
 	Enabled *bool
+}
+
+// ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces - Application Monitoring OpenTelemetry logs and
+// traces profile for AKS. Collects OpenTelemetry logs and traces of the application using Azure Monitor OpenTelemetry based
+// SDKs. See https://aka.ms/AKSAppMonitoringDocs and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
+type ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces struct {
+	// Indicates if Application Monitoring OpenTelemetry Logs and traces is enabled or not.
+	Enabled *bool
+
+	// The host port for OpenTelemetry GRPC logs and traces. If not specified, the default port is 28332.
+	GrpcPort *int64
+
+	// The host port for OpenTelemetry HTTP/PROTOBUF logs and traces. If not specified, the default port is 28331.
+	HTTPPort *int64
+}
+
+// ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics - Application Monitoring OpenTelemetry Metrics Profile
+// for AKS. Collects OpenTelemetry metrics of the application using Azure Monitor OpenTelemetry based SDKs. See https://aka.ms/AKSAppMonitoringDocs
+// and https://aka.ms/AzureMonitorApplicationMonitoring for an overview.
+type ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics struct {
+	// Indicates if Application Monitoring OpenTelemetry Metrics is enabled or not.
+	Enabled *bool
+
+	// The host port for OpenTelemetry GRPC metrics. If not specified, the default port is 28334.
+	GrpcPort *int64
+
+	// The host port for OpenTelemetry HTTP/PROTOBUF metrics. If not specified, the default port is 28333.
+	HTTPPort *int64
+}
+
+// ManagedClusterAzureMonitorProfileContainerInsights - Azure Monitor Container Insights profile. Represents the configuration
+// for collecting Kubernetes events, inventory, and container stdout & stderr logs. See aka.ms/AzureMonitorContainerInsights
+// for an overview.
+type ManagedClusterAzureMonitorProfileContainerInsights struct {
+	// Configures container network logs ingestion with Azure Monitor. The log types ingested are controlled by the associated
+	// CRD; if unspecified, defaults to `Disabled`. See https://aka.ms/ContainerNetworkLogsDoc and https://aka.ms/acns/howtoenablecnl
+	// for details.
+	ContainerNetworkLogs *ContainerNetworkLogs
+
+	// Indicates whether prometheus metrics scraping is disabled or not. If not specified the default is false i.e. the prometheus
+	// scraping is enabled.
+	DisablePrometheusMetricsScraping *bool
+
+	// Indicates if Azure Monitor Container Insights Logs Addon is enabled or not.
+	Enabled *bool
+
+	// Fully Qualified ARM Resource Id of Azure Log Analytics Workspace for storing Azure Monitor Container Insights Logs.
+	LogAnalyticsWorkspaceResourceID *string
+
+	// The syslog host port. If not specified, the default port is 28330.
+	SyslogPort *int64
 }
 
 // ManagedClusterAzureMonitorProfileKubeStateMetrics - Kube State Metrics profile for the Azure Managed Prometheus addon.
@@ -1742,6 +1816,9 @@ type ManagedClusterManagedOutboundIPProfile struct {
 	// The desired number of outbound IPs created/managed by Azure. Allowed values must be in the range of 1 to 16 (inclusive).
 	// The default value is 1.
 	Count *int32
+
+	// The desired number of IPv6 outbound IPs created/managed by Azure. Allowed values must be in the range of 1 to 16 (inclusive).
+	CountIPv6 *int32
 }
 
 // ManagedClusterMetricsProfile - The metrics profile for the ManagedCluster.
@@ -1759,8 +1836,27 @@ type ManagedClusterNATGatewayProfile struct {
 	// Profile of the managed outbound IP resources of the cluster NAT gateway.
 	ManagedOutboundIPProfile *ManagedClusterManagedOutboundIPProfile
 
+	// Desired outbound IP Prefix resources for the managed NAT Gateway. Only compatible with NAT Gateway V2.
+	OutboundIPPrefixes *ManagedClusterNATGatewayProfileOutboundIPPrefixes
+
+	// Desired outbound IP resources for the managed NAT Gateway.
+	OutboundIPs *ManagedClusterNATGatewayProfileOutboundIPs
+
+	// The SKU of the managed cluster NAT Gateway. Defaults to 'StandardV2' where available in the region, otherwise 'Standard'.
+	SKU *ManagedClusterNATGatewaySKU
+
 	// READ-ONLY; The effective outbound IP resources of the cluster NAT gateway.
 	EffectiveOutboundIPs []*ResourceReference
+}
+
+type ManagedClusterNATGatewayProfileOutboundIPPrefixes struct {
+	// A list of public IP prefix resources.
+	PublicIPPrefixes []*string
+}
+
+type ManagedClusterNATGatewayProfileOutboundIPs struct {
+	// A list of public IP resources.
+	PublicIPs []*string
 }
 
 // ManagedClusterNodeProvisioningProfile - Node provisioning profile for the managed cluster.

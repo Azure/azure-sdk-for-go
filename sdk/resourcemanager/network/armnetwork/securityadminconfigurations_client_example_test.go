@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/NetworkManagerSecurityAdminConfigurationPut.json
+// Generated from example definition: 2025-09-01/NetworkManagerSecurityAdminConfigurationPut.json
 func ExampleSecurityAdminConfigurationsClient_CreateOrUpdate_createNetworkManagerSecurityAdminConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,10 +51,10 @@ func ExampleSecurityAdminConfigurationsClient_CreateOrUpdate_createNetworkManage
 	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		SystemData: &armnetwork.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 	// 		},
@@ -62,7 +62,7 @@ func ExampleSecurityAdminConfigurationsClient_CreateOrUpdate_createNetworkManage
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkManagerSecurityAdminConfigurationPut_ManualAggregation.json
+// Generated from example definition: 2025-09-01/NetworkManagerSecurityAdminConfigurationPut_ManualAggregation.json
 func ExampleSecurityAdminConfigurationsClient_CreateOrUpdate_createManualModeSecurityAdminConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,10 +96,10 @@ func ExampleSecurityAdminConfigurationsClient_CreateOrUpdate_createManualModeSec
 	// 			ProvisioningState: to.Ptr(armnetwork.ProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armnetwork.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 	// 		},
@@ -107,7 +107,7 @@ func ExampleSecurityAdminConfigurationsClient_CreateOrUpdate_createManualModeSec
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkManagerSecurityAdminConfigurationDelete.json
+// Generated from example definition: 2025-09-01/NetworkManagerSecurityAdminConfigurationDelete.json
 func ExampleSecurityAdminConfigurationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleSecurityAdminConfigurationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkManagerSecurityAdminConfigurationGet.json
+// Generated from example definition: 2025-09-01/NetworkManagerSecurityAdminConfigurationGet.json
 func ExampleSecurityAdminConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,10 +166,10 @@ func ExampleSecurityAdminConfigurationsClient_Get() {
 	// 			ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
 	// 		SystemData: &armnetwork.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 	// 			LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 	// 		},
@@ -177,7 +177,7 @@ func ExampleSecurityAdminConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/NetworkManagerSecurityAdminConfigurationList.json
+// Generated from example definition: 2025-09-01/NetworkManagerSecurityAdminConfigurationList.json
 func ExampleSecurityAdminConfigurationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,10 +216,10 @@ func ExampleSecurityAdminConfigurationsClient_NewListPager() {
 		// 					ResourceGUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
 		// 				SystemData: &armnetwork.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 		// 					CreatedByType: to.Ptr(armnetwork.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-11T18:52:27Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 11, 18, 52, 27, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("b69a9388-9488-4534-b470-7ec6d41beef5"),
 		// 					LastModifiedByType: to.Ptr(armnetwork.CreatedByTypeUser),
 		// 				},

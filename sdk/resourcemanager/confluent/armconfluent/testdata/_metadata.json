@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.Confluent": "2026-06-02-preview"
   },
-  "emitterVersion": "0.14.3"
+  "emitterVersion": "0.16.0"
 }

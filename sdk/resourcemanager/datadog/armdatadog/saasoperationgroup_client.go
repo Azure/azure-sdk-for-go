@@ -18,6 +18,8 @@ import (
 
 // SaaSOperationGroupClient contains the methods for the SaaSOperationGroup group.
 // Don't use this type directly, use NewSaaSOperationGroupClient() instead.
+//
+// Generated from API version 2025-12-26-preview
 type SaaSOperationGroupClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewSaaSOperationGroupClient(subscriptionID string, credential azcore.TokenC
 
 // ActivateResource - Resolve the token to get the SaaS resource ID and activate the SaaS resource
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - body - The request body
 //   - options - SaaSOperationGroupClientActivateResourceOptions contains the optional parameters for the SaaSOperationGroupClient.ActivateResource
 //     method.
@@ -60,12 +60,7 @@ func (client *SaaSOperationGroupClient) ActivateResource(ctx context.Context, bo
 	if err != nil {
 		return SaaSOperationGroupClientActivateResourceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SaaSOperationGroupClientActivateResourceResponse{}, err
-	}
-	resp, err := client.activateResourceHandleResponse(httpResp)
-	return resp, err
+	return client.activateResourceHandleResponse(httpResp, http.StatusOK)
 }
 
 // activateResourceCreateRequest creates the ActivateResource request.
@@ -80,8 +75,8 @@ func (client *SaaSOperationGroupClient) activateResourceCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -91,8 +86,11 @@ func (client *SaaSOperationGroupClient) activateResourceCreateRequest(ctx contex
 }
 
 // activateResourceHandleResponse handles the ActivateResource response.
-func (client *SaaSOperationGroupClient) activateResourceHandleResponse(resp *http.Response) (SaaSOperationGroupClientActivateResourceResponse, error) {
+func (client *SaaSOperationGroupClient) activateResourceHandleResponse(resp *http.Response, successCodes ...int) (SaaSOperationGroupClientActivateResourceResponse, error) {
 	result := SaaSOperationGroupClientActivateResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SaaSResourceDetailsResponse); err != nil {
 		return SaaSOperationGroupClientActivateResourceResponse{}, err
 	}

@@ -129,10 +129,10 @@ func ExampleClusterClient_CreateOrUpdate() {
 	// 		SystemData: &armconfluent.SystemData{
 	// 			CreatedBy: to.Ptr("lfskmafvssxoohhokqsa"),
 	// 			CreatedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("txubvkbhgirdizxd"),
 	// 			LastModifiedByType: to.Ptr(armconfluent.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-08-18T11:10:31.028Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.August, 18, 11, 10, 31, 28000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

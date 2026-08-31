@@ -3,6 +3,8 @@
 ## 1.1.0-beta.2 (2026-08-31)
 ### Other Changes
 
+- Updated generated documentation for service replica restart operations.
+- Updated dependencies.
 
 ## 1.1.0-beta.1 (2026-05-19)
 ### Features Added

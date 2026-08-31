@@ -73,31 +73,28 @@ extends:
               EnvVars:
                 EMULATOR: 'true'
 
-      # The v2 driver binding needs a native library, a C toolchain and a build tag, none of which
-      # the stage above provides, so it runs separately rather than complicating that one.
+      # The v2 driver binding needs a native library and a build tag, neither of which the stage
+      # above provides, so it runs separately rather than complicating that one.
       #
-      # It runs against the driver's own in-memory emulator rather than the containerized one. That
-      # emulator is the same one the driver's Rust tests use, so the binding is exercised against
-      # what the driver is developed against; it is a plain process, so the stage needs no
-      # container runtime; it creates its databases and containers from its config, so nothing has
-      # to be provisioned separately; and it reports its endpoints as JSON on stdout, so they are
-      # read rather than assumed. It builds from the same checkout as the driver.
+      # The library and the emulator are committed under internal/native/lib rather than built
+      # here. Building them needs crates.io, which the agents cannot reach, and the distribution
+      # design puts these binaries in their own modules in a separate repository anyway. That
+      # repository does not yet carry a module for this platform, so the committed copies stand in
+      # until it does. This stage is expected to shrink to a module dependency at that point.
       - stage: DriverEmulator
         displayName: 'Cosmos Emulator (v2 driver)'
         variables:
         - template: /eng/pipelines/templates/variables/globals.yml@self
         - template: /eng/pipelines/templates/variables/image.yml@self
-        # Pinned rather than floating: the C ABI is only guaranteed compatible within a version,
-        # and this has to move in lockstep with nativeDriverVersion in driver.go.
-        - name: DriverRepoCommit
-          value: 2bc179cf6ff5c22e249fd10d944c8e946bb712d2
-        - name: DriverRepoDir
-          value: $(Agent.TempDirectory)/cosmos-driver
         - name: DriverLibDir
-          value: $(Agent.TempDirectory)/cosmos-driver/target/release
+          value: $(Build.SourcesDirectory)/sdk/data/azcosmos/internal/native/lib/linux_amd64
+        # cgo rejects executable-relative rpaths by default, and the driver modules use them so a
+        # library shipped beside a binary wins over the path it was built from.
+        - name: CgoRpathAllow
+          value: '^-Wl,-rpath,(@(executable_path|loader_path)|\$ORIGIN)$'
         jobs:
-        - job: BuildDriverAndRunEmulator
-          displayName: Build the driver and run the emulator tests
+        - job: RunDriverEmulatorTests
+          displayName: Run the driver emulator tests
 
           pool:
             name: $(LINUXPOOL)
@@ -109,49 +106,15 @@ extends:
             parameters:
               AgentImage: ubuntu
 
+          # Fail here rather than leaving the tests to fail at link time with a less obvious
+          # message, and confirm the committed library matches the header it is used with.
           - script: |
               set -euo pipefail
-              git clone --filter=blob:none --no-checkout \
-                https://github.com/Azure/azure-sdk-for-rust.git "$(DriverRepoDir)"
-              cd "$(DriverRepoDir)"
-              git checkout $(DriverRepoCommit)
-            displayName: 'Fetch the Cosmos driver source'
-
-          - script: |
-              set -euo pipefail
-              cd "$(DriverRepoDir)"
-              cargo build --release \
-                -p azure_data_cosmos_driver_native \
-                -p azure_data_cosmos_emulator
-              # Fail loudly here rather than leaving the tests to fail at link time, or the
-              # emulator step to fail on a missing binary, with a less obvious message.
-              test -f "$(DriverLibDir)/libazurecosmosdriver.a"
-              test -x "$(DriverLibDir)/azure_data_cosmos_emulator"
-            displayName: 'Build the Cosmos driver and emulator'
-
-          # The binding links the archive from a fixed path inside the module, because a cgo
-          # directive cannot take a path from the environment. Staging it here is what stands in
-          # for the per-target driver modules until they exist.
-          - script: |
-              set -euo pipefail
-              mkdir -p sdk/data/azcosmos/internal/native/lib
-              cp "$(DriverLibDir)/libazurecosmosdriver.a" \
-                sdk/data/azcosmos/internal/native/lib/
-            displayName: 'Stage the driver archive'
-
-          # The header the binding compiles against is vendored, so it has to match the library it
-          # links against. A mismatch is an ABI mismatch, which fails at runtime rather than at
-          # build time and is worth catching here.
-          - script: |
-              set -euo pipefail
-              vendored='sdk/data/azcosmos/internal/native/azurecosmosdriver.h'
-              upstream="$(DriverRepoDir)/sdk/cosmos/azure_data_cosmos_driver_native/include/azurecosmosdriver.h"
-              if ! diff -u "$vendored" "$upstream"; then
-                echo "##[error] The vendored header does not match the driver at $(DriverRepoCommit)."
-                echo "##[error] Re-vendor it and update nativeDriverVersion in driver.go."
-                exit 1
-              fi
-            displayName: 'Verify the vendored header matches the driver'
+              test -f "$(DriverLibDir)/libazurecosmosdriver.so"
+              test -f "$(DriverLibDir)/azure_data_cosmos_emulator"
+              chmod +x "$(DriverLibDir)/azure_data_cosmos_emulator"
+              file "$(DriverLibDir)/libazurecosmosdriver.so"
+            displayName: 'Check the committed driver artifacts'
 
           # The emulator writes one JSON record to stdout once every listener is bound, and logs to
           # stderr, so the endpoint is read from that record rather than guessed. Its config asks
@@ -188,7 +151,6 @@ extends:
           # The shared template forwards EnvVars only to its test step, so its own build and vet
           # steps would compile the stub and leave the binding unchecked. Nothing else in the
           # repository builds with this tag, so without this the cgo code is never vetted at all.
-          # Vetting does not link, so it needs no library on the path.
           - script: |
               set -euo pipefail
               cd sdk/data/azcosmos
@@ -197,6 +159,7 @@ extends:
             displayName: 'Build and vet the driver binding'
             env:
               CGO_ENABLED: '1'
+              CGO_LDFLAGS_ALLOW: $(CgoRpathAllow)
 
           - template:  /eng/pipelines/templates/steps/build-test.yml@self
             parameters:
@@ -212,3 +175,4 @@ extends:
                 # rather than by changing a template the Go central team owns.
                 GOFLAGS: '-tags=azcosmos_driver'
                 CGO_ENABLED: '1'
+                CGO_LDFLAGS_ALLOW: $(CgoRpathAllow)

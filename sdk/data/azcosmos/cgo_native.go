@@ -8,16 +8,23 @@ package azcosmos
 /*
 #cgo CFLAGS: -I${SRCDIR}/internal/native
 
-// The driver is linked as a static archive rather than a shared library, so a program built
-// against it carries the driver with it: no library has to be installed on the machine that runs
-// it, and nothing has to be on a search path at startup. That is what lets the eventual per-target
-// driver modules be ordinary Go modules.
+// The library is linked dynamically, matching the driver modules in
+// github.com/Azure/azure-cosmos-driver. A static archive would avoid the run-time search below,
+// but it is six times the size, which matters while these binaries are committed here.
 //
-// The system libraries below are what the archive itself depends on. A shared library would carry
-// those dependencies in its own header; a static archive leaves them to whoever links it.
-#cgo linux LDFLAGS: ${SRCDIR}/internal/native/lib/libazurecosmosdriver.a -lm -ldl -lpthread
-#cgo darwin LDFLAGS: ${SRCDIR}/internal/native/lib/libazurecosmosdriver.a -liconv -framework Security -framework CoreFoundation
-#cgo windows LDFLAGS: ${SRCDIR}/internal/native/lib/libazurecosmosdriver.a -lntdll -lsecur32 -lcrypt32 -lbcrypt -lws2_32 -luserenv
+// Because it is dynamic, the library has to be resolvable at run time and not just at build time.
+// The loader searches rpath entries in order, so the executable-relative ones come first: a library
+// shipped alongside a binary has to win over the path it happened to be built from. The build path
+// is kept last so that `go test` works without staging a copy, but it is only a fallback.
+//
+// Building a package that imports this one therefore needs cgo's rpath allowlist opened, because
+// cgo rejects the executable-relative forms by default:
+//
+//	CGO_LDFLAGS_ALLOW='^-Wl,-rpath,(@(executable_path|loader_path)|\$ORIGIN)$' go test ./...
+#cgo darwin,arm64 LDFLAGS: -L${SRCDIR}/internal/native/lib/darwin_arm64 -lazurecosmosdriver
+#cgo darwin,arm64 LDFLAGS: -Wl,-rpath,@executable_path -Wl,-rpath,@loader_path -Wl,-rpath,${SRCDIR}/internal/native/lib/darwin_arm64
+#cgo linux,amd64 LDFLAGS: -L${SRCDIR}/internal/native/lib/linux_amd64 -lazurecosmosdriver
+#cgo linux,amd64 LDFLAGS: -Wl,-rpath,$ORIGIN -Wl,-rpath,${SRCDIR}/internal/native/lib/linux_amd64
 
 #include "azurecosmosdriver.h"
 */
@@ -28,6 +35,9 @@ import "C"
 // package: repeating them means every file has to be kept in step, and a file that drifts is a
 // link error rather than a compile error.
 //
-// The archive is expected at internal/native/lib. It is not committed: the distribution design
-// puts the per-target binaries in their own modules, in a separate repository, so this location is
-// where a locally built driver goes during development. See the README.
+// The libraries under internal/native/lib are committed, which is deliberately temporary. The
+// distribution design puts the per-target binaries in their own modules in a separate repository,
+// consumed as ordinary Go modules; that repository exists and already carries a darwin/arm64
+// module, but not yet one for the platform CI runs on. Committing them here unblocks that in the
+// meantime and is expected to be reverted, which is why only the two platforms that are actually
+// built and tested are present rather than a full matrix.

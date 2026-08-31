@@ -1,5 +1,0 @@
-# The driver archive is not committed: the distribution design puts the per-target binaries in
-# their own modules, in a separate repository. This directory is where a locally built one goes
-# during development.
-*.a
-*.lib

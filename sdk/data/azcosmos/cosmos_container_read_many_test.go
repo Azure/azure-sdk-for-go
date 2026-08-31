@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+// cSpell:ignore azcosmostest
 
 package azcosmos
 
@@ -321,11 +322,12 @@ func TestReadManyItems_PartitionKeyHeader(t *testing.T) {
 			})
 			require.NoError(t, err)
 
-			rangeBody, err := json.Marshal(partitionKeyRangeResponse{
-				PartitionKeyRanges: []partitionKeyRange{
-					{ID: "0", MinInclusive: "", MaxExclusive: "FF"},
-				},
-				Count: 1,
+			rangeBody, err := json.Marshal(struct {
+				PartitionKeyRanges []partitionKeyRange `json:"PartitionKeyRanges"`
+				Count              int                 `json:"_count"`
+			}{
+				PartitionKeyRanges: []partitionKeyRange{{ID: "0", MinInclusive: "", MaxExclusive: "FF"}},
+				Count:              1,
 			})
 			require.NoError(t, err)
 

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Datastore/AzureBlobWAccountKey/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Datastore/AzureBlobWAccountKey/createOrUpdate.json
 func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureBlobWAccountKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureBlobWAcc
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Datastore/AzureDataLakeGen1WServicePrincipal/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Datastore/AzureDataLakeGen1WServicePrincipal/createOrUpdate.json
 func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureDataLakeGen1WServicePrincipal() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureDataLake
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Datastore/AzureDataLakeGen2WServicePrincipal/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Datastore/AzureDataLakeGen2WServicePrincipal/createOrUpdate.json
 func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureDataLakeGen2WServicePrincipal() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,7 +245,7 @@ func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureDataLake
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Datastore/AzureFileWAccountKey/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Datastore/AzureFileWAccountKey/createOrUpdate.json
 func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureFileStoreWAccountKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -319,7 +319,7 @@ func ExampleDatastoresClient_CreateOrUpdate_createOrUpdateDatastoreAzureFileStor
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Datastore/delete.json
+// Generated from example definition: 2026-07-01/Datastore/delete.json
 func ExampleDatastoresClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -341,7 +341,7 @@ func ExampleDatastoresClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Datastore/get.json
+// Generated from example definition: 2026-07-01/Datastore/get.json
 func ExampleDatastoresClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,7 +395,7 @@ func ExampleDatastoresClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Datastore/list.json
+// Generated from example definition: 2026-07-01/Datastore/list.json
 func ExampleDatastoresClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -427,7 +427,7 @@ func ExampleDatastoresClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.DatastoresClientListResponse{
 		// 	DatastoreResourceArmPaginatedResult: armmachinelearning.DatastoreResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/datastores?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/datastores?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.Datastore{
 		// 			{
 		// 				Name: to.Ptr("string"),
@@ -467,7 +467,7 @@ func ExampleDatastoresClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Datastore/listSecrets.json
+// Generated from example definition: 2026-07-01/Datastore/listSecrets.json
 func ExampleDatastoresClient_ListSecrets() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

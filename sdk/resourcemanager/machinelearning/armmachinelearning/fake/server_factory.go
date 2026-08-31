@@ -39,27 +39,6 @@ type ServerFactory struct {
 	// ComputeServer contains the fakes for client ComputeClient
 	ComputeServer ComputeServer
 
-	// ConnectionServer contains the fakes for client ConnectionClient
-	ConnectionServer ConnectionServer
-
-	// ConnectionRaiBlocklistServer contains the fakes for client ConnectionRaiBlocklistClient
-	ConnectionRaiBlocklistServer ConnectionRaiBlocklistServer
-
-	// ConnectionRaiBlocklistItemServer contains the fakes for client ConnectionRaiBlocklistItemClient
-	ConnectionRaiBlocklistItemServer ConnectionRaiBlocklistItemServer
-
-	// ConnectionRaiBlocklistItemsServer contains the fakes for client ConnectionRaiBlocklistItemsClient
-	ConnectionRaiBlocklistItemsServer ConnectionRaiBlocklistItemsServer
-
-	// ConnectionRaiBlocklistsServer contains the fakes for client ConnectionRaiBlocklistsClient
-	ConnectionRaiBlocklistsServer ConnectionRaiBlocklistsServer
-
-	// ConnectionRaiPoliciesServer contains the fakes for client ConnectionRaiPoliciesClient
-	ConnectionRaiPoliciesServer ConnectionRaiPoliciesServer
-
-	// ConnectionRaiPolicyServer contains the fakes for client ConnectionRaiPolicyClient
-	ConnectionRaiPolicyServer ConnectionRaiPolicyServer
-
 	// DataContainersServer contains the fakes for client DataContainersClient
 	DataContainersServer DataContainersServer
 
@@ -68,12 +47,6 @@ type ServerFactory struct {
 
 	// DatastoresServer contains the fakes for client DatastoresClient
 	DatastoresServer DatastoresServer
-
-	// EndpointServer contains the fakes for client EndpointClient
-	EndpointServer EndpointServer
-
-	// EndpointDeploymentServer contains the fakes for client EndpointDeploymentClient
-	EndpointDeploymentServer EndpointDeploymentServer
 
 	// EnvironmentContainersServer contains the fakes for client EnvironmentContainersClient
 	EnvironmentContainersServer EnvironmentContainersServer
@@ -96,23 +69,11 @@ type ServerFactory struct {
 	// FeaturestoreEntityVersionsServer contains the fakes for client FeaturestoreEntityVersionsClient
 	FeaturestoreEntityVersionsServer FeaturestoreEntityVersionsServer
 
-	// InferenceEndpointsServer contains the fakes for client InferenceEndpointsClient
-	InferenceEndpointsServer InferenceEndpointsServer
-
-	// InferenceGroupsServer contains the fakes for client InferenceGroupsClient
-	InferenceGroupsServer InferenceGroupsServer
-
-	// InferencePoolsServer contains the fakes for client InferencePoolsClient
-	InferencePoolsServer InferencePoolsServer
-
 	// JobsServer contains the fakes for client JobsClient
 	JobsServer JobsServer
 
 	// ManagedNetworkProvisionsServer contains the fakes for client ManagedNetworkProvisionsClient
 	ManagedNetworkProvisionsServer ManagedNetworkProvisionsServer
-
-	// ManagedNetworkSettingsServer contains the fakes for client ManagedNetworkSettingsClient
-	ManagedNetworkSettingsServer ManagedNetworkSettingsServer
 
 	// ManagedNetworkSettingsRuleServer contains the fakes for client ManagedNetworkSettingsRuleClient
 	ManagedNetworkSettingsRuleServer ManagedNetworkSettingsRuleServer
@@ -135,15 +96,6 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
-	// OutboundRuleServer contains the fakes for client OutboundRuleClient
-	OutboundRuleServer OutboundRuleServer
-
-	// OutboundRulesServer contains the fakes for client OutboundRulesClient
-	OutboundRulesServer OutboundRulesServer
-
-	// PTUQuotaServer contains the fakes for client PTUQuotaClient
-	PTUQuotaServer PTUQuotaServer
-
 	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
 	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
 
@@ -152,12 +104,6 @@ type ServerFactory struct {
 
 	// QuotasServer contains the fakes for client QuotasClient
 	QuotasServer QuotasServer
-
-	// RaiPoliciesServer contains the fakes for client RaiPoliciesClient
-	RaiPoliciesServer RaiPoliciesServer
-
-	// RaiPolicyServer contains the fakes for client RaiPolicyClient
-	RaiPolicyServer RaiPolicyServer
 
 	// RegistriesServer contains the fakes for client RegistriesClient
 	RegistriesServer RegistriesServer
@@ -239,18 +185,9 @@ type ServerFactoryTransport struct {
 	trComponentContainersServer           *ComponentContainersServerTransport
 	trComponentVersionsServer             *ComponentVersionsServerTransport
 	trComputeServer                       *ComputeServerTransport
-	trConnectionServer                    *ConnectionServerTransport
-	trConnectionRaiBlocklistServer        *ConnectionRaiBlocklistServerTransport
-	trConnectionRaiBlocklistItemServer    *ConnectionRaiBlocklistItemServerTransport
-	trConnectionRaiBlocklistItemsServer   *ConnectionRaiBlocklistItemsServerTransport
-	trConnectionRaiBlocklistsServer       *ConnectionRaiBlocklistsServerTransport
-	trConnectionRaiPoliciesServer         *ConnectionRaiPoliciesServerTransport
-	trConnectionRaiPolicyServer           *ConnectionRaiPolicyServerTransport
 	trDataContainersServer                *DataContainersServerTransport
 	trDataVersionsServer                  *DataVersionsServerTransport
 	trDatastoresServer                    *DatastoresServerTransport
-	trEndpointServer                      *EndpointServerTransport
-	trEndpointDeploymentServer            *EndpointDeploymentServerTransport
 	trEnvironmentContainersServer         *EnvironmentContainersServerTransport
 	trEnvironmentVersionsServer           *EnvironmentVersionsServerTransport
 	trFeaturesServer                      *FeaturesServerTransport
@@ -258,12 +195,8 @@ type ServerFactoryTransport struct {
 	trFeaturesetVersionsServer            *FeaturesetVersionsServerTransport
 	trFeaturestoreEntityContainersServer  *FeaturestoreEntityContainersServerTransport
 	trFeaturestoreEntityVersionsServer    *FeaturestoreEntityVersionsServerTransport
-	trInferenceEndpointsServer            *InferenceEndpointsServerTransport
-	trInferenceGroupsServer               *InferenceGroupsServerTransport
-	trInferencePoolsServer                *InferencePoolsServerTransport
 	trJobsServer                          *JobsServerTransport
 	trManagedNetworkProvisionsServer      *ManagedNetworkProvisionsServerTransport
-	trManagedNetworkSettingsServer        *ManagedNetworkSettingsServerTransport
 	trManagedNetworkSettingsRuleServer    *ManagedNetworkSettingsRuleServerTransport
 	trMarketplaceSubscriptionsServer      *MarketplaceSubscriptionsServerTransport
 	trModelContainersServer               *ModelContainersServerTransport
@@ -271,14 +204,9 @@ type ServerFactoryTransport struct {
 	trOnlineDeploymentsServer             *OnlineDeploymentsServerTransport
 	trOnlineEndpointsServer               *OnlineEndpointsServerTransport
 	trOperationsServer                    *OperationsServerTransport
-	trOutboundRuleServer                  *OutboundRuleServerTransport
-	trOutboundRulesServer                 *OutboundRulesServerTransport
-	trPTUQuotaServer                      *PTUQuotaServerTransport
 	trPrivateEndpointConnectionsServer    *PrivateEndpointConnectionsServerTransport
 	trPrivateLinkResourcesServer          *PrivateLinkResourcesServerTransport
 	trQuotasServer                        *QuotasServerTransport
-	trRaiPoliciesServer                   *RaiPoliciesServerTransport
-	trRaiPolicyServer                     *RaiPolicyServerTransport
 	trRegistriesServer                    *RegistriesServerTransport
 	trRegistryCodeContainersServer        *RegistryCodeContainersServerTransport
 	trRegistryCodeVersionsServer          *RegistryCodeVersionsServerTransport
@@ -349,39 +277,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ComputeClient":
 		initServer(&s.trMu, &s.trComputeServer, func() *ComputeServerTransport { return NewComputeServerTransport(&s.srv.ComputeServer) })
 		resp, err = s.trComputeServer.Do(req)
-	case "ConnectionClient":
-		initServer(&s.trMu, &s.trConnectionServer, func() *ConnectionServerTransport { return NewConnectionServerTransport(&s.srv.ConnectionServer) })
-		resp, err = s.trConnectionServer.Do(req)
-	case "ConnectionRaiBlocklistClient":
-		initServer(&s.trMu, &s.trConnectionRaiBlocklistServer, func() *ConnectionRaiBlocklistServerTransport {
-			return NewConnectionRaiBlocklistServerTransport(&s.srv.ConnectionRaiBlocklistServer)
-		})
-		resp, err = s.trConnectionRaiBlocklistServer.Do(req)
-	case "ConnectionRaiBlocklistItemClient":
-		initServer(&s.trMu, &s.trConnectionRaiBlocklistItemServer, func() *ConnectionRaiBlocklistItemServerTransport {
-			return NewConnectionRaiBlocklistItemServerTransport(&s.srv.ConnectionRaiBlocklistItemServer)
-		})
-		resp, err = s.trConnectionRaiBlocklistItemServer.Do(req)
-	case "ConnectionRaiBlocklistItemsClient":
-		initServer(&s.trMu, &s.trConnectionRaiBlocklistItemsServer, func() *ConnectionRaiBlocklistItemsServerTransport {
-			return NewConnectionRaiBlocklistItemsServerTransport(&s.srv.ConnectionRaiBlocklistItemsServer)
-		})
-		resp, err = s.trConnectionRaiBlocklistItemsServer.Do(req)
-	case "ConnectionRaiBlocklistsClient":
-		initServer(&s.trMu, &s.trConnectionRaiBlocklistsServer, func() *ConnectionRaiBlocklistsServerTransport {
-			return NewConnectionRaiBlocklistsServerTransport(&s.srv.ConnectionRaiBlocklistsServer)
-		})
-		resp, err = s.trConnectionRaiBlocklistsServer.Do(req)
-	case "ConnectionRaiPoliciesClient":
-		initServer(&s.trMu, &s.trConnectionRaiPoliciesServer, func() *ConnectionRaiPoliciesServerTransport {
-			return NewConnectionRaiPoliciesServerTransport(&s.srv.ConnectionRaiPoliciesServer)
-		})
-		resp, err = s.trConnectionRaiPoliciesServer.Do(req)
-	case "ConnectionRaiPolicyClient":
-		initServer(&s.trMu, &s.trConnectionRaiPolicyServer, func() *ConnectionRaiPolicyServerTransport {
-			return NewConnectionRaiPolicyServerTransport(&s.srv.ConnectionRaiPolicyServer)
-		})
-		resp, err = s.trConnectionRaiPolicyServer.Do(req)
 	case "DataContainersClient":
 		initServer(&s.trMu, &s.trDataContainersServer, func() *DataContainersServerTransport {
 			return NewDataContainersServerTransport(&s.srv.DataContainersServer)
@@ -393,14 +288,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "DatastoresClient":
 		initServer(&s.trMu, &s.trDatastoresServer, func() *DatastoresServerTransport { return NewDatastoresServerTransport(&s.srv.DatastoresServer) })
 		resp, err = s.trDatastoresServer.Do(req)
-	case "EndpointClient":
-		initServer(&s.trMu, &s.trEndpointServer, func() *EndpointServerTransport { return NewEndpointServerTransport(&s.srv.EndpointServer) })
-		resp, err = s.trEndpointServer.Do(req)
-	case "EndpointDeploymentClient":
-		initServer(&s.trMu, &s.trEndpointDeploymentServer, func() *EndpointDeploymentServerTransport {
-			return NewEndpointDeploymentServerTransport(&s.srv.EndpointDeploymentServer)
-		})
-		resp, err = s.trEndpointDeploymentServer.Do(req)
 	case "EnvironmentContainersClient":
 		initServer(&s.trMu, &s.trEnvironmentContainersServer, func() *EnvironmentContainersServerTransport {
 			return NewEnvironmentContainersServerTransport(&s.srv.EnvironmentContainersServer)
@@ -434,21 +321,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewFeaturestoreEntityVersionsServerTransport(&s.srv.FeaturestoreEntityVersionsServer)
 		})
 		resp, err = s.trFeaturestoreEntityVersionsServer.Do(req)
-	case "InferenceEndpointsClient":
-		initServer(&s.trMu, &s.trInferenceEndpointsServer, func() *InferenceEndpointsServerTransport {
-			return NewInferenceEndpointsServerTransport(&s.srv.InferenceEndpointsServer)
-		})
-		resp, err = s.trInferenceEndpointsServer.Do(req)
-	case "InferenceGroupsClient":
-		initServer(&s.trMu, &s.trInferenceGroupsServer, func() *InferenceGroupsServerTransport {
-			return NewInferenceGroupsServerTransport(&s.srv.InferenceGroupsServer)
-		})
-		resp, err = s.trInferenceGroupsServer.Do(req)
-	case "InferencePoolsClient":
-		initServer(&s.trMu, &s.trInferencePoolsServer, func() *InferencePoolsServerTransport {
-			return NewInferencePoolsServerTransport(&s.srv.InferencePoolsServer)
-		})
-		resp, err = s.trInferencePoolsServer.Do(req)
 	case "JobsClient":
 		initServer(&s.trMu, &s.trJobsServer, func() *JobsServerTransport { return NewJobsServerTransport(&s.srv.JobsServer) })
 		resp, err = s.trJobsServer.Do(req)
@@ -457,11 +329,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewManagedNetworkProvisionsServerTransport(&s.srv.ManagedNetworkProvisionsServer)
 		})
 		resp, err = s.trManagedNetworkProvisionsServer.Do(req)
-	case "ManagedNetworkSettingsClient":
-		initServer(&s.trMu, &s.trManagedNetworkSettingsServer, func() *ManagedNetworkSettingsServerTransport {
-			return NewManagedNetworkSettingsServerTransport(&s.srv.ManagedNetworkSettingsServer)
-		})
-		resp, err = s.trManagedNetworkSettingsServer.Do(req)
 	case "ManagedNetworkSettingsRuleClient":
 		initServer(&s.trMu, &s.trManagedNetworkSettingsRuleServer, func() *ManagedNetworkSettingsRuleServerTransport {
 			return NewManagedNetworkSettingsRuleServerTransport(&s.srv.ManagedNetworkSettingsRuleServer)
@@ -495,17 +362,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "OutboundRuleClient":
-		initServer(&s.trMu, &s.trOutboundRuleServer, func() *OutboundRuleServerTransport { return NewOutboundRuleServerTransport(&s.srv.OutboundRuleServer) })
-		resp, err = s.trOutboundRuleServer.Do(req)
-	case "OutboundRulesClient":
-		initServer(&s.trMu, &s.trOutboundRulesServer, func() *OutboundRulesServerTransport {
-			return NewOutboundRulesServerTransport(&s.srv.OutboundRulesServer)
-		})
-		resp, err = s.trOutboundRulesServer.Do(req)
-	case "PTUQuotaClient":
-		initServer(&s.trMu, &s.trPTUQuotaServer, func() *PTUQuotaServerTransport { return NewPTUQuotaServerTransport(&s.srv.PTUQuotaServer) })
-		resp, err = s.trPTUQuotaServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
 		initServer(&s.trMu, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)
@@ -519,12 +375,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "QuotasClient":
 		initServer(&s.trMu, &s.trQuotasServer, func() *QuotasServerTransport { return NewQuotasServerTransport(&s.srv.QuotasServer) })
 		resp, err = s.trQuotasServer.Do(req)
-	case "RaiPoliciesClient":
-		initServer(&s.trMu, &s.trRaiPoliciesServer, func() *RaiPoliciesServerTransport { return NewRaiPoliciesServerTransport(&s.srv.RaiPoliciesServer) })
-		resp, err = s.trRaiPoliciesServer.Do(req)
-	case "RaiPolicyClient":
-		initServer(&s.trMu, &s.trRaiPolicyServer, func() *RaiPolicyServerTransport { return NewRaiPolicyServerTransport(&s.srv.RaiPolicyServer) })
-		resp, err = s.trRaiPolicyServer.Do(req)
 	case "RegistriesClient":
 		initServer(&s.trMu, &s.trRegistriesServer, func() *RegistriesServerTransport { return NewRegistriesServerTransport(&s.srv.RegistriesServer) })
 		resp, err = s.trRegistriesServer.Do(req)

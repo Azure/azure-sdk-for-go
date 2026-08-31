@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Registries/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Registries/createOrUpdate.json
 func ExampleRegistriesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -207,7 +207,7 @@ func ExampleRegistriesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registries/delete.json
+// Generated from example definition: 2026-07-01/Registries/delete.json
 func ExampleRegistriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,7 +233,7 @@ func ExampleRegistriesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registries/get.json
+// Generated from example definition: 2026-07-01/Registries/get.json
 func ExampleRegistriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -349,7 +349,7 @@ func ExampleRegistriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registries/list.json
+// Generated from example definition: 2026-07-01/Registries/list.json
 func ExampleRegistriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -373,7 +373,7 @@ func ExampleRegistriesClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.RegistriesClientListResponse{
 		// 	RegistryTrackedResourceArmPaginatedResult: armmachinelearning.RegistryTrackedResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.Registry{
 		// 			{
 		// 				Name: to.Ptr("string"),
@@ -475,7 +475,7 @@ func ExampleRegistriesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Registries/listBySubscription.json
+// Generated from example definition: 2026-07-01/Registries/listBySubscription.json
 func ExampleRegistriesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -499,7 +499,7 @@ func ExampleRegistriesClient_NewListBySubscriptionPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.RegistriesClientListBySubscriptionResponse{
 		// 	RegistryTrackedResourceArmPaginatedResult: armmachinelearning.RegistryTrackedResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.MachineLearningServices/registries?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.MachineLearningServices/registries?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.Registry{
 		// 			{
 		// 				Name: to.Ptr("string"),
@@ -601,7 +601,7 @@ func ExampleRegistriesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Registries/removeRegions.json
+// Generated from example definition: 2026-07-01/Registries/removeRegions.json
 func ExampleRegistriesClient_BeginRemoveRegions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -796,7 +796,7 @@ func ExampleRegistriesClient_BeginRemoveRegions() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registries/update.json
+// Generated from example definition: 2026-07-01/Registries/update.json
 func ExampleRegistriesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

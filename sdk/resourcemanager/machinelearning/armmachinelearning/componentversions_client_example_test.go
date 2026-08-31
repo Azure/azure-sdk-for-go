@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/ComponentVersion/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Workspace/ComponentVersion/createOrUpdate.json
 func ExampleComponentVersionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleComponentVersionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/ComponentVersion/delete.json
+// Generated from example definition: 2026-07-01/Workspace/ComponentVersion/delete.json
 func ExampleComponentVersionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleComponentVersionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/ComponentVersion/get.json
+// Generated from example definition: 2026-07-01/Workspace/ComponentVersion/get.json
 func ExampleComponentVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -144,7 +144,7 @@ func ExampleComponentVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/ComponentVersion/list.json
+// Generated from example definition: 2026-07-01/Workspace/ComponentVersion/list.json
 func ExampleComponentVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleComponentVersionsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.ComponentVersionsClientListResponse{
 		// 	ComponentVersionResourceArmPaginatedResult: armmachinelearning.ComponentVersionResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/components/string/versions?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/components/string/versions?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.ComponentVersion{
 		// 			{
 		// 				Name: to.Ptr("string"),
@@ -204,7 +204,7 @@ func ExampleComponentVersionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/ComponentVersion/publish.json
+// Generated from example definition: 2026-07-01/Workspace/ComponentVersion/publish.json
 func ExampleComponentVersionsClient_BeginPublish() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

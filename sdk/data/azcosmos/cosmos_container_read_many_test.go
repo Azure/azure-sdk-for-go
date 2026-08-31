@@ -299,6 +299,18 @@ func TestReadManyItems_PartitionKeyHeader(t *testing.T) {
 				{ID: "2", PartitionKey: NewPartitionKeyString("tenant").AppendString("other")},
 			},
 		},
+		{
+			name: "same partial hierarchical partition key",
+			partitionKeyDef: PartitionKeyDefinition{
+				Paths:   []string{"/tenant", "/user"},
+				Kind:    PartitionKeyKindMultiHash,
+				Version: 2,
+			},
+			items: []ItemIdentity{
+				{ID: "1", PartitionKey: NewPartitionKeyString("tenant")},
+				{ID: "2", PartitionKey: NewPartitionKeyString("tenant")},
+			},
+		},
 	}
 
 	for _, tc := range testCases {

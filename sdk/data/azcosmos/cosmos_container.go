@@ -501,7 +501,6 @@ func (c *ContainerClient) ReadManyItems(
 	}
 
 	h := headerOptionsOverride{
-		partitionKey:     sharedPartitionKey(itemIdentities),
 		priorityLevel:    readManyOptions.PriorityLevel,
 		throughputBucket: readManyOptions.ThroughputBucket,
 	}

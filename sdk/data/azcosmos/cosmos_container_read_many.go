@@ -38,6 +38,14 @@ func sharedPartitionKey(items []ItemIdentity) *PartitionKey {
 	return partitionKey
 }
 
+func completeSharedPartitionKey(items []ItemIdentity, pkDef PartitionKeyDefinition) *PartitionKey {
+	partitionKey := sharedPartitionKey(items)
+	if partitionKey == nil || len(partitionKey.values) != len(pkDef.Paths) {
+		return nil
+	}
+	return partitionKey
+}
+
 // determineConcurrency returns either the provided positive max or NumCPU (>=1).
 func determineConcurrency(max *int32) int {
 	if max != nil && *max > 0 {
@@ -380,6 +388,8 @@ func (c *ContainerClient) executeReadManyWithQueries(
 			}
 			pkDef = containerResp.ContainerProperties.PartitionKeyDefinition
 		}
+
+		operationContext.headerOptionsOverride.partitionKey = completeSharedPartitionKey(items, pkDef)
 
 		pkRangeResp, err := c.getPartitionKeyRanges(ctx, nil)
 		if err != nil {

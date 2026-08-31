@@ -1,5 +1,16 @@
 # Release History
 
+## 4.2.0-beta.1 (2026-08-31)
+### Features Added
+
+- New enum type `BackupSolutionType` with values `BackupSolutionTypeLogicalBackup`, `BackupSolutionTypePhysicalBackup`
+- New enum type `ResumeProtectionRequestObjectType` with values `ResumeProtectionRequestObjectTypeResumeProtectionRequest`
+- New function `*PostgreSQLFlexibleServerBackupDatasourceParameters.GetBackupDatasourceParameters() *BackupDatasourceParameters`
+- New function `*ResumeProtectionRequest.GetResumeProtectionRequest() *ResumeProtectionRequest`
+- New struct `PostgreSQLFlexibleServerBackupDatasourceParameters`
+- New field `Parameters` in struct `BackupInstancesClientBeginResumeProtectionOptions`
+
+
 ## 4.1.0 (2026-06-24)
 ### Features Added
 

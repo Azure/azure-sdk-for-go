@@ -36,6 +36,9 @@ type BackupInstancesClientBeginResumeBackupsOptions struct {
 // BackupInstancesClientBeginResumeProtectionOptions contains the optional parameters for the BackupInstancesClient.BeginResumeProtection
 // method.
 type BackupInstancesClientBeginResumeProtectionOptions struct {
+	// The content of the action request
+	Parameters ResumeProtectionRequestClassification
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

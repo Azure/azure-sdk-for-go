@@ -1,6 +1,6 @@
 # Release History
 
-## 5.1.0 (2026-08-29)
+## 5.1.0 (2026-08-31)
 ### Features Added
 
 - New function `*ItemLevelRecoveryConnectionsClient.ListInstantItemRecoveryOperationResult(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, body InstantItemRecoveryOperationResultRequest, options *ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultOptions) (ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultResponse, error)`

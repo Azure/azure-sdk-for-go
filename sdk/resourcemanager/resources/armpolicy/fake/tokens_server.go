@@ -27,6 +27,10 @@ type TokensServer struct {
 	// AcquireAtManagementGroup is the fake for method TokensClient.AcquireAtManagementGroup
 	// HTTP status codes to indicate success: http.StatusOK
 	AcquireAtManagementGroup func(ctx context.Context, managementGroupName string, parameters armpolicy.TokenRequest, options *armpolicy.TokensClientAcquireAtManagementGroupOptions) (resp azfake.Responder[armpolicy.TokensClientAcquireAtManagementGroupResponse], errResp azfake.ErrorResponder)
+
+	// AcquireAtResourceGroup is the fake for method TokensClient.AcquireAtResourceGroup
+	// HTTP status codes to indicate success: http.StatusOK
+	AcquireAtResourceGroup func(ctx context.Context, resourceGroupName string, parameters armpolicy.TokenRequest, options *armpolicy.TokensClientAcquireAtResourceGroupOptions) (resp azfake.Responder[armpolicy.TokensClientAcquireAtResourceGroupResponse], errResp azfake.ErrorResponder)
 }
 
 // NewTokensServerTransport creates a new instance of TokensServerTransport with the provided implementation.
@@ -67,6 +71,8 @@ func (t *TokensServerTransport) dispatchToMethodFake(req *http.Request, method s
 				res.resp, res.err = t.dispatchAcquire(req)
 			case "TokensClient.AcquireAtManagementGroup":
 				res.resp, res.err = t.dispatchAcquireAtManagementGroup(req)
+			case "TokensClient.AcquireAtResourceGroup":
+				res.resp, res.err = t.dispatchAcquireAtResourceGroup(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -131,6 +137,39 @@ func (t *TokensServerTransport) dispatchAcquireAtManagementGroup(req *http.Reque
 		return nil, err
 	}
 	respr, errRespr := t.srv.AcquireAtManagementGroup(req.Context(), managementGroupNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TokenResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (t *TokensServerTransport) dispatchAcquireAtResourceGroup(req *http.Request) (*http.Response, error) {
+	if t.srv.AcquireAtResourceGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method AcquireAtResourceGroup not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Authorization/acquirePolicyToken`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armpolicy.TokenRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := t.srv.AcquireAtResourceGroup(req.Context(), resourceGroupNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

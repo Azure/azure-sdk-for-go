@@ -51,10 +51,10 @@ func ExampleAIManagerNamespacesClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armcontainerserviceaimanager.SystemData{
 	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		ETag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
 	// 		Properties: &armcontainerserviceaimanager.AIManagerNamespaceProperties{
@@ -117,10 +117,10 @@ func ExampleAIManagerNamespacesClient_Get() {
 	// 		SystemData: &armcontainerserviceaimanager.SystemData{
 	// 			CreatedBy: to.Ptr("user@example.com"),
 	// 			CreatedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user@example.com"),
 	// 			LastModifiedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 		ETag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
 	// 		Properties: &armcontainerserviceaimanager.AIManagerNamespaceProperties{
@@ -159,7 +159,7 @@ func ExampleAIManagerNamespacesClient_ListAccessKeys() {
 	// 		Endpoint: to.Ptr("https://team-alpha.aks-cluster.eastus.aksapp.io/v1"),
 	// 		PrimaryKey: to.Ptr("00000000000000000000000000000000"),
 	// 		SecondaryKey: to.Ptr("11111111111111111111111111111111"),
-	// 		LastRotatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-05T06:05:51.358Z"); return t}()),
+	// 		LastRotatedAt: to.Ptr(time.Date(2026, time.May, 5, 6, 5, 51, 358000000, time.UTC)),
 	// 	},
 	// }
 }
@@ -196,10 +196,10 @@ func ExampleAIManagerNamespacesClient_NewListByAIManagerPager() {
 		// 				SystemData: &armcontainerserviceaimanager.SystemData{
 		// 					CreatedBy: to.Ptr("user@example.com"),
 		// 					CreatedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user@example.com"),
 		// 					LastModifiedByType: to.Ptr(armcontainerserviceaimanager.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-01-01T00:00:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 				},
 		// 				ETag: to.Ptr("\"00000000-0000-0000-0000-000000000000\""),
 		// 				Properties: &armcontainerserviceaimanager.AIManagerNamespaceProperties{
@@ -271,7 +271,7 @@ func ExampleAIManagerNamespacesClient_RotateKeys() {
 	// 		Endpoint: to.Ptr("https://team-alpha.aks-cluster.eastus.aksapp.io/v1"),
 	// 		PrimaryKey: to.Ptr("22222222222222222222222222222222"),
 	// 		SecondaryKey: to.Ptr("00000000000000000000000000000000"),
-	// 		LastRotatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-23T10:00:00Z"); return t}()),
+	// 		LastRotatedAt: to.Ptr(time.Date(2026, time.May, 23, 10, 0, 0, 0, time.UTC)),
 	// 	},
 	// }
 }

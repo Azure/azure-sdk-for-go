@@ -31,6 +31,9 @@ type AlertsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAlertsClient(scope string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertsClient, error) {
+	if scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -71,7 +74,7 @@ func (client *AlertsClient) ChangeState(ctx context.Context, alertID string, new
 func (client *AlertsClient) changeStateCreateRequest(ctx context.Context, alertID string, newState AlertState, options *AlertsClientChangeStateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.AlertsManagement/alerts/{alertId}/changestate"
 	if client.scope == "" {
-		return nil, errors.New("parameter client.scope cannot be empty")
+		return nil, errors.New("parameter scope cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(client.scope))
 	if alertID == "" {
@@ -206,7 +209,7 @@ func (client *AlertsClient) getAllCreateRequest(ctx context.Context, nextLink st
 	if firstPage {
 		urlPath := "/{scope}/providers/Microsoft.AlertsManagement/alerts"
 		if client.scope == "" {
-			return nil, errors.New("parameter client.scope cannot be empty")
+			return nil, errors.New("parameter scope cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(client.scope))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -432,7 +435,7 @@ func (client *AlertsClient) GetByID(ctx context.Context, alertID string, options
 func (client *AlertsClient) getByIDCreateRequest(ctx context.Context, alertID string, _ *AlertsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.AlertsManagement/alerts/{alertId}"
 	if client.scope == "" {
-		return nil, errors.New("parameter client.scope cannot be empty")
+		return nil, errors.New("parameter scope cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(client.scope))
 	if alertID == "" {
@@ -552,7 +555,7 @@ func (client *AlertsClient) getEnrichmentsCreateRequest(ctx context.Context, ale
 	if firstPage {
 		urlPath := "/{scope}/providers/Microsoft.AlertsManagement/alerts/{alertId}/enrichments"
 		if client.scope == "" {
-			return nil, errors.New("parameter client.scope cannot be empty")
+			return nil, errors.New("parameter scope cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(client.scope))
 		if alertID == "" {
@@ -616,7 +619,7 @@ func (client *AlertsClient) GetHistory(ctx context.Context, alertID string, opti
 func (client *AlertsClient) getHistoryCreateRequest(ctx context.Context, alertID string, _ *AlertsClientGetHistoryOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.AlertsManagement/alerts/{alertId}/history"
 	if client.scope == "" {
-		return nil, errors.New("parameter client.scope cannot be empty")
+		return nil, errors.New("parameter scope cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(client.scope))
 	if alertID == "" {
@@ -724,7 +727,7 @@ func (client *AlertsClient) GetSummary(ctx context.Context, groupby AlertsSummar
 func (client *AlertsClient) getSummaryCreateRequest(ctx context.Context, groupby AlertsSummaryGroupByFields, options *AlertsClientGetSummaryOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.AlertsManagement/alertsSummary"
 	if client.scope == "" {
-		return nil, errors.New("parameter client.scope cannot be empty")
+		return nil, errors.New("parameter scope cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(client.scope))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))

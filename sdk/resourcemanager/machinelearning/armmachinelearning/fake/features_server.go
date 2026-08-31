@@ -93,7 +93,7 @@ func (f *FeaturesServerTransport) dispatchGet(req *http.Request) (*http.Response
 	if f.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/featuresets/(?P<featuresetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<featuresetVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/features/(?P<featureName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/featuresets/(?P<featuresetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<featuresetVersion>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/features/(?P<featureName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -140,7 +140,7 @@ func (f *FeaturesServerTransport) dispatchNewListPager(req *http.Request) (*http
 	}
 	newListPager := f.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/featuresets/(?P<featuresetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<featuresetVersion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/features`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/featuresets/(?P<featuresetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<featuresetVersion>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/features`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

@@ -92,7 +92,7 @@ func (s *SourceControlSyncJobStreamsServerTransport) dispatchGet(req *http.Reque
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sourceControls/(?P<sourceControlName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sourceControlSyncJobs/(?P<sourceControlSyncJobId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/streams/(?P<streamId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sourceControls/(?P<sourceControlName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sourceControlSyncJobs/(?P<sourceControlSyncJobId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/streams/(?P<streamId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -139,7 +139,7 @@ func (s *SourceControlSyncJobStreamsServerTransport) dispatchNewListBySyncJobPag
 	}
 	newListBySyncJobPager := s.newListBySyncJobPager.get(req)
 	if newListBySyncJobPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sourceControls/(?P<sourceControlName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sourceControlSyncJobs/(?P<sourceControlSyncJobId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/streams`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sourceControls/(?P<sourceControlName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sourceControlSyncJobs/(?P<sourceControlSyncJobId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/streams`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

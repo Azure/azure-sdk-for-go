@@ -179,7 +179,7 @@ func (r *RecommendationsServerTransport) dispatchDisableAllForHostingEnvironment
 	if r.srv.DisableAllForHostingEnvironment == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DisableAllForHostingEnvironment not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<hostingEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recommendations/disable`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<hostingEnvironmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recommendations/disable`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -213,7 +213,7 @@ func (r *RecommendationsServerTransport) dispatchDisableAllForWebApp(req *http.R
 	if r.srv.DisableAllForWebApp == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DisableAllForWebApp not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recommendations/disable`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recommendations/disable`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -246,7 +246,7 @@ func (r *RecommendationsServerTransport) dispatchDisableRecommendationForHosting
 	if r.srv.DisableRecommendationForHostingEnvironment == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DisableRecommendationForHostingEnvironment not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<hostingEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recommendations/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disable`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<hostingEnvironmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recommendations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disable`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -284,7 +284,7 @@ func (r *RecommendationsServerTransport) dispatchDisableRecommendationForSite(re
 	if r.srv.DisableRecommendationForSite == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DisableRecommendationForSite not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recommendations/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disable`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recommendations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disable`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -321,7 +321,7 @@ func (r *RecommendationsServerTransport) dispatchDisableRecommendationForSubscri
 	if r.srv.DisableRecommendationForSubscription == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DisableRecommendationForSubscription not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/recommendations/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/disable`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/recommendations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/disable`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -350,7 +350,7 @@ func (r *RecommendationsServerTransport) dispatchGetRuleDetailsByHostingEnvironm
 	if r.srv.GetRuleDetailsByHostingEnvironment == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetRuleDetailsByHostingEnvironment not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<hostingEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recommendations/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<hostingEnvironmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recommendations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -400,7 +400,7 @@ func (r *RecommendationsServerTransport) dispatchGetRuleDetailsByWebApp(req *htt
 	if r.srv.GetRuleDetailsByWebApp == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetRuleDetailsByWebApp not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recommendations/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recommendations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -452,7 +452,7 @@ func (r *RecommendationsServerTransport) dispatchNewListPager(req *http.Request)
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/recommendations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/recommendations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -498,7 +498,7 @@ func (r *RecommendationsServerTransport) dispatchNewListHistoryForHostingEnviron
 	}
 	newListHistoryForHostingEnvironmentPager := r.newListHistoryForHostingEnvironmentPager.get(req)
 	if newListHistoryForHostingEnvironmentPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<hostingEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recommendationHistory`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<hostingEnvironmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recommendationHistory`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -552,7 +552,7 @@ func (r *RecommendationsServerTransport) dispatchNewListHistoryForWebAppPager(re
 	}
 	newListHistoryForWebAppPager := r.newListHistoryForWebAppPager.get(req)
 	if newListHistoryForWebAppPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recommendationHistory`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recommendationHistory`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -606,7 +606,7 @@ func (r *RecommendationsServerTransport) dispatchNewListRecommendedRulesForHosti
 	}
 	newListRecommendedRulesForHostingEnvironmentPager := r.newListRecommendedRulesForHostingEnvironmentPager.get(req)
 	if newListRecommendedRulesForHostingEnvironmentPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<hostingEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recommendations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<hostingEnvironmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recommendations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -660,7 +660,7 @@ func (r *RecommendationsServerTransport) dispatchNewListRecommendedRulesForWebAp
 	}
 	newListRecommendedRulesForWebAppPager := r.newListRecommendedRulesForWebAppPager.get(req)
 	if newListRecommendedRulesForWebAppPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recommendations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recommendations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -712,7 +712,7 @@ func (r *RecommendationsServerTransport) dispatchResetAllFilters(req *http.Reque
 	if r.srv.ResetAllFilters == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ResetAllFilters not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/recommendations/reset`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/recommendations/reset`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -737,7 +737,7 @@ func (r *RecommendationsServerTransport) dispatchResetAllFiltersForHostingEnviro
 	if r.srv.ResetAllFiltersForHostingEnvironment == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ResetAllFiltersForHostingEnvironment not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<hostingEnvironmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recommendations/reset`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/hostingEnvironments/(?P<hostingEnvironmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recommendations/reset`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -771,7 +771,7 @@ func (r *RecommendationsServerTransport) dispatchResetAllFiltersForWebApp(req *h
 	if r.srv.ResetAllFiltersForWebApp == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ResetAllFiltersForWebApp not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/sites/(?P<siteName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recommendations/reset`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<siteName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recommendations/reset`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

@@ -121,7 +121,7 @@ func ExampleJobRunsClient_Get_jobRunsGetWithSchedule() {
 	// 			},
 	// 			TargetResourceID: to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/endpoints/targetEndpoint"),
 	// 			TriggerType: to.Ptr(armstoragemover.TriggerTypeScheduled),
-	// 			ScheduledExecutionTime: to.Ptr(time.Date(2025, time.December, 1, 10, 0, 0, 0, time.UTC)),
+	// 			ScheduledExecutionTime: to.Ptr(time.Date(2026, time.May, 1, 10, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.5.0 (2026-07-23)
+## 2.5.0 (2026-08-31)
 ### Features Added
 
 - New value `FrequencyHourly` added to enum type `Frequency`

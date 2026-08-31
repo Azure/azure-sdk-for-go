@@ -38,7 +38,7 @@ func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdate() {
 				to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
 			},
 			SyncMode:            to.Ptr("FullScan"),
-			MoverSyncedUntil:    to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-01T00:00:00Z"); return t }()),
+			MoverSyncedUntil:    to.Ptr(time.Date(2026, time.May, 1, 0, 0, 0, 0, time.UTC)),
 			PreservePermissions: to.Ptr(false),
 		},
 	}, nil)
@@ -68,7 +68,7 @@ func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdate() {
 	// 				to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
 	// 			},
 	// 			SyncMode: to.Ptr("FullScan"),
-	// 			MoverSyncedUntil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-01T00:00:00Z"); return t}()),
+	// 			MoverSyncedUntil: to.Ptr(time.Date(2026, time.May, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -99,7 +99,7 @@ func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdateClou
 				to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
 			},
 			SyncMode:         to.Ptr("SnapshotBased"),
-			MoverSyncedUntil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-01T00:00:00Z"); return t }()),
+			MoverSyncedUntil: to.Ptr(time.Date(2026, time.May, 1, 0, 0, 0, 0, time.UTC)),
 		},
 	}, nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdateClou
 	// 				to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
 	// 			},
 	// 			SyncMode: to.Ptr("SnapshotBased"),
-	// 			MoverSyncedUntil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-01T00:00:00Z"); return t}()),
+	// 			MoverSyncedUntil: to.Ptr(time.Date(2026, time.May, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -220,7 +220,7 @@ func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdateWith
 			Schedule: &armstoragemover.ScheduleInfo{
 				Frequency: to.Ptr(armstoragemover.FrequencyWeekly),
 				IsActive:  to.Ptr(true),
-				StartDate: to.Ptr(time.Date(2025, time.December, 1, 0, 0, 0, 0, time.UTC)),
+				StartDate: to.Ptr(time.Date(2026, time.May, 1, 0, 0, 0, 0, time.UTC)),
 				EndDate:   to.Ptr(time.Date(2025, time.December, 31, 12, 0, 0, 0, time.UTC)),
 				ExecutionTime: &armstoragemover.SchedulerTime{
 					Hour:   to.Ptr[int32](9),
@@ -263,7 +263,7 @@ func ExampleJobDefinitionsClient_CreateOrUpdate_jobDefinitionsCreateOrUpdateWith
 	// 			Schedule: &armstoragemover.ScheduleInfo{
 	// 				Frequency: to.Ptr(armstoragemover.FrequencyWeekly),
 	// 				IsActive: to.Ptr(true),
-	// 				StartDate: to.Ptr(time.Date(2025, time.December, 1, 0, 0, 0, 0, time.UTC)),
+	// 				StartDate: to.Ptr(time.Date(2026, time.May, 1, 0, 0, 0, 0, time.UTC)),
 	// 				EndDate: to.Ptr(time.Date(2025, time.December, 31, 12, 0, 0, 0, time.UTC)),
 	// 				ExecutionTime: &armstoragemover.SchedulerTime{
 	// 					Hour: to.Ptr[int32](9),
@@ -344,7 +344,7 @@ func ExampleJobDefinitionsClient_Get_jobDefinitionsGet() {
 	// 				to.Ptr("/subscriptions/60bcfc77-6589-4da2-b7fd-f9ec9322cf95/resourceGroups/examples-rg/providers/Microsoft.StorageMover/storageMovers/examples-storageMoverName/connections/example-connection"),
 	// 			},
 	// 			SyncMode: to.Ptr("SnapshotBased"),
-	// 			MoverSyncedUntil: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2026-05-01T00:00:00Z"); return t}()),
+	// 			MoverSyncedUntil: to.Ptr(time.Date(2026, time.May, 1, 0, 0, 0, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -476,7 +476,7 @@ func ExampleJobDefinitionsClient_Get_jobDefinitionsGetWithSchedule() {
 	// 			Schedule: &armstoragemover.ScheduleInfo{
 	// 				Frequency: to.Ptr(armstoragemover.FrequencyWeekly),
 	// 				IsActive: to.Ptr(true),
-	// 				StartDate: to.Ptr(time.Date(2025, time.December, 1, 0, 0, 0, 0, time.UTC)),
+	// 				StartDate: to.Ptr(time.Date(2026, time.May, 1, 0, 0, 0, 0, time.UTC)),
 	// 				EndDate: to.Ptr(time.Date(2025, time.December, 31, 12, 0, 0, 0, time.UTC)),
 	// 				ExecutionTime: &armstoragemover.SchedulerTime{
 	// 					Hour: to.Ptr[int32](9),

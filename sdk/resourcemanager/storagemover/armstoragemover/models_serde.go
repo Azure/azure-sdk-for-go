@@ -2183,6 +2183,7 @@ func (s ScheduleInfo) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "executionTime", s.ExecutionTime)
 	populate(objectMap, "frequency", s.Frequency)
 	populate(objectMap, "isActive", s.IsActive)
+	populate(objectMap, "repeatInterval", s.RepeatInterval)
 	populateTime[datetime.RFC3339](objectMap, "startDate", s.StartDate, true)
 	return json.Marshal(objectMap)
 }

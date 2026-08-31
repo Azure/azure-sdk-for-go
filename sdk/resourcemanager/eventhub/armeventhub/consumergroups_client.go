@@ -65,12 +65,7 @@ func (client *ConsumerGroupsClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return ConsumerGroupsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConsumerGroupsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -112,8 +107,11 @@ func (client *ConsumerGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ConsumerGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (ConsumerGroupsClientCreateOrUpdateResponse, error) {
+func (client *ConsumerGroupsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ConsumerGroupsClientCreateOrUpdateResponse, error) {
 	result := ConsumerGroupsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConsumerGroup); err != nil {
 		return ConsumerGroupsClientCreateOrUpdateResponse{}, err
 	}
@@ -142,8 +140,7 @@ func (client *ConsumerGroupsClient) Delete(ctx context.Context, resourceGroupNam
 		return ConsumerGroupsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ConsumerGroupsClientDeleteResponse{}, err
+		return ConsumerGroupsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ConsumerGroupsClientDeleteResponse{}, nil
 }
@@ -202,12 +199,7 @@ func (client *ConsumerGroupsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ConsumerGroupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConsumerGroupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -245,8 +237,11 @@ func (client *ConsumerGroupsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *ConsumerGroupsClient) getHandleResponse(resp *http.Response) (ConsumerGroupsClientGetResponse, error) {
+func (client *ConsumerGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConsumerGroupsClientGetResponse, error) {
 	result := ConsumerGroupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConsumerGroup); err != nil {
 		return ConsumerGroupsClientGetResponse{}, err
 	}
@@ -271,57 +266,71 @@ func (client *ConsumerGroupsClient) NewListByEventHubPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByEventHubCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, options)
-			}, nil)
+			req, err := client.listByEventHubCreateRequest(ctx, resourceGroupName, namespaceName, eventHubName, nextLink, options)
 			if err != nil {
 				return ConsumerGroupsClientListByEventHubResponse{}, err
 			}
-			return client.listByEventHubHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConsumerGroupsClientListByEventHubResponse{}, err
+			}
+			return client.listByEventHubHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByEventHubCreateRequest creates the ListByEventHub request.
-func (client *ConsumerGroupsClient) listByEventHubCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, options *ConsumerGroupsClientListByEventHubOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/consumergroups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ConsumerGroupsClient) listByEventHubCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, eventHubName string, nextLink string, options *ConsumerGroupsClientListByEventHubOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces/{namespaceName}/eventhubs/{eventHubName}/consumergroups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		if eventHubName == "" {
+			return nil, errors.New("parameter eventHubName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{eventHubName}", url.PathEscape(eventHubName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if eventHubName == "" {
-		return nil, errors.New("parameter eventHubName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{eventHubName}", url.PathEscape(eventHubName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20260701Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByEventHubHandleResponse handles the ListByEventHub response.
-func (client *ConsumerGroupsClient) listByEventHubHandleResponse(resp *http.Response) (ConsumerGroupsClientListByEventHubResponse, error) {
+func (client *ConsumerGroupsClient) listByEventHubHandleResponse(resp *http.Response, successCodes ...int) (ConsumerGroupsClientListByEventHubResponse, error) {
 	result := ConsumerGroupsClientListByEventHubResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConsumerGroupListResult); err != nil {
 		return ConsumerGroupsClientListByEventHubResponse{}, err
 	}

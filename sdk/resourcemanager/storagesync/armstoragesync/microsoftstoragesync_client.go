@@ -19,7 +19,7 @@ import (
 // MicrosoftStorageSyncClient contains the methods for the MicrosoftStorageSync group.
 // Don't use this type directly, use NewMicrosoftStorageSyncClient() instead.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2025-12-01
 type MicrosoftStorageSyncClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -61,12 +61,7 @@ func (client *MicrosoftStorageSyncClient) LocationOperationStatus(ctx context.Co
 	if err != nil {
 		return MicrosoftStorageSyncClientLocationOperationStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MicrosoftStorageSyncClientLocationOperationStatusResponse{}, err
-	}
-	resp, err := client.locationOperationStatusHandleResponse(httpResp)
-	return resp, err
+	return client.locationOperationStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // locationOperationStatusCreateRequest creates the LocationOperationStatus request.
@@ -89,19 +84,22 @@ func (client *MicrosoftStorageSyncClient) locationOperationStatusCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220901)
+	reqQP.Set("api-version", version20251201)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // locationOperationStatusHandleResponse handles the LocationOperationStatus response.
-func (client *MicrosoftStorageSyncClient) locationOperationStatusHandleResponse(resp *http.Response) (MicrosoftStorageSyncClientLocationOperationStatusResponse, error) {
+func (client *MicrosoftStorageSyncClient) locationOperationStatusHandleResponse(resp *http.Response, successCodes ...int) (MicrosoftStorageSyncClientLocationOperationStatusResponse, error) {
 	result := MicrosoftStorageSyncClientLocationOperationStatusResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LocationOperationStatus); err != nil {

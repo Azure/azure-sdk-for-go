@@ -65,12 +65,7 @@ func (client *ServicesClient) CheckChildrenNameAvailability(ctx context.Context,
 	if err != nil {
 		return ServicesClientCheckChildrenNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServicesClientCheckChildrenNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkChildrenNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkChildrenNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkChildrenNameAvailabilityCreateRequest creates the CheckChildrenNameAvailability request.
@@ -104,8 +99,11 @@ func (client *ServicesClient) checkChildrenNameAvailabilityCreateRequest(ctx con
 }
 
 // checkChildrenNameAvailabilityHandleResponse handles the CheckChildrenNameAvailability response.
-func (client *ServicesClient) checkChildrenNameAvailabilityHandleResponse(resp *http.Response) (ServicesClientCheckChildrenNameAvailabilityResponse, error) {
+func (client *ServicesClient) checkChildrenNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (ServicesClientCheckChildrenNameAvailabilityResponse, error) {
 	result := ServicesClientCheckChildrenNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailabilityResponse); err != nil {
 		return ServicesClientCheckChildrenNameAvailabilityResponse{}, err
 	}
@@ -134,12 +132,7 @@ func (client *ServicesClient) CheckNameAvailability(ctx context.Context, locatio
 	if err != nil {
 		return ServicesClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServicesClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -169,8 +162,11 @@ func (client *ServicesClient) checkNameAvailabilityCreateRequest(ctx context.Con
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *ServicesClient) checkNameAvailabilityHandleResponse(resp *http.Response) (ServicesClientCheckNameAvailabilityResponse, error) {
+func (client *ServicesClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (ServicesClientCheckNameAvailabilityResponse, error) {
 	result := ServicesClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NameAvailabilityResponse); err != nil {
 		return ServicesClientCheckNameAvailabilityResponse{}, err
 	}
@@ -199,12 +195,7 @@ func (client *ServicesClient) CheckStatus(ctx context.Context, groupName string,
 	if err != nil {
 		return ServicesClientCheckStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServicesClientCheckStatusResponse{}, err
-	}
-	resp, err := client.checkStatusHandleResponse(httpResp)
-	return resp, err
+	return client.checkStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkStatusCreateRequest creates the CheckStatus request.
@@ -234,8 +225,11 @@ func (client *ServicesClient) checkStatusCreateRequest(ctx context.Context, grou
 }
 
 // checkStatusHandleResponse handles the CheckStatus response.
-func (client *ServicesClient) checkStatusHandleResponse(resp *http.Response) (ServicesClientCheckStatusResponse, error) {
+func (client *ServicesClient) checkStatusHandleResponse(resp *http.Response, successCodes ...int) (ServicesClientCheckStatusResponse, error) {
 	result := ServicesClientCheckStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceStatusResponse); err != nil {
 		return ServicesClientCheckStatusResponse{}, err
 	}
@@ -297,8 +291,7 @@ func (client *ServicesClient) createOrUpdate(ctx context.Context, groupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -378,8 +371,7 @@ func (client *ServicesClient) deleteOperation(ctx context.Context, groupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -434,12 +426,7 @@ func (client *ServicesClient) Get(ctx context.Context, groupName string, service
 	if err != nil {
 		return ServicesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServicesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -469,8 +456,11 @@ func (client *ServicesClient) getCreateRequest(ctx context.Context, groupName st
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServicesClient) getHandleResponse(resp *http.Response) (ServicesClientGetResponse, error) {
+func (client *ServicesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ServicesClientGetResponse, error) {
 	result := ServicesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Service); err != nil {
 		return ServicesClientGetResponse{}, err
 	}
@@ -493,39 +483,53 @@ func (client *ServicesClient) NewListPager(options *ServicesClientListOptions) *
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return ServicesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServicesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *ServicesClient) listCreateRequest(ctx context.Context, _ *ServicesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/services"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ServicesClient) listCreateRequest(ctx context.Context, nextLink string, _ *ServicesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataMigration/services"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ServicesClient) listHandleResponse(resp *http.Response) (ServicesClientListResponse, error) {
+func (client *ServicesClient) listHandleResponse(resp *http.Response, successCodes ...int) (ServicesClientListResponse, error) {
 	result := ServicesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceList); err != nil {
 		return ServicesClientListResponse{}, err
 	}
@@ -550,43 +554,57 @@ func (client *ServicesClient) NewListByResourceGroupPager(groupName string, opti
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, groupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, groupName, nextLink, options)
 			if err != nil {
 				return ServicesClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServicesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *ServicesClient) listByResourceGroupCreateRequest(ctx context.Context, groupName string, _ *ServicesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ServicesClient) listByResourceGroupCreateRequest(ctx context.Context, groupName string, nextLink string, _ *ServicesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if groupName == "" {
+			return nil, errors.New("parameter groupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if groupName == "" {
-		return nil, errors.New("parameter groupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *ServicesClient) listByResourceGroupHandleResponse(resp *http.Response) (ServicesClientListByResourceGroupResponse, error) {
+func (client *ServicesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (ServicesClientListByResourceGroupResponse, error) {
 	result := ServicesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceList); err != nil {
 		return ServicesClientListByResourceGroupResponse{}, err
 	}
@@ -611,47 +629,61 @@ func (client *ServicesClient) NewListSKUsPager(groupName string, serviceName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSKUsCreateRequest(ctx, groupName, serviceName, options)
-			}, nil)
+			req, err := client.listSKUsCreateRequest(ctx, groupName, serviceName, nextLink, options)
 			if err != nil {
 				return ServicesClientListSKUsResponse{}, err
 			}
-			return client.listSKUsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ServicesClientListSKUsResponse{}, err
+			}
+			return client.listSKUsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSKUsCreateRequest creates the ListSKUs request.
-func (client *ServicesClient) listSKUsCreateRequest(ctx context.Context, groupName string, serviceName string, _ *ServicesClientListSKUsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/skus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ServicesClient) listSKUsCreateRequest(ctx context.Context, groupName string, serviceName string, nextLink string, _ *ServicesClientListSKUsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/skus"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if groupName == "" {
+			return nil, errors.New("parameter groupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if groupName == "" {
-		return nil, errors.New("parameter groupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSKUsHandleResponse handles the ListSKUs response.
-func (client *ServicesClient) listSKUsHandleResponse(resp *http.Response) (ServicesClientListSKUsResponse, error) {
+func (client *ServicesClient) listSKUsHandleResponse(resp *http.Response, successCodes ...int) (ServicesClientListSKUsResponse, error) {
 	result := ServicesClientListSKUsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceSKUList); err != nil {
 		return ServicesClientListSKUsResponse{}, err
 	}
@@ -703,8 +735,7 @@ func (client *ServicesClient) start(ctx context.Context, groupName string, servi
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -781,8 +812,7 @@ func (client *ServicesClient) stop(ctx context.Context, groupName string, servic
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -860,8 +890,7 @@ func (client *ServicesClient) update(ctx context.Context, groupName string, serv
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

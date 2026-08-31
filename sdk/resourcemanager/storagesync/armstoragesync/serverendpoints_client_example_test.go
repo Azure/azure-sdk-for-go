@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-09-01/ServerEndpoints_Create.json
+// Generated from example definition: 2025-12-01/ServerEndpoints_Create.json
 func ExampleServerEndpointsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleServerEndpointsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/ServerEndpoints_Delete.json
+// Generated from example definition: 2025-12-01/ServerEndpoints_Delete.json
 func ExampleServerEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleServerEndpointsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/ServerEndpoints_Get.json
+// Generated from example definition: 2025-12-01/ServerEndpoints_Get.json
 func ExampleServerEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,11 +133,11 @@ func ExampleServerEndpointsClient_Get() {
 	// 					CacheHitBytes: to.Ptr[int64](922337203685477600),
 	// 					CacheHitBytesPercent: to.Ptr[int32](50),
 	// 					CacheMissBytes: to.Ptr[int64](922337203685477600),
-	// 					LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+	// 					LastUpdatedTimestamp: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 	// 				},
 	// 				DatePolicyStatus: &armstoragesync.CloudTieringDatePolicyStatus{
-	// 					LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
-	// 					TieredFilesMostRecentAccessTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+	// 					LastUpdatedTimestamp: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
+	// 					TieredFilesMostRecentAccessTimestamp: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 	// 				},
 	// 				FilesNotTiering: &armstoragesync.CloudTieringFilesNotTiering{
 	// 					Errors: []*armstoragesync.FilesNotTieringError{
@@ -154,21 +154,21 @@ func ExampleServerEndpointsClient_Get() {
 	// 							FileCount: to.Ptr[int64](30),
 	// 						},
 	// 					},
-	// 					LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+	// 					LastUpdatedTimestamp: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 	// 					TotalFileCount: to.Ptr[int64](60),
 	// 				},
 	// 				Health: to.Ptr(armstoragesync.ServerEndpointHealthStateError),
-	// 				HealthLastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+	// 				HealthLastUpdatedTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 	// 				LastCloudTieringResult: to.Ptr[int32](-2134347771),
-	// 				LastSuccessTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
-	// 				LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+	// 				LastSuccessTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
+	// 				LastUpdatedTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 	// 				LowDiskMode: &armstoragesync.CloudTieringLowDiskMode{
-	// 					LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+	// 					LastUpdatedTimestamp: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 	// 					State: to.Ptr(armstoragesync.CloudTieringLowDiskModeStateDisabled),
 	// 				},
 	// 				SpaceSavings: &armstoragesync.CloudTieringSpaceSavings{
 	// 					CachedSizeBytes: to.Ptr[int64](50000000),
-	// 					LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+	// 					LastUpdatedTimestamp: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 	// 					SpaceSavingsBytes: to.Ptr[int64](50000000),
 	// 					SpaceSavingsPercent: to.Ptr[int32](50),
 	// 					TotalSizeCloudBytes: to.Ptr[int64](100000000),
@@ -177,7 +177,7 @@ func ExampleServerEndpointsClient_Get() {
 	// 				VolumeFreeSpacePolicyStatus: &armstoragesync.CloudTieringVolumeFreeSpacePolicyStatus{
 	// 					CurrentVolumeFreeSpacePercent: to.Ptr[int32](5),
 	// 					EffectiveVolumeFreeSpacePolicy: to.Ptr[int32](30),
-	// 					LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+	// 					LastUpdatedTimestamp: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 	// 				},
 	// 			},
 	// 			FriendlyName: to.Ptr("somemachine.redmond.corp.microsoft.com"),
@@ -192,7 +192,7 @@ func ExampleServerEndpointsClient_Get() {
 	// 			OfflineDataTransferStorageAccountTenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			RecallStatus: &armstoragesync.ServerEndpointRecallStatus{
-	// 				LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+	// 				LastUpdatedTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 	// 				RecallErrors: []*armstoragesync.ServerEndpointRecallError{
 	// 					{
 	// 						Count: to.Ptr[int64](5),
@@ -218,11 +218,11 @@ func ExampleServerEndpointsClient_Get() {
 	// 							"ItemsProcessed": to.Ptr("1001"),
 	// 							"ItemsRemaining": to.Ptr("0"),
 	// 						},
-	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:06:59.1959227Z"); return t}()),
+	// 						EndTime: to.Ptr(time.Date(2019, time.April, 17, 19, 6, 59, 195922700, time.UTC)),
 	// 						ErrorCode: to.Ptr[int32](0),
 	// 						MinutesLeft: to.Ptr[int32](0),
 	// 						ProgressPercentage: to.Ptr[int32](100),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+	// 						StartTime: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 	// 						Status: to.Ptr("Completed"),
 	// 					},
 	// 					{
@@ -231,11 +231,11 @@ func ExampleServerEndpointsClient_Get() {
 	// 							"ItemsProcessed": to.Ptr("1001"),
 	// 							"ItemsRemaining": to.Ptr("0"),
 	// 						},
-	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:06:59.1959227Z"); return t}()),
+	// 						EndTime: to.Ptr(time.Date(2019, time.April, 17, 19, 6, 59, 195922700, time.UTC)),
 	// 						ErrorCode: to.Ptr[int32](0),
 	// 						MinutesLeft: to.Ptr[int32](0),
 	// 						ProgressPercentage: to.Ptr[int32](100),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+	// 						StartTime: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 	// 						Status: to.Ptr("Completed"),
 	// 					},
 	// 					{
@@ -244,11 +244,11 @@ func ExampleServerEndpointsClient_Get() {
 	// 							"ItemsProcessed": to.Ptr("1001"),
 	// 							"ItemsRemaining": to.Ptr("0"),
 	// 						},
-	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:06:59.1959227Z"); return t}()),
+	// 						EndTime: to.Ptr(time.Date(2019, time.April, 17, 19, 6, 59, 195922700, time.UTC)),
 	// 						ErrorCode: to.Ptr[int32](0),
 	// 						MinutesLeft: to.Ptr[int32](0),
 	// 						ProgressPercentage: to.Ptr[int32](100),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+	// 						StartTime: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 	// 						Status: to.Ptr("Completed"),
 	// 					},
 	// 					{
@@ -257,11 +257,11 @@ func ExampleServerEndpointsClient_Get() {
 	// 							"ItemsProcessed": to.Ptr("1001"),
 	// 							"ItemsRemaining": to.Ptr("0"),
 	// 						},
-	// 						EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-17T19:08:59.1959227Z"); return t}()),
+	// 						EndTime: to.Ptr(time.Date(2019, time.May, 17, 19, 8, 59, 195922700, time.UTC)),
 	// 						ErrorCode: to.Ptr[int32](0),
 	// 						MinutesLeft: to.Ptr[int32](0),
 	// 						ProgressPercentage: to.Ptr[int32](100),
-	// 						StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-17T19:06:59.1959227Z"); return t}()),
+	// 						StartTime: to.Ptr(time.Date(2019, time.May, 17, 19, 6, 59, 195922700, time.UTC)),
 	// 						Status: to.Ptr("Completed"),
 	// 					},
 	// 				},
@@ -276,33 +276,52 @@ func ExampleServerEndpointsClient_Get() {
 	// 					AppliedBytes: to.Ptr[int64](94805587),
 	// 					AppliedItemCount: to.Ptr[int64](100),
 	// 					PerItemErrorCount: to.Ptr[int64](0),
-	// 					Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+	// 					Timestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 	// 					TotalBytes: to.Ptr[int64](19583674),
-	// 					TotalItemCount: to.Ptr[int64](300),
+	// 					TotalItemCount: to.Ptr[int64](305),
+	// 					RemainingFileCount: to.Ptr[int64](200),
+	// 					RemainingDirectoryCount: to.Ptr[int64](5),
+	// 					RemainingDeleteCount: to.Ptr[int64](0),
+	// 					RemainingLogicalSizeBytes: to.Ptr[int64](19583674),
+	// 					IsRemainingFinal: to.Ptr(true),
+	// 					RecentItemsPerSecond: to.Ptr[float64](12.5),
+	// 					RecentMegabytesPerSecond: to.Ptr[float64](1.2),
+	// 					Warning: to.Ptr(armstoragesync.ServerEndpointSyncSessionWarningTypeNoWarning),
 	// 				},
 	// 				DownloadHealth: to.Ptr(armstoragesync.ServerEndpointHealthStateHealthy),
 	// 				DownloadStatus: &armstoragesync.ServerEndpointSyncSessionStatus{
 	// 					LastSyncPerItemErrorCount: to.Ptr[int64](0),
 	// 					LastSyncResult: to.Ptr[int32](0),
-	// 					LastSyncSuccessTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:28:33.9217334Z"); return t}()),
-	// 					LastSyncTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:28:33.9217334Z"); return t}()),
+	// 					LastSyncSuccessTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 28, 33, 921733400, time.UTC)),
+	// 					LastSyncTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 28, 33, 921733400, time.UTC)),
 	// 				},
-	// 				LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+	// 				LastUpdatedTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 	// 				OfflineDataTransferStatus: to.Ptr(armstoragesync.ServerEndpointOfflineDataTransferStateInProgress),
 	// 				SyncActivity: to.Ptr(armstoragesync.ServerEndpointSyncActivityStateUploadAndDownload),
 	// 				UploadActivity: &armstoragesync.ServerEndpointSyncActivityStatus{
 	// 					AppliedBytes: to.Ptr[int64](57348983),
 	// 					AppliedItemCount: to.Ptr[int64](1000),
 	// 					PerItemErrorCount: to.Ptr[int64](300),
-	// 					Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+	// 					Timestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 	// 					TotalBytes: to.Ptr[int64](1958367412),
-	// 					TotalItemCount: to.Ptr[int64](2300),
+	// 					TotalItemCount: to.Ptr[int64](2310),
+	// 					RemainingFileCount: to.Ptr[int64](1290),
+	// 					RemainingDirectoryCount: to.Ptr[int64](10),
+	// 					RemainingDeleteCount: to.Ptr[int64](0),
+	// 					RemainingLogicalSizeBytes: to.Ptr[int64](1901018429),
+	// 					IsRemainingFinal: to.Ptr(true),
+	// 					RecentItemsPerSecond: to.Ptr[float64](125.3),
+	// 					RecentMegabytesPerSecond: to.Ptr[float64](5.8),
+	// 					InProgressLargeFilePath: to.Ptr("dir/largefile.zip"),
+	// 					InProgressLargeFileSizeBytes: to.Ptr[int64](1073741824),
+	// 					InProgressLargeFilePercentComplete: to.Ptr[int32](42),
+	// 					Warning: to.Ptr(armstoragesync.ServerEndpointSyncSessionWarningTypeNoWarning),
 	// 				},
 	// 				UploadHealth: to.Ptr(armstoragesync.ServerEndpointHealthStateError),
 	// 				UploadStatus: &armstoragesync.ServerEndpointSyncSessionStatus{
 	// 					LastSyncPerItemErrorCount: to.Ptr[int64](1000),
 	// 					LastSyncResult: to.Ptr[int32](-2134351810),
-	// 					LastSyncTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+	// 					LastSyncTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 	// 				},
 	// 			},
 	// 			TierFilesOlderThanDays: to.Ptr[int32](0),
@@ -312,7 +331,7 @@ func ExampleServerEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/ServerEndpoints_ListBySyncGroup.json
+// Generated from example definition: 2025-12-01/ServerEndpoints_ListBySyncGroup.json
 func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -365,11 +384,11 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 		// 									"ItemsProcessed": to.Ptr("1001"),
 		// 									"ItemsRemaining": to.Ptr("0"),
 		// 								},
-		// 								EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:06:59.1959227Z"); return t}()),
+		// 								EndTime: to.Ptr(time.Date(2019, time.April, 17, 19, 6, 59, 195922700, time.UTC)),
 		// 								ErrorCode: to.Ptr[int32](0),
 		// 								MinutesLeft: to.Ptr[int32](0),
 		// 								ProgressPercentage: to.Ptr[int32](100),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 		// 								Status: to.Ptr("Completed"),
 		// 							},
 		// 							{
@@ -378,11 +397,11 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 		// 									"ItemsProcessed": to.Ptr("1001"),
 		// 									"ItemsRemaining": to.Ptr("0"),
 		// 								},
-		// 								EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:06:59.1959227Z"); return t}()),
+		// 								EndTime: to.Ptr(time.Date(2019, time.April, 17, 19, 6, 59, 195922700, time.UTC)),
 		// 								ErrorCode: to.Ptr[int32](0),
 		// 								MinutesLeft: to.Ptr[int32](0),
 		// 								ProgressPercentage: to.Ptr[int32](100),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 		// 								Status: to.Ptr("Completed"),
 		// 							},
 		// 							{
@@ -391,11 +410,11 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 		// 									"ItemsProcessed": to.Ptr("1001"),
 		// 									"ItemsRemaining": to.Ptr("0"),
 		// 								},
-		// 								EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:06:59.1959227Z"); return t}()),
+		// 								EndTime: to.Ptr(time.Date(2019, time.April, 17, 19, 6, 59, 195922700, time.UTC)),
 		// 								ErrorCode: to.Ptr[int32](0),
 		// 								MinutesLeft: to.Ptr[int32](0),
 		// 								ProgressPercentage: to.Ptr[int32](100),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 		// 								Status: to.Ptr("Completed"),
 		// 							},
 		// 							{
@@ -404,11 +423,11 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 		// 									"ItemsProcessed": to.Ptr("1001"),
 		// 									"ItemsRemaining": to.Ptr("0"),
 		// 								},
-		// 								EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:06:59.1959227Z"); return t}()),
+		// 								EndTime: to.Ptr(time.Date(2019, time.April, 17, 19, 6, 59, 195922700, time.UTC)),
 		// 								ErrorCode: to.Ptr[int32](0),
 		// 								MinutesLeft: to.Ptr[int32](0),
 		// 								ProgressPercentage: to.Ptr[int32](100),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-17T19:04:59.1959227Z"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2019, time.May, 17, 19, 4, 59, 195922700, time.UTC)),
 		// 								Status: to.Ptr("Completed"),
 		// 							},
 		// 						},
@@ -423,17 +442,17 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 		// 						DownloadStatus: &armstoragesync.ServerEndpointSyncSessionStatus{
 		// 							LastSyncPerItemErrorCount: to.Ptr[int64](1000),
 		// 							LastSyncResult: to.Ptr[int32](0),
-		// 							LastSyncSuccessTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:28:33.9217334Z"); return t}()),
-		// 							LastSyncTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:28:33.9217334Z"); return t}()),
+		// 							LastSyncSuccessTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 28, 33, 921733400, time.UTC)),
+		// 							LastSyncTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 28, 33, 921733400, time.UTC)),
 		// 						},
-		// 						LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+		// 						LastUpdatedTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 		// 						OfflineDataTransferStatus: to.Ptr(armstoragesync.ServerEndpointOfflineDataTransferStateComplete),
 		// 						UploadHealth: to.Ptr(armstoragesync.ServerEndpointHealthStateError),
 		// 						UploadStatus: &armstoragesync.ServerEndpointSyncSessionStatus{
 		// 							LastSyncPerItemErrorCount: to.Ptr[int64](0),
 		// 							LastSyncResult: to.Ptr[int32](0),
-		// 							LastSyncSuccessTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
-		// 							LastSyncTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+		// 							LastSyncSuccessTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
+		// 							LastSyncTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 		// 						},
 		// 					},
 		// 					TierFilesOlderThanDays: to.Ptr[int32](0),
@@ -451,11 +470,11 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 		// 							CacheHitBytes: to.Ptr[int64](922337203685477600),
 		// 							CacheHitBytesPercent: to.Ptr[int32](50),
 		// 							CacheMissBytes: to.Ptr[int64](922337203685477600),
-		// 							LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+		// 							LastUpdatedTimestamp: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 		// 						},
 		// 						DatePolicyStatus: &armstoragesync.CloudTieringDatePolicyStatus{
-		// 							LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
-		// 							TieredFilesMostRecentAccessTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+		// 							LastUpdatedTimestamp: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
+		// 							TieredFilesMostRecentAccessTimestamp: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 		// 						},
 		// 						FilesNotTiering: &armstoragesync.CloudTieringFilesNotTiering{
 		// 							Errors: []*armstoragesync.FilesNotTieringError{
@@ -472,21 +491,21 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 		// 									FileCount: to.Ptr[int64](30),
 		// 								},
 		// 							},
-		// 							LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+		// 							LastUpdatedTimestamp: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 		// 							TotalFileCount: to.Ptr[int64](60),
 		// 						},
 		// 						Health: to.Ptr(armstoragesync.ServerEndpointHealthStateError),
-		// 						HealthLastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+		// 						HealthLastUpdatedTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 		// 						LastCloudTieringResult: to.Ptr[int32](-2134347771),
-		// 						LastSuccessTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
-		// 						LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+		// 						LastSuccessTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
+		// 						LastUpdatedTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 		// 						LowDiskMode: &armstoragesync.CloudTieringLowDiskMode{
-		// 							LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+		// 							LastUpdatedTimestamp: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 		// 							State: to.Ptr(armstoragesync.CloudTieringLowDiskModeStateDisabled),
 		// 						},
 		// 						SpaceSavings: &armstoragesync.CloudTieringSpaceSavings{
 		// 							CachedSizeBytes: to.Ptr[int64](50000000),
-		// 							LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+		// 							LastUpdatedTimestamp: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 		// 							SpaceSavingsBytes: to.Ptr[int64](50000000),
 		// 							SpaceSavingsPercent: to.Ptr[int32](50),
 		// 							TotalSizeCloudBytes: to.Ptr[int64](100000000),
@@ -495,7 +514,7 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 		// 						VolumeFreeSpacePolicyStatus: &armstoragesync.CloudTieringVolumeFreeSpacePolicyStatus{
 		// 							CurrentVolumeFreeSpacePercent: to.Ptr[int32](5),
 		// 							EffectiveVolumeFreeSpacePolicy: to.Ptr[int32](30),
-		// 							LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+		// 							LastUpdatedTimestamp: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 		// 						},
 		// 					},
 		// 					FriendlyName: to.Ptr("somemachine2.redmond.corp.microsoft.com"),
@@ -507,7 +526,7 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 		// 					OfflineDataTransfer: to.Ptr(armstoragesync.FeatureStatusOff),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					RecallStatus: &armstoragesync.ServerEndpointRecallStatus{
-		// 						LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+		// 						LastUpdatedTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 		// 						RecallErrors: []*armstoragesync.ServerEndpointRecallError{
 		// 							{
 		// 								Count: to.Ptr[int64](5),
@@ -533,11 +552,11 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 		// 									"ItemsProcessed": to.Ptr("1001"),
 		// 									"ItemsRemaining": to.Ptr("0"),
 		// 								},
-		// 								EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:06:59.1959227Z"); return t}()),
+		// 								EndTime: to.Ptr(time.Date(2019, time.April, 17, 19, 6, 59, 195922700, time.UTC)),
 		// 								ErrorCode: to.Ptr[int32](0),
 		// 								MinutesLeft: to.Ptr[int32](0),
 		// 								ProgressPercentage: to.Ptr[int32](100),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 		// 								Status: to.Ptr("Completed"),
 		// 							},
 		// 							{
@@ -546,11 +565,11 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 		// 									"ItemsProcessed": to.Ptr("1001"),
 		// 									"ItemsRemaining": to.Ptr("0"),
 		// 								},
-		// 								EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:06:59.1959227Z"); return t}()),
+		// 								EndTime: to.Ptr(time.Date(2019, time.April, 17, 19, 6, 59, 195922700, time.UTC)),
 		// 								ErrorCode: to.Ptr[int32](0),
 		// 								MinutesLeft: to.Ptr[int32](0),
 		// 								ProgressPercentage: to.Ptr[int32](100),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 		// 								Status: to.Ptr("Completed"),
 		// 							},
 		// 							{
@@ -559,11 +578,11 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 		// 									"ItemsProcessed": to.Ptr("1001"),
 		// 									"ItemsRemaining": to.Ptr("0"),
 		// 								},
-		// 								EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:06:59.1959227Z"); return t}()),
+		// 								EndTime: to.Ptr(time.Date(2019, time.April, 17, 19, 6, 59, 195922700, time.UTC)),
 		// 								ErrorCode: to.Ptr[int32](0),
 		// 								MinutesLeft: to.Ptr[int32](0),
 		// 								ProgressPercentage: to.Ptr[int32](100),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:04:59.1959227Z"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2019, time.April, 17, 19, 4, 59, 195922700, time.UTC)),
 		// 								Status: to.Ptr("Completed"),
 		// 							},
 		// 							{
@@ -572,11 +591,11 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 		// 									"ItemsProcessed": to.Ptr("1001"),
 		// 									"ItemsRemaining": to.Ptr("0"),
 		// 								},
-		// 								EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-04-17T19:06:59.1959227Z"); return t}()),
+		// 								EndTime: to.Ptr(time.Date(2019, time.April, 17, 19, 6, 59, 195922700, time.UTC)),
 		// 								ErrorCode: to.Ptr[int32](0),
 		// 								MinutesLeft: to.Ptr[int32](0),
 		// 								ProgressPercentage: to.Ptr[int32](100),
-		// 								StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-17T19:04:59.1959227Z"); return t}()),
+		// 								StartTime: to.Ptr(time.Date(2019, time.May, 17, 19, 4, 59, 195922700, time.UTC)),
 		// 								Status: to.Ptr("Completed"),
 		// 							},
 		// 						},
@@ -591,26 +610,34 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 		// 						DownloadStatus: &armstoragesync.ServerEndpointSyncSessionStatus{
 		// 							LastSyncPerItemErrorCount: to.Ptr[int64](0),
 		// 							LastSyncResult: to.Ptr[int32](0),
-		// 							LastSyncSuccessTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:28:33.9217334Z"); return t}()),
-		// 							LastSyncTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:28:33.9217334Z"); return t}()),
+		// 							LastSyncSuccessTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 28, 33, 921733400, time.UTC)),
+		// 							LastSyncTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 28, 33, 921733400, time.UTC)),
 		// 						},
-		// 						LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+		// 						LastUpdatedTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 		// 						OfflineDataTransferStatus: to.Ptr(armstoragesync.ServerEndpointOfflineDataTransferStateNotRunning),
 		// 						SyncActivity: to.Ptr(armstoragesync.ServerEndpointSyncActivityStateUpload),
 		// 						UploadActivity: &armstoragesync.ServerEndpointSyncActivityStatus{
 		// 							AppliedBytes: to.Ptr[int64](57348983),
 		// 							AppliedItemCount: to.Ptr[int64](1000),
 		// 							PerItemErrorCount: to.Ptr[int64](300),
-		// 							Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+		// 							Timestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 		// 							TotalBytes: to.Ptr[int64](1958367412),
 		// 							TotalItemCount: to.Ptr[int64](2300),
+		// 							RemainingFileCount: to.Ptr[int64](1290),
+		// 							RemainingDirectoryCount: to.Ptr[int64](10),
+		// 							RemainingDeleteCount: to.Ptr[int64](0),
+		// 							RemainingLogicalSizeBytes: to.Ptr[int64](1901018429),
+		// 							IsRemainingFinal: to.Ptr(true),
+		// 							RecentItemsPerSecond: to.Ptr[float64](250.3),
+		// 							RecentMegabytesPerSecond: to.Ptr[float64](5.8),
+		// 							Warning: to.Ptr(armstoragesync.ServerEndpointSyncSessionWarningTypeNoWarning),
 		// 						},
 		// 						UploadHealth: to.Ptr(armstoragesync.ServerEndpointHealthStateHealthy),
 		// 						UploadStatus: &armstoragesync.ServerEndpointSyncSessionStatus{
 		// 							LastSyncPerItemErrorCount: to.Ptr[int64](0),
 		// 							LastSyncResult: to.Ptr[int32](0),
-		// 							LastSyncSuccessTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:28:33.9217334Z"); return t}()),
-		// 							LastSyncTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+		// 							LastSyncSuccessTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 28, 33, 921733400, time.UTC)),
+		// 							LastSyncTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 		// 						},
 		// 					},
 		// 					TierFilesOlderThanDays: to.Ptr[int32](5),
@@ -623,7 +650,7 @@ func ExampleServerEndpointsClient_NewListBySyncGroupPager() {
 	}
 }
 
-// Generated from example definition: 2022-09-01/ServerEndpoints_Recall.json
+// Generated from example definition: 2025-12-01/ServerEndpoints_Recall.json
 func ExampleServerEndpointsClient_BeginRecallAction() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -652,7 +679,7 @@ func ExampleServerEndpointsClient_BeginRecallAction() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/ServerEndpoints_Update.json
+// Generated from example definition: 2025-12-01/ServerEndpoints_Update.json
 func ExampleServerEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -709,16 +736,16 @@ func ExampleServerEndpointsClient_BeginUpdate() {
 	// 				DownloadStatus: &armstoragesync.ServerEndpointSyncSessionStatus{
 	// 					LastSyncPerItemErrorCount: to.Ptr[int64](0),
 	// 					LastSyncResult: to.Ptr[int32](0),
-	// 					LastSyncSuccessTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:28:33.9217334Z"); return t}()),
-	// 					LastSyncTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:28:33.9217334Z"); return t}()),
+	// 					LastSyncSuccessTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 28, 33, 921733400, time.UTC)),
+	// 					LastSyncTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 28, 33, 921733400, time.UTC)),
 	// 				},
-	// 				LastUpdatedTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+	// 				LastUpdatedTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 	// 				OfflineDataTransferStatus: to.Ptr(armstoragesync.ServerEndpointOfflineDataTransferStateStopping),
 	// 				UploadHealth: to.Ptr(armstoragesync.ServerEndpointHealthStateError),
 	// 				UploadStatus: &armstoragesync.ServerEndpointSyncSessionStatus{
 	// 					LastSyncPerItemErrorCount: to.Ptr[int64](0),
 	// 					LastSyncResult: to.Ptr[int32](-2134351810),
-	// 					LastSyncTimestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-06-11T23:32:51.1057915Z"); return t}()),
+	// 					LastSyncTimestamp: to.Ptr(time.Date(2018, time.June, 11, 23, 32, 51, 105791500, time.UTC)),
 	// 				},
 	// 			},
 	// 			TierFilesOlderThanDays: to.Ptr[int32](0),

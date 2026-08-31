@@ -57,7 +57,7 @@ func ExampleRecommendationsClient_Get_getRecommendationDetailServiceGroupResourc
 	// 			Impact: to.Ptr(armadvisor.ImpactMedium),
 	// 			ImpactedField: to.Ptr("Microsoft.Management/serviceGroup"),
 	// 			ImpactedValue: to.Ptr("serviceGroupXYZ"),
-	// 			LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-24T22:24:43.3216408Z"); return t}()),
+	// 			LastUpdated: to.Ptr(time.Date(2025, time.April, 24, 22, 24, 43, 321640800, time.UTC)),
 	// 			Risk: to.Ptr(armadvisor.RiskWarning),
 	// 			ShortDescription: &armadvisor.ShortDescription{
 	// 				Problem: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
@@ -130,7 +130,7 @@ func ExampleRecommendationsClient_Get_getRecommendationDetailSubscriptionResourc
 	// 			Impact: to.Ptr(armadvisor.ImpactMedium),
 	// 			ImpactedField: to.Ptr("Microsoft.Compute/availabilitysets"),
 	// 			ImpactedValue: to.Ptr("armavset"),
-	// 			LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T22:24:43.3216408Z"); return t}()),
+	// 			LastUpdated: to.Ptr(time.Date(2017, time.February, 24, 22, 24, 43, 321640800, time.UTC)),
 	// 			Risk: to.Ptr(armadvisor.RiskWarning),
 	// 			ShortDescription: &armadvisor.ShortDescription{
 	// 				Problem: to.Ptr("Monitoring agent should be installed on your machines"),
@@ -237,7 +237,7 @@ func ExampleRecommendationsClient_NewListPager() {
 		// 					Impact: to.Ptr(armadvisor.ImpactMedium),
 		// 					ImpactedField: to.Ptr("Microsoft.Compute/availabilitySets"),
 		// 					ImpactedValue: to.Ptr("armavset"),
-		// 					LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T22:24:43.3216408Z"); return t}()),
+		// 					LastUpdated: to.Ptr(time.Date(2017, time.February, 24, 22, 24, 43, 321640800, time.UTC)),
 		// 					Risk: to.Ptr(armadvisor.RiskWarning),
 		// 					Remediation: map[string]any{
 		// 						"additionalProperties": map[string]any{
@@ -295,7 +295,7 @@ func ExampleRecommendationsClient_NewListPager() {
 		// 					Impact: to.Ptr(armadvisor.ImpactMedium),
 		// 					ImpactedField: to.Ptr("Microsoft.Compute/virtualMachines"),
 		// 					ImpactedValue: to.Ptr("xyz"),
-		// 					LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T22:24:43.3216408Z"); return t}()),
+		// 					LastUpdated: to.Ptr(time.Date(2017, time.February, 24, 22, 24, 43, 321640800, time.UTC)),
 		// 					Risk: to.Ptr(armadvisor.RiskWarning),
 		// 					ShortDescription: &armadvisor.ShortDescription{
 		// 						Problem: to.Ptr("Monitoring agent should be installed on your machines"),
@@ -338,7 +338,7 @@ func ExampleRecommendationsClient_NewListPager() {
 		// 					Tracked: to.Ptr(true),
 		// 					TrackedProperties: &armadvisor.TrackedRecommendationProperties{
 		// 						State: to.Ptr(armadvisor.StatePostponed),
-		// 						PostponedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-01T00:00:00Z"); return t}()),
+		// 						PostponedTime: to.Ptr(time.Date(2023, time.October, 1, 0, 0, 0, 0, time.UTC)),
 		// 						Reason: to.Ptr(armadvisor.ReasonRiskAccepted),
 		// 						Priority: to.Ptr(armadvisor.PriorityHigh),
 		// 					},
@@ -396,7 +396,7 @@ func ExampleRecommendationsClient_NewListByTenantPager() {
 		// 					Impact: to.Ptr(armadvisor.ImpactMedium),
 		// 					ImpactedField: to.Ptr("Microsoft.Management/serviceGroup"),
 		// 					ImpactedValue: to.Ptr("serviceGroupXYZ"),
-		// 					LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-24T22:24:43.3216408Z"); return t}()),
+		// 					LastUpdated: to.Ptr(time.Date(2025, time.April, 24, 22, 24, 43, 321640800, time.UTC)),
 		// 					Risk: to.Ptr(armadvisor.RiskWarning),
 		// 					ShortDescription: &armadvisor.ShortDescription{
 		// 						Problem: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
@@ -447,7 +447,7 @@ func ExampleRecommendationsClient_NewListByTenantPager() {
 		// 					Impact: to.Ptr(armadvisor.ImpactMedium),
 		// 					ImpactedField: to.Ptr("Microsoft.Management/serviceGroup"),
 		// 					ImpactedValue: to.Ptr("serviceGroupXYZ"),
-		// 					LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-24T22:24:43.3216408Z"); return t}()),
+		// 					LastUpdated: to.Ptr(time.Date(2025, time.April, 24, 22, 24, 43, 321640800, time.UTC)),
 		// 					Risk: to.Ptr(armadvisor.RiskWarning),
 		// 					ShortDescription: &armadvisor.ShortDescription{
 		// 						Problem: to.Ptr("To ensure high availability add one or more virtual machines to this availability set"),
@@ -510,7 +510,7 @@ func ExampleRecommendationsClient_Patch() {
 		Properties: &armadvisor.TrackedRecommendationPropertiesPayloadProperties{
 			TrackedProperties: &armadvisor.TrackedRecommendationProperties{
 				State:         to.Ptr(armadvisor.StatePostponed),
-				PostponedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-01T00:00:00Z"); return t }()),
+				PostponedTime: to.Ptr(time.Date(2023, time.October, 1, 0, 0, 0, 0, time.UTC)),
 			},
 		},
 	}, nil)
@@ -530,7 +530,7 @@ func ExampleRecommendationsClient_Patch() {
 	// 			Impact: to.Ptr(armadvisor.ImpactMedium),
 	// 			ImpactedField: to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 			ImpactedValue: to.Ptr("armavset"),
-	// 			LastUpdated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-24T22:24:43.3216408Z"); return t}()),
+	// 			LastUpdated: to.Ptr(time.Date(2017, time.February, 24, 22, 24, 43, 321640800, time.UTC)),
 	// 			Risk: to.Ptr(armadvisor.RiskWarning),
 	// 			ShortDescription: &armadvisor.ShortDescription{
 	// 				Problem: to.Ptr("Monitoring agent should be installed on your machines"),
@@ -580,7 +580,7 @@ func ExampleRecommendationsClient_Patch() {
 	// 			Tracked: to.Ptr(true),
 	// 			TrackedProperties: &armadvisor.TrackedRecommendationProperties{
 	// 				State: to.Ptr(armadvisor.StatePostponed),
-	// 				PostponedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-10-01T00:00:00Z"); return t}()),
+	// 				PostponedTime: to.Ptr(time.Date(2023, time.October, 1, 0, 0, 0, 0, time.UTC)),
 	// 				Priority: to.Ptr(armadvisor.PriorityHigh),
 	// 			},
 	// 			ResourceWorkload: &armadvisor.RecommendationPropertiesResourceWorkload{

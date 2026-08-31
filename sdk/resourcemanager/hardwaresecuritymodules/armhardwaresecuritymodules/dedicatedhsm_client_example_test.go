@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-03-31/DedicatedHsm_CreateOrUpdate.json
+// Generated from example definition: 2025-12-01-preview/DedicatedHsm_CreateOrUpdate.json
 func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingDedicatedHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingD
 	// }
 }
 
-// Generated from example definition: 2025-03-31/PaymentHsm_CreateOrUpdate.json
+// Generated from example definition: 2025-12-01-preview/PaymentHsm_CreateOrUpdate.json
 func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingPaymentHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,10 +170,10 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 	// 			Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 	// 		},
 	// 		SystemData: &armhardwaresecuritymodules.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 	// 		},
@@ -185,7 +185,7 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 	// }
 }
 
-// Generated from example definition: 2025-03-31/PaymentHsm_CreateOrUpdate_WithManagementProfile.json
+// Generated from example definition: 2025-12-01-preview/PaymentHsm_CreateOrUpdate_WithManagementProfile.json
 func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingPaymentHsmWithManagementProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,10 +276,10 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 	// 			Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 	// 		},
 	// 		SystemData: &armhardwaresecuritymodules.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 	// 		},
@@ -291,7 +291,7 @@ func ExampleDedicatedHsmClient_BeginCreateOrUpdate_createANewOrUpdateAnExistingP
 	// }
 }
 
-// Generated from example definition: 2025-03-31/DedicatedHsm_Delete.json
+// Generated from example definition: 2025-12-01-preview/DedicatedHsm_Delete.json
 func ExampleDedicatedHsmClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -312,7 +312,7 @@ func ExampleDedicatedHsmClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-03-31/DedicatedHsm_Get.json
+// Generated from example definition: 2025-12-01-preview/DedicatedHsm_Get.json
 func ExampleDedicatedHsmClient_Get_getADedicatedHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -364,7 +364,7 @@ func ExampleDedicatedHsmClient_Get_getADedicatedHsm() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/PaymentHsm_Get.json
+// Generated from example definition: 2025-12-01-preview/PaymentHsm_Get.json
 func ExampleDedicatedHsmClient_Get_getAPaymentHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -419,10 +419,10 @@ func ExampleDedicatedHsmClient_Get_getAPaymentHsm() {
 	// 			Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 	// 		},
 	// 		SystemData: &armhardwaresecuritymodules.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 	// 		},
@@ -435,7 +435,7 @@ func ExampleDedicatedHsmClient_Get_getAPaymentHsm() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/PaymentHsm_Get_With_2018-10-31Preview_Version.json
+// Generated from example definition: 2025-12-01-preview/PaymentHsm_Get_With_2018-10-31Preview_Version.json
 func ExampleDedicatedHsmClient_Get_getAPaymentHsmWith20181031PreviewApiVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -487,7 +487,7 @@ func ExampleDedicatedHsmClient_Get_getAPaymentHsmWith20181031PreviewApiVersion()
 	// }
 }
 
-// Generated from example definition: 2025-03-31/DedicatedHsm_ListByResourceGroup.json
+// Generated from example definition: 2025-12-01-preview/DedicatedHsm_ListByResourceGroup.json
 func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevicesInAResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -579,7 +579,7 @@ func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevic
 	}
 }
 
-// Generated from example definition: 2025-03-31/PaymentHsm_ListByResourceGroup.json
+// Generated from example definition: 2025-12-01-preview/PaymentHsm_ListByResourceGroup.json
 func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevicesInAResourceGroupIncludingPaymentHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -641,10 +641,10 @@ func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevic
 		// 					Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 		// 				},
 		// 				SystemData: &armhardwaresecuritymodules.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 		// 				},
@@ -690,10 +690,10 @@ func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevic
 		// 					Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 		// 				},
 		// 				SystemData: &armhardwaresecuritymodules.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 		// 				},
@@ -709,7 +709,7 @@ func ExampleDedicatedHsmClient_NewListByResourceGroupPager_listDedicatedHsmDevic
 	}
 }
 
-// Generated from example definition: 2025-03-31/DedicatedHsm_ListBySubscription.json
+// Generated from example definition: 2025-12-01-preview/DedicatedHsm_ListBySubscription.json
 func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevicesInASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -801,7 +801,7 @@ func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevice
 	}
 }
 
-// Generated from example definition: 2025-03-31/PaymentHsm_ListBySubscription.json
+// Generated from example definition: 2025-12-01-preview/PaymentHsm_ListBySubscription.json
 func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevicesInASubscriptionIncludingPaymentHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -863,10 +863,10 @@ func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevice
 		// 					Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 		// 				},
 		// 				SystemData: &armhardwaresecuritymodules.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 		// 				},
@@ -912,10 +912,10 @@ func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevice
 		// 					Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 		// 				},
 		// 				SystemData: &armhardwaresecuritymodules.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("user2"),
 		// 					LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 		// 				},
@@ -931,7 +931,7 @@ func ExampleDedicatedHsmClient_NewListBySubscriptionPager_listDedicatedHsmDevice
 	}
 }
 
-// Generated from example definition: 2025-03-31/GetOutboundNetworkDependenciesEndpointsList.json
+// Generated from example definition: 2025-12-01-preview/GetOutboundNetworkDependenciesEndpointsList.json
 func ExampleDedicatedHsmClient_NewListOutboundNetworkDependenciesEndpointsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -962,7 +962,7 @@ func ExampleDedicatedHsmClient_NewListOutboundNetworkDependenciesEndpointsPager(
 	}
 }
 
-// Generated from example definition: 2025-03-31/DedicatedHsm_Update.json
+// Generated from example definition: 2025-12-01-preview/DedicatedHsm_Update.json
 func ExampleDedicatedHsmClient_BeginUpdate_updateAnExistingDedicatedHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1024,7 +1024,7 @@ func ExampleDedicatedHsmClient_BeginUpdate_updateAnExistingDedicatedHsm() {
 	// }
 }
 
-// Generated from example definition: 2025-03-31/PaymentHsm_Update.json
+// Generated from example definition: 2025-12-01-preview/PaymentHsm_Update.json
 func ExampleDedicatedHsmClient_BeginUpdate_updateAnExistingPaymentHsm() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1089,10 +1089,10 @@ func ExampleDedicatedHsmClient_BeginUpdate_updateAnExistingPaymentHsm() {
 	// 			Name: to.Ptr(armhardwaresecuritymodules.SKUNamePayShield10KLMK1CPS60),
 	// 		},
 	// 		SystemData: &armhardwaresecuritymodules.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-01-01T12:00:00.0000000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 0, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("user2"),
 	// 			LastModifiedByType: to.Ptr(armhardwaresecuritymodules.CreatedByTypeUser),
 	// 		},

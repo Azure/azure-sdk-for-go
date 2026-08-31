@@ -65,12 +65,7 @@ func (client *FilesClient) CreateOrUpdate(ctx context.Context, groupName string,
 	if err != nil {
 		return FilesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return FilesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -112,8 +107,11 @@ func (client *FilesClient) createOrUpdateCreateRequest(ctx context.Context, grou
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *FilesClient) createOrUpdateHandleResponse(resp *http.Response) (FilesClientCreateOrUpdateResponse, error) {
+func (client *FilesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (FilesClientCreateOrUpdateResponse, error) {
 	result := FilesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProjectFile); err != nil {
 		return FilesClientCreateOrUpdateResponse{}, err
 	}
@@ -144,8 +142,7 @@ func (client *FilesClient) Delete(ctx context.Context, groupName string, service
 		return FilesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return FilesClientDeleteResponse{}, err
+		return FilesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return FilesClientDeleteResponse{}, nil
 }
@@ -207,12 +204,7 @@ func (client *FilesClient) Get(ctx context.Context, groupName string, serviceNam
 	if err != nil {
 		return FilesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FilesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -250,8 +242,11 @@ func (client *FilesClient) getCreateRequest(ctx context.Context, groupName strin
 }
 
 // getHandleResponse handles the Get response.
-func (client *FilesClient) getHandleResponse(resp *http.Response) (FilesClientGetResponse, error) {
+func (client *FilesClient) getHandleResponse(resp *http.Response, successCodes ...int) (FilesClientGetResponse, error) {
 	result := FilesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProjectFile); err != nil {
 		return FilesClientGetResponse{}, err
 	}
@@ -277,51 +272,65 @@ func (client *FilesClient) NewListPager(groupName string, serviceName string, pr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, groupName, serviceName, projectName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, groupName, serviceName, projectName, nextLink, options)
 			if err != nil {
 				return FilesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FilesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *FilesClient) listCreateRequest(ctx context.Context, groupName string, serviceName string, projectName string, _ *FilesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/files"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FilesClient) listCreateRequest(ctx context.Context, groupName string, serviceName string, projectName string, nextLink string, _ *FilesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}/files"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if groupName == "" {
+			return nil, errors.New("parameter groupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
+		if serviceName == "" {
+			return nil, errors.New("parameter serviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+		if projectName == "" {
+			return nil, errors.New("parameter projectName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if groupName == "" {
-		return nil, errors.New("parameter groupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupName}", url.PathEscape(groupName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *FilesClient) listHandleResponse(resp *http.Response) (FilesClientListResponse, error) {
+func (client *FilesClient) listHandleResponse(resp *http.Response, successCodes ...int) (FilesClientListResponse, error) {
 	result := FilesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileList); err != nil {
 		return FilesClientListResponse{}, err
 	}
@@ -351,12 +360,7 @@ func (client *FilesClient) Read(ctx context.Context, groupName string, serviceNa
 	if err != nil {
 		return FilesClientReadResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FilesClientReadResponse{}, err
-	}
-	resp, err := client.readHandleResponse(httpResp)
-	return resp, err
+	return client.readHandleResponse(httpResp, http.StatusOK)
 }
 
 // readCreateRequest creates the Read request.
@@ -394,8 +398,11 @@ func (client *FilesClient) readCreateRequest(ctx context.Context, groupName stri
 }
 
 // readHandleResponse handles the Read response.
-func (client *FilesClient) readHandleResponse(resp *http.Response) (FilesClientReadResponse, error) {
+func (client *FilesClient) readHandleResponse(resp *http.Response, successCodes ...int) (FilesClientReadResponse, error) {
 	result := FilesClientReadResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileStorageInfo); err != nil {
 		return FilesClientReadResponse{}, err
 	}
@@ -425,12 +432,7 @@ func (client *FilesClient) ReadWrite(ctx context.Context, groupName string, serv
 	if err != nil {
 		return FilesClientReadWriteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FilesClientReadWriteResponse{}, err
-	}
-	resp, err := client.readWriteHandleResponse(httpResp)
-	return resp, err
+	return client.readWriteHandleResponse(httpResp, http.StatusOK)
 }
 
 // readWriteCreateRequest creates the ReadWrite request.
@@ -468,8 +470,11 @@ func (client *FilesClient) readWriteCreateRequest(ctx context.Context, groupName
 }
 
 // readWriteHandleResponse handles the ReadWrite response.
-func (client *FilesClient) readWriteHandleResponse(resp *http.Response) (FilesClientReadWriteResponse, error) {
+func (client *FilesClient) readWriteHandleResponse(resp *http.Response, successCodes ...int) (FilesClientReadWriteResponse, error) {
 	result := FilesClientReadWriteResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileStorageInfo); err != nil {
 		return FilesClientReadWriteResponse{}, err
 	}
@@ -500,12 +505,7 @@ func (client *FilesClient) Update(ctx context.Context, groupName string, service
 	if err != nil {
 		return FilesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FilesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -547,8 +547,11 @@ func (client *FilesClient) updateCreateRequest(ctx context.Context, groupName st
 }
 
 // updateHandleResponse handles the Update response.
-func (client *FilesClient) updateHandleResponse(resp *http.Response) (FilesClientUpdateResponse, error) {
+func (client *FilesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (FilesClientUpdateResponse, error) {
 	result := FilesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProjectFile); err != nil {
 		return FilesClientUpdateResponse{}, err
 	}

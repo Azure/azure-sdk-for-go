@@ -63,12 +63,7 @@ func (client *CustomizationTasksClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return CustomizationTasksClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CustomizationTasksClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -106,8 +101,11 @@ func (client *CustomizationTasksClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *CustomizationTasksClient) getHandleResponse(resp *http.Response) (CustomizationTasksClientGetResponse, error) {
+func (client *CustomizationTasksClient) getHandleResponse(resp *http.Response, successCodes ...int) (CustomizationTasksClientGetResponse, error) {
 	result := CustomizationTasksClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomizationTask); err != nil {
 		return CustomizationTasksClientGetResponse{}, err
 	}
@@ -136,12 +134,7 @@ func (client *CustomizationTasksClient) GetErrorDetails(ctx context.Context, res
 	if err != nil {
 		return CustomizationTasksClientGetErrorDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CustomizationTasksClientGetErrorDetailsResponse{}, err
-	}
-	resp, err := client.getErrorDetailsHandleResponse(httpResp)
-	return resp, err
+	return client.getErrorDetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getErrorDetailsCreateRequest creates the GetErrorDetails request.
@@ -179,8 +172,11 @@ func (client *CustomizationTasksClient) getErrorDetailsCreateRequest(ctx context
 }
 
 // getErrorDetailsHandleResponse handles the GetErrorDetails response.
-func (client *CustomizationTasksClient) getErrorDetailsHandleResponse(resp *http.Response) (CustomizationTasksClientGetErrorDetailsResponse, error) {
+func (client *CustomizationTasksClient) getErrorDetailsHandleResponse(resp *http.Response, successCodes ...int) (CustomizationTasksClientGetErrorDetailsResponse, error) {
 	result := CustomizationTasksClientGetErrorDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CatalogResourceValidationErrorDetails); err != nil {
 		return CustomizationTasksClientGetErrorDetailsResponse{}, err
 	}
@@ -204,54 +200,68 @@ func (client *CustomizationTasksClient) NewListByCatalogPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByCatalogCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, options)
-			}, nil)
+			req, err := client.listByCatalogCreateRequest(ctx, resourceGroupName, devCenterName, catalogName, nextLink, options)
 			if err != nil {
 				return CustomizationTasksClientListByCatalogResponse{}, err
 			}
-			return client.listByCatalogHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CustomizationTasksClientListByCatalogResponse{}, err
+			}
+			return client.listByCatalogHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByCatalogCreateRequest creates the ListByCatalog request.
-func (client *CustomizationTasksClient) listByCatalogCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, options *CustomizationTasksClientListByCatalogOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/tasks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CustomizationTasksClient) listByCatalogCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, nextLink string, options *CustomizationTasksClientListByCatalogOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/tasks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if devCenterName == "" {
+			return nil, errors.New("parameter devCenterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
+		if catalogName == "" {
+			return nil, errors.New("parameter catalogName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if devCenterName == "" {
-		return nil, errors.New("parameter devCenterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{devCenterName}", url.PathEscape(devCenterName))
-	if catalogName == "" {
-		return nil, errors.New("parameter catalogName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{catalogName}", url.PathEscape(catalogName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByCatalogHandleResponse handles the ListByCatalog response.
-func (client *CustomizationTasksClient) listByCatalogHandleResponse(resp *http.Response) (CustomizationTasksClientListByCatalogResponse, error) {
+func (client *CustomizationTasksClient) listByCatalogHandleResponse(resp *http.Response, successCodes ...int) (CustomizationTasksClientListByCatalogResponse, error) {
 	result := CustomizationTasksClientListByCatalogResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomizationTaskListResult); err != nil {
 		return CustomizationTasksClientListByCatalogResponse{}, err
 	}

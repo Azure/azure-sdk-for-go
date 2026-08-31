@@ -7,11 +7,11 @@ package armchaos_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/DiscoveredResources_Get.json
+// Generated from example definition: 2026-08-01-preview/DiscoveredResources_Get.json
 func ExampleDiscoveredResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,14 +39,14 @@ func ExampleDiscoveredResourcesClient_Get() {
 	// 			ResourceName: to.Ptr("myVirtualMachine"),
 	// 			ResourceType: to.Ptr("virtualMachines"),
 	// 			FullyQualifiedIdentifier: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/myVirtualMachine"),
-	// 			DiscoveredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T10:30:00.000Z"); return t}()),
+	// 			DiscoveredAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
 	// 			Scope: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
 	// 		},
 	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T10:30:00.000Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("system"),
 	// 			CreatedByType: to.Ptr(armchaos.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T10:30:00.000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("system"),
 	// 			LastModifiedByType: to.Ptr(armchaos.CreatedByTypeApplication),
 	// 		},
@@ -54,7 +54,7 @@ func ExampleDiscoveredResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/DiscoveredResources_ListByWorkspace.json
+// Generated from example definition: 2026-08-01-preview/DiscoveredResources_ListByWorkspace.json
 func ExampleDiscoveredResourcesClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,14 +88,14 @@ func ExampleDiscoveredResourcesClient_NewListByWorkspacePager() {
 		// 					ResourceName: to.Ptr("myVirtualMachine"),
 		// 					ResourceType: to.Ptr("virtualMachines"),
 		// 					FullyQualifiedIdentifier: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/myVirtualMachine"),
-		// 					DiscoveredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T10:30:00.000Z"); return t}()),
+		// 					DiscoveredAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
 		// 					Scope: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T10:30:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("system"),
 		// 					CreatedByType: to.Ptr(armchaos.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T10:30:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.January, 15, 10, 30, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("system"),
 		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByTypeApplication),
 		// 				},
@@ -109,14 +109,14 @@ func ExampleDiscoveredResourcesClient_NewListByWorkspacePager() {
 		// 					ResourceName: to.Ptr("mystorageaccount"),
 		// 					ResourceType: to.Ptr("storageAccounts"),
 		// 					FullyQualifiedIdentifier: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Storage/storageAccounts/mystorageaccount"),
-		// 					DiscoveredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T11:00:00.000Z"); return t}()),
+		// 					DiscoveredAt: to.Ptr(time.Date(2025, time.January, 15, 11, 0, 0, 0, time.UTC)),
 		// 					Scope: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T11:00:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.January, 15, 11, 0, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("system"),
 		// 					CreatedByType: to.Ptr(armchaos.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T11:00:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.January, 15, 11, 0, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("system"),
 		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByTypeApplication),
 		// 				},
@@ -130,14 +130,14 @@ func ExampleDiscoveredResourcesClient_NewListByWorkspacePager() {
 		// 					ResourceName: to.Ptr("myVirtualNetwork"),
 		// 					ResourceType: to.Ptr("virtualNetworks"),
 		// 					FullyQualifiedIdentifier: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Network/virtualNetworks/myVirtualNetwork"),
-		// 					DiscoveredAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T11:15:00.000Z"); return t}()),
+		// 					DiscoveredAt: to.Ptr(time.Date(2025, time.January, 15, 11, 15, 0, 0, time.UTC)),
 		// 					Scope: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
 		// 				},
 		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T11:15:00.000Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.January, 15, 11, 15, 0, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("system"),
 		// 					CreatedByType: to.Ptr(armchaos.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-15T11:15:00.000Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.January, 15, 11, 15, 0, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("system"),
 		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByTypeApplication),
 		// 				},

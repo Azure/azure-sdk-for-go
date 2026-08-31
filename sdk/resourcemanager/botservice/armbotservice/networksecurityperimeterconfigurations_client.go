@@ -18,6 +18,8 @@ import (
 
 // NetworkSecurityPerimeterConfigurationsClient contains the methods for the NetworkSecurityPerimeterConfigurations group.
 // Don't use this type directly, use NewNetworkSecurityPerimeterConfigurationsClient() instead.
+//
+// Generated from API version 2023-09-15-preview
 type NetworkSecurityPerimeterConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewNetworkSecurityPerimeterConfigurationsClient(subscriptionID string, cred
 
 // Get - Gets the specified Network Security Perimeter configuration associated with the Bot.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Bot resource.
 //   - networkSecurityPerimeterConfigurationName - The resource association Name. Composed of parameter guid and association name.
@@ -62,12 +62,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) Get(ctx context.Cont
 	if err != nil {
 		return NetworkSecurityPerimeterConfigurationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkSecurityPerimeterConfigurationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -94,15 +89,18 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *NetworkSecurityPerimeterConfigurationsClient) getHandleResponse(resp *http.Response) (NetworkSecurityPerimeterConfigurationsClientGetResponse, error) {
+func (client *NetworkSecurityPerimeterConfigurationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (NetworkSecurityPerimeterConfigurationsClientGetResponse, error) {
 	result := NetworkSecurityPerimeterConfigurationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfiguration); err != nil {
 		return NetworkSecurityPerimeterConfigurationsClientGetResponse{}, err
 	}
@@ -110,8 +108,6 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getHandleResponse(re
 }
 
 // NewListPager - List Network Security Perimeter configurations associated with the Bot.
-//
-// Generated from API version 2023-09-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Bot resource.
 //   - options - NetworkSecurityPerimeterConfigurationsClientListOptions contains the optional parameters for the NetworkSecurityPerimeterConfigurationsClient.NewListPager
@@ -127,47 +123,61 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) NewListPager(resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, resourceName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
 			if err != nil {
 				return NetworkSecurityPerimeterConfigurationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkSecurityPerimeterConfigurationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *NetworkSecurityPerimeterConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *NetworkSecurityPerimeterConfigurationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/networkSecurityPerimeterConfigurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NetworkSecurityPerimeterConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *NetworkSecurityPerimeterConfigurationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices/{resourceName}/networkSecurityPerimeterConfigurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if resourceName == "" {
+			return nil, errors.New("parameter resourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20230915Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *NetworkSecurityPerimeterConfigurationsClient) listHandleResponse(resp *http.Response) (NetworkSecurityPerimeterConfigurationsClientListResponse, error) {
+func (client *NetworkSecurityPerimeterConfigurationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (NetworkSecurityPerimeterConfigurationsClientListResponse, error) {
 	result := NetworkSecurityPerimeterConfigurationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfigurationList); err != nil {
 		return NetworkSecurityPerimeterConfigurationsClientListResponse{}, err
 	}
@@ -176,8 +186,6 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) listHandleResponse(r
 
 // BeginReconcile - Reconcile the specified Network Security Perimeter configuration associated with the Bot.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Bot resource.
 //   - networkSecurityPerimeterConfigurationName - The resource association Name. Composed of parameter guid and association name.
@@ -202,8 +210,6 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) BeginReconcile(ctx c
 
 // Reconcile - Reconcile the specified Network Security Perimeter configuration associated with the Bot.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-15-preview
 func (client *NetworkSecurityPerimeterConfigurationsClient) reconcile(ctx context.Context, resourceGroupName string, resourceName string, networkSecurityPerimeterConfigurationName string, options *NetworkSecurityPerimeterConfigurationsClientBeginReconcileOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NetworkSecurityPerimeterConfigurationsClient.BeginReconcile"
@@ -219,8 +225,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) reconcile(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -249,8 +254,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) reconcileCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }

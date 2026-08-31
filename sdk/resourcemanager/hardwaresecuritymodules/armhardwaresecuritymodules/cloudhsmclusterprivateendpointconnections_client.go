@@ -20,7 +20,7 @@ import (
 // group.
 // Don't use this type directly, use NewCloudHsmClusterPrivateEndpointConnectionsClient() instead.
 //
-// Generated from API version 2025-03-31
+// Generated from API version 2025-12-01-preview
 type CloudHsmClusterPrivateEndpointConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -65,12 +65,7 @@ func (client *CloudHsmClusterPrivateEndpointConnectionsClient) Create(ctx contex
 	if err != nil {
 		return CloudHsmClusterPrivateEndpointConnectionsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CloudHsmClusterPrivateEndpointConnectionsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK)
 }
 
 // createCreateRequest creates the Create request.
@@ -97,7 +92,7 @@ func (client *CloudHsmClusterPrivateEndpointConnectionsClient) createCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250331)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -108,8 +103,11 @@ func (client *CloudHsmClusterPrivateEndpointConnectionsClient) createCreateReque
 }
 
 // createHandleResponse handles the Create response.
-func (client *CloudHsmClusterPrivateEndpointConnectionsClient) createHandleResponse(resp *http.Response) (CloudHsmClusterPrivateEndpointConnectionsClientCreateResponse, error) {
+func (client *CloudHsmClusterPrivateEndpointConnectionsClient) createHandleResponse(resp *http.Response, successCodes ...int) (CloudHsmClusterPrivateEndpointConnectionsClientCreateResponse, error) {
 	result := CloudHsmClusterPrivateEndpointConnectionsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
 		return CloudHsmClusterPrivateEndpointConnectionsClientCreateResponse{}, err
 	}
@@ -158,8 +156,7 @@ func (client *CloudHsmClusterPrivateEndpointConnectionsClient) deleteOperation(c
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -188,7 +185,7 @@ func (client *CloudHsmClusterPrivateEndpointConnectionsClient) deleteCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250331)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -215,12 +212,7 @@ func (client *CloudHsmClusterPrivateEndpointConnectionsClient) Get(ctx context.C
 	if err != nil {
 		return CloudHsmClusterPrivateEndpointConnectionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CloudHsmClusterPrivateEndpointConnectionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -247,15 +239,18 @@ func (client *CloudHsmClusterPrivateEndpointConnectionsClient) getCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250331)
+	reqQP.Set("api-version", version20251201Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *CloudHsmClusterPrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response) (CloudHsmClusterPrivateEndpointConnectionsClientGetResponse, error) {
+func (client *CloudHsmClusterPrivateEndpointConnectionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (CloudHsmClusterPrivateEndpointConnectionsClientGetResponse, error) {
 	result := CloudHsmClusterPrivateEndpointConnectionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnection); err != nil {
 		return CloudHsmClusterPrivateEndpointConnectionsClientGetResponse{}, err
 	}

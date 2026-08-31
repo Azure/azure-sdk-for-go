@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusters_Create.json
+// Generated from example definition: 2026-07-01/KubernetesClusters_Create.json
 func ExampleKubernetesClustersClient_BeginCreateOrUpdate_createOrUpdateKubernetesCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -502,10 +502,10 @@ func ExampleKubernetesClustersClient_BeginCreateOrUpdate_createOrUpdateKubernete
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.KubernetesClusterProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -518,7 +518,7 @@ func ExampleKubernetesClustersClient_BeginCreateOrUpdate_createOrUpdateKubernete
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusters_L2LoadBalancer_Create.json
+// Generated from example definition: 2026-07-01/KubernetesClusters_L2LoadBalancer_Create.json
 func ExampleKubernetesClustersClient_BeginCreateOrUpdate_createOrUpdateKubernetesClusterWithALayer2LoadBalancer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -950,10 +950,10 @@ func ExampleKubernetesClustersClient_BeginCreateOrUpdate_createOrUpdateKubernete
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.KubernetesClusterProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -966,7 +966,7 @@ func ExampleKubernetesClustersClient_BeginCreateOrUpdate_createOrUpdateKubernete
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusters_Delete.json
+// Generated from example definition: 2026-07-01/KubernetesClusters_Delete.json
 func ExampleKubernetesClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -987,7 +987,7 @@ func ExampleKubernetesClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusters_Get.json
+// Generated from example definition: 2026-07-01/KubernetesClusters_Get.json
 func ExampleKubernetesClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1293,10 +1293,10 @@ func ExampleKubernetesClustersClient_Get() {
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.KubernetesClusterProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},
@@ -1309,7 +1309,7 @@ func ExampleKubernetesClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusters_ListByResourceGroup.json
+// Generated from example definition: 2026-07-01/KubernetesClusters_ListByResourceGroup.json
 func ExampleKubernetesClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1622,10 +1622,10 @@ func ExampleKubernetesClustersClient_NewListByResourceGroupPager() {
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.KubernetesClusterProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armnetworkcloud.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("identityA"),
 		// 					CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("identityB"),
 		// 					LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 		// 				},
@@ -1641,7 +1641,7 @@ func ExampleKubernetesClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusters_ListBySubscription.json
+// Generated from example definition: 2026-07-01/KubernetesClusters_ListBySubscription.json
 func ExampleKubernetesClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1953,10 +1953,10 @@ func ExampleKubernetesClustersClient_NewListBySubscriptionPager() {
 		// 					ProvisioningState: to.Ptr(armnetworkcloud.KubernetesClusterProvisioningStateSucceeded),
 		// 				},
 		// 				SystemData: &armnetworkcloud.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 		// 					CreatedBy: to.Ptr("identityA"),
 		// 					CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("identityB"),
 		// 					LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 		// 				},
@@ -1972,7 +1972,7 @@ func ExampleKubernetesClustersClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusters_RestartNode.json
+// Generated from example definition: 2026-07-01/KubernetesClusters_RestartNode.json
 func ExampleKubernetesClustersClient_BeginRestartNode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1995,7 +1995,7 @@ func ExampleKubernetesClustersClient_BeginRestartNode() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/KubernetesClusters_Patch.json
+// Generated from example definition: 2026-07-01/KubernetesClusters_Patch.json
 func ExampleKubernetesClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2330,10 +2330,10 @@ func ExampleKubernetesClustersClient_BeginUpdate() {
 	// 			ProvisioningState: to.Ptr(armnetworkcloud.KubernetesClusterProvisioningStateSucceeded),
 	// 		},
 	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:27:03.008Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
 	// 			CreatedBy: to.Ptr("identityA"),
 	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-22T13:29:03.001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("identityB"),
 	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
 	// 		},

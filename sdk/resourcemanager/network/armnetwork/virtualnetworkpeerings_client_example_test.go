@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/VirtualNetworkPeeringCreate.json
+// Generated from example definition: 2025-09-01/VirtualNetworkPeeringCreate.json
 func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createPeering() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkPeeringCreateWithRemoteVirtualNetworkEncryption.json
+// Generated from example definition: 2025-09-01/VirtualNetworkPeeringCreateWithRemoteVirtualNetworkEncryption.json
 func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createPeeringWithRemoteVirtualNetworkEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createPeeringWithRe
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkPeeringSync.json
+// Generated from example definition: 2025-09-01/VirtualNetworkPeeringSync.json
 func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_syncPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -209,7 +209,7 @@ func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_syncPeering() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkSubnetPeeringCreate.json
+// Generated from example definition: 2025-09-01/VirtualNetworkSubnetPeeringCreate.json
 func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createSubnetPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -309,7 +309,7 @@ func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createSubnetPeering
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkSubnetPeeringSync.json
+// Generated from example definition: 2025-09-01/VirtualNetworkSubnetPeeringSync.json
 func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_syncSubnetPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -400,7 +400,7 @@ func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_syncSubnetPeering()
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkV6SubnetPeeringCreate.json
+// Generated from example definition: 2025-09-01/VirtualNetworkV6SubnetPeeringCreate.json
 func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createV6SubnetPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -496,7 +496,7 @@ func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_createV6SubnetPeeri
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkV6SubnetPeeringSync.json
+// Generated from example definition: 2025-09-01/VirtualNetworkV6SubnetPeeringSync.json
 func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_syncV6SubnetPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -583,7 +583,7 @@ func ExampleVirtualNetworkPeeringsClient_BeginCreateOrUpdate_syncV6SubnetPeering
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkPeeringDelete.json
+// Generated from example definition: 2025-09-01/VirtualNetworkPeeringDelete.json
 func ExampleVirtualNetworkPeeringsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -609,7 +609,7 @@ func ExampleVirtualNetworkPeeringsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkPeeringGet.json
+// Generated from example definition: 2025-09-01/VirtualNetworkPeeringGet.json
 func ExampleVirtualNetworkPeeringsClient_Get_getPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -661,7 +661,7 @@ func ExampleVirtualNetworkPeeringsClient_Get_getPeering() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkPeeringGetWithRemoteVirtualNetworkEncryption.json
+// Generated from example definition: 2025-09-01/VirtualNetworkPeeringGetWithRemoteVirtualNetworkEncryption.json
 func ExampleVirtualNetworkPeeringsClient_Get_getPeeringWithRemoteVirtualNetworkEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -711,7 +711,7 @@ func ExampleVirtualNetworkPeeringsClient_Get_getPeeringWithRemoteVirtualNetworkE
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkSubnetPeeringGet.json
+// Generated from example definition: 2025-09-01/VirtualNetworkSubnetPeeringGet.json
 func ExampleVirtualNetworkPeeringsClient_Get_getSubnetPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -785,7 +785,7 @@ func ExampleVirtualNetworkPeeringsClient_Get_getSubnetPeering() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkV6SubnetPeeringGet.json
+// Generated from example definition: 2025-09-01/VirtualNetworkV6SubnetPeeringGet.json
 func ExampleVirtualNetworkPeeringsClient_Get_getV6SubnetPeering() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -855,7 +855,7 @@ func ExampleVirtualNetworkPeeringsClient_Get_getV6SubnetPeering() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkPeeringList.json
+// Generated from example definition: 2025-09-01/VirtualNetworkPeeringList.json
 func ExampleVirtualNetworkPeeringsClient_NewListPager_listPeerings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -946,7 +946,7 @@ func ExampleVirtualNetworkPeeringsClient_NewListPager_listPeerings() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualNetworkPeeringListWithRemoteVirtualNetworkEncryption.json
+// Generated from example definition: 2025-09-01/VirtualNetworkPeeringListWithRemoteVirtualNetworkEncryption.json
 func ExampleVirtualNetworkPeeringsClient_NewListPager_listPeeringsWithRemoteVirtualNetworkEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

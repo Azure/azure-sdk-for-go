@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/CloudServiceSwapPut.json
+// Generated from example definition: 2025-09-01/CloudServiceSwapPut.json
 func ExampleVipSwapClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleVipSwapClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/CloudServiceSwapGet.json
+// Generated from example definition: 2025-09-01/CloudServiceSwapGet.json
 func ExampleVipSwapClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,7 +72,7 @@ func ExampleVipSwapClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/CloudServiceSwapList.json
+// Generated from example definition: 2025-09-01/CloudServiceSwapList.json
 func ExampleVipSwapClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

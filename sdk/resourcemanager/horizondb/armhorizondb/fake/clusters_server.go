@@ -41,6 +41,18 @@ type ClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armhorizondb.ClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armhorizondb.ClustersClientListBySubscriptionResponse])
 
+	// BeginRestart is the fake for method ClustersClient.BeginRestart
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginRestart func(ctx context.Context, resourceGroupName string, clusterName string, options *armhorizondb.ClustersClientBeginRestartOptions) (resp azfake.PollerResponder[armhorizondb.ClustersClientRestartResponse], errResp azfake.ErrorResponder)
+
+	// BeginStart is the fake for method ClustersClient.BeginStart
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginStart func(ctx context.Context, resourceGroupName string, clusterName string, options *armhorizondb.ClustersClientBeginStartOptions) (resp azfake.PollerResponder[armhorizondb.ClustersClientStartResponse], errResp azfake.ErrorResponder)
+
+	// BeginStop is the fake for method ClustersClient.BeginStop
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginStop func(ctx context.Context, resourceGroupName string, clusterName string, options *armhorizondb.ClustersClientBeginStopOptions) (resp azfake.PollerResponder[armhorizondb.ClustersClientStopResponse], errResp azfake.ErrorResponder)
+
 	// BeginUpdate is the fake for method ClustersClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, properties armhorizondb.ClusterForPatchUpdate, options *armhorizondb.ClustersClientBeginUpdateOptions) (resp azfake.PollerResponder[armhorizondb.ClustersClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -56,6 +68,9 @@ func NewClustersServerTransport(srv *ClustersServer) *ClustersServerTransport {
 		beginDelete:                 newTracker[azfake.PollerResponder[armhorizondb.ClustersClientDeleteResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armhorizondb.ClustersClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armhorizondb.ClustersClientListBySubscriptionResponse]](),
+		beginRestart:                newTracker[azfake.PollerResponder[armhorizondb.ClustersClientRestartResponse]](),
+		beginStart:                  newTracker[azfake.PollerResponder[armhorizondb.ClustersClientStartResponse]](),
+		beginStop:                   newTracker[azfake.PollerResponder[armhorizondb.ClustersClientStopResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armhorizondb.ClustersClientUpdateResponse]](),
 	}
 }
@@ -68,6 +83,9 @@ type ClustersServerTransport struct {
 	beginDelete                 *tracker[azfake.PollerResponder[armhorizondb.ClustersClientDeleteResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armhorizondb.ClustersClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armhorizondb.ClustersClientListBySubscriptionResponse]]
+	beginRestart                *tracker[azfake.PollerResponder[armhorizondb.ClustersClientRestartResponse]]
+	beginStart                  *tracker[azfake.PollerResponder[armhorizondb.ClustersClientStartResponse]]
+	beginStop                   *tracker[azfake.PollerResponder[armhorizondb.ClustersClientStopResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armhorizondb.ClustersClientUpdateResponse]]
 }
 
@@ -102,6 +120,12 @@ func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
 			case "ClustersClient.NewListBySubscriptionPager":
 				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
+			case "ClustersClient.BeginRestart":
+				res.resp, res.err = c.dispatchBeginRestart(req)
+			case "ClustersClient.BeginStart":
+				res.resp, res.err = c.dispatchBeginStart(req)
+			case "ClustersClient.BeginStop":
+				res.resp, res.err = c.dispatchBeginStop(req)
 			case "ClustersClient.BeginUpdate":
 				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
@@ -312,6 +336,138 @@ func (c *ClustersServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		c.newListBySubscriptionPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (c *ClustersServerTransport) dispatchBeginRestart(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginRestart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginRestart not implemented")}
+	}
+	beginRestart := c.beginRestart.get(req)
+	if beginRestart == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HorizonDb/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginRestart(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginRestart = &respr
+		c.beginRestart.add(req, beginRestart)
+	}
+
+	resp, err := server.PollerResponderNext(beginRestart, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginRestart.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginRestart) {
+		c.beginRestart.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *ClustersServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginStart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
+	}
+	beginStart := c.beginStart.get(req)
+	if beginStart == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HorizonDb/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginStart(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStart = &respr
+		c.beginStart.add(req, beginStart)
+	}
+
+	resp, err := server.PollerResponderNext(beginStart, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginStart.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStart) {
+		c.beginStart.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *ClustersServerTransport) dispatchBeginStop(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginStop == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStop not implemented")}
+	}
+	beginStop := c.beginStop.get(req)
+	if beginStop == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HorizonDb/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginStop(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStop = &respr
+		c.beginStop.add(req, beginStop)
+	}
+
+	resp, err := server.PollerResponderNext(beginStop, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginStop.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStop) {
+		c.beginStop.remove(req)
+	}
+
 	return resp, nil
 }
 

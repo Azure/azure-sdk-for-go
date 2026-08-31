@@ -18,6 +18,8 @@ import (
 
 // ManagedDatabaseColumnsClient contains the methods for the ManagedDatabaseColumns group.
 // Don't use this type directly, use NewManagedDatabaseColumnsClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ManagedDatabaseColumnsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewManagedDatabaseColumnsClient(subscriptionID string, credential azcore.To
 
 // Get - Get managed database column
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -65,12 +65,7 @@ func (client *ManagedDatabaseColumnsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return ManagedDatabaseColumnsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabaseColumnsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -109,15 +104,18 @@ func (client *ManagedDatabaseColumnsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabaseColumnsClient) getHandleResponse(resp *http.Response) (ManagedDatabaseColumnsClientGetResponse, error) {
+func (client *ManagedDatabaseColumnsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseColumnsClientGetResponse, error) {
 	result := ManagedDatabaseColumnsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseColumn); err != nil {
 		return ManagedDatabaseColumnsClientGetResponse{}, err
 	}
@@ -125,8 +123,6 @@ func (client *ManagedDatabaseColumnsClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListByDatabasePager - List managed database columns
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -143,74 +139,88 @@ func (client *ManagedDatabaseColumnsClient) NewListByDatabasePager(resourceGroup
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, options)
-			}, nil)
+			req, err := client.listByDatabaseCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, nextLink, options)
 			if err != nil {
 				return ManagedDatabaseColumnsClientListByDatabaseResponse{}, err
 			}
-			return client.listByDatabaseHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedDatabaseColumnsClientListByDatabaseResponse{}, err
+			}
+			return client.listByDatabaseHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDatabaseCreateRequest creates the ListByDatabase request.
-func (client *ManagedDatabaseColumnsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabaseColumnsClientListByDatabaseOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/columns"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedDatabaseColumnsClient) listByDatabaseCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, nextLink string, options *ManagedDatabaseColumnsClientListByDatabaseOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/columns"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skiptoken != nil {
-		reqQP.Set("$skiptoken", *options.Skiptoken)
-	}
-	reqQP.Set("api-version", "2025-02-01-preview")
-	if options != nil && options.Column != nil {
-		for _, qv := range options.Column {
-			reqQP.Add("column", qv)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skiptoken != nil {
+			reqQP.Set("$skiptoken", *options.Skiptoken)
 		}
-	}
-	if options != nil && options.OrderBy != nil {
-		for _, qv := range options.OrderBy {
-			reqQP.Add("orderBy", qv)
+		reqQP.Set("api-version", version20250201Preview)
+		if options != nil && options.Column != nil {
+			for _, qv := range options.Column {
+				reqQP.Add("column", qv)
+			}
 		}
-	}
-	if options != nil && options.Schema != nil {
-		for _, qv := range options.Schema {
-			reqQP.Add("schema", qv)
+		if options != nil && options.OrderBy != nil {
+			for _, qv := range options.OrderBy {
+				reqQP.Add("orderBy", qv)
+			}
 		}
-	}
-	if options != nil && options.Table != nil {
-		for _, qv := range options.Table {
-			reqQP.Add("table", qv)
+		if options != nil && options.Schema != nil {
+			for _, qv := range options.Schema {
+				reqQP.Add("schema", qv)
+			}
 		}
+		if options != nil && options.Table != nil {
+			for _, qv := range options.Table {
+				reqQP.Add("table", qv)
+			}
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByDatabaseHandleResponse handles the ListByDatabase response.
-func (client *ManagedDatabaseColumnsClient) listByDatabaseHandleResponse(resp *http.Response) (ManagedDatabaseColumnsClientListByDatabaseResponse, error) {
+func (client *ManagedDatabaseColumnsClient) listByDatabaseHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseColumnsClientListByDatabaseResponse, error) {
 	result := ManagedDatabaseColumnsClientListByDatabaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseColumnListResult); err != nil {
 		return ManagedDatabaseColumnsClientListByDatabaseResponse{}, err
 	}
@@ -218,8 +228,6 @@ func (client *ManagedDatabaseColumnsClient) listByDatabaseHandleResponse(resp *h
 }
 
 // NewListByTablePager - List managed database columns
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -238,62 +246,76 @@ func (client *ManagedDatabaseColumnsClient) NewListByTablePager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByTableCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, options)
-			}, nil)
+			req, err := client.listByTableCreateRequest(ctx, resourceGroupName, managedInstanceName, databaseName, schemaName, tableName, nextLink, options)
 			if err != nil {
 				return ManagedDatabaseColumnsClientListByTableResponse{}, err
 			}
-			return client.listByTableHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedDatabaseColumnsClientListByTableResponse{}, err
+			}
+			return client.listByTableHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByTableCreateRequest creates the ListByTable request.
-func (client *ManagedDatabaseColumnsClient) listByTableCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, options *ManagedDatabaseColumnsClientListByTableOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedDatabaseColumnsClient) listByTableCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, schemaName string, tableName string, nextLink string, options *ManagedDatabaseColumnsClientListByTableOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		if databaseName == "" {
+			return nil, errors.New("parameter databaseName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
+		if schemaName == "" {
+			return nil, errors.New("parameter schemaName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{schemaName}", url.PathEscape(schemaName))
+		if tableName == "" {
+			return nil, errors.New("parameter tableName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	if databaseName == "" {
-		return nil, errors.New("parameter databaseName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	if schemaName == "" {
-		return nil, errors.New("parameter schemaName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{schemaName}", url.PathEscape(schemaName))
-	if tableName == "" {
-		return nil, errors.New("parameter tableName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByTableHandleResponse handles the ListByTable response.
-func (client *ManagedDatabaseColumnsClient) listByTableHandleResponse(resp *http.Response) (ManagedDatabaseColumnsClientListByTableResponse, error) {
+func (client *ManagedDatabaseColumnsClient) listByTableHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabaseColumnsClientListByTableResponse, error) {
 	result := ManagedDatabaseColumnsClientListByTableResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DatabaseColumnListResult); err != nil {
 		return ManagedDatabaseColumnsClientListByTableResponse{}, err
 	}

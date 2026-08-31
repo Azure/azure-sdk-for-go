@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/VirtualWANPut.json
+// Generated from example definition: 2025-09-01/VirtualWANPut.json
 func ExampleVirtualWansClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleVirtualWansClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualWANDelete.json
+// Generated from example definition: 2025-09-01/VirtualWANDelete.json
 func ExampleVirtualWansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleVirtualWansClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualWANGet.json
+// Generated from example definition: 2025-09-01/VirtualWANGet.json
 func ExampleVirtualWansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -157,7 +157,7 @@ func ExampleVirtualWansClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualWANList.json
+// Generated from example definition: 2025-09-01/VirtualWANList.json
 func ExampleVirtualWansClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,7 +250,7 @@ func ExampleVirtualWansClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualWANListByResourceGroup.json
+// Generated from example definition: 2025-09-01/VirtualWANListByResourceGroup.json
 func ExampleVirtualWansClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +343,7 @@ func ExampleVirtualWansClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-01/VirtualWANUpdateTags.json
+// Generated from example definition: 2025-09-01/VirtualWANUpdateTags.json
 func ExampleVirtualWansClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

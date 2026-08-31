@@ -18,6 +18,8 @@ import (
 
 // ManagedDatabasesClient contains the methods for the ManagedDatabases group.
 // Don't use this type directly, use NewManagedDatabasesClient() instead.
+//
+// Generated from API version 2025-02-01-preview
 type ManagedDatabasesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewManagedDatabasesClient(subscriptionID string, credential azcore.TokenCre
 
 // BeginCancelMove - Cancels a managed database move operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -68,8 +68,6 @@ func (client *ManagedDatabasesClient) BeginCancelMove(ctx context.Context, resou
 
 // CancelMove - Cancels a managed database move operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ManagedDatabasesClient) cancelMove(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseMoveDefinition, options *ManagedDatabasesClientBeginCancelMoveOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedDatabasesClient.BeginCancelMove"
@@ -85,8 +83,7 @@ func (client *ManagedDatabasesClient) cancelMove(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -115,8 +112,8 @@ func (client *ManagedDatabasesClient) cancelMoveCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -126,8 +123,6 @@ func (client *ManagedDatabasesClient) cancelMoveCreateRequest(ctx context.Contex
 
 // BeginCompleteMove - Completes a managed database move operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -153,8 +148,6 @@ func (client *ManagedDatabasesClient) BeginCompleteMove(ctx context.Context, res
 
 // CompleteMove - Completes a managed database move operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ManagedDatabasesClient) completeMove(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseMoveDefinition, options *ManagedDatabasesClientBeginCompleteMoveOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedDatabasesClient.BeginCompleteMove"
@@ -170,8 +163,7 @@ func (client *ManagedDatabasesClient) completeMove(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -200,8 +192,8 @@ func (client *ManagedDatabasesClient) completeMoveCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -211,8 +203,6 @@ func (client *ManagedDatabasesClient) completeMoveCreateRequest(ctx context.Cont
 
 // BeginCompleteRestore - Completes the restore operation on a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -238,8 +228,6 @@ func (client *ManagedDatabasesClient) BeginCompleteRestore(ctx context.Context, 
 
 // CompleteRestore - Completes the restore operation on a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ManagedDatabasesClient) completeRestore(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters CompleteDatabaseRestoreDefinition, options *ManagedDatabasesClientBeginCompleteRestoreOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedDatabasesClient.BeginCompleteRestore"
@@ -255,8 +243,7 @@ func (client *ManagedDatabasesClient) completeRestore(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -285,8 +272,8 @@ func (client *ManagedDatabasesClient) completeRestoreCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -296,8 +283,6 @@ func (client *ManagedDatabasesClient) completeRestoreCreateRequest(ctx context.C
 
 // BeginCreateOrUpdate - Creates a new database or updates an existing database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -323,8 +308,6 @@ func (client *ManagedDatabasesClient) BeginCreateOrUpdate(ctx context.Context, r
 
 // CreateOrUpdate - Creates a new database or updates an existing database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ManagedDatabasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabase, options *ManagedDatabasesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedDatabasesClient.BeginCreateOrUpdate"
@@ -340,8 +323,7 @@ func (client *ManagedDatabasesClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -370,8 +352,8 @@ func (client *ManagedDatabasesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -382,8 +364,6 @@ func (client *ManagedDatabasesClient) createOrUpdateCreateRequest(ctx context.Co
 
 // BeginDelete - Deletes a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -408,8 +388,6 @@ func (client *ManagedDatabasesClient) BeginDelete(ctx context.Context, resourceG
 
 // Delete - Deletes a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ManagedDatabasesClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabasesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedDatabasesClient.BeginDelete"
@@ -425,8 +403,7 @@ func (client *ManagedDatabasesClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -455,15 +432,13 @@ func (client *ManagedDatabasesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -482,12 +457,7 @@ func (client *ManagedDatabasesClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ManagedDatabasesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedDatabasesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -514,15 +484,18 @@ func (client *ManagedDatabasesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ManagedDatabasesClient) getHandleResponse(resp *http.Response) (ManagedDatabasesClientGetResponse, error) {
+func (client *ManagedDatabasesClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabasesClientGetResponse, error) {
 	result := ManagedDatabasesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabase); err != nil {
 		return ManagedDatabasesClientGetResponse{}, err
 	}
@@ -530,8 +503,6 @@ func (client *ManagedDatabasesClient) getHandleResponse(resp *http.Response) (Ma
 }
 
 // NewListByInstancePager - Gets a list of managed databases.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedDatabasesClientListByInstanceOptions contains the optional parameters for the ManagedDatabasesClient.NewListByInstancePager
@@ -547,47 +518,61 @@ func (client *ManagedDatabasesClient) NewListByInstancePager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
-			}, nil)
+			req, err := client.listByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, nextLink, options)
 			if err != nil {
 				return ManagedDatabasesClientListByInstanceResponse{}, err
 			}
-			return client.listByInstanceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedDatabasesClientListByInstanceResponse{}, err
+			}
+			return client.listByInstanceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByInstanceCreateRequest creates the ListByInstance request.
-func (client *ManagedDatabasesClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, _ *ManagedDatabasesClientListByInstanceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedDatabasesClient) listByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, nextLink string, _ *ManagedDatabasesClientListByInstanceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByInstanceHandleResponse handles the ListByInstance response.
-func (client *ManagedDatabasesClient) listByInstanceHandleResponse(resp *http.Response) (ManagedDatabasesClientListByInstanceResponse, error) {
+func (client *ManagedDatabasesClient) listByInstanceHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabasesClientListByInstanceResponse, error) {
 	result := ManagedDatabasesClientListByInstanceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseListResult); err != nil {
 		return ManagedDatabasesClientListByInstanceResponse{}, err
 	}
@@ -595,8 +580,6 @@ func (client *ManagedDatabasesClient) listByInstanceHandleResponse(resp *http.Re
 }
 
 // NewListInaccessibleByInstancePager - Gets a list of inaccessible managed databases in a managed instance
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - options - ManagedDatabasesClientListInaccessibleByInstanceOptions contains the optional parameters for the ManagedDatabasesClient.NewListInaccessibleByInstancePager
@@ -612,47 +595,61 @@ func (client *ManagedDatabasesClient) NewListInaccessibleByInstancePager(resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listInaccessibleByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, options)
-			}, nil)
+			req, err := client.listInaccessibleByInstanceCreateRequest(ctx, resourceGroupName, managedInstanceName, nextLink, options)
 			if err != nil {
 				return ManagedDatabasesClientListInaccessibleByInstanceResponse{}, err
 			}
-			return client.listInaccessibleByInstanceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedDatabasesClientListInaccessibleByInstanceResponse{}, err
+			}
+			return client.listInaccessibleByInstanceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listInaccessibleByInstanceCreateRequest creates the ListInaccessibleByInstance request.
-func (client *ManagedDatabasesClient) listInaccessibleByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, _ *ManagedDatabasesClientListInaccessibleByInstanceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/inaccessibleManagedDatabases"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ManagedDatabasesClient) listInaccessibleByInstanceCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, nextLink string, _ *ManagedDatabasesClientListInaccessibleByInstanceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/inaccessibleManagedDatabases"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if managedInstanceName == "" {
+			return nil, errors.New("parameter managedInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedInstanceName == "" {
-		return nil, errors.New("parameter managedInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedInstanceName}", url.PathEscape(managedInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listInaccessibleByInstanceHandleResponse handles the ListInaccessibleByInstance response.
-func (client *ManagedDatabasesClient) listInaccessibleByInstanceHandleResponse(resp *http.Response) (ManagedDatabasesClientListInaccessibleByInstanceResponse, error) {
+func (client *ManagedDatabasesClient) listInaccessibleByInstanceHandleResponse(resp *http.Response, successCodes ...int) (ManagedDatabasesClientListInaccessibleByInstanceResponse, error) {
 	result := ManagedDatabasesClientListInaccessibleByInstanceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedDatabaseListResult); err != nil {
 		return ManagedDatabasesClientListInaccessibleByInstanceResponse{}, err
 	}
@@ -661,8 +658,6 @@ func (client *ManagedDatabasesClient) listInaccessibleByInstanceHandleResponse(r
 
 // BeginReevaluateInaccessibleDatabaseState - Reevaluates the inaccessibility state of a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -687,8 +682,6 @@ func (client *ManagedDatabasesClient) BeginReevaluateInaccessibleDatabaseState(c
 
 // ReevaluateInaccessibleDatabaseState - Reevaluates the inaccessibility state of a managed database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ManagedDatabasesClient) reevaluateInaccessibleDatabaseState(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, options *ManagedDatabasesClientBeginReevaluateInaccessibleDatabaseStateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedDatabasesClient.BeginReevaluateInaccessibleDatabaseState"
@@ -704,8 +697,7 @@ func (client *ManagedDatabasesClient) reevaluateInaccessibleDatabaseState(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -734,16 +726,14 @@ func (client *ManagedDatabasesClient) reevaluateInaccessibleDatabaseStateCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // BeginStartMove - Starts a managed database move operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -769,8 +759,6 @@ func (client *ManagedDatabasesClient) BeginStartMove(ctx context.Context, resour
 
 // StartMove - Starts a managed database move operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ManagedDatabasesClient) startMove(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseStartMoveDefinition, options *ManagedDatabasesClientBeginStartMoveOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedDatabasesClient.BeginStartMove"
@@ -786,8 +774,7 @@ func (client *ManagedDatabasesClient) startMove(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -816,8 +803,8 @@ func (client *ManagedDatabasesClient) startMoveCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
@@ -827,8 +814,6 @@ func (client *ManagedDatabasesClient) startMoveCreateRequest(ctx context.Context
 
 // BeginUpdate - Updates an existing database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - managedInstanceName - The name of the managed instance.
 //   - databaseName - The name of the database.
@@ -854,8 +839,6 @@ func (client *ManagedDatabasesClient) BeginUpdate(ctx context.Context, resourceG
 
 // Update - Updates an existing database.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-02-01-preview
 func (client *ManagedDatabasesClient) update(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, parameters ManagedDatabaseUpdate, options *ManagedDatabasesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedDatabasesClient.BeginUpdate"
@@ -871,8 +854,7 @@ func (client *ManagedDatabasesClient) update(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -901,8 +883,8 @@ func (client *ManagedDatabasesClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-02-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20250201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

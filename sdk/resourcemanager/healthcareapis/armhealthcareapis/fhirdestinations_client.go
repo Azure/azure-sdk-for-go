@@ -58,51 +58,65 @@ func (client *FhirDestinationsClient) NewListByIotConnectorPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByIotConnectorCreateRequest(ctx, resourceGroupName, workspaceName, iotConnectorName, options)
-			}, nil)
+			req, err := client.listByIotConnectorCreateRequest(ctx, resourceGroupName, workspaceName, iotConnectorName, nextLink, options)
 			if err != nil {
 				return FhirDestinationsClientListByIotConnectorResponse{}, err
 			}
-			return client.listByIotConnectorHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FhirDestinationsClientListByIotConnectorResponse{}, err
+			}
+			return client.listByIotConnectorHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByIotConnectorCreateRequest creates the ListByIotConnector request.
-func (client *FhirDestinationsClient) listByIotConnectorCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, _ *FhirDestinationsClientListByIotConnectorOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}/fhirdestinations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FhirDestinationsClient) listByIotConnectorCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, iotConnectorName string, nextLink string, _ *FhirDestinationsClientListByIotConnectorOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}/fhirdestinations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		if iotConnectorName == "" {
+			return nil, errors.New("parameter iotConnectorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{iotConnectorName}", url.PathEscape(iotConnectorName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if iotConnectorName == "" {
-		return nil, errors.New("parameter iotConnectorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{iotConnectorName}", url.PathEscape(iotConnectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250401Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByIotConnectorHandleResponse handles the ListByIotConnector response.
-func (client *FhirDestinationsClient) listByIotConnectorHandleResponse(resp *http.Response) (FhirDestinationsClientListByIotConnectorResponse, error) {
+func (client *FhirDestinationsClient) listByIotConnectorHandleResponse(resp *http.Response, successCodes ...int) (FhirDestinationsClientListByIotConnectorResponse, error) {
 	result := FhirDestinationsClientListByIotConnectorResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IotFhirDestinationCollection); err != nil {
 		return FhirDestinationsClientListByIotConnectorResponse{}, err
 	}

@@ -19,7 +19,7 @@ import (
 // NetworkProfileClient contains the methods for the NetworkProfile group.
 // Don't use this type directly, use NewNetworkProfileClient() instead.
 //
-// Generated from API version 2025-09-16-preview
+// Generated from API version 2026-07-15
 type NetworkProfileClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -60,12 +60,7 @@ func (client *NetworkProfileClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return NetworkProfileClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkProfileClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -88,15 +83,18 @@ func (client *NetworkProfileClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250916Preview)
+	reqQP.Set("api-version", version20260715)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *NetworkProfileClient) getHandleResponse(resp *http.Response) (NetworkProfileClientGetResponse, error) {
+func (client *NetworkProfileClient) getHandleResponse(resp *http.Response, successCodes ...int) (NetworkProfileClientGetResponse, error) {
 	result := NetworkProfileClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkProfile); err != nil {
 		return NetworkProfileClientGetResponse{}, err
 	}

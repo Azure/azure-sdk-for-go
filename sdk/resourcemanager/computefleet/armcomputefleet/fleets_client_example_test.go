@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/Fleets_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Fleets_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleFleetsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1168,7 +1168,7 @@ func ExampleFleetsClient_BeginCreateOrUpdate() {
 	// 						},
 	// 						IsOverridable: to.Ptr(true),
 	// 					},
-	// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-29T21:51:44.043Z"); return t}()),
+	// 					TimeCreated: to.Ptr(time.Date(2024, time.April, 29, 21, 51, 44, 43000000, time.UTC)),
 	// 				},
 	// 				ComputeAPIVersion: to.Ptr("2023-07-01"),
 	// 				PlatformFaultDomainCount: to.Ptr[int32](1),
@@ -1584,12 +1584,12 @@ func ExampleFleetsClient_BeginCreateOrUpdate() {
 	// 								},
 	// 								IsOverridable: to.Ptr(true),
 	// 							},
-	// 							TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-29T19:41:35.908Z"); return t}()),
+	// 							TimeCreated: to.Ptr(time.Date(2025, time.July, 29, 19, 41, 35, 908000000, time.UTC)),
 	// 						},
 	// 					},
 	// 				},
 	// 			},
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-10T00:16:34.8590555+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2024, time.July, 10, 0, 16, 34, 859055500, time.UTC)),
 	// 			UniqueID: to.Ptr("a2f7fabd-bbc2-4a20-afe1-49fdb3885a28"),
 	// 		},
 	// 		Zones: []*string{
@@ -1619,16 +1619,16 @@ func ExampleFleetsClient_BeginCreateOrUpdate() {
 	// 		SystemData: &armcomputefleet.SystemData{
 	// 			CreatedBy: to.Ptr("rowegentrpoajsv"),
 	// 			CreatedByType: to.Ptr(armcomputefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-29T21:51:44.043Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 21, 51, 44, 43000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("edwuayhhaoepxzisfaqjhmrxjq"),
 	// 			LastModifiedByType: to.Ptr(armcomputefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-29T21:51:44.043Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 21, 51, 44, 43000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/Fleets_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Fleets_Delete_MaximumSet_Gen.json
 func ExampleFleetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1649,7 +1649,7 @@ func ExampleFleetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/Fleets_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Fleets_Get_MaximumSet_Gen.json
 func ExampleFleetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2016,7 +2016,7 @@ func ExampleFleetsClient_Get() {
 	// 						},
 	// 						IsOverridable: to.Ptr(true),
 	// 					},
-	// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-29T21:51:44.043Z"); return t}()),
+	// 					TimeCreated: to.Ptr(time.Date(2024, time.April, 29, 21, 51, 44, 43000000, time.UTC)),
 	// 				},
 	// 				ComputeAPIVersion: to.Ptr("2023-07-01"),
 	// 				PlatformFaultDomainCount: to.Ptr[int32](1),
@@ -2423,12 +2423,12 @@ func ExampleFleetsClient_Get() {
 	// 								},
 	// 								IsOverridable: to.Ptr(true),
 	// 							},
-	// 							TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-29T18:51:38.722Z"); return t}()),
+	// 							TimeCreated: to.Ptr(time.Date(2025, time.July, 29, 18, 51, 38, 722000000, time.UTC)),
 	// 						},
 	// 					},
 	// 				},
 	// 			},
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-10T00:16:34.8590555+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2024, time.July, 10, 0, 16, 34, 859055500, time.UTC)),
 	// 			UniqueID: to.Ptr("a2f7fabd-bbc2-4a20-afe1-49fdb3885a28"),
 	// 		},
 	// 		Zones: []*string{
@@ -2458,16 +2458,16 @@ func ExampleFleetsClient_Get() {
 	// 		SystemData: &armcomputefleet.SystemData{
 	// 			CreatedBy: to.Ptr("rowegentrpoajsv"),
 	// 			CreatedByType: to.Ptr(armcomputefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-29T21:51:44.043Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 21, 51, 44, 43000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("edwuayhhaoepxzisfaqjhmrxjq"),
 	// 			LastModifiedByType: to.Ptr(armcomputefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-29T21:51:44.043Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 21, 51, 44, 43000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/Fleets_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Fleets_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2838,12 +2838,12 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 		// 								},
 		// 								IsOverridable: to.Ptr(true),
 		// 							},
-		// 							TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-29T21:51:44.043Z"); return t}()),
+		// 							TimeCreated: to.Ptr(time.Date(2024, time.April, 29, 21, 51, 44, 43000000, time.UTC)),
 		// 						},
 		// 						ComputeAPIVersion: to.Ptr("2023-07-01"),
 		// 						PlatformFaultDomainCount: to.Ptr[int32](1),
 		// 					},
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-10T00:16:34.8590555+00:00"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2024, time.July, 10, 0, 16, 34, 859055500, time.UTC)),
 		// 					UniqueID: to.Ptr("a2f7fabd-bbc2-4a20-afe1-49fdb3885a28"),
 		// 				},
 		// 				Zones: []*string{
@@ -2878,10 +2878,10 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armcomputefleet.SystemData{
 		// 					CreatedBy: to.Ptr("rowegentrpoajsv"),
 		// 					CreatedByType: to.Ptr(armcomputefleet.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-29T21:51:44.043Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 21, 51, 44, 43000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("edwuayhhaoepxzisfaqjhmrxjq"),
 		// 					LastModifiedByType: to.Ptr(armcomputefleet.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-29T21:51:44.043Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 21, 51, 44, 43000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -2891,7 +2891,7 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/Fleets_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Fleets_ListBySubscription_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3262,12 +3262,12 @@ func ExampleFleetsClient_NewListBySubscriptionPager() {
 		// 								},
 		// 								IsOverridable: to.Ptr(true),
 		// 							},
-		// 							TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-29T21:51:44.043Z"); return t}()),
+		// 							TimeCreated: to.Ptr(time.Date(2024, time.April, 29, 21, 51, 44, 43000000, time.UTC)),
 		// 						},
 		// 						ComputeAPIVersion: to.Ptr("2023-07-01"),
 		// 						PlatformFaultDomainCount: to.Ptr[int32](1),
 		// 					},
-		// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-10T00:16:34.8590555+00:00"); return t}()),
+		// 					TimeCreated: to.Ptr(time.Date(2024, time.July, 10, 0, 16, 34, 859055500, time.UTC)),
 		// 					UniqueID: to.Ptr("a2f7fabd-bbc2-4a20-afe1-49fdb3885a28"),
 		// 				},
 		// 				Zones: []*string{
@@ -3302,10 +3302,10 @@ func ExampleFleetsClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armcomputefleet.SystemData{
 		// 					CreatedBy: to.Ptr("rowegentrpoajsv"),
 		// 					CreatedByType: to.Ptr(armcomputefleet.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-29T21:51:44.043Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 21, 51, 44, 43000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("edwuayhhaoepxzisfaqjhmrxjq"),
 		// 					LastModifiedByType: to.Ptr(armcomputefleet.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-29T21:51:44.043Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 21, 51, 44, 43000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -3315,7 +3315,7 @@ func ExampleFleetsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Fleets_ListVirtualMachineScaleSets_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListVirtualMachineScaleSetsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3368,7 +3368,7 @@ func ExampleFleetsClient_NewListVirtualMachineScaleSetsPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/Fleets_ListVirtualMachines_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Fleets_ListVirtualMachines_MaximumSet_Gen.json
 func ExampleFleetsClient_NewListVirtualMachinesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -3400,18 +3400,27 @@ func ExampleFleetsClient_NewListVirtualMachinesPager() {
 		// 				ID: to.Ptr("/subscriptions/3453D930-6DDF-4466-B3B3-E1AEE9BD448C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/myFleet/virtualMachines/test-vm_aef123_0"),
 		// 				Type: to.Ptr("lmzwlqfgyp"),
 		// 				OperationStatus: to.Ptr(armcomputefleet.VMOperationStatusLaunching),
+		// 				VMSize: to.Ptr("Standard_D2s_v3"),
+		// 				Zone: to.Ptr("1"),
+		// 				Priority: to.Ptr("Spot"),
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("test-vm_aef123_1"),
 		// 				ID: to.Ptr("/subscriptions/3453D930-6DDF-4466-B3B3-E1AEE9BD448C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/myFleet/virtualMachines/test-vm_aef123_1"),
 		// 				Type: to.Ptr("lmzwlqfgyp"),
 		// 				OperationStatus: to.Ptr(armcomputefleet.VMOperationStatusCreating),
+		// 				VMSize: to.Ptr("Standard_D4s_v3"),
+		// 				Zone: to.Ptr("2"),
+		// 				Priority: to.Ptr("Regular"),
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("test-vm_aef123_2"),
 		// 				ID: to.Ptr("/subscriptions/3453D930-6DDF-4466-B3B3-E1AEE9BD448C/resourceGroups/rgazurefleet/providers/Microsoft.AzureFleet/fleets/myFleet/virtualMachines/test-vm_aef123_2"),
 		// 				Type: to.Ptr("lmzwlqfgyp"),
 		// 				OperationStatus: to.Ptr(armcomputefleet.VMOperationStatusSucceeded),
+		// 				VMSize: to.Ptr("Standard_D2s_v3"),
+		// 				Zone: to.Ptr("3"),
+		// 				Priority: to.Ptr("Spot"),
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("test-vm_aef123_3"),
@@ -3441,7 +3450,7 @@ func ExampleFleetsClient_NewListVirtualMachinesPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/Fleets_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-06-01-preview/Fleets_Update_MaximumSet_Gen.json
 func ExampleFleetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -4582,7 +4591,7 @@ func ExampleFleetsClient_BeginUpdate() {
 	// 						},
 	// 						IsOverridable: to.Ptr(true),
 	// 					},
-	// 					TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-29T21:51:44.043Z"); return t}()),
+	// 					TimeCreated: to.Ptr(time.Date(2024, time.April, 29, 21, 51, 44, 43000000, time.UTC)),
 	// 				},
 	// 				ComputeAPIVersion: to.Ptr("2023-07-01"),
 	// 				PlatformFaultDomainCount: to.Ptr[int32](1),
@@ -4987,12 +4996,12 @@ func ExampleFleetsClient_BeginUpdate() {
 	// 								},
 	// 								IsOverridable: to.Ptr(true),
 	// 							},
-	// 							TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-07-29T18:51:38.722Z"); return t}()),
+	// 							TimeCreated: to.Ptr(time.Date(2025, time.July, 29, 18, 51, 38, 722000000, time.UTC)),
 	// 						},
 	// 					},
 	// 				},
 	// 			},
-	// 			TimeCreated: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-07-10T00:16:34.8590555+00:00"); return t}()),
+	// 			TimeCreated: to.Ptr(time.Date(2024, time.July, 10, 0, 16, 34, 859055500, time.UTC)),
 	// 			UniqueID: to.Ptr("a2f7fabd-bbc2-4a20-afe1-49fdb3885a28"),
 	// 		},
 	// 		Zones: []*string{
@@ -5022,10 +5031,10 @@ func ExampleFleetsClient_BeginUpdate() {
 	// 		SystemData: &armcomputefleet.SystemData{
 	// 			CreatedBy: to.Ptr("rowegentrpoajsv"),
 	// 			CreatedByType: to.Ptr(armcomputefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-29T21:51:44.043Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.April, 29, 21, 51, 44, 43000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("edwuayhhaoepxzisfaqjhmrxjq"),
 	// 			LastModifiedByType: to.Ptr(armcomputefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2024-04-29T21:51:44.043Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.April, 29, 21, 51, 44, 43000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

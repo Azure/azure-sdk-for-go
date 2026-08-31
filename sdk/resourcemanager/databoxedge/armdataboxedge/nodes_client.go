@@ -56,47 +56,61 @@ func (client *NodesClient) NewListByDataBoxEdgeDevicePager(deviceName string, re
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByDataBoxEdgeDeviceCreateRequest(ctx, deviceName, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByDataBoxEdgeDeviceCreateRequest(ctx, deviceName, resourceGroupName, nextLink, options)
 			if err != nil {
 				return NodesClientListByDataBoxEdgeDeviceResponse{}, err
 			}
-			return client.listByDataBoxEdgeDeviceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NodesClientListByDataBoxEdgeDeviceResponse{}, err
+			}
+			return client.listByDataBoxEdgeDeviceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByDataBoxEdgeDeviceCreateRequest creates the ListByDataBoxEdgeDevice request.
-func (client *NodesClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, _ *NodesClientListByDataBoxEdgeDeviceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/nodes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *NodesClient) listByDataBoxEdgeDeviceCreateRequest(ctx context.Context, deviceName string, resourceGroupName string, nextLink string, _ *NodesClientListByDataBoxEdgeDeviceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/nodes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if deviceName == "" {
+			return nil, errors.New("parameter deviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{deviceName}", url.PathEscape(deviceName))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if deviceName == "" {
-		return nil, errors.New("parameter deviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deviceName}", url.PathEscape(deviceName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20231201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByDataBoxEdgeDeviceHandleResponse handles the ListByDataBoxEdgeDevice response.
-func (client *NodesClient) listByDataBoxEdgeDeviceHandleResponse(resp *http.Response) (NodesClientListByDataBoxEdgeDeviceResponse, error) {
+func (client *NodesClient) listByDataBoxEdgeDeviceHandleResponse(resp *http.Response, successCodes ...int) (NodesClientListByDataBoxEdgeDeviceResponse, error) {
 	result := NodesClientListByDataBoxEdgeDeviceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NodeList); err != nil {
 		return NodesClientListByDataBoxEdgeDeviceResponse{}, err
 	}

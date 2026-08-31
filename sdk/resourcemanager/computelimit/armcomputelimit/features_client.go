@@ -19,7 +19,7 @@ import (
 // FeaturesClient - Location-scoped operations for compute limit features.
 // Don't use this type directly, use NewFeaturesClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-07-31
 type FeaturesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -81,8 +81,7 @@ func (client *FeaturesClient) disable(ctx context.Context, location string, feat
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -107,7 +106,7 @@ func (client *FeaturesClient) disableCreateRequest(ctx context.Context, location
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260731)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -153,8 +152,7 @@ func (client *FeaturesClient) enable(ctx context.Context, location string, featu
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -179,7 +177,7 @@ func (client *FeaturesClient) enableCreateRequest(ctx context.Context, location 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260731)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {
@@ -211,12 +209,7 @@ func (client *FeaturesClient) Get(ctx context.Context, location string, featureN
 	if err != nil {
 		return FeaturesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FeaturesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -239,15 +232,18 @@ func (client *FeaturesClient) getCreateRequest(ctx context.Context, location str
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260731)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *FeaturesClient) getHandleResponse(resp *http.Response) (FeaturesClientGetResponse, error) {
+func (client *FeaturesClient) getHandleResponse(resp *http.Response, successCodes ...int) (FeaturesClientGetResponse, error) {
 	result := FeaturesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Feature); err != nil {
 		return FeaturesClientGetResponse{}, err
 	}
@@ -269,43 +265,57 @@ func (client *FeaturesClient) NewListBySubscriptionLocationResourcePager(locatio
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionLocationResourceCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listBySubscriptionLocationResourceCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return FeaturesClientListBySubscriptionLocationResourceResponse{}, err
 			}
-			return client.listBySubscriptionLocationResourceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FeaturesClientListBySubscriptionLocationResourceResponse{}, err
+			}
+			return client.listBySubscriptionLocationResourceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionLocationResourceCreateRequest creates the ListBySubscriptionLocationResource request.
-func (client *FeaturesClient) listBySubscriptionLocationResourceCreateRequest(ctx context.Context, location string, _ *FeaturesClientListBySubscriptionLocationResourceOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/features"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FeaturesClient) listBySubscriptionLocationResourceCreateRequest(ctx context.Context, location string, nextLink string, _ *FeaturesClientListBySubscriptionLocationResourceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ComputeLimit/locations/{location}/features"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260731)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionLocationResourceHandleResponse handles the ListBySubscriptionLocationResource response.
-func (client *FeaturesClient) listBySubscriptionLocationResourceHandleResponse(resp *http.Response) (FeaturesClientListBySubscriptionLocationResourceResponse, error) {
+func (client *FeaturesClient) listBySubscriptionLocationResourceHandleResponse(resp *http.Response, successCodes ...int) (FeaturesClientListBySubscriptionLocationResourceResponse, error) {
 	result := FeaturesClientListBySubscriptionLocationResourceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FeatureListResult); err != nil {
 		return FeaturesClientListBySubscriptionLocationResourceResponse{}, err
 	}

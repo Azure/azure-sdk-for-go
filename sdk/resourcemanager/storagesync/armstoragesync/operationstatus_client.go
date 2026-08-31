@@ -19,7 +19,7 @@ import (
 // OperationStatusClient contains the methods for the OperationStatus group.
 // Don't use this type directly, use NewOperationStatusClient() instead.
 //
-// Generated from API version 2022-09-01
+// Generated from API version 2025-12-01
 type OperationStatusClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -62,12 +62,7 @@ func (client *OperationStatusClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return OperationStatusClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationStatusClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -98,19 +93,22 @@ func (client *OperationStatusClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20220901)
+	reqQP.Set("api-version", version20251201)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *OperationStatusClient) getHandleResponse(resp *http.Response) (OperationStatusClientGetResponse, error) {
+func (client *OperationStatusClient) getHandleResponse(resp *http.Response, successCodes ...int) (OperationStatusClientGetResponse, error) {
 	result := OperationStatusClientGetResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.XMSRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {

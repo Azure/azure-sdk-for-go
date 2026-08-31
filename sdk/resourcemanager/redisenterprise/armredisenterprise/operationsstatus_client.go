@@ -19,7 +19,7 @@ import (
 // OperationsStatusClient contains the methods for the OperationsStatus group.
 // Don't use this type directly, use NewOperationsStatusClient() instead.
 //
-// Generated from API version 2025-08-01-preview
+// Generated from API version 2026-06-01-preview
 type OperationsStatusClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -60,12 +60,7 @@ func (client *OperationsStatusClient) Get(ctx context.Context, location string, 
 	if err != nil {
 		return OperationsStatusClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationsStatusClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -88,15 +83,18 @@ func (client *OperationsStatusClient) getCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801Preview)
+	reqQP.Set("api-version", version20260601Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *OperationsStatusClient) getHandleResponse(resp *http.Response) (OperationsStatusClientGetResponse, error) {
+func (client *OperationsStatusClient) getHandleResponse(resp *http.Response, successCodes ...int) (OperationsStatusClientGetResponse, error) {
 	result := OperationsStatusClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
 		return OperationsStatusClientGetResponse{}, err
 	}

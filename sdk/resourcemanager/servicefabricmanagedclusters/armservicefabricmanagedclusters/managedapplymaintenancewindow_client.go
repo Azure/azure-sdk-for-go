@@ -62,8 +62,7 @@ func (client *ManagedApplyMaintenanceWindowClient) Post(ctx context.Context, res
 		return ManagedApplyMaintenanceWindowClientPostResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedApplyMaintenanceWindowClientPostResponse{}, err
+		return ManagedApplyMaintenanceWindowClientPostResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ManagedApplyMaintenanceWindowClientPostResponse{}, nil
 }

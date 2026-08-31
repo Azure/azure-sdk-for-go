@@ -50,7 +50,7 @@ func ExampleManagedDatabaseSecurityEventsClient_NewListByDatabasePager_getTheMan
 		// 					ApplicationName: to.Ptr("myApp"),
 		// 					ClientIP: to.Ptr("10.166.113.220"),
 		// 					Database: to.Ptr("database1"),
-		// 					EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-24T10:13:24.729Z"); return t}()),
+		// 					EventTime: to.Ptr(time.Date(2017, time.December, 24, 10, 13, 24, 729000000, time.UTC)),
 		// 					PrincipalName: to.Ptr("maliciousUser"),
 		// 					SecurityEventSQLInjectionAdditionalProperties: &armsql.SecurityEventSQLInjectionAdditionalProperties{
 		// 						ErrorCode: to.Ptr[int32](0),
@@ -105,7 +105,7 @@ func ExampleManagedDatabaseSecurityEventsClient_NewListByDatabasePager_getTheMan
 		// 					ApplicationName: to.Ptr("myApp"),
 		// 					ClientIP: to.Ptr("10.166.113.220"),
 		// 					Database: to.Ptr("database1"),
-		// 					EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-24T10:13:24.729Z"); return t}()),
+		// 					EventTime: to.Ptr(time.Date(2017, time.December, 24, 10, 13, 24, 729000000, time.UTC)),
 		// 					PrincipalName: to.Ptr("maliciousUser"),
 		// 					SecurityEventSQLInjectionAdditionalProperties: &armsql.SecurityEventSQLInjectionAdditionalProperties{
 		// 						ErrorCode: to.Ptr[int32](0),
@@ -129,7 +129,7 @@ func ExampleManagedDatabaseSecurityEventsClient_NewListByDatabasePager_getTheMan
 		// 					ApplicationName: to.Ptr("myApp"),
 		// 					ClientIP: to.Ptr("10.166.113.220"),
 		// 					Database: to.Ptr("database1"),
-		// 					EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-24T10:11:14.121Z"); return t}()),
+		// 					EventTime: to.Ptr(time.Date(2017, time.December, 24, 10, 11, 14, 121000000, time.UTC)),
 		// 					PrincipalName: to.Ptr("maliciousUser"),
 		// 					SecurityEventSQLInjectionAdditionalProperties: &armsql.SecurityEventSQLInjectionAdditionalProperties{
 		// 						ErrorCode: to.Ptr[int32](0),
@@ -153,7 +153,7 @@ func ExampleManagedDatabaseSecurityEventsClient_NewListByDatabasePager_getTheMan
 		// 					ApplicationName: to.Ptr("myApp"),
 		// 					ClientIP: to.Ptr("10.166.113.220"),
 		// 					Database: to.Ptr("database1"),
-		// 					EventTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-12-24T10:03:17.066Z"); return t}()),
+		// 					EventTime: to.Ptr(time.Date(2017, time.December, 24, 10, 3, 17, 66000000, time.UTC)),
 		// 					PrincipalName: to.Ptr("maliciousUser"),
 		// 					SecurityEventSQLInjectionAdditionalProperties: &armsql.SecurityEventSQLInjectionAdditionalProperties{
 		// 						ErrorCode: to.Ptr[int32](0),

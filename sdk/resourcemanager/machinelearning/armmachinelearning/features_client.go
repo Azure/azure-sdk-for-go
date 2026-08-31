@@ -66,12 +66,7 @@ func (client *FeaturesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return FeaturesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FeaturesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -113,8 +108,11 @@ func (client *FeaturesClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *FeaturesClient) getHandleResponse(resp *http.Response) (FeaturesClientGetResponse, error) {
+func (client *FeaturesClient) getHandleResponse(resp *http.Response, successCodes ...int) (FeaturesClientGetResponse, error) {
 	result := FeaturesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Feature); err != nil {
 		return FeaturesClientGetResponse{}, err
 	}
@@ -140,73 +138,87 @@ func (client *FeaturesClient) NewListPager(resourceGroupName string, workspaceNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, workspaceName, featuresetName, featuresetVersion, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, featuresetName, featuresetVersion, nextLink, options)
 			if err != nil {
 				return FeaturesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FeaturesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *FeaturesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, featuresetName string, featuresetVersion string, options *FeaturesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/featuresets/{featuresetName}/versions/{featuresetVersion}/features"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FeaturesClient) listCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, featuresetName string, featuresetVersion string, nextLink string, options *FeaturesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/featuresets/{featuresetName}/versions/{featuresetVersion}/features"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if workspaceName == "" {
+			return nil, errors.New("parameter workspaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+		if featuresetName == "" {
+			return nil, errors.New("parameter featuresetName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{featuresetName}", url.PathEscape(featuresetName))
+		if featuresetVersion == "" {
+			return nil, errors.New("parameter featuresetVersion cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{featuresetVersion}", url.PathEscape(featuresetVersion))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if featuresetName == "" {
-		return nil, errors.New("parameter featuresetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{featuresetName}", url.PathEscape(featuresetName))
-	if featuresetVersion == "" {
-		return nil, errors.New("parameter featuresetVersion cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{featuresetVersion}", url.PathEscape(featuresetVersion))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Skip != nil {
-		reqQP.Set("$skip", *options.Skip)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Skip != nil {
+			reqQP.Set("$skip", *options.Skip)
+		}
+		reqQP.Set("api-version", version20260315Preview)
+		if options != nil && options.Description != nil {
+			reqQP.Set("description", *options.Description)
+		}
+		if options != nil && options.FeatureName != nil {
+			reqQP.Set("featureName", *options.FeatureName)
+		}
+		if options != nil && options.ListViewType != nil {
+			reqQP.Set("listViewType", string(*options.ListViewType))
+		}
+		if options != nil && options.PageSize != nil {
+			reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))
+		}
+		if options != nil && options.Tags != nil {
+			reqQP.Set("tags", *options.Tags)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20260315Preview)
-	if options != nil && options.Description != nil {
-		reqQP.Set("description", *options.Description)
-	}
-	if options != nil && options.FeatureName != nil {
-		reqQP.Set("featureName", *options.FeatureName)
-	}
-	if options != nil && options.ListViewType != nil {
-		reqQP.Set("listViewType", string(*options.ListViewType))
-	}
-	if options != nil && options.PageSize != nil {
-		reqQP.Set("pageSize", strconv.FormatInt(int64(*options.PageSize), 10))
-	}
-	if options != nil && options.Tags != nil {
-		reqQP.Set("tags", *options.Tags)
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *FeaturesClient) listHandleResponse(resp *http.Response) (FeaturesClientListResponse, error) {
+func (client *FeaturesClient) listHandleResponse(resp *http.Response, successCodes ...int) (FeaturesClientListResponse, error) {
 	result := FeaturesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FeatureResourceArmPaginatedResult); err != nil {
 		return FeaturesClientListResponse{}, err
 	}

@@ -71,14 +71,14 @@ func (f FileProperty) MarshalXML(enc *xml.Encoder, start xml.StartElement) error
 		ChangeTime     *datetime.RFC3339 `xml:"ChangeTime"`
 		CreationTime   *datetime.RFC3339 `xml:"CreationTime"`
 		LastAccessTime *datetime.RFC3339 `xml:"LastAccessTime"`
-		LastModified   *datetime.RFC1123 `xml:"Last-Modified"`
+		LastModified   *datetime.RFC7231 `xml:"Last-Modified"`
 		LastWriteTime  *datetime.RFC3339 `xml:"LastWriteTime"`
 	}{
 		alias:          (*alias)(&f),
 		ChangeTime:     (*datetime.RFC3339)(f.ChangeTime),
 		CreationTime:   (*datetime.RFC3339)(f.CreationTime),
 		LastAccessTime: (*datetime.RFC3339)(f.LastAccessTime),
-		LastModified:   (*datetime.RFC1123)(f.LastModified),
+		LastModified:   (*datetime.RFC7231)(f.LastModified),
 		LastWriteTime:  (*datetime.RFC3339)(f.LastWriteTime),
 	}
 	return enc.EncodeElement(aux, start)
@@ -92,7 +92,7 @@ func (f *FileProperty) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) er
 		ChangeTime     *datetime.RFC3339 `xml:"ChangeTime"`
 		CreationTime   *datetime.RFC3339 `xml:"CreationTime"`
 		LastAccessTime *datetime.RFC3339 `xml:"LastAccessTime"`
-		LastModified   *datetime.RFC1123 `xml:"Last-Modified"`
+		LastModified   *datetime.RFC7231 `xml:"Last-Modified"`
 		LastWriteTime  *datetime.RFC3339 `xml:"LastWriteTime"`
 	}{
 		alias: (*alias)(f),
@@ -278,6 +278,26 @@ func (s ShareFileRangeList) MarshalXML(enc *xml.Encoder, start xml.StartElement)
 	return enc.EncodeElement(aux, start)
 }
 
+// MarshalXML implements the xml.Marshaller interface for type ShareFileRangeListSegment.
+func (s ShareFileRangeListSegment) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "Ranges"
+	type alias ShareFileRangeListSegment
+	aux := &struct {
+		*alias
+		ClearRanges *[]*ClearRange `xml:"ClearRange"`
+		Ranges      *[]*FileRange  `xml:"Range"`
+	}{
+		alias: (*alias)(&s),
+	}
+	if s.ClearRanges != nil {
+		aux.ClearRanges = &s.ClearRanges
+	}
+	if s.Ranges != nil {
+		aux.Ranges = &s.Ranges
+	}
+	return enc.EncodeElement(aux, start)
+}
+
 // MarshalXML implements the xml.Marshaller interface for type ShareNFSSettings.
 func (s ShareNFSSettings) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	start.Name.Local = "NFS"
@@ -314,7 +334,7 @@ func (s SharePermission) MarshalJSON() ([]byte, error) {
 func (s *SharePermission) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", s, err)
+		return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
 	}
 	for key, val := range rawMsg {
 		var err error
@@ -327,7 +347,7 @@ func (s *SharePermission) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		}
 		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", s, err)
+			return fmt.Errorf("unmarshalling type %T: %s", s, err.Error())
 		}
 	}
 	return nil
@@ -339,20 +359,20 @@ func (s ShareProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) er
 	type alias ShareProperties
 	aux := &struct {
 		*alias
-		AccessTierChangeTime                         *datetime.RFC1123 `xml:"AccessTierChangeTime"`
-		DeletedTime                                  *datetime.RFC1123 `xml:"DeletedTime"`
-		LastModified                                 *datetime.RFC1123 `xml:"Last-Modified"`
-		NextAllowedProvisionedBandwidthDowngradeTime *datetime.RFC1123 `xml:"NextAllowedProvisionedBandwidthDowngradeTime"`
-		NextAllowedProvisionedIopsDowngradeTime      *datetime.RFC1123 `xml:"NextAllowedProvisionedIopsDowngradeTime"`
-		NextAllowedQuotaDowngradeTime                *datetime.RFC1123 `xml:"NextAllowedQuotaDowngradeTime"`
+		AccessTierChangeTime                         *datetime.RFC7231 `xml:"AccessTierChangeTime"`
+		DeletedTime                                  *datetime.RFC7231 `xml:"DeletedTime"`
+		LastModified                                 *datetime.RFC7231 `xml:"Last-Modified"`
+		NextAllowedProvisionedBandwidthDowngradeTime *datetime.RFC7231 `xml:"NextAllowedProvisionedBandwidthDowngradeTime"`
+		NextAllowedProvisionedIopsDowngradeTime      *datetime.RFC7231 `xml:"NextAllowedProvisionedIopsDowngradeTime"`
+		NextAllowedQuotaDowngradeTime                *datetime.RFC7231 `xml:"NextAllowedQuotaDowngradeTime"`
 	}{
 		alias:                (*alias)(&s),
-		AccessTierChangeTime: (*datetime.RFC1123)(s.AccessTierChangeTime),
-		DeletedTime:          (*datetime.RFC1123)(s.DeletedTime),
-		LastModified:         (*datetime.RFC1123)(s.LastModified),
-		NextAllowedProvisionedBandwidthDowngradeTime: (*datetime.RFC1123)(s.NextAllowedProvisionedBandwidthDowngradeTime),
-		NextAllowedProvisionedIopsDowngradeTime:      (*datetime.RFC1123)(s.NextAllowedProvisionedIopsDowngradeTime),
-		NextAllowedQuotaDowngradeTime:                (*datetime.RFC1123)(s.NextAllowedQuotaDowngradeTime),
+		AccessTierChangeTime: (*datetime.RFC7231)(s.AccessTierChangeTime),
+		DeletedTime:          (*datetime.RFC7231)(s.DeletedTime),
+		LastModified:         (*datetime.RFC7231)(s.LastModified),
+		NextAllowedProvisionedBandwidthDowngradeTime: (*datetime.RFC7231)(s.NextAllowedProvisionedBandwidthDowngradeTime),
+		NextAllowedProvisionedIopsDowngradeTime:      (*datetime.RFC7231)(s.NextAllowedProvisionedIopsDowngradeTime),
+		NextAllowedQuotaDowngradeTime:                (*datetime.RFC7231)(s.NextAllowedQuotaDowngradeTime),
 	}
 	return enc.EncodeElement(aux, start)
 }
@@ -362,12 +382,12 @@ func (s *ShareProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement)
 	type alias ShareProperties
 	aux := &struct {
 		*alias
-		AccessTierChangeTime                         *datetime.RFC1123 `xml:"AccessTierChangeTime"`
-		DeletedTime                                  *datetime.RFC1123 `xml:"DeletedTime"`
-		LastModified                                 *datetime.RFC1123 `xml:"Last-Modified"`
-		NextAllowedProvisionedBandwidthDowngradeTime *datetime.RFC1123 `xml:"NextAllowedProvisionedBandwidthDowngradeTime"`
-		NextAllowedProvisionedIopsDowngradeTime      *datetime.RFC1123 `xml:"NextAllowedProvisionedIopsDowngradeTime"`
-		NextAllowedQuotaDowngradeTime                *datetime.RFC1123 `xml:"NextAllowedQuotaDowngradeTime"`
+		AccessTierChangeTime                         *datetime.RFC7231 `xml:"AccessTierChangeTime"`
+		DeletedTime                                  *datetime.RFC7231 `xml:"DeletedTime"`
+		LastModified                                 *datetime.RFC7231 `xml:"Last-Modified"`
+		NextAllowedProvisionedBandwidthDowngradeTime *datetime.RFC7231 `xml:"NextAllowedProvisionedBandwidthDowngradeTime"`
+		NextAllowedProvisionedIopsDowngradeTime      *datetime.RFC7231 `xml:"NextAllowedProvisionedIopsDowngradeTime"`
+		NextAllowedQuotaDowngradeTime                *datetime.RFC7231 `xml:"NextAllowedQuotaDowngradeTime"`
 	}{
 		alias: (*alias)(s),
 	}

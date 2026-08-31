@@ -19,7 +19,7 @@ import (
 // CapabilitiesClient contains the methods for the Capabilities group.
 // Don't use this type directly, use NewCapabilitiesClient() instead.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2026-08-01-preview
 type CapabilitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -66,12 +66,7 @@ func (client *CapabilitiesClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return CapabilitiesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return CapabilitiesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -110,7 +105,7 @@ func (client *CapabilitiesClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -121,8 +116,11 @@ func (client *CapabilitiesClient) createOrUpdateCreateRequest(ctx context.Contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CapabilitiesClient) createOrUpdateHandleResponse(resp *http.Response) (CapabilitiesClientCreateOrUpdateResponse, error) {
+func (client *CapabilitiesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (CapabilitiesClientCreateOrUpdateResponse, error) {
 	result := CapabilitiesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Capability); err != nil {
 		return CapabilitiesClientCreateOrUpdateResponse{}, err
 	}
@@ -153,8 +151,7 @@ func (client *CapabilitiesClient) Delete(ctx context.Context, resourceGroupName 
 		return CapabilitiesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return CapabilitiesClientDeleteResponse{}, err
+		return CapabilitiesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return CapabilitiesClientDeleteResponse{}, nil
 }
@@ -195,7 +192,7 @@ func (client *CapabilitiesClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -223,12 +220,7 @@ func (client *CapabilitiesClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return CapabilitiesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CapabilitiesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -267,15 +259,18 @@ func (client *CapabilitiesClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *CapabilitiesClient) getHandleResponse(resp *http.Response) (CapabilitiesClientGetResponse, error) {
+func (client *CapabilitiesClient) getHandleResponse(resp *http.Response, successCodes ...int) (CapabilitiesClientGetResponse, error) {
 	result := CapabilitiesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Capability); err != nil {
 		return CapabilitiesClientGetResponse{}, err
 	}
@@ -300,62 +295,76 @@ func (client *CapabilitiesClient) NewListPager(resourceGroupName string, parentP
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, parentProviderNamespace, parentResourceType, parentResourceName, targetName, nextLink, options)
 			if err != nil {
 				return CapabilitiesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CapabilitiesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *CapabilitiesClient) listCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, options *CapabilitiesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}/capabilities"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CapabilitiesClient) listCreateRequest(ctx context.Context, resourceGroupName string, parentProviderNamespace string, parentResourceType string, parentResourceName string, targetName string, nextLink string, options *CapabilitiesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{parentProviderNamespace}/{parentResourceType}/{parentResourceName}/providers/Microsoft.Chaos/targets/{targetName}/capabilities"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if parentProviderNamespace == "" {
+			return nil, errors.New("parameter parentProviderNamespace cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{parentProviderNamespace}", url.PathEscape(parentProviderNamespace))
+		if parentResourceType == "" {
+			return nil, errors.New("parameter parentResourceType cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{parentResourceType}", url.PathEscape(parentResourceType))
+		if parentResourceName == "" {
+			return nil, errors.New("parameter parentResourceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{parentResourceName}", url.PathEscape(parentResourceName))
+		if targetName == "" {
+			return nil, errors.New("parameter targetName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if parentProviderNamespace == "" {
-		return nil, errors.New("parameter parentProviderNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{parentProviderNamespace}", url.PathEscape(parentProviderNamespace))
-	if parentResourceType == "" {
-		return nil, errors.New("parameter parentResourceType cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{parentResourceType}", url.PathEscape(parentResourceType))
-	if parentResourceName == "" {
-		return nil, errors.New("parameter parentResourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{parentResourceName}", url.PathEscape(parentResourceName))
-	if targetName == "" {
-		return nil, errors.New("parameter targetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetName}", url.PathEscape(targetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	if options != nil && options.ContinuationToken != nil {
-		reqQP.Set("continuationToken", *options.ContinuationToken)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260801Preview)
+		if options != nil && options.ContinuationToken != nil {
+			reqQP.Set("continuationToken", *options.ContinuationToken)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *CapabilitiesClient) listHandleResponse(resp *http.Response) (CapabilitiesClientListResponse, error) {
+func (client *CapabilitiesClient) listHandleResponse(resp *http.Response, successCodes ...int) (CapabilitiesClientListResponse, error) {
 	result := CapabilitiesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapabilityListResult); err != nil {
 		return CapabilitiesClientListResponse{}, err
 	}

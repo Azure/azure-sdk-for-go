@@ -63,12 +63,7 @@ func (client *SavedSearchesClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return SavedSearchesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SavedSearchesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -106,8 +101,11 @@ func (client *SavedSearchesClient) createOrUpdateCreateRequest(ctx context.Conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *SavedSearchesClient) createOrUpdateHandleResponse(resp *http.Response) (SavedSearchesClientCreateOrUpdateResponse, error) {
+func (client *SavedSearchesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (SavedSearchesClientCreateOrUpdateResponse, error) {
 	result := SavedSearchesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SavedSearch); err != nil {
 		return SavedSearchesClientCreateOrUpdateResponse{}, err
 	}
@@ -135,8 +133,7 @@ func (client *SavedSearchesClient) Delete(ctx context.Context, resourceGroupName
 		return SavedSearchesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SavedSearchesClientDeleteResponse{}, err
+		return SavedSearchesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SavedSearchesClientDeleteResponse{}, nil
 }
@@ -190,12 +187,7 @@ func (client *SavedSearchesClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return SavedSearchesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SavedSearchesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -229,8 +221,11 @@ func (client *SavedSearchesClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *SavedSearchesClient) getHandleResponse(resp *http.Response) (SavedSearchesClientGetResponse, error) {
+func (client *SavedSearchesClient) getHandleResponse(resp *http.Response, successCodes ...int) (SavedSearchesClientGetResponse, error) {
 	result := SavedSearchesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SavedSearch); err != nil {
 		return SavedSearchesClientGetResponse{}, err
 	}
@@ -257,12 +252,7 @@ func (client *SavedSearchesClient) ListByWorkspace(ctx context.Context, resource
 	if err != nil {
 		return SavedSearchesClientListByWorkspaceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SavedSearchesClientListByWorkspaceResponse{}, err
-	}
-	resp, err := client.listByWorkspaceHandleResponse(httpResp)
-	return resp, err
+	return client.listByWorkspaceHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.
@@ -292,8 +282,11 @@ func (client *SavedSearchesClient) listByWorkspaceCreateRequest(ctx context.Cont
 }
 
 // listByWorkspaceHandleResponse handles the ListByWorkspace response.
-func (client *SavedSearchesClient) listByWorkspaceHandleResponse(resp *http.Response) (SavedSearchesClientListByWorkspaceResponse, error) {
+func (client *SavedSearchesClient) listByWorkspaceHandleResponse(resp *http.Response, successCodes ...int) (SavedSearchesClientListByWorkspaceResponse, error) {
 	result := SavedSearchesClientListByWorkspaceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SavedSearchesListResult); err != nil {
 		return SavedSearchesClientListByWorkspaceResponse{}, err
 	}

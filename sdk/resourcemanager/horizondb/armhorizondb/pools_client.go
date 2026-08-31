@@ -19,7 +19,7 @@ import (
 // PoolsClient contains the methods for the Pools group.
 // Don't use this type directly, use NewPoolsClient() instead.
 //
-// Generated from API version 2026-01-20-preview
+// Generated from API version 2026-05-01-preview
 type PoolsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,11 +41,11 @@ func NewPoolsClient(subscriptionID string, credential azcore.TokenCredential, op
 	return client, nil
 }
 
-// Get - Gets information about a HorizonDb pool.
+// Get - Gets information about a HorizonDB pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the HorizonDb cluster.
-//   - poolName - The name of the HorizonDb pool.
+//   - clusterName - The name of the HorizonDB cluster.
+//   - poolName - The name of the HorizonDB pool.
 //   - options - PoolsClientGetOptions contains the optional parameters for the PoolsClient.Get method.
 func (client *PoolsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *PoolsClientGetOptions) (PoolsClientGetResponse, error) {
 	var err error
@@ -61,12 +61,7 @@ func (client *PoolsClient) Get(ctx context.Context, resourceGroupName string, cl
 	if err != nil {
 		return PoolsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PoolsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -93,24 +88,27 @@ func (client *PoolsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *PoolsClient) getHandleResponse(resp *http.Response) (PoolsClientGetResponse, error) {
+func (client *PoolsClient) getHandleResponse(resp *http.Response, successCodes ...int) (PoolsClientGetResponse, error) {
 	result := PoolsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Pool); err != nil {
 		return PoolsClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - Lists all HorizonDb pools in a cluster.
+// NewListPager - Lists all HorizonDB pools in a cluster.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the HorizonDb cluster.
+//   - clusterName - The name of the HorizonDB cluster.
 //   - options - PoolsClientListOptions contains the optional parameters for the PoolsClient.NewListPager method.
 func (client *PoolsClient) NewListPager(resourceGroupName string, clusterName string, options *PoolsClientListOptions) *runtime.Pager[PoolsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PoolsClientListResponse]{
@@ -123,47 +121,61 @@ func (client *PoolsClient) NewListPager(resourceGroupName string, clusterName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, clusterName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, clusterName, nextLink, options)
 			if err != nil {
 				return PoolsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PoolsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *PoolsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *PoolsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PoolsClient) listCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, nextLink string, _ *PoolsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HorizonDb/clusters/{clusterName}/pools"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if clusterName == "" {
+			return nil, errors.New("parameter clusterName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260120Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PoolsClient) listHandleResponse(resp *http.Response) (PoolsClientListResponse, error) {
+func (client *PoolsClient) listHandleResponse(resp *http.Response, successCodes ...int) (PoolsClientListResponse, error) {
 	result := PoolsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PoolListResult); err != nil {
 		return PoolsClientListResponse{}, err
 	}

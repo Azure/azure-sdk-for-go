@@ -64,12 +64,7 @@ func (client *EntitiesClient) AddDataAnnotation(ctx context.Context, resourceGro
 	if err != nil {
 		return EntitiesClientAddDataAnnotationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EntitiesClientAddDataAnnotationResponse{}, err
-	}
-	resp, err := client.addDataAnnotationHandleResponse(httpResp)
-	return resp, err
+	return client.addDataAnnotationHandleResponse(httpResp, http.StatusOK)
 }
 
 // addDataAnnotationCreateRequest creates the AddDataAnnotation request.
@@ -107,8 +102,11 @@ func (client *EntitiesClient) addDataAnnotationCreateRequest(ctx context.Context
 }
 
 // addDataAnnotationHandleResponse handles the AddDataAnnotation response.
-func (client *EntitiesClient) addDataAnnotationHandleResponse(resp *http.Response) (EntitiesClientAddDataAnnotationResponse, error) {
+func (client *EntitiesClient) addDataAnnotationHandleResponse(resp *http.Response, successCodes ...int) (EntitiesClientAddDataAnnotationResponse, error) {
 	result := EntitiesClientAddDataAnnotationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataAnnotation); err != nil {
 		return EntitiesClientAddDataAnnotationResponse{}, err
 	}
@@ -157,8 +155,7 @@ func (client *EntitiesClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -237,8 +234,7 @@ func (client *EntitiesClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -292,12 +288,7 @@ func (client *EntitiesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return EntitiesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EntitiesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -331,8 +322,11 @@ func (client *EntitiesClient) getCreateRequest(ctx context.Context, resourceGrou
 }
 
 // getHandleResponse handles the Get response.
-func (client *EntitiesClient) getHandleResponse(resp *http.Response) (EntitiesClientGetResponse, error) {
+func (client *EntitiesClient) getHandleResponse(resp *http.Response, successCodes ...int) (EntitiesClientGetResponse, error) {
 	result := EntitiesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Entity); err != nil {
 		return EntitiesClientGetResponse{}, err
 	}
@@ -361,12 +355,7 @@ func (client *EntitiesClient) GetDataAnnotations(ctx context.Context, resourceGr
 	if err != nil {
 		return EntitiesClientGetDataAnnotationsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EntitiesClientGetDataAnnotationsResponse{}, err
-	}
-	resp, err := client.getDataAnnotationsHandleResponse(httpResp)
-	return resp, err
+	return client.getDataAnnotationsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDataAnnotationsCreateRequest creates the GetDataAnnotations request.
@@ -404,8 +393,11 @@ func (client *EntitiesClient) getDataAnnotationsCreateRequest(ctx context.Contex
 }
 
 // getDataAnnotationsHandleResponse handles the GetDataAnnotations response.
-func (client *EntitiesClient) getDataAnnotationsHandleResponse(resp *http.Response) (EntitiesClientGetDataAnnotationsResponse, error) {
+func (client *EntitiesClient) getDataAnnotationsHandleResponse(resp *http.Response, successCodes ...int) (EntitiesClientGetDataAnnotationsResponse, error) {
 	result := EntitiesClientGetDataAnnotationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetDataAnnotationsResponse); err != nil {
 		return EntitiesClientGetDataAnnotationsResponse{}, err
 	}
@@ -433,12 +425,7 @@ func (client *EntitiesClient) GetHistory(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return EntitiesClientGetHistoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EntitiesClientGetHistoryResponse{}, err
-	}
-	resp, err := client.getHistoryHandleResponse(httpResp)
-	return resp, err
+	return client.getHistoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getHistoryCreateRequest creates the GetHistory request.
@@ -476,8 +463,11 @@ func (client *EntitiesClient) getHistoryCreateRequest(ctx context.Context, resou
 }
 
 // getHistoryHandleResponse handles the GetHistory response.
-func (client *EntitiesClient) getHistoryHandleResponse(resp *http.Response) (EntitiesClientGetHistoryResponse, error) {
+func (client *EntitiesClient) getHistoryHandleResponse(resp *http.Response, successCodes ...int) (EntitiesClientGetHistoryResponse, error) {
 	result := EntitiesClientGetHistoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EntityHistoryResponse); err != nil {
 		return EntitiesClientGetHistoryResponse{}, err
 	}
@@ -506,12 +496,7 @@ func (client *EntitiesClient) GetSignalHistory(ctx context.Context, resourceGrou
 	if err != nil {
 		return EntitiesClientGetSignalHistoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EntitiesClientGetSignalHistoryResponse{}, err
-	}
-	resp, err := client.getSignalHistoryHandleResponse(httpResp)
-	return resp, err
+	return client.getSignalHistoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSignalHistoryCreateRequest creates the GetSignalHistory request.
@@ -549,8 +534,11 @@ func (client *EntitiesClient) getSignalHistoryCreateRequest(ctx context.Context,
 }
 
 // getSignalHistoryHandleResponse handles the GetSignalHistory response.
-func (client *EntitiesClient) getSignalHistoryHandleResponse(resp *http.Response) (EntitiesClientGetSignalHistoryResponse, error) {
+func (client *EntitiesClient) getSignalHistoryHandleResponse(resp *http.Response, successCodes ...int) (EntitiesClientGetSignalHistoryResponse, error) {
 	result := EntitiesClientGetSignalHistoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SignalHistoryResponse); err != nil {
 		return EntitiesClientGetSignalHistoryResponse{}, err
 	}
@@ -579,12 +567,7 @@ func (client *EntitiesClient) GetSignalRecommendations(ctx context.Context, reso
 	if err != nil {
 		return EntitiesClientGetSignalRecommendationsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return EntitiesClientGetSignalRecommendationsResponse{}, err
-	}
-	resp, err := client.getSignalRecommendationsHandleResponse(httpResp)
-	return resp, err
+	return client.getSignalRecommendationsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSignalRecommendationsCreateRequest creates the GetSignalRecommendations request.
@@ -618,8 +601,11 @@ func (client *EntitiesClient) getSignalRecommendationsCreateRequest(ctx context.
 }
 
 // getSignalRecommendationsHandleResponse handles the GetSignalRecommendations response.
-func (client *EntitiesClient) getSignalRecommendationsHandleResponse(resp *http.Response) (EntitiesClientGetSignalRecommendationsResponse, error) {
+func (client *EntitiesClient) getSignalRecommendationsHandleResponse(resp *http.Response, successCodes ...int) (EntitiesClientGetSignalRecommendationsResponse, error) {
 	result := EntitiesClientGetSignalRecommendationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GetSignalRecommendationsResponse); err != nil {
 		return EntitiesClientGetSignalRecommendationsResponse{}, err
 	}
@@ -649,8 +635,7 @@ func (client *EntitiesClient) IngestHealthReport(ctx context.Context, resourceGr
 		return EntitiesClientIngestHealthReportResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return EntitiesClientIngestHealthReportResponse{}, err
+		return EntitiesClientIngestHealthReportResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return EntitiesClientIngestHealthReportResponse{}, nil
 }
@@ -704,50 +689,64 @@ func (client *EntitiesClient) NewListByHealthModelPager(resourceGroupName string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByHealthModelCreateRequest(ctx, resourceGroupName, healthModelName, options)
-			}, nil)
+			req, err := client.listByHealthModelCreateRequest(ctx, resourceGroupName, healthModelName, nextLink, options)
 			if err != nil {
 				return EntitiesClientListByHealthModelResponse{}, err
 			}
-			return client.listByHealthModelHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return EntitiesClientListByHealthModelResponse{}, err
+			}
+			return client.listByHealthModelHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByHealthModelCreateRequest creates the ListByHealthModel request.
-func (client *EntitiesClient) listByHealthModelCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, options *EntitiesClientListByHealthModelOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *EntitiesClient) listByHealthModelCreateRequest(ctx context.Context, resourceGroupName string, healthModelName string, nextLink string, options *EntitiesClientListByHealthModelOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CloudHealth/healthmodels/{healthModelName}/entities"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if healthModelName == "" {
+			return nil, errors.New("parameter healthModelName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{healthModelName}", url.PathEscape(healthModelName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if healthModelName == "" {
-		return nil, errors.New("parameter healthModelName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{healthModelName}", url.PathEscape(healthModelName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	if options != nil && options.Timestamp != nil {
-		reqQP.Set("timestamp", datetime.RFC3339(*options.Timestamp).String())
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501Preview)
+		if options != nil && options.Timestamp != nil {
+			reqQP.Set("timestamp", datetime.RFC3339((*options.Timestamp).UTC()).String())
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByHealthModelHandleResponse handles the ListByHealthModel response.
-func (client *EntitiesClient) listByHealthModelHandleResponse(resp *http.Response) (EntitiesClientListByHealthModelResponse, error) {
+func (client *EntitiesClient) listByHealthModelHandleResponse(resp *http.Response, successCodes ...int) (EntitiesClientListByHealthModelResponse, error) {
 	result := EntitiesClientListByHealthModelResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EntityListResult); err != nil {
 		return EntitiesClientListByHealthModelResponse{}, err
 	}

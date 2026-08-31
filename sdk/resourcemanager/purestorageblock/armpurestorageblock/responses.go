@@ -97,6 +97,23 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// RecoverableVolumeGroupsClientDeleteResponse contains the response from method RecoverableVolumeGroupsClient.BeginDelete.
+type RecoverableVolumeGroupsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// RecoverableVolumeGroupsClientGetResponse contains the response from method RecoverableVolumeGroupsClient.Get.
+type RecoverableVolumeGroupsClientGetResponse struct {
+	// A destroyed volume group that is pending eradication
+	RecoverableVolumeGroup
+}
+
+// RecoverableVolumeGroupsClientListByStoragePoolResponse contains the response from method RecoverableVolumeGroupsClient.NewListByStoragePoolPager.
+type RecoverableVolumeGroupsClientListByStoragePoolResponse struct {
+	// The response of a RecoverableVolumeGroup list operation.
+	RecoverableVolumeGroupListResult
+}
+
 // ReservationsClientCreateResponse contains the response from method ReservationsClient.BeginCreate.
 type ReservationsClientCreateResponse struct {
 	// Pure Storage cloud service resource type, also called reservation
@@ -132,6 +149,18 @@ type ReservationsClientGetResponse struct {
 	Reservation
 }
 
+// ReservationsClientLatestLinkedSaaSResponse contains the response from method ReservationsClient.LatestLinkedSaaS.
+type ReservationsClientLatestLinkedSaaSResponse struct {
+	// Response of get latest linked SaaS resource operation.
+	LatestLinkedSaaSResponse
+}
+
+// ReservationsClientLinkSaaSResponse contains the response from method ReservationsClient.BeginLinkSaaS.
+type ReservationsClientLinkSaaSResponse struct {
+	// Pure Storage cloud service resource type, also called reservation
+	Reservation
+}
+
 // ReservationsClientListByResourceGroupResponse contains the response from method ReservationsClient.NewListByResourceGroupPager.
 type ReservationsClientListByResourceGroupResponse struct {
 	// The response of a Reservation list operation.
@@ -148,6 +177,18 @@ type ReservationsClientListBySubscriptionResponse struct {
 type ReservationsClientUpdateResponse struct {
 	// Pure Storage cloud service resource type, also called reservation
 	Reservation
+}
+
+// SaaSOperationGroupClientActivateResourceResponse contains the response from method SaaSOperationGroupClient.BeginActivateResource.
+type SaaSOperationGroupClientActivateResourceResponse struct {
+	// Marketplace SaaS resource details.
+	SaaSResourceDetailsResponse
+}
+
+// StoragePoolsClientConfigurePlatformConsoleAuthResponse contains the response from method StoragePoolsClient.ConfigurePlatformConsoleAuth.
+type StoragePoolsClientConfigurePlatformConsoleAuthResponse struct {
+	// Base model for platform console authentication result. Actual type depends on the authType used in the request.
+	PlatformConsoleAuthResultClassification
 }
 
 // StoragePoolsClientCreateResponse contains the response from method StoragePoolsClient.BeginCreate.
@@ -212,6 +253,12 @@ type StoragePoolsClientListBySubscriptionResponse struct {
 	StoragePoolListResult
 }
 
+// StoragePoolsClientListPlatformConsoleActivationCodeResponse contains the response from method StoragePoolsClient.ListPlatformConsoleActivationCode.
+type StoragePoolsClientListPlatformConsoleActivationCodeResponse struct {
+	// One-time activation code for platform console access
+	PlatformConsoleActivationCode
+}
+
 // StoragePoolsClientRepairAvsConnectionResponse contains the response from method StoragePoolsClient.BeginRepairAvsConnection.
 type StoragePoolsClientRepairAvsConnectionResponse struct {
 	// placeholder for future response values
@@ -221,6 +268,35 @@ type StoragePoolsClientRepairAvsConnectionResponse struct {
 type StoragePoolsClientUpdateResponse struct {
 	// Storage pool resource
 	StoragePool
+}
+
+// VolumeGroupSnapshotsClientCreateResponse contains the response from method VolumeGroupSnapshotsClient.BeginCreate.
+type VolumeGroupSnapshotsClientCreateResponse struct {
+	// A snapshot of a volume group
+	VolumeGroupSnapshot
+}
+
+// VolumeGroupSnapshotsClientDeleteResponse contains the response from method VolumeGroupSnapshotsClient.BeginDelete.
+type VolumeGroupSnapshotsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// VolumeGroupSnapshotsClientGetResponse contains the response from method VolumeGroupSnapshotsClient.Get.
+type VolumeGroupSnapshotsClientGetResponse struct {
+	// A snapshot of a volume group
+	VolumeGroupSnapshot
+}
+
+// VolumeGroupSnapshotsClientListByVolumeGroupResponse contains the response from method VolumeGroupSnapshotsClient.NewListByVolumeGroupPager.
+type VolumeGroupSnapshotsClientListByVolumeGroupResponse struct {
+	// Paged list result for volume group snapshots
+	VolumeGroupSnapshotListResult
+}
+
+// VolumeGroupSnapshotsClientListSnapshotsResponse contains the response from method VolumeGroupSnapshotsClient.ListSnapshots.
+type VolumeGroupSnapshotsClientListSnapshotsResponse struct {
+	// List result for volume group snapshots returned by the listSnapshots POST action
+	VolumeGroupSnapshotPostListResult
 }
 
 // VolumeGroupsClientCreateResponse contains the response from method VolumeGroupsClient.BeginCreate.
@@ -258,6 +334,11 @@ type VolumeGroupsClientListConnectionParametersResponse struct {
 	ConnectionParametersResponse
 }
 
+// VolumeGroupsClientOverwriteResponse contains the response from method VolumeGroupsClient.BeginOverwrite.
+type VolumeGroupsClientOverwriteResponse struct {
+	// placeholder for future response values
+}
+
 // VolumeGroupsClientUpdateResponse contains the response from method VolumeGroupsClient.BeginUpdate.
 type VolumeGroupsClientUpdateResponse struct {
 	// Volume Group resource
@@ -285,6 +366,11 @@ type VolumesClientGetResponse struct {
 type VolumesClientListByVolumeGroupResponse struct {
 	// The response of a Volume list operation.
 	VolumeListResult
+}
+
+// VolumesClientOverwriteResponse contains the response from method VolumesClient.BeginOverwrite.
+type VolumesClientOverwriteResponse struct {
+	// placeholder for future response values
 }
 
 // VolumesClientUpdateResponse contains the response from method VolumesClient.BeginUpdate.

@@ -64,12 +64,7 @@ func (client *PartnerConfigurationsClient) AuthorizePartner(ctx context.Context,
 	if err != nil {
 		return PartnerConfigurationsClientAuthorizePartnerResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PartnerConfigurationsClientAuthorizePartnerResponse{}, err
-	}
-	resp, err := client.authorizePartnerHandleResponse(httpResp)
-	return resp, err
+	return client.authorizePartnerHandleResponse(httpResp, http.StatusOK)
 }
 
 // authorizePartnerCreateRequest creates the AuthorizePartner request.
@@ -99,8 +94,11 @@ func (client *PartnerConfigurationsClient) authorizePartnerCreateRequest(ctx con
 }
 
 // authorizePartnerHandleResponse handles the AuthorizePartner response.
-func (client *PartnerConfigurationsClient) authorizePartnerHandleResponse(resp *http.Response) (PartnerConfigurationsClientAuthorizePartnerResponse, error) {
+func (client *PartnerConfigurationsClient) authorizePartnerHandleResponse(resp *http.Response, successCodes ...int) (PartnerConfigurationsClientAuthorizePartnerResponse, error) {
 	result := PartnerConfigurationsClientAuthorizePartnerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerConfiguration); err != nil {
 		return PartnerConfigurationsClientAuthorizePartnerResponse{}, err
 	}
@@ -151,8 +149,7 @@ func (client *PartnerConfigurationsClient) createOrUpdate(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -226,8 +223,7 @@ func (client *PartnerConfigurationsClient) deleteOperation(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -274,12 +270,7 @@ func (client *PartnerConfigurationsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return PartnerConfigurationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PartnerConfigurationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -305,8 +296,11 @@ func (client *PartnerConfigurationsClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *PartnerConfigurationsClient) getHandleResponse(resp *http.Response) (PartnerConfigurationsClientGetResponse, error) {
+func (client *PartnerConfigurationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (PartnerConfigurationsClientGetResponse, error) {
 	result := PartnerConfigurationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerConfiguration); err != nil {
 		return PartnerConfigurationsClientGetResponse{}, err
 	}
@@ -330,43 +324,57 @@ func (client *PartnerConfigurationsClient) NewListByResourceGroupPager(resourceG
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return PartnerConfigurationsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PartnerConfigurationsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *PartnerConfigurationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *PartnerConfigurationsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PartnerConfigurationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *PartnerConfigurationsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerConfigurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *PartnerConfigurationsClient) listByResourceGroupHandleResponse(resp *http.Response) (PartnerConfigurationsClientListByResourceGroupResponse, error) {
+func (client *PartnerConfigurationsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (PartnerConfigurationsClientListByResourceGroupResponse, error) {
 	result := PartnerConfigurationsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerConfigurationsListResult); err != nil {
 		return PartnerConfigurationsClientListByResourceGroupResponse{}, err
 	}
@@ -389,45 +397,59 @@ func (client *PartnerConfigurationsClient) NewListBySubscriptionPager(options *P
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return PartnerConfigurationsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PartnerConfigurationsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *PartnerConfigurationsClient) listBySubscriptionCreateRequest(ctx context.Context, options *PartnerConfigurationsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/partnerConfigurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PartnerConfigurationsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, options *PartnerConfigurationsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/partnerConfigurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20250715Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20250715Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *PartnerConfigurationsClient) listBySubscriptionHandleResponse(resp *http.Response) (PartnerConfigurationsClientListBySubscriptionResponse, error) {
+func (client *PartnerConfigurationsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (PartnerConfigurationsClientListBySubscriptionResponse, error) {
 	result := PartnerConfigurationsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerConfigurationsListResult); err != nil {
 		return PartnerConfigurationsClientListBySubscriptionResponse{}, err
 	}
@@ -456,12 +478,7 @@ func (client *PartnerConfigurationsClient) UnauthorizePartner(ctx context.Contex
 	if err != nil {
 		return PartnerConfigurationsClientUnauthorizePartnerResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PartnerConfigurationsClientUnauthorizePartnerResponse{}, err
-	}
-	resp, err := client.unauthorizePartnerHandleResponse(httpResp)
-	return resp, err
+	return client.unauthorizePartnerHandleResponse(httpResp, http.StatusOK)
 }
 
 // unauthorizePartnerCreateRequest creates the UnauthorizePartner request.
@@ -491,8 +508,11 @@ func (client *PartnerConfigurationsClient) unauthorizePartnerCreateRequest(ctx c
 }
 
 // unauthorizePartnerHandleResponse handles the UnauthorizePartner response.
-func (client *PartnerConfigurationsClient) unauthorizePartnerHandleResponse(resp *http.Response) (PartnerConfigurationsClientUnauthorizePartnerResponse, error) {
+func (client *PartnerConfigurationsClient) unauthorizePartnerHandleResponse(resp *http.Response, successCodes ...int) (PartnerConfigurationsClientUnauthorizePartnerResponse, error) {
 	result := PartnerConfigurationsClientUnauthorizePartnerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PartnerConfiguration); err != nil {
 		return PartnerConfigurationsClientUnauthorizePartnerResponse{}, err
 	}
@@ -543,8 +563,7 @@ func (client *PartnerConfigurationsClient) update(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

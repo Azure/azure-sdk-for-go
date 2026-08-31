@@ -60,50 +60,64 @@ func (client *UsageAggregatesClient) NewListPager(reportedStartTime time.Time, r
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, reportedStartTime, reportedEndTime, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, reportedStartTime, reportedEndTime, nextLink, options)
 			if err != nil {
 				return UsageAggregatesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return UsageAggregatesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *UsageAggregatesClient) listCreateRequest(ctx context.Context, reportedStartTime time.Time, reportedEndTime time.Time, options *UsageAggregatesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Commerce/usageAggregates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *UsageAggregatesClient) listCreateRequest(ctx context.Context, reportedStartTime time.Time, reportedEndTime time.Time, nextLink string, options *UsageAggregatesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Commerce/usageAggregates"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.AggregationGranularity != nil {
-		reqQP.Set("aggregationGranularity", string(*options.AggregationGranularity))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.AggregationGranularity != nil {
+			reqQP.Set("aggregationGranularity", string(*options.AggregationGranularity))
+		}
+		reqQP.Set("api-version", version20150601Preview)
+		if options != nil && options.ContinuationToken != nil {
+			reqQP.Set("continuationToken", *options.ContinuationToken)
+		}
+		reqQP.Set("reportedEndTime", datetime.RFC3339((reportedEndTime).UTC()).String())
+		reqQP.Set("reportedStartTime", datetime.RFC3339((reportedStartTime).UTC()).String())
+		if options != nil && options.ShowDetails != nil {
+			reqQP.Set("showDetails", strconv.FormatBool(*options.ShowDetails))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20150601Preview)
-	if options != nil && options.ContinuationToken != nil {
-		reqQP.Set("continuationToken", *options.ContinuationToken)
-	}
-	reqQP.Set("reportedEndTime", datetime.RFC3339(reportedEndTime).String())
-	reqQP.Set("reportedStartTime", datetime.RFC3339(reportedStartTime).String())
-	if options != nil && options.ShowDetails != nil {
-		reqQP.Set("showDetails", strconv.FormatBool(*options.ShowDetails))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *UsageAggregatesClient) listHandleResponse(resp *http.Response) (UsageAggregatesClientListResponse, error) {
+func (client *UsageAggregatesClient) listHandleResponse(resp *http.Response, successCodes ...int) (UsageAggregatesClientListResponse, error) {
 	result := UsageAggregatesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.UsageAggregationListResult); err != nil {
 		return UsageAggregatesClientListResponse{}, err
 	}

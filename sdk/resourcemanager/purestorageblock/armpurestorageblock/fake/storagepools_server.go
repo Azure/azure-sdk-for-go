@@ -21,6 +21,10 @@ import (
 
 // StoragePoolsServer is a fake server for instances of the armpurestorageblock.StoragePoolsClient type.
 type StoragePoolsServer struct {
+	// ConfigurePlatformConsoleAuth is the fake for method StoragePoolsClient.ConfigurePlatformConsoleAuth
+	// HTTP status codes to indicate success: http.StatusOK
+	ConfigurePlatformConsoleAuth func(ctx context.Context, resourceGroupName string, storagePoolName string, config armpurestorageblock.PlatformConsoleAuthConfigClassification, options *armpurestorageblock.StoragePoolsClientConfigurePlatformConsoleAuthOptions) (resp azfake.Responder[armpurestorageblock.StoragePoolsClientConfigurePlatformConsoleAuthResponse], errResp azfake.ErrorResponder)
+
 	// BeginCreate is the fake for method StoragePoolsClient.BeginCreate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreate func(ctx context.Context, resourceGroupName string, storagePoolName string, resource armpurestorageblock.StoragePool, options *armpurestorageblock.StoragePoolsClientBeginCreateOptions) (resp azfake.PollerResponder[armpurestorageblock.StoragePoolsClientCreateResponse], errResp azfake.ErrorResponder)
@@ -64,6 +68,10 @@ type StoragePoolsServer struct {
 	// NewListBySubscriptionPager is the fake for method StoragePoolsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armpurestorageblock.StoragePoolsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armpurestorageblock.StoragePoolsClientListBySubscriptionResponse])
+
+	// ListPlatformConsoleActivationCode is the fake for method StoragePoolsClient.ListPlatformConsoleActivationCode
+	// HTTP status codes to indicate success: http.StatusOK
+	ListPlatformConsoleActivationCode func(ctx context.Context, resourceGroupName string, storagePoolName string, options *armpurestorageblock.StoragePoolsClientListPlatformConsoleActivationCodeOptions) (resp azfake.Responder[armpurestorageblock.StoragePoolsClientListPlatformConsoleActivationCodeResponse], errResp azfake.ErrorResponder)
 
 	// BeginRepairAvsConnection is the fake for method StoragePoolsClient.BeginRepairAvsConnection
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -128,6 +136,8 @@ func (s *StoragePoolsServerTransport) dispatchToMethodFake(req *http.Request, me
 		}
 		if !intercepted {
 			switch method {
+			case "StoragePoolsClient.ConfigurePlatformConsoleAuth":
+				res.resp, res.err = s.dispatchConfigurePlatformConsoleAuth(req)
 			case "StoragePoolsClient.BeginCreate":
 				res.resp, res.err = s.dispatchBeginCreate(req)
 			case "StoragePoolsClient.BeginDelete":
@@ -150,6 +160,8 @@ func (s *StoragePoolsServerTransport) dispatchToMethodFake(req *http.Request, me
 				res.resp, res.err = s.dispatchNewListByResourceGroupPager(req)
 			case "StoragePoolsClient.NewListBySubscriptionPager":
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
+			case "StoragePoolsClient.ListPlatformConsoleActivationCode":
+				res.resp, res.err = s.dispatchListPlatformConsoleActivationCode(req)
 			case "StoragePoolsClient.BeginRepairAvsConnection":
 				res.resp, res.err = s.dispatchBeginRepairAvsConnection(req)
 			case "StoragePoolsClient.BeginUpdate":
@@ -168,6 +180,47 @@ func (s *StoragePoolsServerTransport) dispatchToMethodFake(req *http.Request, me
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (s *StoragePoolsServerTransport) dispatchConfigurePlatformConsoleAuth(req *http.Request) (*http.Response, error) {
+	if s.srv.ConfigurePlatformConsoleAuth == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ConfigurePlatformConsoleAuth not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/configurePlatformConsoleAuth`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	raw, err := readRequestBody(req)
+	if err != nil {
+		return nil, err
+	}
+	body, err := unmarshalPlatformConsoleAuthConfigClassification(raw)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	storagePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storagePoolName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.ConfigurePlatformConsoleAuth(req.Context(), resourceGroupNameParam, storagePoolNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PlatformConsoleAuthResultClassification, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }
 
 func (s *StoragePoolsServerTransport) dispatchBeginCreate(req *http.Request) (*http.Response, error) {
@@ -600,6 +653,39 @@ func (s *StoragePoolsServerTransport) dispatchNewListBySubscriptionPager(req *ht
 	}
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		s.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (s *StoragePoolsServerTransport) dispatchListPlatformConsoleActivationCode(req *http.Request) (*http.Response, error) {
+	if s.srv.ListPlatformConsoleActivationCode == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListPlatformConsoleActivationCode not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listPlatformConsoleActivationCode`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	storagePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("storagePoolName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.ListPlatformConsoleActivationCode(req.Context(), resourceGroupNameParam, storagePoolNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PlatformConsoleActivationCode, req)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

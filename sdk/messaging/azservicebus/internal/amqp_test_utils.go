@@ -272,8 +272,8 @@ func (ns *FakeNS) NewAMQPSession(ctx context.Context) (amqpwrap.AMQPSession, uin
 	return ns.Session, ns.recovered + 100, nil
 }
 
-func (ns *FakeNS) NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, error) {
-	return ns.RPCLink, nil
+func (ns *FakeNS) NewRPCLink(ctx context.Context, managementPath string) (amqpwrap.RPCLink, uint64, error) {
+	return ns.RPCLink, ns.recovered + 100, nil
 }
 
 func (ns *FakeNS) Recover(ctx context.Context, clientRevision uint64) (bool, error) {

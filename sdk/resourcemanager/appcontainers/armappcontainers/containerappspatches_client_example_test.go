@@ -40,13 +40,13 @@ func ExampleContainerAppsPatchesClient_BeginApply() {
 	// 		Type: to.Ptr("Microsoft.App/containerApps/patches"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.App/containerApps/test-app/patches/testPatch-25fe4b"),
 	// 		Properties: &armappcontainers.PatchProperties{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-10T12:06:20.3421+00:00"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-10T12:06:20.3421+00:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.October, 10, 12, 6, 20, 342100000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.October, 10, 12, 6, 20, 342100000, time.UTC)),
 	// 			PatchApplyStatus: to.Ptr(armappcontainers.PatchApplyStatusSucceeded),
 	// 			PatchDetails: []*armappcontainers.PatchDetails{
 	// 				{
 	// 					DetectionStatus: to.Ptr(armappcontainers.DetectionStatusSucceeded),
-	// 					LastDetectionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-10T12:06:19.5241+00:00"); return t}()),
+	// 					LastDetectionTime: to.Ptr(time.Date(2022, time.October, 10, 12, 6, 19, 524100000, time.UTC)),
 	// 					NewImageName: to.Ptr("testregistry.azurecr.io/test-image:latest-patched-202210101206"),
 	// 					NewLayer: &armappcontainers.PatchDetailsNewLayer{
 	// 						Name: to.Ptr("mcr.microsoft.com/dotnet/aspnet:7.0.7-cbl-mariner2.0"),
@@ -116,13 +116,13 @@ func ExampleContainerAppsPatchesClient_Get() {
 	// 		Type: to.Ptr("Microsoft.App/containerApps/patches"),
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.App/containerApps/test-app/patches/testPatch-25fe4b"),
 	// 		Properties: &armappcontainers.PatchProperties{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-10T12:06:20.3421+00:00"); return t}()),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-10T12:06:20.3421+00:00"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.October, 10, 12, 6, 20, 342100000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.October, 10, 12, 6, 20, 342100000, time.UTC)),
 	// 			PatchApplyStatus: to.Ptr(armappcontainers.PatchApplyStatusNotStarted),
 	// 			PatchDetails: []*armappcontainers.PatchDetails{
 	// 				{
 	// 					DetectionStatus: to.Ptr(armappcontainers.DetectionStatusSucceeded),
-	// 					LastDetectionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-10T12:06:19.5241+00:00"); return t}()),
+	// 					LastDetectionTime: to.Ptr(time.Date(2022, time.October, 10, 12, 6, 19, 524100000, time.UTC)),
 	// 					NewImageName: to.Ptr("testregistry.azurecr.io/test-image:latest-patched-202210101206"),
 	// 					NewLayer: &armappcontainers.PatchDetailsNewLayer{
 	// 						Name: to.Ptr("mcr.microsoft.com/dotnet/aspnet:7.0.7-cbl-mariner2.0"),
@@ -177,13 +177,13 @@ func ExampleContainerAppsPatchesClient_NewListByContainerAppPager() {
 		// 				Type: to.Ptr("Microsoft.App/containerApps/patches"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.App/containerApps/test-app/patches/testPatch-25fe4b"),
 		// 				Properties: &armappcontainers.PatchProperties{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-10T12:06:20.3421+00:00"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-10T12:06:20.3421+00:00"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.October, 10, 12, 6, 20, 342100000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.October, 10, 12, 6, 20, 342100000, time.UTC)),
 		// 					PatchApplyStatus: to.Ptr(armappcontainers.PatchApplyStatusNotStarted),
 		// 					PatchDetails: []*armappcontainers.PatchDetails{
 		// 						{
 		// 							DetectionStatus: to.Ptr(armappcontainers.DetectionStatusSucceeded),
-		// 							LastDetectionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-10-10T12:06:19.5241+00:00"); return t}()),
+		// 							LastDetectionTime: to.Ptr(time.Date(2022, time.October, 10, 12, 6, 19, 524100000, time.UTC)),
 		// 							NewImageName: to.Ptr("testregistry.azurecr.io/test-image:release-1-patched-202210101206185241"),
 		// 							NewLayer: &armappcontainers.PatchDetailsNewLayer{
 		// 								Name: to.Ptr("mcr.microsoft.com/dotnet/aspnet:7.0.9-cbl-mariner2.0"),
@@ -210,13 +210,13 @@ func ExampleContainerAppsPatchesClient_NewListByContainerAppPager() {
 		// 				Type: to.Ptr("Microsoft.App/containerApps/patches"),
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.App/containerApps/test-app/patches/testPatch-27c3d5"),
 		// 				Properties: &armappcontainers.PatchProperties{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-10T12:06:20.3421+00:00"); return t}()),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-20T12:06:20.3421+00:00"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.September, 10, 12, 6, 20, 342100000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.September, 20, 12, 6, 20, 342100000, time.UTC)),
 		// 					PatchApplyStatus: to.Ptr(armappcontainers.PatchApplyStatusSucceeded),
 		// 					PatchDetails: []*armappcontainers.PatchDetails{
 		// 						{
 		// 							DetectionStatus: to.Ptr(armappcontainers.DetectionStatusSucceeded),
-		// 							LastDetectionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-21T12:06:19.5241+00:00"); return t}()),
+		// 							LastDetectionTime: to.Ptr(time.Date(2022, time.September, 21, 12, 6, 19, 524100000, time.UTC)),
 		// 							NewImageName: to.Ptr("testregistry.azurecr.io/test-image:release-1-patched-202209101206203421"),
 		// 							NewLayer: &armappcontainers.PatchDetailsNewLayer{
 		// 								Name: to.Ptr("mcr.microsoft.com/dotnet/aspnet:7.0.7-cbl-mariner2.0"),
@@ -234,7 +234,7 @@ func ExampleContainerAppsPatchesClient_NewListByContainerAppPager() {
 		// 						},
 		// 						{
 		// 							DetectionStatus: to.Ptr(armappcontainers.DetectionStatusSucceeded),
-		// 							LastDetectionTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-09-21T12:06:19.5241+00:00"); return t}()),
+		// 							LastDetectionTime: to.Ptr(time.Date(2022, time.September, 21, 12, 6, 19, 524100000, time.UTC)),
 		// 							NewImageName: to.Ptr("testregistry.azurecr.io/test-image:release-2-patched-202209101206203421"),
 		// 							NewLayer: &armappcontainers.PatchDetailsNewLayer{
 		// 								Name: to.Ptr("mcr.microsoft.com/dotnet/aspnet:7.0.7-cbl-mariner2.0"),

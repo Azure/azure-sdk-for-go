@@ -19,7 +19,7 @@ import (
 // ValidationsClient contains the methods for the Validations group.
 // Don't use this type directly, use NewValidationsClient() instead.
 //
-// Generated from API version 2025-08-18-preview
+// Generated from API version 2026-06-02-preview
 type ValidationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,12 +64,7 @@ func (client *ValidationsClient) ValidateOrganization(ctx context.Context, resou
 	if err != nil {
 		return ValidationsClientValidateOrganizationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ValidationsClientValidateOrganizationResponse{}, err
-	}
-	resp, err := client.validateOrganizationHandleResponse(httpResp)
-	return resp, err
+	return client.validateOrganizationHandleResponse(httpResp, http.StatusOK)
 }
 
 // validateOrganizationCreateRequest creates the ValidateOrganization request.
@@ -92,7 +87,7 @@ func (client *ValidationsClient) validateOrganizationCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -103,8 +98,11 @@ func (client *ValidationsClient) validateOrganizationCreateRequest(ctx context.C
 }
 
 // validateOrganizationHandleResponse handles the ValidateOrganization response.
-func (client *ValidationsClient) validateOrganizationHandleResponse(resp *http.Response) (ValidationsClientValidateOrganizationResponse, error) {
+func (client *ValidationsClient) validateOrganizationHandleResponse(resp *http.Response, successCodes ...int) (ValidationsClientValidateOrganizationResponse, error) {
 	result := ValidationsClientValidateOrganizationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OrganizationResource); err != nil {
 		return ValidationsClientValidateOrganizationResponse{}, err
 	}
@@ -134,12 +132,7 @@ func (client *ValidationsClient) ValidateOrganizationV2(ctx context.Context, res
 	if err != nil {
 		return ValidationsClientValidateOrganizationV2Response{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ValidationsClientValidateOrganizationV2Response{}, err
-	}
-	resp, err := client.validateOrganizationV2HandleResponse(httpResp)
-	return resp, err
+	return client.validateOrganizationV2HandleResponse(httpResp, http.StatusOK)
 }
 
 // validateOrganizationV2CreateRequest creates the ValidateOrganizationV2 request.
@@ -162,7 +155,7 @@ func (client *ValidationsClient) validateOrganizationV2CreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250818Preview)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -173,8 +166,11 @@ func (client *ValidationsClient) validateOrganizationV2CreateRequest(ctx context
 }
 
 // validateOrganizationV2HandleResponse handles the ValidateOrganizationV2 response.
-func (client *ValidationsClient) validateOrganizationV2HandleResponse(resp *http.Response) (ValidationsClientValidateOrganizationV2Response, error) {
+func (client *ValidationsClient) validateOrganizationV2HandleResponse(resp *http.Response, successCodes ...int) (ValidationsClientValidateOrganizationV2Response, error) {
 	result := ValidationsClientValidateOrganizationV2Response{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ValidationResponse); err != nil {
 		return ValidationsClientValidateOrganizationV2Response{}, err
 	}

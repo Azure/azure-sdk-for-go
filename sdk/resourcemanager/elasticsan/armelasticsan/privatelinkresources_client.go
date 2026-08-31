@@ -61,12 +61,7 @@ func (client *PrivateLinkResourcesClient) ListByElasticSan(ctx context.Context, 
 	if err != nil {
 		return PrivateLinkResourcesClientListByElasticSanResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateLinkResourcesClientListByElasticSanResponse{}, err
-	}
-	resp, err := client.listByElasticSanHandleResponse(httpResp)
-	return resp, err
+	return client.listByElasticSanHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByElasticSanCreateRequest creates the ListByElasticSan request.
@@ -96,8 +91,11 @@ func (client *PrivateLinkResourcesClient) listByElasticSanCreateRequest(ctx cont
 }
 
 // listByElasticSanHandleResponse handles the ListByElasticSan response.
-func (client *PrivateLinkResourcesClient) listByElasticSanHandleResponse(resp *http.Response) (PrivateLinkResourcesClientListByElasticSanResponse, error) {
+func (client *PrivateLinkResourcesClient) listByElasticSanHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinkResourcesClientListByElasticSanResponse, error) {
 	result := PrivateLinkResourcesClientListByElasticSanResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return PrivateLinkResourcesClientListByElasticSanResponse{}, err
 	}

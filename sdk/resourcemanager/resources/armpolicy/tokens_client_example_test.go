@@ -101,12 +101,12 @@ func ExampleTokensClient_Acquire() {
 	// 				AdditionalInfo: map[string]any{
 	// 					"successProbability": 1,
 	// 				},
-	// 				Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T21:30:00.00Z"); return t}()),
+	// 				Expiration: to.Ptr(time.Date(2025, time.January, 1, 21, 30, 0, 0, time.UTC)),
 	// 			},
 	// 		},
 	// 		Token: to.Ptr("PT 1.ey7zmVse52pjMKPQd5m2uiNjz5UV2pZ.LPGtRiTeuCDBomEVbzj9kIaL9odEmlNv4D9VzyrQLTAyv4HHnUR7oNytWnL.AQrZ5bSGAQZzr8eySqvugzrD-ceRVL311SL3Nn6f-4c9kgPgU_u1ArXQKW25QCxMlsAuWmaE"),
 	// 		TokenID: to.Ptr("0da8a969-c660-4de0-a6a4-b2034d4325e4"),
-	// 		Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T21:30:00.00Z"); return t}()),
+	// 		Expiration: to.Ptr(time.Date(2025, time.January, 1, 21, 30, 0, 0, time.UTC)),
 	// 	},
 	// }
 }
@@ -200,12 +200,12 @@ func ExampleTokensClient_AcquireAtManagementGroup() {
 	// 				AdditionalInfo: map[string]any{
 	// 					"successProbability": 1,
 	// 				},
-	// 				Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T21:30:00.00Z"); return t}()),
+	// 				Expiration: to.Ptr(time.Date(2025, time.January, 1, 21, 30, 0, 0, time.UTC)),
 	// 			},
 	// 		},
 	// 		Token: to.Ptr("PT 1.ey7zmVse52pjMKPQd5m2uiNjz5UV2pZ.LPGtRiTeuCDBomEVbzj9kIaL9odEmlNv4D9VzyrQLTAyv4HHnUR7oNytWnL.AQrZ5bSGAQZzr8eySqvugzrD-ceRVL311SL3Nn6f-4c9kgPgU_u1ArXQKW25QCxMlsAuWmaE"),
 	// 		TokenID: to.Ptr("0da8a969-c660-4de0-a6a4-b2034d4325e4"),
-	// 		Expiration: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-01T21:30:00.00Z"); return t}()),
+	// 		Expiration: to.Ptr(time.Date(2025, time.January, 1, 21, 30, 0, 0, time.UTC)),
 	// 	},
 	// }
 }

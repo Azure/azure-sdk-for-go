@@ -18,6 +18,8 @@ import (
 
 // ResourceTypeRegistrationsClient contains the methods for the ResourceTypeRegistrations group.
 // Don't use this type directly, use NewResourceTypeRegistrationsClient() instead.
+//
+// Generated from API version 2024-09-01
 type ResourceTypeRegistrationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewResourceTypeRegistrationsClient(subscriptionID string, credential azcore
 
 // BeginCreateOrUpdate - Creates or updates a resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - properties - The required request body parameters supplied to the resource type registration CreateOrUpdate operation.
@@ -67,8 +67,6 @@ func (client *ResourceTypeRegistrationsClient) BeginCreateOrUpdate(ctx context.C
 
 // CreateOrUpdate - Creates or updates a resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *ResourceTypeRegistrationsClient) createOrUpdate(ctx context.Context, providerNamespace string, resourceType string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ResourceTypeRegistrationsClient.BeginCreateOrUpdate"
@@ -84,8 +82,7 @@ func (client *ResourceTypeRegistrationsClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -110,8 +107,8 @@ func (client *ResourceTypeRegistrationsClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -122,8 +119,6 @@ func (client *ResourceTypeRegistrationsClient) createOrUpdateCreateRequest(ctx c
 
 // BeginDelete - Deletes a resource type
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - options - ResourceTypeRegistrationsClientBeginDeleteOptions contains the optional parameters for the ResourceTypeRegistrationsClient.BeginDelete
@@ -147,8 +142,6 @@ func (client *ResourceTypeRegistrationsClient) BeginDelete(ctx context.Context, 
 
 // Delete - Deletes a resource type
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *ResourceTypeRegistrationsClient) deleteOperation(ctx context.Context, providerNamespace string, resourceType string, options *ResourceTypeRegistrationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ResourceTypeRegistrationsClient.BeginDelete"
@@ -164,8 +157,7 @@ func (client *ResourceTypeRegistrationsClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -190,15 +182,13 @@ func (client *ResourceTypeRegistrationsClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets a resource type details in the given subscription and provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - resourceType - The resource type.
 //   - options - ResourceTypeRegistrationsClientGetOptions contains the optional parameters for the ResourceTypeRegistrationsClient.Get
@@ -217,12 +207,7 @@ func (client *ResourceTypeRegistrationsClient) Get(ctx context.Context, provider
 	if err != nil {
 		return ResourceTypeRegistrationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceTypeRegistrationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -245,15 +230,18 @@ func (client *ResourceTypeRegistrationsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ResourceTypeRegistrationsClient) getHandleResponse(resp *http.Response) (ResourceTypeRegistrationsClientGetResponse, error) {
+func (client *ResourceTypeRegistrationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ResourceTypeRegistrationsClientGetResponse, error) {
 	result := ResourceTypeRegistrationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceTypeRegistration); err != nil {
 		return ResourceTypeRegistrationsClientGetResponse{}, err
 	}
@@ -261,8 +249,6 @@ func (client *ResourceTypeRegistrationsClient) getHandleResponse(resp *http.Resp
 }
 
 // NewListByProviderRegistrationPager - Gets the list of the resource types for the given provider.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - ResourceTypeRegistrationsClientListByProviderRegistrationOptions contains the optional parameters for the ResourceTypeRegistrationsClient.NewListByProviderRegistrationPager
 //     method.
@@ -277,43 +263,57 @@ func (client *ResourceTypeRegistrationsClient) NewListByProviderRegistrationPage
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, options)
-			}, nil)
+			req, err := client.listByProviderRegistrationCreateRequest(ctx, providerNamespace, nextLink, options)
 			if err != nil {
 				return ResourceTypeRegistrationsClientListByProviderRegistrationResponse{}, err
 			}
-			return client.listByProviderRegistrationHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ResourceTypeRegistrationsClientListByProviderRegistrationResponse{}, err
+			}
+			return client.listByProviderRegistrationHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByProviderRegistrationCreateRequest creates the ListByProviderRegistration request.
-func (client *ResourceTypeRegistrationsClient) listByProviderRegistrationCreateRequest(ctx context.Context, providerNamespace string, _ *ResourceTypeRegistrationsClientListByProviderRegistrationOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ResourceTypeRegistrationsClient) listByProviderRegistrationCreateRequest(ctx context.Context, providerNamespace string, nextLink string, _ *ResourceTypeRegistrationsClientListByProviderRegistrationOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if providerNamespace == "" {
+			return nil, errors.New("parameter providerNamespace cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if providerNamespace == "" {
-		return nil, errors.New("parameter providerNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByProviderRegistrationHandleResponse handles the ListByProviderRegistration response.
-func (client *ResourceTypeRegistrationsClient) listByProviderRegistrationHandleResponse(resp *http.Response) (ResourceTypeRegistrationsClientListByProviderRegistrationResponse, error) {
+func (client *ResourceTypeRegistrationsClient) listByProviderRegistrationHandleResponse(resp *http.Response, successCodes ...int) (ResourceTypeRegistrationsClientListByProviderRegistrationResponse, error) {
 	result := ResourceTypeRegistrationsClientListByProviderRegistrationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceTypeRegistrationArrayResponseWithContinuation); err != nil {
 		return ResourceTypeRegistrationsClientListByProviderRegistrationResponse{}, err
 	}

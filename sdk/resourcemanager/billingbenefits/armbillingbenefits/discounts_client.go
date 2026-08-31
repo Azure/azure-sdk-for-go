@@ -81,8 +81,7 @@ func (client *DiscountsClient) cancel(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -153,8 +152,7 @@ func (client *DiscountsClient) create(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -229,8 +227,7 @@ func (client *DiscountsClient) deleteOperation(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -275,43 +272,57 @@ func (client *DiscountsClient) NewResourceGroupListPager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.resourceGroupListCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.resourceGroupListCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return DiscountsClientResourceGroupListResponse{}, err
 			}
-			return client.resourceGroupListHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiscountsClientResourceGroupListResponse{}, err
+			}
+			return client.resourceGroupListHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // resourceGroupListCreateRequest creates the ResourceGroupList request.
-func (client *DiscountsClient) resourceGroupListCreateRequest(ctx context.Context, resourceGroupName string, _ *DiscountsClientResourceGroupListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/discounts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DiscountsClient) resourceGroupListCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *DiscountsClientResourceGroupListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/discounts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // resourceGroupListHandleResponse handles the ResourceGroupList response.
-func (client *DiscountsClient) resourceGroupListHandleResponse(resp *http.Response) (DiscountsClientResourceGroupListResponse, error) {
+func (client *DiscountsClient) resourceGroupListHandleResponse(resp *http.Response, successCodes ...int) (DiscountsClientResourceGroupListResponse, error) {
 	result := DiscountsClientResourceGroupListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiscountList); err != nil {
 		return DiscountsClientResourceGroupListResponse{}, err
 	}
@@ -332,39 +343,53 @@ func (client *DiscountsClient) NewScopeListPager(scope string, options *Discount
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.scopeListCreateRequest(ctx, scope, options)
-			}, nil)
+			req, err := client.scopeListCreateRequest(ctx, scope, nextLink, options)
 			if err != nil {
 				return DiscountsClientScopeListResponse{}, err
 			}
-			return client.scopeListHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiscountsClientScopeListResponse{}, err
+			}
+			return client.scopeListHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // scopeListCreateRequest creates the ScopeList request.
-func (client *DiscountsClient) scopeListCreateRequest(ctx context.Context, scope string, _ *DiscountsClientScopeListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.BillingBenefits/applicableDiscounts"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
+func (client *DiscountsClient) scopeListCreateRequest(ctx context.Context, scope string, nextLink string, _ *DiscountsClientScopeListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.BillingBenefits/applicableDiscounts"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(scope))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(scope))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // scopeListHandleResponse handles the ScopeList response.
-func (client *DiscountsClient) scopeListHandleResponse(resp *http.Response) (DiscountsClientScopeListResponse, error) {
+func (client *DiscountsClient) scopeListHandleResponse(resp *http.Response, successCodes ...int) (DiscountsClientScopeListResponse, error) {
 	result := DiscountsClientScopeListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiscountList); err != nil {
 		return DiscountsClientScopeListResponse{}, err
 	}
@@ -385,39 +410,53 @@ func (client *DiscountsClient) NewSubscriptionListPager(options *DiscountsClient
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.subscriptionListCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.subscriptionListCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return DiscountsClientSubscriptionListResponse{}, err
 			}
-			return client.subscriptionListHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DiscountsClientSubscriptionListResponse{}, err
+			}
+			return client.subscriptionListHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // subscriptionListCreateRequest creates the SubscriptionList request.
-func (client *DiscountsClient) subscriptionListCreateRequest(ctx context.Context, _ *DiscountsClientSubscriptionListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.BillingBenefits/discounts"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DiscountsClient) subscriptionListCreateRequest(ctx context.Context, nextLink string, _ *DiscountsClientSubscriptionListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.BillingBenefits/discounts"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // subscriptionListHandleResponse handles the SubscriptionList response.
-func (client *DiscountsClient) subscriptionListHandleResponse(resp *http.Response) (DiscountsClientSubscriptionListResponse, error) {
+func (client *DiscountsClient) subscriptionListHandleResponse(resp *http.Response, successCodes ...int) (DiscountsClientSubscriptionListResponse, error) {
 	result := DiscountsClientSubscriptionListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DiscountList); err != nil {
 		return DiscountsClientSubscriptionListResponse{}, err
 	}

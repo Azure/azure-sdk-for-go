@@ -60,12 +60,7 @@ func (client *AdminKeysClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return AdminKeysClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AdminKeysClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -98,8 +93,11 @@ func (client *AdminKeysClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *AdminKeysClient) getHandleResponse(resp *http.Response) (AdminKeysClientGetResponse, error) {
+func (client *AdminKeysClient) getHandleResponse(resp *http.Response, successCodes ...int) (AdminKeysClientGetResponse, error) {
 	result := AdminKeysClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdminKeyResult); err != nil {
 		return AdminKeysClientGetResponse{}, err
 	}
@@ -126,12 +124,7 @@ func (client *AdminKeysClient) Regenerate(ctx context.Context, resourceGroupName
 	if err != nil {
 		return AdminKeysClientRegenerateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AdminKeysClientRegenerateResponse{}, err
-	}
-	resp, err := client.regenerateHandleResponse(httpResp)
-	return resp, err
+	return client.regenerateHandleResponse(httpResp, http.StatusOK)
 }
 
 // regenerateCreateRequest creates the Regenerate request.
@@ -168,8 +161,11 @@ func (client *AdminKeysClient) regenerateCreateRequest(ctx context.Context, reso
 }
 
 // regenerateHandleResponse handles the Regenerate response.
-func (client *AdminKeysClient) regenerateHandleResponse(resp *http.Response) (AdminKeysClientRegenerateResponse, error) {
+func (client *AdminKeysClient) regenerateHandleResponse(resp *http.Response, successCodes ...int) (AdminKeysClientRegenerateResponse, error) {
 	result := AdminKeysClientRegenerateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdminKeyResult); err != nil {
 		return AdminKeysClientRegenerateResponse{}, err
 	}

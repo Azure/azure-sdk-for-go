@@ -61,12 +61,7 @@ func (client *ManagementClient) UsageBySubscriptionSKU(ctx context.Context, loca
 	if err != nil {
 		return ManagementClientUsageBySubscriptionSKUResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagementClientUsageBySubscriptionSKUResponse{}, err
-	}
-	resp, err := client.usageBySubscriptionSKUHandleResponse(httpResp)
-	return resp, err
+	return client.usageBySubscriptionSKUHandleResponse(httpResp, http.StatusOK)
 }
 
 // usageBySubscriptionSKUCreateRequest creates the UsageBySubscriptionSKU request.
@@ -99,8 +94,11 @@ func (client *ManagementClient) usageBySubscriptionSKUCreateRequest(ctx context.
 }
 
 // usageBySubscriptionSKUHandleResponse handles the UsageBySubscriptionSKU response.
-func (client *ManagementClient) usageBySubscriptionSKUHandleResponse(resp *http.Response) (ManagementClientUsageBySubscriptionSKUResponse, error) {
+func (client *ManagementClient) usageBySubscriptionSKUHandleResponse(resp *http.Response, successCodes ...int) (ManagementClientUsageBySubscriptionSKUResponse, error) {
 	result := ManagementClientUsageBySubscriptionSKUResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.QuotaUsageResult); err != nil {
 		return ManagementClientUsageBySubscriptionSKUResponse{}, err
 	}

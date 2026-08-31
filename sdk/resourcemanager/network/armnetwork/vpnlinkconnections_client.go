@@ -19,7 +19,7 @@ import (
 // VPNLinkConnectionsClient contains the methods for the VPNLinkConnections group.
 // Don't use this type directly, use NewVPNLinkConnectionsClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type VPNLinkConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -59,55 +59,69 @@ func (client *VPNLinkConnectionsClient) NewGetAllSharedKeysPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getAllSharedKeysCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, linkConnectionName, options)
-			}, nil)
+			req, err := client.getAllSharedKeysCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, linkConnectionName, nextLink, options)
 			if err != nil {
 				return VPNLinkConnectionsClientGetAllSharedKeysResponse{}, err
 			}
-			return client.getAllSharedKeysHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VPNLinkConnectionsClientGetAllSharedKeysResponse{}, err
+			}
+			return client.getAllSharedKeysHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getAllSharedKeysCreateRequest creates the GetAllSharedKeys request.
-func (client *VPNLinkConnectionsClient) getAllSharedKeysCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, _ *VPNLinkConnectionsClientGetAllSharedKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections/{linkConnectionName}/sharedKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *VPNLinkConnectionsClient) getAllSharedKeysCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, linkConnectionName string, nextLink string, _ *VPNLinkConnectionsClientGetAllSharedKeysOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections/{linkConnectionName}/sharedKeys"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if gatewayName == "" {
+			return nil, errors.New("parameter gatewayName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{gatewayName}", url.PathEscape(gatewayName))
+		if connectionName == "" {
+			return nil, errors.New("parameter connectionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{connectionName}", url.PathEscape(connectionName))
+		if linkConnectionName == "" {
+			return nil, errors.New("parameter linkConnectionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{linkConnectionName}", url.PathEscape(linkConnectionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if gatewayName == "" {
-		return nil, errors.New("parameter gatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{gatewayName}", url.PathEscape(gatewayName))
-	if connectionName == "" {
-		return nil, errors.New("parameter connectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectionName}", url.PathEscape(connectionName))
-	if linkConnectionName == "" {
-		return nil, errors.New("parameter linkConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{linkConnectionName}", url.PathEscape(linkConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // getAllSharedKeysHandleResponse handles the GetAllSharedKeys response.
-func (client *VPNLinkConnectionsClient) getAllSharedKeysHandleResponse(resp *http.Response) (VPNLinkConnectionsClientGetAllSharedKeysResponse, error) {
+func (client *VPNLinkConnectionsClient) getAllSharedKeysHandleResponse(resp *http.Response, successCodes ...int) (VPNLinkConnectionsClientGetAllSharedKeysResponse, error) {
 	result := VPNLinkConnectionsClientGetAllSharedKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionSharedKeyResultList); err != nil {
 		return VPNLinkConnectionsClientGetAllSharedKeysResponse{}, err
 	}
@@ -136,12 +150,7 @@ func (client *VPNLinkConnectionsClient) GetDefaultSharedKey(ctx context.Context,
 	if err != nil {
 		return VPNLinkConnectionsClientGetDefaultSharedKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VPNLinkConnectionsClientGetDefaultSharedKeyResponse{}, err
-	}
-	resp, err := client.getDefaultSharedKeyHandleResponse(httpResp)
-	return resp, err
+	return client.getDefaultSharedKeyHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDefaultSharedKeyCreateRequest creates the GetDefaultSharedKey request.
@@ -172,15 +181,18 @@ func (client *VPNLinkConnectionsClient) getDefaultSharedKeyCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getDefaultSharedKeyHandleResponse handles the GetDefaultSharedKey response.
-func (client *VPNLinkConnectionsClient) getDefaultSharedKeyHandleResponse(resp *http.Response) (VPNLinkConnectionsClientGetDefaultSharedKeyResponse, error) {
+func (client *VPNLinkConnectionsClient) getDefaultSharedKeyHandleResponse(resp *http.Response, successCodes ...int) (VPNLinkConnectionsClientGetDefaultSharedKeyResponse, error) {
 	result := VPNLinkConnectionsClientGetDefaultSharedKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionSharedKeyResult); err != nil {
 		return VPNLinkConnectionsClientGetDefaultSharedKeyResponse{}, err
 	}
@@ -229,8 +241,7 @@ func (client *VPNLinkConnectionsClient) getIkeSas(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -263,7 +274,7 @@ func (client *VPNLinkConnectionsClient) getIkeSasCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -286,51 +297,65 @@ func (client *VPNLinkConnectionsClient) NewListByVPNConnectionPager(resourceGrou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByVPNConnectionCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, options)
-			}, nil)
+			req, err := client.listByVPNConnectionCreateRequest(ctx, resourceGroupName, gatewayName, connectionName, nextLink, options)
 			if err != nil {
 				return VPNLinkConnectionsClientListByVPNConnectionResponse{}, err
 			}
-			return client.listByVPNConnectionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VPNLinkConnectionsClientListByVPNConnectionResponse{}, err
+			}
+			return client.listByVPNConnectionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByVPNConnectionCreateRequest creates the ListByVPNConnection request.
-func (client *VPNLinkConnectionsClient) listByVPNConnectionCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, _ *VPNLinkConnectionsClientListByVPNConnectionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *VPNLinkConnectionsClient) listByVPNConnectionCreateRequest(ctx context.Context, resourceGroupName string, gatewayName string, connectionName string, nextLink string, _ *VPNLinkConnectionsClientListByVPNConnectionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if gatewayName == "" {
+			return nil, errors.New("parameter gatewayName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{gatewayName}", url.PathEscape(gatewayName))
+		if connectionName == "" {
+			return nil, errors.New("parameter connectionName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{connectionName}", url.PathEscape(connectionName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if gatewayName == "" {
-		return nil, errors.New("parameter gatewayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{gatewayName}", url.PathEscape(gatewayName))
-	if connectionName == "" {
-		return nil, errors.New("parameter connectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectionName}", url.PathEscape(connectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByVPNConnectionHandleResponse handles the ListByVPNConnection response.
-func (client *VPNLinkConnectionsClient) listByVPNConnectionHandleResponse(resp *http.Response) (VPNLinkConnectionsClientListByVPNConnectionResponse, error) {
+func (client *VPNLinkConnectionsClient) listByVPNConnectionHandleResponse(resp *http.Response, successCodes ...int) (VPNLinkConnectionsClientListByVPNConnectionResponse, error) {
 	result := VPNLinkConnectionsClientListByVPNConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ListVPNSiteLinkConnectionsResult); err != nil {
 		return VPNLinkConnectionsClientListByVPNConnectionResponse{}, err
 	}
@@ -359,12 +384,7 @@ func (client *VPNLinkConnectionsClient) ListDefaultSharedKey(ctx context.Context
 	if err != nil {
 		return VPNLinkConnectionsClientListDefaultSharedKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VPNLinkConnectionsClientListDefaultSharedKeyResponse{}, err
-	}
-	resp, err := client.listDefaultSharedKeyHandleResponse(httpResp)
-	return resp, err
+	return client.listDefaultSharedKeyHandleResponse(httpResp, http.StatusOK)
 }
 
 // listDefaultSharedKeyCreateRequest creates the ListDefaultSharedKey request.
@@ -395,15 +415,18 @@ func (client *VPNLinkConnectionsClient) listDefaultSharedKeyCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listDefaultSharedKeyHandleResponse handles the ListDefaultSharedKey response.
-func (client *VPNLinkConnectionsClient) listDefaultSharedKeyHandleResponse(resp *http.Response) (VPNLinkConnectionsClientListDefaultSharedKeyResponse, error) {
+func (client *VPNLinkConnectionsClient) listDefaultSharedKeyHandleResponse(resp *http.Response, successCodes ...int) (VPNLinkConnectionsClientListDefaultSharedKeyResponse, error) {
 	result := VPNLinkConnectionsClientListDefaultSharedKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionSharedKeyResult); err != nil {
 		return VPNLinkConnectionsClientListDefaultSharedKeyResponse{}, err
 	}
@@ -452,8 +475,7 @@ func (client *VPNLinkConnectionsClient) resetConnection(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -486,7 +508,7 @@ func (client *VPNLinkConnectionsClient) resetConnectionCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -536,8 +558,7 @@ func (client *VPNLinkConnectionsClient) setOrInitDefaultSharedKey(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -570,7 +591,7 @@ func (client *VPNLinkConnectionsClient) setOrInitDefaultSharedKeyCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

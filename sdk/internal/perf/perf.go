@@ -60,6 +60,8 @@ func registerFlags(fs *flag.FlagSet) {
 	fs.StringVar(&workloadConfigPath, "config", "", "Path to workload config JSON file.")
 	fs.StringVar(&workloadName, "workload", "", "Workload name from config JSON.")
 	fs.StringVar(&outputFilePrefix, "output-file-prefix", "", "Write run artifacts to <prefix>.json/.csv/.txt/.md.")
+	fs.BoolVar(&profile, "profile", false, "Collect a CPU profile for the performance test.")
+	fs.StringVar(&profilePath, "profile-path", "", "File path for the CPU profile (default cpu.pprof when --profile is set).")
 
 	// .NET ThreadPool tuning flags — accepted for CLI compatibility, ignored at runtime.
 	fs.IntVar(&maxIOCompletionThreads, "max-io-completion-threads", 0, "Compatibility flag; no-op in Go.")
@@ -205,16 +207,8 @@ func Run(tests map[string]PerfMethods) {
 		workloadName = invocation.Workload
 	}
 
-	// Normalize sentinel defaults for the .NET-compatible Rate/Iterations/
-	// StatusInterval flags.
-	if iterations < 1 {
-		iterations = 1
-	}
-	if statusInterval < 1 {
-		statusInterval = 1
-	}
-	if targetRate < 0 {
-		targetRate = 0
+	if err = normalizeAndValidateOptions(); err != nil {
+		panic(err)
 	}
 
 	if numProcesses > 0 {
@@ -239,11 +233,42 @@ func Run(tests map[string]PerfMethods) {
 		fmt.Printf("\tRunning %s\n", testNameToRun)
 	}
 
-	runner := newPerfRunner(perfTestToRun, testNameToRun)
-	err = runner.Run()
+	err = runWithCPUProfile(profile, profilePath, func() error {
+		return newPerfRunner(perfTestToRun, testNameToRun).Run()
+	})
 	if err != nil {
 		panic(err)
 	}
+}
+
+func normalizeAndValidateOptions() error {
+	if duration <= 0 {
+		return fmt.Errorf("--duration must be greater than zero, got %d", duration)
+	}
+	if warmUpDuration < 0 {
+		return fmt.Errorf("--warmup must be non-negative, got %d", warmUpDuration)
+	}
+	if parallelInstances <= 0 {
+		return fmt.Errorf("--parallel must be greater than zero, got %d", parallelInstances)
+	}
+	if maxResults < 0 {
+		return fmt.Errorf("--max-results must be non-negative, got %d", maxResults)
+	}
+	// Normalize sentinel defaults for the .NET-compatible Rate/Iterations/
+	// StatusInterval flags.
+	if iterations < 1 {
+		iterations = 1
+	}
+	if statusInterval < 1 {
+		statusInterval = 1
+	}
+	if targetRate < 0 {
+		targetRate = 0
+	}
+	if profile && profilePath == "" {
+		profilePath = "cpu.pprof"
+	}
+	return nil
 }
 
 // printOptions writes a "=== Options ===" header followed by a JSON object
@@ -266,6 +291,8 @@ func printOptions(testName string) {
 		Insecure               bool   `json:"insecure"`
 		TestProxies            string `json:"testProxies,omitempty"`
 		ResultsFile            string `json:"resultsFile,omitempty"`
+		Profile                bool   `json:"profile"`
+		ProfilePath            string `json:"profilePath,omitempty"`
 		MaxIOCompletionThreads int    `json:"maxIOCompletionThreads"`
 		MaxWorkerThreads       int    `json:"maxWorkerThreads"`
 		MinIOCompletionThreads int    `json:"minIOCompletionThreads"`
@@ -286,6 +313,8 @@ func printOptions(testName string) {
 		Insecure:               insecureSkipVerify,
 		TestProxies:            testProxyURLs,
 		ResultsFile:            resultsFilePath,
+		Profile:                profile,
+		ProfilePath:            profilePath,
 		MaxIOCompletionThreads: maxIOCompletionThreads,
 		MaxWorkerThreads:       maxWorkerThreads,
 		MinIOCompletionThreads: minIOCompletionThreads,

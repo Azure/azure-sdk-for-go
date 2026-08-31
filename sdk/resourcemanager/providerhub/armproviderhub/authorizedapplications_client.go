@@ -18,6 +18,8 @@ import (
 
 // AuthorizedApplicationsClient contains the methods for the AuthorizedApplications group.
 // Don't use this type directly, use NewAuthorizedApplicationsClient() instead.
+//
+// Generated from API version 2024-09-01
 type AuthorizedApplicationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewAuthorizedApplicationsClient(subscriptionID string, credential azcore.To
 
 // BeginCreateOrUpdate - Creates or updates the authorized application.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - applicationID - The application ID.
 //   - properties - The authorized application properties supplied to the CreateOrUpdate operation.
@@ -67,8 +67,6 @@ func (client *AuthorizedApplicationsClient) BeginCreateOrUpdate(ctx context.Cont
 
 // CreateOrUpdate - Creates or updates the authorized application.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 func (client *AuthorizedApplicationsClient) createOrUpdate(ctx context.Context, providerNamespace string, applicationID string, properties AuthorizedApplication, options *AuthorizedApplicationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AuthorizedApplicationsClient.BeginCreateOrUpdate"
@@ -84,8 +82,7 @@ func (client *AuthorizedApplicationsClient) createOrUpdate(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -110,8 +107,8 @@ func (client *AuthorizedApplicationsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, properties); err != nil {
@@ -122,8 +119,6 @@ func (client *AuthorizedApplicationsClient) createOrUpdateCreateRequest(ctx cont
 
 // Delete - Deletes an authorized application.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - applicationID - The application ID.
 //   - options - AuthorizedApplicationsClientDeleteOptions contains the optional parameters for the AuthorizedApplicationsClient.Delete
@@ -143,8 +138,7 @@ func (client *AuthorizedApplicationsClient) Delete(ctx context.Context, provider
 		return AuthorizedApplicationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return AuthorizedApplicationsClientDeleteResponse{}, err
+		return AuthorizedApplicationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AuthorizedApplicationsClientDeleteResponse{}, nil
 }
@@ -169,15 +163,13 @@ func (client *AuthorizedApplicationsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Gets the authorized application details.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - applicationID - The application ID.
 //   - options - AuthorizedApplicationsClientGetOptions contains the optional parameters for the AuthorizedApplicationsClient.Get
@@ -196,12 +188,7 @@ func (client *AuthorizedApplicationsClient) Get(ctx context.Context, providerNam
 	if err != nil {
 		return AuthorizedApplicationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AuthorizedApplicationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -224,15 +211,18 @@ func (client *AuthorizedApplicationsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *AuthorizedApplicationsClient) getHandleResponse(resp *http.Response) (AuthorizedApplicationsClientGetResponse, error) {
+func (client *AuthorizedApplicationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AuthorizedApplicationsClientGetResponse, error) {
 	result := AuthorizedApplicationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizedApplication); err != nil {
 		return AuthorizedApplicationsClientGetResponse{}, err
 	}
@@ -240,8 +230,6 @@ func (client *AuthorizedApplicationsClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListPager - Gets the list of the authorized applications in the provider namespace.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - AuthorizedApplicationsClientListOptions contains the optional parameters for the AuthorizedApplicationsClient.NewListPager
 //     method.
@@ -256,43 +244,57 @@ func (client *AuthorizedApplicationsClient) NewListPager(providerNamespace strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, providerNamespace, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, providerNamespace, nextLink, options)
 			if err != nil {
 				return AuthorizedApplicationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AuthorizedApplicationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AuthorizedApplicationsClient) listCreateRequest(ctx context.Context, providerNamespace string, _ *AuthorizedApplicationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/authorizedApplications"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AuthorizedApplicationsClient) listCreateRequest(ctx context.Context, providerNamespace string, nextLink string, _ *AuthorizedApplicationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/authorizedApplications"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if providerNamespace == "" {
+			return nil, errors.New("parameter providerNamespace cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if providerNamespace == "" {
-		return nil, errors.New("parameter providerNamespace cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{providerNamespace}", url.PathEscape(providerNamespace))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AuthorizedApplicationsClient) listHandleResponse(resp *http.Response) (AuthorizedApplicationsClientListResponse, error) {
+func (client *AuthorizedApplicationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AuthorizedApplicationsClientListResponse, error) {
 	result := AuthorizedApplicationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizedApplicationArrayResponseWithContinuation); err != nil {
 		return AuthorizedApplicationsClientListResponse{}, err
 	}

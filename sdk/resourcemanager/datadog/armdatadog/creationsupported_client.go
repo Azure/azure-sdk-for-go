@@ -18,6 +18,8 @@ import (
 
 // CreationSupportedClient contains the methods for the CreationSupported group.
 // Don't use this type directly, use NewCreationSupportedClient() instead.
+//
+// Generated from API version 2025-12-26-preview
 type CreationSupportedClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewCreationSupportedClient(subscriptionID string, credential azcore.TokenCr
 //
 // Informs if the current subscription is being already monitored for selected Datadog organization.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - datadogOrganizationID - Datadog Organization Id
 //   - options - CreationSupportedClientGetOptions contains the optional parameters for the CreationSupportedClient.Get method.
 func (client *CreationSupportedClient) Get(ctx context.Context, datadogOrganizationID string, options *CreationSupportedClientGetOptions) (CreationSupportedClientGetResponse, error) {
@@ -61,12 +61,7 @@ func (client *CreationSupportedClient) Get(ctx context.Context, datadogOrganizat
 	if err != nil {
 		return CreationSupportedClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CreationSupportedClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -81,16 +76,19 @@ func (client *CreationSupportedClient) getCreateRequest(ctx context.Context, dat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
+	reqQP.Set("api-version", version20251226Preview)
 	reqQP.Set("datadogOrganizationId", datadogOrganizationID)
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *CreationSupportedClient) getHandleResponse(resp *http.Response) (CreationSupportedClientGetResponse, error) {
+func (client *CreationSupportedClient) getHandleResponse(resp *http.Response, successCodes ...int) (CreationSupportedClientGetResponse, error) {
 	result := CreationSupportedClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreateResourceSupportedResponse); err != nil {
 		return CreationSupportedClientGetResponse{}, err
 	}
@@ -100,8 +98,6 @@ func (client *CreationSupportedClient) getHandleResponse(resp *http.Response) (C
 // NewListPager - Informs if the current subscription is being already monitored for selected Datadog organization.
 //
 // Informs if the current subscription is being already monitored for selected Datadog organization.
-//
-// Generated from API version 2025-12-26-preview
 //   - datadogOrganizationID - Datadog Organization Id
 //   - options - CreationSupportedClientListOptions contains the optional parameters for the CreationSupportedClient.NewListPager
 //     method.
@@ -116,40 +112,54 @@ func (client *CreationSupportedClient) NewListPager(datadogOrganizationID string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, datadogOrganizationID, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, datadogOrganizationID, nextLink, options)
 			if err != nil {
 				return CreationSupportedClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CreationSupportedClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *CreationSupportedClient) listCreateRequest(ctx context.Context, datadogOrganizationID string, _ *CreationSupportedClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/subscriptionStatuses"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CreationSupportedClient) listCreateRequest(ctx context.Context, datadogOrganizationID string, nextLink string, _ *CreationSupportedClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Datadog/subscriptionStatuses"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	reqQP.Set("datadogOrganizationId", datadogOrganizationID)
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251226Preview)
+		reqQP.Set("datadogOrganizationId", datadogOrganizationID)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *CreationSupportedClient) listHandleResponse(resp *http.Response) (CreationSupportedClientListResponse, error) {
+func (client *CreationSupportedClient) listHandleResponse(resp *http.Response, successCodes ...int) (CreationSupportedClientListResponse, error) {
 	result := CreationSupportedClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CreateResourceSupportedResponseList); err != nil {
 		return CreationSupportedClientListResponse{}, err
 	}

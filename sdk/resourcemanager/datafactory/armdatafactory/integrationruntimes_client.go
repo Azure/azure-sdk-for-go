@@ -63,12 +63,7 @@ func (client *IntegrationRuntimesClient) CreateLinkedIntegrationRuntime(ctx cont
 	if err != nil {
 		return IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse{}, err
-	}
-	resp, err := client.createLinkedIntegrationRuntimeHandleResponse(httpResp)
-	return resp, err
+	return client.createLinkedIntegrationRuntimeHandleResponse(httpResp, http.StatusOK)
 }
 
 // createLinkedIntegrationRuntimeCreateRequest creates the CreateLinkedIntegrationRuntime request.
@@ -106,8 +101,11 @@ func (client *IntegrationRuntimesClient) createLinkedIntegrationRuntimeCreateReq
 }
 
 // createLinkedIntegrationRuntimeHandleResponse handles the CreateLinkedIntegrationRuntime response.
-func (client *IntegrationRuntimesClient) createLinkedIntegrationRuntimeHandleResponse(resp *http.Response) (IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse, error) {
+func (client *IntegrationRuntimesClient) createLinkedIntegrationRuntimeHandleResponse(resp *http.Response, successCodes ...int) (IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse, error) {
 	result := IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeStatusResponse); err != nil {
 		return IntegrationRuntimesClientCreateLinkedIntegrationRuntimeResponse{}, err
 	}
@@ -136,12 +134,7 @@ func (client *IntegrationRuntimesClient) CreateOrUpdate(ctx context.Context, res
 	if err != nil {
 		return IntegrationRuntimesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IntegrationRuntimesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -182,8 +175,11 @@ func (client *IntegrationRuntimesClient) createOrUpdateCreateRequest(ctx context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *IntegrationRuntimesClient) createOrUpdateHandleResponse(resp *http.Response) (IntegrationRuntimesClientCreateOrUpdateResponse, error) {
+func (client *IntegrationRuntimesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (IntegrationRuntimesClientCreateOrUpdateResponse, error) {
 	result := IntegrationRuntimesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeResource); err != nil {
 		return IntegrationRuntimesClientCreateOrUpdateResponse{}, err
 	}
@@ -212,8 +208,7 @@ func (client *IntegrationRuntimesClient) Delete(ctx context.Context, resourceGro
 		return IntegrationRuntimesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return IntegrationRuntimesClientDeleteResponse{}, err
+		return IntegrationRuntimesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return IntegrationRuntimesClientDeleteResponse{}, nil
 }
@@ -267,12 +262,7 @@ func (client *IntegrationRuntimesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return IntegrationRuntimesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNotModified) {
-		err = runtime.NewResponseError(httpResp)
-		return IntegrationRuntimesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusNotModified)
 }
 
 // getCreateRequest creates the Get request.
@@ -309,8 +299,11 @@ func (client *IntegrationRuntimesClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *IntegrationRuntimesClient) getHandleResponse(resp *http.Response) (IntegrationRuntimesClientGetResponse, error) {
+func (client *IntegrationRuntimesClient) getHandleResponse(resp *http.Response, successCodes ...int) (IntegrationRuntimesClientGetResponse, error) {
 	result := IntegrationRuntimesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeResource); err != nil {
 		return IntegrationRuntimesClientGetResponse{}, err
 	}
@@ -339,12 +332,7 @@ func (client *IntegrationRuntimesClient) GetConnectionInfo(ctx context.Context, 
 	if err != nil {
 		return IntegrationRuntimesClientGetConnectionInfoResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IntegrationRuntimesClientGetConnectionInfoResponse{}, err
-	}
-	resp, err := client.getConnectionInfoHandleResponse(httpResp)
-	return resp, err
+	return client.getConnectionInfoHandleResponse(httpResp, http.StatusOK)
 }
 
 // getConnectionInfoCreateRequest creates the GetConnectionInfo request.
@@ -378,8 +366,11 @@ func (client *IntegrationRuntimesClient) getConnectionInfoCreateRequest(ctx cont
 }
 
 // getConnectionInfoHandleResponse handles the GetConnectionInfo response.
-func (client *IntegrationRuntimesClient) getConnectionInfoHandleResponse(resp *http.Response) (IntegrationRuntimesClientGetConnectionInfoResponse, error) {
+func (client *IntegrationRuntimesClient) getConnectionInfoHandleResponse(resp *http.Response, successCodes ...int) (IntegrationRuntimesClientGetConnectionInfoResponse, error) {
 	result := IntegrationRuntimesClientGetConnectionInfoResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeConnectionInfo); err != nil {
 		return IntegrationRuntimesClientGetConnectionInfoResponse{}, err
 	}
@@ -408,12 +399,7 @@ func (client *IntegrationRuntimesClient) GetMonitoringData(ctx context.Context, 
 	if err != nil {
 		return IntegrationRuntimesClientGetMonitoringDataResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IntegrationRuntimesClientGetMonitoringDataResponse{}, err
-	}
-	resp, err := client.getMonitoringDataHandleResponse(httpResp)
-	return resp, err
+	return client.getMonitoringDataHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMonitoringDataCreateRequest creates the GetMonitoringData request.
@@ -447,8 +433,11 @@ func (client *IntegrationRuntimesClient) getMonitoringDataCreateRequest(ctx cont
 }
 
 // getMonitoringDataHandleResponse handles the GetMonitoringData response.
-func (client *IntegrationRuntimesClient) getMonitoringDataHandleResponse(resp *http.Response) (IntegrationRuntimesClientGetMonitoringDataResponse, error) {
+func (client *IntegrationRuntimesClient) getMonitoringDataHandleResponse(resp *http.Response, successCodes ...int) (IntegrationRuntimesClientGetMonitoringDataResponse, error) {
 	result := IntegrationRuntimesClientGetMonitoringDataResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeMonitoringData); err != nil {
 		return IntegrationRuntimesClientGetMonitoringDataResponse{}, err
 	}
@@ -476,12 +465,7 @@ func (client *IntegrationRuntimesClient) GetStatus(ctx context.Context, resource
 	if err != nil {
 		return IntegrationRuntimesClientGetStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IntegrationRuntimesClientGetStatusResponse{}, err
-	}
-	resp, err := client.getStatusHandleResponse(httpResp)
-	return resp, err
+	return client.getStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // getStatusCreateRequest creates the GetStatus request.
@@ -515,8 +499,11 @@ func (client *IntegrationRuntimesClient) getStatusCreateRequest(ctx context.Cont
 }
 
 // getStatusHandleResponse handles the GetStatus response.
-func (client *IntegrationRuntimesClient) getStatusHandleResponse(resp *http.Response) (IntegrationRuntimesClientGetStatusResponse, error) {
+func (client *IntegrationRuntimesClient) getStatusHandleResponse(resp *http.Response, successCodes ...int) (IntegrationRuntimesClientGetStatusResponse, error) {
 	result := IntegrationRuntimesClientGetStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeStatusResponse); err != nil {
 		return IntegrationRuntimesClientGetStatusResponse{}, err
 	}
@@ -544,12 +531,7 @@ func (client *IntegrationRuntimesClient) ListAuthKeys(ctx context.Context, resou
 	if err != nil {
 		return IntegrationRuntimesClientListAuthKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IntegrationRuntimesClientListAuthKeysResponse{}, err
-	}
-	resp, err := client.listAuthKeysHandleResponse(httpResp)
-	return resp, err
+	return client.listAuthKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAuthKeysCreateRequest creates the ListAuthKeys request.
@@ -583,8 +565,11 @@ func (client *IntegrationRuntimesClient) listAuthKeysCreateRequest(ctx context.C
 }
 
 // listAuthKeysHandleResponse handles the ListAuthKeys response.
-func (client *IntegrationRuntimesClient) listAuthKeysHandleResponse(resp *http.Response) (IntegrationRuntimesClientListAuthKeysResponse, error) {
+func (client *IntegrationRuntimesClient) listAuthKeysHandleResponse(resp *http.Response, successCodes ...int) (IntegrationRuntimesClientListAuthKeysResponse, error) {
 	result := IntegrationRuntimesClientListAuthKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeAuthKeys); err != nil {
 		return IntegrationRuntimesClientListAuthKeysResponse{}, err
 	}
@@ -607,47 +592,61 @@ func (client *IntegrationRuntimesClient) NewListByFactoryPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, options)
-			}, nil)
+			req, err := client.listByFactoryCreateRequest(ctx, resourceGroupName, factoryName, nextLink, options)
 			if err != nil {
 				return IntegrationRuntimesClientListByFactoryResponse{}, err
 			}
-			return client.listByFactoryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return IntegrationRuntimesClientListByFactoryResponse{}, err
+			}
+			return client.listByFactoryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByFactoryCreateRequest creates the ListByFactory request.
-func (client *IntegrationRuntimesClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, _ *IntegrationRuntimesClientListByFactoryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *IntegrationRuntimesClient) listByFactoryCreateRequest(ctx context.Context, resourceGroupName string, factoryName string, nextLink string, _ *IntegrationRuntimesClientListByFactoryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataFactory/factories/{factoryName}/integrationRuntimes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if factoryName == "" {
+			return nil, errors.New("parameter factoryName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if factoryName == "" {
-		return nil, errors.New("parameter factoryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20180601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20180601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByFactoryHandleResponse handles the ListByFactory response.
-func (client *IntegrationRuntimesClient) listByFactoryHandleResponse(resp *http.Response) (IntegrationRuntimesClientListByFactoryResponse, error) {
+func (client *IntegrationRuntimesClient) listByFactoryHandleResponse(resp *http.Response, successCodes ...int) (IntegrationRuntimesClientListByFactoryResponse, error) {
 	result := IntegrationRuntimesClientListByFactoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeListResponse); err != nil {
 		return IntegrationRuntimesClientListByFactoryResponse{}, err
 	}
@@ -676,12 +675,7 @@ func (client *IntegrationRuntimesClient) ListOutboundNetworkDependenciesEndpoint
 	if err != nil {
 		return IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse{}, err
-	}
-	resp, err := client.listOutboundNetworkDependenciesEndpointsHandleResponse(httpResp)
-	return resp, err
+	return client.listOutboundNetworkDependenciesEndpointsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listOutboundNetworkDependenciesEndpointsCreateRequest creates the ListOutboundNetworkDependenciesEndpoints request.
@@ -715,8 +709,11 @@ func (client *IntegrationRuntimesClient) listOutboundNetworkDependenciesEndpoint
 }
 
 // listOutboundNetworkDependenciesEndpointsHandleResponse handles the ListOutboundNetworkDependenciesEndpoints response.
-func (client *IntegrationRuntimesClient) listOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response) (IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse, error) {
+func (client *IntegrationRuntimesClient) listOutboundNetworkDependenciesEndpointsHandleResponse(resp *http.Response, successCodes ...int) (IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse, error) {
 	result := IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse); err != nil {
 		return IntegrationRuntimesClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
@@ -745,12 +742,7 @@ func (client *IntegrationRuntimesClient) RegenerateAuthKey(ctx context.Context, 
 	if err != nil {
 		return IntegrationRuntimesClientRegenerateAuthKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IntegrationRuntimesClientRegenerateAuthKeyResponse{}, err
-	}
-	resp, err := client.regenerateAuthKeyHandleResponse(httpResp)
-	return resp, err
+	return client.regenerateAuthKeyHandleResponse(httpResp, http.StatusOK)
 }
 
 // regenerateAuthKeyCreateRequest creates the RegenerateAuthKey request.
@@ -788,8 +780,11 @@ func (client *IntegrationRuntimesClient) regenerateAuthKeyCreateRequest(ctx cont
 }
 
 // regenerateAuthKeyHandleResponse handles the RegenerateAuthKey response.
-func (client *IntegrationRuntimesClient) regenerateAuthKeyHandleResponse(resp *http.Response) (IntegrationRuntimesClientRegenerateAuthKeyResponse, error) {
+func (client *IntegrationRuntimesClient) regenerateAuthKeyHandleResponse(resp *http.Response, successCodes ...int) (IntegrationRuntimesClientRegenerateAuthKeyResponse, error) {
 	result := IntegrationRuntimesClientRegenerateAuthKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeAuthKeys); err != nil {
 		return IntegrationRuntimesClientRegenerateAuthKeyResponse{}, err
 	}
@@ -819,8 +814,7 @@ func (client *IntegrationRuntimesClient) RemoveLinks(ctx context.Context, resour
 		return IntegrationRuntimesClientRemoveLinksResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IntegrationRuntimesClientRemoveLinksResponse{}, err
+		return IntegrationRuntimesClientRemoveLinksResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return IntegrationRuntimesClientRemoveLinksResponse{}, nil
 }
@@ -899,8 +893,7 @@ func (client *IntegrationRuntimesClient) start(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -976,8 +969,7 @@ func (client *IntegrationRuntimesClient) stop(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1036,8 +1028,7 @@ func (client *IntegrationRuntimesClient) SyncCredentials(ctx context.Context, re
 		return IntegrationRuntimesClientSyncCredentialsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IntegrationRuntimesClientSyncCredentialsResponse{}, err
+		return IntegrationRuntimesClientSyncCredentialsResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return IntegrationRuntimesClientSyncCredentialsResponse{}, nil
 }
@@ -1093,12 +1084,7 @@ func (client *IntegrationRuntimesClient) Update(ctx context.Context, resourceGro
 	if err != nil {
 		return IntegrationRuntimesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IntegrationRuntimesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -1136,8 +1122,11 @@ func (client *IntegrationRuntimesClient) updateCreateRequest(ctx context.Context
 }
 
 // updateHandleResponse handles the Update response.
-func (client *IntegrationRuntimesClient) updateHandleResponse(resp *http.Response) (IntegrationRuntimesClientUpdateResponse, error) {
+func (client *IntegrationRuntimesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (IntegrationRuntimesClientUpdateResponse, error) {
 	result := IntegrationRuntimesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IntegrationRuntimeResource); err != nil {
 		return IntegrationRuntimesClientUpdateResponse{}, err
 	}
@@ -1166,8 +1155,7 @@ func (client *IntegrationRuntimesClient) Upgrade(ctx context.Context, resourceGr
 		return IntegrationRuntimesClientUpgradeResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return IntegrationRuntimesClientUpgradeResponse{}, err
+		return IntegrationRuntimesClientUpgradeResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return IntegrationRuntimesClientUpgradeResponse{}, nil
 }

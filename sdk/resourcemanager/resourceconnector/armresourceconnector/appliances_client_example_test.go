@@ -77,10 +77,10 @@ func ExampleAppliancesClient_BeginCreateOrUpdate_createUpdateAppliance() {
 	// 		SystemData: &armresourceconnector.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T17:52:25.0928001Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.April, 9, 17, 52, 25, 92800100, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T17:52:25.0928001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.April, 9, 17, 52, 25, 92800100, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -157,10 +157,10 @@ func ExampleAppliancesClient_BeginCreateOrUpdate_updateApplianceProxyConfigurati
 	// 		SystemData: &armresourceconnector.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T17:52:25.0928001Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.April, 9, 17, 52, 25, 92800100, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-06-21T00:05:15.0000000Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 21, 0, 5, 15, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -238,7 +238,7 @@ func ExampleAppliancesClient_Get() {
 	// 					Status: to.Ptr("Failed"),
 	// 					Message: to.Ptr("Cloud managed upgrade failed with error: InvalidLogin"),
 	// 					Severity: to.Ptr("Error"),
-	// 					Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T17:52:25Z"); return t}()),
+	// 					Timestamp: to.Ptr(time.Date(2025, time.April, 9, 17, 52, 25, 0, time.UTC)),
 	// 				},
 	// 				{
 	// 					Type: to.Ptr("Unplanned"),
@@ -246,7 +246,7 @@ func ExampleAppliancesClient_Get() {
 	// 					Status: to.Ptr("Failed"),
 	// 					Message: to.Ptr("VCenter is not reachable from the resource bridge. Please check the network connectivity."),
 	// 					Severity: to.Ptr("Error"),
-	// 					Timestamp: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T17:52:25Z"); return t}()),
+	// 					Timestamp: to.Ptr(time.Date(2025, time.April, 9, 17, 52, 25, 0, time.UTC)),
 	// 				},
 	// 			},
 	// 		},
@@ -258,10 +258,10 @@ func ExampleAppliancesClient_Get() {
 	// 		SystemData: &armresourceconnector.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T17:52:25.0928001Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.April, 9, 17, 52, 25, 92800100, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T17:52:25.0928001Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.April, 9, 17, 52, 25, 92800100, time.UTC)),
 	// 		},
 	// 	},
 	// }
@@ -392,10 +392,10 @@ func ExampleAppliancesClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armresourceconnector.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T17:52:25.0928001Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.April, 9, 17, 52, 25, 92800100, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T17:52:25.0928001Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.April, 9, 17, 52, 25, 92800100, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -427,10 +427,10 @@ func ExampleAppliancesClient_NewListByResourceGroupPager() {
 		// 				SystemData: &armresourceconnector.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T17:52:25.0928001Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.April, 9, 17, 52, 25, 92800100, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T17:52:25.0928001Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.April, 9, 17, 52, 25, 92800100, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -493,10 +493,10 @@ func ExampleAppliancesClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armresourceconnector.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T17:52:25.0928001Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.April, 9, 17, 52, 25, 92800100, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T17:52:25.0928001Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.April, 9, 17, 52, 25, 92800100, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -528,10 +528,10 @@ func ExampleAppliancesClient_NewListBySubscriptionPager() {
 		// 				SystemData: &armresourceconnector.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T17:52:25.0928001Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.April, 9, 17, 52, 25, 92800100, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-04-09T17:52:25.0928001Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.April, 9, 17, 52, 25, 92800100, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

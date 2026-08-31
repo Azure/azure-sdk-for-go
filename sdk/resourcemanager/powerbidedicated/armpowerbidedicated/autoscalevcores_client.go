@@ -61,12 +61,7 @@ func (client *AutoScaleVCoresClient) Create(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AutoScaleVCoresClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AutoScaleVCoresClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK)
 }
 
 // createCreateRequest creates the Create request.
@@ -100,8 +95,11 @@ func (client *AutoScaleVCoresClient) createCreateRequest(ctx context.Context, re
 }
 
 // createHandleResponse handles the Create response.
-func (client *AutoScaleVCoresClient) createHandleResponse(resp *http.Response) (AutoScaleVCoresClientCreateResponse, error) {
+func (client *AutoScaleVCoresClient) createHandleResponse(resp *http.Response, successCodes ...int) (AutoScaleVCoresClientCreateResponse, error) {
 	result := AutoScaleVCoresClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoScaleVCore); err != nil {
 		return AutoScaleVCoresClientCreateResponse{}, err
 	}
@@ -128,8 +126,7 @@ func (client *AutoScaleVCoresClient) Delete(ctx context.Context, resourceGroupNa
 		return AutoScaleVCoresClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return AutoScaleVCoresClientDeleteResponse{}, err
+		return AutoScaleVCoresClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return AutoScaleVCoresClientDeleteResponse{}, nil
 }
@@ -178,12 +175,7 @@ func (client *AutoScaleVCoresClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return AutoScaleVCoresClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AutoScaleVCoresClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -213,8 +205,11 @@ func (client *AutoScaleVCoresClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *AutoScaleVCoresClient) getHandleResponse(resp *http.Response) (AutoScaleVCoresClientGetResponse, error) {
+func (client *AutoScaleVCoresClient) getHandleResponse(resp *http.Response, successCodes ...int) (AutoScaleVCoresClientGetResponse, error) {
 	result := AutoScaleVCoresClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoScaleVCore); err != nil {
 		return AutoScaleVCoresClientGetResponse{}, err
 	}
@@ -236,43 +231,57 @@ func (client *AutoScaleVCoresClient) NewListByResourceGroupPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return AutoScaleVCoresClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AutoScaleVCoresClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AutoScaleVCoresClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *AutoScaleVCoresClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AutoScaleVCoresClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *AutoScaleVCoresClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PowerBIDedicated/autoScaleVCores"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20210101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AutoScaleVCoresClient) listByResourceGroupHandleResponse(resp *http.Response) (AutoScaleVCoresClientListByResourceGroupResponse, error) {
+func (client *AutoScaleVCoresClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (AutoScaleVCoresClientListByResourceGroupResponse, error) {
 	result := AutoScaleVCoresClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoScaleVCoreListResult); err != nil {
 		return AutoScaleVCoresClientListByResourceGroupResponse{}, err
 	}
@@ -293,39 +302,53 @@ func (client *AutoScaleVCoresClient) NewListBySubscriptionPager(options *AutoSca
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return AutoScaleVCoresClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AutoScaleVCoresClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AutoScaleVCoresClient) listBySubscriptionCreateRequest(ctx context.Context, _ *AutoScaleVCoresClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/autoScaleVCores"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AutoScaleVCoresClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *AutoScaleVCoresClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.PowerBIDedicated/autoScaleVCores"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20210101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20210101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *AutoScaleVCoresClient) listBySubscriptionHandleResponse(resp *http.Response) (AutoScaleVCoresClientListBySubscriptionResponse, error) {
+func (client *AutoScaleVCoresClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (AutoScaleVCoresClientListBySubscriptionResponse, error) {
 	result := AutoScaleVCoresClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoScaleVCoreListResult); err != nil {
 		return AutoScaleVCoresClientListBySubscriptionResponse{}, err
 	}
@@ -352,12 +375,7 @@ func (client *AutoScaleVCoresClient) Update(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AutoScaleVCoresClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AutoScaleVCoresClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -391,8 +409,11 @@ func (client *AutoScaleVCoresClient) updateCreateRequest(ctx context.Context, re
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AutoScaleVCoresClient) updateHandleResponse(resp *http.Response) (AutoScaleVCoresClientUpdateResponse, error) {
+func (client *AutoScaleVCoresClient) updateHandleResponse(resp *http.Response, successCodes ...int) (AutoScaleVCoresClientUpdateResponse, error) {
 	result := AutoScaleVCoresClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutoScaleVCore); err != nil {
 		return AutoScaleVCoresClientUpdateResponse{}, err
 	}

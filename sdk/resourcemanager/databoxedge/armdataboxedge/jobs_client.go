@@ -61,12 +61,7 @@ func (client *JobsClient) Get(ctx context.Context, deviceName string, name strin
 	if err != nil {
 		return JobsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return JobsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -100,8 +95,11 @@ func (client *JobsClient) getCreateRequest(ctx context.Context, deviceName strin
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobsClient) getHandleResponse(resp *http.Response) (JobsClientGetResponse, error) {
+func (client *JobsClient) getHandleResponse(resp *http.Response, successCodes ...int) (JobsClientGetResponse, error) {
 	result := JobsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Job); err != nil {
 		return JobsClientGetResponse{}, err
 	}

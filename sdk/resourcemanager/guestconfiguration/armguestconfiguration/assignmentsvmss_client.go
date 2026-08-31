@@ -63,12 +63,7 @@ func (client *AssignmentsVMSSClient) CreateOrUpdate(ctx context.Context, resourc
 	if err != nil {
 		return AssignmentsVMSSClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return AssignmentsVMSSClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -106,8 +101,11 @@ func (client *AssignmentsVMSSClient) createOrUpdateCreateRequest(ctx context.Con
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AssignmentsVMSSClient) createOrUpdateHandleResponse(resp *http.Response) (AssignmentsVMSSClientCreateOrUpdateResponse, error) {
+func (client *AssignmentsVMSSClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (AssignmentsVMSSClientCreateOrUpdateResponse, error) {
 	result := AssignmentsVMSSClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return AssignmentsVMSSClientCreateOrUpdateResponse{}, err
 	}
@@ -134,12 +132,7 @@ func (client *AssignmentsVMSSClient) Delete(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AssignmentsVMSSClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return AssignmentsVMSSClientDeleteResponse{}, err
-	}
-	resp, err := client.deleteHandleResponse(httpResp)
-	return resp, err
+	return client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -173,8 +166,11 @@ func (client *AssignmentsVMSSClient) deleteCreateRequest(ctx context.Context, re
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *AssignmentsVMSSClient) deleteHandleResponse(resp *http.Response) (AssignmentsVMSSClientDeleteResponse, error) {
+func (client *AssignmentsVMSSClient) deleteHandleResponse(resp *http.Response, successCodes ...int) (AssignmentsVMSSClientDeleteResponse, error) {
 	result := AssignmentsVMSSClientDeleteResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return AssignmentsVMSSClientDeleteResponse{}, err
 	}
@@ -201,12 +197,7 @@ func (client *AssignmentsVMSSClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return AssignmentsVMSSClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AssignmentsVMSSClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -240,8 +231,11 @@ func (client *AssignmentsVMSSClient) getCreateRequest(ctx context.Context, resou
 }
 
 // getHandleResponse handles the Get response.
-func (client *AssignmentsVMSSClient) getHandleResponse(resp *http.Response) (AssignmentsVMSSClientGetResponse, error) {
+func (client *AssignmentsVMSSClient) getHandleResponse(resp *http.Response, successCodes ...int) (AssignmentsVMSSClientGetResponse, error) {
 	result := AssignmentsVMSSClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Assignment); err != nil {
 		return AssignmentsVMSSClientGetResponse{}, err
 	}
@@ -264,47 +258,61 @@ func (client *AssignmentsVMSSClient) NewListPager(resourceGroupName string, vmss
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, vmssName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, vmssName, nextLink, options)
 			if err != nil {
 				return AssignmentsVMSSClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AssignmentsVMSSClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AssignmentsVMSSClient) listCreateRequest(ctx context.Context, resourceGroupName string, vmssName string, _ *AssignmentsVMSSClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AssignmentsVMSSClient) listCreateRequest(ctx context.Context, resourceGroupName string, vmssName string, nextLink string, _ *AssignmentsVMSSClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmssName}/providers/Microsoft.GuestConfiguration/guestConfigurationAssignments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if vmssName == "" {
+			return nil, errors.New("parameter vmssName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{vmssName}", url.PathEscape(vmssName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vmssName == "" {
-		return nil, errors.New("parameter vmssName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vmssName}", url.PathEscape(vmssName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240405)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240405)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AssignmentsVMSSClient) listHandleResponse(resp *http.Response) (AssignmentsVMSSClientListResponse, error) {
+func (client *AssignmentsVMSSClient) listHandleResponse(resp *http.Response, successCodes ...int) (AssignmentsVMSSClientListResponse, error) {
 	result := AssignmentsVMSSClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssignmentList); err != nil {
 		return AssignmentsVMSSClientListResponse{}, err
 	}

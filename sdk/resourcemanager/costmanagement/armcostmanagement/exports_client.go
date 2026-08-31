@@ -59,12 +59,7 @@ func (client *ExportsClient) CreateOrUpdate(ctx context.Context, scope string, e
 	if err != nil {
 		return ExportsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return ExportsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -94,8 +89,11 @@ func (client *ExportsClient) createOrUpdateCreateRequest(ctx context.Context, sc
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *ExportsClient) createOrUpdateHandleResponse(resp *http.Response) (ExportsClientCreateOrUpdateResponse, error) {
+func (client *ExportsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (ExportsClientCreateOrUpdateResponse, error) {
 	result := ExportsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Export); err != nil {
 		return ExportsClientCreateOrUpdateResponse{}, err
 	}
@@ -122,8 +120,7 @@ func (client *ExportsClient) Delete(ctx context.Context, scope string, exportNam
 		return ExportsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExportsClientDeleteResponse{}, err
+		return ExportsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ExportsClientDeleteResponse{}, nil
 }
@@ -169,8 +166,7 @@ func (client *ExportsClient) Execute(ctx context.Context, scope string, exportNa
 		return ExportsClientExecuteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExportsClientExecuteResponse{}, err
+		return ExportsClientExecuteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ExportsClientExecuteResponse{}, nil
 }
@@ -222,12 +218,7 @@ func (client *ExportsClient) Get(ctx context.Context, scope string, exportName s
 	if err != nil {
 		return ExportsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExportsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -256,8 +247,11 @@ func (client *ExportsClient) getCreateRequest(ctx context.Context, scope string,
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExportsClient) getHandleResponse(resp *http.Response) (ExportsClientGetResponse, error) {
+func (client *ExportsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ExportsClientGetResponse, error) {
 	result := ExportsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Export); err != nil {
 		return ExportsClientGetResponse{}, err
 	}
@@ -284,12 +278,7 @@ func (client *ExportsClient) GetExecutionHistory(ctx context.Context, scope stri
 	if err != nil {
 		return ExportsClientGetExecutionHistoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExportsClientGetExecutionHistoryResponse{}, err
-	}
-	resp, err := client.getExecutionHistoryHandleResponse(httpResp)
-	return resp, err
+	return client.getExecutionHistoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getExecutionHistoryCreateRequest creates the GetExecutionHistory request.
@@ -315,8 +304,11 @@ func (client *ExportsClient) getExecutionHistoryCreateRequest(ctx context.Contex
 }
 
 // getExecutionHistoryHandleResponse handles the GetExecutionHistory response.
-func (client *ExportsClient) getExecutionHistoryHandleResponse(resp *http.Response) (ExportsClientGetExecutionHistoryResponse, error) {
+func (client *ExportsClient) getExecutionHistoryHandleResponse(resp *http.Response, successCodes ...int) (ExportsClientGetExecutionHistoryResponse, error) {
 	result := ExportsClientGetExecutionHistoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExportExecutionListResult); err != nil {
 		return ExportsClientGetExecutionHistoryResponse{}, err
 	}
@@ -349,12 +341,7 @@ func (client *ExportsClient) List(ctx context.Context, scope string, options *Ex
 	if err != nil {
 		return ExportsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExportsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -379,8 +366,11 @@ func (client *ExportsClient) listCreateRequest(ctx context.Context, scope string
 }
 
 // listHandleResponse handles the List response.
-func (client *ExportsClient) listHandleResponse(resp *http.Response) (ExportsClientListResponse, error) {
+func (client *ExportsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ExportsClientListResponse, error) {
 	result := ExportsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExportListResult); err != nil {
 		return ExportsClientListResponse{}, err
 	}

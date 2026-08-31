@@ -18,6 +18,8 @@ import (
 
 // BillingInfoClient contains the methods for the BillingInfo group.
 // Don't use this type directly, use NewBillingInfoClient() instead.
+//
+// Generated from API version 2025-12-26-preview
 type BillingInfoClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -43,8 +45,6 @@ func NewBillingInfoClient(subscriptionID string, credential azcore.TokenCredenti
 //
 // Get marketplace and organization info mapped to the given monitor.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-12-26-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - monitorName - Monitor resource name
 //   - options - BillingInfoClientGetOptions contains the optional parameters for the BillingInfoClient.Get method.
@@ -62,12 +62,7 @@ func (client *BillingInfoClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return BillingInfoClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BillingInfoClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -90,15 +85,18 @@ func (client *BillingInfoClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-12-26-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251226Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *BillingInfoClient) getHandleResponse(resp *http.Response) (BillingInfoClientGetResponse, error) {
+func (client *BillingInfoClient) getHandleResponse(resp *http.Response, successCodes ...int) (BillingInfoClientGetResponse, error) {
 	result := BillingInfoClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BillingInfoResponse); err != nil {
 		return BillingInfoClientGetResponse{}, err
 	}

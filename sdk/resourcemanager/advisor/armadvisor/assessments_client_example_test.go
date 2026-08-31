@@ -60,10 +60,10 @@ func ExampleAssessmentsClient_Get() {
 	// 		SystemData: &armadvisor.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armadvisor.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armadvisor.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 		},
 	// 		Properties: &armadvisor.AssessmentResultProperties{
 	// 			WorkloadID: to.Ptr("f72b7134-800f-4f1b-a5bd-691e2140c7d5"),
@@ -113,10 +113,10 @@ func ExampleAssessmentsClient_NewListPager() {
 		// 				SystemData: &armadvisor.SystemData{
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armadvisor.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armadvisor.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 		// 				},
 		// 				Properties: &armadvisor.AssessmentResultProperties{
 		// 					WorkloadID: to.Ptr("f72b7134-800f-4f1b-a5bd-691e2140c7d5"),
@@ -170,10 +170,10 @@ func ExampleAssessmentsClient_Put() {
 	// 		SystemData: &armadvisor.SystemData{
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armadvisor.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armadvisor.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-03T04:41:33.937Z"); return t}()),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.April, 3, 4, 41, 33, 937000000, time.UTC)),
 	// 		},
 	// 		Properties: &armadvisor.AssessmentResultProperties{
 	// 			WorkloadID: to.Ptr("f72b7134-800f-4f1b-a5bd-691e2140c7d5"),

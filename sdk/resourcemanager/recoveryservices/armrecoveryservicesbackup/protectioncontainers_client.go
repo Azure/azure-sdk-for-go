@@ -18,6 +18,8 @@ import (
 
 // ProtectionContainersClient contains the methods for the ProtectionContainers group.
 // Don't use this type directly, use NewProtectionContainersClient() instead.
+//
+// Generated from API version 2026-07-01
 type ProtectionContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewProtectionContainersClient(subscriptionID string, credential azcore.Toke
 
 // Get - Gets details of the specific container registered to your Recovery Services Vault.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectionContainersClientGetOptions contains the optional parameters for the ProtectionContainersClient.Get
 //     method.
@@ -60,12 +60,7 @@ func (client *ProtectionContainersClient) Get(ctx context.Context, vaultName str
 	if err != nil {
 		return ProtectionContainersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectionContainersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -96,15 +91,18 @@ func (client *ProtectionContainersClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *ProtectionContainersClient) getHandleResponse(resp *http.Response) (ProtectionContainersClientGetResponse, error) {
+func (client *ProtectionContainersClient) getHandleResponse(resp *http.Response, successCodes ...int) (ProtectionContainersClientGetResponse, error) {
 	result := ProtectionContainersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProtectionContainerResource); err != nil {
 		return ProtectionContainersClientGetResponse{}, err
 	}
@@ -113,8 +111,6 @@ func (client *ProtectionContainersClient) getHandleResponse(resp *http.Response)
 
 // Inquire - This is an async operation and the results should be tracked using location header or Azure-async-url.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectionContainersClientInquireOptions contains the optional parameters for the ProtectionContainersClient.Inquire
 //     method.
@@ -133,8 +129,7 @@ func (client *ProtectionContainersClient) Inquire(ctx context.Context, vaultName
 		return ProtectionContainersClientInquireResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectionContainersClientInquireResponse{}, err
+		return ProtectionContainersClientInquireResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ProtectionContainersClientInquireResponse{}, nil
 }
@@ -170,16 +165,14 @@ func (client *ProtectionContainersClient) inquireCreateRequest(ctx context.Conte
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Refresh - Discovers all the containers in the subscription that can be backed up to Recovery Services Vault. This is an
 // asynchronous operation. To know the status of the operation, call GetRefreshOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - fabricName - Fabric name associated the container.
@@ -200,8 +193,7 @@ func (client *ProtectionContainersClient) Refresh(ctx context.Context, vaultName
 		return ProtectionContainersClientRefreshResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectionContainersClientRefreshResponse{}, err
+		return ProtectionContainersClientRefreshResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ProtectionContainersClientRefreshResponse{}, nil
 }
@@ -233,8 +225,8 @@ func (client *ProtectionContainersClient) refreshCreateRequest(ctx context.Conte
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
@@ -242,8 +234,6 @@ func (client *ProtectionContainersClient) refreshCreateRequest(ctx context.Conte
 // This is an asynchronous operation. To track the operation status, use location header to call get latest status of
 // the operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectionContainersClientBeginRegisterOptions contains the optional parameters for the ProtectionContainersClient.BeginRegister
 //     method.
@@ -268,8 +258,6 @@ func (client *ProtectionContainersClient) BeginRegister(ctx context.Context, vau
 // This is an asynchronous operation. To track the operation status, use location header to call get latest status of
 // the operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 func (client *ProtectionContainersClient) register(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, parameters ProtectionContainerResource, options *ProtectionContainersClientBeginRegisterOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProtectionContainersClient.BeginRegister"
@@ -285,8 +273,7 @@ func (client *ProtectionContainersClient) register(ctx context.Context, vaultNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -319,8 +306,8 @@ func (client *ProtectionContainersClient) registerCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -332,8 +319,6 @@ func (client *ProtectionContainersClient) registerCreateRequest(ctx context.Cont
 // Unregister - Unregisters the given container from your Recovery Services Vault. This is an asynchronous operation. To determine
 // whether the backend service has finished processing the request, call Get Container Operation Result API.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2026-01-31-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ProtectionContainersClientUnregisterOptions contains the optional parameters for the ProtectionContainersClient.Unregister
 //     method.
@@ -352,8 +337,7 @@ func (client *ProtectionContainersClient) Unregister(ctx context.Context, vaultN
 		return ProtectionContainersClientUnregisterResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return ProtectionContainersClientUnregisterResponse{}, err
+		return ProtectionContainersClientUnregisterResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return ProtectionContainersClientUnregisterResponse{}, nil
 }
@@ -386,7 +370,7 @@ func (client *ProtectionContainersClient) unregisterCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2026-01-31-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

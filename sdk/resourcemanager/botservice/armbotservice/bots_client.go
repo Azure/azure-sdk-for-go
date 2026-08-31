@@ -18,6 +18,8 @@ import (
 
 // BotsClient contains the methods for the Bots group.
 // Don't use this type directly, use NewBotsClient() instead.
+//
+// Generated from API version 2023-09-15-preview
 type BotsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewBotsClient(subscriptionID string, credential azcore.TokenCredential, opt
 
 // Create - Creates a Bot Service. Bot Service is a resource group wide resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Bot resource.
 //   - parameters - The parameters to provide for the created bot.
@@ -61,12 +61,7 @@ func (client *BotsClient) Create(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return BotsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return BotsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -89,8 +84,8 @@ func (client *BotsClient) createCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -100,8 +95,11 @@ func (client *BotsClient) createCreateRequest(ctx context.Context, resourceGroup
 }
 
 // createHandleResponse handles the Create response.
-func (client *BotsClient) createHandleResponse(resp *http.Response) (BotsClientCreateResponse, error) {
+func (client *BotsClient) createHandleResponse(resp *http.Response, successCodes ...int) (BotsClientCreateResponse, error) {
 	result := BotsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Bot); err != nil {
 		return BotsClientCreateResponse{}, err
 	}
@@ -110,8 +108,6 @@ func (client *BotsClient) createHandleResponse(resp *http.Response) (BotsClientC
 
 // Delete - Deletes a Bot Service from the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Bot resource.
 //   - options - BotsClientDeleteOptions contains the optional parameters for the BotsClient.Delete method.
@@ -130,8 +126,7 @@ func (client *BotsClient) Delete(ctx context.Context, resourceGroupName string, 
 		return BotsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return BotsClientDeleteResponse{}, err
+		return BotsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return BotsClientDeleteResponse{}, nil
 }
@@ -156,15 +151,13 @@ func (client *BotsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // Get - Returns a BotService specified by the parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Bot resource.
 //   - options - BotsClientGetOptions contains the optional parameters for the BotsClient.Get method.
@@ -182,12 +175,7 @@ func (client *BotsClient) Get(ctx context.Context, resourceGroupName string, res
 	if err != nil {
 		return BotsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BotsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -210,15 +198,18 @@ func (client *BotsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *BotsClient) getHandleResponse(resp *http.Response) (BotsClientGetResponse, error) {
+func (client *BotsClient) getHandleResponse(resp *http.Response, successCodes ...int) (BotsClientGetResponse, error) {
 	result := BotsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Bot); err != nil {
 		return BotsClientGetResponse{}, err
 	}
@@ -227,8 +218,6 @@ func (client *BotsClient) getHandleResponse(resp *http.Response) (BotsClientGetR
 
 // GetCheckNameAvailability - Check whether a bot name is available.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-15-preview
 //   - parameters - The request body
 //   - options - BotsClientGetCheckNameAvailabilityOptions contains the optional parameters for the BotsClient.GetCheckNameAvailability
 //     method.
@@ -246,12 +235,7 @@ func (client *BotsClient) GetCheckNameAvailability(ctx context.Context, paramete
 	if err != nil {
 		return BotsClientGetCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BotsClientGetCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.getCheckNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.getCheckNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCheckNameAvailabilityCreateRequest creates the GetCheckNameAvailability request.
@@ -262,8 +246,8 @@ func (client *BotsClient) getCheckNameAvailabilityCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -273,8 +257,11 @@ func (client *BotsClient) getCheckNameAvailabilityCreateRequest(ctx context.Cont
 }
 
 // getCheckNameAvailabilityHandleResponse handles the GetCheckNameAvailability response.
-func (client *BotsClient) getCheckNameAvailabilityHandleResponse(resp *http.Response) (BotsClientGetCheckNameAvailabilityResponse, error) {
+func (client *BotsClient) getCheckNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (BotsClientGetCheckNameAvailabilityResponse, error) {
 	result := BotsClientGetCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResponseBody); err != nil {
 		return BotsClientGetCheckNameAvailabilityResponse{}, err
 	}
@@ -282,8 +269,6 @@ func (client *BotsClient) getCheckNameAvailabilityHandleResponse(resp *http.Resp
 }
 
 // NewListPager - Returns all the resources of a particular type belonging to a subscription.
-//
-// Generated from API version 2023-09-15-preview
 //   - options - BotsClientListOptions contains the optional parameters for the BotsClient.NewListPager method.
 func (client *BotsClient) NewListPager(options *BotsClientListOptions) *runtime.Pager[BotsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[BotsClientListResponse]{
@@ -296,39 +281,53 @@ func (client *BotsClient) NewListPager(options *BotsClientListOptions) *runtime.
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return BotsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BotsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *BotsClient) listCreateRequest(ctx context.Context, _ *BotsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/botServices"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *BotsClient) listCreateRequest(ctx context.Context, nextLink string, _ *BotsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/botServices"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20230915Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *BotsClient) listHandleResponse(resp *http.Response) (BotsClientListResponse, error) {
+func (client *BotsClient) listHandleResponse(resp *http.Response, successCodes ...int) (BotsClientListResponse, error) {
 	result := BotsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BotResponseList); err != nil {
 		return BotsClientListResponse{}, err
 	}
@@ -336,8 +335,6 @@ func (client *BotsClient) listHandleResponse(resp *http.Response) (BotsClientLis
 }
 
 // NewListByResourceGroupPager - Returns all the resources of a particular type belonging to a resource group
-//
-// Generated from API version 2023-09-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - BotsClientListByResourceGroupOptions contains the optional parameters for the BotsClient.NewListByResourceGroupPager
 //     method.
@@ -352,43 +349,57 @@ func (client *BotsClient) NewListByResourceGroupPager(resourceGroupName string, 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return BotsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BotsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *BotsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *BotsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *BotsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *BotsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BotService/botServices"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20230915Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *BotsClient) listByResourceGroupHandleResponse(resp *http.Response) (BotsClientListByResourceGroupResponse, error) {
+func (client *BotsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (BotsClientListByResourceGroupResponse, error) {
 	result := BotsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BotResponseList); err != nil {
 		return BotsClientListByResourceGroupResponse{}, err
 	}
@@ -397,8 +408,6 @@ func (client *BotsClient) listByResourceGroupHandleResponse(resp *http.Response)
 
 // Update - Updates a Bot Service
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2023-09-15-preview
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the Bot resource.
 //   - parameters - The parameters to provide for the created bot.
@@ -417,12 +426,7 @@ func (client *BotsClient) Update(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return BotsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return BotsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // updateCreateRequest creates the Update request.
@@ -445,8 +449,8 @@ func (client *BotsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-09-15-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20230915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -456,8 +460,11 @@ func (client *BotsClient) updateCreateRequest(ctx context.Context, resourceGroup
 }
 
 // updateHandleResponse handles the Update response.
-func (client *BotsClient) updateHandleResponse(resp *http.Response) (BotsClientUpdateResponse, error) {
+func (client *BotsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (BotsClientUpdateResponse, error) {
 	result := BotsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Bot); err != nil {
 		return BotsClientUpdateResponse{}, err
 	}

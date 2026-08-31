@@ -19,6 +19,8 @@ import (
 
 // RpUnbilledPrefixesClient contains the methods for the RpUnbilledPrefixes group.
 // Don't use this type directly, use NewRpUnbilledPrefixesClient() instead.
+//
+// Generated from API version 2025-05-01
 type RpUnbilledPrefixesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewRpUnbilledPrefixesClient(subscriptionID string, credential azcore.TokenC
 }
 
 // NewListPager - Lists all of the RP unbilled prefixes for the specified peering
-//
-// Generated from API version 2025-05-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - peeringName - The name of the peering.
 //   - options - RpUnbilledPrefixesClientListOptions contains the optional parameters for the RpUnbilledPrefixesClient.NewListPager
@@ -58,50 +58,64 @@ func (client *RpUnbilledPrefixesClient) NewListPager(resourceGroupName string, p
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, peeringName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, peeringName, nextLink, options)
 			if err != nil {
 				return RpUnbilledPrefixesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RpUnbilledPrefixesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RpUnbilledPrefixesClient) listCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, options *RpUnbilledPrefixesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}/rpUnbilledPrefixes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RpUnbilledPrefixesClient) listCreateRequest(ctx context.Context, resourceGroupName string, peeringName string, nextLink string, options *RpUnbilledPrefixesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Peering/peerings/{peeringName}/rpUnbilledPrefixes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if peeringName == "" {
+			return nil, errors.New("parameter peeringName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{peeringName}", url.PathEscape(peeringName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if peeringName == "" {
-		return nil, errors.New("parameter peeringName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{peeringName}", url.PathEscape(peeringName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-05-01")
-	if options != nil && options.Consolidate != nil {
-		reqQP.Set("consolidate", strconv.FormatBool(*options.Consolidate))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		if options != nil && options.Consolidate != nil {
+			reqQP.Set("consolidate", strconv.FormatBool(*options.Consolidate))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RpUnbilledPrefixesClient) listHandleResponse(resp *http.Response) (RpUnbilledPrefixesClientListResponse, error) {
+func (client *RpUnbilledPrefixesClient) listHandleResponse(resp *http.Response, successCodes ...int) (RpUnbilledPrefixesClientListResponse, error) {
 	result := RpUnbilledPrefixesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RpUnbilledPrefixListResult); err != nil {
 		return RpUnbilledPrefixesClientListResponse{}, err
 	}

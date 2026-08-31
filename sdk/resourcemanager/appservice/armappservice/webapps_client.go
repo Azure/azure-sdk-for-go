@@ -65,12 +65,7 @@ func (client *WebAppsClient) AddPremierAddOn(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WebAppsClientAddPremierAddOnResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientAddPremierAddOnResponse{}, err
-	}
-	resp, err := client.addPremierAddOnHandleResponse(httpResp)
-	return resp, err
+	return client.addPremierAddOnHandleResponse(httpResp, http.StatusOK)
 }
 
 // addPremierAddOnCreateRequest creates the AddPremierAddOn request.
@@ -108,8 +103,11 @@ func (client *WebAppsClient) addPremierAddOnCreateRequest(ctx context.Context, r
 }
 
 // addPremierAddOnHandleResponse handles the AddPremierAddOn response.
-func (client *WebAppsClient) addPremierAddOnHandleResponse(resp *http.Response) (WebAppsClientAddPremierAddOnResponse, error) {
+func (client *WebAppsClient) addPremierAddOnHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientAddPremierAddOnResponse, error) {
 	result := WebAppsClientAddPremierAddOnResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PremierAddOn); err != nil {
 		return WebAppsClientAddPremierAddOnResponse{}, err
 	}
@@ -137,12 +135,7 @@ func (client *WebAppsClient) AddPremierAddOnSlot(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientAddPremierAddOnSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientAddPremierAddOnSlotResponse{}, err
-	}
-	resp, err := client.addPremierAddOnSlotHandleResponse(httpResp)
-	return resp, err
+	return client.addPremierAddOnSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // addPremierAddOnSlotCreateRequest creates the AddPremierAddOnSlot request.
@@ -184,8 +177,11 @@ func (client *WebAppsClient) addPremierAddOnSlotCreateRequest(ctx context.Contex
 }
 
 // addPremierAddOnSlotHandleResponse handles the AddPremierAddOnSlot response.
-func (client *WebAppsClient) addPremierAddOnSlotHandleResponse(resp *http.Response) (WebAppsClientAddPremierAddOnSlotResponse, error) {
+func (client *WebAppsClient) addPremierAddOnSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientAddPremierAddOnSlotResponse, error) {
 	result := WebAppsClientAddPremierAddOnSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PremierAddOn); err != nil {
 		return WebAppsClientAddPremierAddOnSlotResponse{}, err
 	}
@@ -214,12 +210,7 @@ func (client *WebAppsClient) AnalyzeCustomHostname(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientAnalyzeCustomHostnameResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientAnalyzeCustomHostnameResponse{}, err
-	}
-	resp, err := client.analyzeCustomHostnameHandleResponse(httpResp)
-	return resp, err
+	return client.analyzeCustomHostnameHandleResponse(httpResp, http.StatusOK)
 }
 
 // analyzeCustomHostnameCreateRequest creates the AnalyzeCustomHostname request.
@@ -252,8 +243,11 @@ func (client *WebAppsClient) analyzeCustomHostnameCreateRequest(ctx context.Cont
 }
 
 // analyzeCustomHostnameHandleResponse handles the AnalyzeCustomHostname response.
-func (client *WebAppsClient) analyzeCustomHostnameHandleResponse(resp *http.Response) (WebAppsClientAnalyzeCustomHostnameResponse, error) {
+func (client *WebAppsClient) analyzeCustomHostnameHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientAnalyzeCustomHostnameResponse, error) {
 	result := WebAppsClientAnalyzeCustomHostnameResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomHostnameAnalysisResult); err != nil {
 		return WebAppsClientAnalyzeCustomHostnameResponse{}, err
 	}
@@ -283,12 +277,7 @@ func (client *WebAppsClient) AnalyzeCustomHostnameSlot(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientAnalyzeCustomHostnameSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientAnalyzeCustomHostnameSlotResponse{}, err
-	}
-	resp, err := client.analyzeCustomHostnameSlotHandleResponse(httpResp)
-	return resp, err
+	return client.analyzeCustomHostnameSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // analyzeCustomHostnameSlotCreateRequest creates the AnalyzeCustomHostnameSlot request.
@@ -325,8 +314,11 @@ func (client *WebAppsClient) analyzeCustomHostnameSlotCreateRequest(ctx context.
 }
 
 // analyzeCustomHostnameSlotHandleResponse handles the AnalyzeCustomHostnameSlot response.
-func (client *WebAppsClient) analyzeCustomHostnameSlotHandleResponse(resp *http.Response) (WebAppsClientAnalyzeCustomHostnameSlotResponse, error) {
+func (client *WebAppsClient) analyzeCustomHostnameSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientAnalyzeCustomHostnameSlotResponse, error) {
 	result := WebAppsClientAnalyzeCustomHostnameSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomHostnameAnalysisResult); err != nil {
 		return WebAppsClientAnalyzeCustomHostnameSlotResponse{}, err
 	}
@@ -357,8 +349,7 @@ func (client *WebAppsClient) ApplySlotConfigToProduction(ctx context.Context, re
 		return WebAppsClientApplySlotConfigToProductionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientApplySlotConfigToProductionResponse{}, err
+		return WebAppsClientApplySlotConfigToProductionResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientApplySlotConfigToProductionResponse{}, nil
 }
@@ -417,8 +408,7 @@ func (client *WebAppsClient) ApplySlotConfigurationSlot(ctx context.Context, res
 		return WebAppsClientApplySlotConfigurationSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientApplySlotConfigurationSlotResponse{}, err
+		return WebAppsClientApplySlotConfigurationSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientApplySlotConfigurationSlotResponse{}, nil
 }
@@ -501,8 +491,7 @@ func (client *WebAppsClient) approveOrRejectPrivateEndpointConnection(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -584,8 +573,7 @@ func (client *WebAppsClient) approveOrRejectPrivateEndpointConnectionSlot(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -650,12 +638,7 @@ func (client *WebAppsClient) Backup(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return WebAppsClientBackupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientBackupResponse{}, err
-	}
-	resp, err := client.backupHandleResponse(httpResp)
-	return resp, err
+	return client.backupHandleResponse(httpResp, http.StatusOK)
 }
 
 // backupCreateRequest creates the Backup request.
@@ -689,8 +672,11 @@ func (client *WebAppsClient) backupCreateRequest(ctx context.Context, resourceGr
 }
 
 // backupHandleResponse handles the Backup response.
-func (client *WebAppsClient) backupHandleResponse(resp *http.Response) (WebAppsClientBackupResponse, error) {
+func (client *WebAppsClient) backupHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientBackupResponse, error) {
 	result := WebAppsClientBackupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupItem); err != nil {
 		return WebAppsClientBackupResponse{}, err
 	}
@@ -720,12 +706,7 @@ func (client *WebAppsClient) BackupSlot(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return WebAppsClientBackupSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientBackupSlotResponse{}, err
-	}
-	resp, err := client.backupSlotHandleResponse(httpResp)
-	return resp, err
+	return client.backupSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // backupSlotCreateRequest creates the BackupSlot request.
@@ -763,8 +744,11 @@ func (client *WebAppsClient) backupSlotCreateRequest(ctx context.Context, resour
 }
 
 // backupSlotHandleResponse handles the BackupSlot response.
-func (client *WebAppsClient) backupSlotHandleResponse(resp *http.Response) (WebAppsClientBackupSlotResponse, error) {
+func (client *WebAppsClient) backupSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientBackupSlotResponse, error) {
 	result := WebAppsClientBackupSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupItem); err != nil {
 		return WebAppsClientBackupSlotResponse{}, err
 	}
@@ -795,12 +779,7 @@ func (client *WebAppsClient) CreateDeployment(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientCreateDeploymentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateDeploymentResponse{}, err
-	}
-	resp, err := client.createDeploymentHandleResponse(httpResp)
-	return resp, err
+	return client.createDeploymentHandleResponse(httpResp, http.StatusOK)
 }
 
 // createDeploymentCreateRequest creates the CreateDeployment request.
@@ -838,8 +817,11 @@ func (client *WebAppsClient) createDeploymentCreateRequest(ctx context.Context, 
 }
 
 // createDeploymentHandleResponse handles the CreateDeployment response.
-func (client *WebAppsClient) createDeploymentHandleResponse(resp *http.Response) (WebAppsClientCreateDeploymentResponse, error) {
+func (client *WebAppsClient) createDeploymentHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateDeploymentResponse, error) {
 	result := WebAppsClientCreateDeploymentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Deployment); err != nil {
 		return WebAppsClientCreateDeploymentResponse{}, err
 	}
@@ -867,12 +849,7 @@ func (client *WebAppsClient) CreateDeploymentSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientCreateDeploymentSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateDeploymentSlotResponse{}, err
-	}
-	resp, err := client.createDeploymentSlotHandleResponse(httpResp)
-	return resp, err
+	return client.createDeploymentSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // createDeploymentSlotCreateRequest creates the CreateDeploymentSlot request.
@@ -914,8 +891,11 @@ func (client *WebAppsClient) createDeploymentSlotCreateRequest(ctx context.Conte
 }
 
 // createDeploymentSlotHandleResponse handles the CreateDeploymentSlot response.
-func (client *WebAppsClient) createDeploymentSlotHandleResponse(resp *http.Response) (WebAppsClientCreateDeploymentSlotResponse, error) {
+func (client *WebAppsClient) createDeploymentSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateDeploymentSlotResponse, error) {
 	result := WebAppsClientCreateDeploymentSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Deployment); err != nil {
 		return WebAppsClientCreateDeploymentSlotResponse{}, err
 	}
@@ -968,8 +948,7 @@ func (client *WebAppsClient) createFunction(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1051,8 +1030,7 @@ func (client *WebAppsClient) createInstanceFunctionSlot(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1141,8 +1119,7 @@ func (client *WebAppsClient) createInstanceMSDeployOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1228,8 +1205,7 @@ func (client *WebAppsClient) createInstanceMSDeployOperationSlot(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1317,8 +1293,7 @@ func (client *WebAppsClient) createMSDeployOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1399,8 +1374,7 @@ func (client *WebAppsClient) createMSDeployOperationSlot(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1461,12 +1435,7 @@ func (client *WebAppsClient) CreateOneDeployOperation(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientCreateOneDeployOperationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOneDeployOperationResponse{}, err
-	}
-	resp, err := client.createOneDeployOperationHandleResponse(httpResp)
-	return resp, err
+	return client.createOneDeployOperationHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOneDeployOperationCreateRequest creates the CreateOneDeployOperation request.
@@ -1496,8 +1465,11 @@ func (client *WebAppsClient) createOneDeployOperationCreateRequest(ctx context.C
 }
 
 // createOneDeployOperationHandleResponse handles the CreateOneDeployOperation response.
-func (client *WebAppsClient) createOneDeployOperationHandleResponse(resp *http.Response) (WebAppsClientCreateOneDeployOperationResponse, error) {
+func (client *WebAppsClient) createOneDeployOperationHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOneDeployOperationResponse, error) {
 	result := WebAppsClientCreateOneDeployOperationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return WebAppsClientCreateOneDeployOperationResponse{}, err
 	}
@@ -1549,8 +1521,7 @@ func (client *WebAppsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -1608,12 +1579,7 @@ func (client *WebAppsClient) CreateOrUpdateConfiguration(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientCreateOrUpdateConfigurationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateConfigurationResponse{}, err
-	}
-	resp, err := client.createOrUpdateConfigurationHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateConfigurationHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateConfigurationCreateRequest creates the CreateOrUpdateConfiguration request.
@@ -1647,8 +1613,11 @@ func (client *WebAppsClient) createOrUpdateConfigurationCreateRequest(ctx contex
 }
 
 // createOrUpdateConfigurationHandleResponse handles the CreateOrUpdateConfiguration response.
-func (client *WebAppsClient) createOrUpdateConfigurationHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateConfigurationResponse, error) {
+func (client *WebAppsClient) createOrUpdateConfigurationHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateConfigurationResponse, error) {
 	result := WebAppsClientCreateOrUpdateConfigurationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteConfigResource); err != nil {
 		return WebAppsClientCreateOrUpdateConfigurationResponse{}, err
 	}
@@ -1679,12 +1648,7 @@ func (client *WebAppsClient) CreateOrUpdateConfigurationSlot(ctx context.Context
 	if err != nil {
 		return WebAppsClientCreateOrUpdateConfigurationSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateConfigurationSlotResponse{}, err
-	}
-	resp, err := client.createOrUpdateConfigurationSlotHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateConfigurationSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateConfigurationSlotCreateRequest creates the CreateOrUpdateConfigurationSlot request.
@@ -1722,8 +1686,11 @@ func (client *WebAppsClient) createOrUpdateConfigurationSlotCreateRequest(ctx co
 }
 
 // createOrUpdateConfigurationSlotHandleResponse handles the CreateOrUpdateConfigurationSlot response.
-func (client *WebAppsClient) createOrUpdateConfigurationSlotHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateConfigurationSlotResponse, error) {
+func (client *WebAppsClient) createOrUpdateConfigurationSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateConfigurationSlotResponse, error) {
 	result := WebAppsClientCreateOrUpdateConfigurationSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteConfigResource); err != nil {
 		return WebAppsClientCreateOrUpdateConfigurationSlotResponse{}, err
 	}
@@ -1755,12 +1722,7 @@ func (client *WebAppsClient) CreateOrUpdateDomainOwnershipIdentifier(ctx context
 	if err != nil {
 		return WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResponse{}, err
-	}
-	resp, err := client.createOrUpdateDomainOwnershipIdentifierHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateDomainOwnershipIdentifierHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateDomainOwnershipIdentifierCreateRequest creates the CreateOrUpdateDomainOwnershipIdentifier request.
@@ -1798,8 +1760,11 @@ func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierCreateReques
 }
 
 // createOrUpdateDomainOwnershipIdentifierHandleResponse handles the CreateOrUpdateDomainOwnershipIdentifier response.
-func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResponse, error) {
+func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResponse, error) {
 	result := WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Identifier); err != nil {
 		return WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResponse{}, err
 	}
@@ -1828,12 +1793,7 @@ func (client *WebAppsClient) CreateOrUpdateDomainOwnershipIdentifierSlot(ctx con
 	if err != nil {
 		return WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResponse{}, err
-	}
-	resp, err := client.createOrUpdateDomainOwnershipIdentifierSlotHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateDomainOwnershipIdentifierSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateDomainOwnershipIdentifierSlotCreateRequest creates the CreateOrUpdateDomainOwnershipIdentifierSlot request.
@@ -1875,8 +1835,11 @@ func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierSlotCreateRe
 }
 
 // createOrUpdateDomainOwnershipIdentifierSlotHandleResponse handles the CreateOrUpdateDomainOwnershipIdentifierSlot response.
-func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierSlotHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResponse, error) {
+func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResponse, error) {
 	result := WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Identifier); err != nil {
 		return WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResponse{}, err
 	}
@@ -1905,12 +1868,7 @@ func (client *WebAppsClient) CreateOrUpdateFunctionSecret(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientCreateOrUpdateFunctionSecretResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateFunctionSecretResponse{}, err
-	}
-	resp, err := client.createOrUpdateFunctionSecretHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateFunctionSecretHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateFunctionSecretCreateRequest creates the CreateOrUpdateFunctionSecret request.
@@ -1952,8 +1910,11 @@ func (client *WebAppsClient) createOrUpdateFunctionSecretCreateRequest(ctx conte
 }
 
 // createOrUpdateFunctionSecretHandleResponse handles the CreateOrUpdateFunctionSecret response.
-func (client *WebAppsClient) createOrUpdateFunctionSecretHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateFunctionSecretResponse, error) {
+func (client *WebAppsClient) createOrUpdateFunctionSecretHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateFunctionSecretResponse, error) {
 	result := WebAppsClientCreateOrUpdateFunctionSecretResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyInfo); err != nil {
 		return WebAppsClientCreateOrUpdateFunctionSecretResponse{}, err
 	}
@@ -1981,12 +1942,7 @@ func (client *WebAppsClient) CreateOrUpdateFunctionSecretSlot(ctx context.Contex
 	if err != nil {
 		return WebAppsClientCreateOrUpdateFunctionSecretSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateFunctionSecretSlotResponse{}, err
-	}
-	resp, err := client.createOrUpdateFunctionSecretSlotHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateFunctionSecretSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateFunctionSecretSlotCreateRequest creates the CreateOrUpdateFunctionSecretSlot request.
@@ -2032,8 +1988,11 @@ func (client *WebAppsClient) createOrUpdateFunctionSecretSlotCreateRequest(ctx c
 }
 
 // createOrUpdateFunctionSecretSlotHandleResponse handles the CreateOrUpdateFunctionSecretSlot response.
-func (client *WebAppsClient) createOrUpdateFunctionSecretSlotHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateFunctionSecretSlotResponse, error) {
+func (client *WebAppsClient) createOrUpdateFunctionSecretSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateFunctionSecretSlotResponse, error) {
 	result := WebAppsClientCreateOrUpdateFunctionSecretSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyInfo); err != nil {
 		return WebAppsClientCreateOrUpdateFunctionSecretSlotResponse{}, err
 	}
@@ -2064,12 +2023,7 @@ func (client *WebAppsClient) CreateOrUpdateHostNameBinding(ctx context.Context, 
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHostNameBindingResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateHostNameBindingResponse{}, err
-	}
-	resp, err := client.createOrUpdateHostNameBindingHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHostNameBindingHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateHostNameBindingCreateRequest creates the CreateOrUpdateHostNameBinding request.
@@ -2107,8 +2061,11 @@ func (client *WebAppsClient) createOrUpdateHostNameBindingCreateRequest(ctx cont
 }
 
 // createOrUpdateHostNameBindingHandleResponse handles the CreateOrUpdateHostNameBinding response.
-func (client *WebAppsClient) createOrUpdateHostNameBindingHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateHostNameBindingResponse, error) {
+func (client *WebAppsClient) createOrUpdateHostNameBindingHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateHostNameBindingResponse, error) {
 	result := WebAppsClientCreateOrUpdateHostNameBindingResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HostNameBinding); err != nil {
 		return WebAppsClientCreateOrUpdateHostNameBindingResponse{}, err
 	}
@@ -2136,12 +2093,7 @@ func (client *WebAppsClient) CreateOrUpdateHostNameBindingSlot(ctx context.Conte
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHostNameBindingSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateHostNameBindingSlotResponse{}, err
-	}
-	resp, err := client.createOrUpdateHostNameBindingSlotHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHostNameBindingSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateHostNameBindingSlotCreateRequest creates the CreateOrUpdateHostNameBindingSlot request.
@@ -2183,8 +2135,11 @@ func (client *WebAppsClient) createOrUpdateHostNameBindingSlotCreateRequest(ctx 
 }
 
 // createOrUpdateHostNameBindingSlotHandleResponse handles the CreateOrUpdateHostNameBindingSlot response.
-func (client *WebAppsClient) createOrUpdateHostNameBindingSlotHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateHostNameBindingSlotResponse, error) {
+func (client *WebAppsClient) createOrUpdateHostNameBindingSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateHostNameBindingSlotResponse, error) {
 	result := WebAppsClientCreateOrUpdateHostNameBindingSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HostNameBinding); err != nil {
 		return WebAppsClientCreateOrUpdateHostNameBindingSlotResponse{}, err
 	}
@@ -2216,12 +2171,7 @@ func (client *WebAppsClient) CreateOrUpdateHostSecret(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHostSecretResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateHostSecretResponse{}, err
-	}
-	resp, err := client.createOrUpdateHostSecretHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHostSecretHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateHostSecretCreateRequest creates the CreateOrUpdateHostSecret request.
@@ -2263,8 +2213,11 @@ func (client *WebAppsClient) createOrUpdateHostSecretCreateRequest(ctx context.C
 }
 
 // createOrUpdateHostSecretHandleResponse handles the CreateOrUpdateHostSecret response.
-func (client *WebAppsClient) createOrUpdateHostSecretHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateHostSecretResponse, error) {
+func (client *WebAppsClient) createOrUpdateHostSecretHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateHostSecretResponse, error) {
 	result := WebAppsClientCreateOrUpdateHostSecretResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyInfo); err != nil {
 		return WebAppsClientCreateOrUpdateHostSecretResponse{}, err
 	}
@@ -2292,12 +2245,7 @@ func (client *WebAppsClient) CreateOrUpdateHostSecretSlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHostSecretSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateHostSecretSlotResponse{}, err
-	}
-	resp, err := client.createOrUpdateHostSecretSlotHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHostSecretSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateHostSecretSlotCreateRequest creates the CreateOrUpdateHostSecretSlot request.
@@ -2343,8 +2291,11 @@ func (client *WebAppsClient) createOrUpdateHostSecretSlotCreateRequest(ctx conte
 }
 
 // createOrUpdateHostSecretSlotHandleResponse handles the CreateOrUpdateHostSecretSlot response.
-func (client *WebAppsClient) createOrUpdateHostSecretSlotHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateHostSecretSlotResponse, error) {
+func (client *WebAppsClient) createOrUpdateHostSecretSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateHostSecretSlotResponse, error) {
 	result := WebAppsClientCreateOrUpdateHostSecretSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.KeyInfo); err != nil {
 		return WebAppsClientCreateOrUpdateHostSecretSlotResponse{}, err
 	}
@@ -2376,12 +2327,7 @@ func (client *WebAppsClient) CreateOrUpdateHybridConnection(ctx context.Context,
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHybridConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateHybridConnectionResponse{}, err
-	}
-	resp, err := client.createOrUpdateHybridConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHybridConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateHybridConnectionCreateRequest creates the CreateOrUpdateHybridConnection request.
@@ -2423,8 +2369,11 @@ func (client *WebAppsClient) createOrUpdateHybridConnectionCreateRequest(ctx con
 }
 
 // createOrUpdateHybridConnectionHandleResponse handles the CreateOrUpdateHybridConnection response.
-func (client *WebAppsClient) createOrUpdateHybridConnectionHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateHybridConnectionResponse, error) {
+func (client *WebAppsClient) createOrUpdateHybridConnectionHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateHybridConnectionResponse, error) {
 	result := WebAppsClientCreateOrUpdateHybridConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
 		return WebAppsClientCreateOrUpdateHybridConnectionResponse{}, err
 	}
@@ -2452,12 +2401,7 @@ func (client *WebAppsClient) CreateOrUpdateHybridConnectionSlot(ctx context.Cont
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHybridConnectionSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateHybridConnectionSlotResponse{}, err
-	}
-	resp, err := client.createOrUpdateHybridConnectionSlotHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHybridConnectionSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateHybridConnectionSlotCreateRequest creates the CreateOrUpdateHybridConnectionSlot request.
@@ -2503,8 +2447,11 @@ func (client *WebAppsClient) createOrUpdateHybridConnectionSlotCreateRequest(ctx
 }
 
 // createOrUpdateHybridConnectionSlotHandleResponse handles the CreateOrUpdateHybridConnectionSlot response.
-func (client *WebAppsClient) createOrUpdateHybridConnectionSlotHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateHybridConnectionSlotResponse, error) {
+func (client *WebAppsClient) createOrUpdateHybridConnectionSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateHybridConnectionSlotResponse, error) {
 	result := WebAppsClientCreateOrUpdateHybridConnectionSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
 		return WebAppsClientCreateOrUpdateHybridConnectionSlotResponse{}, err
 	}
@@ -2535,12 +2482,7 @@ func (client *WebAppsClient) CreateOrUpdatePublicCertificate(ctx context.Context
 	if err != nil {
 		return WebAppsClientCreateOrUpdatePublicCertificateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdatePublicCertificateResponse{}, err
-	}
-	resp, err := client.createOrUpdatePublicCertificateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdatePublicCertificateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdatePublicCertificateCreateRequest creates the CreateOrUpdatePublicCertificate request.
@@ -2578,8 +2520,11 @@ func (client *WebAppsClient) createOrUpdatePublicCertificateCreateRequest(ctx co
 }
 
 // createOrUpdatePublicCertificateHandleResponse handles the CreateOrUpdatePublicCertificate response.
-func (client *WebAppsClient) createOrUpdatePublicCertificateHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdatePublicCertificateResponse, error) {
+func (client *WebAppsClient) createOrUpdatePublicCertificateHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdatePublicCertificateResponse, error) {
 	result := WebAppsClientCreateOrUpdatePublicCertificateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicCertificate); err != nil {
 		return WebAppsClientCreateOrUpdatePublicCertificateResponse{}, err
 	}
@@ -2607,12 +2552,7 @@ func (client *WebAppsClient) CreateOrUpdatePublicCertificateSlot(ctx context.Con
 	if err != nil {
 		return WebAppsClientCreateOrUpdatePublicCertificateSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdatePublicCertificateSlotResponse{}, err
-	}
-	resp, err := client.createOrUpdatePublicCertificateSlotHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdatePublicCertificateSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdatePublicCertificateSlotCreateRequest creates the CreateOrUpdatePublicCertificateSlot request.
@@ -2654,8 +2594,11 @@ func (client *WebAppsClient) createOrUpdatePublicCertificateSlotCreateRequest(ct
 }
 
 // createOrUpdatePublicCertificateSlotHandleResponse handles the CreateOrUpdatePublicCertificateSlot response.
-func (client *WebAppsClient) createOrUpdatePublicCertificateSlotHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdatePublicCertificateSlotResponse, error) {
+func (client *WebAppsClient) createOrUpdatePublicCertificateSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdatePublicCertificateSlotResponse, error) {
 	result := WebAppsClientCreateOrUpdatePublicCertificateSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicCertificate); err != nil {
 		return WebAppsClientCreateOrUpdatePublicCertificateSlotResponse{}, err
 	}
@@ -2687,12 +2630,7 @@ func (client *WebAppsClient) CreateOrUpdateRelayServiceConnection(ctx context.Co
 	if err != nil {
 		return WebAppsClientCreateOrUpdateRelayServiceConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateRelayServiceConnectionResponse{}, err
-	}
-	resp, err := client.createOrUpdateRelayServiceConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateRelayServiceConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateRelayServiceConnectionCreateRequest creates the CreateOrUpdateRelayServiceConnection request.
@@ -2730,8 +2668,11 @@ func (client *WebAppsClient) createOrUpdateRelayServiceConnectionCreateRequest(c
 }
 
 // createOrUpdateRelayServiceConnectionHandleResponse handles the CreateOrUpdateRelayServiceConnection response.
-func (client *WebAppsClient) createOrUpdateRelayServiceConnectionHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateRelayServiceConnectionResponse, error) {
+func (client *WebAppsClient) createOrUpdateRelayServiceConnectionHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateRelayServiceConnectionResponse, error) {
 	result := WebAppsClientCreateOrUpdateRelayServiceConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RelayServiceConnectionEntity); err != nil {
 		return WebAppsClientCreateOrUpdateRelayServiceConnectionResponse{}, err
 	}
@@ -2760,12 +2701,7 @@ func (client *WebAppsClient) CreateOrUpdateRelayServiceConnectionSlot(ctx contex
 	if err != nil {
 		return WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse{}, err
-	}
-	resp, err := client.createOrUpdateRelayServiceConnectionSlotHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateRelayServiceConnectionSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateRelayServiceConnectionSlotCreateRequest creates the CreateOrUpdateRelayServiceConnectionSlot request.
@@ -2807,8 +2743,11 @@ func (client *WebAppsClient) createOrUpdateRelayServiceConnectionSlotCreateReque
 }
 
 // createOrUpdateRelayServiceConnectionSlotHandleResponse handles the CreateOrUpdateRelayServiceConnectionSlot response.
-func (client *WebAppsClient) createOrUpdateRelayServiceConnectionSlotHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse, error) {
+func (client *WebAppsClient) createOrUpdateRelayServiceConnectionSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse, error) {
 	result := WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RelayServiceConnectionEntity); err != nil {
 		return WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse{}, err
 	}
@@ -2839,12 +2778,7 @@ func (client *WebAppsClient) CreateOrUpdateSiteContainer(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientCreateOrUpdateSiteContainerResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateSiteContainerResponse{}, err
-	}
-	resp, err := client.createOrUpdateSiteContainerHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateSiteContainerHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateSiteContainerCreateRequest creates the CreateOrUpdateSiteContainer request.
@@ -2882,8 +2816,11 @@ func (client *WebAppsClient) createOrUpdateSiteContainerCreateRequest(ctx contex
 }
 
 // createOrUpdateSiteContainerHandleResponse handles the CreateOrUpdateSiteContainer response.
-func (client *WebAppsClient) createOrUpdateSiteContainerHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateSiteContainerResponse, error) {
+func (client *WebAppsClient) createOrUpdateSiteContainerHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateSiteContainerResponse, error) {
 	result := WebAppsClientCreateOrUpdateSiteContainerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteContainer); err != nil {
 		return WebAppsClientCreateOrUpdateSiteContainerResponse{}, err
 	}
@@ -2916,12 +2853,7 @@ func (client *WebAppsClient) CreateOrUpdateSiteContainerSlot(ctx context.Context
 	if err != nil {
 		return WebAppsClientCreateOrUpdateSiteContainerSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateSiteContainerSlotResponse{}, err
-	}
-	resp, err := client.createOrUpdateSiteContainerSlotHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateSiteContainerSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateSiteContainerSlotCreateRequest creates the CreateOrUpdateSiteContainerSlot request.
@@ -2963,8 +2895,11 @@ func (client *WebAppsClient) createOrUpdateSiteContainerSlotCreateRequest(ctx co
 }
 
 // createOrUpdateSiteContainerSlotHandleResponse handles the CreateOrUpdateSiteContainerSlot response.
-func (client *WebAppsClient) createOrUpdateSiteContainerSlotHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateSiteContainerSlotResponse, error) {
+func (client *WebAppsClient) createOrUpdateSiteContainerSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateSiteContainerSlotResponse, error) {
 	result := WebAppsClientCreateOrUpdateSiteContainerSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteContainer); err != nil {
 		return WebAppsClientCreateOrUpdateSiteContainerSlotResponse{}, err
 	}
@@ -3017,8 +2952,7 @@ func (client *WebAppsClient) createOrUpdateSlot(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -3102,8 +3036,7 @@ func (client *WebAppsClient) createOrUpdateSourceControl(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -3185,8 +3118,7 @@ func (client *WebAppsClient) createOrUpdateSourceControlSlot(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -3253,12 +3185,7 @@ func (client *WebAppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionWithChec
 	if err != nil {
 		return WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}, err
-	}
-	resp, err := client.createOrUpdateSwiftVirtualNetworkConnectionWithCheckHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateSwiftVirtualNetworkConnectionWithCheckHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateSwiftVirtualNetworkConnectionWithCheckCreateRequest creates the CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck request.
@@ -3292,8 +3219,11 @@ func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithChec
 }
 
 // createOrUpdateSwiftVirtualNetworkConnectionWithCheckHandleResponse handles the CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck response.
-func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithCheckHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse, error) {
+func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithCheckHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse, error) {
 	result := WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SwiftVirtualNetwork); err != nil {
 		return WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}, err
 	}
@@ -3330,12 +3260,7 @@ func (client *WebAppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionWithChec
 	if err != nil {
 		return WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}, err
-	}
-	resp, err := client.createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotCreateRequest creates the CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot request.
@@ -3373,8 +3298,11 @@ func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithChec
 }
 
 // createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse handles the CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot response.
-func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse, error) {
+func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse, error) {
 	result := WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SwiftVirtualNetwork); err != nil {
 		return WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}, err
 	}
@@ -3406,12 +3334,7 @@ func (client *WebAppsClient) CreateOrUpdateVnetConnection(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateVnetConnectionResponse{}, err
-	}
-	resp, err := client.createOrUpdateVnetConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateVnetConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateVnetConnectionCreateRequest creates the CreateOrUpdateVnetConnection request.
@@ -3449,8 +3372,11 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionCreateRequest(ctx conte
 }
 
 // createOrUpdateVnetConnectionHandleResponse handles the CreateOrUpdateVnetConnection response.
-func (client *WebAppsClient) createOrUpdateVnetConnectionHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateVnetConnectionResponse, error) {
+func (client *WebAppsClient) createOrUpdateVnetConnectionHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateVnetConnectionResponse, error) {
 	result := WebAppsClientCreateOrUpdateVnetConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResource); err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionResponse{}, err
 	}
@@ -3482,12 +3408,7 @@ func (client *WebAppsClient) CreateOrUpdateVnetConnectionGateway(ctx context.Con
 	if err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionGatewayResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateVnetConnectionGatewayResponse{}, err
-	}
-	resp, err := client.createOrUpdateVnetConnectionGatewayHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateVnetConnectionGatewayHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateVnetConnectionGatewayCreateRequest creates the CreateOrUpdateVnetConnectionGateway request.
@@ -3529,8 +3450,11 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionGatewayCreateRequest(ct
 }
 
 // createOrUpdateVnetConnectionGatewayHandleResponse handles the CreateOrUpdateVnetConnectionGateway response.
-func (client *WebAppsClient) createOrUpdateVnetConnectionGatewayHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateVnetConnectionGatewayResponse, error) {
+func (client *WebAppsClient) createOrUpdateVnetConnectionGatewayHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateVnetConnectionGatewayResponse, error) {
 	result := WebAppsClientCreateOrUpdateVnetConnectionGatewayResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetGateway); err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionGatewayResponse{}, err
 	}
@@ -3558,12 +3482,7 @@ func (client *WebAppsClient) CreateOrUpdateVnetConnectionGatewaySlot(ctx context
 	if err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResponse{}, err
-	}
-	resp, err := client.createOrUpdateVnetConnectionGatewaySlotHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateVnetConnectionGatewaySlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateVnetConnectionGatewaySlotCreateRequest creates the CreateOrUpdateVnetConnectionGatewaySlot request.
@@ -3609,8 +3528,11 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionGatewaySlotCreateReques
 }
 
 // createOrUpdateVnetConnectionGatewaySlotHandleResponse handles the CreateOrUpdateVnetConnectionGatewaySlot response.
-func (client *WebAppsClient) createOrUpdateVnetConnectionGatewaySlotHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResponse, error) {
+func (client *WebAppsClient) createOrUpdateVnetConnectionGatewaySlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResponse, error) {
 	result := WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetGateway); err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResponse{}, err
 	}
@@ -3639,12 +3561,7 @@ func (client *WebAppsClient) CreateOrUpdateVnetConnectionSlot(ctx context.Contex
 	if err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientCreateOrUpdateVnetConnectionSlotResponse{}, err
-	}
-	resp, err := client.createOrUpdateVnetConnectionSlotHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateVnetConnectionSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateVnetConnectionSlotCreateRequest creates the CreateOrUpdateVnetConnectionSlot request.
@@ -3686,8 +3603,11 @@ func (client *WebAppsClient) createOrUpdateVnetConnectionSlotCreateRequest(ctx c
 }
 
 // createOrUpdateVnetConnectionSlotHandleResponse handles the CreateOrUpdateVnetConnectionSlot response.
-func (client *WebAppsClient) createOrUpdateVnetConnectionSlotHandleResponse(resp *http.Response) (WebAppsClientCreateOrUpdateVnetConnectionSlotResponse, error) {
+func (client *WebAppsClient) createOrUpdateVnetConnectionSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientCreateOrUpdateVnetConnectionSlotResponse, error) {
 	result := WebAppsClientCreateOrUpdateVnetConnectionSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResource); err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionSlotResponse{}, err
 	}
@@ -3716,8 +3636,7 @@ func (client *WebAppsClient) Delete(ctx context.Context, resourceGroupName strin
 		return WebAppsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteResponse{}, err
+		return WebAppsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteResponse{}, nil
 }
@@ -3776,8 +3695,7 @@ func (client *WebAppsClient) DeleteBackup(ctx context.Context, resourceGroupName
 		return WebAppsClientDeleteBackupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteBackupResponse{}, err
+		return WebAppsClientDeleteBackupResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteBackupResponse{}, nil
 }
@@ -3834,8 +3752,7 @@ func (client *WebAppsClient) DeleteBackupConfiguration(ctx context.Context, reso
 		return WebAppsClientDeleteBackupConfigurationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteBackupConfigurationResponse{}, err
+		return WebAppsClientDeleteBackupConfigurationResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteBackupConfigurationResponse{}, nil
 }
@@ -3889,8 +3806,7 @@ func (client *WebAppsClient) DeleteBackupConfigurationSlot(ctx context.Context, 
 		return WebAppsClientDeleteBackupConfigurationSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteBackupConfigurationSlotResponse{}, err
+		return WebAppsClientDeleteBackupConfigurationSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteBackupConfigurationSlotResponse{}, nil
 }
@@ -3946,8 +3862,7 @@ func (client *WebAppsClient) DeleteBackupSlot(ctx context.Context, resourceGroup
 		return WebAppsClientDeleteBackupSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteBackupSlotResponse{}, err
+		return WebAppsClientDeleteBackupSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteBackupSlotResponse{}, nil
 }
@@ -4009,8 +3924,7 @@ func (client *WebAppsClient) DeleteContinuousWebJob(ctx context.Context, resourc
 		return WebAppsClientDeleteContinuousWebJobResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteContinuousWebJobResponse{}, err
+		return WebAppsClientDeleteContinuousWebJobResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteContinuousWebJobResponse{}, nil
 }
@@ -4066,8 +3980,7 @@ func (client *WebAppsClient) DeleteContinuousWebJobSlot(ctx context.Context, res
 		return WebAppsClientDeleteContinuousWebJobSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteContinuousWebJobSlotResponse{}, err
+		return WebAppsClientDeleteContinuousWebJobSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteContinuousWebJobSlotResponse{}, nil
 }
@@ -4129,8 +4042,7 @@ func (client *WebAppsClient) DeleteDeployment(ctx context.Context, resourceGroup
 		return WebAppsClientDeleteDeploymentResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteDeploymentResponse{}, err
+		return WebAppsClientDeleteDeploymentResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteDeploymentResponse{}, nil
 }
@@ -4186,8 +4098,7 @@ func (client *WebAppsClient) DeleteDeploymentSlot(ctx context.Context, resourceG
 		return WebAppsClientDeleteDeploymentSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteDeploymentSlotResponse{}, err
+		return WebAppsClientDeleteDeploymentSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteDeploymentSlotResponse{}, nil
 }
@@ -4249,8 +4160,7 @@ func (client *WebAppsClient) DeleteDomainOwnershipIdentifier(ctx context.Context
 		return WebAppsClientDeleteDomainOwnershipIdentifierResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteDomainOwnershipIdentifierResponse{}, err
+		return WebAppsClientDeleteDomainOwnershipIdentifierResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteDomainOwnershipIdentifierResponse{}, nil
 }
@@ -4306,8 +4216,7 @@ func (client *WebAppsClient) DeleteDomainOwnershipIdentifierSlot(ctx context.Con
 		return WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse{}, err
+		return WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse{}, nil
 }
@@ -4368,8 +4277,7 @@ func (client *WebAppsClient) DeleteFunction(ctx context.Context, resourceGroupNa
 		return WebAppsClientDeleteFunctionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteFunctionResponse{}, err
+		return WebAppsClientDeleteFunctionResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteFunctionResponse{}, nil
 }
@@ -4425,8 +4333,7 @@ func (client *WebAppsClient) DeleteFunctionSecret(ctx context.Context, resourceG
 		return WebAppsClientDeleteFunctionSecretResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteFunctionSecretResponse{}, err
+		return WebAppsClientDeleteFunctionSecretResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteFunctionSecretResponse{}, nil
 }
@@ -4486,8 +4393,7 @@ func (client *WebAppsClient) DeleteFunctionSecretSlot(ctx context.Context, resou
 		return WebAppsClientDeleteFunctionSecretSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteFunctionSecretSlotResponse{}, err
+		return WebAppsClientDeleteFunctionSecretSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteFunctionSecretSlotResponse{}, nil
 }
@@ -4553,8 +4459,7 @@ func (client *WebAppsClient) DeleteHostNameBinding(ctx context.Context, resource
 		return WebAppsClientDeleteHostNameBindingResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteHostNameBindingResponse{}, err
+		return WebAppsClientDeleteHostNameBindingResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteHostNameBindingResponse{}, nil
 }
@@ -4613,8 +4518,7 @@ func (client *WebAppsClient) DeleteHostNameBindingSlot(ctx context.Context, reso
 		return WebAppsClientDeleteHostNameBindingSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteHostNameBindingSlotResponse{}, err
+		return WebAppsClientDeleteHostNameBindingSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteHostNameBindingSlotResponse{}, nil
 }
@@ -4677,8 +4581,7 @@ func (client *WebAppsClient) DeleteHostSecret(ctx context.Context, resourceGroup
 		return WebAppsClientDeleteHostSecretResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteHostSecretResponse{}, err
+		return WebAppsClientDeleteHostSecretResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteHostSecretResponse{}, nil
 }
@@ -4738,8 +4641,7 @@ func (client *WebAppsClient) DeleteHostSecretSlot(ctx context.Context, resourceG
 		return WebAppsClientDeleteHostSecretSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteHostSecretSlotResponse{}, err
+		return WebAppsClientDeleteHostSecretSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteHostSecretSlotResponse{}, nil
 }
@@ -4806,8 +4708,7 @@ func (client *WebAppsClient) DeleteHybridConnection(ctx context.Context, resourc
 		return WebAppsClientDeleteHybridConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteHybridConnectionResponse{}, err
+		return WebAppsClientDeleteHybridConnectionResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteHybridConnectionResponse{}, nil
 }
@@ -4867,8 +4768,7 @@ func (client *WebAppsClient) DeleteHybridConnectionSlot(ctx context.Context, res
 		return WebAppsClientDeleteHybridConnectionSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteHybridConnectionSlotResponse{}, err
+		return WebAppsClientDeleteHybridConnectionSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteHybridConnectionSlotResponse{}, nil
 }
@@ -4932,8 +4832,7 @@ func (client *WebAppsClient) DeleteInstanceFunctionSlot(ctx context.Context, res
 		return WebAppsClientDeleteInstanceFunctionSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteInstanceFunctionSlotResponse{}, err
+		return WebAppsClientDeleteInstanceFunctionSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteInstanceFunctionSlotResponse{}, nil
 }
@@ -4995,8 +4894,7 @@ func (client *WebAppsClient) DeleteInstanceProcess(ctx context.Context, resource
 		return WebAppsClientDeleteInstanceProcessResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteInstanceProcessResponse{}, err
+		return WebAppsClientDeleteInstanceProcessResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteInstanceProcessResponse{}, nil
 }
@@ -5058,8 +4956,7 @@ func (client *WebAppsClient) DeleteInstanceProcessSlot(ctx context.Context, reso
 		return WebAppsClientDeleteInstanceProcessSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteInstanceProcessSlotResponse{}, err
+		return WebAppsClientDeleteInstanceProcessSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteInstanceProcessSlotResponse{}, nil
 }
@@ -5125,8 +5022,7 @@ func (client *WebAppsClient) DeletePremierAddOn(ctx context.Context, resourceGro
 		return WebAppsClientDeletePremierAddOnResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeletePremierAddOnResponse{}, err
+		return WebAppsClientDeletePremierAddOnResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeletePremierAddOnResponse{}, nil
 }
@@ -5182,8 +5078,7 @@ func (client *WebAppsClient) DeletePremierAddOnSlot(ctx context.Context, resourc
 		return WebAppsClientDeletePremierAddOnSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeletePremierAddOnSlotResponse{}, err
+		return WebAppsClientDeletePremierAddOnSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeletePremierAddOnSlotResponse{}, nil
 }
@@ -5266,8 +5161,7 @@ func (client *WebAppsClient) deletePrivateEndpointConnection(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -5345,8 +5239,7 @@ func (client *WebAppsClient) deletePrivateEndpointConnectionSlot(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -5410,8 +5303,7 @@ func (client *WebAppsClient) DeleteProcess(ctx context.Context, resourceGroupNam
 		return WebAppsClientDeleteProcessResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteProcessResponse{}, err
+		return WebAppsClientDeleteProcessResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteProcessResponse{}, nil
 }
@@ -5469,8 +5361,7 @@ func (client *WebAppsClient) DeleteProcessSlot(ctx context.Context, resourceGrou
 		return WebAppsClientDeleteProcessSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteProcessSlotResponse{}, err
+		return WebAppsClientDeleteProcessSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteProcessSlotResponse{}, nil
 }
@@ -5532,8 +5423,7 @@ func (client *WebAppsClient) DeletePublicCertificate(ctx context.Context, resour
 		return WebAppsClientDeletePublicCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeletePublicCertificateResponse{}, err
+		return WebAppsClientDeletePublicCertificateResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeletePublicCertificateResponse{}, nil
 }
@@ -5592,8 +5482,7 @@ func (client *WebAppsClient) DeletePublicCertificateSlot(ctx context.Context, re
 		return WebAppsClientDeletePublicCertificateSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeletePublicCertificateSlotResponse{}, err
+		return WebAppsClientDeletePublicCertificateSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeletePublicCertificateSlotResponse{}, nil
 }
@@ -5655,8 +5544,7 @@ func (client *WebAppsClient) DeleteRelayServiceConnection(ctx context.Context, r
 		return WebAppsClientDeleteRelayServiceConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteRelayServiceConnectionResponse{}, err
+		return WebAppsClientDeleteRelayServiceConnectionResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteRelayServiceConnectionResponse{}, nil
 }
@@ -5712,8 +5600,7 @@ func (client *WebAppsClient) DeleteRelayServiceConnectionSlot(ctx context.Contex
 		return WebAppsClientDeleteRelayServiceConnectionSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteRelayServiceConnectionSlotResponse{}, err
+		return WebAppsClientDeleteRelayServiceConnectionSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteRelayServiceConnectionSlotResponse{}, nil
 }
@@ -5775,8 +5662,7 @@ func (client *WebAppsClient) DeleteSiteContainer(ctx context.Context, resourceGr
 		return WebAppsClientDeleteSiteContainerResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteSiteContainerResponse{}, err
+		return WebAppsClientDeleteSiteContainerResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteSiteContainerResponse{}, nil
 }
@@ -5836,8 +5722,7 @@ func (client *WebAppsClient) DeleteSiteContainerSlot(ctx context.Context, resour
 		return WebAppsClientDeleteSiteContainerSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteSiteContainerSlotResponse{}, err
+		return WebAppsClientDeleteSiteContainerSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteSiteContainerSlotResponse{}, nil
 }
@@ -5899,8 +5784,7 @@ func (client *WebAppsClient) DeleteSiteExtension(ctx context.Context, resourceGr
 		return WebAppsClientDeleteSiteExtensionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteSiteExtensionResponse{}, err
+		return WebAppsClientDeleteSiteExtensionResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteSiteExtensionResponse{}, nil
 }
@@ -5956,8 +5840,7 @@ func (client *WebAppsClient) DeleteSiteExtensionSlot(ctx context.Context, resour
 		return WebAppsClientDeleteSiteExtensionSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteSiteExtensionSlotResponse{}, err
+		return WebAppsClientDeleteSiteExtensionSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteSiteExtensionSlotResponse{}, nil
 }
@@ -6018,8 +5901,7 @@ func (client *WebAppsClient) DeleteSlot(ctx context.Context, resourceGroupName s
 		return WebAppsClientDeleteSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteSlotResponse{}, err
+		return WebAppsClientDeleteSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteSlotResponse{}, nil
 }
@@ -6082,8 +5964,7 @@ func (client *WebAppsClient) DeleteSourceControl(ctx context.Context, resourceGr
 		return WebAppsClientDeleteSourceControlResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteSourceControlResponse{}, err
+		return WebAppsClientDeleteSourceControlResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteSourceControlResponse{}, nil
 }
@@ -6141,8 +6022,7 @@ func (client *WebAppsClient) DeleteSourceControlSlot(ctx context.Context, resour
 		return WebAppsClientDeleteSourceControlSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteSourceControlSlotResponse{}, err
+		return WebAppsClientDeleteSourceControlSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteSourceControlSlotResponse{}, nil
 }
@@ -6202,8 +6082,7 @@ func (client *WebAppsClient) DeleteSwiftVirtualNetwork(ctx context.Context, reso
 		return WebAppsClientDeleteSwiftVirtualNetworkResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteSwiftVirtualNetworkResponse{}, err
+		return WebAppsClientDeleteSwiftVirtualNetworkResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteSwiftVirtualNetworkResponse{}, nil
 }
@@ -6258,8 +6137,7 @@ func (client *WebAppsClient) DeleteSwiftVirtualNetworkSlot(ctx context.Context, 
 		return WebAppsClientDeleteSwiftVirtualNetworkSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteSwiftVirtualNetworkSlotResponse{}, err
+		return WebAppsClientDeleteSwiftVirtualNetworkSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteSwiftVirtualNetworkSlotResponse{}, nil
 }
@@ -6317,8 +6195,7 @@ func (client *WebAppsClient) DeleteTriggeredWebJob(ctx context.Context, resource
 		return WebAppsClientDeleteTriggeredWebJobResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteTriggeredWebJobResponse{}, err
+		return WebAppsClientDeleteTriggeredWebJobResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteTriggeredWebJobResponse{}, nil
 }
@@ -6374,8 +6251,7 @@ func (client *WebAppsClient) DeleteTriggeredWebJobSlot(ctx context.Context, reso
 		return WebAppsClientDeleteTriggeredWebJobSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteTriggeredWebJobSlotResponse{}, err
+		return WebAppsClientDeleteTriggeredWebJobSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteTriggeredWebJobSlotResponse{}, nil
 }
@@ -6437,8 +6313,7 @@ func (client *WebAppsClient) DeleteVnetConnection(ctx context.Context, resourceG
 		return WebAppsClientDeleteVnetConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteVnetConnectionResponse{}, err
+		return WebAppsClientDeleteVnetConnectionResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteVnetConnectionResponse{}, nil
 }
@@ -6494,8 +6369,7 @@ func (client *WebAppsClient) DeleteVnetConnectionSlot(ctx context.Context, resou
 		return WebAppsClientDeleteVnetConnectionSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeleteVnetConnectionSlotResponse{}, err
+		return WebAppsClientDeleteVnetConnectionSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeleteVnetConnectionSlotResponse{}, nil
 }
@@ -6556,8 +6430,7 @@ func (client *WebAppsClient) DeployWorkflowArtifacts(ctx context.Context, resour
 		return WebAppsClientDeployWorkflowArtifactsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeployWorkflowArtifactsResponse{}, err
+		return WebAppsClientDeployWorkflowArtifactsResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeployWorkflowArtifactsResponse{}, nil
 }
@@ -6618,8 +6491,7 @@ func (client *WebAppsClient) DeployWorkflowArtifactsSlot(ctx context.Context, re
 		return WebAppsClientDeployWorkflowArtifactsSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDeployWorkflowArtifactsSlotResponse{}, err
+		return WebAppsClientDeployWorkflowArtifactsSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientDeployWorkflowArtifactsSlotResponse{}, nil
 }
@@ -6684,12 +6556,7 @@ func (client *WebAppsClient) DiscoverBackup(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return WebAppsClientDiscoverBackupResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDiscoverBackupResponse{}, err
-	}
-	resp, err := client.discoverBackupHandleResponse(httpResp)
-	return resp, err
+	return client.discoverBackupHandleResponse(httpResp, http.StatusOK)
 }
 
 // discoverBackupCreateRequest creates the DiscoverBackup request.
@@ -6723,8 +6590,11 @@ func (client *WebAppsClient) discoverBackupCreateRequest(ctx context.Context, re
 }
 
 // discoverBackupHandleResponse handles the DiscoverBackup response.
-func (client *WebAppsClient) discoverBackupHandleResponse(resp *http.Response) (WebAppsClientDiscoverBackupResponse, error) {
+func (client *WebAppsClient) discoverBackupHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientDiscoverBackupResponse, error) {
 	result := WebAppsClientDiscoverBackupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestoreRequest); err != nil {
 		return WebAppsClientDiscoverBackupResponse{}, err
 	}
@@ -6757,12 +6627,7 @@ func (client *WebAppsClient) DiscoverBackupSlot(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientDiscoverBackupSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientDiscoverBackupSlotResponse{}, err
-	}
-	resp, err := client.discoverBackupSlotHandleResponse(httpResp)
-	return resp, err
+	return client.discoverBackupSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // discoverBackupSlotCreateRequest creates the DiscoverBackupSlot request.
@@ -6800,8 +6665,11 @@ func (client *WebAppsClient) discoverBackupSlotCreateRequest(ctx context.Context
 }
 
 // discoverBackupSlotHandleResponse handles the DiscoverBackupSlot response.
-func (client *WebAppsClient) discoverBackupSlotHandleResponse(resp *http.Response) (WebAppsClientDiscoverBackupSlotResponse, error) {
+func (client *WebAppsClient) discoverBackupSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientDiscoverBackupSlotResponse, error) {
 	result := WebAppsClientDiscoverBackupSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RestoreRequest); err != nil {
 		return WebAppsClientDiscoverBackupSlotResponse{}, err
 	}
@@ -6831,8 +6699,7 @@ func (client *WebAppsClient) GenerateNewSitePublishingPassword(ctx context.Conte
 		return WebAppsClientGenerateNewSitePublishingPasswordResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGenerateNewSitePublishingPasswordResponse{}, err
+		return WebAppsClientGenerateNewSitePublishingPasswordResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientGenerateNewSitePublishingPasswordResponse{}, nil
 }
@@ -6886,8 +6753,7 @@ func (client *WebAppsClient) GenerateNewSitePublishingPasswordSlot(ctx context.C
 		return WebAppsClientGenerateNewSitePublishingPasswordSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGenerateNewSitePublishingPasswordSlotResponse{}, err
+		return WebAppsClientGenerateNewSitePublishingPasswordSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientGenerateNewSitePublishingPasswordSlotResponse{}, nil
 }
@@ -6942,12 +6808,7 @@ func (client *WebAppsClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return WebAppsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -6977,8 +6838,11 @@ func (client *WebAppsClient) getCreateRequest(ctx context.Context, resourceGroup
 }
 
 // getHandleResponse handles the Get response.
-func (client *WebAppsClient) getHandleResponse(resp *http.Response) (WebAppsClientGetResponse, error) {
+func (client *WebAppsClient) getHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetResponse, error) {
 	result := WebAppsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Site); err != nil {
 		return WebAppsClientGetResponse{}, err
 	}
@@ -7008,12 +6872,7 @@ func (client *WebAppsClient) GetAppSettingKeyVaultReference(ctx context.Context,
 	if err != nil {
 		return WebAppsClientGetAppSettingKeyVaultReferenceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetAppSettingKeyVaultReferenceResponse{}, err
-	}
-	resp, err := client.getAppSettingKeyVaultReferenceHandleResponse(httpResp)
-	return resp, err
+	return client.getAppSettingKeyVaultReferenceHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAppSettingKeyVaultReferenceCreateRequest creates the GetAppSettingKeyVaultReference request.
@@ -7047,8 +6906,11 @@ func (client *WebAppsClient) getAppSettingKeyVaultReferenceCreateRequest(ctx con
 }
 
 // getAppSettingKeyVaultReferenceHandleResponse handles the GetAppSettingKeyVaultReference response.
-func (client *WebAppsClient) getAppSettingKeyVaultReferenceHandleResponse(resp *http.Response) (WebAppsClientGetAppSettingKeyVaultReferenceResponse, error) {
+func (client *WebAppsClient) getAppSettingKeyVaultReferenceHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetAppSettingKeyVaultReferenceResponse, error) {
 	result := WebAppsClientGetAppSettingKeyVaultReferenceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKVReference); err != nil {
 		return WebAppsClientGetAppSettingKeyVaultReferenceResponse{}, err
 	}
@@ -7076,12 +6938,7 @@ func (client *WebAppsClient) GetAppSettingKeyVaultReferenceSlot(ctx context.Cont
 	if err != nil {
 		return WebAppsClientGetAppSettingKeyVaultReferenceSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetAppSettingKeyVaultReferenceSlotResponse{}, err
-	}
-	resp, err := client.getAppSettingKeyVaultReferenceSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getAppSettingKeyVaultReferenceSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAppSettingKeyVaultReferenceSlotCreateRequest creates the GetAppSettingKeyVaultReferenceSlot request.
@@ -7119,8 +6976,11 @@ func (client *WebAppsClient) getAppSettingKeyVaultReferenceSlotCreateRequest(ctx
 }
 
 // getAppSettingKeyVaultReferenceSlotHandleResponse handles the GetAppSettingKeyVaultReferenceSlot response.
-func (client *WebAppsClient) getAppSettingKeyVaultReferenceSlotHandleResponse(resp *http.Response) (WebAppsClientGetAppSettingKeyVaultReferenceSlotResponse, error) {
+func (client *WebAppsClient) getAppSettingKeyVaultReferenceSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetAppSettingKeyVaultReferenceSlotResponse, error) {
 	result := WebAppsClientGetAppSettingKeyVaultReferenceSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKVReference); err != nil {
 		return WebAppsClientGetAppSettingKeyVaultReferenceSlotResponse{}, err
 	}
@@ -7145,47 +7005,61 @@ func (client *WebAppsClient) NewGetAppSettingsKeyVaultReferencesPager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getAppSettingsKeyVaultReferencesCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.getAppSettingsKeyVaultReferencesCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientGetAppSettingsKeyVaultReferencesResponse{}, err
 			}
-			return client.getAppSettingsKeyVaultReferencesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientGetAppSettingsKeyVaultReferencesResponse{}, err
+			}
+			return client.getAppSettingsKeyVaultReferencesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getAppSettingsKeyVaultReferencesCreateRequest creates the GetAppSettingsKeyVaultReferences request.
-func (client *WebAppsClient) getAppSettingsKeyVaultReferencesCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetAppSettingsKeyVaultReferencesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/configreferences/appsettings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) getAppSettingsKeyVaultReferencesCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientGetAppSettingsKeyVaultReferencesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/configreferences/appsettings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // getAppSettingsKeyVaultReferencesHandleResponse handles the GetAppSettingsKeyVaultReferences response.
-func (client *WebAppsClient) getAppSettingsKeyVaultReferencesHandleResponse(resp *http.Response) (WebAppsClientGetAppSettingsKeyVaultReferencesResponse, error) {
+func (client *WebAppsClient) getAppSettingsKeyVaultReferencesHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetAppSettingsKeyVaultReferencesResponse, error) {
 	result := WebAppsClientGetAppSettingsKeyVaultReferencesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKVReferenceCollection); err != nil {
 		return WebAppsClientGetAppSettingsKeyVaultReferencesResponse{}, err
 	}
@@ -7210,51 +7084,65 @@ func (client *WebAppsClient) NewGetAppSettingsKeyVaultReferencesSlotPager(resour
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getAppSettingsKeyVaultReferencesSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.getAppSettingsKeyVaultReferencesSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse{}, err
 			}
-			return client.getAppSettingsKeyVaultReferencesSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse{}, err
+			}
+			return client.getAppSettingsKeyVaultReferencesSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getAppSettingsKeyVaultReferencesSlotCreateRequest creates the GetAppSettingsKeyVaultReferencesSlot request.
-func (client *WebAppsClient) getAppSettingsKeyVaultReferencesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/configreferences/appsettings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) getAppSettingsKeyVaultReferencesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/configreferences/appsettings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // getAppSettingsKeyVaultReferencesSlotHandleResponse handles the GetAppSettingsKeyVaultReferencesSlot response.
-func (client *WebAppsClient) getAppSettingsKeyVaultReferencesSlotHandleResponse(resp *http.Response) (WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse, error) {
+func (client *WebAppsClient) getAppSettingsKeyVaultReferencesSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse, error) {
 	result := WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKVReferenceCollection); err != nil {
 		return WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse{}, err
 	}
@@ -7282,12 +7170,7 @@ func (client *WebAppsClient) GetAuthSettings(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WebAppsClientGetAuthSettingsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetAuthSettingsResponse{}, err
-	}
-	resp, err := client.getAuthSettingsHandleResponse(httpResp)
-	return resp, err
+	return client.getAuthSettingsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAuthSettingsCreateRequest creates the GetAuthSettings request.
@@ -7317,8 +7200,11 @@ func (client *WebAppsClient) getAuthSettingsCreateRequest(ctx context.Context, r
 }
 
 // getAuthSettingsHandleResponse handles the GetAuthSettings response.
-func (client *WebAppsClient) getAuthSettingsHandleResponse(resp *http.Response) (WebAppsClientGetAuthSettingsResponse, error) {
+func (client *WebAppsClient) getAuthSettingsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetAuthSettingsResponse, error) {
 	result := WebAppsClientGetAuthSettingsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteAuthSettings); err != nil {
 		return WebAppsClientGetAuthSettingsResponse{}, err
 	}
@@ -7348,12 +7234,7 @@ func (client *WebAppsClient) GetAuthSettingsSlot(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientGetAuthSettingsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetAuthSettingsSlotResponse{}, err
-	}
-	resp, err := client.getAuthSettingsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getAuthSettingsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAuthSettingsSlotCreateRequest creates the GetAuthSettingsSlot request.
@@ -7387,8 +7268,11 @@ func (client *WebAppsClient) getAuthSettingsSlotCreateRequest(ctx context.Contex
 }
 
 // getAuthSettingsSlotHandleResponse handles the GetAuthSettingsSlot response.
-func (client *WebAppsClient) getAuthSettingsSlotHandleResponse(resp *http.Response) (WebAppsClientGetAuthSettingsSlotResponse, error) {
+func (client *WebAppsClient) getAuthSettingsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetAuthSettingsSlotResponse, error) {
 	result := WebAppsClientGetAuthSettingsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteAuthSettings); err != nil {
 		return WebAppsClientGetAuthSettingsSlotResponse{}, err
 	}
@@ -7417,12 +7301,7 @@ func (client *WebAppsClient) GetAuthSettingsV2(ctx context.Context, resourceGrou
 	if err != nil {
 		return WebAppsClientGetAuthSettingsV2Response{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetAuthSettingsV2Response{}, err
-	}
-	resp, err := client.getAuthSettingsV2HandleResponse(httpResp)
-	return resp, err
+	return client.getAuthSettingsV2HandleResponse(httpResp, http.StatusOK)
 }
 
 // getAuthSettingsV2CreateRequest creates the GetAuthSettingsV2 request.
@@ -7452,8 +7331,11 @@ func (client *WebAppsClient) getAuthSettingsV2CreateRequest(ctx context.Context,
 }
 
 // getAuthSettingsV2HandleResponse handles the GetAuthSettingsV2 response.
-func (client *WebAppsClient) getAuthSettingsV2HandleResponse(resp *http.Response) (WebAppsClientGetAuthSettingsV2Response, error) {
+func (client *WebAppsClient) getAuthSettingsV2HandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetAuthSettingsV2Response, error) {
 	result := WebAppsClientGetAuthSettingsV2Response{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteAuthSettingsV2); err != nil {
 		return WebAppsClientGetAuthSettingsV2Response{}, err
 	}
@@ -7483,12 +7365,7 @@ func (client *WebAppsClient) GetAuthSettingsV2Slot(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientGetAuthSettingsV2SlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetAuthSettingsV2SlotResponse{}, err
-	}
-	resp, err := client.getAuthSettingsV2SlotHandleResponse(httpResp)
-	return resp, err
+	return client.getAuthSettingsV2SlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAuthSettingsV2SlotCreateRequest creates the GetAuthSettingsV2Slot request.
@@ -7522,8 +7399,11 @@ func (client *WebAppsClient) getAuthSettingsV2SlotCreateRequest(ctx context.Cont
 }
 
 // getAuthSettingsV2SlotHandleResponse handles the GetAuthSettingsV2Slot response.
-func (client *WebAppsClient) getAuthSettingsV2SlotHandleResponse(resp *http.Response) (WebAppsClientGetAuthSettingsV2SlotResponse, error) {
+func (client *WebAppsClient) getAuthSettingsV2SlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetAuthSettingsV2SlotResponse, error) {
 	result := WebAppsClientGetAuthSettingsV2SlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteAuthSettingsV2); err != nil {
 		return WebAppsClientGetAuthSettingsV2SlotResponse{}, err
 	}
@@ -7552,12 +7432,7 @@ func (client *WebAppsClient) GetAuthSettingsV2WithoutSecrets(ctx context.Context
 	if err != nil {
 		return WebAppsClientGetAuthSettingsV2WithoutSecretsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetAuthSettingsV2WithoutSecretsResponse{}, err
-	}
-	resp, err := client.getAuthSettingsV2WithoutSecretsHandleResponse(httpResp)
-	return resp, err
+	return client.getAuthSettingsV2WithoutSecretsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAuthSettingsV2WithoutSecretsCreateRequest creates the GetAuthSettingsV2WithoutSecrets request.
@@ -7587,8 +7462,11 @@ func (client *WebAppsClient) getAuthSettingsV2WithoutSecretsCreateRequest(ctx co
 }
 
 // getAuthSettingsV2WithoutSecretsHandleResponse handles the GetAuthSettingsV2WithoutSecrets response.
-func (client *WebAppsClient) getAuthSettingsV2WithoutSecretsHandleResponse(resp *http.Response) (WebAppsClientGetAuthSettingsV2WithoutSecretsResponse, error) {
+func (client *WebAppsClient) getAuthSettingsV2WithoutSecretsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetAuthSettingsV2WithoutSecretsResponse, error) {
 	result := WebAppsClientGetAuthSettingsV2WithoutSecretsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteAuthSettingsV2); err != nil {
 		return WebAppsClientGetAuthSettingsV2WithoutSecretsResponse{}, err
 	}
@@ -7618,12 +7496,7 @@ func (client *WebAppsClient) GetAuthSettingsV2WithoutSecretsSlot(ctx context.Con
 	if err != nil {
 		return WebAppsClientGetAuthSettingsV2WithoutSecretsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetAuthSettingsV2WithoutSecretsSlotResponse{}, err
-	}
-	resp, err := client.getAuthSettingsV2WithoutSecretsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getAuthSettingsV2WithoutSecretsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getAuthSettingsV2WithoutSecretsSlotCreateRequest creates the GetAuthSettingsV2WithoutSecretsSlot request.
@@ -7657,8 +7530,11 @@ func (client *WebAppsClient) getAuthSettingsV2WithoutSecretsSlotCreateRequest(ct
 }
 
 // getAuthSettingsV2WithoutSecretsSlotHandleResponse handles the GetAuthSettingsV2WithoutSecretsSlot response.
-func (client *WebAppsClient) getAuthSettingsV2WithoutSecretsSlotHandleResponse(resp *http.Response) (WebAppsClientGetAuthSettingsV2WithoutSecretsSlotResponse, error) {
+func (client *WebAppsClient) getAuthSettingsV2WithoutSecretsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetAuthSettingsV2WithoutSecretsSlotResponse, error) {
 	result := WebAppsClientGetAuthSettingsV2WithoutSecretsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteAuthSettingsV2); err != nil {
 		return WebAppsClientGetAuthSettingsV2WithoutSecretsSlotResponse{}, err
 	}
@@ -7687,12 +7563,7 @@ func (client *WebAppsClient) GetBackupConfiguration(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetBackupConfigurationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetBackupConfigurationResponse{}, err
-	}
-	resp, err := client.getBackupConfigurationHandleResponse(httpResp)
-	return resp, err
+	return client.getBackupConfigurationHandleResponse(httpResp, http.StatusOK)
 }
 
 // getBackupConfigurationCreateRequest creates the GetBackupConfiguration request.
@@ -7722,8 +7593,11 @@ func (client *WebAppsClient) getBackupConfigurationCreateRequest(ctx context.Con
 }
 
 // getBackupConfigurationHandleResponse handles the GetBackupConfiguration response.
-func (client *WebAppsClient) getBackupConfigurationHandleResponse(resp *http.Response) (WebAppsClientGetBackupConfigurationResponse, error) {
+func (client *WebAppsClient) getBackupConfigurationHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetBackupConfigurationResponse, error) {
 	result := WebAppsClientGetBackupConfigurationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupRequest); err != nil {
 		return WebAppsClientGetBackupConfigurationResponse{}, err
 	}
@@ -7753,12 +7627,7 @@ func (client *WebAppsClient) GetBackupConfigurationSlot(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientGetBackupConfigurationSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetBackupConfigurationSlotResponse{}, err
-	}
-	resp, err := client.getBackupConfigurationSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getBackupConfigurationSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getBackupConfigurationSlotCreateRequest creates the GetBackupConfigurationSlot request.
@@ -7792,8 +7661,11 @@ func (client *WebAppsClient) getBackupConfigurationSlotCreateRequest(ctx context
 }
 
 // getBackupConfigurationSlotHandleResponse handles the GetBackupConfigurationSlot response.
-func (client *WebAppsClient) getBackupConfigurationSlotHandleResponse(resp *http.Response) (WebAppsClientGetBackupConfigurationSlotResponse, error) {
+func (client *WebAppsClient) getBackupConfigurationSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetBackupConfigurationSlotResponse, error) {
 	result := WebAppsClientGetBackupConfigurationSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupRequest); err != nil {
 		return WebAppsClientGetBackupConfigurationSlotResponse{}, err
 	}
@@ -7822,12 +7694,7 @@ func (client *WebAppsClient) GetBackupStatus(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WebAppsClientGetBackupStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetBackupStatusResponse{}, err
-	}
-	resp, err := client.getBackupStatusHandleResponse(httpResp)
-	return resp, err
+	return client.getBackupStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // getBackupStatusCreateRequest creates the GetBackupStatus request.
@@ -7861,8 +7728,11 @@ func (client *WebAppsClient) getBackupStatusCreateRequest(ctx context.Context, r
 }
 
 // getBackupStatusHandleResponse handles the GetBackupStatus response.
-func (client *WebAppsClient) getBackupStatusHandleResponse(resp *http.Response) (WebAppsClientGetBackupStatusResponse, error) {
+func (client *WebAppsClient) getBackupStatusHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetBackupStatusResponse, error) {
 	result := WebAppsClientGetBackupStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupItem); err != nil {
 		return WebAppsClientGetBackupStatusResponse{}, err
 	}
@@ -7890,12 +7760,7 @@ func (client *WebAppsClient) GetBackupStatusSlot(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientGetBackupStatusSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetBackupStatusSlotResponse{}, err
-	}
-	resp, err := client.getBackupStatusSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getBackupStatusSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getBackupStatusSlotCreateRequest creates the GetBackupStatusSlot request.
@@ -7933,8 +7798,11 @@ func (client *WebAppsClient) getBackupStatusSlotCreateRequest(ctx context.Contex
 }
 
 // getBackupStatusSlotHandleResponse handles the GetBackupStatusSlot response.
-func (client *WebAppsClient) getBackupStatusSlotHandleResponse(resp *http.Response) (WebAppsClientGetBackupStatusSlotResponse, error) {
+func (client *WebAppsClient) getBackupStatusSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetBackupStatusSlotResponse, error) {
 	result := WebAppsClientGetBackupStatusSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupItem); err != nil {
 		return WebAppsClientGetBackupStatusSlotResponse{}, err
 	}
@@ -7965,12 +7833,7 @@ func (client *WebAppsClient) GetConfiguration(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientGetConfigurationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetConfigurationResponse{}, err
-	}
-	resp, err := client.getConfigurationHandleResponse(httpResp)
-	return resp, err
+	return client.getConfigurationHandleResponse(httpResp, http.StatusOK)
 }
 
 // getConfigurationCreateRequest creates the GetConfiguration request.
@@ -8000,8 +7863,11 @@ func (client *WebAppsClient) getConfigurationCreateRequest(ctx context.Context, 
 }
 
 // getConfigurationHandleResponse handles the GetConfiguration response.
-func (client *WebAppsClient) getConfigurationHandleResponse(resp *http.Response) (WebAppsClientGetConfigurationResponse, error) {
+func (client *WebAppsClient) getConfigurationHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetConfigurationResponse, error) {
 	result := WebAppsClientGetConfigurationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteConfigResource); err != nil {
 		return WebAppsClientGetConfigurationResponse{}, err
 	}
@@ -8033,12 +7899,7 @@ func (client *WebAppsClient) GetConfigurationSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientGetConfigurationSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetConfigurationSlotResponse{}, err
-	}
-	resp, err := client.getConfigurationSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getConfigurationSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getConfigurationSlotCreateRequest creates the GetConfigurationSlot request.
@@ -8072,8 +7933,11 @@ func (client *WebAppsClient) getConfigurationSlotCreateRequest(ctx context.Conte
 }
 
 // getConfigurationSlotHandleResponse handles the GetConfigurationSlot response.
-func (client *WebAppsClient) getConfigurationSlotHandleResponse(resp *http.Response) (WebAppsClientGetConfigurationSlotResponse, error) {
+func (client *WebAppsClient) getConfigurationSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetConfigurationSlotResponse, error) {
 	result := WebAppsClientGetConfigurationSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteConfigResource); err != nil {
 		return WebAppsClientGetConfigurationSlotResponse{}, err
 	}
@@ -8103,12 +7967,7 @@ func (client *WebAppsClient) GetConfigurationSnapshot(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientGetConfigurationSnapshotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetConfigurationSnapshotResponse{}, err
-	}
-	resp, err := client.getConfigurationSnapshotHandleResponse(httpResp)
-	return resp, err
+	return client.getConfigurationSnapshotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getConfigurationSnapshotCreateRequest creates the GetConfigurationSnapshot request.
@@ -8142,8 +8001,11 @@ func (client *WebAppsClient) getConfigurationSnapshotCreateRequest(ctx context.C
 }
 
 // getConfigurationSnapshotHandleResponse handles the GetConfigurationSnapshot response.
-func (client *WebAppsClient) getConfigurationSnapshotHandleResponse(resp *http.Response) (WebAppsClientGetConfigurationSnapshotResponse, error) {
+func (client *WebAppsClient) getConfigurationSnapshotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetConfigurationSnapshotResponse, error) {
 	result := WebAppsClientGetConfigurationSnapshotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteConfigResource); err != nil {
 		return WebAppsClientGetConfigurationSnapshotResponse{}, err
 	}
@@ -8171,12 +8033,7 @@ func (client *WebAppsClient) GetConfigurationSnapshotSlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientGetConfigurationSnapshotSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetConfigurationSnapshotSlotResponse{}, err
-	}
-	resp, err := client.getConfigurationSnapshotSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getConfigurationSnapshotSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getConfigurationSnapshotSlotCreateRequest creates the GetConfigurationSnapshotSlot request.
@@ -8214,8 +8071,11 @@ func (client *WebAppsClient) getConfigurationSnapshotSlotCreateRequest(ctx conte
 }
 
 // getConfigurationSnapshotSlotHandleResponse handles the GetConfigurationSnapshotSlot response.
-func (client *WebAppsClient) getConfigurationSnapshotSlotHandleResponse(resp *http.Response) (WebAppsClientGetConfigurationSnapshotSlotResponse, error) {
+func (client *WebAppsClient) getConfigurationSnapshotSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetConfigurationSnapshotSlotResponse, error) {
 	result := WebAppsClientGetConfigurationSnapshotSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteConfigResource); err != nil {
 		return WebAppsClientGetConfigurationSnapshotSlotResponse{}, err
 	}
@@ -8244,12 +8104,7 @@ func (client *WebAppsClient) GetContainerLogsZip(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientGetContainerLogsZipResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetContainerLogsZipResponse{}, err
-	}
-	resp, err := client.getContainerLogsZipHandleResponse(httpResp)
-	return resp, err
+	return client.getContainerLogsZipHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
 }
 
 // getContainerLogsZipCreateRequest creates the GetContainerLogsZip request.
@@ -8280,11 +8135,15 @@ func (client *WebAppsClient) getContainerLogsZipCreateRequest(ctx context.Contex
 }
 
 // getContainerLogsZipHandleResponse handles the GetContainerLogsZip response.
-func (client *WebAppsClient) getContainerLogsZipHandleResponse(resp *http.Response) (WebAppsClientGetContainerLogsZipResponse, error) {
-	result := WebAppsClientGetContainerLogsZipResponse{Body: resp.Body}
+func (client *WebAppsClient) getContainerLogsZipHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetContainerLogsZipResponse, error) {
+	result := WebAppsClientGetContainerLogsZipResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
+	result.Body = resp.Body
 	return result, nil
 }
 
@@ -8311,12 +8170,7 @@ func (client *WebAppsClient) GetContainerLogsZipSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientGetContainerLogsZipSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetContainerLogsZipSlotResponse{}, err
-	}
-	resp, err := client.getContainerLogsZipSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getContainerLogsZipSlotHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
 }
 
 // getContainerLogsZipSlotCreateRequest creates the GetContainerLogsZipSlot request.
@@ -8351,11 +8205,15 @@ func (client *WebAppsClient) getContainerLogsZipSlotCreateRequest(ctx context.Co
 }
 
 // getContainerLogsZipSlotHandleResponse handles the GetContainerLogsZipSlot response.
-func (client *WebAppsClient) getContainerLogsZipSlotHandleResponse(resp *http.Response) (WebAppsClientGetContainerLogsZipSlotResponse, error) {
-	result := WebAppsClientGetContainerLogsZipSlotResponse{Body: resp.Body}
+func (client *WebAppsClient) getContainerLogsZipSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetContainerLogsZipSlotResponse, error) {
+	result := WebAppsClientGetContainerLogsZipSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
+	result.Body = resp.Body
 	return result, nil
 }
 
@@ -8382,12 +8240,7 @@ func (client *WebAppsClient) GetContinuousWebJob(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientGetContinuousWebJobResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetContinuousWebJobResponse{}, err
-	}
-	resp, err := client.getContinuousWebJobHandleResponse(httpResp)
-	return resp, err
+	return client.getContinuousWebJobHandleResponse(httpResp, http.StatusOK)
 }
 
 // getContinuousWebJobCreateRequest creates the GetContinuousWebJob request.
@@ -8421,8 +8274,11 @@ func (client *WebAppsClient) getContinuousWebJobCreateRequest(ctx context.Contex
 }
 
 // getContinuousWebJobHandleResponse handles the GetContinuousWebJob response.
-func (client *WebAppsClient) getContinuousWebJobHandleResponse(resp *http.Response) (WebAppsClientGetContinuousWebJobResponse, error) {
+func (client *WebAppsClient) getContinuousWebJobHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetContinuousWebJobResponse, error) {
 	result := WebAppsClientGetContinuousWebJobResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContinuousWebJob); err != nil {
 		return WebAppsClientGetContinuousWebJobResponse{}, err
 	}
@@ -8450,12 +8306,7 @@ func (client *WebAppsClient) GetContinuousWebJobSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientGetContinuousWebJobSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetContinuousWebJobSlotResponse{}, err
-	}
-	resp, err := client.getContinuousWebJobSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getContinuousWebJobSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getContinuousWebJobSlotCreateRequest creates the GetContinuousWebJobSlot request.
@@ -8493,8 +8344,11 @@ func (client *WebAppsClient) getContinuousWebJobSlotCreateRequest(ctx context.Co
 }
 
 // getContinuousWebJobSlotHandleResponse handles the GetContinuousWebJobSlot response.
-func (client *WebAppsClient) getContinuousWebJobSlotHandleResponse(resp *http.Response) (WebAppsClientGetContinuousWebJobSlotResponse, error) {
+func (client *WebAppsClient) getContinuousWebJobSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetContinuousWebJobSlotResponse, error) {
 	result := WebAppsClientGetContinuousWebJobSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContinuousWebJob); err != nil {
 		return WebAppsClientGetContinuousWebJobSlotResponse{}, err
 	}
@@ -8523,12 +8377,7 @@ func (client *WebAppsClient) GetDeployment(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return WebAppsClientGetDeploymentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetDeploymentResponse{}, err
-	}
-	resp, err := client.getDeploymentHandleResponse(httpResp)
-	return resp, err
+	return client.getDeploymentHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDeploymentCreateRequest creates the GetDeployment request.
@@ -8562,8 +8411,11 @@ func (client *WebAppsClient) getDeploymentCreateRequest(ctx context.Context, res
 }
 
 // getDeploymentHandleResponse handles the GetDeployment response.
-func (client *WebAppsClient) getDeploymentHandleResponse(resp *http.Response) (WebAppsClientGetDeploymentResponse, error) {
+func (client *WebAppsClient) getDeploymentHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetDeploymentResponse, error) {
 	result := WebAppsClientGetDeploymentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Deployment); err != nil {
 		return WebAppsClientGetDeploymentResponse{}, err
 	}
@@ -8591,12 +8443,7 @@ func (client *WebAppsClient) GetDeploymentSlot(ctx context.Context, resourceGrou
 	if err != nil {
 		return WebAppsClientGetDeploymentSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetDeploymentSlotResponse{}, err
-	}
-	resp, err := client.getDeploymentSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getDeploymentSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDeploymentSlotCreateRequest creates the GetDeploymentSlot request.
@@ -8634,8 +8481,11 @@ func (client *WebAppsClient) getDeploymentSlotCreateRequest(ctx context.Context,
 }
 
 // getDeploymentSlotHandleResponse handles the GetDeploymentSlot response.
-func (client *WebAppsClient) getDeploymentSlotHandleResponse(resp *http.Response) (WebAppsClientGetDeploymentSlotResponse, error) {
+func (client *WebAppsClient) getDeploymentSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetDeploymentSlotResponse, error) {
 	result := WebAppsClientGetDeploymentSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Deployment); err != nil {
 		return WebAppsClientGetDeploymentSlotResponse{}, err
 	}
@@ -8664,12 +8514,7 @@ func (client *WebAppsClient) GetDiagnosticLogsConfiguration(ctx context.Context,
 	if err != nil {
 		return WebAppsClientGetDiagnosticLogsConfigurationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetDiagnosticLogsConfigurationResponse{}, err
-	}
-	resp, err := client.getDiagnosticLogsConfigurationHandleResponse(httpResp)
-	return resp, err
+	return client.getDiagnosticLogsConfigurationHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDiagnosticLogsConfigurationCreateRequest creates the GetDiagnosticLogsConfiguration request.
@@ -8699,8 +8544,11 @@ func (client *WebAppsClient) getDiagnosticLogsConfigurationCreateRequest(ctx con
 }
 
 // getDiagnosticLogsConfigurationHandleResponse handles the GetDiagnosticLogsConfiguration response.
-func (client *WebAppsClient) getDiagnosticLogsConfigurationHandleResponse(resp *http.Response) (WebAppsClientGetDiagnosticLogsConfigurationResponse, error) {
+func (client *WebAppsClient) getDiagnosticLogsConfigurationHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetDiagnosticLogsConfigurationResponse, error) {
 	result := WebAppsClientGetDiagnosticLogsConfigurationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteLogsConfig); err != nil {
 		return WebAppsClientGetDiagnosticLogsConfigurationResponse{}, err
 	}
@@ -8731,12 +8579,7 @@ func (client *WebAppsClient) GetDiagnosticLogsConfigurationSlot(ctx context.Cont
 	if err != nil {
 		return WebAppsClientGetDiagnosticLogsConfigurationSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetDiagnosticLogsConfigurationSlotResponse{}, err
-	}
-	resp, err := client.getDiagnosticLogsConfigurationSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getDiagnosticLogsConfigurationSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDiagnosticLogsConfigurationSlotCreateRequest creates the GetDiagnosticLogsConfigurationSlot request.
@@ -8770,8 +8613,11 @@ func (client *WebAppsClient) getDiagnosticLogsConfigurationSlotCreateRequest(ctx
 }
 
 // getDiagnosticLogsConfigurationSlotHandleResponse handles the GetDiagnosticLogsConfigurationSlot response.
-func (client *WebAppsClient) getDiagnosticLogsConfigurationSlotHandleResponse(resp *http.Response) (WebAppsClientGetDiagnosticLogsConfigurationSlotResponse, error) {
+func (client *WebAppsClient) getDiagnosticLogsConfigurationSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetDiagnosticLogsConfigurationSlotResponse, error) {
 	result := WebAppsClientGetDiagnosticLogsConfigurationSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteLogsConfig); err != nil {
 		return WebAppsClientGetDiagnosticLogsConfigurationSlotResponse{}, err
 	}
@@ -8801,12 +8647,7 @@ func (client *WebAppsClient) GetDomainOwnershipIdentifier(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientGetDomainOwnershipIdentifierResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetDomainOwnershipIdentifierResponse{}, err
-	}
-	resp, err := client.getDomainOwnershipIdentifierHandleResponse(httpResp)
-	return resp, err
+	return client.getDomainOwnershipIdentifierHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDomainOwnershipIdentifierCreateRequest creates the GetDomainOwnershipIdentifier request.
@@ -8840,8 +8681,11 @@ func (client *WebAppsClient) getDomainOwnershipIdentifierCreateRequest(ctx conte
 }
 
 // getDomainOwnershipIdentifierHandleResponse handles the GetDomainOwnershipIdentifier response.
-func (client *WebAppsClient) getDomainOwnershipIdentifierHandleResponse(resp *http.Response) (WebAppsClientGetDomainOwnershipIdentifierResponse, error) {
+func (client *WebAppsClient) getDomainOwnershipIdentifierHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetDomainOwnershipIdentifierResponse, error) {
 	result := WebAppsClientGetDomainOwnershipIdentifierResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Identifier); err != nil {
 		return WebAppsClientGetDomainOwnershipIdentifierResponse{}, err
 	}
@@ -8869,12 +8713,7 @@ func (client *WebAppsClient) GetDomainOwnershipIdentifierSlot(ctx context.Contex
 	if err != nil {
 		return WebAppsClientGetDomainOwnershipIdentifierSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetDomainOwnershipIdentifierSlotResponse{}, err
-	}
-	resp, err := client.getDomainOwnershipIdentifierSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getDomainOwnershipIdentifierSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDomainOwnershipIdentifierSlotCreateRequest creates the GetDomainOwnershipIdentifierSlot request.
@@ -8912,8 +8751,11 @@ func (client *WebAppsClient) getDomainOwnershipIdentifierSlotCreateRequest(ctx c
 }
 
 // getDomainOwnershipIdentifierSlotHandleResponse handles the GetDomainOwnershipIdentifierSlot response.
-func (client *WebAppsClient) getDomainOwnershipIdentifierSlotHandleResponse(resp *http.Response) (WebAppsClientGetDomainOwnershipIdentifierSlotResponse, error) {
+func (client *WebAppsClient) getDomainOwnershipIdentifierSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetDomainOwnershipIdentifierSlotResponse, error) {
 	result := WebAppsClientGetDomainOwnershipIdentifierSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Identifier); err != nil {
 		return WebAppsClientGetDomainOwnershipIdentifierSlotResponse{}, err
 	}
@@ -8941,12 +8783,7 @@ func (client *WebAppsClient) GetFtpAllowed(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return WebAppsClientGetFtpAllowedResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetFtpAllowedResponse{}, err
-	}
-	resp, err := client.getFtpAllowedHandleResponse(httpResp)
-	return resp, err
+	return client.getFtpAllowedHandleResponse(httpResp, http.StatusOK)
 }
 
 // getFtpAllowedCreateRequest creates the GetFtpAllowed request.
@@ -8976,8 +8813,11 @@ func (client *WebAppsClient) getFtpAllowedCreateRequest(ctx context.Context, res
 }
 
 // getFtpAllowedHandleResponse handles the GetFtpAllowed response.
-func (client *WebAppsClient) getFtpAllowedHandleResponse(resp *http.Response) (WebAppsClientGetFtpAllowedResponse, error) {
+func (client *WebAppsClient) getFtpAllowedHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetFtpAllowedResponse, error) {
 	result := WebAppsClientGetFtpAllowedResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmPublishingCredentialsPoliciesEntity); err != nil {
 		return WebAppsClientGetFtpAllowedResponse{}, err
 	}
@@ -9006,12 +8846,7 @@ func (client *WebAppsClient) GetFtpAllowedSlot(ctx context.Context, resourceGrou
 	if err != nil {
 		return WebAppsClientGetFtpAllowedSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetFtpAllowedSlotResponse{}, err
-	}
-	resp, err := client.getFtpAllowedSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getFtpAllowedSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getFtpAllowedSlotCreateRequest creates the GetFtpAllowedSlot request.
@@ -9045,8 +8880,11 @@ func (client *WebAppsClient) getFtpAllowedSlotCreateRequest(ctx context.Context,
 }
 
 // getFtpAllowedSlotHandleResponse handles the GetFtpAllowedSlot response.
-func (client *WebAppsClient) getFtpAllowedSlotHandleResponse(resp *http.Response) (WebAppsClientGetFtpAllowedSlotResponse, error) {
+func (client *WebAppsClient) getFtpAllowedSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetFtpAllowedSlotResponse, error) {
 	result := WebAppsClientGetFtpAllowedSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmPublishingCredentialsPoliciesEntity); err != nil {
 		return WebAppsClientGetFtpAllowedSlotResponse{}, err
 	}
@@ -9075,12 +8913,7 @@ func (client *WebAppsClient) GetFunction(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return WebAppsClientGetFunctionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetFunctionResponse{}, err
-	}
-	resp, err := client.getFunctionHandleResponse(httpResp)
-	return resp, err
+	return client.getFunctionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getFunctionCreateRequest creates the GetFunction request.
@@ -9114,8 +8947,11 @@ func (client *WebAppsClient) getFunctionCreateRequest(ctx context.Context, resou
 }
 
 // getFunctionHandleResponse handles the GetFunction response.
-func (client *WebAppsClient) getFunctionHandleResponse(resp *http.Response) (WebAppsClientGetFunctionResponse, error) {
+func (client *WebAppsClient) getFunctionHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetFunctionResponse, error) {
 	result := WebAppsClientGetFunctionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionEnvelope); err != nil {
 		return WebAppsClientGetFunctionResponse{}, err
 	}
@@ -9144,12 +8980,7 @@ func (client *WebAppsClient) GetFunctionsAdminToken(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetFunctionsAdminTokenResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetFunctionsAdminTokenResponse{}, err
-	}
-	resp, err := client.getFunctionsAdminTokenHandleResponse(httpResp)
-	return resp, err
+	return client.getFunctionsAdminTokenHandleResponse(httpResp, http.StatusOK)
 }
 
 // getFunctionsAdminTokenCreateRequest creates the GetFunctionsAdminToken request.
@@ -9179,8 +9010,11 @@ func (client *WebAppsClient) getFunctionsAdminTokenCreateRequest(ctx context.Con
 }
 
 // getFunctionsAdminTokenHandleResponse handles the GetFunctionsAdminToken response.
-func (client *WebAppsClient) getFunctionsAdminTokenHandleResponse(resp *http.Response) (WebAppsClientGetFunctionsAdminTokenResponse, error) {
+func (client *WebAppsClient) getFunctionsAdminTokenHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetFunctionsAdminTokenResponse, error) {
 	result := WebAppsClientGetFunctionsAdminTokenResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return WebAppsClientGetFunctionsAdminTokenResponse{}, err
 	}
@@ -9210,12 +9044,7 @@ func (client *WebAppsClient) GetFunctionsAdminTokenSlot(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientGetFunctionsAdminTokenSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetFunctionsAdminTokenSlotResponse{}, err
-	}
-	resp, err := client.getFunctionsAdminTokenSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getFunctionsAdminTokenSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getFunctionsAdminTokenSlotCreateRequest creates the GetFunctionsAdminTokenSlot request.
@@ -9249,8 +9078,11 @@ func (client *WebAppsClient) getFunctionsAdminTokenSlotCreateRequest(ctx context
 }
 
 // getFunctionsAdminTokenSlotHandleResponse handles the GetFunctionsAdminTokenSlot response.
-func (client *WebAppsClient) getFunctionsAdminTokenSlotHandleResponse(resp *http.Response) (WebAppsClientGetFunctionsAdminTokenSlotResponse, error) {
+func (client *WebAppsClient) getFunctionsAdminTokenSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetFunctionsAdminTokenSlotResponse, error) {
 	result := WebAppsClientGetFunctionsAdminTokenSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return WebAppsClientGetFunctionsAdminTokenSlotResponse{}, err
 	}
@@ -9280,12 +9112,7 @@ func (client *WebAppsClient) GetHostNameBinding(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientGetHostNameBindingResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetHostNameBindingResponse{}, err
-	}
-	resp, err := client.getHostNameBindingHandleResponse(httpResp)
-	return resp, err
+	return client.getHostNameBindingHandleResponse(httpResp, http.StatusOK)
 }
 
 // getHostNameBindingCreateRequest creates the GetHostNameBinding request.
@@ -9319,8 +9146,11 @@ func (client *WebAppsClient) getHostNameBindingCreateRequest(ctx context.Context
 }
 
 // getHostNameBindingHandleResponse handles the GetHostNameBinding response.
-func (client *WebAppsClient) getHostNameBindingHandleResponse(resp *http.Response) (WebAppsClientGetHostNameBindingResponse, error) {
+func (client *WebAppsClient) getHostNameBindingHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetHostNameBindingResponse, error) {
 	result := WebAppsClientGetHostNameBindingResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HostNameBinding); err != nil {
 		return WebAppsClientGetHostNameBindingResponse{}, err
 	}
@@ -9351,12 +9181,7 @@ func (client *WebAppsClient) GetHostNameBindingSlot(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetHostNameBindingSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetHostNameBindingSlotResponse{}, err
-	}
-	resp, err := client.getHostNameBindingSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getHostNameBindingSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getHostNameBindingSlotCreateRequest creates the GetHostNameBindingSlot request.
@@ -9394,8 +9219,11 @@ func (client *WebAppsClient) getHostNameBindingSlotCreateRequest(ctx context.Con
 }
 
 // getHostNameBindingSlotHandleResponse handles the GetHostNameBindingSlot response.
-func (client *WebAppsClient) getHostNameBindingSlotHandleResponse(resp *http.Response) (WebAppsClientGetHostNameBindingSlotResponse, error) {
+func (client *WebAppsClient) getHostNameBindingSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetHostNameBindingSlotResponse, error) {
 	result := WebAppsClientGetHostNameBindingSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HostNameBinding); err != nil {
 		return WebAppsClientGetHostNameBindingSlotResponse{}, err
 	}
@@ -9426,12 +9254,7 @@ func (client *WebAppsClient) GetHybridConnection(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientGetHybridConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetHybridConnectionResponse{}, err
-	}
-	resp, err := client.getHybridConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.getHybridConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getHybridConnectionCreateRequest creates the GetHybridConnection request.
@@ -9469,8 +9292,11 @@ func (client *WebAppsClient) getHybridConnectionCreateRequest(ctx context.Contex
 }
 
 // getHybridConnectionHandleResponse handles the GetHybridConnection response.
-func (client *WebAppsClient) getHybridConnectionHandleResponse(resp *http.Response) (WebAppsClientGetHybridConnectionResponse, error) {
+func (client *WebAppsClient) getHybridConnectionHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetHybridConnectionResponse, error) {
 	result := WebAppsClientGetHybridConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
 		return WebAppsClientGetHybridConnectionResponse{}, err
 	}
@@ -9498,12 +9324,7 @@ func (client *WebAppsClient) GetHybridConnectionSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientGetHybridConnectionSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetHybridConnectionSlotResponse{}, err
-	}
-	resp, err := client.getHybridConnectionSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getHybridConnectionSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getHybridConnectionSlotCreateRequest creates the GetHybridConnectionSlot request.
@@ -9545,8 +9366,11 @@ func (client *WebAppsClient) getHybridConnectionSlotCreateRequest(ctx context.Co
 }
 
 // getHybridConnectionSlotHandleResponse handles the GetHybridConnectionSlot response.
-func (client *WebAppsClient) getHybridConnectionSlotHandleResponse(resp *http.Response) (WebAppsClientGetHybridConnectionSlotResponse, error) {
+func (client *WebAppsClient) getHybridConnectionSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetHybridConnectionSlotResponse, error) {
 	result := WebAppsClientGetHybridConnectionSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
 		return WebAppsClientGetHybridConnectionSlotResponse{}, err
 	}
@@ -9574,12 +9398,7 @@ func (client *WebAppsClient) GetInstanceFunctionSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientGetInstanceFunctionSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetInstanceFunctionSlotResponse{}, err
-	}
-	resp, err := client.getInstanceFunctionSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getInstanceFunctionSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getInstanceFunctionSlotCreateRequest creates the GetInstanceFunctionSlot request.
@@ -9617,8 +9436,11 @@ func (client *WebAppsClient) getInstanceFunctionSlotCreateRequest(ctx context.Co
 }
 
 // getInstanceFunctionSlotHandleResponse handles the GetInstanceFunctionSlot response.
-func (client *WebAppsClient) getInstanceFunctionSlotHandleResponse(resp *http.Response) (WebAppsClientGetInstanceFunctionSlotResponse, error) {
+func (client *WebAppsClient) getInstanceFunctionSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetInstanceFunctionSlotResponse, error) {
 	result := WebAppsClientGetInstanceFunctionSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionEnvelope); err != nil {
 		return WebAppsClientGetInstanceFunctionSlotResponse{}, err
 	}
@@ -9646,12 +9468,7 @@ func (client *WebAppsClient) GetInstanceInfo(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WebAppsClientGetInstanceInfoResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetInstanceInfoResponse{}, err
-	}
-	resp, err := client.getInstanceInfoHandleResponse(httpResp)
-	return resp, err
+	return client.getInstanceInfoHandleResponse(httpResp, http.StatusOK)
 }
 
 // getInstanceInfoCreateRequest creates the GetInstanceInfo request.
@@ -9685,8 +9502,11 @@ func (client *WebAppsClient) getInstanceInfoCreateRequest(ctx context.Context, r
 }
 
 // getInstanceInfoHandleResponse handles the GetInstanceInfo response.
-func (client *WebAppsClient) getInstanceInfoHandleResponse(resp *http.Response) (WebAppsClientGetInstanceInfoResponse, error) {
+func (client *WebAppsClient) getInstanceInfoHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetInstanceInfoResponse, error) {
 	result := WebAppsClientGetInstanceInfoResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebSiteInstanceStatus); err != nil {
 		return WebAppsClientGetInstanceInfoResponse{}, err
 	}
@@ -9714,12 +9534,7 @@ func (client *WebAppsClient) GetInstanceInfoSlot(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientGetInstanceInfoSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetInstanceInfoSlotResponse{}, err
-	}
-	resp, err := client.getInstanceInfoSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getInstanceInfoSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getInstanceInfoSlotCreateRequest creates the GetInstanceInfoSlot request.
@@ -9757,8 +9572,11 @@ func (client *WebAppsClient) getInstanceInfoSlotCreateRequest(ctx context.Contex
 }
 
 // getInstanceInfoSlotHandleResponse handles the GetInstanceInfoSlot response.
-func (client *WebAppsClient) getInstanceInfoSlotHandleResponse(resp *http.Response) (WebAppsClientGetInstanceInfoSlotResponse, error) {
+func (client *WebAppsClient) getInstanceInfoSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetInstanceInfoSlotResponse, error) {
 	result := WebAppsClientGetInstanceInfoSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebSiteInstanceStatus); err != nil {
 		return WebAppsClientGetInstanceInfoSlotResponse{}, err
 	}
@@ -9788,12 +9606,7 @@ func (client *WebAppsClient) GetInstanceMSDeployLog(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetInstanceMSDeployLogResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetInstanceMSDeployLogResponse{}, err
-	}
-	resp, err := client.getInstanceMSDeployLogHandleResponse(httpResp)
-	return resp, err
+	return client.getInstanceMSDeployLogHandleResponse(httpResp, http.StatusOK)
 }
 
 // getInstanceMSDeployLogCreateRequest creates the GetInstanceMSDeployLog request.
@@ -9827,8 +9640,11 @@ func (client *WebAppsClient) getInstanceMSDeployLogCreateRequest(ctx context.Con
 }
 
 // getInstanceMSDeployLogHandleResponse handles the GetInstanceMSDeployLog response.
-func (client *WebAppsClient) getInstanceMSDeployLogHandleResponse(resp *http.Response) (WebAppsClientGetInstanceMSDeployLogResponse, error) {
+func (client *WebAppsClient) getInstanceMSDeployLogHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetInstanceMSDeployLogResponse, error) {
 	result := WebAppsClientGetInstanceMSDeployLogResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MSDeployLog); err != nil {
 		return WebAppsClientGetInstanceMSDeployLogResponse{}, err
 	}
@@ -9859,12 +9675,7 @@ func (client *WebAppsClient) GetInstanceMSDeployLogSlot(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientGetInstanceMSDeployLogSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetInstanceMSDeployLogSlotResponse{}, err
-	}
-	resp, err := client.getInstanceMSDeployLogSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getInstanceMSDeployLogSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getInstanceMSDeployLogSlotCreateRequest creates the GetInstanceMSDeployLogSlot request.
@@ -9902,8 +9713,11 @@ func (client *WebAppsClient) getInstanceMSDeployLogSlotCreateRequest(ctx context
 }
 
 // getInstanceMSDeployLogSlotHandleResponse handles the GetInstanceMSDeployLogSlot response.
-func (client *WebAppsClient) getInstanceMSDeployLogSlotHandleResponse(resp *http.Response) (WebAppsClientGetInstanceMSDeployLogSlotResponse, error) {
+func (client *WebAppsClient) getInstanceMSDeployLogSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetInstanceMSDeployLogSlotResponse, error) {
 	result := WebAppsClientGetInstanceMSDeployLogSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MSDeployLog); err != nil {
 		return WebAppsClientGetInstanceMSDeployLogSlotResponse{}, err
 	}
@@ -9933,12 +9747,7 @@ func (client *WebAppsClient) GetInstanceMsDeployStatus(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientGetInstanceMsDeployStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetInstanceMsDeployStatusResponse{}, err
-	}
-	resp, err := client.getInstanceMsDeployStatusHandleResponse(httpResp)
-	return resp, err
+	return client.getInstanceMsDeployStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // getInstanceMsDeployStatusCreateRequest creates the GetInstanceMsDeployStatus request.
@@ -9972,8 +9781,11 @@ func (client *WebAppsClient) getInstanceMsDeployStatusCreateRequest(ctx context.
 }
 
 // getInstanceMsDeployStatusHandleResponse handles the GetInstanceMsDeployStatus response.
-func (client *WebAppsClient) getInstanceMsDeployStatusHandleResponse(resp *http.Response) (WebAppsClientGetInstanceMsDeployStatusResponse, error) {
+func (client *WebAppsClient) getInstanceMsDeployStatusHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetInstanceMsDeployStatusResponse, error) {
 	result := WebAppsClientGetInstanceMsDeployStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MSDeployStatus); err != nil {
 		return WebAppsClientGetInstanceMsDeployStatusResponse{}, err
 	}
@@ -10004,12 +9816,7 @@ func (client *WebAppsClient) GetInstanceMsDeployStatusSlot(ctx context.Context, 
 	if err != nil {
 		return WebAppsClientGetInstanceMsDeployStatusSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetInstanceMsDeployStatusSlotResponse{}, err
-	}
-	resp, err := client.getInstanceMsDeployStatusSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getInstanceMsDeployStatusSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getInstanceMsDeployStatusSlotCreateRequest creates the GetInstanceMsDeployStatusSlot request.
@@ -10047,8 +9854,11 @@ func (client *WebAppsClient) getInstanceMsDeployStatusSlotCreateRequest(ctx cont
 }
 
 // getInstanceMsDeployStatusSlotHandleResponse handles the GetInstanceMsDeployStatusSlot response.
-func (client *WebAppsClient) getInstanceMsDeployStatusSlotHandleResponse(resp *http.Response) (WebAppsClientGetInstanceMsDeployStatusSlotResponse, error) {
+func (client *WebAppsClient) getInstanceMsDeployStatusSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetInstanceMsDeployStatusSlotResponse, error) {
 	result := WebAppsClientGetInstanceMsDeployStatusSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MSDeployStatus); err != nil {
 		return WebAppsClientGetInstanceMsDeployStatusSlotResponse{}, err
 	}
@@ -10076,12 +9886,7 @@ func (client *WebAppsClient) GetInstanceProcess(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientGetInstanceProcessResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetInstanceProcessResponse{}, err
-	}
-	resp, err := client.getInstanceProcessHandleResponse(httpResp)
-	return resp, err
+	return client.getInstanceProcessHandleResponse(httpResp, http.StatusOK)
 }
 
 // getInstanceProcessCreateRequest creates the GetInstanceProcess request.
@@ -10119,8 +9924,11 @@ func (client *WebAppsClient) getInstanceProcessCreateRequest(ctx context.Context
 }
 
 // getInstanceProcessHandleResponse handles the GetInstanceProcess response.
-func (client *WebAppsClient) getInstanceProcessHandleResponse(resp *http.Response) (WebAppsClientGetInstanceProcessResponse, error) {
+func (client *WebAppsClient) getInstanceProcessHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetInstanceProcessResponse, error) {
 	result := WebAppsClientGetInstanceProcessResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessInfo); err != nil {
 		return WebAppsClientGetInstanceProcessResponse{}, err
 	}
@@ -10148,12 +9956,7 @@ func (client *WebAppsClient) GetInstanceProcessDump(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetInstanceProcessDumpResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetInstanceProcessDumpResponse{}, err
-	}
-	resp, err := client.getInstanceProcessDumpHandleResponse(httpResp)
-	return resp, err
+	return client.getInstanceProcessDumpHandleResponse(httpResp, http.StatusOK)
 }
 
 // getInstanceProcessDumpCreateRequest creates the GetInstanceProcessDump request.
@@ -10192,11 +9995,15 @@ func (client *WebAppsClient) getInstanceProcessDumpCreateRequest(ctx context.Con
 }
 
 // getInstanceProcessDumpHandleResponse handles the GetInstanceProcessDump response.
-func (client *WebAppsClient) getInstanceProcessDumpHandleResponse(resp *http.Response) (WebAppsClientGetInstanceProcessDumpResponse, error) {
-	result := WebAppsClientGetInstanceProcessDumpResponse{Body: resp.Body}
+func (client *WebAppsClient) getInstanceProcessDumpHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetInstanceProcessDumpResponse, error) {
+	result := WebAppsClientGetInstanceProcessDumpResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
+	result.Body = resp.Body
 	return result, nil
 }
 
@@ -10221,12 +10028,7 @@ func (client *WebAppsClient) GetInstanceProcessDumpSlot(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientGetInstanceProcessDumpSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetInstanceProcessDumpSlotResponse{}, err
-	}
-	resp, err := client.getInstanceProcessDumpSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getInstanceProcessDumpSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getInstanceProcessDumpSlotCreateRequest creates the GetInstanceProcessDumpSlot request.
@@ -10269,11 +10071,15 @@ func (client *WebAppsClient) getInstanceProcessDumpSlotCreateRequest(ctx context
 }
 
 // getInstanceProcessDumpSlotHandleResponse handles the GetInstanceProcessDumpSlot response.
-func (client *WebAppsClient) getInstanceProcessDumpSlotHandleResponse(resp *http.Response) (WebAppsClientGetInstanceProcessDumpSlotResponse, error) {
-	result := WebAppsClientGetInstanceProcessDumpSlotResponse{Body: resp.Body}
+func (client *WebAppsClient) getInstanceProcessDumpSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetInstanceProcessDumpSlotResponse, error) {
+	result := WebAppsClientGetInstanceProcessDumpSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
+	result.Body = resp.Body
 	return result, nil
 }
 
@@ -10298,12 +10104,7 @@ func (client *WebAppsClient) GetInstanceProcessModule(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientGetInstanceProcessModuleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetInstanceProcessModuleResponse{}, err
-	}
-	resp, err := client.getInstanceProcessModuleHandleResponse(httpResp)
-	return resp, err
+	return client.getInstanceProcessModuleHandleResponse(httpResp, http.StatusOK)
 }
 
 // getInstanceProcessModuleCreateRequest creates the GetInstanceProcessModule request.
@@ -10345,8 +10146,11 @@ func (client *WebAppsClient) getInstanceProcessModuleCreateRequest(ctx context.C
 }
 
 // getInstanceProcessModuleHandleResponse handles the GetInstanceProcessModule response.
-func (client *WebAppsClient) getInstanceProcessModuleHandleResponse(resp *http.Response) (WebAppsClientGetInstanceProcessModuleResponse, error) {
+func (client *WebAppsClient) getInstanceProcessModuleHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetInstanceProcessModuleResponse, error) {
 	result := WebAppsClientGetInstanceProcessModuleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessModuleInfo); err != nil {
 		return WebAppsClientGetInstanceProcessModuleResponse{}, err
 	}
@@ -10374,12 +10178,7 @@ func (client *WebAppsClient) GetInstanceProcessModuleSlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientGetInstanceProcessModuleSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetInstanceProcessModuleSlotResponse{}, err
-	}
-	resp, err := client.getInstanceProcessModuleSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getInstanceProcessModuleSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getInstanceProcessModuleSlotCreateRequest creates the GetInstanceProcessModuleSlot request.
@@ -10425,8 +10224,11 @@ func (client *WebAppsClient) getInstanceProcessModuleSlotCreateRequest(ctx conte
 }
 
 // getInstanceProcessModuleSlotHandleResponse handles the GetInstanceProcessModuleSlot response.
-func (client *WebAppsClient) getInstanceProcessModuleSlotHandleResponse(resp *http.Response) (WebAppsClientGetInstanceProcessModuleSlotResponse, error) {
+func (client *WebAppsClient) getInstanceProcessModuleSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetInstanceProcessModuleSlotResponse, error) {
 	result := WebAppsClientGetInstanceProcessModuleSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessModuleInfo); err != nil {
 		return WebAppsClientGetInstanceProcessModuleSlotResponse{}, err
 	}
@@ -10454,12 +10256,7 @@ func (client *WebAppsClient) GetInstanceProcessSlot(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetInstanceProcessSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetInstanceProcessSlotResponse{}, err
-	}
-	resp, err := client.getInstanceProcessSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getInstanceProcessSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getInstanceProcessSlotCreateRequest creates the GetInstanceProcessSlot request.
@@ -10501,8 +10298,11 @@ func (client *WebAppsClient) getInstanceProcessSlotCreateRequest(ctx context.Con
 }
 
 // getInstanceProcessSlotHandleResponse handles the GetInstanceProcessSlot response.
-func (client *WebAppsClient) getInstanceProcessSlotHandleResponse(resp *http.Response) (WebAppsClientGetInstanceProcessSlotResponse, error) {
+func (client *WebAppsClient) getInstanceProcessSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetInstanceProcessSlotResponse, error) {
 	result := WebAppsClientGetInstanceProcessSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessInfo); err != nil {
 		return WebAppsClientGetInstanceProcessSlotResponse{}, err
 	}
@@ -10533,12 +10333,7 @@ func (client *WebAppsClient) GetInstanceWorkflowSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientGetInstanceWorkflowSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetInstanceWorkflowSlotResponse{}, err
-	}
-	resp, err := client.getInstanceWorkflowSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getInstanceWorkflowSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getInstanceWorkflowSlotCreateRequest creates the GetInstanceWorkflowSlot request.
@@ -10576,8 +10371,11 @@ func (client *WebAppsClient) getInstanceWorkflowSlotCreateRequest(ctx context.Co
 }
 
 // getInstanceWorkflowSlotHandleResponse handles the GetInstanceWorkflowSlot response.
-func (client *WebAppsClient) getInstanceWorkflowSlotHandleResponse(resp *http.Response) (WebAppsClientGetInstanceWorkflowSlotResponse, error) {
+func (client *WebAppsClient) getInstanceWorkflowSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetInstanceWorkflowSlotResponse, error) {
 	result := WebAppsClientGetInstanceWorkflowSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowEnvelope); err != nil {
 		return WebAppsClientGetInstanceWorkflowSlotResponse{}, err
 	}
@@ -10605,12 +10403,7 @@ func (client *WebAppsClient) GetMSDeployLog(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return WebAppsClientGetMSDeployLogResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetMSDeployLogResponse{}, err
-	}
-	resp, err := client.getMSDeployLogHandleResponse(httpResp)
-	return resp, err
+	return client.getMSDeployLogHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMSDeployLogCreateRequest creates the GetMSDeployLog request.
@@ -10640,8 +10433,11 @@ func (client *WebAppsClient) getMSDeployLogCreateRequest(ctx context.Context, re
 }
 
 // getMSDeployLogHandleResponse handles the GetMSDeployLog response.
-func (client *WebAppsClient) getMSDeployLogHandleResponse(resp *http.Response) (WebAppsClientGetMSDeployLogResponse, error) {
+func (client *WebAppsClient) getMSDeployLogHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetMSDeployLogResponse, error) {
 	result := WebAppsClientGetMSDeployLogResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MSDeployLog); err != nil {
 		return WebAppsClientGetMSDeployLogResponse{}, err
 	}
@@ -10671,12 +10467,7 @@ func (client *WebAppsClient) GetMSDeployLogSlot(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientGetMSDeployLogSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetMSDeployLogSlotResponse{}, err
-	}
-	resp, err := client.getMSDeployLogSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getMSDeployLogSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMSDeployLogSlotCreateRequest creates the GetMSDeployLogSlot request.
@@ -10710,8 +10501,11 @@ func (client *WebAppsClient) getMSDeployLogSlotCreateRequest(ctx context.Context
 }
 
 // getMSDeployLogSlotHandleResponse handles the GetMSDeployLogSlot response.
-func (client *WebAppsClient) getMSDeployLogSlotHandleResponse(resp *http.Response) (WebAppsClientGetMSDeployLogSlotResponse, error) {
+func (client *WebAppsClient) getMSDeployLogSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetMSDeployLogSlotResponse, error) {
 	result := WebAppsClientGetMSDeployLogSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MSDeployLog); err != nil {
 		return WebAppsClientGetMSDeployLogSlotResponse{}, err
 	}
@@ -10740,12 +10534,7 @@ func (client *WebAppsClient) GetMSDeployStatus(ctx context.Context, resourceGrou
 	if err != nil {
 		return WebAppsClientGetMSDeployStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetMSDeployStatusResponse{}, err
-	}
-	resp, err := client.getMSDeployStatusHandleResponse(httpResp)
-	return resp, err
+	return client.getMSDeployStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMSDeployStatusCreateRequest creates the GetMSDeployStatus request.
@@ -10775,8 +10564,11 @@ func (client *WebAppsClient) getMSDeployStatusCreateRequest(ctx context.Context,
 }
 
 // getMSDeployStatusHandleResponse handles the GetMSDeployStatus response.
-func (client *WebAppsClient) getMSDeployStatusHandleResponse(resp *http.Response) (WebAppsClientGetMSDeployStatusResponse, error) {
+func (client *WebAppsClient) getMSDeployStatusHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetMSDeployStatusResponse, error) {
 	result := WebAppsClientGetMSDeployStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MSDeployStatus); err != nil {
 		return WebAppsClientGetMSDeployStatusResponse{}, err
 	}
@@ -10806,12 +10598,7 @@ func (client *WebAppsClient) GetMSDeployStatusSlot(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientGetMSDeployStatusSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetMSDeployStatusSlotResponse{}, err
-	}
-	resp, err := client.getMSDeployStatusSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getMSDeployStatusSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMSDeployStatusSlotCreateRequest creates the GetMSDeployStatusSlot request.
@@ -10845,8 +10632,11 @@ func (client *WebAppsClient) getMSDeployStatusSlotCreateRequest(ctx context.Cont
 }
 
 // getMSDeployStatusSlotHandleResponse handles the GetMSDeployStatusSlot response.
-func (client *WebAppsClient) getMSDeployStatusSlotHandleResponse(resp *http.Response) (WebAppsClientGetMSDeployStatusSlotResponse, error) {
+func (client *WebAppsClient) getMSDeployStatusSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetMSDeployStatusSlotResponse, error) {
 	result := WebAppsClientGetMSDeployStatusSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MSDeployStatus); err != nil {
 		return WebAppsClientGetMSDeployStatusSlotResponse{}, err
 	}
@@ -10876,12 +10666,7 @@ func (client *WebAppsClient) GetMigrateMySQLStatus(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientGetMigrateMySQLStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetMigrateMySQLStatusResponse{}, err
-	}
-	resp, err := client.getMigrateMySQLStatusHandleResponse(httpResp)
-	return resp, err
+	return client.getMigrateMySQLStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMigrateMySQLStatusCreateRequest creates the GetMigrateMySQLStatus request.
@@ -10911,8 +10696,11 @@ func (client *WebAppsClient) getMigrateMySQLStatusCreateRequest(ctx context.Cont
 }
 
 // getMigrateMySQLStatusHandleResponse handles the GetMigrateMySQLStatus response.
-func (client *WebAppsClient) getMigrateMySQLStatusHandleResponse(resp *http.Response) (WebAppsClientGetMigrateMySQLStatusResponse, error) {
+func (client *WebAppsClient) getMigrateMySQLStatusHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetMigrateMySQLStatusResponse, error) {
 	result := WebAppsClientGetMigrateMySQLStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrateMySQLStatus); err != nil {
 		return WebAppsClientGetMigrateMySQLStatusResponse{}, err
 	}
@@ -10943,12 +10731,7 @@ func (client *WebAppsClient) GetMigrateMySQLStatusSlot(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientGetMigrateMySQLStatusSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetMigrateMySQLStatusSlotResponse{}, err
-	}
-	resp, err := client.getMigrateMySQLStatusSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getMigrateMySQLStatusSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getMigrateMySQLStatusSlotCreateRequest creates the GetMigrateMySQLStatusSlot request.
@@ -10982,8 +10765,11 @@ func (client *WebAppsClient) getMigrateMySQLStatusSlotCreateRequest(ctx context.
 }
 
 // getMigrateMySQLStatusSlotHandleResponse handles the GetMigrateMySQLStatusSlot response.
-func (client *WebAppsClient) getMigrateMySQLStatusSlotHandleResponse(resp *http.Response) (WebAppsClientGetMigrateMySQLStatusSlotResponse, error) {
+func (client *WebAppsClient) getMigrateMySQLStatusSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetMigrateMySQLStatusSlotResponse, error) {
 	result := WebAppsClientGetMigrateMySQLStatusSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MigrateMySQLStatus); err != nil {
 		return WebAppsClientGetMigrateMySQLStatusSlotResponse{}, err
 	}
@@ -11013,12 +10799,7 @@ func (client *WebAppsClient) GetNetworkTraceOperation(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientGetNetworkTraceOperationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetNetworkTraceOperationResponse{}, err
-	}
-	resp, err := client.getNetworkTraceOperationHandleResponse(httpResp)
-	return resp, err
+	return client.getNetworkTraceOperationHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getNetworkTraceOperationCreateRequest creates the GetNetworkTraceOperation request.
@@ -11052,8 +10833,11 @@ func (client *WebAppsClient) getNetworkTraceOperationCreateRequest(ctx context.C
 }
 
 // getNetworkTraceOperationHandleResponse handles the GetNetworkTraceOperation response.
-func (client *WebAppsClient) getNetworkTraceOperationHandleResponse(resp *http.Response) (WebAppsClientGetNetworkTraceOperationResponse, error) {
+func (client *WebAppsClient) getNetworkTraceOperationHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetNetworkTraceOperationResponse, error) {
 	result := WebAppsClientGetNetworkTraceOperationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkTraceArray); err != nil {
 		return WebAppsClientGetNetworkTraceOperationResponse{}, err
 	}
@@ -11081,12 +10865,7 @@ func (client *WebAppsClient) GetNetworkTraceOperationSlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientGetNetworkTraceOperationSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetNetworkTraceOperationSlotResponse{}, err
-	}
-	resp, err := client.getNetworkTraceOperationSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getNetworkTraceOperationSlotHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getNetworkTraceOperationSlotCreateRequest creates the GetNetworkTraceOperationSlot request.
@@ -11124,8 +10903,11 @@ func (client *WebAppsClient) getNetworkTraceOperationSlotCreateRequest(ctx conte
 }
 
 // getNetworkTraceOperationSlotHandleResponse handles the GetNetworkTraceOperationSlot response.
-func (client *WebAppsClient) getNetworkTraceOperationSlotHandleResponse(resp *http.Response) (WebAppsClientGetNetworkTraceOperationSlotResponse, error) {
+func (client *WebAppsClient) getNetworkTraceOperationSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetNetworkTraceOperationSlotResponse, error) {
 	result := WebAppsClientGetNetworkTraceOperationSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkTraceArray); err != nil {
 		return WebAppsClientGetNetworkTraceOperationSlotResponse{}, err
 	}
@@ -11153,12 +10935,7 @@ func (client *WebAppsClient) GetNetworkTraceOperationSlotV2(ctx context.Context,
 	if err != nil {
 		return WebAppsClientGetNetworkTraceOperationSlotV2Response{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetNetworkTraceOperationSlotV2Response{}, err
-	}
-	resp, err := client.getNetworkTraceOperationSlotV2HandleResponse(httpResp)
-	return resp, err
+	return client.getNetworkTraceOperationSlotV2HandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getNetworkTraceOperationSlotV2CreateRequest creates the GetNetworkTraceOperationSlotV2 request.
@@ -11196,8 +10973,11 @@ func (client *WebAppsClient) getNetworkTraceOperationSlotV2CreateRequest(ctx con
 }
 
 // getNetworkTraceOperationSlotV2HandleResponse handles the GetNetworkTraceOperationSlotV2 response.
-func (client *WebAppsClient) getNetworkTraceOperationSlotV2HandleResponse(resp *http.Response) (WebAppsClientGetNetworkTraceOperationSlotV2Response, error) {
+func (client *WebAppsClient) getNetworkTraceOperationSlotV2HandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetNetworkTraceOperationSlotV2Response, error) {
 	result := WebAppsClientGetNetworkTraceOperationSlotV2Response{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkTraceArray); err != nil {
 		return WebAppsClientGetNetworkTraceOperationSlotV2Response{}, err
 	}
@@ -11227,12 +11007,7 @@ func (client *WebAppsClient) GetNetworkTraceOperationV2(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientGetNetworkTraceOperationV2Response{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetNetworkTraceOperationV2Response{}, err
-	}
-	resp, err := client.getNetworkTraceOperationV2HandleResponse(httpResp)
-	return resp, err
+	return client.getNetworkTraceOperationV2HandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // getNetworkTraceOperationV2CreateRequest creates the GetNetworkTraceOperationV2 request.
@@ -11266,8 +11041,11 @@ func (client *WebAppsClient) getNetworkTraceOperationV2CreateRequest(ctx context
 }
 
 // getNetworkTraceOperationV2HandleResponse handles the GetNetworkTraceOperationV2 response.
-func (client *WebAppsClient) getNetworkTraceOperationV2HandleResponse(resp *http.Response) (WebAppsClientGetNetworkTraceOperationV2Response, error) {
+func (client *WebAppsClient) getNetworkTraceOperationV2HandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetNetworkTraceOperationV2Response, error) {
 	result := WebAppsClientGetNetworkTraceOperationV2Response{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkTraceArray); err != nil {
 		return WebAppsClientGetNetworkTraceOperationV2Response{}, err
 	}
@@ -11297,12 +11075,7 @@ func (client *WebAppsClient) GetNetworkTraces(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientGetNetworkTracesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetNetworkTracesResponse{}, err
-	}
-	resp, err := client.getNetworkTracesHandleResponse(httpResp)
-	return resp, err
+	return client.getNetworkTracesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getNetworkTracesCreateRequest creates the GetNetworkTraces request.
@@ -11336,8 +11109,11 @@ func (client *WebAppsClient) getNetworkTracesCreateRequest(ctx context.Context, 
 }
 
 // getNetworkTracesHandleResponse handles the GetNetworkTraces response.
-func (client *WebAppsClient) getNetworkTracesHandleResponse(resp *http.Response) (WebAppsClientGetNetworkTracesResponse, error) {
+func (client *WebAppsClient) getNetworkTracesHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetNetworkTracesResponse, error) {
 	result := WebAppsClientGetNetworkTracesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkTraceArray); err != nil {
 		return WebAppsClientGetNetworkTracesResponse{}, err
 	}
@@ -11365,12 +11141,7 @@ func (client *WebAppsClient) GetNetworkTracesSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientGetNetworkTracesSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetNetworkTracesSlotResponse{}, err
-	}
-	resp, err := client.getNetworkTracesSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getNetworkTracesSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getNetworkTracesSlotCreateRequest creates the GetNetworkTracesSlot request.
@@ -11408,8 +11179,11 @@ func (client *WebAppsClient) getNetworkTracesSlotCreateRequest(ctx context.Conte
 }
 
 // getNetworkTracesSlotHandleResponse handles the GetNetworkTracesSlot response.
-func (client *WebAppsClient) getNetworkTracesSlotHandleResponse(resp *http.Response) (WebAppsClientGetNetworkTracesSlotResponse, error) {
+func (client *WebAppsClient) getNetworkTracesSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetNetworkTracesSlotResponse, error) {
 	result := WebAppsClientGetNetworkTracesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkTraceArray); err != nil {
 		return WebAppsClientGetNetworkTracesSlotResponse{}, err
 	}
@@ -11437,12 +11211,7 @@ func (client *WebAppsClient) GetNetworkTracesSlotV2(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetNetworkTracesSlotV2Response{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetNetworkTracesSlotV2Response{}, err
-	}
-	resp, err := client.getNetworkTracesSlotV2HandleResponse(httpResp)
-	return resp, err
+	return client.getNetworkTracesSlotV2HandleResponse(httpResp, http.StatusOK)
 }
 
 // getNetworkTracesSlotV2CreateRequest creates the GetNetworkTracesSlotV2 request.
@@ -11480,8 +11249,11 @@ func (client *WebAppsClient) getNetworkTracesSlotV2CreateRequest(ctx context.Con
 }
 
 // getNetworkTracesSlotV2HandleResponse handles the GetNetworkTracesSlotV2 response.
-func (client *WebAppsClient) getNetworkTracesSlotV2HandleResponse(resp *http.Response) (WebAppsClientGetNetworkTracesSlotV2Response, error) {
+func (client *WebAppsClient) getNetworkTracesSlotV2HandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetNetworkTracesSlotV2Response, error) {
 	result := WebAppsClientGetNetworkTracesSlotV2Response{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkTraceArray); err != nil {
 		return WebAppsClientGetNetworkTracesSlotV2Response{}, err
 	}
@@ -11511,12 +11283,7 @@ func (client *WebAppsClient) GetNetworkTracesV2(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientGetNetworkTracesV2Response{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetNetworkTracesV2Response{}, err
-	}
-	resp, err := client.getNetworkTracesV2HandleResponse(httpResp)
-	return resp, err
+	return client.getNetworkTracesV2HandleResponse(httpResp, http.StatusOK)
 }
 
 // getNetworkTracesV2CreateRequest creates the GetNetworkTracesV2 request.
@@ -11550,8 +11317,11 @@ func (client *WebAppsClient) getNetworkTracesV2CreateRequest(ctx context.Context
 }
 
 // getNetworkTracesV2HandleResponse handles the GetNetworkTracesV2 response.
-func (client *WebAppsClient) getNetworkTracesV2HandleResponse(resp *http.Response) (WebAppsClientGetNetworkTracesV2Response, error) {
+func (client *WebAppsClient) getNetworkTracesV2HandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetNetworkTracesV2Response, error) {
 	result := WebAppsClientGetNetworkTracesV2Response{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkTraceArray); err != nil {
 		return WebAppsClientGetNetworkTracesV2Response{}, err
 	}
@@ -11580,12 +11350,7 @@ func (client *WebAppsClient) GetOneDeployStatus(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientGetOneDeployStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetOneDeployStatusResponse{}, err
-	}
-	resp, err := client.getOneDeployStatusHandleResponse(httpResp)
-	return resp, err
+	return client.getOneDeployStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // getOneDeployStatusCreateRequest creates the GetOneDeployStatus request.
@@ -11615,8 +11380,11 @@ func (client *WebAppsClient) getOneDeployStatusCreateRequest(ctx context.Context
 }
 
 // getOneDeployStatusHandleResponse handles the GetOneDeployStatus response.
-func (client *WebAppsClient) getOneDeployStatusHandleResponse(resp *http.Response) (WebAppsClientGetOneDeployStatusResponse, error) {
+func (client *WebAppsClient) getOneDeployStatusHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetOneDeployStatusResponse, error) {
 	result := WebAppsClientGetOneDeployStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return WebAppsClientGetOneDeployStatusResponse{}, err
 	}
@@ -11645,12 +11413,7 @@ func (client *WebAppsClient) GetPremierAddOn(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WebAppsClientGetPremierAddOnResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetPremierAddOnResponse{}, err
-	}
-	resp, err := client.getPremierAddOnHandleResponse(httpResp)
-	return resp, err
+	return client.getPremierAddOnHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPremierAddOnCreateRequest creates the GetPremierAddOn request.
@@ -11684,8 +11447,11 @@ func (client *WebAppsClient) getPremierAddOnCreateRequest(ctx context.Context, r
 }
 
 // getPremierAddOnHandleResponse handles the GetPremierAddOn response.
-func (client *WebAppsClient) getPremierAddOnHandleResponse(resp *http.Response) (WebAppsClientGetPremierAddOnResponse, error) {
+func (client *WebAppsClient) getPremierAddOnHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetPremierAddOnResponse, error) {
 	result := WebAppsClientGetPremierAddOnResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PremierAddOn); err != nil {
 		return WebAppsClientGetPremierAddOnResponse{}, err
 	}
@@ -11713,12 +11479,7 @@ func (client *WebAppsClient) GetPremierAddOnSlot(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientGetPremierAddOnSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetPremierAddOnSlotResponse{}, err
-	}
-	resp, err := client.getPremierAddOnSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getPremierAddOnSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPremierAddOnSlotCreateRequest creates the GetPremierAddOnSlot request.
@@ -11756,8 +11517,11 @@ func (client *WebAppsClient) getPremierAddOnSlotCreateRequest(ctx context.Contex
 }
 
 // getPremierAddOnSlotHandleResponse handles the GetPremierAddOnSlot response.
-func (client *WebAppsClient) getPremierAddOnSlotHandleResponse(resp *http.Response) (WebAppsClientGetPremierAddOnSlotResponse, error) {
+func (client *WebAppsClient) getPremierAddOnSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetPremierAddOnSlotResponse, error) {
 	result := WebAppsClientGetPremierAddOnSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PremierAddOn); err != nil {
 		return WebAppsClientGetPremierAddOnSlotResponse{}, err
 	}
@@ -11787,12 +11551,7 @@ func (client *WebAppsClient) GetPrivateAccess(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientGetPrivateAccessResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetPrivateAccessResponse{}, err
-	}
-	resp, err := client.getPrivateAccessHandleResponse(httpResp)
-	return resp, err
+	return client.getPrivateAccessHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPrivateAccessCreateRequest creates the GetPrivateAccess request.
@@ -11822,8 +11581,11 @@ func (client *WebAppsClient) getPrivateAccessCreateRequest(ctx context.Context, 
 }
 
 // getPrivateAccessHandleResponse handles the GetPrivateAccess response.
-func (client *WebAppsClient) getPrivateAccessHandleResponse(resp *http.Response) (WebAppsClientGetPrivateAccessResponse, error) {
+func (client *WebAppsClient) getPrivateAccessHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetPrivateAccessResponse, error) {
 	result := WebAppsClientGetPrivateAccessResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateAccess); err != nil {
 		return WebAppsClientGetPrivateAccessResponse{}, err
 	}
@@ -11854,12 +11616,7 @@ func (client *WebAppsClient) GetPrivateAccessSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientGetPrivateAccessSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetPrivateAccessSlotResponse{}, err
-	}
-	resp, err := client.getPrivateAccessSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getPrivateAccessSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPrivateAccessSlotCreateRequest creates the GetPrivateAccessSlot request.
@@ -11893,8 +11650,11 @@ func (client *WebAppsClient) getPrivateAccessSlotCreateRequest(ctx context.Conte
 }
 
 // getPrivateAccessSlotHandleResponse handles the GetPrivateAccessSlot response.
-func (client *WebAppsClient) getPrivateAccessSlotHandleResponse(resp *http.Response) (WebAppsClientGetPrivateAccessSlotResponse, error) {
+func (client *WebAppsClient) getPrivateAccessSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetPrivateAccessSlotResponse, error) {
 	result := WebAppsClientGetPrivateAccessSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateAccess); err != nil {
 		return WebAppsClientGetPrivateAccessSlotResponse{}, err
 	}
@@ -11924,12 +11684,7 @@ func (client *WebAppsClient) GetPrivateEndpointConnection(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientGetPrivateEndpointConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetPrivateEndpointConnectionResponse{}, err
-	}
-	resp, err := client.getPrivateEndpointConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.getPrivateEndpointConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPrivateEndpointConnectionCreateRequest creates the GetPrivateEndpointConnection request.
@@ -11963,8 +11718,11 @@ func (client *WebAppsClient) getPrivateEndpointConnectionCreateRequest(ctx conte
 }
 
 // getPrivateEndpointConnectionHandleResponse handles the GetPrivateEndpointConnection response.
-func (client *WebAppsClient) getPrivateEndpointConnectionHandleResponse(resp *http.Response) (WebAppsClientGetPrivateEndpointConnectionResponse, error) {
+func (client *WebAppsClient) getPrivateEndpointConnectionHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetPrivateEndpointConnectionResponse, error) {
 	result := WebAppsClientGetPrivateEndpointConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemotePrivateEndpointConnectionARMResource); err != nil {
 		return WebAppsClientGetPrivateEndpointConnectionResponse{}, err
 	}
@@ -11989,47 +11747,61 @@ func (client *WebAppsClient) NewGetPrivateEndpointConnectionListPager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getPrivateEndpointConnectionListCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.getPrivateEndpointConnectionListCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientGetPrivateEndpointConnectionListResponse{}, err
 			}
-			return client.getPrivateEndpointConnectionListHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientGetPrivateEndpointConnectionListResponse{}, err
+			}
+			return client.getPrivateEndpointConnectionListHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getPrivateEndpointConnectionListCreateRequest creates the GetPrivateEndpointConnectionList request.
-func (client *WebAppsClient) getPrivateEndpointConnectionListCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetPrivateEndpointConnectionListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/privateEndpointConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) getPrivateEndpointConnectionListCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientGetPrivateEndpointConnectionListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/privateEndpointConnections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // getPrivateEndpointConnectionListHandleResponse handles the GetPrivateEndpointConnectionList response.
-func (client *WebAppsClient) getPrivateEndpointConnectionListHandleResponse(resp *http.Response) (WebAppsClientGetPrivateEndpointConnectionListResponse, error) {
+func (client *WebAppsClient) getPrivateEndpointConnectionListHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetPrivateEndpointConnectionListResponse, error) {
 	result := WebAppsClientGetPrivateEndpointConnectionListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionCollection); err != nil {
 		return WebAppsClientGetPrivateEndpointConnectionListResponse{}, err
 	}
@@ -12055,51 +11827,65 @@ func (client *WebAppsClient) NewGetPrivateEndpointConnectionListSlotPager(resour
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getPrivateEndpointConnectionListSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.getPrivateEndpointConnectionListSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientGetPrivateEndpointConnectionListSlotResponse{}, err
 			}
-			return client.getPrivateEndpointConnectionListSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientGetPrivateEndpointConnectionListSlotResponse{}, err
+			}
+			return client.getPrivateEndpointConnectionListSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getPrivateEndpointConnectionListSlotCreateRequest creates the GetPrivateEndpointConnectionListSlot request.
-func (client *WebAppsClient) getPrivateEndpointConnectionListSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetPrivateEndpointConnectionListSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/privateEndpointConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) getPrivateEndpointConnectionListSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientGetPrivateEndpointConnectionListSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/privateEndpointConnections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // getPrivateEndpointConnectionListSlotHandleResponse handles the GetPrivateEndpointConnectionListSlot response.
-func (client *WebAppsClient) getPrivateEndpointConnectionListSlotHandleResponse(resp *http.Response) (WebAppsClientGetPrivateEndpointConnectionListSlotResponse, error) {
+func (client *WebAppsClient) getPrivateEndpointConnectionListSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetPrivateEndpointConnectionListSlotResponse, error) {
 	result := WebAppsClientGetPrivateEndpointConnectionListSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateEndpointConnectionCollection); err != nil {
 		return WebAppsClientGetPrivateEndpointConnectionListSlotResponse{}, err
 	}
@@ -12127,12 +11913,7 @@ func (client *WebAppsClient) GetPrivateEndpointConnectionSlot(ctx context.Contex
 	if err != nil {
 		return WebAppsClientGetPrivateEndpointConnectionSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetPrivateEndpointConnectionSlotResponse{}, err
-	}
-	resp, err := client.getPrivateEndpointConnectionSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getPrivateEndpointConnectionSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPrivateEndpointConnectionSlotCreateRequest creates the GetPrivateEndpointConnectionSlot request.
@@ -12170,8 +11951,11 @@ func (client *WebAppsClient) getPrivateEndpointConnectionSlotCreateRequest(ctx c
 }
 
 // getPrivateEndpointConnectionSlotHandleResponse handles the GetPrivateEndpointConnectionSlot response.
-func (client *WebAppsClient) getPrivateEndpointConnectionSlotHandleResponse(resp *http.Response) (WebAppsClientGetPrivateEndpointConnectionSlotResponse, error) {
+func (client *WebAppsClient) getPrivateEndpointConnectionSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetPrivateEndpointConnectionSlotResponse, error) {
 	result := WebAppsClientGetPrivateEndpointConnectionSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RemotePrivateEndpointConnectionARMResource); err != nil {
 		return WebAppsClientGetPrivateEndpointConnectionSlotResponse{}, err
 	}
@@ -12200,12 +11984,7 @@ func (client *WebAppsClient) GetPrivateLinkResources(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientGetPrivateLinkResourcesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetPrivateLinkResourcesResponse{}, err
-	}
-	resp, err := client.getPrivateLinkResourcesHandleResponse(httpResp)
-	return resp, err
+	return client.getPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPrivateLinkResourcesCreateRequest creates the GetPrivateLinkResources request.
@@ -12235,8 +12014,11 @@ func (client *WebAppsClient) getPrivateLinkResourcesCreateRequest(ctx context.Co
 }
 
 // getPrivateLinkResourcesHandleResponse handles the GetPrivateLinkResources response.
-func (client *WebAppsClient) getPrivateLinkResourcesHandleResponse(resp *http.Response) (WebAppsClientGetPrivateLinkResourcesResponse, error) {
+func (client *WebAppsClient) getPrivateLinkResourcesHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetPrivateLinkResourcesResponse, error) {
 	result := WebAppsClientGetPrivateLinkResourcesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourcesWrapper); err != nil {
 		return WebAppsClientGetPrivateLinkResourcesResponse{}, err
 	}
@@ -12266,12 +12048,7 @@ func (client *WebAppsClient) GetPrivateLinkResourcesSlot(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientGetPrivateLinkResourcesSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetPrivateLinkResourcesSlotResponse{}, err
-	}
-	resp, err := client.getPrivateLinkResourcesSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getPrivateLinkResourcesSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPrivateLinkResourcesSlotCreateRequest creates the GetPrivateLinkResourcesSlot request.
@@ -12305,8 +12082,11 @@ func (client *WebAppsClient) getPrivateLinkResourcesSlotCreateRequest(ctx contex
 }
 
 // getPrivateLinkResourcesSlotHandleResponse handles the GetPrivateLinkResourcesSlot response.
-func (client *WebAppsClient) getPrivateLinkResourcesSlotHandleResponse(resp *http.Response) (WebAppsClientGetPrivateLinkResourcesSlotResponse, error) {
+func (client *WebAppsClient) getPrivateLinkResourcesSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetPrivateLinkResourcesSlotResponse, error) {
 	result := WebAppsClientGetPrivateLinkResourcesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourcesWrapper); err != nil {
 		return WebAppsClientGetPrivateLinkResourcesSlotResponse{}, err
 	}
@@ -12335,12 +12115,7 @@ func (client *WebAppsClient) GetProcess(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return WebAppsClientGetProcessResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetProcessResponse{}, err
-	}
-	resp, err := client.getProcessHandleResponse(httpResp)
-	return resp, err
+	return client.getProcessHandleResponse(httpResp, http.StatusOK)
 }
 
 // getProcessCreateRequest creates the GetProcess request.
@@ -12374,8 +12149,11 @@ func (client *WebAppsClient) getProcessCreateRequest(ctx context.Context, resour
 }
 
 // getProcessHandleResponse handles the GetProcess response.
-func (client *WebAppsClient) getProcessHandleResponse(resp *http.Response) (WebAppsClientGetProcessResponse, error) {
+func (client *WebAppsClient) getProcessHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetProcessResponse, error) {
 	result := WebAppsClientGetProcessResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessInfo); err != nil {
 		return WebAppsClientGetProcessResponse{}, err
 	}
@@ -12404,12 +12182,7 @@ func (client *WebAppsClient) GetProcessDump(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return WebAppsClientGetProcessDumpResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetProcessDumpResponse{}, err
-	}
-	resp, err := client.getProcessDumpHandleResponse(httpResp)
-	return resp, err
+	return client.getProcessDumpHandleResponse(httpResp, http.StatusOK)
 }
 
 // getProcessDumpCreateRequest creates the GetProcessDump request.
@@ -12444,11 +12217,15 @@ func (client *WebAppsClient) getProcessDumpCreateRequest(ctx context.Context, re
 }
 
 // getProcessDumpHandleResponse handles the GetProcessDump response.
-func (client *WebAppsClient) getProcessDumpHandleResponse(resp *http.Response) (WebAppsClientGetProcessDumpResponse, error) {
-	result := WebAppsClientGetProcessDumpResponse{Body: resp.Body}
+func (client *WebAppsClient) getProcessDumpHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetProcessDumpResponse, error) {
+	result := WebAppsClientGetProcessDumpResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
+	result.Body = resp.Body
 	return result, nil
 }
 
@@ -12473,12 +12250,7 @@ func (client *WebAppsClient) GetProcessDumpSlot(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientGetProcessDumpSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetProcessDumpSlotResponse{}, err
-	}
-	resp, err := client.getProcessDumpSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getProcessDumpSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getProcessDumpSlotCreateRequest creates the GetProcessDumpSlot request.
@@ -12517,11 +12289,15 @@ func (client *WebAppsClient) getProcessDumpSlotCreateRequest(ctx context.Context
 }
 
 // getProcessDumpSlotHandleResponse handles the GetProcessDumpSlot response.
-func (client *WebAppsClient) getProcessDumpSlotHandleResponse(resp *http.Response) (WebAppsClientGetProcessDumpSlotResponse, error) {
-	result := WebAppsClientGetProcessDumpSlotResponse{Body: resp.Body}
+func (client *WebAppsClient) getProcessDumpSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetProcessDumpSlotResponse, error) {
+	result := WebAppsClientGetProcessDumpSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
+	result.Body = resp.Body
 	return result, nil
 }
 
@@ -12549,12 +12325,7 @@ func (client *WebAppsClient) GetProcessModule(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientGetProcessModuleResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetProcessModuleResponse{}, err
-	}
-	resp, err := client.getProcessModuleHandleResponse(httpResp)
-	return resp, err
+	return client.getProcessModuleHandleResponse(httpResp, http.StatusOK)
 }
 
 // getProcessModuleCreateRequest creates the GetProcessModule request.
@@ -12592,8 +12363,11 @@ func (client *WebAppsClient) getProcessModuleCreateRequest(ctx context.Context, 
 }
 
 // getProcessModuleHandleResponse handles the GetProcessModule response.
-func (client *WebAppsClient) getProcessModuleHandleResponse(resp *http.Response) (WebAppsClientGetProcessModuleResponse, error) {
+func (client *WebAppsClient) getProcessModuleHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetProcessModuleResponse, error) {
 	result := WebAppsClientGetProcessModuleResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessModuleInfo); err != nil {
 		return WebAppsClientGetProcessModuleResponse{}, err
 	}
@@ -12621,12 +12395,7 @@ func (client *WebAppsClient) GetProcessModuleSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientGetProcessModuleSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetProcessModuleSlotResponse{}, err
-	}
-	resp, err := client.getProcessModuleSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getProcessModuleSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getProcessModuleSlotCreateRequest creates the GetProcessModuleSlot request.
@@ -12668,8 +12437,11 @@ func (client *WebAppsClient) getProcessModuleSlotCreateRequest(ctx context.Conte
 }
 
 // getProcessModuleSlotHandleResponse handles the GetProcessModuleSlot response.
-func (client *WebAppsClient) getProcessModuleSlotHandleResponse(resp *http.Response) (WebAppsClientGetProcessModuleSlotResponse, error) {
+func (client *WebAppsClient) getProcessModuleSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetProcessModuleSlotResponse, error) {
 	result := WebAppsClientGetProcessModuleSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessModuleInfo); err != nil {
 		return WebAppsClientGetProcessModuleSlotResponse{}, err
 	}
@@ -12696,12 +12468,7 @@ func (client *WebAppsClient) GetProcessSlot(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return WebAppsClientGetProcessSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetProcessSlotResponse{}, err
-	}
-	resp, err := client.getProcessSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getProcessSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getProcessSlotCreateRequest creates the GetProcessSlot request.
@@ -12739,8 +12506,11 @@ func (client *WebAppsClient) getProcessSlotCreateRequest(ctx context.Context, re
 }
 
 // getProcessSlotHandleResponse handles the GetProcessSlot response.
-func (client *WebAppsClient) getProcessSlotHandleResponse(resp *http.Response) (WebAppsClientGetProcessSlotResponse, error) {
+func (client *WebAppsClient) getProcessSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetProcessSlotResponse, error) {
 	result := WebAppsClientGetProcessSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessInfo); err != nil {
 		return WebAppsClientGetProcessSlotResponse{}, err
 	}
@@ -12792,8 +12562,7 @@ func (client *WebAppsClient) getProductionSiteDeploymentStatus(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -12851,12 +12620,7 @@ func (client *WebAppsClient) GetPublicCertificate(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientGetPublicCertificateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetPublicCertificateResponse{}, err
-	}
-	resp, err := client.getPublicCertificateHandleResponse(httpResp)
-	return resp, err
+	return client.getPublicCertificateHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPublicCertificateCreateRequest creates the GetPublicCertificate request.
@@ -12890,8 +12654,11 @@ func (client *WebAppsClient) getPublicCertificateCreateRequest(ctx context.Conte
 }
 
 // getPublicCertificateHandleResponse handles the GetPublicCertificate response.
-func (client *WebAppsClient) getPublicCertificateHandleResponse(resp *http.Response) (WebAppsClientGetPublicCertificateResponse, error) {
+func (client *WebAppsClient) getPublicCertificateHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetPublicCertificateResponse, error) {
 	result := WebAppsClientGetPublicCertificateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicCertificate); err != nil {
 		return WebAppsClientGetPublicCertificateResponse{}, err
 	}
@@ -12922,12 +12689,7 @@ func (client *WebAppsClient) GetPublicCertificateSlot(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientGetPublicCertificateSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetPublicCertificateSlotResponse{}, err
-	}
-	resp, err := client.getPublicCertificateSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getPublicCertificateSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPublicCertificateSlotCreateRequest creates the GetPublicCertificateSlot request.
@@ -12965,8 +12727,11 @@ func (client *WebAppsClient) getPublicCertificateSlotCreateRequest(ctx context.C
 }
 
 // getPublicCertificateSlotHandleResponse handles the GetPublicCertificateSlot response.
-func (client *WebAppsClient) getPublicCertificateSlotHandleResponse(resp *http.Response) (WebAppsClientGetPublicCertificateSlotResponse, error) {
+func (client *WebAppsClient) getPublicCertificateSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetPublicCertificateSlotResponse, error) {
 	result := WebAppsClientGetPublicCertificateSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicCertificate); err != nil {
 		return WebAppsClientGetPublicCertificateSlotResponse{}, err
 	}
@@ -12996,12 +12761,7 @@ func (client *WebAppsClient) GetRelayServiceConnection(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientGetRelayServiceConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetRelayServiceConnectionResponse{}, err
-	}
-	resp, err := client.getRelayServiceConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.getRelayServiceConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getRelayServiceConnectionCreateRequest creates the GetRelayServiceConnection request.
@@ -13035,8 +12795,11 @@ func (client *WebAppsClient) getRelayServiceConnectionCreateRequest(ctx context.
 }
 
 // getRelayServiceConnectionHandleResponse handles the GetRelayServiceConnection response.
-func (client *WebAppsClient) getRelayServiceConnectionHandleResponse(resp *http.Response) (WebAppsClientGetRelayServiceConnectionResponse, error) {
+func (client *WebAppsClient) getRelayServiceConnectionHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetRelayServiceConnectionResponse, error) {
 	result := WebAppsClientGetRelayServiceConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RelayServiceConnectionEntity); err != nil {
 		return WebAppsClientGetRelayServiceConnectionResponse{}, err
 	}
@@ -13064,12 +12827,7 @@ func (client *WebAppsClient) GetRelayServiceConnectionSlot(ctx context.Context, 
 	if err != nil {
 		return WebAppsClientGetRelayServiceConnectionSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetRelayServiceConnectionSlotResponse{}, err
-	}
-	resp, err := client.getRelayServiceConnectionSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getRelayServiceConnectionSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getRelayServiceConnectionSlotCreateRequest creates the GetRelayServiceConnectionSlot request.
@@ -13107,8 +12865,11 @@ func (client *WebAppsClient) getRelayServiceConnectionSlotCreateRequest(ctx cont
 }
 
 // getRelayServiceConnectionSlotHandleResponse handles the GetRelayServiceConnectionSlot response.
-func (client *WebAppsClient) getRelayServiceConnectionSlotHandleResponse(resp *http.Response) (WebAppsClientGetRelayServiceConnectionSlotResponse, error) {
+func (client *WebAppsClient) getRelayServiceConnectionSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetRelayServiceConnectionSlotResponse, error) {
 	result := WebAppsClientGetRelayServiceConnectionSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RelayServiceConnectionEntity); err != nil {
 		return WebAppsClientGetRelayServiceConnectionSlotResponse{}, err
 	}
@@ -13136,12 +12897,7 @@ func (client *WebAppsClient) GetScmAllowed(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return WebAppsClientGetScmAllowedResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetScmAllowedResponse{}, err
-	}
-	resp, err := client.getScmAllowedHandleResponse(httpResp)
-	return resp, err
+	return client.getScmAllowedHandleResponse(httpResp, http.StatusOK)
 }
 
 // getScmAllowedCreateRequest creates the GetScmAllowed request.
@@ -13171,8 +12927,11 @@ func (client *WebAppsClient) getScmAllowedCreateRequest(ctx context.Context, res
 }
 
 // getScmAllowedHandleResponse handles the GetScmAllowed response.
-func (client *WebAppsClient) getScmAllowedHandleResponse(resp *http.Response) (WebAppsClientGetScmAllowedResponse, error) {
+func (client *WebAppsClient) getScmAllowedHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetScmAllowedResponse, error) {
 	result := WebAppsClientGetScmAllowedResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmPublishingCredentialsPoliciesEntity); err != nil {
 		return WebAppsClientGetScmAllowedResponse{}, err
 	}
@@ -13201,12 +12960,7 @@ func (client *WebAppsClient) GetScmAllowedSlot(ctx context.Context, resourceGrou
 	if err != nil {
 		return WebAppsClientGetScmAllowedSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetScmAllowedSlotResponse{}, err
-	}
-	resp, err := client.getScmAllowedSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getScmAllowedSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getScmAllowedSlotCreateRequest creates the GetScmAllowedSlot request.
@@ -13240,8 +12994,11 @@ func (client *WebAppsClient) getScmAllowedSlotCreateRequest(ctx context.Context,
 }
 
 // getScmAllowedSlotHandleResponse handles the GetScmAllowedSlot response.
-func (client *WebAppsClient) getScmAllowedSlotHandleResponse(resp *http.Response) (WebAppsClientGetScmAllowedSlotResponse, error) {
+func (client *WebAppsClient) getScmAllowedSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetScmAllowedSlotResponse, error) {
 	result := WebAppsClientGetScmAllowedSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmPublishingCredentialsPoliciesEntity); err != nil {
 		return WebAppsClientGetScmAllowedSlotResponse{}, err
 	}
@@ -13270,12 +13027,7 @@ func (client *WebAppsClient) GetSiteConnectionStringKeyVaultReference(ctx contex
 	if err != nil {
 		return WebAppsClientGetSiteConnectionStringKeyVaultReferenceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetSiteConnectionStringKeyVaultReferenceResponse{}, err
-	}
-	resp, err := client.getSiteConnectionStringKeyVaultReferenceHandleResponse(httpResp)
-	return resp, err
+	return client.getSiteConnectionStringKeyVaultReferenceHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSiteConnectionStringKeyVaultReferenceCreateRequest creates the GetSiteConnectionStringKeyVaultReference request.
@@ -13309,8 +13061,11 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceCreateReque
 }
 
 // getSiteConnectionStringKeyVaultReferenceHandleResponse handles the GetSiteConnectionStringKeyVaultReference response.
-func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceHandleResponse(resp *http.Response) (WebAppsClientGetSiteConnectionStringKeyVaultReferenceResponse, error) {
+func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetSiteConnectionStringKeyVaultReferenceResponse, error) {
 	result := WebAppsClientGetSiteConnectionStringKeyVaultReferenceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKVReference); err != nil {
 		return WebAppsClientGetSiteConnectionStringKeyVaultReferenceResponse{}, err
 	}
@@ -13338,12 +13093,7 @@ func (client *WebAppsClient) GetSiteConnectionStringKeyVaultReferenceSlot(ctx co
 	if err != nil {
 		return WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResponse{}, err
-	}
-	resp, err := client.getSiteConnectionStringKeyVaultReferenceSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getSiteConnectionStringKeyVaultReferenceSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSiteConnectionStringKeyVaultReferenceSlotCreateRequest creates the GetSiteConnectionStringKeyVaultReferenceSlot request.
@@ -13381,8 +13131,11 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceSlotCreateR
 }
 
 // getSiteConnectionStringKeyVaultReferenceSlotHandleResponse handles the GetSiteConnectionStringKeyVaultReferenceSlot response.
-func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceSlotHandleResponse(resp *http.Response) (WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResponse, error) {
+func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResponse, error) {
 	result := WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKVReference); err != nil {
 		return WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResponse{}, err
 	}
@@ -13407,47 +13160,61 @@ func (client *WebAppsClient) NewGetSiteConnectionStringKeyVaultReferencesPager(r
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getSiteConnectionStringKeyVaultReferencesCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.getSiteConnectionStringKeyVaultReferencesCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse{}, err
 			}
-			return client.getSiteConnectionStringKeyVaultReferencesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse{}, err
+			}
+			return client.getSiteConnectionStringKeyVaultReferencesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getSiteConnectionStringKeyVaultReferencesCreateRequest creates the GetSiteConnectionStringKeyVaultReferences request.
-func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/configreferences/connectionstrings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/configreferences/connectionstrings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // getSiteConnectionStringKeyVaultReferencesHandleResponse handles the GetSiteConnectionStringKeyVaultReferences response.
-func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesHandleResponse(resp *http.Response) (WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse, error) {
+func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse, error) {
 	result := WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKVReferenceCollection); err != nil {
 		return WebAppsClientGetSiteConnectionStringKeyVaultReferencesResponse{}, err
 	}
@@ -13472,51 +13239,65 @@ func (client *WebAppsClient) NewGetSiteConnectionStringKeyVaultReferencesSlotPag
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.getSiteConnectionStringKeyVaultReferencesSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.getSiteConnectionStringKeyVaultReferencesSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse{}, err
 			}
-			return client.getSiteConnectionStringKeyVaultReferencesSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse{}, err
+			}
+			return client.getSiteConnectionStringKeyVaultReferencesSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // getSiteConnectionStringKeyVaultReferencesSlotCreateRequest creates the GetSiteConnectionStringKeyVaultReferencesSlot request.
-func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/configreferences/connectionstrings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/configreferences/connectionstrings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // getSiteConnectionStringKeyVaultReferencesSlotHandleResponse handles the GetSiteConnectionStringKeyVaultReferencesSlot response.
-func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesSlotHandleResponse(resp *http.Response) (WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse, error) {
+func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse, error) {
 	result := WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.APIKVReferenceCollection); err != nil {
 		return WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotResponse{}, err
 	}
@@ -13546,12 +13327,7 @@ func (client *WebAppsClient) GetSiteContainer(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientGetSiteContainerResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetSiteContainerResponse{}, err
-	}
-	resp, err := client.getSiteContainerHandleResponse(httpResp)
-	return resp, err
+	return client.getSiteContainerHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSiteContainerCreateRequest creates the GetSiteContainer request.
@@ -13585,8 +13361,11 @@ func (client *WebAppsClient) getSiteContainerCreateRequest(ctx context.Context, 
 }
 
 // getSiteContainerHandleResponse handles the GetSiteContainer response.
-func (client *WebAppsClient) getSiteContainerHandleResponse(resp *http.Response) (WebAppsClientGetSiteContainerResponse, error) {
+func (client *WebAppsClient) getSiteContainerHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetSiteContainerResponse, error) {
 	result := WebAppsClientGetSiteContainerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteContainer); err != nil {
 		return WebAppsClientGetSiteContainerResponse{}, err
 	}
@@ -13618,12 +13397,7 @@ func (client *WebAppsClient) GetSiteContainerSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientGetSiteContainerSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetSiteContainerSlotResponse{}, err
-	}
-	resp, err := client.getSiteContainerSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getSiteContainerSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSiteContainerSlotCreateRequest creates the GetSiteContainerSlot request.
@@ -13661,8 +13435,11 @@ func (client *WebAppsClient) getSiteContainerSlotCreateRequest(ctx context.Conte
 }
 
 // getSiteContainerSlotHandleResponse handles the GetSiteContainerSlot response.
-func (client *WebAppsClient) getSiteContainerSlotHandleResponse(resp *http.Response) (WebAppsClientGetSiteContainerSlotResponse, error) {
+func (client *WebAppsClient) getSiteContainerSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetSiteContainerSlotResponse, error) {
 	result := WebAppsClientGetSiteContainerSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteContainer); err != nil {
 		return WebAppsClientGetSiteContainerSlotResponse{}, err
 	}
@@ -13692,12 +13469,7 @@ func (client *WebAppsClient) GetSiteExtension(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientGetSiteExtensionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetSiteExtensionResponse{}, err
-	}
-	resp, err := client.getSiteExtensionHandleResponse(httpResp)
-	return resp, err
+	return client.getSiteExtensionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSiteExtensionCreateRequest creates the GetSiteExtension request.
@@ -13731,8 +13503,11 @@ func (client *WebAppsClient) getSiteExtensionCreateRequest(ctx context.Context, 
 }
 
 // getSiteExtensionHandleResponse handles the GetSiteExtension response.
-func (client *WebAppsClient) getSiteExtensionHandleResponse(resp *http.Response) (WebAppsClientGetSiteExtensionResponse, error) {
+func (client *WebAppsClient) getSiteExtensionHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetSiteExtensionResponse, error) {
 	result := WebAppsClientGetSiteExtensionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteExtensionInfo); err != nil {
 		return WebAppsClientGetSiteExtensionResponse{}, err
 	}
@@ -13760,12 +13535,7 @@ func (client *WebAppsClient) GetSiteExtensionSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientGetSiteExtensionSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetSiteExtensionSlotResponse{}, err
-	}
-	resp, err := client.getSiteExtensionSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getSiteExtensionSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSiteExtensionSlotCreateRequest creates the GetSiteExtensionSlot request.
@@ -13803,8 +13573,11 @@ func (client *WebAppsClient) getSiteExtensionSlotCreateRequest(ctx context.Conte
 }
 
 // getSiteExtensionSlotHandleResponse handles the GetSiteExtensionSlot response.
-func (client *WebAppsClient) getSiteExtensionSlotHandleResponse(resp *http.Response) (WebAppsClientGetSiteExtensionSlotResponse, error) {
+func (client *WebAppsClient) getSiteExtensionSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetSiteExtensionSlotResponse, error) {
 	result := WebAppsClientGetSiteExtensionSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteExtensionInfo); err != nil {
 		return WebAppsClientGetSiteExtensionSlotResponse{}, err
 	}
@@ -13833,12 +13606,7 @@ func (client *WebAppsClient) GetSitePhpErrorLogFlag(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetSitePhpErrorLogFlagResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetSitePhpErrorLogFlagResponse{}, err
-	}
-	resp, err := client.getSitePhpErrorLogFlagHandleResponse(httpResp)
-	return resp, err
+	return client.getSitePhpErrorLogFlagHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSitePhpErrorLogFlagCreateRequest creates the GetSitePhpErrorLogFlag request.
@@ -13868,8 +13636,11 @@ func (client *WebAppsClient) getSitePhpErrorLogFlagCreateRequest(ctx context.Con
 }
 
 // getSitePhpErrorLogFlagHandleResponse handles the GetSitePhpErrorLogFlag response.
-func (client *WebAppsClient) getSitePhpErrorLogFlagHandleResponse(resp *http.Response) (WebAppsClientGetSitePhpErrorLogFlagResponse, error) {
+func (client *WebAppsClient) getSitePhpErrorLogFlagHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetSitePhpErrorLogFlagResponse, error) {
 	result := WebAppsClientGetSitePhpErrorLogFlagResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SitePhpErrorLogFlag); err != nil {
 		return WebAppsClientGetSitePhpErrorLogFlagResponse{}, err
 	}
@@ -13899,12 +13670,7 @@ func (client *WebAppsClient) GetSitePhpErrorLogFlagSlot(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientGetSitePhpErrorLogFlagSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetSitePhpErrorLogFlagSlotResponse{}, err
-	}
-	resp, err := client.getSitePhpErrorLogFlagSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getSitePhpErrorLogFlagSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSitePhpErrorLogFlagSlotCreateRequest creates the GetSitePhpErrorLogFlagSlot request.
@@ -13938,8 +13704,11 @@ func (client *WebAppsClient) getSitePhpErrorLogFlagSlotCreateRequest(ctx context
 }
 
 // getSitePhpErrorLogFlagSlotHandleResponse handles the GetSitePhpErrorLogFlagSlot response.
-func (client *WebAppsClient) getSitePhpErrorLogFlagSlotHandleResponse(resp *http.Response) (WebAppsClientGetSitePhpErrorLogFlagSlotResponse, error) {
+func (client *WebAppsClient) getSitePhpErrorLogFlagSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetSitePhpErrorLogFlagSlotResponse, error) {
 	result := WebAppsClientGetSitePhpErrorLogFlagSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SitePhpErrorLogFlag); err != nil {
 		return WebAppsClientGetSitePhpErrorLogFlagSlotResponse{}, err
 	}
@@ -13968,12 +13737,7 @@ func (client *WebAppsClient) GetSlot(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return WebAppsClientGetSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetSlotResponse{}, err
-	}
-	resp, err := client.getSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSlotCreateRequest creates the GetSlot request.
@@ -14007,8 +13771,11 @@ func (client *WebAppsClient) getSlotCreateRequest(ctx context.Context, resourceG
 }
 
 // getSlotHandleResponse handles the GetSlot response.
-func (client *WebAppsClient) getSlotHandleResponse(resp *http.Response) (WebAppsClientGetSlotResponse, error) {
+func (client *WebAppsClient) getSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetSlotResponse, error) {
 	result := WebAppsClientGetSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Site); err != nil {
 		return WebAppsClientGetSlotResponse{}, err
 	}
@@ -14062,8 +13829,7 @@ func (client *WebAppsClient) getSlotSiteDeploymentStatusSlot(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -14124,12 +13890,7 @@ func (client *WebAppsClient) GetSourceControl(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientGetSourceControlResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetSourceControlResponse{}, err
-	}
-	resp, err := client.getSourceControlHandleResponse(httpResp)
-	return resp, err
+	return client.getSourceControlHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
 }
 
 // getSourceControlCreateRequest creates the GetSourceControl request.
@@ -14159,8 +13920,11 @@ func (client *WebAppsClient) getSourceControlCreateRequest(ctx context.Context, 
 }
 
 // getSourceControlHandleResponse handles the GetSourceControl response.
-func (client *WebAppsClient) getSourceControlHandleResponse(resp *http.Response) (WebAppsClientGetSourceControlResponse, error) {
+func (client *WebAppsClient) getSourceControlHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetSourceControlResponse, error) {
 	result := WebAppsClientGetSourceControlResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteSourceControl); err != nil {
 		return WebAppsClientGetSourceControlResponse{}, err
 	}
@@ -14191,12 +13955,7 @@ func (client *WebAppsClient) GetSourceControlSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientGetSourceControlSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetSourceControlSlotResponse{}, err
-	}
-	resp, err := client.getSourceControlSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getSourceControlSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
 }
 
 // getSourceControlSlotCreateRequest creates the GetSourceControlSlot request.
@@ -14230,8 +13989,11 @@ func (client *WebAppsClient) getSourceControlSlotCreateRequest(ctx context.Conte
 }
 
 // getSourceControlSlotHandleResponse handles the GetSourceControlSlot response.
-func (client *WebAppsClient) getSourceControlSlotHandleResponse(resp *http.Response) (WebAppsClientGetSourceControlSlotResponse, error) {
+func (client *WebAppsClient) getSourceControlSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetSourceControlSlotResponse, error) {
 	result := WebAppsClientGetSourceControlSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteSourceControl); err != nil {
 		return WebAppsClientGetSourceControlSlotResponse{}, err
 	}
@@ -14260,12 +14022,7 @@ func (client *WebAppsClient) GetSwiftVirtualNetworkConnection(ctx context.Contex
 	if err != nil {
 		return WebAppsClientGetSwiftVirtualNetworkConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetSwiftVirtualNetworkConnectionResponse{}, err
-	}
-	resp, err := client.getSwiftVirtualNetworkConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.getSwiftVirtualNetworkConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSwiftVirtualNetworkConnectionCreateRequest creates the GetSwiftVirtualNetworkConnection request.
@@ -14295,8 +14052,11 @@ func (client *WebAppsClient) getSwiftVirtualNetworkConnectionCreateRequest(ctx c
 }
 
 // getSwiftVirtualNetworkConnectionHandleResponse handles the GetSwiftVirtualNetworkConnection response.
-func (client *WebAppsClient) getSwiftVirtualNetworkConnectionHandleResponse(resp *http.Response) (WebAppsClientGetSwiftVirtualNetworkConnectionResponse, error) {
+func (client *WebAppsClient) getSwiftVirtualNetworkConnectionHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetSwiftVirtualNetworkConnectionResponse, error) {
 	result := WebAppsClientGetSwiftVirtualNetworkConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SwiftVirtualNetwork); err != nil {
 		return WebAppsClientGetSwiftVirtualNetworkConnectionResponse{}, err
 	}
@@ -14327,12 +14087,7 @@ func (client *WebAppsClient) GetSwiftVirtualNetworkConnectionSlot(ctx context.Co
 	if err != nil {
 		return WebAppsClientGetSwiftVirtualNetworkConnectionSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetSwiftVirtualNetworkConnectionSlotResponse{}, err
-	}
-	resp, err := client.getSwiftVirtualNetworkConnectionSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getSwiftVirtualNetworkConnectionSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getSwiftVirtualNetworkConnectionSlotCreateRequest creates the GetSwiftVirtualNetworkConnectionSlot request.
@@ -14366,8 +14121,11 @@ func (client *WebAppsClient) getSwiftVirtualNetworkConnectionSlotCreateRequest(c
 }
 
 // getSwiftVirtualNetworkConnectionSlotHandleResponse handles the GetSwiftVirtualNetworkConnectionSlot response.
-func (client *WebAppsClient) getSwiftVirtualNetworkConnectionSlotHandleResponse(resp *http.Response) (WebAppsClientGetSwiftVirtualNetworkConnectionSlotResponse, error) {
+func (client *WebAppsClient) getSwiftVirtualNetworkConnectionSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetSwiftVirtualNetworkConnectionSlotResponse, error) {
 	result := WebAppsClientGetSwiftVirtualNetworkConnectionSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SwiftVirtualNetwork); err != nil {
 		return WebAppsClientGetSwiftVirtualNetworkConnectionSlotResponse{}, err
 	}
@@ -14397,12 +14155,7 @@ func (client *WebAppsClient) GetTriggeredWebJob(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientGetTriggeredWebJobResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetTriggeredWebJobResponse{}, err
-	}
-	resp, err := client.getTriggeredWebJobHandleResponse(httpResp)
-	return resp, err
+	return client.getTriggeredWebJobHandleResponse(httpResp, http.StatusOK)
 }
 
 // getTriggeredWebJobCreateRequest creates the GetTriggeredWebJob request.
@@ -14436,8 +14189,11 @@ func (client *WebAppsClient) getTriggeredWebJobCreateRequest(ctx context.Context
 }
 
 // getTriggeredWebJobHandleResponse handles the GetTriggeredWebJob response.
-func (client *WebAppsClient) getTriggeredWebJobHandleResponse(resp *http.Response) (WebAppsClientGetTriggeredWebJobResponse, error) {
+func (client *WebAppsClient) getTriggeredWebJobHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetTriggeredWebJobResponse, error) {
 	result := WebAppsClientGetTriggeredWebJobResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggeredWebJob); err != nil {
 		return WebAppsClientGetTriggeredWebJobResponse{}, err
 	}
@@ -14468,12 +14224,7 @@ func (client *WebAppsClient) GetTriggeredWebJobHistory(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientGetTriggeredWebJobHistoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetTriggeredWebJobHistoryResponse{}, err
-	}
-	resp, err := client.getTriggeredWebJobHistoryHandleResponse(httpResp)
-	return resp, err
+	return client.getTriggeredWebJobHistoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getTriggeredWebJobHistoryCreateRequest creates the GetTriggeredWebJobHistory request.
@@ -14511,8 +14262,11 @@ func (client *WebAppsClient) getTriggeredWebJobHistoryCreateRequest(ctx context.
 }
 
 // getTriggeredWebJobHistoryHandleResponse handles the GetTriggeredWebJobHistory response.
-func (client *WebAppsClient) getTriggeredWebJobHistoryHandleResponse(resp *http.Response) (WebAppsClientGetTriggeredWebJobHistoryResponse, error) {
+func (client *WebAppsClient) getTriggeredWebJobHistoryHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetTriggeredWebJobHistoryResponse, error) {
 	result := WebAppsClientGetTriggeredWebJobHistoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggeredJobHistory); err != nil {
 		return WebAppsClientGetTriggeredWebJobHistoryResponse{}, err
 	}
@@ -14540,12 +14294,7 @@ func (client *WebAppsClient) GetTriggeredWebJobHistorySlot(ctx context.Context, 
 	if err != nil {
 		return WebAppsClientGetTriggeredWebJobHistorySlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetTriggeredWebJobHistorySlotResponse{}, err
-	}
-	resp, err := client.getTriggeredWebJobHistorySlotHandleResponse(httpResp)
-	return resp, err
+	return client.getTriggeredWebJobHistorySlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getTriggeredWebJobHistorySlotCreateRequest creates the GetTriggeredWebJobHistorySlot request.
@@ -14587,8 +14336,11 @@ func (client *WebAppsClient) getTriggeredWebJobHistorySlotCreateRequest(ctx cont
 }
 
 // getTriggeredWebJobHistorySlotHandleResponse handles the GetTriggeredWebJobHistorySlot response.
-func (client *WebAppsClient) getTriggeredWebJobHistorySlotHandleResponse(resp *http.Response) (WebAppsClientGetTriggeredWebJobHistorySlotResponse, error) {
+func (client *WebAppsClient) getTriggeredWebJobHistorySlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetTriggeredWebJobHistorySlotResponse, error) {
 	result := WebAppsClientGetTriggeredWebJobHistorySlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggeredJobHistory); err != nil {
 		return WebAppsClientGetTriggeredWebJobHistorySlotResponse{}, err
 	}
@@ -14616,12 +14368,7 @@ func (client *WebAppsClient) GetTriggeredWebJobSlot(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetTriggeredWebJobSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetTriggeredWebJobSlotResponse{}, err
-	}
-	resp, err := client.getTriggeredWebJobSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getTriggeredWebJobSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getTriggeredWebJobSlotCreateRequest creates the GetTriggeredWebJobSlot request.
@@ -14659,8 +14406,11 @@ func (client *WebAppsClient) getTriggeredWebJobSlotCreateRequest(ctx context.Con
 }
 
 // getTriggeredWebJobSlotHandleResponse handles the GetTriggeredWebJobSlot response.
-func (client *WebAppsClient) getTriggeredWebJobSlotHandleResponse(resp *http.Response) (WebAppsClientGetTriggeredWebJobSlotResponse, error) {
+func (client *WebAppsClient) getTriggeredWebJobSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetTriggeredWebJobSlotResponse, error) {
 	result := WebAppsClientGetTriggeredWebJobSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggeredWebJob); err != nil {
 		return WebAppsClientGetTriggeredWebJobSlotResponse{}, err
 	}
@@ -14690,12 +14440,7 @@ func (client *WebAppsClient) GetVnetConnection(ctx context.Context, resourceGrou
 	if err != nil {
 		return WebAppsClientGetVnetConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetVnetConnectionResponse{}, err
-	}
-	resp, err := client.getVnetConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.getVnetConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getVnetConnectionCreateRequest creates the GetVnetConnection request.
@@ -14729,8 +14474,11 @@ func (client *WebAppsClient) getVnetConnectionCreateRequest(ctx context.Context,
 }
 
 // getVnetConnectionHandleResponse handles the GetVnetConnection response.
-func (client *WebAppsClient) getVnetConnectionHandleResponse(resp *http.Response) (WebAppsClientGetVnetConnectionResponse, error) {
+func (client *WebAppsClient) getVnetConnectionHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetVnetConnectionResponse, error) {
 	result := WebAppsClientGetVnetConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResource); err != nil {
 		return WebAppsClientGetVnetConnectionResponse{}, err
 	}
@@ -14761,12 +14509,7 @@ func (client *WebAppsClient) GetVnetConnectionGateway(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientGetVnetConnectionGatewayResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetVnetConnectionGatewayResponse{}, err
-	}
-	resp, err := client.getVnetConnectionGatewayHandleResponse(httpResp)
-	return resp, err
+	return client.getVnetConnectionGatewayHandleResponse(httpResp, http.StatusOK)
 }
 
 // getVnetConnectionGatewayCreateRequest creates the GetVnetConnectionGateway request.
@@ -14804,8 +14547,11 @@ func (client *WebAppsClient) getVnetConnectionGatewayCreateRequest(ctx context.C
 }
 
 // getVnetConnectionGatewayHandleResponse handles the GetVnetConnectionGateway response.
-func (client *WebAppsClient) getVnetConnectionGatewayHandleResponse(resp *http.Response) (WebAppsClientGetVnetConnectionGatewayResponse, error) {
+func (client *WebAppsClient) getVnetConnectionGatewayHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetVnetConnectionGatewayResponse, error) {
 	result := WebAppsClientGetVnetConnectionGatewayResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetGateway); err != nil {
 		return WebAppsClientGetVnetConnectionGatewayResponse{}, err
 	}
@@ -14833,12 +14579,7 @@ func (client *WebAppsClient) GetVnetConnectionGatewaySlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientGetVnetConnectionGatewaySlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetVnetConnectionGatewaySlotResponse{}, err
-	}
-	resp, err := client.getVnetConnectionGatewaySlotHandleResponse(httpResp)
-	return resp, err
+	return client.getVnetConnectionGatewaySlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getVnetConnectionGatewaySlotCreateRequest creates the GetVnetConnectionGatewaySlot request.
@@ -14880,8 +14621,11 @@ func (client *WebAppsClient) getVnetConnectionGatewaySlotCreateRequest(ctx conte
 }
 
 // getVnetConnectionGatewaySlotHandleResponse handles the GetVnetConnectionGatewaySlot response.
-func (client *WebAppsClient) getVnetConnectionGatewaySlotHandleResponse(resp *http.Response) (WebAppsClientGetVnetConnectionGatewaySlotResponse, error) {
+func (client *WebAppsClient) getVnetConnectionGatewaySlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetVnetConnectionGatewaySlotResponse, error) {
 	result := WebAppsClientGetVnetConnectionGatewaySlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetGateway); err != nil {
 		return WebAppsClientGetVnetConnectionGatewaySlotResponse{}, err
 	}
@@ -14909,12 +14653,7 @@ func (client *WebAppsClient) GetVnetConnectionSlot(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientGetVnetConnectionSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetVnetConnectionSlotResponse{}, err
-	}
-	resp, err := client.getVnetConnectionSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getVnetConnectionSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getVnetConnectionSlotCreateRequest creates the GetVnetConnectionSlot request.
@@ -14952,8 +14691,11 @@ func (client *WebAppsClient) getVnetConnectionSlotCreateRequest(ctx context.Cont
 }
 
 // getVnetConnectionSlotHandleResponse handles the GetVnetConnectionSlot response.
-func (client *WebAppsClient) getVnetConnectionSlotHandleResponse(resp *http.Response) (WebAppsClientGetVnetConnectionSlotResponse, error) {
+func (client *WebAppsClient) getVnetConnectionSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetVnetConnectionSlotResponse, error) {
 	result := WebAppsClientGetVnetConnectionSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResource); err != nil {
 		return WebAppsClientGetVnetConnectionSlotResponse{}, err
 	}
@@ -14982,12 +14724,7 @@ func (client *WebAppsClient) GetWebJob(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return WebAppsClientGetWebJobResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetWebJobResponse{}, err
-	}
-	resp, err := client.getWebJobHandleResponse(httpResp)
-	return resp, err
+	return client.getWebJobHandleResponse(httpResp, http.StatusOK)
 }
 
 // getWebJobCreateRequest creates the GetWebJob request.
@@ -15021,8 +14758,11 @@ func (client *WebAppsClient) getWebJobCreateRequest(ctx context.Context, resourc
 }
 
 // getWebJobHandleResponse handles the GetWebJob response.
-func (client *WebAppsClient) getWebJobHandleResponse(resp *http.Response) (WebAppsClientGetWebJobResponse, error) {
+func (client *WebAppsClient) getWebJobHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetWebJobResponse, error) {
 	result := WebAppsClientGetWebJobResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebJob); err != nil {
 		return WebAppsClientGetWebJobResponse{}, err
 	}
@@ -15049,12 +14789,7 @@ func (client *WebAppsClient) GetWebJobSlot(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return WebAppsClientGetWebJobSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetWebJobSlotResponse{}, err
-	}
-	resp, err := client.getWebJobSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getWebJobSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // getWebJobSlotCreateRequest creates the GetWebJobSlot request.
@@ -15092,8 +14827,11 @@ func (client *WebAppsClient) getWebJobSlotCreateRequest(ctx context.Context, res
 }
 
 // getWebJobSlotHandleResponse handles the GetWebJobSlot response.
-func (client *WebAppsClient) getWebJobSlotHandleResponse(resp *http.Response) (WebAppsClientGetWebJobSlotResponse, error) {
+func (client *WebAppsClient) getWebJobSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetWebJobSlotResponse, error) {
 	result := WebAppsClientGetWebJobSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebJob); err != nil {
 		return WebAppsClientGetWebJobSlotResponse{}, err
 	}
@@ -15122,12 +14860,7 @@ func (client *WebAppsClient) GetWebSiteContainerLogs(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientGetWebSiteContainerLogsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetWebSiteContainerLogsResponse{}, err
-	}
-	resp, err := client.getWebSiteContainerLogsHandleResponse(httpResp)
-	return resp, err
+	return client.getWebSiteContainerLogsHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
 }
 
 // getWebSiteContainerLogsCreateRequest creates the GetWebSiteContainerLogs request.
@@ -15158,11 +14891,15 @@ func (client *WebAppsClient) getWebSiteContainerLogsCreateRequest(ctx context.Co
 }
 
 // getWebSiteContainerLogsHandleResponse handles the GetWebSiteContainerLogs response.
-func (client *WebAppsClient) getWebSiteContainerLogsHandleResponse(resp *http.Response) (WebAppsClientGetWebSiteContainerLogsResponse, error) {
-	result := WebAppsClientGetWebSiteContainerLogsResponse{Body: resp.Body}
+func (client *WebAppsClient) getWebSiteContainerLogsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetWebSiteContainerLogsResponse, error) {
+	result := WebAppsClientGetWebSiteContainerLogsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
+	result.Body = resp.Body
 	return result, nil
 }
 
@@ -15189,12 +14926,7 @@ func (client *WebAppsClient) GetWebSiteContainerLogsSlot(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientGetWebSiteContainerLogsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetWebSiteContainerLogsSlotResponse{}, err
-	}
-	resp, err := client.getWebSiteContainerLogsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.getWebSiteContainerLogsSlotHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
 }
 
 // getWebSiteContainerLogsSlotCreateRequest creates the GetWebSiteContainerLogsSlot request.
@@ -15229,11 +14961,15 @@ func (client *WebAppsClient) getWebSiteContainerLogsSlotCreateRequest(ctx contex
 }
 
 // getWebSiteContainerLogsSlotHandleResponse handles the GetWebSiteContainerLogsSlot response.
-func (client *WebAppsClient) getWebSiteContainerLogsSlotHandleResponse(resp *http.Response) (WebAppsClientGetWebSiteContainerLogsSlotResponse, error) {
-	result := WebAppsClientGetWebSiteContainerLogsSlotResponse{Body: resp.Body}
+func (client *WebAppsClient) getWebSiteContainerLogsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetWebSiteContainerLogsSlotResponse, error) {
+	result := WebAppsClientGetWebSiteContainerLogsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
+	result.Body = resp.Body
 	return result, nil
 }
 
@@ -15259,12 +14995,7 @@ func (client *WebAppsClient) GetWorkflow(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return WebAppsClientGetWorkflowResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientGetWorkflowResponse{}, err
-	}
-	resp, err := client.getWorkflowHandleResponse(httpResp)
-	return resp, err
+	return client.getWorkflowHandleResponse(httpResp, http.StatusOK)
 }
 
 // getWorkflowCreateRequest creates the GetWorkflow request.
@@ -15298,8 +15029,11 @@ func (client *WebAppsClient) getWorkflowCreateRequest(ctx context.Context, resou
 }
 
 // getWorkflowHandleResponse handles the GetWorkflow response.
-func (client *WebAppsClient) getWorkflowHandleResponse(resp *http.Response) (WebAppsClientGetWorkflowResponse, error) {
+func (client *WebAppsClient) getWorkflowHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientGetWorkflowResponse, error) {
 	result := WebAppsClientGetWorkflowResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowEnvelope); err != nil {
 		return WebAppsClientGetWorkflowResponse{}, err
 	}
@@ -15351,8 +15085,7 @@ func (client *WebAppsClient) installSiteExtension(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -15430,8 +15163,7 @@ func (client *WebAppsClient) installSiteExtensionSlot(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -15491,12 +15223,7 @@ func (client *WebAppsClient) IsCloneable(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return WebAppsClientIsCloneableResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientIsCloneableResponse{}, err
-	}
-	resp, err := client.isCloneableHandleResponse(httpResp)
-	return resp, err
+	return client.isCloneableHandleResponse(httpResp, http.StatusOK)
 }
 
 // isCloneableCreateRequest creates the IsCloneable request.
@@ -15526,8 +15253,11 @@ func (client *WebAppsClient) isCloneableCreateRequest(ctx context.Context, resou
 }
 
 // isCloneableHandleResponse handles the IsCloneable response.
-func (client *WebAppsClient) isCloneableHandleResponse(resp *http.Response) (WebAppsClientIsCloneableResponse, error) {
+func (client *WebAppsClient) isCloneableHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientIsCloneableResponse, error) {
 	result := WebAppsClientIsCloneableResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteCloneability); err != nil {
 		return WebAppsClientIsCloneableResponse{}, err
 	}
@@ -15556,12 +15286,7 @@ func (client *WebAppsClient) IsCloneableSlot(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WebAppsClientIsCloneableSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientIsCloneableSlotResponse{}, err
-	}
-	resp, err := client.isCloneableSlotHandleResponse(httpResp)
-	return resp, err
+	return client.isCloneableSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // isCloneableSlotCreateRequest creates the IsCloneableSlot request.
@@ -15595,8 +15320,11 @@ func (client *WebAppsClient) isCloneableSlotCreateRequest(ctx context.Context, r
 }
 
 // isCloneableSlotHandleResponse handles the IsCloneableSlot response.
-func (client *WebAppsClient) isCloneableSlotHandleResponse(resp *http.Response) (WebAppsClientIsCloneableSlotResponse, error) {
+func (client *WebAppsClient) isCloneableSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientIsCloneableSlotResponse, error) {
 	result := WebAppsClientIsCloneableSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteCloneability); err != nil {
 		return WebAppsClientIsCloneableSlotResponse{}, err
 	}
@@ -15618,39 +15346,53 @@ func (client *WebAppsClient) NewListPager(options *WebAppsClientListOptions) *ru
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return WebAppsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *WebAppsClient) listCreateRequest(ctx context.Context, _ *WebAppsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/sites"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listCreateRequest(ctx context.Context, nextLink string, _ *WebAppsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/sites"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *WebAppsClient) listHandleResponse(resp *http.Response) (WebAppsClientListResponse, error) {
+func (client *WebAppsClient) listHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListResponse, error) {
 	result := WebAppsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
 		return WebAppsClientListResponse{}, err
 	}
@@ -15679,12 +15421,7 @@ func (client *WebAppsClient) ListApplicationSettings(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientListApplicationSettingsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListApplicationSettingsResponse{}, err
-	}
-	resp, err := client.listApplicationSettingsHandleResponse(httpResp)
-	return resp, err
+	return client.listApplicationSettingsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listApplicationSettingsCreateRequest creates the ListApplicationSettings request.
@@ -15714,8 +15451,11 @@ func (client *WebAppsClient) listApplicationSettingsCreateRequest(ctx context.Co
 }
 
 // listApplicationSettingsHandleResponse handles the ListApplicationSettings response.
-func (client *WebAppsClient) listApplicationSettingsHandleResponse(resp *http.Response) (WebAppsClientListApplicationSettingsResponse, error) {
+func (client *WebAppsClient) listApplicationSettingsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListApplicationSettingsResponse, error) {
 	result := WebAppsClientListApplicationSettingsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
 		return WebAppsClientListApplicationSettingsResponse{}, err
 	}
@@ -15745,12 +15485,7 @@ func (client *WebAppsClient) ListApplicationSettingsSlot(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientListApplicationSettingsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListApplicationSettingsSlotResponse{}, err
-	}
-	resp, err := client.listApplicationSettingsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listApplicationSettingsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listApplicationSettingsSlotCreateRequest creates the ListApplicationSettingsSlot request.
@@ -15784,8 +15519,11 @@ func (client *WebAppsClient) listApplicationSettingsSlotCreateRequest(ctx contex
 }
 
 // listApplicationSettingsSlotHandleResponse handles the ListApplicationSettingsSlot response.
-func (client *WebAppsClient) listApplicationSettingsSlotHandleResponse(resp *http.Response) (WebAppsClientListApplicationSettingsSlotResponse, error) {
+func (client *WebAppsClient) listApplicationSettingsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListApplicationSettingsSlotResponse, error) {
 	result := WebAppsClientListApplicationSettingsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
 		return WebAppsClientListApplicationSettingsSlotResponse{}, err
 	}
@@ -15814,12 +15552,7 @@ func (client *WebAppsClient) ListAzureStorageAccounts(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientListAzureStorageAccountsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListAzureStorageAccountsResponse{}, err
-	}
-	resp, err := client.listAzureStorageAccountsHandleResponse(httpResp)
-	return resp, err
+	return client.listAzureStorageAccountsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAzureStorageAccountsCreateRequest creates the ListAzureStorageAccounts request.
@@ -15849,8 +15582,11 @@ func (client *WebAppsClient) listAzureStorageAccountsCreateRequest(ctx context.C
 }
 
 // listAzureStorageAccountsHandleResponse handles the ListAzureStorageAccounts response.
-func (client *WebAppsClient) listAzureStorageAccountsHandleResponse(resp *http.Response) (WebAppsClientListAzureStorageAccountsResponse, error) {
+func (client *WebAppsClient) listAzureStorageAccountsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListAzureStorageAccountsResponse, error) {
 	result := WebAppsClientListAzureStorageAccountsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureStoragePropertyDictionaryResource); err != nil {
 		return WebAppsClientListAzureStorageAccountsResponse{}, err
 	}
@@ -15880,12 +15616,7 @@ func (client *WebAppsClient) ListAzureStorageAccountsSlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientListAzureStorageAccountsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListAzureStorageAccountsSlotResponse{}, err
-	}
-	resp, err := client.listAzureStorageAccountsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listAzureStorageAccountsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAzureStorageAccountsSlotCreateRequest creates the ListAzureStorageAccountsSlot request.
@@ -15919,8 +15650,11 @@ func (client *WebAppsClient) listAzureStorageAccountsSlotCreateRequest(ctx conte
 }
 
 // listAzureStorageAccountsSlotHandleResponse handles the ListAzureStorageAccountsSlot response.
-func (client *WebAppsClient) listAzureStorageAccountsSlotHandleResponse(resp *http.Response) (WebAppsClientListAzureStorageAccountsSlotResponse, error) {
+func (client *WebAppsClient) listAzureStorageAccountsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListAzureStorageAccountsSlotResponse, error) {
 	result := WebAppsClientListAzureStorageAccountsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureStoragePropertyDictionaryResource); err != nil {
 		return WebAppsClientListAzureStorageAccountsSlotResponse{}, err
 	}
@@ -15955,12 +15689,7 @@ func (client *WebAppsClient) ListBackupStatusSecrets(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientListBackupStatusSecretsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListBackupStatusSecretsResponse{}, err
-	}
-	resp, err := client.listBackupStatusSecretsHandleResponse(httpResp)
-	return resp, err
+	return client.listBackupStatusSecretsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listBackupStatusSecretsCreateRequest creates the ListBackupStatusSecrets request.
@@ -15998,8 +15727,11 @@ func (client *WebAppsClient) listBackupStatusSecretsCreateRequest(ctx context.Co
 }
 
 // listBackupStatusSecretsHandleResponse handles the ListBackupStatusSecrets response.
-func (client *WebAppsClient) listBackupStatusSecretsHandleResponse(resp *http.Response) (WebAppsClientListBackupStatusSecretsResponse, error) {
+func (client *WebAppsClient) listBackupStatusSecretsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListBackupStatusSecretsResponse, error) {
 	result := WebAppsClientListBackupStatusSecretsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupItem); err != nil {
 		return WebAppsClientListBackupStatusSecretsResponse{}, err
 	}
@@ -16031,12 +15763,7 @@ func (client *WebAppsClient) ListBackupStatusSecretsSlot(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientListBackupStatusSecretsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListBackupStatusSecretsSlotResponse{}, err
-	}
-	resp, err := client.listBackupStatusSecretsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listBackupStatusSecretsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listBackupStatusSecretsSlotCreateRequest creates the ListBackupStatusSecretsSlot request.
@@ -16078,8 +15805,11 @@ func (client *WebAppsClient) listBackupStatusSecretsSlotCreateRequest(ctx contex
 }
 
 // listBackupStatusSecretsSlotHandleResponse handles the ListBackupStatusSecretsSlot response.
-func (client *WebAppsClient) listBackupStatusSecretsSlotHandleResponse(resp *http.Response) (WebAppsClientListBackupStatusSecretsSlotResponse, error) {
+func (client *WebAppsClient) listBackupStatusSecretsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListBackupStatusSecretsSlotResponse, error) {
 	result := WebAppsClientListBackupStatusSecretsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupItem); err != nil {
 		return WebAppsClientListBackupStatusSecretsSlotResponse{}, err
 	}
@@ -16103,47 +15833,61 @@ func (client *WebAppsClient) NewListBackupsPager(resourceGroupName string, name 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBackupsCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listBackupsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListBackupsResponse{}, err
 			}
-			return client.listBackupsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListBackupsResponse{}, err
+			}
+			return client.listBackupsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBackupsCreateRequest creates the ListBackups request.
-func (client *WebAppsClient) listBackupsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListBackupsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listBackupsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListBackupsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBackupsHandleResponse handles the ListBackups response.
-func (client *WebAppsClient) listBackupsHandleResponse(resp *http.Response) (WebAppsClientListBackupsResponse, error) {
+func (client *WebAppsClient) listBackupsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListBackupsResponse, error) {
 	result := WebAppsClientListBackupsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupItemCollection); err != nil {
 		return WebAppsClientListBackupsResponse{}, err
 	}
@@ -16169,51 +15913,65 @@ func (client *WebAppsClient) NewListBackupsSlotPager(resourceGroupName string, n
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBackupsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listBackupsSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListBackupsSlotResponse{}, err
 			}
-			return client.listBackupsSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListBackupsSlotResponse{}, err
+			}
+			return client.listBackupsSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBackupsSlotCreateRequest creates the ListBackupsSlot request.
-func (client *WebAppsClient) listBackupsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListBackupsSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listBackupsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListBackupsSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBackupsSlotHandleResponse handles the ListBackupsSlot response.
-func (client *WebAppsClient) listBackupsSlotHandleResponse(resp *http.Response) (WebAppsClientListBackupsSlotResponse, error) {
+func (client *WebAppsClient) listBackupsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListBackupsSlotResponse, error) {
 	result := WebAppsClientListBackupsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupItemCollection); err != nil {
 		return WebAppsClientListBackupsSlotResponse{}, err
 	}
@@ -16239,47 +15997,61 @@ func (client *WebAppsClient) NewListBasicPublishingCredentialsPoliciesPager(reso
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBasicPublishingCredentialsPoliciesCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listBasicPublishingCredentialsPoliciesCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListBasicPublishingCredentialsPoliciesResponse{}, err
 			}
-			return client.listBasicPublishingCredentialsPoliciesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListBasicPublishingCredentialsPoliciesResponse{}, err
+			}
+			return client.listBasicPublishingCredentialsPoliciesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBasicPublishingCredentialsPoliciesCreateRequest creates the ListBasicPublishingCredentialsPolicies request.
-func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListBasicPublishingCredentialsPoliciesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/basicPublishingCredentialsPolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListBasicPublishingCredentialsPoliciesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/basicPublishingCredentialsPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBasicPublishingCredentialsPoliciesHandleResponse handles the ListBasicPublishingCredentialsPolicies response.
-func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesHandleResponse(resp *http.Response) (WebAppsClientListBasicPublishingCredentialsPoliciesResponse, error) {
+func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListBasicPublishingCredentialsPoliciesResponse, error) {
 	result := WebAppsClientListBasicPublishingCredentialsPoliciesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublishingCredentialsPoliciesCollection); err != nil {
 		return WebAppsClientListBasicPublishingCredentialsPoliciesResponse{}, err
 	}
@@ -16305,51 +16077,65 @@ func (client *WebAppsClient) NewListBasicPublishingCredentialsPoliciesSlotPager(
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBasicPublishingCredentialsPoliciesSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listBasicPublishingCredentialsPoliciesSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse{}, err
 			}
-			return client.listBasicPublishingCredentialsPoliciesSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse{}, err
+			}
+			return client.listBasicPublishingCredentialsPoliciesSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBasicPublishingCredentialsPoliciesSlotCreateRequest creates the ListBasicPublishingCredentialsPoliciesSlot request.
-func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListBasicPublishingCredentialsPoliciesSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/basicPublishingCredentialsPolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListBasicPublishingCredentialsPoliciesSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/basicPublishingCredentialsPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBasicPublishingCredentialsPoliciesSlotHandleResponse handles the ListBasicPublishingCredentialsPoliciesSlot response.
-func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesSlotHandleResponse(resp *http.Response) (WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse, error) {
+func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse, error) {
 	result := WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublishingCredentialsPoliciesCollection); err != nil {
 		return WebAppsClientListBasicPublishingCredentialsPoliciesSlotResponse{}, err
 	}
@@ -16373,46 +16159,60 @@ func (client *WebAppsClient) NewListByResourceGroupPager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return WebAppsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *WebAppsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, options *WebAppsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, options *WebAppsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	if options != nil && options.IncludeSlots != nil {
-		reqQP.Set("includeSlots", strconv.FormatBool(*options.IncludeSlots))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		if options != nil && options.IncludeSlots != nil {
+			reqQP.Set("includeSlots", strconv.FormatBool(*options.IncludeSlots))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *WebAppsClient) listByResourceGroupHandleResponse(resp *http.Response) (WebAppsClientListByResourceGroupResponse, error) {
+func (client *WebAppsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListByResourceGroupResponse, error) {
 	result := WebAppsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
 		return WebAppsClientListByResourceGroupResponse{}, err
 	}
@@ -16439,47 +16239,61 @@ func (client *WebAppsClient) NewListConfigurationSnapshotInfoPager(resourceGroup
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listConfigurationSnapshotInfoCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listConfigurationSnapshotInfoCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListConfigurationSnapshotInfoResponse{}, err
 			}
-			return client.listConfigurationSnapshotInfoHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListConfigurationSnapshotInfoResponse{}, err
+			}
+			return client.listConfigurationSnapshotInfoHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listConfigurationSnapshotInfoCreateRequest creates the ListConfigurationSnapshotInfo request.
-func (client *WebAppsClient) listConfigurationSnapshotInfoCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListConfigurationSnapshotInfoOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web/snapshots"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listConfigurationSnapshotInfoCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListConfigurationSnapshotInfoOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web/snapshots"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listConfigurationSnapshotInfoHandleResponse handles the ListConfigurationSnapshotInfo response.
-func (client *WebAppsClient) listConfigurationSnapshotInfoHandleResponse(resp *http.Response) (WebAppsClientListConfigurationSnapshotInfoResponse, error) {
+func (client *WebAppsClient) listConfigurationSnapshotInfoHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListConfigurationSnapshotInfoResponse, error) {
 	result := WebAppsClientListConfigurationSnapshotInfoResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteConfigurationSnapshotInfoCollection); err != nil {
 		return WebAppsClientListConfigurationSnapshotInfoResponse{}, err
 	}
@@ -16507,51 +16321,65 @@ func (client *WebAppsClient) NewListConfigurationSnapshotInfoSlotPager(resourceG
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listConfigurationSnapshotInfoSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listConfigurationSnapshotInfoSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListConfigurationSnapshotInfoSlotResponse{}, err
 			}
-			return client.listConfigurationSnapshotInfoSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListConfigurationSnapshotInfoSlotResponse{}, err
+			}
+			return client.listConfigurationSnapshotInfoSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listConfigurationSnapshotInfoSlotCreateRequest creates the ListConfigurationSnapshotInfoSlot request.
-func (client *WebAppsClient) listConfigurationSnapshotInfoSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListConfigurationSnapshotInfoSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web/snapshots"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listConfigurationSnapshotInfoSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListConfigurationSnapshotInfoSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web/snapshots"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listConfigurationSnapshotInfoSlotHandleResponse handles the ListConfigurationSnapshotInfoSlot response.
-func (client *WebAppsClient) listConfigurationSnapshotInfoSlotHandleResponse(resp *http.Response) (WebAppsClientListConfigurationSnapshotInfoSlotResponse, error) {
+func (client *WebAppsClient) listConfigurationSnapshotInfoSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListConfigurationSnapshotInfoSlotResponse, error) {
 	result := WebAppsClientListConfigurationSnapshotInfoSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteConfigurationSnapshotInfoCollection); err != nil {
 		return WebAppsClientListConfigurationSnapshotInfoSlotResponse{}, err
 	}
@@ -16576,47 +16404,61 @@ func (client *WebAppsClient) NewListConfigurationsPager(resourceGroupName string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listConfigurationsCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listConfigurationsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListConfigurationsResponse{}, err
 			}
-			return client.listConfigurationsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListConfigurationsResponse{}, err
+			}
+			return client.listConfigurationsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listConfigurationsCreateRequest creates the ListConfigurations request.
-func (client *WebAppsClient) listConfigurationsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListConfigurationsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listConfigurationsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListConfigurationsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listConfigurationsHandleResponse handles the ListConfigurations response.
-func (client *WebAppsClient) listConfigurationsHandleResponse(resp *http.Response) (WebAppsClientListConfigurationsResponse, error) {
+func (client *WebAppsClient) listConfigurationsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListConfigurationsResponse, error) {
 	result := WebAppsClientListConfigurationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteConfigResourceCollection); err != nil {
 		return WebAppsClientListConfigurationsResponse{}, err
 	}
@@ -16642,51 +16484,65 @@ func (client *WebAppsClient) NewListConfigurationsSlotPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listConfigurationsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listConfigurationsSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListConfigurationsSlotResponse{}, err
 			}
-			return client.listConfigurationsSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListConfigurationsSlotResponse{}, err
+			}
+			return client.listConfigurationsSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listConfigurationsSlotCreateRequest creates the ListConfigurationsSlot request.
-func (client *WebAppsClient) listConfigurationsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListConfigurationsSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listConfigurationsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListConfigurationsSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listConfigurationsSlotHandleResponse handles the ListConfigurationsSlot response.
-func (client *WebAppsClient) listConfigurationsSlotHandleResponse(resp *http.Response) (WebAppsClientListConfigurationsSlotResponse, error) {
+func (client *WebAppsClient) listConfigurationsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListConfigurationsSlotResponse, error) {
 	result := WebAppsClientListConfigurationsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteConfigResourceCollection); err != nil {
 		return WebAppsClientListConfigurationsSlotResponse{}, err
 	}
@@ -16715,12 +16571,7 @@ func (client *WebAppsClient) ListConnectionStrings(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientListConnectionStringsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListConnectionStringsResponse{}, err
-	}
-	resp, err := client.listConnectionStringsHandleResponse(httpResp)
-	return resp, err
+	return client.listConnectionStringsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listConnectionStringsCreateRequest creates the ListConnectionStrings request.
@@ -16750,8 +16601,11 @@ func (client *WebAppsClient) listConnectionStringsCreateRequest(ctx context.Cont
 }
 
 // listConnectionStringsHandleResponse handles the ListConnectionStrings response.
-func (client *WebAppsClient) listConnectionStringsHandleResponse(resp *http.Response) (WebAppsClientListConnectionStringsResponse, error) {
+func (client *WebAppsClient) listConnectionStringsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListConnectionStringsResponse, error) {
 	result := WebAppsClientListConnectionStringsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionStringDictionary); err != nil {
 		return WebAppsClientListConnectionStringsResponse{}, err
 	}
@@ -16781,12 +16635,7 @@ func (client *WebAppsClient) ListConnectionStringsSlot(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientListConnectionStringsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListConnectionStringsSlotResponse{}, err
-	}
-	resp, err := client.listConnectionStringsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listConnectionStringsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listConnectionStringsSlotCreateRequest creates the ListConnectionStringsSlot request.
@@ -16820,8 +16669,11 @@ func (client *WebAppsClient) listConnectionStringsSlotCreateRequest(ctx context.
 }
 
 // listConnectionStringsSlotHandleResponse handles the ListConnectionStringsSlot response.
-func (client *WebAppsClient) listConnectionStringsSlotHandleResponse(resp *http.Response) (WebAppsClientListConnectionStringsSlotResponse, error) {
+func (client *WebAppsClient) listConnectionStringsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListConnectionStringsSlotResponse, error) {
 	result := WebAppsClientListConnectionStringsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionStringDictionary); err != nil {
 		return WebAppsClientListConnectionStringsSlotResponse{}, err
 	}
@@ -16846,47 +16698,61 @@ func (client *WebAppsClient) NewListContinuousWebJobsPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listContinuousWebJobsCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listContinuousWebJobsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListContinuousWebJobsResponse{}, err
 			}
-			return client.listContinuousWebJobsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListContinuousWebJobsResponse{}, err
+			}
+			return client.listContinuousWebJobsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listContinuousWebJobsCreateRequest creates the ListContinuousWebJobs request.
-func (client *WebAppsClient) listContinuousWebJobsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListContinuousWebJobsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/continuouswebjobs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listContinuousWebJobsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListContinuousWebJobsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/continuouswebjobs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listContinuousWebJobsHandleResponse handles the ListContinuousWebJobs response.
-func (client *WebAppsClient) listContinuousWebJobsHandleResponse(resp *http.Response) (WebAppsClientListContinuousWebJobsResponse, error) {
+func (client *WebAppsClient) listContinuousWebJobsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListContinuousWebJobsResponse, error) {
 	result := WebAppsClientListContinuousWebJobsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContinuousWebJobCollection); err != nil {
 		return WebAppsClientListContinuousWebJobsResponse{}, err
 	}
@@ -16912,51 +16778,65 @@ func (client *WebAppsClient) NewListContinuousWebJobsSlotPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listContinuousWebJobsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listContinuousWebJobsSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListContinuousWebJobsSlotResponse{}, err
 			}
-			return client.listContinuousWebJobsSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListContinuousWebJobsSlotResponse{}, err
+			}
+			return client.listContinuousWebJobsSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listContinuousWebJobsSlotCreateRequest creates the ListContinuousWebJobsSlot request.
-func (client *WebAppsClient) listContinuousWebJobsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListContinuousWebJobsSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/continuouswebjobs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listContinuousWebJobsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListContinuousWebJobsSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/continuouswebjobs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listContinuousWebJobsSlotHandleResponse handles the ListContinuousWebJobsSlot response.
-func (client *WebAppsClient) listContinuousWebJobsSlotHandleResponse(resp *http.Response) (WebAppsClientListContinuousWebJobsSlotResponse, error) {
+func (client *WebAppsClient) listContinuousWebJobsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListContinuousWebJobsSlotResponse, error) {
 	result := WebAppsClientListContinuousWebJobsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContinuousWebJobCollection); err != nil {
 		return WebAppsClientListContinuousWebJobsSlotResponse{}, err
 	}
@@ -16986,12 +16866,7 @@ func (client *WebAppsClient) ListDeploymentLog(ctx context.Context, resourceGrou
 	if err != nil {
 		return WebAppsClientListDeploymentLogResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListDeploymentLogResponse{}, err
-	}
-	resp, err := client.listDeploymentLogHandleResponse(httpResp)
-	return resp, err
+	return client.listDeploymentLogHandleResponse(httpResp, http.StatusOK)
 }
 
 // listDeploymentLogCreateRequest creates the ListDeploymentLog request.
@@ -17025,8 +16900,11 @@ func (client *WebAppsClient) listDeploymentLogCreateRequest(ctx context.Context,
 }
 
 // listDeploymentLogHandleResponse handles the ListDeploymentLog response.
-func (client *WebAppsClient) listDeploymentLogHandleResponse(resp *http.Response) (WebAppsClientListDeploymentLogResponse, error) {
+func (client *WebAppsClient) listDeploymentLogHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListDeploymentLogResponse, error) {
 	result := WebAppsClientListDeploymentLogResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Deployment); err != nil {
 		return WebAppsClientListDeploymentLogResponse{}, err
 	}
@@ -17054,12 +16932,7 @@ func (client *WebAppsClient) ListDeploymentLogSlot(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientListDeploymentLogSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListDeploymentLogSlotResponse{}, err
-	}
-	resp, err := client.listDeploymentLogSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listDeploymentLogSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listDeploymentLogSlotCreateRequest creates the ListDeploymentLogSlot request.
@@ -17097,8 +16970,11 @@ func (client *WebAppsClient) listDeploymentLogSlotCreateRequest(ctx context.Cont
 }
 
 // listDeploymentLogSlotHandleResponse handles the ListDeploymentLogSlot response.
-func (client *WebAppsClient) listDeploymentLogSlotHandleResponse(resp *http.Response) (WebAppsClientListDeploymentLogSlotResponse, error) {
+func (client *WebAppsClient) listDeploymentLogSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListDeploymentLogSlotResponse, error) {
 	result := WebAppsClientListDeploymentLogSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Deployment); err != nil {
 		return WebAppsClientListDeploymentLogSlotResponse{}, err
 	}
@@ -17123,47 +16999,61 @@ func (client *WebAppsClient) NewListDeploymentsPager(resourceGroupName string, n
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listDeploymentsCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listDeploymentsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListDeploymentsResponse{}, err
 			}
-			return client.listDeploymentsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListDeploymentsResponse{}, err
+			}
+			return client.listDeploymentsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listDeploymentsCreateRequest creates the ListDeployments request.
-func (client *WebAppsClient) listDeploymentsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListDeploymentsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listDeploymentsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListDeploymentsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listDeploymentsHandleResponse handles the ListDeployments response.
-func (client *WebAppsClient) listDeploymentsHandleResponse(resp *http.Response) (WebAppsClientListDeploymentsResponse, error) {
+func (client *WebAppsClient) listDeploymentsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListDeploymentsResponse, error) {
 	result := WebAppsClientListDeploymentsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentCollection); err != nil {
 		return WebAppsClientListDeploymentsResponse{}, err
 	}
@@ -17189,51 +17079,65 @@ func (client *WebAppsClient) NewListDeploymentsSlotPager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listDeploymentsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listDeploymentsSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListDeploymentsSlotResponse{}, err
 			}
-			return client.listDeploymentsSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListDeploymentsSlotResponse{}, err
+			}
+			return client.listDeploymentsSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listDeploymentsSlotCreateRequest creates the ListDeploymentsSlot request.
-func (client *WebAppsClient) listDeploymentsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListDeploymentsSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listDeploymentsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListDeploymentsSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listDeploymentsSlotHandleResponse handles the ListDeploymentsSlot response.
-func (client *WebAppsClient) listDeploymentsSlotHandleResponse(resp *http.Response) (WebAppsClientListDeploymentsSlotResponse, error) {
+func (client *WebAppsClient) listDeploymentsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListDeploymentsSlotResponse, error) {
 	result := WebAppsClientListDeploymentsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeploymentCollection); err != nil {
 		return WebAppsClientListDeploymentsSlotResponse{}, err
 	}
@@ -17258,47 +17162,61 @@ func (client *WebAppsClient) NewListDomainOwnershipIdentifiersPager(resourceGrou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listDomainOwnershipIdentifiersCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listDomainOwnershipIdentifiersCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListDomainOwnershipIdentifiersResponse{}, err
 			}
-			return client.listDomainOwnershipIdentifiersHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListDomainOwnershipIdentifiersResponse{}, err
+			}
+			return client.listDomainOwnershipIdentifiersHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listDomainOwnershipIdentifiersCreateRequest creates the ListDomainOwnershipIdentifiers request.
-func (client *WebAppsClient) listDomainOwnershipIdentifiersCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListDomainOwnershipIdentifiersOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listDomainOwnershipIdentifiersCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListDomainOwnershipIdentifiersOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listDomainOwnershipIdentifiersHandleResponse handles the ListDomainOwnershipIdentifiers response.
-func (client *WebAppsClient) listDomainOwnershipIdentifiersHandleResponse(resp *http.Response) (WebAppsClientListDomainOwnershipIdentifiersResponse, error) {
+func (client *WebAppsClient) listDomainOwnershipIdentifiersHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListDomainOwnershipIdentifiersResponse, error) {
 	result := WebAppsClientListDomainOwnershipIdentifiersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IdentifierCollection); err != nil {
 		return WebAppsClientListDomainOwnershipIdentifiersResponse{}, err
 	}
@@ -17324,51 +17242,65 @@ func (client *WebAppsClient) NewListDomainOwnershipIdentifiersSlotPager(resource
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listDomainOwnershipIdentifiersSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listDomainOwnershipIdentifiersSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListDomainOwnershipIdentifiersSlotResponse{}, err
 			}
-			return client.listDomainOwnershipIdentifiersSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListDomainOwnershipIdentifiersSlotResponse{}, err
+			}
+			return client.listDomainOwnershipIdentifiersSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listDomainOwnershipIdentifiersSlotCreateRequest creates the ListDomainOwnershipIdentifiersSlot request.
-func (client *WebAppsClient) listDomainOwnershipIdentifiersSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListDomainOwnershipIdentifiersSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/domainOwnershipIdentifiers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listDomainOwnershipIdentifiersSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListDomainOwnershipIdentifiersSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/domainOwnershipIdentifiers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listDomainOwnershipIdentifiersSlotHandleResponse handles the ListDomainOwnershipIdentifiersSlot response.
-func (client *WebAppsClient) listDomainOwnershipIdentifiersSlotHandleResponse(resp *http.Response) (WebAppsClientListDomainOwnershipIdentifiersSlotResponse, error) {
+func (client *WebAppsClient) listDomainOwnershipIdentifiersSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListDomainOwnershipIdentifiersSlotResponse, error) {
 	result := WebAppsClientListDomainOwnershipIdentifiersSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IdentifierCollection); err != nil {
 		return WebAppsClientListDomainOwnershipIdentifiersSlotResponse{}, err
 	}
@@ -17398,12 +17330,7 @@ func (client *WebAppsClient) ListFunctionKeys(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientListFunctionKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListFunctionKeysResponse{}, err
-	}
-	resp, err := client.listFunctionKeysHandleResponse(httpResp)
-	return resp, err
+	return client.listFunctionKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // listFunctionKeysCreateRequest creates the ListFunctionKeys request.
@@ -17437,8 +17364,11 @@ func (client *WebAppsClient) listFunctionKeysCreateRequest(ctx context.Context, 
 }
 
 // listFunctionKeysHandleResponse handles the ListFunctionKeys response.
-func (client *WebAppsClient) listFunctionKeysHandleResponse(resp *http.Response) (WebAppsClientListFunctionKeysResponse, error) {
+func (client *WebAppsClient) listFunctionKeysHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListFunctionKeysResponse, error) {
 	result := WebAppsClientListFunctionKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
 		return WebAppsClientListFunctionKeysResponse{}, err
 	}
@@ -17466,12 +17396,7 @@ func (client *WebAppsClient) ListFunctionKeysSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientListFunctionKeysSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListFunctionKeysSlotResponse{}, err
-	}
-	resp, err := client.listFunctionKeysSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listFunctionKeysSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listFunctionKeysSlotCreateRequest creates the ListFunctionKeysSlot request.
@@ -17509,8 +17434,11 @@ func (client *WebAppsClient) listFunctionKeysSlotCreateRequest(ctx context.Conte
 }
 
 // listFunctionKeysSlotHandleResponse handles the ListFunctionKeysSlot response.
-func (client *WebAppsClient) listFunctionKeysSlotHandleResponse(resp *http.Response) (WebAppsClientListFunctionKeysSlotResponse, error) {
+func (client *WebAppsClient) listFunctionKeysSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListFunctionKeysSlotResponse, error) {
 	result := WebAppsClientListFunctionKeysSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
 		return WebAppsClientListFunctionKeysSlotResponse{}, err
 	}
@@ -17540,12 +17468,7 @@ func (client *WebAppsClient) ListFunctionSecrets(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientListFunctionSecretsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListFunctionSecretsResponse{}, err
-	}
-	resp, err := client.listFunctionSecretsHandleResponse(httpResp)
-	return resp, err
+	return client.listFunctionSecretsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listFunctionSecretsCreateRequest creates the ListFunctionSecrets request.
@@ -17579,8 +17502,11 @@ func (client *WebAppsClient) listFunctionSecretsCreateRequest(ctx context.Contex
 }
 
 // listFunctionSecretsHandleResponse handles the ListFunctionSecrets response.
-func (client *WebAppsClient) listFunctionSecretsHandleResponse(resp *http.Response) (WebAppsClientListFunctionSecretsResponse, error) {
+func (client *WebAppsClient) listFunctionSecretsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListFunctionSecretsResponse, error) {
 	result := WebAppsClientListFunctionSecretsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionSecrets); err != nil {
 		return WebAppsClientListFunctionSecretsResponse{}, err
 	}
@@ -17608,12 +17534,7 @@ func (client *WebAppsClient) ListFunctionSecretsSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientListFunctionSecretsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListFunctionSecretsSlotResponse{}, err
-	}
-	resp, err := client.listFunctionSecretsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listFunctionSecretsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listFunctionSecretsSlotCreateRequest creates the ListFunctionSecretsSlot request.
@@ -17651,8 +17572,11 @@ func (client *WebAppsClient) listFunctionSecretsSlotCreateRequest(ctx context.Co
 }
 
 // listFunctionSecretsSlotHandleResponse handles the ListFunctionSecretsSlot response.
-func (client *WebAppsClient) listFunctionSecretsSlotHandleResponse(resp *http.Response) (WebAppsClientListFunctionSecretsSlotResponse, error) {
+func (client *WebAppsClient) listFunctionSecretsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListFunctionSecretsSlotResponse, error) {
 	result := WebAppsClientListFunctionSecretsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionSecrets); err != nil {
 		return WebAppsClientListFunctionSecretsSlotResponse{}, err
 	}
@@ -17677,47 +17601,61 @@ func (client *WebAppsClient) NewListFunctionsPager(resourceGroupName string, nam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listFunctionsCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listFunctionsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListFunctionsResponse{}, err
 			}
-			return client.listFunctionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListFunctionsResponse{}, err
+			}
+			return client.listFunctionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listFunctionsCreateRequest creates the ListFunctions request.
-func (client *WebAppsClient) listFunctionsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListFunctionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listFunctionsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListFunctionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listFunctionsHandleResponse handles the ListFunctions response.
-func (client *WebAppsClient) listFunctionsHandleResponse(resp *http.Response) (WebAppsClientListFunctionsResponse, error) {
+func (client *WebAppsClient) listFunctionsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListFunctionsResponse, error) {
 	result := WebAppsClientListFunctionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionEnvelopeCollection); err != nil {
 		return WebAppsClientListFunctionsResponse{}, err
 	}
@@ -17745,12 +17683,7 @@ func (client *WebAppsClient) ListHostKeys(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WebAppsClientListHostKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListHostKeysResponse{}, err
-	}
-	resp, err := client.listHostKeysHandleResponse(httpResp)
-	return resp, err
+	return client.listHostKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // listHostKeysCreateRequest creates the ListHostKeys request.
@@ -17780,8 +17713,11 @@ func (client *WebAppsClient) listHostKeysCreateRequest(ctx context.Context, reso
 }
 
 // listHostKeysHandleResponse handles the ListHostKeys response.
-func (client *WebAppsClient) listHostKeysHandleResponse(resp *http.Response) (WebAppsClientListHostKeysResponse, error) {
+func (client *WebAppsClient) listHostKeysHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListHostKeysResponse, error) {
 	result := WebAppsClientListHostKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HostKeys); err != nil {
 		return WebAppsClientListHostKeysResponse{}, err
 	}
@@ -17811,12 +17747,7 @@ func (client *WebAppsClient) ListHostKeysSlot(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientListHostKeysSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListHostKeysSlotResponse{}, err
-	}
-	resp, err := client.listHostKeysSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listHostKeysSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listHostKeysSlotCreateRequest creates the ListHostKeysSlot request.
@@ -17850,8 +17781,11 @@ func (client *WebAppsClient) listHostKeysSlotCreateRequest(ctx context.Context, 
 }
 
 // listHostKeysSlotHandleResponse handles the ListHostKeysSlot response.
-func (client *WebAppsClient) listHostKeysSlotHandleResponse(resp *http.Response) (WebAppsClientListHostKeysSlotResponse, error) {
+func (client *WebAppsClient) listHostKeysSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListHostKeysSlotResponse, error) {
 	result := WebAppsClientListHostKeysSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HostKeys); err != nil {
 		return WebAppsClientListHostKeysSlotResponse{}, err
 	}
@@ -17876,47 +17810,61 @@ func (client *WebAppsClient) NewListHostNameBindingsPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listHostNameBindingsCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listHostNameBindingsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListHostNameBindingsResponse{}, err
 			}
-			return client.listHostNameBindingsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListHostNameBindingsResponse{}, err
+			}
+			return client.listHostNameBindingsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listHostNameBindingsCreateRequest creates the ListHostNameBindings request.
-func (client *WebAppsClient) listHostNameBindingsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListHostNameBindingsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listHostNameBindingsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListHostNameBindingsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHostNameBindingsHandleResponse handles the ListHostNameBindings response.
-func (client *WebAppsClient) listHostNameBindingsHandleResponse(resp *http.Response) (WebAppsClientListHostNameBindingsResponse, error) {
+func (client *WebAppsClient) listHostNameBindingsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListHostNameBindingsResponse, error) {
 	result := WebAppsClientListHostNameBindingsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HostNameBindingCollection); err != nil {
 		return WebAppsClientListHostNameBindingsResponse{}, err
 	}
@@ -17942,51 +17890,65 @@ func (client *WebAppsClient) NewListHostNameBindingsSlotPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listHostNameBindingsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listHostNameBindingsSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListHostNameBindingsSlotResponse{}, err
 			}
-			return client.listHostNameBindingsSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListHostNameBindingsSlotResponse{}, err
+			}
+			return client.listHostNameBindingsSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listHostNameBindingsSlotCreateRequest creates the ListHostNameBindingsSlot request.
-func (client *WebAppsClient) listHostNameBindingsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListHostNameBindingsSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listHostNameBindingsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListHostNameBindingsSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHostNameBindingsSlotHandleResponse handles the ListHostNameBindingsSlot response.
-func (client *WebAppsClient) listHostNameBindingsSlotHandleResponse(resp *http.Response) (WebAppsClientListHostNameBindingsSlotResponse, error) {
+func (client *WebAppsClient) listHostNameBindingsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListHostNameBindingsSlotResponse, error) {
 	result := WebAppsClientListHostNameBindingsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HostNameBindingCollection); err != nil {
 		return WebAppsClientListHostNameBindingsSlotResponse{}, err
 	}
@@ -18015,12 +17977,7 @@ func (client *WebAppsClient) ListHybridConnections(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientListHybridConnectionsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListHybridConnectionsResponse{}, err
-	}
-	resp, err := client.listHybridConnectionsHandleResponse(httpResp)
-	return resp, err
+	return client.listHybridConnectionsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listHybridConnectionsCreateRequest creates the ListHybridConnections request.
@@ -18050,8 +18007,11 @@ func (client *WebAppsClient) listHybridConnectionsCreateRequest(ctx context.Cont
 }
 
 // listHybridConnectionsHandleResponse handles the ListHybridConnections response.
-func (client *WebAppsClient) listHybridConnectionsHandleResponse(resp *http.Response) (WebAppsClientListHybridConnectionsResponse, error) {
+func (client *WebAppsClient) listHybridConnectionsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListHybridConnectionsResponse, error) {
 	result := WebAppsClientListHybridConnectionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
 		return WebAppsClientListHybridConnectionsResponse{}, err
 	}
@@ -18081,12 +18041,7 @@ func (client *WebAppsClient) ListHybridConnectionsSlot(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientListHybridConnectionsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListHybridConnectionsSlotResponse{}, err
-	}
-	resp, err := client.listHybridConnectionsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listHybridConnectionsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listHybridConnectionsSlotCreateRequest creates the ListHybridConnectionsSlot request.
@@ -18120,8 +18075,11 @@ func (client *WebAppsClient) listHybridConnectionsSlotCreateRequest(ctx context.
 }
 
 // listHybridConnectionsSlotHandleResponse handles the ListHybridConnectionsSlot response.
-func (client *WebAppsClient) listHybridConnectionsSlotHandleResponse(resp *http.Response) (WebAppsClientListHybridConnectionsSlotResponse, error) {
+func (client *WebAppsClient) listHybridConnectionsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListHybridConnectionsSlotResponse, error) {
 	result := WebAppsClientListHybridConnectionsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
 		return WebAppsClientListHybridConnectionsSlotResponse{}, err
 	}
@@ -18147,51 +18105,65 @@ func (client *WebAppsClient) NewListInstanceFunctionsSlotPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listInstanceFunctionsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listInstanceFunctionsSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListInstanceFunctionsSlotResponse{}, err
 			}
-			return client.listInstanceFunctionsSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListInstanceFunctionsSlotResponse{}, err
+			}
+			return client.listInstanceFunctionsSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listInstanceFunctionsSlotCreateRequest creates the ListInstanceFunctionsSlot request.
-func (client *WebAppsClient) listInstanceFunctionsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListInstanceFunctionsSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listInstanceFunctionsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListInstanceFunctionsSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listInstanceFunctionsSlotHandleResponse handles the ListInstanceFunctionsSlot response.
-func (client *WebAppsClient) listInstanceFunctionsSlotHandleResponse(resp *http.Response) (WebAppsClientListInstanceFunctionsSlotResponse, error) {
+func (client *WebAppsClient) listInstanceFunctionsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListInstanceFunctionsSlotResponse, error) {
 	result := WebAppsClientListInstanceFunctionsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionEnvelopeCollection); err != nil {
 		return WebAppsClientListInstanceFunctionsSlotResponse{}, err
 	}
@@ -18216,47 +18188,61 @@ func (client *WebAppsClient) NewListInstanceIdentifiersPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listInstanceIdentifiersCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listInstanceIdentifiersCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListInstanceIdentifiersResponse{}, err
 			}
-			return client.listInstanceIdentifiersHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListInstanceIdentifiersResponse{}, err
+			}
+			return client.listInstanceIdentifiersHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listInstanceIdentifiersCreateRequest creates the ListInstanceIdentifiers request.
-func (client *WebAppsClient) listInstanceIdentifiersCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListInstanceIdentifiersOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listInstanceIdentifiersCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListInstanceIdentifiersOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listInstanceIdentifiersHandleResponse handles the ListInstanceIdentifiers response.
-func (client *WebAppsClient) listInstanceIdentifiersHandleResponse(resp *http.Response) (WebAppsClientListInstanceIdentifiersResponse, error) {
+func (client *WebAppsClient) listInstanceIdentifiersHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListInstanceIdentifiersResponse, error) {
 	result := WebAppsClientListInstanceIdentifiersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppInstanceStatusCollection); err != nil {
 		return WebAppsClientListInstanceIdentifiersResponse{}, err
 	}
@@ -18282,51 +18268,65 @@ func (client *WebAppsClient) NewListInstanceIdentifiersSlotPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listInstanceIdentifiersSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listInstanceIdentifiersSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListInstanceIdentifiersSlotResponse{}, err
 			}
-			return client.listInstanceIdentifiersSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListInstanceIdentifiersSlotResponse{}, err
+			}
+			return client.listInstanceIdentifiersSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listInstanceIdentifiersSlotCreateRequest creates the ListInstanceIdentifiersSlot request.
-func (client *WebAppsClient) listInstanceIdentifiersSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListInstanceIdentifiersSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listInstanceIdentifiersSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListInstanceIdentifiersSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listInstanceIdentifiersSlotHandleResponse handles the ListInstanceIdentifiersSlot response.
-func (client *WebAppsClient) listInstanceIdentifiersSlotHandleResponse(resp *http.Response) (WebAppsClientListInstanceIdentifiersSlotResponse, error) {
+func (client *WebAppsClient) listInstanceIdentifiersSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListInstanceIdentifiersSlotResponse, error) {
 	result := WebAppsClientListInstanceIdentifiersSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppInstanceStatusCollection); err != nil {
 		return WebAppsClientListInstanceIdentifiersSlotResponse{}, err
 	}
@@ -18351,55 +18351,69 @@ func (client *WebAppsClient) NewListInstanceProcessModulesPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listInstanceProcessModulesCreateRequest(ctx, resourceGroupName, name, processID, instanceID, options)
-			}, nil)
+			req, err := client.listInstanceProcessModulesCreateRequest(ctx, resourceGroupName, name, processID, instanceID, nextLink, options)
 			if err != nil {
 				return WebAppsClientListInstanceProcessModulesResponse{}, err
 			}
-			return client.listInstanceProcessModulesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListInstanceProcessModulesResponse{}, err
+			}
+			return client.listInstanceProcessModulesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listInstanceProcessModulesCreateRequest creates the ListInstanceProcessModules request.
-func (client *WebAppsClient) listInstanceProcessModulesCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, _ *WebAppsClientListInstanceProcessModulesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/processes/{processId}/modules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listInstanceProcessModulesCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, nextLink string, _ *WebAppsClientListInstanceProcessModulesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/processes/{processId}/modules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if processID == "" {
+			return nil, errors.New("parameter processID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{processId}", url.PathEscape(processID))
+		if instanceID == "" {
+			return nil, errors.New("parameter instanceID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if processID == "" {
-		return nil, errors.New("parameter processID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{processId}", url.PathEscape(processID))
-	if instanceID == "" {
-		return nil, errors.New("parameter instanceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listInstanceProcessModulesHandleResponse handles the ListInstanceProcessModules response.
-func (client *WebAppsClient) listInstanceProcessModulesHandleResponse(resp *http.Response) (WebAppsClientListInstanceProcessModulesResponse, error) {
+func (client *WebAppsClient) listInstanceProcessModulesHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListInstanceProcessModulesResponse, error) {
 	result := WebAppsClientListInstanceProcessModulesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessModuleInfoCollection); err != nil {
 		return WebAppsClientListInstanceProcessModulesResponse{}, err
 	}
@@ -18424,59 +18438,73 @@ func (client *WebAppsClient) NewListInstanceProcessModulesSlotPager(resourceGrou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listInstanceProcessModulesSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, instanceID, options)
-			}, nil)
+			req, err := client.listInstanceProcessModulesSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, instanceID, nextLink, options)
 			if err != nil {
 				return WebAppsClientListInstanceProcessModulesSlotResponse{}, err
 			}
-			return client.listInstanceProcessModulesSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListInstanceProcessModulesSlotResponse{}, err
+			}
+			return client.listInstanceProcessModulesSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listInstanceProcessModulesSlotCreateRequest creates the ListInstanceProcessModulesSlot request.
-func (client *WebAppsClient) listInstanceProcessModulesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, _ *WebAppsClientListInstanceProcessModulesSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/processes/{processId}/modules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listInstanceProcessModulesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, nextLink string, _ *WebAppsClientListInstanceProcessModulesSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/processes/{processId}/modules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if processID == "" {
+			return nil, errors.New("parameter processID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{processId}", url.PathEscape(processID))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		if instanceID == "" {
+			return nil, errors.New("parameter instanceID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if processID == "" {
-		return nil, errors.New("parameter processID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{processId}", url.PathEscape(processID))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	if instanceID == "" {
-		return nil, errors.New("parameter instanceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listInstanceProcessModulesSlotHandleResponse handles the ListInstanceProcessModulesSlot response.
-func (client *WebAppsClient) listInstanceProcessModulesSlotHandleResponse(resp *http.Response) (WebAppsClientListInstanceProcessModulesSlotResponse, error) {
+func (client *WebAppsClient) listInstanceProcessModulesSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListInstanceProcessModulesSlotResponse, error) {
 	result := WebAppsClientListInstanceProcessModulesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessModuleInfoCollection); err != nil {
 		return WebAppsClientListInstanceProcessModulesSlotResponse{}, err
 	}
@@ -18501,55 +18529,69 @@ func (client *WebAppsClient) NewListInstanceProcessThreadsPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listInstanceProcessThreadsCreateRequest(ctx, resourceGroupName, name, processID, instanceID, options)
-			}, nil)
+			req, err := client.listInstanceProcessThreadsCreateRequest(ctx, resourceGroupName, name, processID, instanceID, nextLink, options)
 			if err != nil {
 				return WebAppsClientListInstanceProcessThreadsResponse{}, err
 			}
-			return client.listInstanceProcessThreadsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListInstanceProcessThreadsResponse{}, err
+			}
+			return client.listInstanceProcessThreadsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listInstanceProcessThreadsCreateRequest creates the ListInstanceProcessThreads request.
-func (client *WebAppsClient) listInstanceProcessThreadsCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, _ *WebAppsClientListInstanceProcessThreadsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/processes/{processId}/threads"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listInstanceProcessThreadsCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, nextLink string, _ *WebAppsClientListInstanceProcessThreadsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/processes/{processId}/threads"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if processID == "" {
+			return nil, errors.New("parameter processID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{processId}", url.PathEscape(processID))
+		if instanceID == "" {
+			return nil, errors.New("parameter instanceID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if processID == "" {
-		return nil, errors.New("parameter processID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{processId}", url.PathEscape(processID))
-	if instanceID == "" {
-		return nil, errors.New("parameter instanceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listInstanceProcessThreadsHandleResponse handles the ListInstanceProcessThreads response.
-func (client *WebAppsClient) listInstanceProcessThreadsHandleResponse(resp *http.Response) (WebAppsClientListInstanceProcessThreadsResponse, error) {
+func (client *WebAppsClient) listInstanceProcessThreadsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListInstanceProcessThreadsResponse, error) {
 	result := WebAppsClientListInstanceProcessThreadsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessThreadInfoCollection); err != nil {
 		return WebAppsClientListInstanceProcessThreadsResponse{}, err
 	}
@@ -18574,59 +18616,73 @@ func (client *WebAppsClient) NewListInstanceProcessThreadsSlotPager(resourceGrou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listInstanceProcessThreadsSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, instanceID, options)
-			}, nil)
+			req, err := client.listInstanceProcessThreadsSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, instanceID, nextLink, options)
 			if err != nil {
 				return WebAppsClientListInstanceProcessThreadsSlotResponse{}, err
 			}
-			return client.listInstanceProcessThreadsSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListInstanceProcessThreadsSlotResponse{}, err
+			}
+			return client.listInstanceProcessThreadsSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listInstanceProcessThreadsSlotCreateRequest creates the ListInstanceProcessThreadsSlot request.
-func (client *WebAppsClient) listInstanceProcessThreadsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, _ *WebAppsClientListInstanceProcessThreadsSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/processes/{processId}/threads"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listInstanceProcessThreadsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, nextLink string, _ *WebAppsClientListInstanceProcessThreadsSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/processes/{processId}/threads"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if processID == "" {
+			return nil, errors.New("parameter processID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{processId}", url.PathEscape(processID))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		if instanceID == "" {
+			return nil, errors.New("parameter instanceID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if processID == "" {
-		return nil, errors.New("parameter processID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{processId}", url.PathEscape(processID))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	if instanceID == "" {
-		return nil, errors.New("parameter instanceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listInstanceProcessThreadsSlotHandleResponse handles the ListInstanceProcessThreadsSlot response.
-func (client *WebAppsClient) listInstanceProcessThreadsSlotHandleResponse(resp *http.Response) (WebAppsClientListInstanceProcessThreadsSlotResponse, error) {
+func (client *WebAppsClient) listInstanceProcessThreadsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListInstanceProcessThreadsSlotResponse, error) {
 	result := WebAppsClientListInstanceProcessThreadsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessThreadInfoCollection); err != nil {
 		return WebAppsClientListInstanceProcessThreadsSlotResponse{}, err
 	}
@@ -18655,51 +18711,65 @@ func (client *WebAppsClient) NewListInstanceProcessesPager(resourceGroupName str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listInstanceProcessesCreateRequest(ctx, resourceGroupName, name, instanceID, options)
-			}, nil)
+			req, err := client.listInstanceProcessesCreateRequest(ctx, resourceGroupName, name, instanceID, nextLink, options)
 			if err != nil {
 				return WebAppsClientListInstanceProcessesResponse{}, err
 			}
-			return client.listInstanceProcessesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListInstanceProcessesResponse{}, err
+			}
+			return client.listInstanceProcessesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listInstanceProcessesCreateRequest creates the ListInstanceProcesses request.
-func (client *WebAppsClient) listInstanceProcessesCreateRequest(ctx context.Context, resourceGroupName string, name string, instanceID string, _ *WebAppsClientListInstanceProcessesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/processes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listInstanceProcessesCreateRequest(ctx context.Context, resourceGroupName string, name string, instanceID string, nextLink string, _ *WebAppsClientListInstanceProcessesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/processes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if instanceID == "" {
+			return nil, errors.New("parameter instanceID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if instanceID == "" {
-		return nil, errors.New("parameter instanceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listInstanceProcessesHandleResponse handles the ListInstanceProcesses response.
-func (client *WebAppsClient) listInstanceProcessesHandleResponse(resp *http.Response) (WebAppsClientListInstanceProcessesResponse, error) {
+func (client *WebAppsClient) listInstanceProcessesHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListInstanceProcessesResponse, error) {
 	result := WebAppsClientListInstanceProcessesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessInfoCollection); err != nil {
 		return WebAppsClientListInstanceProcessesResponse{}, err
 	}
@@ -18729,55 +18799,69 @@ func (client *WebAppsClient) NewListInstanceProcessesSlotPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listInstanceProcessesSlotCreateRequest(ctx, resourceGroupName, name, slot, instanceID, options)
-			}, nil)
+			req, err := client.listInstanceProcessesSlotCreateRequest(ctx, resourceGroupName, name, slot, instanceID, nextLink, options)
 			if err != nil {
 				return WebAppsClientListInstanceProcessesSlotResponse{}, err
 			}
-			return client.listInstanceProcessesSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListInstanceProcessesSlotResponse{}, err
+			}
+			return client.listInstanceProcessesSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listInstanceProcessesSlotCreateRequest creates the ListInstanceProcessesSlot request.
-func (client *WebAppsClient) listInstanceProcessesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, _ *WebAppsClientListInstanceProcessesSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/processes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listInstanceProcessesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, nextLink string, _ *WebAppsClientListInstanceProcessesSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/processes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		if instanceID == "" {
+			return nil, errors.New("parameter instanceID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	if instanceID == "" {
-		return nil, errors.New("parameter instanceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listInstanceProcessesSlotHandleResponse handles the ListInstanceProcessesSlot response.
-func (client *WebAppsClient) listInstanceProcessesSlotHandleResponse(resp *http.Response) (WebAppsClientListInstanceProcessesSlotResponse, error) {
+func (client *WebAppsClient) listInstanceProcessesSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListInstanceProcessesSlotResponse, error) {
 	result := WebAppsClientListInstanceProcessesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessInfoCollection); err != nil {
 		return WebAppsClientListInstanceProcessesSlotResponse{}, err
 	}
@@ -18803,51 +18887,65 @@ func (client *WebAppsClient) NewListInstanceWorkflowsSlotPager(resourceGroupName
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listInstanceWorkflowsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listInstanceWorkflowsSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListInstanceWorkflowsSlotResponse{}, err
 			}
-			return client.listInstanceWorkflowsSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListInstanceWorkflowsSlotResponse{}, err
+			}
+			return client.listInstanceWorkflowsSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listInstanceWorkflowsSlotCreateRequest creates the ListInstanceWorkflowsSlot request.
-func (client *WebAppsClient) listInstanceWorkflowsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListInstanceWorkflowsSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/workflows"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listInstanceWorkflowsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListInstanceWorkflowsSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/workflows"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listInstanceWorkflowsSlotHandleResponse handles the ListInstanceWorkflowsSlot response.
-func (client *WebAppsClient) listInstanceWorkflowsSlotHandleResponse(resp *http.Response) (WebAppsClientListInstanceWorkflowsSlotResponse, error) {
+func (client *WebAppsClient) listInstanceWorkflowsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListInstanceWorkflowsSlotResponse, error) {
 	result := WebAppsClientListInstanceWorkflowsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowEnvelopeCollection); err != nil {
 		return WebAppsClientListInstanceWorkflowsSlotResponse{}, err
 	}
@@ -18875,12 +18973,7 @@ func (client *WebAppsClient) ListMetadata(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WebAppsClientListMetadataResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListMetadataResponse{}, err
-	}
-	resp, err := client.listMetadataHandleResponse(httpResp)
-	return resp, err
+	return client.listMetadataHandleResponse(httpResp, http.StatusOK)
 }
 
 // listMetadataCreateRequest creates the ListMetadata request.
@@ -18910,8 +19003,11 @@ func (client *WebAppsClient) listMetadataCreateRequest(ctx context.Context, reso
 }
 
 // listMetadataHandleResponse handles the ListMetadata response.
-func (client *WebAppsClient) listMetadataHandleResponse(resp *http.Response) (WebAppsClientListMetadataResponse, error) {
+func (client *WebAppsClient) listMetadataHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListMetadataResponse, error) {
 	result := WebAppsClientListMetadataResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
 		return WebAppsClientListMetadataResponse{}, err
 	}
@@ -18941,12 +19037,7 @@ func (client *WebAppsClient) ListMetadataSlot(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientListMetadataSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListMetadataSlotResponse{}, err
-	}
-	resp, err := client.listMetadataSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listMetadataSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listMetadataSlotCreateRequest creates the ListMetadataSlot request.
@@ -18980,8 +19071,11 @@ func (client *WebAppsClient) listMetadataSlotCreateRequest(ctx context.Context, 
 }
 
 // listMetadataSlotHandleResponse handles the ListMetadataSlot response.
-func (client *WebAppsClient) listMetadataSlotHandleResponse(resp *http.Response) (WebAppsClientListMetadataSlotResponse, error) {
+func (client *WebAppsClient) listMetadataSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListMetadataSlotResponse, error) {
 	result := WebAppsClientListMetadataSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
 		return WebAppsClientListMetadataSlotResponse{}, err
 	}
@@ -19011,12 +19105,7 @@ func (client *WebAppsClient) ListNetworkFeatures(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientListNetworkFeaturesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListNetworkFeaturesResponse{}, err
-	}
-	resp, err := client.listNetworkFeaturesHandleResponse(httpResp)
-	return resp, err
+	return client.listNetworkFeaturesHandleResponse(httpResp, http.StatusOK)
 }
 
 // listNetworkFeaturesCreateRequest creates the ListNetworkFeatures request.
@@ -19050,8 +19139,11 @@ func (client *WebAppsClient) listNetworkFeaturesCreateRequest(ctx context.Contex
 }
 
 // listNetworkFeaturesHandleResponse handles the ListNetworkFeatures response.
-func (client *WebAppsClient) listNetworkFeaturesHandleResponse(resp *http.Response) (WebAppsClientListNetworkFeaturesResponse, error) {
+func (client *WebAppsClient) listNetworkFeaturesHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListNetworkFeaturesResponse, error) {
 	result := WebAppsClientListNetworkFeaturesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkFeatures); err != nil {
 		return WebAppsClientListNetworkFeaturesResponse{}, err
 	}
@@ -19079,12 +19171,7 @@ func (client *WebAppsClient) ListNetworkFeaturesSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientListNetworkFeaturesSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListNetworkFeaturesSlotResponse{}, err
-	}
-	resp, err := client.listNetworkFeaturesSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listNetworkFeaturesSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listNetworkFeaturesSlotCreateRequest creates the ListNetworkFeaturesSlot request.
@@ -19122,8 +19209,11 @@ func (client *WebAppsClient) listNetworkFeaturesSlotCreateRequest(ctx context.Co
 }
 
 // listNetworkFeaturesSlotHandleResponse handles the ListNetworkFeaturesSlot response.
-func (client *WebAppsClient) listNetworkFeaturesSlotHandleResponse(resp *http.Response) (WebAppsClientListNetworkFeaturesSlotResponse, error) {
+func (client *WebAppsClient) listNetworkFeaturesSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListNetworkFeaturesSlotResponse, error) {
 	result := WebAppsClientListNetworkFeaturesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkFeatures); err != nil {
 		return WebAppsClientListNetworkFeaturesSlotResponse{}, err
 	}
@@ -19148,50 +19238,64 @@ func (client *WebAppsClient) NewListPerfMonCountersPager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listPerfMonCountersCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listPerfMonCountersCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListPerfMonCountersResponse{}, err
 			}
-			return client.listPerfMonCountersHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListPerfMonCountersResponse{}, err
+			}
+			return client.listPerfMonCountersHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listPerfMonCountersCreateRequest creates the ListPerfMonCounters request.
-func (client *WebAppsClient) listPerfMonCountersCreateRequest(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientListPerfMonCountersOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/perfcounters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listPerfMonCountersCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, options *WebAppsClientListPerfMonCountersOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/perfcounters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listPerfMonCountersHandleResponse handles the ListPerfMonCounters response.
-func (client *WebAppsClient) listPerfMonCountersHandleResponse(resp *http.Response) (WebAppsClientListPerfMonCountersResponse, error) {
+func (client *WebAppsClient) listPerfMonCountersHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListPerfMonCountersResponse, error) {
 	result := WebAppsClientListPerfMonCountersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PerfMonCounterCollection); err != nil {
 		return WebAppsClientListPerfMonCountersResponse{}, err
 	}
@@ -19217,54 +19321,68 @@ func (client *WebAppsClient) NewListPerfMonCountersSlotPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listPerfMonCountersSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listPerfMonCountersSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListPerfMonCountersSlotResponse{}, err
 			}
-			return client.listPerfMonCountersSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListPerfMonCountersSlotResponse{}, err
+			}
+			return client.listPerfMonCountersSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listPerfMonCountersSlotCreateRequest creates the ListPerfMonCountersSlot request.
-func (client *WebAppsClient) listPerfMonCountersSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientListPerfMonCountersSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/perfcounters"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listPerfMonCountersSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, options *WebAppsClientListPerfMonCountersSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/perfcounters"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listPerfMonCountersSlotHandleResponse handles the ListPerfMonCountersSlot response.
-func (client *WebAppsClient) listPerfMonCountersSlotHandleResponse(resp *http.Response) (WebAppsClientListPerfMonCountersSlotResponse, error) {
+func (client *WebAppsClient) listPerfMonCountersSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListPerfMonCountersSlotResponse, error) {
 	result := WebAppsClientListPerfMonCountersSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PerfMonCounterCollection); err != nil {
 		return WebAppsClientListPerfMonCountersSlotResponse{}, err
 	}
@@ -19293,12 +19411,7 @@ func (client *WebAppsClient) ListPremierAddOns(ctx context.Context, resourceGrou
 	if err != nil {
 		return WebAppsClientListPremierAddOnsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListPremierAddOnsResponse{}, err
-	}
-	resp, err := client.listPremierAddOnsHandleResponse(httpResp)
-	return resp, err
+	return client.listPremierAddOnsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listPremierAddOnsCreateRequest creates the ListPremierAddOns request.
@@ -19328,8 +19441,11 @@ func (client *WebAppsClient) listPremierAddOnsCreateRequest(ctx context.Context,
 }
 
 // listPremierAddOnsHandleResponse handles the ListPremierAddOns response.
-func (client *WebAppsClient) listPremierAddOnsHandleResponse(resp *http.Response) (WebAppsClientListPremierAddOnsResponse, error) {
+func (client *WebAppsClient) listPremierAddOnsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListPremierAddOnsResponse, error) {
 	result := WebAppsClientListPremierAddOnsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PremierAddOn); err != nil {
 		return WebAppsClientListPremierAddOnsResponse{}, err
 	}
@@ -19359,12 +19475,7 @@ func (client *WebAppsClient) ListPremierAddOnsSlot(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientListPremierAddOnsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListPremierAddOnsSlotResponse{}, err
-	}
-	resp, err := client.listPremierAddOnsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listPremierAddOnsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listPremierAddOnsSlotCreateRequest creates the ListPremierAddOnsSlot request.
@@ -19398,8 +19509,11 @@ func (client *WebAppsClient) listPremierAddOnsSlotCreateRequest(ctx context.Cont
 }
 
 // listPremierAddOnsSlotHandleResponse handles the ListPremierAddOnsSlot response.
-func (client *WebAppsClient) listPremierAddOnsSlotHandleResponse(resp *http.Response) (WebAppsClientListPremierAddOnsSlotResponse, error) {
+func (client *WebAppsClient) listPremierAddOnsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListPremierAddOnsSlotResponse, error) {
 	result := WebAppsClientListPremierAddOnsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PremierAddOn); err != nil {
 		return WebAppsClientListPremierAddOnsSlotResponse{}, err
 	}
@@ -19426,51 +19540,65 @@ func (client *WebAppsClient) NewListProcessModulesPager(resourceGroupName string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listProcessModulesCreateRequest(ctx, resourceGroupName, name, processID, options)
-			}, nil)
+			req, err := client.listProcessModulesCreateRequest(ctx, resourceGroupName, name, processID, nextLink, options)
 			if err != nil {
 				return WebAppsClientListProcessModulesResponse{}, err
 			}
-			return client.listProcessModulesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListProcessModulesResponse{}, err
+			}
+			return client.listProcessModulesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listProcessModulesCreateRequest creates the ListProcessModules request.
-func (client *WebAppsClient) listProcessModulesCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, _ *WebAppsClientListProcessModulesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes/{processId}/modules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listProcessModulesCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, nextLink string, _ *WebAppsClientListProcessModulesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes/{processId}/modules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if processID == "" {
+			return nil, errors.New("parameter processID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{processId}", url.PathEscape(processID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if processID == "" {
-		return nil, errors.New("parameter processID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{processId}", url.PathEscape(processID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listProcessModulesHandleResponse handles the ListProcessModules response.
-func (client *WebAppsClient) listProcessModulesHandleResponse(resp *http.Response) (WebAppsClientListProcessModulesResponse, error) {
+func (client *WebAppsClient) listProcessModulesHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListProcessModulesResponse, error) {
 	result := WebAppsClientListProcessModulesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessModuleInfoCollection); err != nil {
 		return WebAppsClientListProcessModulesResponse{}, err
 	}
@@ -19495,55 +19623,69 @@ func (client *WebAppsClient) NewListProcessModulesSlotPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listProcessModulesSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, options)
-			}, nil)
+			req, err := client.listProcessModulesSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListProcessModulesSlotResponse{}, err
 			}
-			return client.listProcessModulesSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListProcessModulesSlotResponse{}, err
+			}
+			return client.listProcessModulesSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listProcessModulesSlotCreateRequest creates the ListProcessModulesSlot request.
-func (client *WebAppsClient) listProcessModulesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, slot string, _ *WebAppsClientListProcessModulesSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/processes/{processId}/modules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listProcessModulesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, slot string, nextLink string, _ *WebAppsClientListProcessModulesSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/processes/{processId}/modules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if processID == "" {
+			return nil, errors.New("parameter processID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{processId}", url.PathEscape(processID))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if processID == "" {
-		return nil, errors.New("parameter processID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{processId}", url.PathEscape(processID))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listProcessModulesSlotHandleResponse handles the ListProcessModulesSlot response.
-func (client *WebAppsClient) listProcessModulesSlotHandleResponse(resp *http.Response) (WebAppsClientListProcessModulesSlotResponse, error) {
+func (client *WebAppsClient) listProcessModulesSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListProcessModulesSlotResponse, error) {
 	result := WebAppsClientListProcessModulesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessModuleInfoCollection); err != nil {
 		return WebAppsClientListProcessModulesSlotResponse{}, err
 	}
@@ -19569,51 +19711,65 @@ func (client *WebAppsClient) NewListProcessThreadsPager(resourceGroupName string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listProcessThreadsCreateRequest(ctx, resourceGroupName, name, processID, options)
-			}, nil)
+			req, err := client.listProcessThreadsCreateRequest(ctx, resourceGroupName, name, processID, nextLink, options)
 			if err != nil {
 				return WebAppsClientListProcessThreadsResponse{}, err
 			}
-			return client.listProcessThreadsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListProcessThreadsResponse{}, err
+			}
+			return client.listProcessThreadsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listProcessThreadsCreateRequest creates the ListProcessThreads request.
-func (client *WebAppsClient) listProcessThreadsCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, _ *WebAppsClientListProcessThreadsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes/{processId}/threads"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listProcessThreadsCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, nextLink string, _ *WebAppsClientListProcessThreadsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes/{processId}/threads"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if processID == "" {
+			return nil, errors.New("parameter processID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{processId}", url.PathEscape(processID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if processID == "" {
-		return nil, errors.New("parameter processID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{processId}", url.PathEscape(processID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listProcessThreadsHandleResponse handles the ListProcessThreads response.
-func (client *WebAppsClient) listProcessThreadsHandleResponse(resp *http.Response) (WebAppsClientListProcessThreadsResponse, error) {
+func (client *WebAppsClient) listProcessThreadsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListProcessThreadsResponse, error) {
 	result := WebAppsClientListProcessThreadsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessThreadInfoCollection); err != nil {
 		return WebAppsClientListProcessThreadsResponse{}, err
 	}
@@ -19637,55 +19793,69 @@ func (client *WebAppsClient) NewListProcessThreadsSlotPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listProcessThreadsSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, options)
-			}, nil)
+			req, err := client.listProcessThreadsSlotCreateRequest(ctx, resourceGroupName, name, processID, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListProcessThreadsSlotResponse{}, err
 			}
-			return client.listProcessThreadsSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListProcessThreadsSlotResponse{}, err
+			}
+			return client.listProcessThreadsSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listProcessThreadsSlotCreateRequest creates the ListProcessThreadsSlot request.
-func (client *WebAppsClient) listProcessThreadsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, slot string, _ *WebAppsClientListProcessThreadsSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/processes/{processId}/threads"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listProcessThreadsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, slot string, nextLink string, _ *WebAppsClientListProcessThreadsSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/processes/{processId}/threads"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if processID == "" {
+			return nil, errors.New("parameter processID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{processId}", url.PathEscape(processID))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if processID == "" {
-		return nil, errors.New("parameter processID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{processId}", url.PathEscape(processID))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listProcessThreadsSlotHandleResponse handles the ListProcessThreadsSlot response.
-func (client *WebAppsClient) listProcessThreadsSlotHandleResponse(resp *http.Response) (WebAppsClientListProcessThreadsSlotResponse, error) {
+func (client *WebAppsClient) listProcessThreadsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListProcessThreadsSlotResponse, error) {
 	result := WebAppsClientListProcessThreadsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessThreadInfoCollection); err != nil {
 		return WebAppsClientListProcessThreadsSlotResponse{}, err
 	}
@@ -19712,47 +19882,61 @@ func (client *WebAppsClient) NewListProcessesPager(resourceGroupName string, nam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listProcessesCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listProcessesCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListProcessesResponse{}, err
 			}
-			return client.listProcessesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListProcessesResponse{}, err
+			}
+			return client.listProcessesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listProcessesCreateRequest creates the ListProcesses request.
-func (client *WebAppsClient) listProcessesCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListProcessesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listProcessesCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListProcessesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listProcessesHandleResponse handles the ListProcesses response.
-func (client *WebAppsClient) listProcessesHandleResponse(resp *http.Response) (WebAppsClientListProcessesResponse, error) {
+func (client *WebAppsClient) listProcessesHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListProcessesResponse, error) {
 	result := WebAppsClientListProcessesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessInfoCollection); err != nil {
 		return WebAppsClientListProcessesResponse{}, err
 	}
@@ -19780,51 +19964,65 @@ func (client *WebAppsClient) NewListProcessesSlotPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listProcessesSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listProcessesSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListProcessesSlotResponse{}, err
 			}
-			return client.listProcessesSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListProcessesSlotResponse{}, err
+			}
+			return client.listProcessesSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listProcessesSlotCreateRequest creates the ListProcessesSlot request.
-func (client *WebAppsClient) listProcessesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListProcessesSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/processes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listProcessesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListProcessesSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/processes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listProcessesSlotHandleResponse handles the ListProcessesSlot response.
-func (client *WebAppsClient) listProcessesSlotHandleResponse(resp *http.Response) (WebAppsClientListProcessesSlotResponse, error) {
+func (client *WebAppsClient) listProcessesSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListProcessesSlotResponse, error) {
 	result := WebAppsClientListProcessesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ProcessInfoCollection); err != nil {
 		return WebAppsClientListProcessesSlotResponse{}, err
 	}
@@ -19849,47 +20047,61 @@ func (client *WebAppsClient) NewListProductionSiteDeploymentStatusesPager(resour
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listProductionSiteDeploymentStatusesCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listProductionSiteDeploymentStatusesCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListProductionSiteDeploymentStatusesResponse{}, err
 			}
-			return client.listProductionSiteDeploymentStatusesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListProductionSiteDeploymentStatusesResponse{}, err
+			}
+			return client.listProductionSiteDeploymentStatusesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listProductionSiteDeploymentStatusesCreateRequest creates the ListProductionSiteDeploymentStatuses request.
-func (client *WebAppsClient) listProductionSiteDeploymentStatusesCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListProductionSiteDeploymentStatusesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deploymentStatus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listProductionSiteDeploymentStatusesCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListProductionSiteDeploymentStatusesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deploymentStatus"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listProductionSiteDeploymentStatusesHandleResponse handles the ListProductionSiteDeploymentStatuses response.
-func (client *WebAppsClient) listProductionSiteDeploymentStatusesHandleResponse(resp *http.Response) (WebAppsClientListProductionSiteDeploymentStatusesResponse, error) {
+func (client *WebAppsClient) listProductionSiteDeploymentStatusesHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListProductionSiteDeploymentStatusesResponse, error) {
 	result := WebAppsClientListProductionSiteDeploymentStatusesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmDeploymentStatusCollection); err != nil {
 		return WebAppsClientListProductionSiteDeploymentStatusesResponse{}, err
 	}
@@ -19914,47 +20126,61 @@ func (client *WebAppsClient) NewListPublicCertificatesPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listPublicCertificatesCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listPublicCertificatesCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListPublicCertificatesResponse{}, err
 			}
-			return client.listPublicCertificatesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListPublicCertificatesResponse{}, err
+			}
+			return client.listPublicCertificatesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listPublicCertificatesCreateRequest creates the ListPublicCertificates request.
-func (client *WebAppsClient) listPublicCertificatesCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListPublicCertificatesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publicCertificates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listPublicCertificatesCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListPublicCertificatesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publicCertificates"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listPublicCertificatesHandleResponse handles the ListPublicCertificates response.
-func (client *WebAppsClient) listPublicCertificatesHandleResponse(resp *http.Response) (WebAppsClientListPublicCertificatesResponse, error) {
+func (client *WebAppsClient) listPublicCertificatesHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListPublicCertificatesResponse, error) {
 	result := WebAppsClientListPublicCertificatesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicCertificateCollection); err != nil {
 		return WebAppsClientListPublicCertificatesResponse{}, err
 	}
@@ -19980,51 +20206,65 @@ func (client *WebAppsClient) NewListPublicCertificatesSlotPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listPublicCertificatesSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listPublicCertificatesSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListPublicCertificatesSlotResponse{}, err
 			}
-			return client.listPublicCertificatesSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListPublicCertificatesSlotResponse{}, err
+			}
+			return client.listPublicCertificatesSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listPublicCertificatesSlotCreateRequest creates the ListPublicCertificatesSlot request.
-func (client *WebAppsClient) listPublicCertificatesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListPublicCertificatesSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publicCertificates"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listPublicCertificatesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListPublicCertificatesSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publicCertificates"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listPublicCertificatesSlotHandleResponse handles the ListPublicCertificatesSlot response.
-func (client *WebAppsClient) listPublicCertificatesSlotHandleResponse(resp *http.Response) (WebAppsClientListPublicCertificatesSlotResponse, error) {
+func (client *WebAppsClient) listPublicCertificatesSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListPublicCertificatesSlotResponse, error) {
 	result := WebAppsClientListPublicCertificatesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PublicCertificateCollection); err != nil {
 		return WebAppsClientListPublicCertificatesSlotResponse{}, err
 	}
@@ -20075,8 +20315,7 @@ func (client *WebAppsClient) listPublishingCredentials(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -20152,8 +20391,7 @@ func (client *WebAppsClient) listPublishingCredentialsSlot(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -20212,12 +20450,7 @@ func (client *WebAppsClient) ListPublishingProfileXMLWithSecrets(ctx context.Con
 	if err != nil {
 		return WebAppsClientListPublishingProfileXMLWithSecretsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListPublishingProfileXMLWithSecretsResponse{}, err
-	}
-	resp, err := client.listPublishingProfileXMLWithSecretsHandleResponse(httpResp)
-	return resp, err
+	return client.listPublishingProfileXMLWithSecretsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listPublishingProfileXMLWithSecretsCreateRequest creates the ListPublishingProfileXMLWithSecrets request.
@@ -20252,11 +20485,15 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsCreateRequest(ct
 }
 
 // listPublishingProfileXMLWithSecretsHandleResponse handles the ListPublishingProfileXMLWithSecrets response.
-func (client *WebAppsClient) listPublishingProfileXMLWithSecretsHandleResponse(resp *http.Response) (WebAppsClientListPublishingProfileXMLWithSecretsResponse, error) {
-	result := WebAppsClientListPublishingProfileXMLWithSecretsResponse{Body: resp.Body}
+func (client *WebAppsClient) listPublishingProfileXMLWithSecretsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListPublishingProfileXMLWithSecretsResponse, error) {
+	result := WebAppsClientListPublishingProfileXMLWithSecretsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
+	result.Body = resp.Body
 	return result, nil
 }
 
@@ -20285,12 +20522,7 @@ func (client *WebAppsClient) ListPublishingProfileXMLWithSecretsSlot(ctx context
 	if err != nil {
 		return WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse{}, err
-	}
-	resp, err := client.listPublishingProfileXMLWithSecretsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listPublishingProfileXMLWithSecretsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listPublishingProfileXMLWithSecretsSlotCreateRequest creates the ListPublishingProfileXMLWithSecretsSlot request.
@@ -20329,11 +20561,15 @@ func (client *WebAppsClient) listPublishingProfileXMLWithSecretsSlotCreateReques
 }
 
 // listPublishingProfileXMLWithSecretsSlotHandleResponse handles the ListPublishingProfileXMLWithSecretsSlot response.
-func (client *WebAppsClient) listPublishingProfileXMLWithSecretsSlotHandleResponse(resp *http.Response) (WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse, error) {
-	result := WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse{Body: resp.Body}
+func (client *WebAppsClient) listPublishingProfileXMLWithSecretsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse, error) {
+	result := WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
+	result.Body = resp.Body
 	return result, nil
 }
 
@@ -20359,12 +20595,7 @@ func (client *WebAppsClient) ListRelayServiceConnections(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientListRelayServiceConnectionsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListRelayServiceConnectionsResponse{}, err
-	}
-	resp, err := client.listRelayServiceConnectionsHandleResponse(httpResp)
-	return resp, err
+	return client.listRelayServiceConnectionsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listRelayServiceConnectionsCreateRequest creates the ListRelayServiceConnections request.
@@ -20394,8 +20625,11 @@ func (client *WebAppsClient) listRelayServiceConnectionsCreateRequest(ctx contex
 }
 
 // listRelayServiceConnectionsHandleResponse handles the ListRelayServiceConnections response.
-func (client *WebAppsClient) listRelayServiceConnectionsHandleResponse(resp *http.Response) (WebAppsClientListRelayServiceConnectionsResponse, error) {
+func (client *WebAppsClient) listRelayServiceConnectionsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListRelayServiceConnectionsResponse, error) {
 	result := WebAppsClientListRelayServiceConnectionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RelayServiceConnectionEntity); err != nil {
 		return WebAppsClientListRelayServiceConnectionsResponse{}, err
 	}
@@ -20425,12 +20659,7 @@ func (client *WebAppsClient) ListRelayServiceConnectionsSlot(ctx context.Context
 	if err != nil {
 		return WebAppsClientListRelayServiceConnectionsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListRelayServiceConnectionsSlotResponse{}, err
-	}
-	resp, err := client.listRelayServiceConnectionsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listRelayServiceConnectionsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listRelayServiceConnectionsSlotCreateRequest creates the ListRelayServiceConnectionsSlot request.
@@ -20464,8 +20693,11 @@ func (client *WebAppsClient) listRelayServiceConnectionsSlotCreateRequest(ctx co
 }
 
 // listRelayServiceConnectionsSlotHandleResponse handles the ListRelayServiceConnectionsSlot response.
-func (client *WebAppsClient) listRelayServiceConnectionsSlotHandleResponse(resp *http.Response) (WebAppsClientListRelayServiceConnectionsSlotResponse, error) {
+func (client *WebAppsClient) listRelayServiceConnectionsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListRelayServiceConnectionsSlotResponse, error) {
 	result := WebAppsClientListRelayServiceConnectionsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RelayServiceConnectionEntity); err != nil {
 		return WebAppsClientListRelayServiceConnectionsSlotResponse{}, err
 	}
@@ -20490,47 +20722,61 @@ func (client *WebAppsClient) NewListSiteBackupsPager(resourceGroupName string, n
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSiteBackupsCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listSiteBackupsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListSiteBackupsResponse{}, err
 			}
-			return client.listSiteBackupsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListSiteBackupsResponse{}, err
+			}
+			return client.listSiteBackupsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSiteBackupsCreateRequest creates the ListSiteBackups request.
-func (client *WebAppsClient) listSiteBackupsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListSiteBackupsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/listbackups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listSiteBackupsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListSiteBackupsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/listbackups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSiteBackupsHandleResponse handles the ListSiteBackups response.
-func (client *WebAppsClient) listSiteBackupsHandleResponse(resp *http.Response) (WebAppsClientListSiteBackupsResponse, error) {
+func (client *WebAppsClient) listSiteBackupsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSiteBackupsResponse, error) {
 	result := WebAppsClientListSiteBackupsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupItemCollection); err != nil {
 		return WebAppsClientListSiteBackupsResponse{}, err
 	}
@@ -20556,51 +20802,65 @@ func (client *WebAppsClient) NewListSiteBackupsSlotPager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSiteBackupsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listSiteBackupsSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListSiteBackupsSlotResponse{}, err
 			}
-			return client.listSiteBackupsSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListSiteBackupsSlotResponse{}, err
+			}
+			return client.listSiteBackupsSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSiteBackupsSlotCreateRequest creates the ListSiteBackupsSlot request.
-func (client *WebAppsClient) listSiteBackupsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListSiteBackupsSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/listbackups"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listSiteBackupsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListSiteBackupsSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/listbackups"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSiteBackupsSlotHandleResponse handles the ListSiteBackupsSlot response.
-func (client *WebAppsClient) listSiteBackupsSlotHandleResponse(resp *http.Response) (WebAppsClientListSiteBackupsSlotResponse, error) {
+func (client *WebAppsClient) listSiteBackupsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSiteBackupsSlotResponse, error) {
 	result := WebAppsClientListSiteBackupsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupItemCollection); err != nil {
 		return WebAppsClientListSiteBackupsSlotResponse{}, err
 	}
@@ -20625,47 +20885,61 @@ func (client *WebAppsClient) NewListSiteContainersPager(resourceGroupName string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSiteContainersCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listSiteContainersCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListSiteContainersResponse{}, err
 			}
-			return client.listSiteContainersHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListSiteContainersResponse{}, err
+			}
+			return client.listSiteContainersHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSiteContainersCreateRequest creates the ListSiteContainers request.
-func (client *WebAppsClient) listSiteContainersCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListSiteContainersOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sitecontainers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listSiteContainersCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListSiteContainersOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sitecontainers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSiteContainersHandleResponse handles the ListSiteContainers response.
-func (client *WebAppsClient) listSiteContainersHandleResponse(resp *http.Response) (WebAppsClientListSiteContainersResponse, error) {
+func (client *WebAppsClient) listSiteContainersHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSiteContainersResponse, error) {
 	result := WebAppsClientListSiteContainersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteContainerCollection); err != nil {
 		return WebAppsClientListSiteContainersResponse{}, err
 	}
@@ -20692,51 +20966,65 @@ func (client *WebAppsClient) NewListSiteContainersSlotPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSiteContainersSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listSiteContainersSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListSiteContainersSlotResponse{}, err
 			}
-			return client.listSiteContainersSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListSiteContainersSlotResponse{}, err
+			}
+			return client.listSiteContainersSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSiteContainersSlotCreateRequest creates the ListSiteContainersSlot request.
-func (client *WebAppsClient) listSiteContainersSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListSiteContainersSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sitecontainers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listSiteContainersSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListSiteContainersSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sitecontainers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSiteContainersSlotHandleResponse handles the ListSiteContainersSlot response.
-func (client *WebAppsClient) listSiteContainersSlotHandleResponse(resp *http.Response) (WebAppsClientListSiteContainersSlotResponse, error) {
+func (client *WebAppsClient) listSiteContainersSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSiteContainersSlotResponse, error) {
 	result := WebAppsClientListSiteContainersSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteContainerCollection); err != nil {
 		return WebAppsClientListSiteContainersSlotResponse{}, err
 	}
@@ -20761,47 +21049,61 @@ func (client *WebAppsClient) NewListSiteExtensionsPager(resourceGroupName string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSiteExtensionsCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listSiteExtensionsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListSiteExtensionsResponse{}, err
 			}
-			return client.listSiteExtensionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListSiteExtensionsResponse{}, err
+			}
+			return client.listSiteExtensionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSiteExtensionsCreateRequest creates the ListSiteExtensions request.
-func (client *WebAppsClient) listSiteExtensionsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListSiteExtensionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/siteextensions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listSiteExtensionsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListSiteExtensionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/siteextensions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSiteExtensionsHandleResponse handles the ListSiteExtensions response.
-func (client *WebAppsClient) listSiteExtensionsHandleResponse(resp *http.Response) (WebAppsClientListSiteExtensionsResponse, error) {
+func (client *WebAppsClient) listSiteExtensionsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSiteExtensionsResponse, error) {
 	result := WebAppsClientListSiteExtensionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteExtensionInfoCollection); err != nil {
 		return WebAppsClientListSiteExtensionsResponse{}, err
 	}
@@ -20827,51 +21129,65 @@ func (client *WebAppsClient) NewListSiteExtensionsSlotPager(resourceGroupName st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSiteExtensionsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listSiteExtensionsSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListSiteExtensionsSlotResponse{}, err
 			}
-			return client.listSiteExtensionsSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListSiteExtensionsSlotResponse{}, err
+			}
+			return client.listSiteExtensionsSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSiteExtensionsSlotCreateRequest creates the ListSiteExtensionsSlot request.
-func (client *WebAppsClient) listSiteExtensionsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListSiteExtensionsSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/siteextensions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listSiteExtensionsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListSiteExtensionsSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/siteextensions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSiteExtensionsSlotHandleResponse handles the ListSiteExtensionsSlot response.
-func (client *WebAppsClient) listSiteExtensionsSlotHandleResponse(resp *http.Response) (WebAppsClientListSiteExtensionsSlotResponse, error) {
+func (client *WebAppsClient) listSiteExtensionsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSiteExtensionsSlotResponse, error) {
 	result := WebAppsClientListSiteExtensionsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteExtensionInfoCollection); err != nil {
 		return WebAppsClientListSiteExtensionsSlotResponse{}, err
 	}
@@ -20900,12 +21216,7 @@ func (client *WebAppsClient) ListSitePushSettings(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientListSitePushSettingsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListSitePushSettingsResponse{}, err
-	}
-	resp, err := client.listSitePushSettingsHandleResponse(httpResp)
-	return resp, err
+	return client.listSitePushSettingsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listSitePushSettingsCreateRequest creates the ListSitePushSettings request.
@@ -20935,8 +21246,11 @@ func (client *WebAppsClient) listSitePushSettingsCreateRequest(ctx context.Conte
 }
 
 // listSitePushSettingsHandleResponse handles the ListSitePushSettings response.
-func (client *WebAppsClient) listSitePushSettingsHandleResponse(resp *http.Response) (WebAppsClientListSitePushSettingsResponse, error) {
+func (client *WebAppsClient) listSitePushSettingsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSitePushSettingsResponse, error) {
 	result := WebAppsClientListSitePushSettingsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PushSettings); err != nil {
 		return WebAppsClientListSitePushSettingsResponse{}, err
 	}
@@ -20966,12 +21280,7 @@ func (client *WebAppsClient) ListSitePushSettingsSlot(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientListSitePushSettingsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListSitePushSettingsSlotResponse{}, err
-	}
-	resp, err := client.listSitePushSettingsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listSitePushSettingsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listSitePushSettingsSlotCreateRequest creates the ListSitePushSettingsSlot request.
@@ -21005,8 +21314,11 @@ func (client *WebAppsClient) listSitePushSettingsSlotCreateRequest(ctx context.C
 }
 
 // listSitePushSettingsSlotHandleResponse handles the ListSitePushSettingsSlot response.
-func (client *WebAppsClient) listSitePushSettingsSlotHandleResponse(resp *http.Response) (WebAppsClientListSitePushSettingsSlotResponse, error) {
+func (client *WebAppsClient) listSitePushSettingsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSitePushSettingsSlotResponse, error) {
 	result := WebAppsClientListSitePushSettingsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PushSettings); err != nil {
 		return WebAppsClientListSitePushSettingsSlotResponse{}, err
 	}
@@ -21035,12 +21347,7 @@ func (client *WebAppsClient) ListSlotConfigurationNames(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientListSlotConfigurationNamesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListSlotConfigurationNamesResponse{}, err
-	}
-	resp, err := client.listSlotConfigurationNamesHandleResponse(httpResp)
-	return resp, err
+	return client.listSlotConfigurationNamesHandleResponse(httpResp, http.StatusOK)
 }
 
 // listSlotConfigurationNamesCreateRequest creates the ListSlotConfigurationNames request.
@@ -21070,8 +21377,11 @@ func (client *WebAppsClient) listSlotConfigurationNamesCreateRequest(ctx context
 }
 
 // listSlotConfigurationNamesHandleResponse handles the ListSlotConfigurationNames response.
-func (client *WebAppsClient) listSlotConfigurationNamesHandleResponse(resp *http.Response) (WebAppsClientListSlotConfigurationNamesResponse, error) {
+func (client *WebAppsClient) listSlotConfigurationNamesHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSlotConfigurationNamesResponse, error) {
 	result := WebAppsClientListSlotConfigurationNamesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SlotConfigNamesResource); err != nil {
 		return WebAppsClientListSlotConfigurationNamesResponse{}, err
 	}
@@ -21097,51 +21407,65 @@ func (client *WebAppsClient) NewListSlotDifferencesFromProductionPager(resourceG
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSlotDifferencesFromProductionCreateRequest(ctx, resourceGroupName, name, slotSwapEntity, options)
-			}, nil)
+			req, err := client.listSlotDifferencesFromProductionCreateRequest(ctx, resourceGroupName, name, slotSwapEntity, nextLink, options)
 			if err != nil {
 				return WebAppsClientListSlotDifferencesFromProductionResponse{}, err
 			}
-			return client.listSlotDifferencesFromProductionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListSlotDifferencesFromProductionResponse{}, err
+			}
+			return client.listSlotDifferencesFromProductionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSlotDifferencesFromProductionCreateRequest creates the ListSlotDifferencesFromProduction request.
-func (client *WebAppsClient) listSlotDifferencesFromProductionCreateRequest(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, _ *WebAppsClientListSlotDifferencesFromProductionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsdiffs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listSlotDifferencesFromProductionCreateRequest(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, nextLink string, _ *WebAppsClientListSlotDifferencesFromProductionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsdiffs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, slotSwapEntity); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, slotSwapEntity); err != nil {
+			return nil, err
+		}
 	}
 	return req, nil
 }
 
 // listSlotDifferencesFromProductionHandleResponse handles the ListSlotDifferencesFromProduction response.
-func (client *WebAppsClient) listSlotDifferencesFromProductionHandleResponse(resp *http.Response) (WebAppsClientListSlotDifferencesFromProductionResponse, error) {
+func (client *WebAppsClient) listSlotDifferencesFromProductionHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSlotDifferencesFromProductionResponse, error) {
 	result := WebAppsClientListSlotDifferencesFromProductionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SlotDifferenceCollection); err != nil {
 		return WebAppsClientListSlotDifferencesFromProductionResponse{}, err
 	}
@@ -21168,55 +21492,69 @@ func (client *WebAppsClient) NewListSlotDifferencesSlotPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSlotDifferencesSlotCreateRequest(ctx, resourceGroupName, name, slot, slotSwapEntity, options)
-			}, nil)
+			req, err := client.listSlotDifferencesSlotCreateRequest(ctx, resourceGroupName, name, slot, slotSwapEntity, nextLink, options)
 			if err != nil {
 				return WebAppsClientListSlotDifferencesSlotResponse{}, err
 			}
-			return client.listSlotDifferencesSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListSlotDifferencesSlotResponse{}, err
+			}
+			return client.listSlotDifferencesSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSlotDifferencesSlotCreateRequest creates the ListSlotDifferencesSlot request.
-func (client *WebAppsClient) listSlotDifferencesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, _ *WebAppsClientListSlotDifferencesSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsdiffs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listSlotDifferencesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, nextLink string, _ *WebAppsClientListSlotDifferencesSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsdiffs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, slotSwapEntity); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, slotSwapEntity); err != nil {
+			return nil, err
+		}
 	}
 	return req, nil
 }
 
 // listSlotDifferencesSlotHandleResponse handles the ListSlotDifferencesSlot response.
-func (client *WebAppsClient) listSlotDifferencesSlotHandleResponse(resp *http.Response) (WebAppsClientListSlotDifferencesSlotResponse, error) {
+func (client *WebAppsClient) listSlotDifferencesSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSlotDifferencesSlotResponse, error) {
 	result := WebAppsClientListSlotDifferencesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SlotDifferenceCollection); err != nil {
 		return WebAppsClientListSlotDifferencesSlotResponse{}, err
 	}
@@ -21243,51 +21581,65 @@ func (client *WebAppsClient) NewListSlotSiteDeploymentStatusesSlotPager(resource
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSlotSiteDeploymentStatusesSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listSlotSiteDeploymentStatusesSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListSlotSiteDeploymentStatusesSlotResponse{}, err
 			}
-			return client.listSlotSiteDeploymentStatusesSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListSlotSiteDeploymentStatusesSlotResponse{}, err
+			}
+			return client.listSlotSiteDeploymentStatusesSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSlotSiteDeploymentStatusesSlotCreateRequest creates the ListSlotSiteDeploymentStatusesSlot request.
-func (client *WebAppsClient) listSlotSiteDeploymentStatusesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListSlotSiteDeploymentStatusesSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deploymentStatus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listSlotSiteDeploymentStatusesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListSlotSiteDeploymentStatusesSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deploymentStatus"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSlotSiteDeploymentStatusesSlotHandleResponse handles the ListSlotSiteDeploymentStatusesSlot response.
-func (client *WebAppsClient) listSlotSiteDeploymentStatusesSlotHandleResponse(resp *http.Response) (WebAppsClientListSlotSiteDeploymentStatusesSlotResponse, error) {
+func (client *WebAppsClient) listSlotSiteDeploymentStatusesSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSlotSiteDeploymentStatusesSlotResponse, error) {
 	result := WebAppsClientListSlotSiteDeploymentStatusesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmDeploymentStatusCollection); err != nil {
 		return WebAppsClientListSlotSiteDeploymentStatusesSlotResponse{}, err
 	}
@@ -21311,47 +21663,61 @@ func (client *WebAppsClient) NewListSlotsPager(resourceGroupName string, name st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSlotsCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listSlotsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListSlotsResponse{}, err
 			}
-			return client.listSlotsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListSlotsResponse{}, err
+			}
+			return client.listSlotsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSlotsCreateRequest creates the ListSlots request.
-func (client *WebAppsClient) listSlotsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListSlotsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listSlotsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListSlotsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSlotsHandleResponse handles the ListSlots response.
-func (client *WebAppsClient) listSlotsHandleResponse(resp *http.Response) (WebAppsClientListSlotsResponse, error) {
+func (client *WebAppsClient) listSlotsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSlotsResponse, error) {
 	result := WebAppsClientListSlotsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
 		return WebAppsClientListSlotsResponse{}, err
 	}
@@ -21376,47 +21742,61 @@ func (client *WebAppsClient) NewListSnapshotsPager(resourceGroupName string, nam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSnapshotsCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listSnapshotsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListSnapshotsResponse{}, err
 			}
-			return client.listSnapshotsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListSnapshotsResponse{}, err
+			}
+			return client.listSnapshotsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSnapshotsCreateRequest creates the ListSnapshots request.
-func (client *WebAppsClient) listSnapshotsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListSnapshotsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshots"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listSnapshotsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListSnapshotsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshots"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSnapshotsHandleResponse handles the ListSnapshots response.
-func (client *WebAppsClient) listSnapshotsHandleResponse(resp *http.Response) (WebAppsClientListSnapshotsResponse, error) {
+func (client *WebAppsClient) listSnapshotsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSnapshotsResponse, error) {
 	result := WebAppsClientListSnapshotsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotCollection); err != nil {
 		return WebAppsClientListSnapshotsResponse{}, err
 	}
@@ -21441,47 +21821,61 @@ func (client *WebAppsClient) NewListSnapshotsFromDRSecondaryPager(resourceGroupN
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSnapshotsFromDRSecondaryCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listSnapshotsFromDRSecondaryCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListSnapshotsFromDRSecondaryResponse{}, err
 			}
-			return client.listSnapshotsFromDRSecondaryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListSnapshotsFromDRSecondaryResponse{}, err
+			}
+			return client.listSnapshotsFromDRSecondaryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSnapshotsFromDRSecondaryCreateRequest creates the ListSnapshotsFromDRSecondary request.
-func (client *WebAppsClient) listSnapshotsFromDRSecondaryCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListSnapshotsFromDRSecondaryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshotsdr"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listSnapshotsFromDRSecondaryCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListSnapshotsFromDRSecondaryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshotsdr"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSnapshotsFromDRSecondaryHandleResponse handles the ListSnapshotsFromDRSecondary response.
-func (client *WebAppsClient) listSnapshotsFromDRSecondaryHandleResponse(resp *http.Response) (WebAppsClientListSnapshotsFromDRSecondaryResponse, error) {
+func (client *WebAppsClient) listSnapshotsFromDRSecondaryHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSnapshotsFromDRSecondaryResponse, error) {
 	result := WebAppsClientListSnapshotsFromDRSecondaryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotCollection); err != nil {
 		return WebAppsClientListSnapshotsFromDRSecondaryResponse{}, err
 	}
@@ -21507,51 +21901,65 @@ func (client *WebAppsClient) NewListSnapshotsFromDRSecondarySlotPager(resourceGr
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSnapshotsFromDRSecondarySlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listSnapshotsFromDRSecondarySlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListSnapshotsFromDRSecondarySlotResponse{}, err
 			}
-			return client.listSnapshotsFromDRSecondarySlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListSnapshotsFromDRSecondarySlotResponse{}, err
+			}
+			return client.listSnapshotsFromDRSecondarySlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSnapshotsFromDRSecondarySlotCreateRequest creates the ListSnapshotsFromDRSecondarySlot request.
-func (client *WebAppsClient) listSnapshotsFromDRSecondarySlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListSnapshotsFromDRSecondarySlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/snapshotsdr"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listSnapshotsFromDRSecondarySlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListSnapshotsFromDRSecondarySlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/snapshotsdr"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSnapshotsFromDRSecondarySlotHandleResponse handles the ListSnapshotsFromDRSecondarySlot response.
-func (client *WebAppsClient) listSnapshotsFromDRSecondarySlotHandleResponse(resp *http.Response) (WebAppsClientListSnapshotsFromDRSecondarySlotResponse, error) {
+func (client *WebAppsClient) listSnapshotsFromDRSecondarySlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSnapshotsFromDRSecondarySlotResponse, error) {
 	result := WebAppsClientListSnapshotsFromDRSecondarySlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotCollection); err != nil {
 		return WebAppsClientListSnapshotsFromDRSecondarySlotResponse{}, err
 	}
@@ -21577,51 +21985,65 @@ func (client *WebAppsClient) NewListSnapshotsSlotPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listSnapshotsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listSnapshotsSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListSnapshotsSlotResponse{}, err
 			}
-			return client.listSnapshotsSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListSnapshotsSlotResponse{}, err
+			}
+			return client.listSnapshotsSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listSnapshotsSlotCreateRequest creates the ListSnapshotsSlot request.
-func (client *WebAppsClient) listSnapshotsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListSnapshotsSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/snapshots"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listSnapshotsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListSnapshotsSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/snapshots"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listSnapshotsSlotHandleResponse handles the ListSnapshotsSlot response.
-func (client *WebAppsClient) listSnapshotsSlotHandleResponse(resp *http.Response) (WebAppsClientListSnapshotsSlotResponse, error) {
+func (client *WebAppsClient) listSnapshotsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSnapshotsSlotResponse, error) {
 	result := WebAppsClientListSnapshotsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SnapshotCollection); err != nil {
 		return WebAppsClientListSnapshotsSlotResponse{}, err
 	}
@@ -21650,12 +22072,7 @@ func (client *WebAppsClient) ListSyncFunctionTriggers(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientListSyncFunctionTriggersResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListSyncFunctionTriggersResponse{}, err
-	}
-	resp, err := client.listSyncFunctionTriggersHandleResponse(httpResp)
-	return resp, err
+	return client.listSyncFunctionTriggersHandleResponse(httpResp, http.StatusOK)
 }
 
 // listSyncFunctionTriggersCreateRequest creates the ListSyncFunctionTriggers request.
@@ -21685,8 +22102,11 @@ func (client *WebAppsClient) listSyncFunctionTriggersCreateRequest(ctx context.C
 }
 
 // listSyncFunctionTriggersHandleResponse handles the ListSyncFunctionTriggers response.
-func (client *WebAppsClient) listSyncFunctionTriggersHandleResponse(resp *http.Response) (WebAppsClientListSyncFunctionTriggersResponse, error) {
+func (client *WebAppsClient) listSyncFunctionTriggersHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSyncFunctionTriggersResponse, error) {
 	result := WebAppsClientListSyncFunctionTriggersResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionSecrets); err != nil {
 		return WebAppsClientListSyncFunctionTriggersResponse{}, err
 	}
@@ -21716,12 +22136,7 @@ func (client *WebAppsClient) ListSyncFunctionTriggersSlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientListSyncFunctionTriggersSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListSyncFunctionTriggersSlotResponse{}, err
-	}
-	resp, err := client.listSyncFunctionTriggersSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listSyncFunctionTriggersSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listSyncFunctionTriggersSlotCreateRequest creates the ListSyncFunctionTriggersSlot request.
@@ -21755,8 +22170,11 @@ func (client *WebAppsClient) listSyncFunctionTriggersSlotCreateRequest(ctx conte
 }
 
 // listSyncFunctionTriggersSlotHandleResponse handles the ListSyncFunctionTriggersSlot response.
-func (client *WebAppsClient) listSyncFunctionTriggersSlotHandleResponse(resp *http.Response) (WebAppsClientListSyncFunctionTriggersSlotResponse, error) {
+func (client *WebAppsClient) listSyncFunctionTriggersSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListSyncFunctionTriggersSlotResponse, error) {
 	result := WebAppsClientListSyncFunctionTriggersSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionSecrets); err != nil {
 		return WebAppsClientListSyncFunctionTriggersSlotResponse{}, err
 	}
@@ -21785,8 +22203,7 @@ func (client *WebAppsClient) ListSyncStatus(ctx context.Context, resourceGroupNa
 		return WebAppsClientListSyncStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListSyncStatusResponse{}, err
+		return WebAppsClientListSyncStatusResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientListSyncStatusResponse{}, nil
 }
@@ -21840,8 +22257,7 @@ func (client *WebAppsClient) ListSyncStatusSlot(ctx context.Context, resourceGro
 		return WebAppsClientListSyncStatusSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListSyncStatusSlotResponse{}, err
+		return WebAppsClientListSyncStatusSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientListSyncStatusSlotResponse{}, nil
 }
@@ -21894,51 +22310,65 @@ func (client *WebAppsClient) NewListTriggeredWebJobHistoryPager(resourceGroupNam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listTriggeredWebJobHistoryCreateRequest(ctx, resourceGroupName, name, webJobName, options)
-			}, nil)
+			req, err := client.listTriggeredWebJobHistoryCreateRequest(ctx, resourceGroupName, name, webJobName, nextLink, options)
 			if err != nil {
 				return WebAppsClientListTriggeredWebJobHistoryResponse{}, err
 			}
-			return client.listTriggeredWebJobHistoryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListTriggeredWebJobHistoryResponse{}, err
+			}
+			return client.listTriggeredWebJobHistoryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listTriggeredWebJobHistoryCreateRequest creates the ListTriggeredWebJobHistory request.
-func (client *WebAppsClient) listTriggeredWebJobHistoryCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, _ *WebAppsClientListTriggeredWebJobHistoryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/triggeredwebjobs/{webJobName}/history"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listTriggeredWebJobHistoryCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, nextLink string, _ *WebAppsClientListTriggeredWebJobHistoryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/triggeredwebjobs/{webJobName}/history"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if webJobName == "" {
+			return nil, errors.New("parameter webJobName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{webJobName}", url.PathEscape(webJobName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if webJobName == "" {
-		return nil, errors.New("parameter webJobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{webJobName}", url.PathEscape(webJobName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listTriggeredWebJobHistoryHandleResponse handles the ListTriggeredWebJobHistory response.
-func (client *WebAppsClient) listTriggeredWebJobHistoryHandleResponse(resp *http.Response) (WebAppsClientListTriggeredWebJobHistoryResponse, error) {
+func (client *WebAppsClient) listTriggeredWebJobHistoryHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListTriggeredWebJobHistoryResponse, error) {
 	result := WebAppsClientListTriggeredWebJobHistoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggeredJobHistoryCollection); err != nil {
 		return WebAppsClientListTriggeredWebJobHistoryResponse{}, err
 	}
@@ -21962,55 +22392,69 @@ func (client *WebAppsClient) NewListTriggeredWebJobHistorySlotPager(resourceGrou
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listTriggeredWebJobHistorySlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, options)
-			}, nil)
+			req, err := client.listTriggeredWebJobHistorySlotCreateRequest(ctx, resourceGroupName, name, webJobName, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListTriggeredWebJobHistorySlotResponse{}, err
 			}
-			return client.listTriggeredWebJobHistorySlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListTriggeredWebJobHistorySlotResponse{}, err
+			}
+			return client.listTriggeredWebJobHistorySlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listTriggeredWebJobHistorySlotCreateRequest creates the ListTriggeredWebJobHistorySlot request.
-func (client *WebAppsClient) listTriggeredWebJobHistorySlotCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, _ *WebAppsClientListTriggeredWebJobHistorySlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/triggeredwebjobs/{webJobName}/history"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listTriggeredWebJobHistorySlotCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, nextLink string, _ *WebAppsClientListTriggeredWebJobHistorySlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/triggeredwebjobs/{webJobName}/history"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if webJobName == "" {
+			return nil, errors.New("parameter webJobName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{webJobName}", url.PathEscape(webJobName))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if webJobName == "" {
-		return nil, errors.New("parameter webJobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{webJobName}", url.PathEscape(webJobName))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listTriggeredWebJobHistorySlotHandleResponse handles the ListTriggeredWebJobHistorySlot response.
-func (client *WebAppsClient) listTriggeredWebJobHistorySlotHandleResponse(resp *http.Response) (WebAppsClientListTriggeredWebJobHistorySlotResponse, error) {
+func (client *WebAppsClient) listTriggeredWebJobHistorySlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListTriggeredWebJobHistorySlotResponse, error) {
 	result := WebAppsClientListTriggeredWebJobHistorySlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggeredJobHistoryCollection); err != nil {
 		return WebAppsClientListTriggeredWebJobHistorySlotResponse{}, err
 	}
@@ -22035,47 +22479,61 @@ func (client *WebAppsClient) NewListTriggeredWebJobsPager(resourceGroupName stri
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listTriggeredWebJobsCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listTriggeredWebJobsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListTriggeredWebJobsResponse{}, err
 			}
-			return client.listTriggeredWebJobsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListTriggeredWebJobsResponse{}, err
+			}
+			return client.listTriggeredWebJobsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listTriggeredWebJobsCreateRequest creates the ListTriggeredWebJobs request.
-func (client *WebAppsClient) listTriggeredWebJobsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListTriggeredWebJobsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/triggeredwebjobs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listTriggeredWebJobsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListTriggeredWebJobsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/triggeredwebjobs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listTriggeredWebJobsHandleResponse handles the ListTriggeredWebJobs response.
-func (client *WebAppsClient) listTriggeredWebJobsHandleResponse(resp *http.Response) (WebAppsClientListTriggeredWebJobsResponse, error) {
+func (client *WebAppsClient) listTriggeredWebJobsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListTriggeredWebJobsResponse, error) {
 	result := WebAppsClientListTriggeredWebJobsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggeredWebJobCollection); err != nil {
 		return WebAppsClientListTriggeredWebJobsResponse{}, err
 	}
@@ -22101,51 +22559,65 @@ func (client *WebAppsClient) NewListTriggeredWebJobsSlotPager(resourceGroupName 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listTriggeredWebJobsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listTriggeredWebJobsSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListTriggeredWebJobsSlotResponse{}, err
 			}
-			return client.listTriggeredWebJobsSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListTriggeredWebJobsSlotResponse{}, err
+			}
+			return client.listTriggeredWebJobsSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listTriggeredWebJobsSlotCreateRequest creates the ListTriggeredWebJobsSlot request.
-func (client *WebAppsClient) listTriggeredWebJobsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListTriggeredWebJobsSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/triggeredwebjobs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listTriggeredWebJobsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListTriggeredWebJobsSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/triggeredwebjobs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listTriggeredWebJobsSlotHandleResponse handles the ListTriggeredWebJobsSlot response.
-func (client *WebAppsClient) listTriggeredWebJobsSlotHandleResponse(resp *http.Response) (WebAppsClientListTriggeredWebJobsSlotResponse, error) {
+func (client *WebAppsClient) listTriggeredWebJobsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListTriggeredWebJobsSlotResponse, error) {
 	result := WebAppsClientListTriggeredWebJobsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TriggeredWebJobCollection); err != nil {
 		return WebAppsClientListTriggeredWebJobsSlotResponse{}, err
 	}
@@ -22169,50 +22641,64 @@ func (client *WebAppsClient) NewListUsagesPager(resourceGroupName string, name s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listUsagesCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listUsagesCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListUsagesResponse{}, err
 			}
-			return client.listUsagesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListUsagesResponse{}, err
+			}
+			return client.listUsagesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listUsagesCreateRequest creates the ListUsages request.
-func (client *WebAppsClient) listUsagesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientListUsagesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/usages"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listUsagesCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, options *WebAppsClientListUsagesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/usages"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listUsagesHandleResponse handles the ListUsages response.
-func (client *WebAppsClient) listUsagesHandleResponse(resp *http.Response) (WebAppsClientListUsagesResponse, error) {
+func (client *WebAppsClient) listUsagesHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListUsagesResponse, error) {
 	result := WebAppsClientListUsagesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmUsageQuotaCollection); err != nil {
 		return WebAppsClientListUsagesResponse{}, err
 	}
@@ -22238,54 +22724,68 @@ func (client *WebAppsClient) NewListUsagesSlotPager(resourceGroupName string, na
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listUsagesSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listUsagesSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListUsagesSlotResponse{}, err
 			}
-			return client.listUsagesSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListUsagesSlotResponse{}, err
+			}
+			return client.listUsagesSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listUsagesSlotCreateRequest creates the ListUsagesSlot request.
-func (client *WebAppsClient) listUsagesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientListUsagesSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/usages"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listUsagesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, options *WebAppsClientListUsagesSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/usages"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listUsagesSlotHandleResponse handles the ListUsagesSlot response.
-func (client *WebAppsClient) listUsagesSlotHandleResponse(resp *http.Response) (WebAppsClientListUsagesSlotResponse, error) {
+func (client *WebAppsClient) listUsagesSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListUsagesSlotResponse, error) {
 	result := WebAppsClientListUsagesSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmUsageQuotaCollection); err != nil {
 		return WebAppsClientListUsagesSlotResponse{}, err
 	}
@@ -22314,12 +22814,7 @@ func (client *WebAppsClient) ListVnetConnections(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientListVnetConnectionsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListVnetConnectionsResponse{}, err
-	}
-	resp, err := client.listVnetConnectionsHandleResponse(httpResp)
-	return resp, err
+	return client.listVnetConnectionsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listVnetConnectionsCreateRequest creates the ListVnetConnections request.
@@ -22349,8 +22844,11 @@ func (client *WebAppsClient) listVnetConnectionsCreateRequest(ctx context.Contex
 }
 
 // listVnetConnectionsHandleResponse handles the ListVnetConnections response.
-func (client *WebAppsClient) listVnetConnectionsHandleResponse(resp *http.Response) (WebAppsClientListVnetConnectionsResponse, error) {
+func (client *WebAppsClient) listVnetConnectionsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListVnetConnectionsResponse, error) {
 	result := WebAppsClientListVnetConnectionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResourceArray); err != nil {
 		return WebAppsClientListVnetConnectionsResponse{}, err
 	}
@@ -22381,12 +22879,7 @@ func (client *WebAppsClient) ListVnetConnectionsSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientListVnetConnectionsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListVnetConnectionsSlotResponse{}, err
-	}
-	resp, err := client.listVnetConnectionsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listVnetConnectionsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listVnetConnectionsSlotCreateRequest creates the ListVnetConnectionsSlot request.
@@ -22420,8 +22913,11 @@ func (client *WebAppsClient) listVnetConnectionsSlotCreateRequest(ctx context.Co
 }
 
 // listVnetConnectionsSlotHandleResponse handles the ListVnetConnectionsSlot response.
-func (client *WebAppsClient) listVnetConnectionsSlotHandleResponse(resp *http.Response) (WebAppsClientListVnetConnectionsSlotResponse, error) {
+func (client *WebAppsClient) listVnetConnectionsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListVnetConnectionsSlotResponse, error) {
 	result := WebAppsClientListVnetConnectionsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResourceArray); err != nil {
 		return WebAppsClientListVnetConnectionsSlotResponse{}, err
 	}
@@ -22445,47 +22941,61 @@ func (client *WebAppsClient) NewListWebJobsPager(resourceGroupName string, name 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listWebJobsCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listWebJobsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListWebJobsResponse{}, err
 			}
-			return client.listWebJobsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListWebJobsResponse{}, err
+			}
+			return client.listWebJobsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listWebJobsCreateRequest creates the ListWebJobs request.
-func (client *WebAppsClient) listWebJobsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListWebJobsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/webjobs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listWebJobsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListWebJobsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/webjobs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listWebJobsHandleResponse handles the ListWebJobs response.
-func (client *WebAppsClient) listWebJobsHandleResponse(resp *http.Response) (WebAppsClientListWebJobsResponse, error) {
+func (client *WebAppsClient) listWebJobsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListWebJobsResponse, error) {
 	result := WebAppsClientListWebJobsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebJobCollection); err != nil {
 		return WebAppsClientListWebJobsResponse{}, err
 	}
@@ -22511,51 +23021,65 @@ func (client *WebAppsClient) NewListWebJobsSlotPager(resourceGroupName string, n
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listWebJobsSlotCreateRequest(ctx, resourceGroupName, name, slot, options)
-			}, nil)
+			req, err := client.listWebJobsSlotCreateRequest(ctx, resourceGroupName, name, slot, nextLink, options)
 			if err != nil {
 				return WebAppsClientListWebJobsSlotResponse{}, err
 			}
-			return client.listWebJobsSlotHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListWebJobsSlotResponse{}, err
+			}
+			return client.listWebJobsSlotHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listWebJobsSlotCreateRequest creates the ListWebJobsSlot request.
-func (client *WebAppsClient) listWebJobsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListWebJobsSlotOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/webjobs"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listWebJobsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, nextLink string, _ *WebAppsClientListWebJobsSlotOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/webjobs"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if slot == "" {
+			return nil, errors.New("parameter slot cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if slot == "" {
-		return nil, errors.New("parameter slot cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{slot}", url.PathEscape(slot))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listWebJobsSlotHandleResponse handles the ListWebJobsSlot response.
-func (client *WebAppsClient) listWebJobsSlotHandleResponse(resp *http.Response) (WebAppsClientListWebJobsSlotResponse, error) {
+func (client *WebAppsClient) listWebJobsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListWebJobsSlotResponse, error) {
 	result := WebAppsClientListWebJobsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebJobCollection); err != nil {
 		return WebAppsClientListWebJobsSlotResponse{}, err
 	}
@@ -22580,47 +23104,61 @@ func (client *WebAppsClient) NewListWorkflowsPager(resourceGroupName string, nam
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listWorkflowsCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listWorkflowsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return WebAppsClientListWorkflowsResponse{}, err
 			}
-			return client.listWorkflowsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WebAppsClientListWorkflowsResponse{}, err
+			}
+			return client.listWorkflowsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listWorkflowsCreateRequest creates the ListWorkflows request.
-func (client *WebAppsClient) listWorkflowsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListWorkflowsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/workflows"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *WebAppsClient) listWorkflowsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *WebAppsClientListWorkflowsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/workflows"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listWorkflowsHandleResponse handles the ListWorkflows response.
-func (client *WebAppsClient) listWorkflowsHandleResponse(resp *http.Response) (WebAppsClientListWorkflowsResponse, error) {
+func (client *WebAppsClient) listWorkflowsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListWorkflowsResponse, error) {
 	result := WebAppsClientListWorkflowsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowEnvelopeCollection); err != nil {
 		return WebAppsClientListWorkflowsResponse{}, err
 	}
@@ -22649,12 +23187,7 @@ func (client *WebAppsClient) ListWorkflowsConnections(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientListWorkflowsConnectionsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListWorkflowsConnectionsResponse{}, err
-	}
-	resp, err := client.listWorkflowsConnectionsHandleResponse(httpResp)
-	return resp, err
+	return client.listWorkflowsConnectionsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listWorkflowsConnectionsCreateRequest creates the ListWorkflowsConnections request.
@@ -22684,8 +23217,11 @@ func (client *WebAppsClient) listWorkflowsConnectionsCreateRequest(ctx context.C
 }
 
 // listWorkflowsConnectionsHandleResponse handles the ListWorkflowsConnections response.
-func (client *WebAppsClient) listWorkflowsConnectionsHandleResponse(resp *http.Response) (WebAppsClientListWorkflowsConnectionsResponse, error) {
+func (client *WebAppsClient) listWorkflowsConnectionsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListWorkflowsConnectionsResponse, error) {
 	result := WebAppsClientListWorkflowsConnectionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowEnvelope); err != nil {
 		return WebAppsClientListWorkflowsConnectionsResponse{}, err
 	}
@@ -22715,12 +23251,7 @@ func (client *WebAppsClient) ListWorkflowsConnectionsSlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientListWorkflowsConnectionsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientListWorkflowsConnectionsSlotResponse{}, err
-	}
-	resp, err := client.listWorkflowsConnectionsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.listWorkflowsConnectionsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // listWorkflowsConnectionsSlotCreateRequest creates the ListWorkflowsConnectionsSlot request.
@@ -22754,8 +23285,11 @@ func (client *WebAppsClient) listWorkflowsConnectionsSlotCreateRequest(ctx conte
 }
 
 // listWorkflowsConnectionsSlotHandleResponse handles the ListWorkflowsConnectionsSlot response.
-func (client *WebAppsClient) listWorkflowsConnectionsSlotHandleResponse(resp *http.Response) (WebAppsClientListWorkflowsConnectionsSlotResponse, error) {
+func (client *WebAppsClient) listWorkflowsConnectionsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientListWorkflowsConnectionsSlotResponse, error) {
 	result := WebAppsClientListWorkflowsConnectionsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowEnvelope); err != nil {
 		return WebAppsClientListWorkflowsConnectionsSlotResponse{}, err
 	}
@@ -22807,8 +23341,7 @@ func (client *WebAppsClient) migrateMySQL(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -22886,8 +23419,7 @@ func (client *WebAppsClient) migrateStorage(ctx context.Context, subscriptionNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -22947,12 +23479,7 @@ func (client *WebAppsClient) PutPrivateAccessVnet(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientPutPrivateAccessVnetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientPutPrivateAccessVnetResponse{}, err
-	}
-	resp, err := client.putPrivateAccessVnetHandleResponse(httpResp)
-	return resp, err
+	return client.putPrivateAccessVnetHandleResponse(httpResp, http.StatusOK)
 }
 
 // putPrivateAccessVnetCreateRequest creates the PutPrivateAccessVnet request.
@@ -22986,8 +23513,11 @@ func (client *WebAppsClient) putPrivateAccessVnetCreateRequest(ctx context.Conte
 }
 
 // putPrivateAccessVnetHandleResponse handles the PutPrivateAccessVnet response.
-func (client *WebAppsClient) putPrivateAccessVnetHandleResponse(resp *http.Response) (WebAppsClientPutPrivateAccessVnetResponse, error) {
+func (client *WebAppsClient) putPrivateAccessVnetHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientPutPrivateAccessVnetResponse, error) {
 	result := WebAppsClientPutPrivateAccessVnetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateAccess); err != nil {
 		return WebAppsClientPutPrivateAccessVnetResponse{}, err
 	}
@@ -23019,12 +23549,7 @@ func (client *WebAppsClient) PutPrivateAccessVnetSlot(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientPutPrivateAccessVnetSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientPutPrivateAccessVnetSlotResponse{}, err
-	}
-	resp, err := client.putPrivateAccessVnetSlotHandleResponse(httpResp)
-	return resp, err
+	return client.putPrivateAccessVnetSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // putPrivateAccessVnetSlotCreateRequest creates the PutPrivateAccessVnetSlot request.
@@ -23062,8 +23587,11 @@ func (client *WebAppsClient) putPrivateAccessVnetSlotCreateRequest(ctx context.C
 }
 
 // putPrivateAccessVnetSlotHandleResponse handles the PutPrivateAccessVnetSlot response.
-func (client *WebAppsClient) putPrivateAccessVnetSlotHandleResponse(resp *http.Response) (WebAppsClientPutPrivateAccessVnetSlotResponse, error) {
+func (client *WebAppsClient) putPrivateAccessVnetSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientPutPrivateAccessVnetSlotResponse, error) {
 	result := WebAppsClientPutPrivateAccessVnetSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateAccess); err != nil {
 		return WebAppsClientPutPrivateAccessVnetSlotResponse{}, err
 	}
@@ -23094,8 +23622,7 @@ func (client *WebAppsClient) RecoverSiteConfigurationSnapshot(ctx context.Contex
 		return WebAppsClientRecoverSiteConfigurationSnapshotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientRecoverSiteConfigurationSnapshotResponse{}, err
+		return WebAppsClientRecoverSiteConfigurationSnapshotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientRecoverSiteConfigurationSnapshotResponse{}, nil
 }
@@ -23151,8 +23678,7 @@ func (client *WebAppsClient) RecoverSiteConfigurationSnapshotSlot(ctx context.Co
 		return WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse{}, err
+		return WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse{}, nil
 }
@@ -23215,8 +23741,7 @@ func (client *WebAppsClient) ResetProductionSlotConfig(ctx context.Context, reso
 		return WebAppsClientResetProductionSlotConfigResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientResetProductionSlotConfigResponse{}, err
+		return WebAppsClientResetProductionSlotConfigResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientResetProductionSlotConfigResponse{}, nil
 }
@@ -23272,8 +23797,7 @@ func (client *WebAppsClient) ResetSlotConfigurationSlot(ctx context.Context, res
 		return WebAppsClientResetSlotConfigurationSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientResetSlotConfigurationSlotResponse{}, err
+		return WebAppsClientResetSlotConfigurationSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientResetSlotConfigurationSlotResponse{}, nil
 }
@@ -23329,8 +23853,7 @@ func (client *WebAppsClient) Restart(ctx context.Context, resourceGroupName stri
 		return WebAppsClientRestartResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientRestartResponse{}, err
+		return WebAppsClientRestartResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientRestartResponse{}, nil
 }
@@ -23389,8 +23912,7 @@ func (client *WebAppsClient) RestartSlot(ctx context.Context, resourceGroupName 
 		return WebAppsClientRestartSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientRestartSlotResponse{}, err
+		return WebAppsClientRestartSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientRestartSlotResponse{}, nil
 }
@@ -23475,8 +23997,7 @@ func (client *WebAppsClient) restore(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -23559,8 +24080,7 @@ func (client *WebAppsClient) restoreFromBackupBlob(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -23640,8 +24160,7 @@ func (client *WebAppsClient) restoreFromBackupBlobSlot(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -23724,8 +24243,7 @@ func (client *WebAppsClient) restoreFromDeletedApp(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -23805,8 +24323,7 @@ func (client *WebAppsClient) restoreFromDeletedAppSlot(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -23887,8 +24404,7 @@ func (client *WebAppsClient) restoreSlot(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -23976,8 +24492,7 @@ func (client *WebAppsClient) restoreSnapshot(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -24058,8 +24573,7 @@ func (client *WebAppsClient) restoreSnapshotSlot(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -24121,8 +24635,7 @@ func (client *WebAppsClient) RunTriggeredWebJob(ctx context.Context, resourceGro
 		return WebAppsClientRunTriggeredWebJobResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientRunTriggeredWebJobResponse{}, err
+		return WebAppsClientRunTriggeredWebJobResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientRunTriggeredWebJobResponse{}, nil
 }
@@ -24178,8 +24691,7 @@ func (client *WebAppsClient) RunTriggeredWebJobSlot(ctx context.Context, resourc
 		return WebAppsClientRunTriggeredWebJobSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientRunTriggeredWebJobSlotResponse{}, err
+		return WebAppsClientRunTriggeredWebJobSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientRunTriggeredWebJobSlotResponse{}, nil
 }
@@ -24239,8 +24751,7 @@ func (client *WebAppsClient) Start(ctx context.Context, resourceGroupName string
 		return WebAppsClientStartResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientStartResponse{}, err
+		return WebAppsClientStartResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientStartResponse{}, nil
 }
@@ -24294,8 +24805,7 @@ func (client *WebAppsClient) StartContinuousWebJob(ctx context.Context, resource
 		return WebAppsClientStartContinuousWebJobResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientStartContinuousWebJobResponse{}, err
+		return WebAppsClientStartContinuousWebJobResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientStartContinuousWebJobResponse{}, nil
 }
@@ -24351,8 +24861,7 @@ func (client *WebAppsClient) StartContinuousWebJobSlot(ctx context.Context, reso
 		return WebAppsClientStartContinuousWebJobSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientStartContinuousWebJobSlotResponse{}, err
+		return WebAppsClientStartContinuousWebJobSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientStartContinuousWebJobSlotResponse{}, nil
 }
@@ -24434,8 +24943,7 @@ func (client *WebAppsClient) startNetworkTrace(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -24520,8 +25028,7 @@ func (client *WebAppsClient) startNetworkTraceSlot(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -24588,8 +25095,7 @@ func (client *WebAppsClient) StartSlot(ctx context.Context, resourceGroupName st
 		return WebAppsClientStartSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientStartSlotResponse{}, err
+		return WebAppsClientStartSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientStartSlotResponse{}, nil
 }
@@ -24645,12 +25151,7 @@ func (client *WebAppsClient) StartWebSiteNetworkTrace(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientStartWebSiteNetworkTraceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientStartWebSiteNetworkTraceResponse{}, err
-	}
-	resp, err := client.startWebSiteNetworkTraceHandleResponse(httpResp)
-	return resp, err
+	return client.startWebSiteNetworkTraceHandleResponse(httpResp, http.StatusOK)
 }
 
 // startWebSiteNetworkTraceCreateRequest creates the StartWebSiteNetworkTrace request.
@@ -24689,8 +25190,11 @@ func (client *WebAppsClient) startWebSiteNetworkTraceCreateRequest(ctx context.C
 }
 
 // startWebSiteNetworkTraceHandleResponse handles the StartWebSiteNetworkTrace response.
-func (client *WebAppsClient) startWebSiteNetworkTraceHandleResponse(resp *http.Response) (WebAppsClientStartWebSiteNetworkTraceResponse, error) {
+func (client *WebAppsClient) startWebSiteNetworkTraceHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientStartWebSiteNetworkTraceResponse, error) {
 	result := WebAppsClientStartWebSiteNetworkTraceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return WebAppsClientStartWebSiteNetworkTraceResponse{}, err
 	}
@@ -24741,8 +25245,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -24827,8 +25330,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationSlot(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -24895,12 +25397,7 @@ func (client *WebAppsClient) StartWebSiteNetworkTraceSlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientStartWebSiteNetworkTraceSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientStartWebSiteNetworkTraceSlotResponse{}, err
-	}
-	resp, err := client.startWebSiteNetworkTraceSlotHandleResponse(httpResp)
-	return resp, err
+	return client.startWebSiteNetworkTraceSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // startWebSiteNetworkTraceSlotCreateRequest creates the StartWebSiteNetworkTraceSlot request.
@@ -24943,8 +25440,11 @@ func (client *WebAppsClient) startWebSiteNetworkTraceSlotCreateRequest(ctx conte
 }
 
 // startWebSiteNetworkTraceSlotHandleResponse handles the StartWebSiteNetworkTraceSlot response.
-func (client *WebAppsClient) startWebSiteNetworkTraceSlotHandleResponse(resp *http.Response) (WebAppsClientStartWebSiteNetworkTraceSlotResponse, error) {
+func (client *WebAppsClient) startWebSiteNetworkTraceSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientStartWebSiteNetworkTraceSlotResponse, error) {
 	result := WebAppsClientStartWebSiteNetworkTraceSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return WebAppsClientStartWebSiteNetworkTraceSlotResponse{}, err
 	}
@@ -24973,8 +25473,7 @@ func (client *WebAppsClient) Stop(ctx context.Context, resourceGroupName string,
 		return WebAppsClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientStopResponse{}, err
+		return WebAppsClientStopResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientStopResponse{}, nil
 }
@@ -25028,8 +25527,7 @@ func (client *WebAppsClient) StopContinuousWebJob(ctx context.Context, resourceG
 		return WebAppsClientStopContinuousWebJobResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientStopContinuousWebJobResponse{}, err
+		return WebAppsClientStopContinuousWebJobResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientStopContinuousWebJobResponse{}, nil
 }
@@ -25085,8 +25583,7 @@ func (client *WebAppsClient) StopContinuousWebJobSlot(ctx context.Context, resou
 		return WebAppsClientStopContinuousWebJobSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientStopContinuousWebJobSlotResponse{}, err
+		return WebAppsClientStopContinuousWebJobSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientStopContinuousWebJobSlotResponse{}, nil
 }
@@ -25147,8 +25644,7 @@ func (client *WebAppsClient) StopNetworkTrace(ctx context.Context, resourceGroup
 		return WebAppsClientStopNetworkTraceResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientStopNetworkTraceResponse{}, err
+		return WebAppsClientStopNetworkTraceResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientStopNetworkTraceResponse{}, nil
 }
@@ -25202,8 +25698,7 @@ func (client *WebAppsClient) StopNetworkTraceSlot(ctx context.Context, resourceG
 		return WebAppsClientStopNetworkTraceSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientStopNetworkTraceSlotResponse{}, err
+		return WebAppsClientStopNetworkTraceSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientStopNetworkTraceSlotResponse{}, nil
 }
@@ -25260,8 +25755,7 @@ func (client *WebAppsClient) StopSlot(ctx context.Context, resourceGroupName str
 		return WebAppsClientStopSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientStopSlotResponse{}, err
+		return WebAppsClientStopSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientStopSlotResponse{}, nil
 }
@@ -25318,8 +25812,7 @@ func (client *WebAppsClient) StopWebSiteNetworkTrace(ctx context.Context, resour
 		return WebAppsClientStopWebSiteNetworkTraceResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientStopWebSiteNetworkTraceResponse{}, err
+		return WebAppsClientStopWebSiteNetworkTraceResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientStopWebSiteNetworkTraceResponse{}, nil
 }
@@ -25373,8 +25866,7 @@ func (client *WebAppsClient) StopWebSiteNetworkTraceSlot(ctx context.Context, re
 		return WebAppsClientStopWebSiteNetworkTraceSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientStopWebSiteNetworkTraceSlotResponse{}, err
+		return WebAppsClientStopWebSiteNetworkTraceSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientStopWebSiteNetworkTraceSlotResponse{}, nil
 }
@@ -25453,8 +25945,7 @@ func (client *WebAppsClient) swapSlot(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -25537,8 +26028,7 @@ func (client *WebAppsClient) swapSlotWithProduction(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -25595,8 +26085,7 @@ func (client *WebAppsClient) SyncFunctionTriggers(ctx context.Context, resourceG
 		return WebAppsClientSyncFunctionTriggersResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientSyncFunctionTriggersResponse{}, err
+		return WebAppsClientSyncFunctionTriggersResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientSyncFunctionTriggersResponse{}, nil
 }
@@ -25650,8 +26139,7 @@ func (client *WebAppsClient) SyncFunctionTriggersSlot(ctx context.Context, resou
 		return WebAppsClientSyncFunctionTriggersSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientSyncFunctionTriggersSlotResponse{}, err
+		return WebAppsClientSyncFunctionTriggersSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientSyncFunctionTriggersSlotResponse{}, nil
 }
@@ -25707,8 +26195,7 @@ func (client *WebAppsClient) SyncFunctions(ctx context.Context, resourceGroupNam
 		return WebAppsClientSyncFunctionsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientSyncFunctionsResponse{}, err
+		return WebAppsClientSyncFunctionsResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientSyncFunctionsResponse{}, nil
 }
@@ -25762,8 +26249,7 @@ func (client *WebAppsClient) SyncFunctionsSlot(ctx context.Context, resourceGrou
 		return WebAppsClientSyncFunctionsSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientSyncFunctionsSlotResponse{}, err
+		return WebAppsClientSyncFunctionsSlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientSyncFunctionsSlotResponse{}, nil
 }
@@ -25819,8 +26305,7 @@ func (client *WebAppsClient) SyncRepository(ctx context.Context, resourceGroupNa
 		return WebAppsClientSyncRepositoryResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientSyncRepositoryResponse{}, err
+		return WebAppsClientSyncRepositoryResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientSyncRepositoryResponse{}, nil
 }
@@ -25874,8 +26359,7 @@ func (client *WebAppsClient) SyncRepositorySlot(ctx context.Context, resourceGro
 		return WebAppsClientSyncRepositorySlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientSyncRepositorySlotResponse{}, err
+		return WebAppsClientSyncRepositorySlotResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return WebAppsClientSyncRepositorySlotResponse{}, nil
 }
@@ -25931,12 +26415,7 @@ func (client *WebAppsClient) Update(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return WebAppsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // updateCreateRequest creates the Update request.
@@ -25970,8 +26449,11 @@ func (client *WebAppsClient) updateCreateRequest(ctx context.Context, resourceGr
 }
 
 // updateHandleResponse handles the Update response.
-func (client *WebAppsClient) updateHandleResponse(resp *http.Response) (WebAppsClientUpdateResponse, error) {
+func (client *WebAppsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateResponse, error) {
 	result := WebAppsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Site); err != nil {
 		return WebAppsClientUpdateResponse{}, err
 	}
@@ -26001,12 +26483,7 @@ func (client *WebAppsClient) UpdateApplicationSettings(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientUpdateApplicationSettingsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateApplicationSettingsResponse{}, err
-	}
-	resp, err := client.updateApplicationSettingsHandleResponse(httpResp)
-	return resp, err
+	return client.updateApplicationSettingsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateApplicationSettingsCreateRequest creates the UpdateApplicationSettings request.
@@ -26040,8 +26517,11 @@ func (client *WebAppsClient) updateApplicationSettingsCreateRequest(ctx context.
 }
 
 // updateApplicationSettingsHandleResponse handles the UpdateApplicationSettings response.
-func (client *WebAppsClient) updateApplicationSettingsHandleResponse(resp *http.Response) (WebAppsClientUpdateApplicationSettingsResponse, error) {
+func (client *WebAppsClient) updateApplicationSettingsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateApplicationSettingsResponse, error) {
 	result := WebAppsClientUpdateApplicationSettingsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
 		return WebAppsClientUpdateApplicationSettingsResponse{}, err
 	}
@@ -26072,12 +26552,7 @@ func (client *WebAppsClient) UpdateApplicationSettingsSlot(ctx context.Context, 
 	if err != nil {
 		return WebAppsClientUpdateApplicationSettingsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateApplicationSettingsSlotResponse{}, err
-	}
-	resp, err := client.updateApplicationSettingsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateApplicationSettingsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateApplicationSettingsSlotCreateRequest creates the UpdateApplicationSettingsSlot request.
@@ -26115,8 +26590,11 @@ func (client *WebAppsClient) updateApplicationSettingsSlotCreateRequest(ctx cont
 }
 
 // updateApplicationSettingsSlotHandleResponse handles the UpdateApplicationSettingsSlot response.
-func (client *WebAppsClient) updateApplicationSettingsSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateApplicationSettingsSlotResponse, error) {
+func (client *WebAppsClient) updateApplicationSettingsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateApplicationSettingsSlotResponse, error) {
 	result := WebAppsClientUpdateApplicationSettingsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
 		return WebAppsClientUpdateApplicationSettingsSlotResponse{}, err
 	}
@@ -26146,12 +26624,7 @@ func (client *WebAppsClient) UpdateAuthSettings(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientUpdateAuthSettingsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateAuthSettingsResponse{}, err
-	}
-	resp, err := client.updateAuthSettingsHandleResponse(httpResp)
-	return resp, err
+	return client.updateAuthSettingsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateAuthSettingsCreateRequest creates the UpdateAuthSettings request.
@@ -26185,8 +26658,11 @@ func (client *WebAppsClient) updateAuthSettingsCreateRequest(ctx context.Context
 }
 
 // updateAuthSettingsHandleResponse handles the UpdateAuthSettings response.
-func (client *WebAppsClient) updateAuthSettingsHandleResponse(resp *http.Response) (WebAppsClientUpdateAuthSettingsResponse, error) {
+func (client *WebAppsClient) updateAuthSettingsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateAuthSettingsResponse, error) {
 	result := WebAppsClientUpdateAuthSettingsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteAuthSettings); err != nil {
 		return WebAppsClientUpdateAuthSettingsResponse{}, err
 	}
@@ -26217,12 +26693,7 @@ func (client *WebAppsClient) UpdateAuthSettingsSlot(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientUpdateAuthSettingsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateAuthSettingsSlotResponse{}, err
-	}
-	resp, err := client.updateAuthSettingsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateAuthSettingsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateAuthSettingsSlotCreateRequest creates the UpdateAuthSettingsSlot request.
@@ -26260,8 +26731,11 @@ func (client *WebAppsClient) updateAuthSettingsSlotCreateRequest(ctx context.Con
 }
 
 // updateAuthSettingsSlotHandleResponse handles the UpdateAuthSettingsSlot response.
-func (client *WebAppsClient) updateAuthSettingsSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateAuthSettingsSlotResponse, error) {
+func (client *WebAppsClient) updateAuthSettingsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateAuthSettingsSlotResponse, error) {
 	result := WebAppsClientUpdateAuthSettingsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteAuthSettings); err != nil {
 		return WebAppsClientUpdateAuthSettingsSlotResponse{}, err
 	}
@@ -26291,12 +26765,7 @@ func (client *WebAppsClient) UpdateAuthSettingsV2(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientUpdateAuthSettingsV2Response{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateAuthSettingsV2Response{}, err
-	}
-	resp, err := client.updateAuthSettingsV2HandleResponse(httpResp)
-	return resp, err
+	return client.updateAuthSettingsV2HandleResponse(httpResp, http.StatusOK)
 }
 
 // updateAuthSettingsV2CreateRequest creates the UpdateAuthSettingsV2 request.
@@ -26330,8 +26799,11 @@ func (client *WebAppsClient) updateAuthSettingsV2CreateRequest(ctx context.Conte
 }
 
 // updateAuthSettingsV2HandleResponse handles the UpdateAuthSettingsV2 response.
-func (client *WebAppsClient) updateAuthSettingsV2HandleResponse(resp *http.Response) (WebAppsClientUpdateAuthSettingsV2Response, error) {
+func (client *WebAppsClient) updateAuthSettingsV2HandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateAuthSettingsV2Response, error) {
 	result := WebAppsClientUpdateAuthSettingsV2Response{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteAuthSettingsV2); err != nil {
 		return WebAppsClientUpdateAuthSettingsV2Response{}, err
 	}
@@ -26362,12 +26834,7 @@ func (client *WebAppsClient) UpdateAuthSettingsV2Slot(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientUpdateAuthSettingsV2SlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateAuthSettingsV2SlotResponse{}, err
-	}
-	resp, err := client.updateAuthSettingsV2SlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateAuthSettingsV2SlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateAuthSettingsV2SlotCreateRequest creates the UpdateAuthSettingsV2Slot request.
@@ -26405,8 +26872,11 @@ func (client *WebAppsClient) updateAuthSettingsV2SlotCreateRequest(ctx context.C
 }
 
 // updateAuthSettingsV2SlotHandleResponse handles the UpdateAuthSettingsV2Slot response.
-func (client *WebAppsClient) updateAuthSettingsV2SlotHandleResponse(resp *http.Response) (WebAppsClientUpdateAuthSettingsV2SlotResponse, error) {
+func (client *WebAppsClient) updateAuthSettingsV2SlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateAuthSettingsV2SlotResponse, error) {
 	result := WebAppsClientUpdateAuthSettingsV2SlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteAuthSettingsV2); err != nil {
 		return WebAppsClientUpdateAuthSettingsV2SlotResponse{}, err
 	}
@@ -26436,12 +26906,7 @@ func (client *WebAppsClient) UpdateAzureStorageAccounts(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientUpdateAzureStorageAccountsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateAzureStorageAccountsResponse{}, err
-	}
-	resp, err := client.updateAzureStorageAccountsHandleResponse(httpResp)
-	return resp, err
+	return client.updateAzureStorageAccountsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateAzureStorageAccountsCreateRequest creates the UpdateAzureStorageAccounts request.
@@ -26475,8 +26940,11 @@ func (client *WebAppsClient) updateAzureStorageAccountsCreateRequest(ctx context
 }
 
 // updateAzureStorageAccountsHandleResponse handles the UpdateAzureStorageAccounts response.
-func (client *WebAppsClient) updateAzureStorageAccountsHandleResponse(resp *http.Response) (WebAppsClientUpdateAzureStorageAccountsResponse, error) {
+func (client *WebAppsClient) updateAzureStorageAccountsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateAzureStorageAccountsResponse, error) {
 	result := WebAppsClientUpdateAzureStorageAccountsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureStoragePropertyDictionaryResource); err != nil {
 		return WebAppsClientUpdateAzureStorageAccountsResponse{}, err
 	}
@@ -26507,12 +26975,7 @@ func (client *WebAppsClient) UpdateAzureStorageAccountsSlot(ctx context.Context,
 	if err != nil {
 		return WebAppsClientUpdateAzureStorageAccountsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateAzureStorageAccountsSlotResponse{}, err
-	}
-	resp, err := client.updateAzureStorageAccountsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateAzureStorageAccountsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateAzureStorageAccountsSlotCreateRequest creates the UpdateAzureStorageAccountsSlot request.
@@ -26550,8 +27013,11 @@ func (client *WebAppsClient) updateAzureStorageAccountsSlotCreateRequest(ctx con
 }
 
 // updateAzureStorageAccountsSlotHandleResponse handles the UpdateAzureStorageAccountsSlot response.
-func (client *WebAppsClient) updateAzureStorageAccountsSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateAzureStorageAccountsSlotResponse, error) {
+func (client *WebAppsClient) updateAzureStorageAccountsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateAzureStorageAccountsSlotResponse, error) {
 	result := WebAppsClientUpdateAzureStorageAccountsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureStoragePropertyDictionaryResource); err != nil {
 		return WebAppsClientUpdateAzureStorageAccountsSlotResponse{}, err
 	}
@@ -26581,12 +27047,7 @@ func (client *WebAppsClient) UpdateBackupConfiguration(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientUpdateBackupConfigurationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateBackupConfigurationResponse{}, err
-	}
-	resp, err := client.updateBackupConfigurationHandleResponse(httpResp)
-	return resp, err
+	return client.updateBackupConfigurationHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateBackupConfigurationCreateRequest creates the UpdateBackupConfiguration request.
@@ -26620,8 +27081,11 @@ func (client *WebAppsClient) updateBackupConfigurationCreateRequest(ctx context.
 }
 
 // updateBackupConfigurationHandleResponse handles the UpdateBackupConfiguration response.
-func (client *WebAppsClient) updateBackupConfigurationHandleResponse(resp *http.Response) (WebAppsClientUpdateBackupConfigurationResponse, error) {
+func (client *WebAppsClient) updateBackupConfigurationHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateBackupConfigurationResponse, error) {
 	result := WebAppsClientUpdateBackupConfigurationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupRequest); err != nil {
 		return WebAppsClientUpdateBackupConfigurationResponse{}, err
 	}
@@ -26652,12 +27116,7 @@ func (client *WebAppsClient) UpdateBackupConfigurationSlot(ctx context.Context, 
 	if err != nil {
 		return WebAppsClientUpdateBackupConfigurationSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateBackupConfigurationSlotResponse{}, err
-	}
-	resp, err := client.updateBackupConfigurationSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateBackupConfigurationSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateBackupConfigurationSlotCreateRequest creates the UpdateBackupConfigurationSlot request.
@@ -26695,8 +27154,11 @@ func (client *WebAppsClient) updateBackupConfigurationSlotCreateRequest(ctx cont
 }
 
 // updateBackupConfigurationSlotHandleResponse handles the UpdateBackupConfigurationSlot response.
-func (client *WebAppsClient) updateBackupConfigurationSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateBackupConfigurationSlotResponse, error) {
+func (client *WebAppsClient) updateBackupConfigurationSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateBackupConfigurationSlotResponse, error) {
 	result := WebAppsClientUpdateBackupConfigurationSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BackupRequest); err != nil {
 		return WebAppsClientUpdateBackupConfigurationSlotResponse{}, err
 	}
@@ -26726,12 +27188,7 @@ func (client *WebAppsClient) UpdateConfiguration(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientUpdateConfigurationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateConfigurationResponse{}, err
-	}
-	resp, err := client.updateConfigurationHandleResponse(httpResp)
-	return resp, err
+	return client.updateConfigurationHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateConfigurationCreateRequest creates the UpdateConfiguration request.
@@ -26765,8 +27222,11 @@ func (client *WebAppsClient) updateConfigurationCreateRequest(ctx context.Contex
 }
 
 // updateConfigurationHandleResponse handles the UpdateConfiguration response.
-func (client *WebAppsClient) updateConfigurationHandleResponse(resp *http.Response) (WebAppsClientUpdateConfigurationResponse, error) {
+func (client *WebAppsClient) updateConfigurationHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateConfigurationResponse, error) {
 	result := WebAppsClientUpdateConfigurationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteConfigResource); err != nil {
 		return WebAppsClientUpdateConfigurationResponse{}, err
 	}
@@ -26797,12 +27257,7 @@ func (client *WebAppsClient) UpdateConfigurationSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientUpdateConfigurationSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateConfigurationSlotResponse{}, err
-	}
-	resp, err := client.updateConfigurationSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateConfigurationSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateConfigurationSlotCreateRequest creates the UpdateConfigurationSlot request.
@@ -26840,8 +27295,11 @@ func (client *WebAppsClient) updateConfigurationSlotCreateRequest(ctx context.Co
 }
 
 // updateConfigurationSlotHandleResponse handles the UpdateConfigurationSlot response.
-func (client *WebAppsClient) updateConfigurationSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateConfigurationSlotResponse, error) {
+func (client *WebAppsClient) updateConfigurationSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateConfigurationSlotResponse, error) {
 	result := WebAppsClientUpdateConfigurationSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteConfigResource); err != nil {
 		return WebAppsClientUpdateConfigurationSlotResponse{}, err
 	}
@@ -26871,12 +27329,7 @@ func (client *WebAppsClient) UpdateConnectionStrings(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientUpdateConnectionStringsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateConnectionStringsResponse{}, err
-	}
-	resp, err := client.updateConnectionStringsHandleResponse(httpResp)
-	return resp, err
+	return client.updateConnectionStringsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateConnectionStringsCreateRequest creates the UpdateConnectionStrings request.
@@ -26910,8 +27363,11 @@ func (client *WebAppsClient) updateConnectionStringsCreateRequest(ctx context.Co
 }
 
 // updateConnectionStringsHandleResponse handles the UpdateConnectionStrings response.
-func (client *WebAppsClient) updateConnectionStringsHandleResponse(resp *http.Response) (WebAppsClientUpdateConnectionStringsResponse, error) {
+func (client *WebAppsClient) updateConnectionStringsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateConnectionStringsResponse, error) {
 	result := WebAppsClientUpdateConnectionStringsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionStringDictionary); err != nil {
 		return WebAppsClientUpdateConnectionStringsResponse{}, err
 	}
@@ -26942,12 +27398,7 @@ func (client *WebAppsClient) UpdateConnectionStringsSlot(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientUpdateConnectionStringsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateConnectionStringsSlotResponse{}, err
-	}
-	resp, err := client.updateConnectionStringsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateConnectionStringsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateConnectionStringsSlotCreateRequest creates the UpdateConnectionStringsSlot request.
@@ -26985,8 +27436,11 @@ func (client *WebAppsClient) updateConnectionStringsSlotCreateRequest(ctx contex
 }
 
 // updateConnectionStringsSlotHandleResponse handles the UpdateConnectionStringsSlot response.
-func (client *WebAppsClient) updateConnectionStringsSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateConnectionStringsSlotResponse, error) {
+func (client *WebAppsClient) updateConnectionStringsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateConnectionStringsSlotResponse, error) {
 	result := WebAppsClientUpdateConnectionStringsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionStringDictionary); err != nil {
 		return WebAppsClientUpdateConnectionStringsSlotResponse{}, err
 	}
@@ -27016,12 +27470,7 @@ func (client *WebAppsClient) UpdateDiagnosticLogsConfig(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientUpdateDiagnosticLogsConfigResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateDiagnosticLogsConfigResponse{}, err
-	}
-	resp, err := client.updateDiagnosticLogsConfigHandleResponse(httpResp)
-	return resp, err
+	return client.updateDiagnosticLogsConfigHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateDiagnosticLogsConfigCreateRequest creates the UpdateDiagnosticLogsConfig request.
@@ -27055,8 +27504,11 @@ func (client *WebAppsClient) updateDiagnosticLogsConfigCreateRequest(ctx context
 }
 
 // updateDiagnosticLogsConfigHandleResponse handles the UpdateDiagnosticLogsConfig response.
-func (client *WebAppsClient) updateDiagnosticLogsConfigHandleResponse(resp *http.Response) (WebAppsClientUpdateDiagnosticLogsConfigResponse, error) {
+func (client *WebAppsClient) updateDiagnosticLogsConfigHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateDiagnosticLogsConfigResponse, error) {
 	result := WebAppsClientUpdateDiagnosticLogsConfigResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteLogsConfig); err != nil {
 		return WebAppsClientUpdateDiagnosticLogsConfigResponse{}, err
 	}
@@ -27088,12 +27540,7 @@ func (client *WebAppsClient) UpdateDiagnosticLogsConfigSlot(ctx context.Context,
 	if err != nil {
 		return WebAppsClientUpdateDiagnosticLogsConfigSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateDiagnosticLogsConfigSlotResponse{}, err
-	}
-	resp, err := client.updateDiagnosticLogsConfigSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateDiagnosticLogsConfigSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateDiagnosticLogsConfigSlotCreateRequest creates the UpdateDiagnosticLogsConfigSlot request.
@@ -27131,8 +27578,11 @@ func (client *WebAppsClient) updateDiagnosticLogsConfigSlotCreateRequest(ctx con
 }
 
 // updateDiagnosticLogsConfigSlotHandleResponse handles the UpdateDiagnosticLogsConfigSlot response.
-func (client *WebAppsClient) updateDiagnosticLogsConfigSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateDiagnosticLogsConfigSlotResponse, error) {
+func (client *WebAppsClient) updateDiagnosticLogsConfigSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateDiagnosticLogsConfigSlotResponse, error) {
 	result := WebAppsClientUpdateDiagnosticLogsConfigSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteLogsConfig); err != nil {
 		return WebAppsClientUpdateDiagnosticLogsConfigSlotResponse{}, err
 	}
@@ -27163,12 +27613,7 @@ func (client *WebAppsClient) UpdateDomainOwnershipIdentifier(ctx context.Context
 	if err != nil {
 		return WebAppsClientUpdateDomainOwnershipIdentifierResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateDomainOwnershipIdentifierResponse{}, err
-	}
-	resp, err := client.updateDomainOwnershipIdentifierHandleResponse(httpResp)
-	return resp, err
+	return client.updateDomainOwnershipIdentifierHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateDomainOwnershipIdentifierCreateRequest creates the UpdateDomainOwnershipIdentifier request.
@@ -27206,8 +27651,11 @@ func (client *WebAppsClient) updateDomainOwnershipIdentifierCreateRequest(ctx co
 }
 
 // updateDomainOwnershipIdentifierHandleResponse handles the UpdateDomainOwnershipIdentifier response.
-func (client *WebAppsClient) updateDomainOwnershipIdentifierHandleResponse(resp *http.Response) (WebAppsClientUpdateDomainOwnershipIdentifierResponse, error) {
+func (client *WebAppsClient) updateDomainOwnershipIdentifierHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateDomainOwnershipIdentifierResponse, error) {
 	result := WebAppsClientUpdateDomainOwnershipIdentifierResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Identifier); err != nil {
 		return WebAppsClientUpdateDomainOwnershipIdentifierResponse{}, err
 	}
@@ -27236,12 +27684,7 @@ func (client *WebAppsClient) UpdateDomainOwnershipIdentifierSlot(ctx context.Con
 	if err != nil {
 		return WebAppsClientUpdateDomainOwnershipIdentifierSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateDomainOwnershipIdentifierSlotResponse{}, err
-	}
-	resp, err := client.updateDomainOwnershipIdentifierSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateDomainOwnershipIdentifierSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateDomainOwnershipIdentifierSlotCreateRequest creates the UpdateDomainOwnershipIdentifierSlot request.
@@ -27283,8 +27726,11 @@ func (client *WebAppsClient) updateDomainOwnershipIdentifierSlotCreateRequest(ct
 }
 
 // updateDomainOwnershipIdentifierSlotHandleResponse handles the UpdateDomainOwnershipIdentifierSlot response.
-func (client *WebAppsClient) updateDomainOwnershipIdentifierSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateDomainOwnershipIdentifierSlotResponse, error) {
+func (client *WebAppsClient) updateDomainOwnershipIdentifierSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateDomainOwnershipIdentifierSlotResponse, error) {
 	result := WebAppsClientUpdateDomainOwnershipIdentifierSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Identifier); err != nil {
 		return WebAppsClientUpdateDomainOwnershipIdentifierSlotResponse{}, err
 	}
@@ -27313,12 +27759,7 @@ func (client *WebAppsClient) UpdateFtpAllowed(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientUpdateFtpAllowedResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateFtpAllowedResponse{}, err
-	}
-	resp, err := client.updateFtpAllowedHandleResponse(httpResp)
-	return resp, err
+	return client.updateFtpAllowedHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateFtpAllowedCreateRequest creates the UpdateFtpAllowed request.
@@ -27352,8 +27793,11 @@ func (client *WebAppsClient) updateFtpAllowedCreateRequest(ctx context.Context, 
 }
 
 // updateFtpAllowedHandleResponse handles the UpdateFtpAllowed response.
-func (client *WebAppsClient) updateFtpAllowedHandleResponse(resp *http.Response) (WebAppsClientUpdateFtpAllowedResponse, error) {
+func (client *WebAppsClient) updateFtpAllowedHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateFtpAllowedResponse, error) {
 	result := WebAppsClientUpdateFtpAllowedResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmPublishingCredentialsPoliciesEntity); err != nil {
 		return WebAppsClientUpdateFtpAllowedResponse{}, err
 	}
@@ -27382,12 +27826,7 @@ func (client *WebAppsClient) UpdateFtpAllowedSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientUpdateFtpAllowedSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateFtpAllowedSlotResponse{}, err
-	}
-	resp, err := client.updateFtpAllowedSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateFtpAllowedSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateFtpAllowedSlotCreateRequest creates the UpdateFtpAllowedSlot request.
@@ -27425,8 +27864,11 @@ func (client *WebAppsClient) updateFtpAllowedSlotCreateRequest(ctx context.Conte
 }
 
 // updateFtpAllowedSlotHandleResponse handles the UpdateFtpAllowedSlot response.
-func (client *WebAppsClient) updateFtpAllowedSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateFtpAllowedSlotResponse, error) {
+func (client *WebAppsClient) updateFtpAllowedSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateFtpAllowedSlotResponse, error) {
 	result := WebAppsClientUpdateFtpAllowedSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmPublishingCredentialsPoliciesEntity); err != nil {
 		return WebAppsClientUpdateFtpAllowedSlotResponse{}, err
 	}
@@ -27458,12 +27900,7 @@ func (client *WebAppsClient) UpdateHybridConnection(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientUpdateHybridConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateHybridConnectionResponse{}, err
-	}
-	resp, err := client.updateHybridConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.updateHybridConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateHybridConnectionCreateRequest creates the UpdateHybridConnection request.
@@ -27505,8 +27942,11 @@ func (client *WebAppsClient) updateHybridConnectionCreateRequest(ctx context.Con
 }
 
 // updateHybridConnectionHandleResponse handles the UpdateHybridConnection response.
-func (client *WebAppsClient) updateHybridConnectionHandleResponse(resp *http.Response) (WebAppsClientUpdateHybridConnectionResponse, error) {
+func (client *WebAppsClient) updateHybridConnectionHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateHybridConnectionResponse, error) {
 	result := WebAppsClientUpdateHybridConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
 		return WebAppsClientUpdateHybridConnectionResponse{}, err
 	}
@@ -27534,12 +27974,7 @@ func (client *WebAppsClient) UpdateHybridConnectionSlot(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientUpdateHybridConnectionSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateHybridConnectionSlotResponse{}, err
-	}
-	resp, err := client.updateHybridConnectionSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateHybridConnectionSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateHybridConnectionSlotCreateRequest creates the UpdateHybridConnectionSlot request.
@@ -27585,8 +28020,11 @@ func (client *WebAppsClient) updateHybridConnectionSlotCreateRequest(ctx context
 }
 
 // updateHybridConnectionSlotHandleResponse handles the UpdateHybridConnectionSlot response.
-func (client *WebAppsClient) updateHybridConnectionSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateHybridConnectionSlotResponse, error) {
+func (client *WebAppsClient) updateHybridConnectionSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateHybridConnectionSlotResponse, error) {
 	result := WebAppsClientUpdateHybridConnectionSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
 		return WebAppsClientUpdateHybridConnectionSlotResponse{}, err
 	}
@@ -27615,12 +28053,7 @@ func (client *WebAppsClient) UpdateMachineKey(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientUpdateMachineKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateMachineKeyResponse{}, err
-	}
-	resp, err := client.updateMachineKeyHandleResponse(httpResp)
-	return resp, err
+	return client.updateMachineKeyHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateMachineKeyCreateRequest creates the UpdateMachineKey request.
@@ -27650,8 +28083,11 @@ func (client *WebAppsClient) updateMachineKeyCreateRequest(ctx context.Context, 
 }
 
 // updateMachineKeyHandleResponse handles the UpdateMachineKey response.
-func (client *WebAppsClient) updateMachineKeyHandleResponse(resp *http.Response) (WebAppsClientUpdateMachineKeyResponse, error) {
+func (client *WebAppsClient) updateMachineKeyHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateMachineKeyResponse, error) {
 	result := WebAppsClientUpdateMachineKeyResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return WebAppsClientUpdateMachineKeyResponse{}, err
 	}
@@ -27680,12 +28116,7 @@ func (client *WebAppsClient) UpdateMetadata(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return WebAppsClientUpdateMetadataResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateMetadataResponse{}, err
-	}
-	resp, err := client.updateMetadataHandleResponse(httpResp)
-	return resp, err
+	return client.updateMetadataHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateMetadataCreateRequest creates the UpdateMetadata request.
@@ -27719,8 +28150,11 @@ func (client *WebAppsClient) updateMetadataCreateRequest(ctx context.Context, re
 }
 
 // updateMetadataHandleResponse handles the UpdateMetadata response.
-func (client *WebAppsClient) updateMetadataHandleResponse(resp *http.Response) (WebAppsClientUpdateMetadataResponse, error) {
+func (client *WebAppsClient) updateMetadataHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateMetadataResponse, error) {
 	result := WebAppsClientUpdateMetadataResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
 		return WebAppsClientUpdateMetadataResponse{}, err
 	}
@@ -27751,12 +28185,7 @@ func (client *WebAppsClient) UpdateMetadataSlot(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientUpdateMetadataSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateMetadataSlotResponse{}, err
-	}
-	resp, err := client.updateMetadataSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateMetadataSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateMetadataSlotCreateRequest creates the UpdateMetadataSlot request.
@@ -27794,8 +28223,11 @@ func (client *WebAppsClient) updateMetadataSlotCreateRequest(ctx context.Context
 }
 
 // updateMetadataSlotHandleResponse handles the UpdateMetadataSlot response.
-func (client *WebAppsClient) updateMetadataSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateMetadataSlotResponse, error) {
+func (client *WebAppsClient) updateMetadataSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateMetadataSlotResponse, error) {
 	result := WebAppsClientUpdateMetadataSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StringDictionary); err != nil {
 		return WebAppsClientUpdateMetadataSlotResponse{}, err
 	}
@@ -27826,12 +28258,7 @@ func (client *WebAppsClient) UpdatePremierAddOn(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientUpdatePremierAddOnResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdatePremierAddOnResponse{}, err
-	}
-	resp, err := client.updatePremierAddOnHandleResponse(httpResp)
-	return resp, err
+	return client.updatePremierAddOnHandleResponse(httpResp, http.StatusOK)
 }
 
 // updatePremierAddOnCreateRequest creates the UpdatePremierAddOn request.
@@ -27869,8 +28296,11 @@ func (client *WebAppsClient) updatePremierAddOnCreateRequest(ctx context.Context
 }
 
 // updatePremierAddOnHandleResponse handles the UpdatePremierAddOn response.
-func (client *WebAppsClient) updatePremierAddOnHandleResponse(resp *http.Response) (WebAppsClientUpdatePremierAddOnResponse, error) {
+func (client *WebAppsClient) updatePremierAddOnHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdatePremierAddOnResponse, error) {
 	result := WebAppsClientUpdatePremierAddOnResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PremierAddOn); err != nil {
 		return WebAppsClientUpdatePremierAddOnResponse{}, err
 	}
@@ -27898,12 +28328,7 @@ func (client *WebAppsClient) UpdatePremierAddOnSlot(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientUpdatePremierAddOnSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdatePremierAddOnSlotResponse{}, err
-	}
-	resp, err := client.updatePremierAddOnSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updatePremierAddOnSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updatePremierAddOnSlotCreateRequest creates the UpdatePremierAddOnSlot request.
@@ -27945,8 +28370,11 @@ func (client *WebAppsClient) updatePremierAddOnSlotCreateRequest(ctx context.Con
 }
 
 // updatePremierAddOnSlotHandleResponse handles the UpdatePremierAddOnSlot response.
-func (client *WebAppsClient) updatePremierAddOnSlotHandleResponse(resp *http.Response) (WebAppsClientUpdatePremierAddOnSlotResponse, error) {
+func (client *WebAppsClient) updatePremierAddOnSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdatePremierAddOnSlotResponse, error) {
 	result := WebAppsClientUpdatePremierAddOnSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PremierAddOn); err != nil {
 		return WebAppsClientUpdatePremierAddOnSlotResponse{}, err
 	}
@@ -27977,12 +28405,7 @@ func (client *WebAppsClient) UpdateRelayServiceConnection(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientUpdateRelayServiceConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateRelayServiceConnectionResponse{}, err
-	}
-	resp, err := client.updateRelayServiceConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.updateRelayServiceConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateRelayServiceConnectionCreateRequest creates the UpdateRelayServiceConnection request.
@@ -28020,8 +28443,11 @@ func (client *WebAppsClient) updateRelayServiceConnectionCreateRequest(ctx conte
 }
 
 // updateRelayServiceConnectionHandleResponse handles the UpdateRelayServiceConnection response.
-func (client *WebAppsClient) updateRelayServiceConnectionHandleResponse(resp *http.Response) (WebAppsClientUpdateRelayServiceConnectionResponse, error) {
+func (client *WebAppsClient) updateRelayServiceConnectionHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateRelayServiceConnectionResponse, error) {
 	result := WebAppsClientUpdateRelayServiceConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RelayServiceConnectionEntity); err != nil {
 		return WebAppsClientUpdateRelayServiceConnectionResponse{}, err
 	}
@@ -28049,12 +28475,7 @@ func (client *WebAppsClient) UpdateRelayServiceConnectionSlot(ctx context.Contex
 	if err != nil {
 		return WebAppsClientUpdateRelayServiceConnectionSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateRelayServiceConnectionSlotResponse{}, err
-	}
-	resp, err := client.updateRelayServiceConnectionSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateRelayServiceConnectionSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateRelayServiceConnectionSlotCreateRequest creates the UpdateRelayServiceConnectionSlot request.
@@ -28096,8 +28517,11 @@ func (client *WebAppsClient) updateRelayServiceConnectionSlotCreateRequest(ctx c
 }
 
 // updateRelayServiceConnectionSlotHandleResponse handles the UpdateRelayServiceConnectionSlot response.
-func (client *WebAppsClient) updateRelayServiceConnectionSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateRelayServiceConnectionSlotResponse, error) {
+func (client *WebAppsClient) updateRelayServiceConnectionSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateRelayServiceConnectionSlotResponse, error) {
 	result := WebAppsClientUpdateRelayServiceConnectionSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RelayServiceConnectionEntity); err != nil {
 		return WebAppsClientUpdateRelayServiceConnectionSlotResponse{}, err
 	}
@@ -28126,12 +28550,7 @@ func (client *WebAppsClient) UpdateScmAllowed(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientUpdateScmAllowedResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateScmAllowedResponse{}, err
-	}
-	resp, err := client.updateScmAllowedHandleResponse(httpResp)
-	return resp, err
+	return client.updateScmAllowedHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateScmAllowedCreateRequest creates the UpdateScmAllowed request.
@@ -28165,8 +28584,11 @@ func (client *WebAppsClient) updateScmAllowedCreateRequest(ctx context.Context, 
 }
 
 // updateScmAllowedHandleResponse handles the UpdateScmAllowed response.
-func (client *WebAppsClient) updateScmAllowedHandleResponse(resp *http.Response) (WebAppsClientUpdateScmAllowedResponse, error) {
+func (client *WebAppsClient) updateScmAllowedHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateScmAllowedResponse, error) {
 	result := WebAppsClientUpdateScmAllowedResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmPublishingCredentialsPoliciesEntity); err != nil {
 		return WebAppsClientUpdateScmAllowedResponse{}, err
 	}
@@ -28195,12 +28617,7 @@ func (client *WebAppsClient) UpdateScmAllowedSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientUpdateScmAllowedSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateScmAllowedSlotResponse{}, err
-	}
-	resp, err := client.updateScmAllowedSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateScmAllowedSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateScmAllowedSlotCreateRequest creates the UpdateScmAllowedSlot request.
@@ -28238,8 +28655,11 @@ func (client *WebAppsClient) updateScmAllowedSlotCreateRequest(ctx context.Conte
 }
 
 // updateScmAllowedSlotHandleResponse handles the UpdateScmAllowedSlot response.
-func (client *WebAppsClient) updateScmAllowedSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateScmAllowedSlotResponse, error) {
+func (client *WebAppsClient) updateScmAllowedSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateScmAllowedSlotResponse, error) {
 	result := WebAppsClientUpdateScmAllowedSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmPublishingCredentialsPoliciesEntity); err != nil {
 		return WebAppsClientUpdateScmAllowedSlotResponse{}, err
 	}
@@ -28269,12 +28689,7 @@ func (client *WebAppsClient) UpdateSitePushSettings(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientUpdateSitePushSettingsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateSitePushSettingsResponse{}, err
-	}
-	resp, err := client.updateSitePushSettingsHandleResponse(httpResp)
-	return resp, err
+	return client.updateSitePushSettingsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateSitePushSettingsCreateRequest creates the UpdateSitePushSettings request.
@@ -28308,8 +28723,11 @@ func (client *WebAppsClient) updateSitePushSettingsCreateRequest(ctx context.Con
 }
 
 // updateSitePushSettingsHandleResponse handles the UpdateSitePushSettings response.
-func (client *WebAppsClient) updateSitePushSettingsHandleResponse(resp *http.Response) (WebAppsClientUpdateSitePushSettingsResponse, error) {
+func (client *WebAppsClient) updateSitePushSettingsHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateSitePushSettingsResponse, error) {
 	result := WebAppsClientUpdateSitePushSettingsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PushSettings); err != nil {
 		return WebAppsClientUpdateSitePushSettingsResponse{}, err
 	}
@@ -28340,12 +28758,7 @@ func (client *WebAppsClient) UpdateSitePushSettingsSlot(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientUpdateSitePushSettingsSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateSitePushSettingsSlotResponse{}, err
-	}
-	resp, err := client.updateSitePushSettingsSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateSitePushSettingsSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateSitePushSettingsSlotCreateRequest creates the UpdateSitePushSettingsSlot request.
@@ -28383,8 +28796,11 @@ func (client *WebAppsClient) updateSitePushSettingsSlotCreateRequest(ctx context
 }
 
 // updateSitePushSettingsSlotHandleResponse handles the UpdateSitePushSettingsSlot response.
-func (client *WebAppsClient) updateSitePushSettingsSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateSitePushSettingsSlotResponse, error) {
+func (client *WebAppsClient) updateSitePushSettingsSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateSitePushSettingsSlotResponse, error) {
 	result := WebAppsClientUpdateSitePushSettingsSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PushSettings); err != nil {
 		return WebAppsClientUpdateSitePushSettingsSlotResponse{}, err
 	}
@@ -28414,12 +28830,7 @@ func (client *WebAppsClient) UpdateSlot(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return WebAppsClientUpdateSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateSlotResponse{}, err
-	}
-	resp, err := client.updateSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateSlotHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // updateSlotCreateRequest creates the UpdateSlot request.
@@ -28457,8 +28868,11 @@ func (client *WebAppsClient) updateSlotCreateRequest(ctx context.Context, resour
 }
 
 // updateSlotHandleResponse handles the UpdateSlot response.
-func (client *WebAppsClient) updateSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateSlotResponse, error) {
+func (client *WebAppsClient) updateSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateSlotResponse, error) {
 	result := WebAppsClientUpdateSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Site); err != nil {
 		return WebAppsClientUpdateSlotResponse{}, err
 	}
@@ -28489,12 +28903,7 @@ func (client *WebAppsClient) UpdateSlotConfigurationNames(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientUpdateSlotConfigurationNamesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateSlotConfigurationNamesResponse{}, err
-	}
-	resp, err := client.updateSlotConfigurationNamesHandleResponse(httpResp)
-	return resp, err
+	return client.updateSlotConfigurationNamesHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateSlotConfigurationNamesCreateRequest creates the UpdateSlotConfigurationNames request.
@@ -28528,8 +28937,11 @@ func (client *WebAppsClient) updateSlotConfigurationNamesCreateRequest(ctx conte
 }
 
 // updateSlotConfigurationNamesHandleResponse handles the UpdateSlotConfigurationNames response.
-func (client *WebAppsClient) updateSlotConfigurationNamesHandleResponse(resp *http.Response) (WebAppsClientUpdateSlotConfigurationNamesResponse, error) {
+func (client *WebAppsClient) updateSlotConfigurationNamesHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateSlotConfigurationNamesResponse, error) {
 	result := WebAppsClientUpdateSlotConfigurationNamesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SlotConfigNamesResource); err != nil {
 		return WebAppsClientUpdateSlotConfigurationNamesResponse{}, err
 	}
@@ -28559,12 +28971,7 @@ func (client *WebAppsClient) UpdateSourceControl(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientUpdateSourceControlResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateSourceControlResponse{}, err
-	}
-	resp, err := client.updateSourceControlHandleResponse(httpResp)
-	return resp, err
+	return client.updateSourceControlHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
 }
 
 // updateSourceControlCreateRequest creates the UpdateSourceControl request.
@@ -28598,8 +29005,11 @@ func (client *WebAppsClient) updateSourceControlCreateRequest(ctx context.Contex
 }
 
 // updateSourceControlHandleResponse handles the UpdateSourceControl response.
-func (client *WebAppsClient) updateSourceControlHandleResponse(resp *http.Response) (WebAppsClientUpdateSourceControlResponse, error) {
+func (client *WebAppsClient) updateSourceControlHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateSourceControlResponse, error) {
 	result := WebAppsClientUpdateSourceControlResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteSourceControl); err != nil {
 		return WebAppsClientUpdateSourceControlResponse{}, err
 	}
@@ -28631,12 +29041,7 @@ func (client *WebAppsClient) UpdateSourceControlSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientUpdateSourceControlSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateSourceControlSlotResponse{}, err
-	}
-	resp, err := client.updateSourceControlSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateSourceControlSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
 }
 
 // updateSourceControlSlotCreateRequest creates the UpdateSourceControlSlot request.
@@ -28674,8 +29079,11 @@ func (client *WebAppsClient) updateSourceControlSlotCreateRequest(ctx context.Co
 }
 
 // updateSourceControlSlotHandleResponse handles the UpdateSourceControlSlot response.
-func (client *WebAppsClient) updateSourceControlSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateSourceControlSlotResponse, error) {
+func (client *WebAppsClient) updateSourceControlSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateSourceControlSlotResponse, error) {
 	result := WebAppsClientUpdateSourceControlSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SiteSourceControl); err != nil {
 		return WebAppsClientUpdateSourceControlSlotResponse{}, err
 	}
@@ -28709,12 +29117,7 @@ func (client *WebAppsClient) UpdateSwiftVirtualNetworkConnectionWithCheck(ctx co
 	if err != nil {
 		return WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}, err
-	}
-	resp, err := client.updateSwiftVirtualNetworkConnectionWithCheckHandleResponse(httpResp)
-	return resp, err
+	return client.updateSwiftVirtualNetworkConnectionWithCheckHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateSwiftVirtualNetworkConnectionWithCheckCreateRequest creates the UpdateSwiftVirtualNetworkConnectionWithCheck request.
@@ -28748,8 +29151,11 @@ func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckCreateR
 }
 
 // updateSwiftVirtualNetworkConnectionWithCheckHandleResponse handles the UpdateSwiftVirtualNetworkConnectionWithCheck response.
-func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckHandleResponse(resp *http.Response) (WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResponse, error) {
+func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResponse, error) {
 	result := WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SwiftVirtualNetwork); err != nil {
 		return WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}, err
 	}
@@ -28786,12 +29192,7 @@ func (client *WebAppsClient) UpdateSwiftVirtualNetworkConnectionWithCheckSlot(ct
 	if err != nil {
 		return WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}, err
-	}
-	resp, err := client.updateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateSwiftVirtualNetworkConnectionWithCheckSlotCreateRequest creates the UpdateSwiftVirtualNetworkConnectionWithCheckSlot request.
@@ -28829,8 +29230,11 @@ func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckSlotCre
 }
 
 // updateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse handles the UpdateSwiftVirtualNetworkConnectionWithCheckSlot response.
-func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse, error) {
+func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse, error) {
 	result := WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SwiftVirtualNetwork); err != nil {
 		return WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}, err
 	}
@@ -28861,12 +29265,7 @@ func (client *WebAppsClient) UpdateVnetConnection(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientUpdateVnetConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateVnetConnectionResponse{}, err
-	}
-	resp, err := client.updateVnetConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.updateVnetConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateVnetConnectionCreateRequest creates the UpdateVnetConnection request.
@@ -28904,8 +29303,11 @@ func (client *WebAppsClient) updateVnetConnectionCreateRequest(ctx context.Conte
 }
 
 // updateVnetConnectionHandleResponse handles the UpdateVnetConnection response.
-func (client *WebAppsClient) updateVnetConnectionHandleResponse(resp *http.Response) (WebAppsClientUpdateVnetConnectionResponse, error) {
+func (client *WebAppsClient) updateVnetConnectionHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateVnetConnectionResponse, error) {
 	result := WebAppsClientUpdateVnetConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResource); err != nil {
 		return WebAppsClientUpdateVnetConnectionResponse{}, err
 	}
@@ -28937,12 +29339,7 @@ func (client *WebAppsClient) UpdateVnetConnectionGateway(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientUpdateVnetConnectionGatewayResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateVnetConnectionGatewayResponse{}, err
-	}
-	resp, err := client.updateVnetConnectionGatewayHandleResponse(httpResp)
-	return resp, err
+	return client.updateVnetConnectionGatewayHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateVnetConnectionGatewayCreateRequest creates the UpdateVnetConnectionGateway request.
@@ -28984,8 +29381,11 @@ func (client *WebAppsClient) updateVnetConnectionGatewayCreateRequest(ctx contex
 }
 
 // updateVnetConnectionGatewayHandleResponse handles the UpdateVnetConnectionGateway response.
-func (client *WebAppsClient) updateVnetConnectionGatewayHandleResponse(resp *http.Response) (WebAppsClientUpdateVnetConnectionGatewayResponse, error) {
+func (client *WebAppsClient) updateVnetConnectionGatewayHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateVnetConnectionGatewayResponse, error) {
 	result := WebAppsClientUpdateVnetConnectionGatewayResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetGateway); err != nil {
 		return WebAppsClientUpdateVnetConnectionGatewayResponse{}, err
 	}
@@ -29013,12 +29413,7 @@ func (client *WebAppsClient) UpdateVnetConnectionGatewaySlot(ctx context.Context
 	if err != nil {
 		return WebAppsClientUpdateVnetConnectionGatewaySlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateVnetConnectionGatewaySlotResponse{}, err
-	}
-	resp, err := client.updateVnetConnectionGatewaySlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateVnetConnectionGatewaySlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateVnetConnectionGatewaySlotCreateRequest creates the UpdateVnetConnectionGatewaySlot request.
@@ -29064,8 +29459,11 @@ func (client *WebAppsClient) updateVnetConnectionGatewaySlotCreateRequest(ctx co
 }
 
 // updateVnetConnectionGatewaySlotHandleResponse handles the UpdateVnetConnectionGatewaySlot response.
-func (client *WebAppsClient) updateVnetConnectionGatewaySlotHandleResponse(resp *http.Response) (WebAppsClientUpdateVnetConnectionGatewaySlotResponse, error) {
+func (client *WebAppsClient) updateVnetConnectionGatewaySlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateVnetConnectionGatewaySlotResponse, error) {
 	result := WebAppsClientUpdateVnetConnectionGatewaySlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetGateway); err != nil {
 		return WebAppsClientUpdateVnetConnectionGatewaySlotResponse{}, err
 	}
@@ -29094,12 +29492,7 @@ func (client *WebAppsClient) UpdateVnetConnectionSlot(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientUpdateVnetConnectionSlotResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return WebAppsClientUpdateVnetConnectionSlotResponse{}, err
-	}
-	resp, err := client.updateVnetConnectionSlotHandleResponse(httpResp)
-	return resp, err
+	return client.updateVnetConnectionSlotHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateVnetConnectionSlotCreateRequest creates the UpdateVnetConnectionSlot request.
@@ -29141,8 +29534,11 @@ func (client *WebAppsClient) updateVnetConnectionSlotCreateRequest(ctx context.C
 }
 
 // updateVnetConnectionSlotHandleResponse handles the UpdateVnetConnectionSlot response.
-func (client *WebAppsClient) updateVnetConnectionSlotHandleResponse(resp *http.Response) (WebAppsClientUpdateVnetConnectionSlotResponse, error) {
+func (client *WebAppsClient) updateVnetConnectionSlotHandleResponse(resp *http.Response, successCodes ...int) (WebAppsClientUpdateVnetConnectionSlotResponse, error) {
 	result := WebAppsClientUpdateVnetConnectionSlotResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResource); err != nil {
 		return WebAppsClientUpdateVnetConnectionSlotResponse{}, err
 	}

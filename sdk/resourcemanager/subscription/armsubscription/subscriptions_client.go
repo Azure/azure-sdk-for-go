@@ -18,6 +18,8 @@ import (
 
 // SubscriptionsClient contains the methods for the Subscriptions group.
 // Don't use this type directly, use NewSubscriptionsClient() instead.
+//
+// Generated from API version 2025-11-01-preview
 type SubscriptionsClient struct {
 	internal *arm.Client
 }
@@ -38,8 +40,6 @@ func NewSubscriptionsClient(credential azcore.TokenCredential, options *arm.Clie
 
 // AcceptTargetDirectory - The operation to accept Subscription Changed Request
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - subscriptionID - Subscription Id.
 //   - options - SubscriptionsClientAcceptTargetDirectoryOptions contains the optional parameters for the SubscriptionsClient.AcceptTargetDirectory
 //     method.
@@ -58,8 +58,7 @@ func (client *SubscriptionsClient) AcceptTargetDirectory(ctx context.Context, su
 		return SubscriptionsClientAcceptTargetDirectoryResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return SubscriptionsClientAcceptTargetDirectoryResponse{}, err
+		return SubscriptionsClientAcceptTargetDirectoryResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SubscriptionsClientAcceptTargetDirectoryResponse{}, nil
 }
@@ -76,15 +75,13 @@ func (client *SubscriptionsClient) acceptTargetDirectoryCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // DeleteTargetDirectory - The operation to delete Initiator Subscription Changed Request
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - options - SubscriptionsClientDeleteTargetDirectoryOptions contains the optional parameters for the SubscriptionsClient.DeleteTargetDirectory
 //     method.
@@ -103,8 +100,7 @@ func (client *SubscriptionsClient) DeleteTargetDirectory(ctx context.Context, su
 		return SubscriptionsClientDeleteTargetDirectoryResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SubscriptionsClientDeleteTargetDirectoryResponse{}, err
+		return SubscriptionsClientDeleteTargetDirectoryResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return SubscriptionsClientDeleteTargetDirectoryResponse{}, nil
 }
@@ -121,15 +117,13 @@ func (client *SubscriptionsClient) deleteTargetDirectoryCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // GetTargetDirectory - The operation to view Initiator Subscription Changed Request
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - options - SubscriptionsClientGetTargetDirectoryOptions contains the optional parameters for the SubscriptionsClient.GetTargetDirectory
 //     method.
@@ -147,12 +141,7 @@ func (client *SubscriptionsClient) GetTargetDirectory(ctx context.Context, subsc
 	if err != nil {
 		return SubscriptionsClientGetTargetDirectoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SubscriptionsClientGetTargetDirectoryResponse{}, err
-	}
-	resp, err := client.getTargetDirectoryHandleResponse(httpResp)
-	return resp, err
+	return client.getTargetDirectoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // getTargetDirectoryCreateRequest creates the GetTargetDirectory request.
@@ -167,15 +156,18 @@ func (client *SubscriptionsClient) getTargetDirectoryCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getTargetDirectoryHandleResponse handles the GetTargetDirectory response.
-func (client *SubscriptionsClient) getTargetDirectoryHandleResponse(resp *http.Response) (SubscriptionsClientGetTargetDirectoryResponse, error) {
+func (client *SubscriptionsClient) getTargetDirectoryHandleResponse(resp *http.Response, successCodes ...int) (SubscriptionsClientGetTargetDirectoryResponse, error) {
 	result := SubscriptionsClientGetTargetDirectoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TargetDirectoryResult); err != nil {
 		return SubscriptionsClientGetTargetDirectoryResponse{}, err
 	}
@@ -183,8 +175,6 @@ func (client *SubscriptionsClient) getTargetDirectoryHandleResponse(resp *http.R
 }
 
 // NewListTargetDirectoryPager - The operation to list Initiator Subscription Changed Request
-//
-// Generated from API version 2025-11-01-preview
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - options - SubscriptionsClientListTargetDirectoryOptions contains the optional parameters for the SubscriptionsClient.NewListTargetDirectoryPager
 //     method.
@@ -199,39 +189,53 @@ func (client *SubscriptionsClient) NewListTargetDirectoryPager(subscriptionID st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listTargetDirectoryCreateRequest(ctx, subscriptionID, options)
-			}, nil)
+			req, err := client.listTargetDirectoryCreateRequest(ctx, subscriptionID, nextLink, options)
 			if err != nil {
 				return SubscriptionsClientListTargetDirectoryResponse{}, err
 			}
-			return client.listTargetDirectoryHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SubscriptionsClientListTargetDirectoryResponse{}, err
+			}
+			return client.listTargetDirectoryHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listTargetDirectoryCreateRequest creates the ListTargetDirectory request.
-func (client *SubscriptionsClient) listTargetDirectoryCreateRequest(ctx context.Context, subscriptionID string, _ *SubscriptionsClientListTargetDirectoryOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Subscription/changeTenantRequest"
-	if subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+func (client *SubscriptionsClient) listTargetDirectoryCreateRequest(ctx context.Context, subscriptionID string, nextLink string, _ *SubscriptionsClientListTargetDirectoryOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Subscription/changeTenantRequest"
+		if subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listTargetDirectoryHandleResponse handles the ListTargetDirectory response.
-func (client *SubscriptionsClient) listTargetDirectoryHandleResponse(resp *http.Response) (SubscriptionsClientListTargetDirectoryResponse, error) {
+func (client *SubscriptionsClient) listTargetDirectoryHandleResponse(resp *http.Response, successCodes ...int) (SubscriptionsClientListTargetDirectoryResponse, error) {
 	result := SubscriptionsClientListTargetDirectoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TargetDirectoryListResult); err != nil {
 		return SubscriptionsClientListTargetDirectoryResponse{}, err
 	}
@@ -240,8 +244,6 @@ func (client *SubscriptionsClient) listTargetDirectoryHandleResponse(resp *http.
 
 // PutTargetDirectory - The operation to initiate Subscription Changed Request
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - body - Target Directory Request
 //   - options - SubscriptionsClientPutTargetDirectoryOptions contains the optional parameters for the SubscriptionsClient.PutTargetDirectory
@@ -260,12 +262,7 @@ func (client *SubscriptionsClient) PutTargetDirectory(ctx context.Context, subsc
 	if err != nil {
 		return SubscriptionsClientPutTargetDirectoryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SubscriptionsClientPutTargetDirectoryResponse{}, err
-	}
-	resp, err := client.putTargetDirectoryHandleResponse(httpResp)
-	return resp, err
+	return client.putTargetDirectoryHandleResponse(httpResp, http.StatusOK)
 }
 
 // putTargetDirectoryCreateRequest creates the PutTargetDirectory request.
@@ -280,8 +277,8 @@ func (client *SubscriptionsClient) putTargetDirectoryCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -291,8 +288,11 @@ func (client *SubscriptionsClient) putTargetDirectoryCreateRequest(ctx context.C
 }
 
 // putTargetDirectoryHandleResponse handles the PutTargetDirectory response.
-func (client *SubscriptionsClient) putTargetDirectoryHandleResponse(resp *http.Response) (SubscriptionsClientPutTargetDirectoryResponse, error) {
+func (client *SubscriptionsClient) putTargetDirectoryHandleResponse(resp *http.Response, successCodes ...int) (SubscriptionsClientPutTargetDirectoryResponse, error) {
 	result := SubscriptionsClientPutTargetDirectoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TargetDirectoryResult); err != nil {
 		return SubscriptionsClientPutTargetDirectoryResponse{}, err
 	}
@@ -301,8 +301,6 @@ func (client *SubscriptionsClient) putTargetDirectoryHandleResponse(resp *http.R
 
 // TargetDirectoryStatus - The operation for Acceptor to view the accepted request
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-11-01-preview
 //   - subscriptionID - Subscription Id.
 //   - options - SubscriptionsClientTargetDirectoryStatusOptions contains the optional parameters for the SubscriptionsClient.TargetDirectoryStatus
 //     method.
@@ -320,12 +318,7 @@ func (client *SubscriptionsClient) TargetDirectoryStatus(ctx context.Context, su
 	if err != nil {
 		return SubscriptionsClientTargetDirectoryStatusResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return SubscriptionsClientTargetDirectoryStatusResponse{}, err
-	}
-	resp, err := client.targetDirectoryStatusHandleResponse(httpResp)
-	return resp, err
+	return client.targetDirectoryStatusHandleResponse(httpResp, http.StatusOK)
 }
 
 // targetDirectoryStatusCreateRequest creates the TargetDirectoryStatus request.
@@ -340,15 +333,18 @@ func (client *SubscriptionsClient) targetDirectoryStatusCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-11-01-preview")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // targetDirectoryStatusHandleResponse handles the TargetDirectoryStatus response.
-func (client *SubscriptionsClient) targetDirectoryStatusHandleResponse(resp *http.Response) (SubscriptionsClientTargetDirectoryStatusResponse, error) {
+func (client *SubscriptionsClient) targetDirectoryStatusHandleResponse(resp *http.Response, successCodes ...int) (SubscriptionsClientTargetDirectoryStatusResponse, error) {
 	result := SubscriptionsClientTargetDirectoryStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TargetDirectoryResultProperties); err != nil {
 		return SubscriptionsClientTargetDirectoryStatusResponse{}, err
 	}

@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v4
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/batch/armbatch/v5
 
 go 1.25.0
 

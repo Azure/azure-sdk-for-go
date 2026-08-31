@@ -158,7 +158,7 @@ type NetworkSecurityPerimeterClientGetConfigurationResponse struct {
 
 // NetworkSecurityPerimeterClientListConfigurationsResponse contains the response from method NetworkSecurityPerimeterClient.NewListConfigurationsPager.
 type NetworkSecurityPerimeterClientListConfigurationsResponse struct {
-	// Result of a list NSP (network security perimeter) configurations request.
+	// The response of a NetworkSecurityPerimeterConfiguration list operation.
 	NetworkSecurityPerimeterConfigurationListResult
 }
 

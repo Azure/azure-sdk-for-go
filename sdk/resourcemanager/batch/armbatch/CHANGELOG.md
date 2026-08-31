@@ -1,5 +1,23 @@
 # Release History
 
+## 5.0.0 (2026-08-18)
+### Breaking Changes
+
+- Field `ETag` of struct `PoolClientCreateResponse` has been removed
+- Field `ETag` of struct `PoolClientDisableAutoScaleResponse` has been removed
+- Field `ETag` of struct `PoolClientGetResponse` has been removed
+- Field `ETag` of struct `PoolClientStopResizeResponse` has been removed
+- Field `ETag` of struct `PoolClientUpdateResponse` has been removed
+
+### Features Added
+
+- New field `Etag` in struct `PoolClientCreateResponse`
+- New field `Etag` in struct `PoolClientDisableAutoScaleResponse`
+- New field `Etag` in struct `PoolClientGetResponse`
+- New field `Etag` in struct `PoolClientStopResizeResponse`
+- New field `Etag` in struct `PoolClientUpdateResponse`
+
+
 ## 4.0.0 (2026-02-11)
 ### Breaking Changes
 

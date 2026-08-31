@@ -44,17 +44,7 @@ func (qb queryBuilder) isSingleLogicalPartitionQuery(items []ItemIdentity) bool 
 	if len(items) <= 1 {
 		return false
 	}
-	first, err := items[0].PartitionKey.toJsonString()
-	if err != nil {
-		return false
-	}
-	for i := 1; i < len(items); i++ {
-		s, err := items[i].PartitionKey.toJsonString()
-		if err != nil || s != first {
-			return false
-		}
-	}
-	return true
+	return sharedPartitionKey(items) != nil
 }
 
 // buildIDInQuery builds: SELECT * FROM c WHERE c.id IN (@param_id0, @param_id1, …)

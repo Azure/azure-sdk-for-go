@@ -19,6 +19,25 @@ import (
 const maxItemsPerQuery = 1000
 const maxPKRangeGoneRetries = 3
 
+func sharedPartitionKey(items []ItemIdentity) *PartitionKey {
+	if len(items) == 0 {
+		return nil
+	}
+
+	partitionKey := &items[0].PartitionKey
+	serializedPartitionKey, err := partitionKey.toJsonString()
+	if err != nil {
+		return nil
+	}
+	for i := 1; i < len(items); i++ {
+		serialized, err := items[i].PartitionKey.toJsonString()
+		if err != nil || serialized != serializedPartitionKey {
+			return nil
+		}
+	}
+	return partitionKey
+}
+
 // determineConcurrency returns either the provided positive max or NumCPU (>=1).
 func determineConcurrency(max *int32) int {
 	if max != nil && *max > 0 {

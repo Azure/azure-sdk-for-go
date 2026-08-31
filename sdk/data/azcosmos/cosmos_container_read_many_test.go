@@ -5,7 +5,9 @@ package azcosmos
 
 import (
 	"context"
+	"encoding/json"
 	"io"
+	"math"
 	"net/http"
 	"net/url"
 	"strings"
@@ -225,6 +227,135 @@ func TestBuildQueryChunksForRanges_Chunking(t *testing.T) {
 	require.Len(t, chunks, 2)
 	require.Equal(t, "0", chunks[0].rangeID)
 	require.Equal(t, "0", chunks[1].rangeID)
+}
+
+func TestReadManyItems_PartitionKeyHeader(t *testing.T) {
+	hierarchicalPK := NewPartitionKeyString("tenant").AppendString("user")
+	testCases := []struct {
+		name             string
+		partitionKeyDef  PartitionKeyDefinition
+		items            []ItemIdentity
+		expectedPKHeader string
+	}{
+		{
+			name: "same logical partition key",
+			partitionKeyDef: PartitionKeyDefinition{
+				Paths:   []string{"/pk"},
+				Kind:    PartitionKeyKindHash,
+				Version: 2,
+			},
+			items: []ItemIdentity{
+				{ID: "1", PartitionKey: NewPartitionKeyString("pk1")},
+				{ID: "2", PartitionKey: NewPartitionKeyString("pk1")},
+			},
+			expectedPKHeader: `["pk1"]`,
+		},
+		{
+			name: "different logical partition keys",
+			partitionKeyDef: PartitionKeyDefinition{
+				Paths:   []string{"/pk"},
+				Kind:    PartitionKeyKindHash,
+				Version: 2,
+			},
+			items: []ItemIdentity{
+				{ID: "1", PartitionKey: NewPartitionKeyString("pk1")},
+				{ID: "2", PartitionKey: NewPartitionKeyString("pk2")},
+			},
+		},
+		{
+			name: "different signed zero partition keys",
+			partitionKeyDef: PartitionKeyDefinition{
+				Paths:   []string{"/pk"},
+				Kind:    PartitionKeyKindHash,
+				Version: 2,
+			},
+			items: []ItemIdentity{
+				{ID: "1", PartitionKey: NewPartitionKeyNumber(0)},
+				{ID: "2", PartitionKey: NewPartitionKeyNumber(math.Copysign(0, -1))},
+			},
+		},
+		{
+			name: "same hierarchical partition key",
+			partitionKeyDef: PartitionKeyDefinition{
+				Paths:   []string{"/tenant", "/user"},
+				Kind:    PartitionKeyKindMultiHash,
+				Version: 2,
+			},
+			items: []ItemIdentity{
+				{ID: "1", PartitionKey: hierarchicalPK},
+				{ID: "2", PartitionKey: hierarchicalPK},
+			},
+			expectedPKHeader: `["tenant","user"]`,
+		},
+		{
+			name: "different hierarchical partition key component",
+			partitionKeyDef: PartitionKeyDefinition{
+				Paths:   []string{"/tenant", "/user"},
+				Kind:    PartitionKeyKindMultiHash,
+				Version: 2,
+			},
+			items: []ItemIdentity{
+				{ID: "1", PartitionKey: hierarchicalPK},
+				{ID: "2", PartitionKey: NewPartitionKeyString("tenant").AppendString("other")},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			containerBody, err := json.Marshal(ContainerProperties{
+				ID:                     "containerId",
+				PartitionKeyDefinition: tc.partitionKeyDef,
+			})
+			require.NoError(t, err)
+
+			rangeBody, err := json.Marshal(partitionKeyRangeResponse{
+				PartitionKeyRanges: []partitionKeyRange{
+					{ID: "0", MinInclusive: "", MaxExclusive: "FF"},
+				},
+				Count: 1,
+			})
+			require.NoError(t, err)
+
+			srv, closeSrv := mock.NewTLSServer()
+			defer closeSrv()
+			srv.AppendResponse(mock.WithBody(containerBody), mock.WithStatusCode(http.StatusOK))
+			srv.AppendResponse(mock.WithBody(rangeBody), mock.WithStatusCode(http.StatusOK))
+			srv.AppendResponse(
+				mock.WithBody([]byte(`{"Documents":[]}`)),
+				mock.WithHeader(cosmosHeaderRequestCharge, "1.0"),
+				mock.WithStatusCode(http.StatusOK),
+			)
+
+			verifier := pipelineVerifier{}
+			internalClient, err := azcore.NewClient(
+				"azcosmostest",
+				"v1.0.0",
+				azruntime.PipelineOptions{PerCall: []policy.Policy{&headerPolicies{}, &verifier}},
+				&policy.ClientOptions{Transport: srv},
+			)
+			require.NoError(t, err)
+
+			defaultEndpoint, err := url.Parse(srv.URL())
+			require.NoError(t, err)
+			client := &Client{
+				endpoint:    srv.URL(),
+				endpointUrl: defaultEndpoint,
+				internal:    internalClient,
+				gem:         &globalEndpointManager{preferredLocations: []string{}},
+			}
+			database, err := newDatabase("databaseId", client)
+			require.NoError(t, err)
+			container, err := newContainer("containerId", database)
+			require.NoError(t, err)
+
+			_, err = container.ReadManyItems(context.Background(), tc.items, nil)
+			require.NoError(t, err)
+			require.Len(t, verifier.requests, 3)
+			require.Equal(t, tc.expectedPKHeader, verifier.requests[2].headers.Get(cosmosHeaderPartitionKey))
+			require.Equal(t, "0", verifier.requests[2].headers.Get(cosmosHeaderPartitionKeyRangeId))
+		})
+	}
 }
 
 // cancelOnNthQueryPolicy is a pipeline policy that cancels a context after the

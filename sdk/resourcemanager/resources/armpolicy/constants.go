@@ -5,7 +5,7 @@
 package armpolicy
 
 const (
-	version20260701 string = "2026-07-01"
+	version20260101Preview string = "2026-01-01-preview"
 )
 
 // AliasPathAttributes - The attributes of the token that the alias path is referring to.
@@ -101,6 +101,25 @@ func PossibleAliasTypeValues() []AliasType {
 	}
 }
 
+// AssignmentScopeValidation - The option to validate whether the exemption or enrollment is at or under the assignment scope.
+type AssignmentScopeValidation string
+
+const (
+	// AssignmentScopeValidationDefault - This option will validate the exemption is at or under the assignment scope.
+	AssignmentScopeValidationDefault AssignmentScopeValidation = "Default"
+	// AssignmentScopeValidationDoNotValidate - This option will bypass the validation the exemption scope is at or under the
+	// policy assignment scope.
+	AssignmentScopeValidationDoNotValidate AssignmentScopeValidation = "DoNotValidate"
+)
+
+// PossibleAssignmentScopeValidationValues returns the possible values for the AssignmentScopeValidation const type.
+func PossibleAssignmentScopeValidationValues() []AssignmentScopeValidation {
+	return []AssignmentScopeValidation{
+		AssignmentScopeValidationDefault,
+		AssignmentScopeValidationDoNotValidate,
+	}
+}
+
 // AssignmentType - The type of policy assignment. Possible values are NotSpecified, System, SystemHidden, and Custom. Immutable.
 type AssignmentType string
 
@@ -122,50 +141,6 @@ func PossibleAssignmentTypeValues() []AssignmentType {
 		AssignmentTypeNotSpecified,
 		AssignmentTypeSystem,
 		AssignmentTypeSystemHidden,
-	}
-}
-
-// ComplianceState - The compliance state of the resource against the policy. Possible values are NotSpecified, NonCompliant,
-// Partial, Conflict, NotApplicable, Compliant, Error, Unknown, Exempt, and Protected.
-type ComplianceState string
-
-const (
-	// ComplianceStateCompliant - Indicates a policy evaluation result, where the Policy is compliant.
-	ComplianceStateCompliant ComplianceState = "Compliant"
-	// ComplianceStateConflict - Indicates a policy evaluation result, where the Policy definitions conflicted so that the evaluation
-	// couldn't complete.
-	ComplianceStateConflict ComplianceState = "Conflict"
-	// ComplianceStateError - Indicates a policy evaluation result, where the Policy evaluation resulted in an error.
-	ComplianceStateError ComplianceState = "Error"
-	// ComplianceStateExempt - Indicates a policy evaluation result, where the Policy is exempt.
-	ComplianceStateExempt ComplianceState = "Exempt"
-	// ComplianceStateNonCompliant - Indicates a non-compliant policy evaluation.
-	ComplianceStateNonCompliant ComplianceState = "NonCompliant"
-	// ComplianceStateNotApplicable - Indicates a policy evaluation result, where the Policy is not applicable.
-	ComplianceStateNotApplicable ComplianceState = "NotApplicable"
-	// ComplianceStateNotSpecified - Indicates a policy evaluation result for which no specific value is set by the evaluator.
-	ComplianceStateNotSpecified ComplianceState = "NotSpecified"
-	// ComplianceStatePartial - Indicates a partially completed policy evaluation.
-	ComplianceStatePartial ComplianceState = "Partial"
-	// ComplianceStateProtected - Indicates a policy evaluation result, where the resource is protected.
-	ComplianceStateProtected ComplianceState = "Protected"
-	// ComplianceStateUnknown - Indicates a policy evaluation result that is unknown.
-	ComplianceStateUnknown ComplianceState = "Unknown"
-)
-
-// PossibleComplianceStateValues returns the possible values for the ComplianceState const type.
-func PossibleComplianceStateValues() []ComplianceState {
-	return []ComplianceState{
-		ComplianceStateCompliant,
-		ComplianceStateConflict,
-		ComplianceStateError,
-		ComplianceStateExempt,
-		ComplianceStateNonCompliant,
-		ComplianceStateNotApplicable,
-		ComplianceStateNotSpecified,
-		ComplianceStatePartial,
-		ComplianceStateProtected,
-		ComplianceStateUnknown,
 	}
 }
 
@@ -212,6 +187,45 @@ func PossibleEnforcementModeValues() []EnforcementMode {
 		EnforcementModeDefault,
 		EnforcementModeDoNotEnforce,
 		EnforcementModeEnroll,
+	}
+}
+
+// ExemptionCategory - The policy exemption category. Possible values are Waiver and Mitigated.
+type ExemptionCategory string
+
+const (
+	// ExemptionCategoryMitigated - This category of exemptions usually means the mitigation actions have been applied to the
+	// scope.
+	ExemptionCategoryMitigated ExemptionCategory = "Mitigated"
+	// ExemptionCategoryWaiver - This category of exemptions usually means the scope is not applicable for the policy.
+	ExemptionCategoryWaiver ExemptionCategory = "Waiver"
+)
+
+// PossibleExemptionCategoryValues returns the possible values for the ExemptionCategory const type.
+func PossibleExemptionCategoryValues() []ExemptionCategory {
+	return []ExemptionCategory{
+		ExemptionCategoryMitigated,
+		ExemptionCategoryWaiver,
+	}
+}
+
+// ExemptionManagementMode - The mode indicating how the policy exemption is managed. Possible values are Admin and UserSelfServe.
+type ExemptionManagementMode string
+
+const (
+	// ExemptionManagementModeAdmin - This mode means the exemption is managed by an administrator and requires permission for
+	// the policy exemption action.
+	ExemptionManagementModeAdmin ExemptionManagementMode = "Admin"
+	// ExemptionManagementModeUserSelfServe - This mode means the exemption is managed by the user it applies to, through the
+	// self-serve exemption settings on the policy assignment.
+	ExemptionManagementModeUserSelfServe ExemptionManagementMode = "UserSelfServe"
+)
+
+// PossibleExemptionManagementModeValues returns the possible values for the ExemptionManagementMode const type.
+func PossibleExemptionManagementModeValues() []ExemptionManagementMode {
+	return []ExemptionManagementMode{
+		ExemptionManagementModeAdmin,
+		ExemptionManagementModeUserSelfServe,
 	}
 }
 
@@ -387,8 +401,6 @@ const (
 	SelectorKindPolicyDefinitionReferenceID SelectorKind = "policyDefinitionReferenceId"
 	// SelectorKindResourceLocation - The selector kind to filter policies by the resource location.
 	SelectorKindResourceLocation SelectorKind = "resourceLocation"
-	// SelectorKindResourceRolloutPercentage - The selector kind to filter policies by the resource rollout percentage.
-	SelectorKindResourceRolloutPercentage SelectorKind = "resourceRolloutPercentage"
 	// SelectorKindResourceType - The selector kind to filter policies by the resource type.
 	SelectorKindResourceType SelectorKind = "resourceType"
 	// SelectorKindResourceWithoutLocation - The selector kind to filter policies by the resource without location.
@@ -403,7 +415,6 @@ func PossibleSelectorKindValues() []SelectorKind {
 		SelectorKindGroupPrincipalID,
 		SelectorKindPolicyDefinitionReferenceID,
 		SelectorKindResourceLocation,
-		SelectorKindResourceRolloutPercentage,
 		SelectorKindResourceType,
 		SelectorKindResourceWithoutLocation,
 		SelectorKindUserPrincipalID,

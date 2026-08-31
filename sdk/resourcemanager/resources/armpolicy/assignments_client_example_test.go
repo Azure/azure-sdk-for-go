@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/createPolicyAssignment.json
+// Generated from example definition: 2026-01-01-preview/createPolicyAssignment.json
 func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignment() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/createPolicyAssignmentNonComplianceMessages.json
+// Generated from example definition: 2026-01-01-preview/createPolicyAssignmentNonComplianceMessages.json
 func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithMultipleNonComplianceMessages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithMultiple
 	}
 }
 
-// Generated from example definition: 2026-07-01/createPolicyAssignmentWithEnrollEnforcement.json
+// Generated from example definition: 2026-01-01-preview/createPolicyAssignmentWithEnrollEnforcement.json
 func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentToEnforcePolicyEffectOnlyOnEnrolledResourcesDuringResourceCreationOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -121,7 +121,7 @@ func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentToEnforcePol
 	}
 }
 
-// Generated from example definition: 2026-07-01/createPolicyAssignmentWithIdentity.json
+// Generated from example definition: 2026-01-01-preview/createPolicyAssignmentWithIdentity.json
 func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithASystemAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithASystemA
 	}
 }
 
-// Generated from example definition: 2026-07-01/createPolicyAssignmentWithOverrides.json
+// Generated from example definition: 2026-01-01-preview/createPolicyAssignmentWithOverrides.json
 func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithOverrides() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,44 +215,7 @@ func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithOverride
 	}
 }
 
-// Generated from example definition: 2026-07-01/createPolicyAssignmentWithResourcePercentageSelector.json
-func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithAResourcePercentageSelector() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpolicy.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewAssignmentsClient().Create(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement", armpolicy.Assignment{
-		Properties: &armpolicy.AssignmentProperties{
-			Description: to.Ptr("Limit resources by rollout percentage"),
-			DisplayName: to.Ptr("Limit resources by rollout percentage"),
-			Metadata: map[string]any{
-				"assignedBy": "Special Someone",
-			},
-			PolicyDefinitionID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policySetDefinitions/CostManagement"),
-			ResourceSelectors: []*armpolicy.ResourceSelector{
-				{
-					Name: to.Ptr("SDPRollout"),
-					Selectors: []*armpolicy.Selector{
-						{
-							Kind:     to.Ptr(armpolicy.SelectorKind("resourcePercentage")),
-							Progress: to.Ptr[int32](80),
-						},
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01/createPolicyAssignmentWithResourceSelectors.json
+// Generated from example definition: 2026-01-01-preview/createPolicyAssignmentWithResourceSelectors.json
 func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithResourceSelectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,7 +255,7 @@ func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithResource
 	}
 }
 
-// Generated from example definition: 2026-07-01/createPolicyAssignmentWithSelfserveExemptionSettings.json
+// Generated from example definition: 2026-01-01-preview/createPolicyAssignmentWithSelfserveExemptionSettings.json
 func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithSelfServeExemptionSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -327,7 +290,7 @@ func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithSelfServ
 	}
 }
 
-// Generated from example definition: 2026-07-01/createPolicyAssignmentWithUserAssignedIdentity.json
+// Generated from example definition: 2026-01-01-preview/createPolicyAssignmentWithUserAssignedIdentity.json
 func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithAUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -369,7 +332,7 @@ func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithAUserAss
 	}
 }
 
-// Generated from example definition: 2026-07-01/createPolicyAssignmentWithoutEnforcement.json
+// Generated from example definition: 2026-01-01-preview/createPolicyAssignmentWithoutEnforcement.json
 func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithoutEnforcingPolicyEffectDuringResourceCreationOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -404,7 +367,7 @@ func ExampleAssignmentsClient_Create_createOrUpdateAPolicyAssignmentWithoutEnfor
 	}
 }
 
-// Generated from example definition: 2026-07-01/deletePolicyAssignment.json
+// Generated from example definition: 2026-01-01-preview/deletePolicyAssignment.json
 func ExampleAssignmentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -452,7 +415,7 @@ func ExampleAssignmentsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/getPolicyAssignment.json
+// Generated from example definition: 2026-01-01-preview/getPolicyAssignment.json
 func ExampleAssignmentsClient_Get_retrieveAPolicyAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -501,7 +464,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/getPolicyAssignmentWithIdentity.json
+// Generated from example definition: 2026-01-01-preview/getPolicyAssignmentWithIdentity.json
 func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithASystemAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -556,7 +519,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithASystemAssignedId
 	// }
 }
 
-// Generated from example definition: 2026-07-01/getPolicyAssignmentWithOverrides.json
+// Generated from example definition: 2026-01-01-preview/getPolicyAssignmentWithOverrides.json
 func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithOverrides() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -612,59 +575,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithOverrides() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/getPolicyAssignmentWithResourcePercentageSelector.json
-func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithAResourcePercentageSelector() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpolicy.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAssignmentsClient().Get(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpolicy.AssignmentsClientGetResponse{
-	// 	Assignment: armpolicy.Assignment{
-	// 		Name: to.Ptr("CostManagement"),
-	// 		Type: to.Ptr("Microsoft.Authorization/policyAssignments"),
-	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
-	// 		Properties: &armpolicy.AssignmentProperties{
-	// 			Description: to.Ptr("Limit resources by rollout percentage"),
-	// 			DefinitionVersion: to.Ptr("1.*.*"),
-	// 			DisplayName: to.Ptr("Limit resources by rollout percentage"),
-	// 			EnforcementMode: to.Ptr(armpolicy.EnforcementModeDefault),
-	// 			InstanceID: to.Ptr("a3c4d5e6-f7a8-9b0c-1d2e-3f4a5b6c7d8e"),
-	// 			Metadata: map[string]any{
-	// 				"assignedBy": "Special Someone",
-	// 			},
-	// 			NotScopes: []*string{
-	// 			},
-	// 			PolicyDefinitionID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policySetDefinitions/CostManagement"),
-	// 			ResourceSelectors: []*armpolicy.ResourceSelector{
-	// 				{
-	// 					Name: to.Ptr("SDPRollout"),
-	// 					Selectors: []*armpolicy.Selector{
-	// 						{
-	// 							Kind: to.Ptr(armpolicy.SelectorKind("resourcePercentage")),
-	// 							Progress: to.Ptr[int32](80),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			Scope: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/getPolicyAssignmentWithResourceSelectors.json
+// Generated from example definition: 2026-01-01-preview/getPolicyAssignmentWithResourceSelectors.json
 func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithResourceSelectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -719,7 +630,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithResourceSelectors
 	// }
 }
 
-// Generated from example definition: 2026-07-01/getPolicyAssignmentWithUserAssignedIdentity.json
+// Generated from example definition: 2026-01-01-preview/getPolicyAssignmentWithUserAssignedIdentity.json
 func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithAUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -778,7 +689,7 @@ func ExampleAssignmentsClient_Get_retrieveAPolicyAssignmentWithAUserAssignedIden
 	// }
 }
 
-// Generated from example definition: 2026-07-01/listPolicyAssignments.json
+// Generated from example definition: 2026-01-01-preview/listPolicyAssignments.json
 func ExampleAssignmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -859,7 +770,7 @@ func ExampleAssignmentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/listPolicyAssignmentsForManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/listPolicyAssignmentsForManagementGroup.json
 func ExampleAssignmentsClient_NewListForManagementGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -940,7 +851,7 @@ func ExampleAssignmentsClient_NewListForManagementGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/listPolicyAssignmentsForResource.json
+// Generated from example definition: 2026-01-01-preview/listPolicyAssignmentsForResource.json
 func ExampleAssignmentsClient_NewListForResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1015,7 +926,7 @@ func ExampleAssignmentsClient_NewListForResourcePager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/listPolicyAssignmentsForResourceGroup.json
+// Generated from example definition: 2026-01-01-preview/listPolicyAssignmentsForResourceGroup.json
 func ExampleAssignmentsClient_NewListForResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1096,7 +1007,7 @@ func ExampleAssignmentsClient_NewListForResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/updatePolicyAssignmentWithIdentity.json
+// Generated from example definition: 2026-01-01-preview/updatePolicyAssignmentWithIdentity.json
 func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithASystemAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1156,7 +1067,7 @@ func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithASystemAssignedI
 	// }
 }
 
-// Generated from example definition: 2026-07-01/updatePolicyAssignmentWithOverrides.json
+// Generated from example definition: 2026-01-01-preview/updatePolicyAssignmentWithOverrides.json
 func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithOverrides() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1230,73 +1141,7 @@ func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithOverrides() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/updatePolicyAssignmentWithResourcePercentageSelector.json
-func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithAResourcePercentageSelector() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpolicy.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAssignmentsClient().Update(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2", "CostManagement", armpolicy.AssignmentUpdate{
-		Properties: &armpolicy.AssignmentUpdateProperties{
-			ResourceSelectors: []*armpolicy.ResourceSelector{
-				{
-					Name: to.Ptr("SDPRollout"),
-					Selectors: []*armpolicy.Selector{
-						{
-							Kind:     to.Ptr(armpolicy.SelectorKind("resourcePercentage")),
-							Progress: to.Ptr[int32](80),
-						},
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpolicy.AssignmentsClientUpdateResponse{
-	// 	Assignment: armpolicy.Assignment{
-	// 		Name: to.Ptr("CostManagement"),
-	// 		Type: to.Ptr("Microsoft.Authorization/policyAssignments"),
-	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
-	// 		Properties: &armpolicy.AssignmentProperties{
-	// 			Description: to.Ptr("Limit resources by rollout percentage"),
-	// 			DefinitionVersion: to.Ptr("1.*.*"),
-	// 			DisplayName: to.Ptr("Limit resources by rollout percentage"),
-	// 			EnforcementMode: to.Ptr(armpolicy.EnforcementModeDefault),
-	// 			InstanceID: to.Ptr("a3c4d5e6-f7a8-9b0c-1d2e-3f4a5b6c7d8e"),
-	// 			Metadata: map[string]any{
-	// 				"assignedBy": "Special Someone",
-	// 			},
-	// 			NotScopes: []*string{
-	// 			},
-	// 			PolicyDefinitionID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policySetDefinitions/CostManagement"),
-	// 			ResourceSelectors: []*armpolicy.ResourceSelector{
-	// 				{
-	// 					Name: to.Ptr("SDPRollout"),
-	// 					Selectors: []*armpolicy.Selector{
-	// 						{
-	// 							Kind: to.Ptr(armpolicy.SelectorKind("resourcePercentage")),
-	// 							Progress: to.Ptr[int32](80),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			Scope: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/updatePolicyAssignmentWithResourceSelectors.json
+// Generated from example definition: 2026-01-01-preview/updatePolicyAssignmentWithResourceSelectors.json
 func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithResourceSelectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1368,7 +1213,7 @@ func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithResourceSelector
 	// }
 }
 
-// Generated from example definition: 2026-07-01/updatePolicyAssignmentWithSelfserveExemptionSettings.json
+// Generated from example definition: 2026-01-01-preview/updatePolicyAssignmentWithSelfserveExemptionSettings.json
 func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithSelfServeExemptionSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1424,7 +1269,7 @@ func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithSelfServeExempti
 	// }
 }
 
-// Generated from example definition: 2026-07-01/updatePolicyAssignmentWithUserAssignedIdentity.json
+// Generated from example definition: 2026-01-01-preview/updatePolicyAssignmentWithUserAssignedIdentity.json
 func ExampleAssignmentsClient_Update_updateAPolicyAssignmentWithAUserAssignedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

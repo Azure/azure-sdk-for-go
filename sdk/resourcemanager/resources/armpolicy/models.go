@@ -4,7 +4,10 @@
 
 package armpolicy
 
-import "time"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"time"
+)
 
 // Alias - The alias type.
 type Alias struct {
@@ -424,6 +427,162 @@ type DefinitionVersionProperties struct {
 	Version *string
 }
 
+// Enrollment - The policy enrollment.
+type Enrollment struct {
+	// The ETag for the policy enrollment.
+	ETag *azcore.ETag
+
+	// The properties of the policy enrollment.
+	Properties *EnrollmentProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// EnrollmentListResult - The response of a PolicyEnrollment list operation.
+type EnrollmentListResult struct {
+	// REQUIRED; The PolicyEnrollment items on this page
+	Value []*Enrollment
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// EnrollmentProperties - The policy enrollment properties.
+type EnrollmentProperties struct {
+	// REQUIRED; The ID of the policy assignment that is being enrolled.
+	PolicyAssignmentID *string
+
+	// The option whether to validate the enrollment is at or under the assignment scope.
+	AssignmentScopeValidation *AssignmentScopeValidation
+
+	// The description of the policy enrollment.
+	Description *string
+
+	// The display name of the policy enrollment.
+	DisplayName *string
+
+	// The policy enrollment metadata. Metadata is an open ended object and is typically a collection of key value pairs.
+	Metadata any
+
+	// The policy definition reference IDs for policy definitions in an assigned policy set definition.
+	// These IDs correspond to a subset of `policyDefinitions[*].policyDefinitionReferenceId` in the policy set definition.
+	// When specified and not empty, only the referenced policy definitions will be enrolled to. Otherwise, the entire policy
+	// set is enrolled to
+	PolicyDefinitionReferenceIDs []*string
+
+	// The resource selector list to filter policies by resource properties.
+	ResourceSelectors []*ResourceSelector
+
+	// READ-ONLY; The policy assignment instance ID associated with this enrollment.
+	// The value is set to the instance ID of the policy assignment the policyAssignmentId references when the enrollment is created
+	// or updated.
+	// The format is a GUID string.
+	PolicyAssignmentInstanceID *string
+}
+
+// EnrollmentUpdate - The policy enrollment for Patch request.
+type EnrollmentUpdate struct {
+	// The policy enrollment properties for Patch request.
+	Properties *EnrollmentUpdateProperties
+}
+
+// EnrollmentUpdateProperties - The policy enrollment properties for Patch request.
+type EnrollmentUpdateProperties struct {
+	// The option whether to validate the enrollment is at or under the assignment scope.
+	AssignmentScopeValidation *AssignmentScopeValidation
+
+	// The resource selector list to filter policies by resource properties.
+	ResourceSelectors []*ResourceSelector
+}
+
+// Exemption - The policy exemption.
+type Exemption struct {
+	// Properties for the policy exemption.
+	Properties *ExemptionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ExemptionListResult - The response of a PolicyExemption list operation.
+type ExemptionListResult struct {
+	// REQUIRED; The PolicyExemption items on this page
+	Value []*Exemption
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ExemptionProperties - The policy exemption properties.
+type ExemptionProperties struct {
+	// REQUIRED; The policy exemption category. Possible values are Waiver and Mitigated.
+	ExemptionCategory *ExemptionCategory
+
+	// REQUIRED; The ID of the policy assignment that is being exempted.
+	PolicyAssignmentID *string
+
+	// The option whether validate the exemption is at or under the assignment scope.
+	AssignmentScopeValidation *AssignmentScopeValidation
+
+	// The description of the policy exemption.
+	Description *string
+
+	// The display name of the policy exemption.
+	DisplayName *string
+
+	// The mode indicating how the policy exemption is managed.
+	ExemptionManagementMode *ExemptionManagementMode
+
+	// The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption.
+	ExpiresOn *time.Time
+
+	// The policy exemption metadata. Metadata is an open ended object and is typically a collection of key value pairs.
+	Metadata any
+
+	// The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition.
+	PolicyDefinitionReferenceIDs []*string
+
+	// The resource selector list to filter policies by resource properties.
+	ResourceSelectors []*ResourceSelector
+}
+
+// ExemptionUpdate - The policy exemption for Patch request.
+type ExemptionUpdate struct {
+	// The policy exemption properties for Patch request.
+	Properties *ExemptionUpdateProperties
+}
+
+// ExemptionUpdateProperties - The policy exemption properties for Patch request.
+type ExemptionUpdateProperties struct {
+	// The option whether validate the exemption is at or under the assignment scope.
+	AssignmentScopeValidation *AssignmentScopeValidation
+
+	// The mode indicating how the policy exemption is managed.
+	ExemptionManagementMode *ExemptionManagementMode
+
+	// The resource selector list to filter policies by resource properties.
+	ResourceSelectors []*ResourceSelector
+}
+
 // ExternalEvaluationEndpointInvocationResult - The external evaluation endpoint invocation results.
 type ExternalEvaluationEndpointInvocationResult struct {
 	// The endpoint specific metadata.
@@ -431,10 +590,6 @@ type ExternalEvaluationEndpointInvocationResult struct {
 
 	// The set of claims that will be attached to the policy token as an attestation for the result of the endpoint invocation.
 	Claims any
-
-	// The compliance state of the resource against the policy. Possible values are NotSpecified, NonCompliant, Conflict, NotApplicable,
-	// Compliant, Error, Unknown, and Exempt.
-	ComplianceState *ComplianceState
 
 	// The external evaluation endpoint kind.
 	EndpointKind *string
@@ -643,9 +798,6 @@ type Selector struct {
 
 	// The list of values to filter out.
 	NotIn []*string
-
-	// The percent of total resources that will be governed by the policy.
-	Progress *int32
 }
 
 // SelfServeExemptionSettings - The self-serve exemption settings for a policy assignment.
@@ -867,4 +1019,85 @@ type UserAssignedIdentitiesValue struct {
 
 	// READ-ONLY; The principal id of user assigned identity.
 	PrincipalID *string
+}
+
+// Variable - The variable.
+type Variable struct {
+	// Properties for the variable.
+	Properties *VariableProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// VariableColumn - The variable column.
+type VariableColumn struct {
+	// REQUIRED; The name of this policy variable column.
+	ColumnName *string
+}
+
+// VariableListResult - The response of a Variable list operation.
+type VariableListResult struct {
+	// REQUIRED; The Variable items on this page
+	Value []*Variable
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// VariableProperties - The variable properties.
+type VariableProperties struct {
+	// REQUIRED; Variable column definitions.
+	Columns []*VariableColumn
+}
+
+// VariableValue - The variable value.
+type VariableValue struct {
+	// Properties for the variable value.
+	Properties *VariableValueProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// VariableValueColumnValue - The name value tuple for this variable value column.
+type VariableValueColumnValue struct {
+	// REQUIRED; Column name for the variable value
+	ColumnName *string
+
+	// REQUIRED; Column value for the variable value; this can be an integer, double, boolean, null or a string.
+	ColumnValue any
+}
+
+// VariableValueListResult - The response of a VariableValue list operation.
+type VariableValueListResult struct {
+	// REQUIRED; The VariableValue items on this page
+	Value []*VariableValue
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// VariableValueProperties - The variable value properties.
+type VariableValueProperties struct {
+	// REQUIRED; Variable value column value array.
+	Values []*VariableValueColumnValue
 }

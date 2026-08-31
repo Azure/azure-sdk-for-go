@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/acquirePolicyToken.json
+// Generated from example definition: 2026-01-01-preview/acquirePolicyToken.json
 func ExampleTokensClient_Acquire() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,6 @@ func ExampleTokensClient_Acquire() {
 	// 					},
 	// 				},
 	// 				PolicyAction: to.Ptr(armpolicy.PolicyActionAllow),
-	// 				ComplianceState: to.Ptr(armpolicy.ComplianceStateNotApplicable),
 	// 				PolicyEvaluationDetails: map[string]any{
 	// 					"evaluatedExpressions": []any{
 	// 						map[string]any{
@@ -112,7 +111,7 @@ func ExampleTokensClient_Acquire() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/acquirePolicyTokenAtManagementGroup.json
+// Generated from example definition: 2026-01-01-preview/acquirePolicyTokenAtManagementGroup.json
 func ExampleTokensClient_AcquireAtManagementGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,107 +185,6 @@ func ExampleTokensClient_AcquireAtManagementGroup() {
 	// 					},
 	// 				},
 	// 				PolicyAction: to.Ptr(armpolicy.PolicyActionAllow),
-	// 				ComplianceState: to.Ptr(armpolicy.ComplianceStateNotApplicable),
-	// 				PolicyEvaluationDetails: map[string]any{
-	// 					"evaluatedExpressions": []any{
-	// 						map[string]any{
-	// 							"result": "False",
-	// 							"expressionKind": "Value",
-	// 							"expression": "[claims().isValid]",
-	// 							"expressionValue": false,
-	// 							"targetValue": "True",
-	// 							"operator": "Equals",
-	// 						},
-	// 					},
-	// 				},
-	// 				AdditionalInfo: map[string]any{
-	// 					"successProbability": 1,
-	// 				},
-	// 				Expiration: to.Ptr(time.Date(2025, time.January, 1, 21, 30, 0, 0, time.UTC)),
-	// 			},
-	// 		},
-	// 		Token: to.Ptr("PT 1.ey7zmVse52pjMKPQd5m2uiNjz5UV2pZ.LPGtRiTeuCDBomEVbzj9kIaL9odEmlNv4D9VzyrQLTAyv4HHnUR7oNytWnL.AQrZ5bSGAQZzr8eySqvugzrD-ceRVL311SL3Nn6f-4c9kgPgU_u1ArXQKW25QCxMlsAuWmaE"),
-	// 		TokenID: to.Ptr("0da8a969-c660-4de0-a6a4-b2034d4325e4"),
-	// 		Expiration: to.Ptr(time.Date(2025, time.January, 1, 21, 30, 0, 0, time.UTC)),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01/acquirePolicyTokenAtResourceGroup.json
-func ExampleTokensClient_AcquireAtResourceGroup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpolicy.NewClientFactory("ae640e6b-ba3e-4256-9d62-2993eecfa6f2", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewTokensClient().AcquireAtResourceGroup(ctx, "testRG", armpolicy.TokenRequest{
-		Operation: &armpolicy.TokenOperation{
-			HTTPMethod: to.Ptr("delete"),
-			URI:        to.Ptr("https://management.azure.com/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/testVM?api-version=2024-01-01"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpolicy.TokensClientAcquireAtResourceGroupResponse{
-	// 	TokenResponse: armpolicy.TokenResponse{
-	// 		Result: to.Ptr(armpolicy.PolicyTokenResultSucceeded),
-	// 		RequestDetails: &armpolicy.TokenEvaluatedRequestDetails{
-	// 			URI: to.Ptr("https://management.azure.com/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/testVM?api-version=2024-01-01"),
-	// 			ResourceID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/testVM"),
-	// 			APIVersion: to.Ptr("2024-01-01"),
-	// 			AuthorizationAction: to.Ptr("Microsoft.Compute/virtualMachines/delete"),
-	// 			HTTPMethod: to.Ptr("DELETE"),
-	// 			ContentHash: to.Ptr("0000000000000000000000000000000000000000000000000000000000000000"),
-	// 		},
-	// 		Results: []*armpolicy.ExternalEvaluationEndpointInvocationResult{
-	// 			{
-	// 				PolicyInfo: &armpolicy.LogInfo{
-	// 					PolicyAssignmentID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/3f2def86"),
-	// 					PolicyDefinitionID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyDefinitions/5ed64d02"),
-	// 					PolicyDefinitionEffect: to.Ptr("denyAction"),
-	// 				},
-	// 				Result: to.Ptr(armpolicy.ExternalEndpointResultSucceeded),
-	// 				EndpointKind: to.Ptr("CoinFlip"),
-	// 				Message: to.Ptr("Coin flip successful (success probability: '1')."),
-	// 				Claims: map[string]any{
-	// 					"date": "2025-01-01T19:30:00.00Z",
-	// 					"double": 0.99,
-	// 					"int": 2,
-	// 					"isValid": false,
-	// 					"string": "testString",
-	// 					"testArray": []any{
-	// 						"Apple",
-	// 						"Banana",
-	// 						"Cherry",
-	// 					},
-	// 					"testObject": map[string]any{
-	// 						"name": "Complex Object",
-	// 						"id": 12345,
-	// 						"details": map[string]any{
-	// 							"createdBy": "John Doe",
-	// 							"createdDate": "2024-12-13T12:00:00Z",
-	// 							"metadata": map[string]any{
-	// 								"isActive": true,
-	// 								"tags": []any{
-	// 									"example",
-	// 									"test",
-	// 									"object",
-	// 								},
-	// 								"version": "1.0.0",
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				PolicyAction: to.Ptr(armpolicy.PolicyActionAllow),
-	// 				ComplianceState: to.Ptr(armpolicy.ComplianceStateNotApplicable),
 	// 				PolicyEvaluationDetails: map[string]any{
 	// 					"evaluatedExpressions": []any{
 	// 						map[string]any{

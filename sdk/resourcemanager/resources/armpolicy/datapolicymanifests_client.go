@@ -19,7 +19,7 @@ import (
 // DataPolicyManifestsClient - Operations for DataPolicyManifest at tenant scope.
 // Don't use this type directly, use NewDataPolicyManifestsClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-01-01-preview
 type DataPolicyManifestsClient struct {
 	internal *arm.Client
 }
@@ -74,7 +74,7 @@ func (client *DataPolicyManifestsClient) getByPolicyModeCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20260101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -144,7 +144,7 @@ func (client *DataPolicyManifestsClient) listCreateRequest(ctx context.Context, 
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20260701)
+		reqQP.Set("api-version", version20260101Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/getDataPolicyManifest.json
+// Generated from example definition: 2026-01-01-preview/getDataPolicyManifest.json
 func ExampleDataPolicyManifestsClient_GetByPolicyMode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleDataPolicyManifestsClient_GetByPolicyMode() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/listDataPolicyManifests.json
+// Generated from example definition: 2026-01-01-preview/listDataPolicyManifests.json
 func ExampleDataPolicyManifestsClient_NewListPager_listDataPolicyManifests() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +222,7 @@ func ExampleDataPolicyManifestsClient_NewListPager_listDataPolicyManifests() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/listDataPolicyManifestsNamespaceFilter.json
+// Generated from example definition: 2026-01-01-preview/listDataPolicyManifestsNamespaceFilter.json
 func ExampleDataPolicyManifestsClient_NewListPager_listDataPolicyManifestsWithNamespaceFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

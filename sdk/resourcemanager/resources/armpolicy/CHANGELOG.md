@@ -1,76 +1,11 @@
 # Release History
 
-## 2.0.0-beta.2 (2026-08-28)
-### Breaking Changes
-
-- Enum `AssignmentScopeValidation` has been removed
-- Enum `ExemptionCategory` has been removed
-- Function `*ClientFactory.NewEnrollmentsClient` has been removed
-- Function `*ClientFactory.NewExemptionsClient` has been removed
-- Function `*ClientFactory.NewVariableValuesClient` has been removed
-- Function `*ClientFactory.NewVariablesClient` has been removed
-- Function `NewEnrollmentsClient` has been removed
-- Function `*EnrollmentsClient.CreateOrUpdate` has been removed
-- Function `*EnrollmentsClient.Delete` has been removed
-- Function `*EnrollmentsClient.Get` has been removed
-- Function `*EnrollmentsClient.NewListForManagementGroupPager` has been removed
-- Function `*EnrollmentsClient.NewListForResourceGroupPager` has been removed
-- Function `*EnrollmentsClient.NewListForResourcePager` has been removed
-- Function `*EnrollmentsClient.NewListPager` has been removed
-- Function `*EnrollmentsClient.Update` has been removed
-- Function `NewExemptionsClient` has been removed
-- Function `*ExemptionsClient.CreateOrUpdate` has been removed
-- Function `*ExemptionsClient.Delete` has been removed
-- Function `*ExemptionsClient.Get` has been removed
-- Function `*ExemptionsClient.NewListForManagementGroupPager` has been removed
-- Function `*ExemptionsClient.NewListForResourceGroupPager` has been removed
-- Function `*ExemptionsClient.NewListForResourcePager` has been removed
-- Function `*ExemptionsClient.NewListPager` has been removed
-- Function `*ExemptionsClient.Update` has been removed
-- Function `NewVariableValuesClient` has been removed
-- Function `*VariableValuesClient.CreateOrUpdate` has been removed
-- Function `*VariableValuesClient.CreateOrUpdateAtManagementGroup` has been removed
-- Function `*VariableValuesClient.Delete` has been removed
-- Function `*VariableValuesClient.DeleteAtManagementGroup` has been removed
-- Function `*VariableValuesClient.Get` has been removed
-- Function `*VariableValuesClient.GetAtManagementGroup` has been removed
-- Function `*VariableValuesClient.NewListForManagementGroupPager` has been removed
-- Function `*VariableValuesClient.NewListPager` has been removed
-- Function `NewVariablesClient` has been removed
-- Function `*VariablesClient.CreateOrUpdate` has been removed
-- Function `*VariablesClient.CreateOrUpdateAtManagementGroup` has been removed
-- Function `*VariablesClient.Delete` has been removed
-- Function `*VariablesClient.DeleteAtManagementGroup` has been removed
-- Function `*VariablesClient.Get` has been removed
-- Function `*VariablesClient.GetAtManagementGroup` has been removed
-- Function `*VariablesClient.NewListForManagementGroupPager` has been removed
-- Function `*VariablesClient.NewListPager` has been removed
-- Struct `Enrollment` has been removed
-- Struct `EnrollmentListResult` has been removed
-- Struct `EnrollmentProperties` has been removed
-- Struct `EnrollmentUpdate` has been removed
-- Struct `EnrollmentUpdateProperties` has been removed
-- Struct `Exemption` has been removed
-- Struct `ExemptionListResult` has been removed
-- Struct `ExemptionProperties` has been removed
-- Struct `ExemptionUpdate` has been removed
-- Struct `ExemptionUpdateProperties` has been removed
-- Struct `Variable` has been removed
-- Struct `VariableColumn` has been removed
-- Struct `VariableListResult` has been removed
-- Struct `VariableProperties` has been removed
-- Struct `VariableValue` has been removed
-- Struct `VariableValueColumnValue` has been removed
-- Struct `VariableValueListResult` has been removed
-- Struct `VariableValueProperties` has been removed
-
+## 2.0.0-beta.2 (2026-08-31)
 ### Features Added
 
-- New value `SelectorKindResourceRolloutPercentage` added to enum type `SelectorKind`
-- New enum type `ComplianceState` with values `ComplianceStateCompliant`, `ComplianceStateConflict`, `ComplianceStateError`, `ComplianceStateExempt`, `ComplianceStateNonCompliant`, `ComplianceStateNotApplicable`, `ComplianceStateNotSpecified`, `ComplianceStatePartial`, `ComplianceStateProtected`, `ComplianceStateUnknown`
-- New function `*TokensClient.AcquireAtResourceGroup(ctx context.Context, resourceGroupName string, parameters TokenRequest, options *TokensClientAcquireAtResourceGroupOptions) (TokensClientAcquireAtResourceGroupResponse, error)`
-- New field `ComplianceState` in struct `ExternalEvaluationEndpointInvocationResult`
-- New field `Progress` in struct `Selector`
+- New enum type `ExemptionManagementMode` with values `ExemptionManagementModeAdmin`, `ExemptionManagementModeUserSelfServe`
+- New field `ExemptionManagementMode` in struct `ExemptionProperties`
+- New field `ExemptionManagementMode` in struct `ExemptionUpdateProperties`
 
 
 ## 2.0.0-beta.1 (2026-06-03)

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/TestRaiExternalSafetyProvider.json
+// Generated from example definition: 2026-07-01/TestRaiExternalSafetyProvider.json
 func ExampleTestRaiExternalSafetyProviderClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/CreateAccount.json
+// Generated from example definition: 2026-07-01/CreateAccount.json
 func ExampleAccountsClient_BeginCreate_createAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleAccountsClient_BeginCreate_createAccount() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/CreateAccountMin.json
+// Generated from example definition: 2026-07-01/CreateAccountMin.json
 func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/DeleteAccount.json
+// Generated from example definition: 2026-07-01/DeleteAccount.json
 func ExampleAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -177,84 +177,7 @@ func ExampleAccountsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/EvaluateDeploymentPolicies.json
-func ExampleAccountsClient_EvaluateDeploymentPolicies() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().EvaluateDeploymentPolicies(ctx, "resourceGroupName", "accountName", armcognitiveservices.EvaluateDeploymentPoliciesRequest{
-		Deployments: []*armcognitiveservices.EvaluateDeploymentPoliciesDeployment{
-			{
-				Name: to.Ptr("gpt4o-deployment"),
-				Properties: &armcognitiveservices.EvaluateDeploymentPoliciesDeploymentProperties{
-					Model: &armcognitiveservices.DeploymentModel{
-						Format:  to.Ptr("OpenAI"),
-						Name:    to.Ptr("gpt-4o"),
-						Version: to.Ptr("2024-11-20"),
-					},
-					RaiPolicyName: to.Ptr("Microsoft.DefaultV2"),
-				},
-			},
-			{
-				Name: to.Ptr("ada-embedding"),
-				Properties: &armcognitiveservices.EvaluateDeploymentPoliciesDeploymentProperties{
-					Model: &armcognitiveservices.DeploymentModel{
-						Format:  to.Ptr("OpenAI"),
-						Name:    to.Ptr("text-embedding-ada-002"),
-						Version: to.Ptr("2"),
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcognitiveservices.AccountsClientEvaluateDeploymentPoliciesResponse{
-	// 	EvaluateDeploymentPoliciesResponse: armcognitiveservices.EvaluateDeploymentPoliciesResponse{
-	// 		Results: map[string]*armcognitiveservices.DeploymentPolicyEvaluationResult{
-	// 			"gpt4o-deployment": &armcognitiveservices.DeploymentPolicyEvaluationResult{
-	// 				EvaluationOutcome: to.Ptr(armcognitiveservices.PolicyEvaluationOutcomeCompliant),
-	// 				NonCompliantAssignments: []*armcognitiveservices.PolicyAssignmentEvaluationDetails{
-	// 				},
-	// 			},
-	// 			"ada-embedding": &armcognitiveservices.DeploymentPolicyEvaluationResult{
-	// 				EvaluationOutcome: to.Ptr(armcognitiveservices.PolicyEvaluationOutcomeNonCompliant),
-	// 				NonCompliantAssignments: []*armcognitiveservices.PolicyAssignmentEvaluationDetails{
-	// 					{
-	// 						AssignmentID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyAssignments/deny-gpt-models"),
-	// 						PolicyDefinitionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Authorization/policyDefinitions/deny-embedding-models"),
-	// 						EvaluationOutcome: to.Ptr(armcognitiveservices.PolicyEvaluationOutcomeNonCompliant),
-	// 						NonComplianceReason: to.Ptr("Model text-embedding-ada-002 is not allowed by policy."),
-	// 						Effect: to.Ptr("Deny"),
-	// 						ExpressionEvaluations: []*armcognitiveservices.PolicyExpressionEvaluationDetails{
-	// 							{
-	// 								Expression: to.Ptr("Microsoft.CognitiveServices/accounts/deployments/model.name"),
-	// 								ExpressionKind: to.Ptr("Field"),
-	// 								Operator: to.Ptr("notIn"),
-	// 								Result: to.Ptr("True"),
-	// 								TargetValue: to.Ptr("[\"gpt-4o\",\"gpt-4\"]"),
-	// 								ExpressionValue: to.Ptr("text-embedding-ada-002"),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-15-preview/GetAccount.json
+// Generated from example definition: 2026-07-01/GetAccount.json
 func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -295,7 +218,7 @@ func ExampleAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ListAccountsBySubscription.json
+// Generated from example definition: 2026-07-01/ListAccountsBySubscription.json
 func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,7 +312,7 @@ func ExampleAccountsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ListAccountsByResourceGroup.json
+// Generated from example definition: 2026-07-01/ListAccountsByResourceGroup.json
 func ExampleAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -456,7 +379,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ListKeys.json
+// Generated from example definition: 2026-07-01/ListKeys.json
 func ExampleAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -482,7 +405,7 @@ func ExampleAccountsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ListAccountModels.json
+// Generated from example definition: 2026-07-01/ListAccountModels.json
 func ExampleAccountsClient_NewListModelsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -683,7 +606,7 @@ func ExampleAccountsClient_NewListModelsPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ListSkus.json
+// Generated from example definition: 2026-07-01/ListSkus.json
 func ExampleAccountsClient_ListSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -723,7 +646,7 @@ func ExampleAccountsClient_ListSKUs() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/GetUsages.json
+// Generated from example definition: 2026-07-01/GetUsages.json
 func ExampleAccountsClient_ListUsages_getUsages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -763,7 +686,7 @@ func ExampleAccountsClient_ListUsages_getUsages() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/GetUsagesClassicScope.json
+// Generated from example definition: 2026-07-01/GetUsagesClassicScope.json
 func ExampleAccountsClient_ListUsages_getUsagesClassicScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -802,7 +725,7 @@ func ExampleAccountsClient_ListUsages_getUsagesClassicScope() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/GetUsagesDataZoneScope.json
+// Generated from example definition: 2026-07-01/GetUsagesDataZoneScope.json
 func ExampleAccountsClient_ListUsages_getUsagesDataZoneScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -842,7 +765,7 @@ func ExampleAccountsClient_ListUsages_getUsagesDataZoneScope() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/GetUsagesGlobalScope.json
+// Generated from example definition: 2026-07-01/GetUsagesGlobalScope.json
 func ExampleAccountsClient_ListUsages_getUsagesGlobalScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -882,7 +805,7 @@ func ExampleAccountsClient_ListUsages_getUsagesGlobalScope() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/RegenerateKey.json
+// Generated from example definition: 2026-07-01/RegenerateKey.json
 func ExampleAccountsClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -910,7 +833,7 @@ func ExampleAccountsClient_RegenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/UpdateAccount.json
+// Generated from example definition: 2026-07-01/UpdateAccount.json
 func ExampleAccountsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

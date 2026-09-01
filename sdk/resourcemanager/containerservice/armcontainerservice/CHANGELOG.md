@@ -1,5 +1,25 @@
 # Release History
 
+## 9.5.0 (2026-08-25)
+### Features Added
+
+- New value `AgentPoolSSHAccessEntraID` added to enum type `AgentPoolSSHAccess`
+- New enum type `ContainerNetworkLogs` with values `ContainerNetworkLogsDisabled`, `ContainerNetworkLogsEnabled`
+- New enum type `DRANETMode` with values `DRANETModeManaged`, `DRANETModeUnmanaged`
+- New enum type `ManagedClusterNATGatewaySKU` with values `ManagedClusterNATGatewaySKUStandard`, `ManagedClusterNATGatewaySKUStandardV2`
+- New struct `DRANETProfile`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryLogsAndTraces`
+- New struct `ManagedClusterAzureMonitorProfileAppMonitoringOpenTelemetryMetrics`
+- New struct `ManagedClusterAzureMonitorProfileContainerInsights`
+- New struct `ManagedClusterNATGatewayProfileOutboundIPPrefixes`
+- New struct `ManagedClusterNATGatewayProfileOutboundIPs`
+- New field `Dranet` in struct `AgentPoolNetworkProfile`
+- New field `ContainerInsights` in struct `ManagedClusterAzureMonitorProfile`
+- New field `OpenTelemetryLogsAndTraces`, `OpenTelemetryMetrics` in struct `ManagedClusterAzureMonitorProfileAppMonitoring`
+- New field `CountIPv6` in struct `ManagedClusterManagedOutboundIPProfile`
+- New field `OutboundIPPrefixes`, `OutboundIPs`, `SKU` in struct `ManagedClusterNATGatewayProfile`
+
+
 ## 9.4.0 (2026-07-22)
 ### Features Added
 

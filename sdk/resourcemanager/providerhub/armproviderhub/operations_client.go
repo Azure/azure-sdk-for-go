@@ -18,6 +18,8 @@ import (
 
 // OperationsClient - Lists all the operations supported by Microsoft.ProviderHub.
 // Don't use this type directly, use NewOperationsClient() instead.
+//
+// Generated from API version 2024-09-01
 type OperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -41,8 +43,6 @@ func NewOperationsClient(subscriptionID string, credential azcore.TokenCredentia
 
 // CreateOrUpdate - Creates or updates the operation supported by the given provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - operationsPutContent - The operations content properties supplied to the CreateOrUpdate operation.
 //   - options - OperationsClientCreateOrUpdateOptions contains the optional parameters for the OperationsClient.CreateOrUpdate
@@ -61,12 +61,7 @@ func (client *OperationsClient) CreateOrUpdate(ctx context.Context, providerName
 	if err != nil {
 		return OperationsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -85,8 +80,8 @@ func (client *OperationsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, operationsPutContent); err != nil {
@@ -96,8 +91,11 @@ func (client *OperationsClient) createOrUpdateCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *OperationsClient) createOrUpdateHandleResponse(resp *http.Response) (OperationsClientCreateOrUpdateResponse, error) {
+func (client *OperationsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (OperationsClientCreateOrUpdateResponse, error) {
 	result := OperationsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationsPutContent); err != nil {
 		return OperationsClientCreateOrUpdateResponse{}, err
 	}
@@ -106,8 +104,6 @@ func (client *OperationsClient) createOrUpdateHandleResponse(resp *http.Response
 
 // Delete - Deletes an operation.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - OperationsClientDeleteOptions contains the optional parameters for the OperationsClient.Delete method.
 func (client *OperationsClient) Delete(ctx context.Context, providerNamespace string, options *OperationsClientDeleteOptions) (OperationsClientDeleteResponse, error) {
@@ -125,8 +121,7 @@ func (client *OperationsClient) Delete(ctx context.Context, providerNamespace st
 		return OperationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationsClientDeleteResponse{}, err
+		return OperationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return OperationsClientDeleteResponse{}, nil
 }
@@ -147,14 +142,12 @@ func (client *OperationsClient) deleteCreateRequest(ctx context.Context, provide
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
 // NewListPager - List the operations for the provider
-//
-// Generated from API version 2024-09-01
 //   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
@@ -167,35 +160,49 @@ func (client *OperationsClient) NewListPager(options *OperationsClientListOption
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return OperationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return OperationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *OperationsClient) listCreateRequest(ctx context.Context, _ *OperationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.ProviderHub/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *OperationsClient) listCreateRequest(ctx context.Context, nextLink string, _ *OperationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.ProviderHub/operations"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *OperationsClient) listHandleResponse(resp *http.Response) (OperationsClientListResponse, error) {
+func (client *OperationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (OperationsClientListResponse, error) {
 	result := OperationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationsDefinitionArrayResponseWithContinuation); err != nil {
 		return OperationsClientListResponse{}, err
 	}
@@ -204,8 +211,6 @@ func (client *OperationsClient) listHandleResponse(resp *http.Response) (Operati
 
 // ListByProviderRegistration - Gets the operations supported by the given provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2024-09-01
 //   - providerNamespace - The name of the resource provider hosted within ProviderHub.
 //   - options - OperationsClientListByProviderRegistrationOptions contains the optional parameters for the OperationsClient.ListByProviderRegistration
 //     method.
@@ -223,12 +228,7 @@ func (client *OperationsClient) ListByProviderRegistration(ctx context.Context, 
 	if err != nil {
 		return OperationsClientListByProviderRegistrationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationsClientListByProviderRegistrationResponse{}, err
-	}
-	resp, err := client.listByProviderRegistrationHandleResponse(httpResp)
-	return resp, err
+	return client.listByProviderRegistrationHandleResponse(httpResp, http.StatusOK)
 }
 
 // listByProviderRegistrationCreateRequest creates the ListByProviderRegistration request.
@@ -247,15 +247,18 @@ func (client *OperationsClient) listByProviderRegistrationCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2024-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByProviderRegistrationHandleResponse handles the ListByProviderRegistration response.
-func (client *OperationsClient) listByProviderRegistrationHandleResponse(resp *http.Response) (OperationsClientListByProviderRegistrationResponse, error) {
+func (client *OperationsClient) listByProviderRegistrationHandleResponse(resp *http.Response, successCodes ...int) (OperationsClientListByProviderRegistrationResponse, error) {
 	result := OperationsClientListByProviderRegistrationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationsDefinitionArray); err != nil {
 		return OperationsClientListByProviderRegistrationResponse{}, err
 	}

@@ -335,10 +335,10 @@ func (h *HybridConnectionListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HybridConnectionProperties.
 func (h HybridConnectionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", h.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", h.CreatedAt, true)
 	populate(objectMap, "listenerCount", h.ListenerCount)
 	populate(objectMap, "requiresClientAuthorization", h.RequiresClientAuthorization)
-	populateTime[datetime.RFC3339](objectMap, "updatedAt", h.UpdatedAt)
+	populateTime[datetime.RFC3339](objectMap, "updatedAt", h.UpdatedAt, true)
 	populate(objectMap, "userMetadata", h.UserMetadata)
 	return json.Marshal(objectMap)
 }
@@ -495,7 +495,7 @@ func (n *NamespaceListResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type NamespaceProperties.
 func (n NamespaceProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", n.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", n.CreatedAt, true)
 	populate(objectMap, "metricId", n.MetricID)
 	populate(objectMap, "minimumTlsVersion", n.MinimumTLSVersion)
 	populate(objectMap, "privateEndpointConnections", n.PrivateEndpointConnections)
@@ -503,7 +503,7 @@ func (n NamespaceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "publicNetworkAccess", n.PublicNetworkAccess)
 	populate(objectMap, "serviceBusEndpoint", n.ServiceBusEndpoint)
 	populate(objectMap, "status", n.Status)
-	populateTime[datetime.RFC3339](objectMap, "updatedAt", n.UpdatedAt)
+	populateTime[datetime.RFC3339](objectMap, "updatedAt", n.UpdatedAt, true)
 	return json.Marshal(objectMap)
 }
 
@@ -1060,10 +1060,10 @@ func (s *SKU) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SystemData.
 func (s SystemData) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", s.CreatedAt, true)
 	populate(objectMap, "createdBy", s.CreatedBy)
 	populate(objectMap, "createdByType", s.CreatedByType)
-	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt)
+	populateTime[datetime.RFC3339](objectMap, "lastModifiedAt", s.LastModifiedAt, true)
 	populate(objectMap, "lastModifiedBy", s.LastModifiedBy)
 	populate(objectMap, "lastModifiedByType", s.LastModifiedByType)
 	return json.Marshal(objectMap)
@@ -1205,13 +1205,13 @@ func (w *WcfRelay) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type WcfRelayProperties.
 func (w WcfRelayProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "createdAt", w.CreatedAt)
+	populateTime[datetime.RFC3339](objectMap, "createdAt", w.CreatedAt, true)
 	populate(objectMap, "isDynamic", w.IsDynamic)
 	populate(objectMap, "listenerCount", w.ListenerCount)
 	populate(objectMap, "relayType", w.RelayType)
 	populate(objectMap, "requiresClientAuthorization", w.RequiresClientAuthorization)
 	populate(objectMap, "requiresTransportSecurity", w.RequiresTransportSecurity)
-	populateTime[datetime.RFC3339](objectMap, "updatedAt", w.UpdatedAt)
+	populateTime[datetime.RFC3339](objectMap, "updatedAt", w.UpdatedAt, true)
 	populate(objectMap, "userMetadata", w.UserMetadata)
 	return json.Marshal(objectMap)
 }
@@ -1298,13 +1298,17 @@ func populate(m map[string]any, k string, v any) {
 	}
 }
 
-func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time) {
+func populateTime[T dateTimeConstraints](m map[string]any, k string, t *time.Time, utc bool) {
 	if t == nil {
 		return
 	} else if azcore.IsNullValue(t) {
 		m[k] = nil
 	} else if !reflect.ValueOf(t).IsNil() {
-		newTime := T(*t)
+		tt := *t
+		if utc {
+			tt = tt.UTC()
+		}
+		newTime := T(tt)
 		m[k] = (*T)(&newTime)
 	}
 }
@@ -1314,7 +1318,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }
@@ -1325,7 +1329,7 @@ func unpopulateTime[T dateTimeConstraints](data json.RawMessage, fn string, t **
 	}
 	var aux T
 	if err := json.Unmarshal(data, &aux); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	newTime := time.Time(aux)
 	*t = &newTime

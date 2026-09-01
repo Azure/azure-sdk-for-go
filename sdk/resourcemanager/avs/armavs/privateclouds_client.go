@@ -83,8 +83,7 @@ func (client *PrivateCloudsClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -159,8 +158,7 @@ func (client *PrivateCloudsClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -209,12 +207,7 @@ func (client *PrivateCloudsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return PrivateCloudsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateCloudsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -244,8 +237,11 @@ func (client *PrivateCloudsClient) getCreateRequest(ctx context.Context, resourc
 }
 
 // getHandleResponse handles the Get response.
-func (client *PrivateCloudsClient) getHandleResponse(resp *http.Response) (PrivateCloudsClientGetResponse, error) {
+func (client *PrivateCloudsClient) getHandleResponse(resp *http.Response, successCodes ...int) (PrivateCloudsClientGetResponse, error) {
 	result := PrivateCloudsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateCloud); err != nil {
 		return PrivateCloudsClientGetResponse{}, err
 	}
@@ -272,12 +268,7 @@ func (client *PrivateCloudsClient) GetVcfLicense(ctx context.Context, resourceGr
 	if err != nil {
 		return PrivateCloudsClientGetVcfLicenseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateCloudsClientGetVcfLicenseResponse{}, err
-	}
-	resp, err := client.getVcfLicenseHandleResponse(httpResp)
-	return resp, err
+	return client.getVcfLicenseHandleResponse(httpResp, http.StatusOK)
 }
 
 // getVcfLicenseCreateRequest creates the GetVcfLicense request.
@@ -307,8 +298,11 @@ func (client *PrivateCloudsClient) getVcfLicenseCreateRequest(ctx context.Contex
 }
 
 // getVcfLicenseHandleResponse handles the GetVcfLicense response.
-func (client *PrivateCloudsClient) getVcfLicenseHandleResponse(resp *http.Response) (PrivateCloudsClientGetVcfLicenseResponse, error) {
+func (client *PrivateCloudsClient) getVcfLicenseHandleResponse(resp *http.Response, successCodes ...int) (PrivateCloudsClientGetVcfLicenseResponse, error) {
 	result := PrivateCloudsClientGetVcfLicenseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return PrivateCloudsClientGetVcfLicenseResponse{}, err
 	}
@@ -329,43 +323,57 @@ func (client *PrivateCloudsClient) NewListPager(resourceGroupName string, option
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return PrivateCloudsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrivateCloudsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *PrivateCloudsClient) listCreateRequest(ctx context.Context, resourceGroupName string, _ *PrivateCloudsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PrivateCloudsClient) listCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *PrivateCloudsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PrivateCloudsClient) listHandleResponse(resp *http.Response) (PrivateCloudsClientListResponse, error) {
+func (client *PrivateCloudsClient) listHandleResponse(resp *http.Response, successCodes ...int) (PrivateCloudsClientListResponse, error) {
 	result := PrivateCloudsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateCloudList); err != nil {
 		return PrivateCloudsClientListResponse{}, err
 	}
@@ -392,12 +400,7 @@ func (client *PrivateCloudsClient) ListAdminCredentials(ctx context.Context, res
 	if err != nil {
 		return PrivateCloudsClientListAdminCredentialsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PrivateCloudsClientListAdminCredentialsResponse{}, err
-	}
-	resp, err := client.listAdminCredentialsHandleResponse(httpResp)
-	return resp, err
+	return client.listAdminCredentialsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listAdminCredentialsCreateRequest creates the ListAdminCredentials request.
@@ -427,8 +430,11 @@ func (client *PrivateCloudsClient) listAdminCredentialsCreateRequest(ctx context
 }
 
 // listAdminCredentialsHandleResponse handles the ListAdminCredentials response.
-func (client *PrivateCloudsClient) listAdminCredentialsHandleResponse(resp *http.Response) (PrivateCloudsClientListAdminCredentialsResponse, error) {
+func (client *PrivateCloudsClient) listAdminCredentialsHandleResponse(resp *http.Response, successCodes ...int) (PrivateCloudsClientListAdminCredentialsResponse, error) {
 	result := PrivateCloudsClientListAdminCredentialsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AdminCredentials); err != nil {
 		return PrivateCloudsClientListAdminCredentialsResponse{}, err
 	}
@@ -449,39 +455,53 @@ func (client *PrivateCloudsClient) NewListInSubscriptionPager(options *PrivateCl
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listInSubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listInSubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return PrivateCloudsClientListInSubscriptionResponse{}, err
 			}
-			return client.listInSubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrivateCloudsClientListInSubscriptionResponse{}, err
+			}
+			return client.listInSubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listInSubscriptionCreateRequest creates the ListInSubscription request.
-func (client *PrivateCloudsClient) listInSubscriptionCreateRequest(ctx context.Context, _ *PrivateCloudsClientListInSubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AVS/privateClouds"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PrivateCloudsClient) listInSubscriptionCreateRequest(ctx context.Context, nextLink string, _ *PrivateCloudsClientListInSubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AVS/privateClouds"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listInSubscriptionHandleResponse handles the ListInSubscription response.
-func (client *PrivateCloudsClient) listInSubscriptionHandleResponse(resp *http.Response) (PrivateCloudsClientListInSubscriptionResponse, error) {
+func (client *PrivateCloudsClient) listInSubscriptionHandleResponse(resp *http.Response, successCodes ...int) (PrivateCloudsClientListInSubscriptionResponse, error) {
 	result := PrivateCloudsClientListInSubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateCloudList); err != nil {
 		return PrivateCloudsClientListInSubscriptionResponse{}, err
 	}
@@ -528,8 +548,7 @@ func (client *PrivateCloudsClient) rotateNsxtPassword(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -599,8 +618,7 @@ func (client *PrivateCloudsClient) rotateVcenterPassword(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -672,8 +690,7 @@ func (client *PrivateCloudsClient) update(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }

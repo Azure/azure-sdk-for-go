@@ -572,6 +572,12 @@ type DownloadStreamOptions struct {
 	// the lease ID that's specified in the request matches the lease ID of the file.
 	// Otherwise, the operation fails with status code 412 (Precondition Failed).
 	LeaseAccessConditions *LeaseAccessConditions
+
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	// When set to TransferValidationTypeComputeStructuredMessageCRC64, the service returns the
+	// file data wrapped in a structured message with per-segment CRC64 checksums. The SDK
+	// automatically decodes the structured message and validates checksums before returning data.
+	TransactionalValidation TransferValidationType
 }
 
 func (o *DownloadStreamOptions) format(fileRequestIntent *generated.ShareTokenIntent, allowTrailingDot *bool) *generated.FileClientDownloadOptions {
@@ -586,6 +592,11 @@ func (o *DownloadStreamOptions) format(fileRequestIntent *generated.ShareTokenIn
 	opts.RangeGetContentMD5 = o.RangeGetContentMD5
 	if o.LeaseAccessConditions != nil {
 		opts.LeaseID = o.LeaseAccessConditions.LeaseID
+	}
+	if o.TransactionalValidation != nil {
+		if h := exported.GetStructuredBodyType(o.TransactionalValidation); h != "" {
+			opts.StructuredBodyType = &h
+		}
 	}
 	return opts
 }
@@ -612,6 +623,9 @@ type downloadOptions struct {
 
 	// RetryReaderOptionsPerChunk is used when downloading each chunk.
 	RetryReaderOptionsPerChunk RetryReaderOptions
+
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	TransactionalValidation TransferValidationType
 }
 
 func (o *downloadOptions) getFilePropertiesOptions() *GetPropertiesOptions {
@@ -629,6 +643,7 @@ func (o *downloadOptions) getDownloadFileOptions(rng HTTPRange) *DownloadStreamO
 	}
 	if o != nil {
 		downloadFileOptions.LeaseAccessConditions = o.LeaseAccessConditions
+		downloadFileOptions.TransactionalValidation = o.TransactionalValidation
 	}
 	return downloadFileOptions
 }
@@ -653,6 +668,9 @@ type DownloadBufferOptions struct {
 
 	// RetryReaderOptionsPerChunk is used when downloading each chunk.
 	RetryReaderOptionsPerChunk RetryReaderOptions
+
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	TransactionalValidation TransferValidationType
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -677,6 +695,9 @@ type DownloadFileOptions struct {
 
 	// RetryReaderOptionsPerChunk is used when downloading each chunk.
 	RetryReaderOptionsPerChunk RetryReaderOptions
+
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	TransactionalValidation TransferValidationType
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -748,9 +769,11 @@ func (o *UploadRangeOptions) format(offset int64, body io.ReadSeekCloser, fileRe
 		uploadRangeOptions.FileLastWrittenMode = o.LastWrittenMode
 	}
 	if o != nil && o.TransactionalValidation != nil {
-		_, err = o.TransactionalValidation.Apply(body, uploadRangeOptions)
-		if err != nil {
-			return "", 0, nil, err
+		if _, ok := o.TransactionalValidation.(TransferValidationTypeMD5); ok {
+			_, err = o.TransactionalValidation.Apply(body, uploadRangeOptions)
+			if err != nil {
+				return "", 0, nil, err
+			}
 		}
 	}
 
@@ -1100,6 +1123,10 @@ type uploadFromReaderOptions struct {
 
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+
+	// TransactionalValidation specifies the transfer validation type to use.
+	// Only TransferValidationTypeComputeStructuredMessageCRC64 is supported for multi-chunk uploads.
+	TransactionalValidation TransferValidationType
 }
 
 // UploadBufferOptions provides set of configurations for Client.UploadBuffer operation.
@@ -1110,7 +1137,8 @@ type UploadFileOptions = uploadFromReaderOptions
 
 func (o *uploadFromReaderOptions) getUploadRangeOptions() *UploadRangeOptions {
 	return &UploadRangeOptions{
-		LeaseAccessConditions: o.LeaseAccessConditions,
+		LeaseAccessConditions:   o.LeaseAccessConditions,
+		TransactionalValidation: o.TransactionalValidation,
 	}
 }
 
@@ -1129,6 +1157,10 @@ type UploadStreamOptions struct {
 
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+
+	// TransactionalValidation specifies the transfer validation type to use.
+	// Only TransferValidationTypeComputeStructuredMessageCRC64 is supported for streaming uploads.
+	TransactionalValidation TransferValidationType
 }
 
 func (u *UploadStreamOptions) setDefaults() {
@@ -1143,7 +1175,8 @@ func (u *UploadStreamOptions) setDefaults() {
 
 func (u *UploadStreamOptions) getUploadRangeOptions() *UploadRangeOptions {
 	return &UploadRangeOptions{
-		LeaseAccessConditions: u.LeaseAccessConditions,
+		LeaseAccessConditions:   u.LeaseAccessConditions,
+		TransactionalValidation: u.TransactionalValidation,
 	}
 }
 

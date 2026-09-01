@@ -7,7 +7,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -29,9 +28,8 @@ func uploadTestRegister() {
 
 type uploadTestGlobal struct {
 	perf.PerfTestOptions
-	containerName         string
-	blobPrefix            string
-	globalContainerClient *container.Client
+	containerName string
+	blobPrefix    string
 
 	// size is the per-iteration upload size in bytes.
 	size int64
@@ -48,7 +46,10 @@ type uploadTestGlobal struct {
 }
 
 // NewUploadTest is called once per process
-func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (_ perf.GlobalPerfTest, retErr error) {
+	if err := validateTransferOptions("upload", uploadTestOpts.size); err != nil {
+		return nil, err
+	}
 	u := &uploadTestGlobal{
 		PerfTestOptions: options,
 		// Suffix with a unique timestamp so concurrent runs and --no-cleanup
@@ -66,20 +67,17 @@ func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 		}
 	}
 
-	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-	}
-
-	containerClient, err := container.NewClientFromConnectionString(connStr, u.containerName, nil)
+	containerClient, err := containerClientFactory(u.containerName, nil)
 	if err != nil {
 		return nil, err
 	}
-	u.globalContainerClient = containerClient
-	_, err = u.globalContainerClient.Create(context.Background(), nil)
+	_, err = containerClient.Create(ctx, nil)
 	if err != nil {
 		return nil, err
 	}
+	// Registered only after Create succeeds so a Create failure does not issue
+	// a Delete against a container that was never created.
+	defer cleanupContainerOnError(&retErr, containerClient)
 
 	// Only the buffer method requires the full payload to be materialized in
 	// RAM (the API signature is []byte). For stream/single we keep a small
@@ -103,7 +101,11 @@ func NewUploadTest(ctx context.Context, options perf.PerfTestOptions) (perf.Glob
 }
 
 func (u *uploadTestGlobal) GlobalCleanup(ctx context.Context) error {
-	_, err := u.globalContainerClient.Delete(context.Background(), nil)
+	containerClient, err := containerClientFactory(u.containerName, nil)
+	if err != nil {
+		return err
+	}
+	_, err = containerClient.Delete(ctx, nil)
 	return err
 }
 
@@ -124,13 +126,7 @@ func (g *uploadTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTe
 		blobName: fmt.Sprintf("%s-%s", g.blobPrefix, options.Name),
 	}
 
-	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-	}
-
-	containerClient, err := container.NewClientFromConnectionString(
-		connStr,
+	containerClient, err := containerClientFactory(
 		u.uploadTestGlobal.containerName,
 		&container.ClientOptions{
 			ClientOptions: azcore.ClientOptions{

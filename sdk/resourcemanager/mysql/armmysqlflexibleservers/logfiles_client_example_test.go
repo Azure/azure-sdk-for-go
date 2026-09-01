@@ -42,8 +42,8 @@ func ExampleLogFilesClient_NewListByServerPager() {
 		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestsvc1/logFiles/mysql-slow-mysqltestsvc1-2018022823.log"),
 		// 				Properties: &armmysqlflexibleservers.LogFileProperties{
 		// 					Type: to.Ptr("slowlog"),
-		// 					CreatedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "0001-01-01T00:00:00+00:00"); return t}()),
-		// 					LastModifiedTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-03-01T06:09:20+00:00"); return t}()),
+		// 					CreatedTime: to.Ptr(time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedTime: to.Ptr(time.Date(2018, time.March, 1, 6, 9, 20, 0, time.UTC)),
 		// 					SizeInKB: to.Ptr[int64](1),
 		// 					URL: to.Ptr("https://wasd2prodwus1afse42.file.core.windows.net/833c99b2f36c47349e5554b903fe0440/serverlogs/mysql-slow-mysqltestsvc1-2018022823.log?sv=2015-04-05&sr=f&sig=XXXXXXX&se=X&sp=r"),
 		// 				},

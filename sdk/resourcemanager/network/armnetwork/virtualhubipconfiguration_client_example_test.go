@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v10"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
 	"log"
 )
 
-// Generated from example definition: 2025-07-01/VirtualHubIpConfigurationPut.json
+// Generated from example definition: 2025-09-01/VirtualHubIpConfigurationPut.json
 func ExampleVirtualHubIPConfigurationClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleVirtualHubIPConfigurationClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualHubIpConfigurationDelete.json
+// Generated from example definition: 2025-09-01/VirtualHubIpConfigurationDelete.json
 func ExampleVirtualHubIPConfigurationClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleVirtualHubIPConfigurationClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualHubIpConfigurationGet.json
+// Generated from example definition: 2025-09-01/VirtualHubIpConfigurationGet.json
 func ExampleVirtualHubIPConfigurationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleVirtualHubIPConfigurationClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/VirtualHubIpConfigurationList.json
+// Generated from example definition: 2025-09-01/VirtualHubIpConfigurationList.json
 func ExampleVirtualHubIPConfigurationClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

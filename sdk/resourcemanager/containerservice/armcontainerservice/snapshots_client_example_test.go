@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01/SnapshotsCreate.json
+// Generated from example definition: 2026-06-01/SnapshotsCreate.json
 func ExampleSnapshotsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 	// 			VMSize: to.Ptr("Standard_D2s_v3"),
 	// 		},
 	// 		SystemData: &armcontainerservice.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298420761Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 9, 20, 13, 23, 298420761, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 	// 		},
@@ -72,7 +72,7 @@ func ExampleSnapshotsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01/SnapshotsDelete.json
+// Generated from example definition: 2026-06-01/SnapshotsDelete.json
 func ExampleSnapshotsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleSnapshotsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01/SnapshotsGet.json
+// Generated from example definition: 2026-06-01/SnapshotsGet.json
 func ExampleSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,7 +131,7 @@ func ExampleSnapshotsClient_Get() {
 	// 			VMSize: to.Ptr("Standard_D2s_v3"),
 	// 		},
 	// 		SystemData: &armcontainerservice.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298420761Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 9, 20, 13, 23, 298420761, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 	// 		},
@@ -143,7 +143,7 @@ func ExampleSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01/SnapshotsList.json
+// Generated from example definition: 2026-06-01/SnapshotsList.json
 func ExampleSnapshotsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +186,7 @@ func ExampleSnapshotsClient_NewListPager() {
 		// 					VMSize: to.Ptr("Standard_D2s_v3"),
 		// 				},
 		// 				SystemData: &armcontainerservice.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298420761Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 9, 20, 13, 23, 298420761, time.UTC)),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 		// 				},
@@ -201,7 +201,7 @@ func ExampleSnapshotsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01/SnapshotsListByResourceGroup.json
+// Generated from example definition: 2026-06-01/SnapshotsListByResourceGroup.json
 func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -244,7 +244,7 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 		// 					VMSize: to.Ptr("Standard_D2s_v3"),
 		// 				},
 		// 				SystemData: &armcontainerservice.SystemData{
-		// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298420761Z"); return t}()),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.August, 9, 20, 13, 23, 298420761, time.UTC)),
 		// 					CreatedBy: to.Ptr("user1"),
 		// 					CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 		// 				},
@@ -259,7 +259,7 @@ func ExampleSnapshotsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01/SnapshotsUpdateTags.json
+// Generated from example definition: 2026-06-01/SnapshotsUpdateTags.json
 func ExampleSnapshotsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -301,7 +301,7 @@ func ExampleSnapshotsClient_UpdateTags() {
 	// 			VMSize: to.Ptr("Standard_D2s_v3"),
 	// 		},
 	// 		SystemData: &armcontainerservice.SystemData{
-	// 			CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-09T20:13:23.298420761Z"); return t}()),
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 9, 20, 13, 23, 298420761, time.UTC)),
 	// 			CreatedBy: to.Ptr("user1"),
 	// 			CreatedByType: to.Ptr(armcontainerservice.CreatedByTypeUser),
 	// 		},

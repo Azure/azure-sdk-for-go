@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01/MachineGet.json
+// Generated from example definition: 2026-06-01/MachineGet.json
 func ExampleMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleMachinesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01/MachineList.json
+// Generated from example definition: 2026-06-01/MachineList.json
 func ExampleMachinesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

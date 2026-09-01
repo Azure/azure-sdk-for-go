@@ -65,12 +65,7 @@ func (client *FeaturesClient) AccountGet(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return FeaturesClientAccountGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FeaturesClientAccountGetResponse{}, err
-	}
-	resp, err := client.accountGetHandleResponse(httpResp)
-	return resp, err
+	return client.accountGetHandleResponse(httpResp, http.StatusOK)
 }
 
 // accountGetCreateRequest creates the AccountGet request.
@@ -104,8 +99,11 @@ func (client *FeaturesClient) accountGetCreateRequest(ctx context.Context, resou
 }
 
 // accountGetHandleResponse handles the AccountGet response.
-func (client *FeaturesClient) accountGetHandleResponse(resp *http.Response) (FeaturesClientAccountGetResponse, error) {
+func (client *FeaturesClient) accountGetHandleResponse(resp *http.Response, successCodes ...int) (FeaturesClientAccountGetResponse, error) {
 	result := FeaturesClientAccountGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BatchFeatureStatus); err != nil {
 		return FeaturesClientAccountGetResponse{}, err
 	}
@@ -136,12 +134,7 @@ func (client *FeaturesClient) SubscriptionGet(ctx context.Context, locations str
 	if err != nil {
 		return FeaturesClientSubscriptionGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FeaturesClientSubscriptionGetResponse{}, err
-	}
-	resp, err := client.subscriptionGetHandleResponse(httpResp)
-	return resp, err
+	return client.subscriptionGetHandleResponse(httpResp, http.StatusOK)
 }
 
 // subscriptionGetCreateRequest creates the SubscriptionGet request.
@@ -171,8 +164,11 @@ func (client *FeaturesClient) subscriptionGetCreateRequest(ctx context.Context, 
 }
 
 // subscriptionGetHandleResponse handles the SubscriptionGet response.
-func (client *FeaturesClient) subscriptionGetHandleResponse(resp *http.Response) (FeaturesClientSubscriptionGetResponse, error) {
+func (client *FeaturesClient) subscriptionGetHandleResponse(resp *http.Response, successCodes ...int) (FeaturesClientSubscriptionGetResponse, error) {
 	result := FeaturesClientSubscriptionGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BatchFeatureStatus); err != nil {
 		return FeaturesClientSubscriptionGetResponse{}, err
 	}

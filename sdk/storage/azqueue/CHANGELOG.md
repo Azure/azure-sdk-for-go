@@ -1,5 +1,16 @@
 ## Release History
 
+### 2.2.0-beta.2 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+* The `queueerror.Code` constants now reference the generated `StorageErrorCode` values instead of duplicating string literals, keeping them in sync with the service definition.
+
 ### 2.2.0-beta.1 (2026-07-24)
 
 #### Other Changes

@@ -31,7 +31,7 @@ func ExampleBuildAuthTokenClient_List() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappcontainers.BuildAuthTokenClientListResponse{
 	// 	BuildToken: armappcontainers.BuildToken{
-	// 		Expires: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-07-14T19:22:50.3080223Z"); return t}()),
+	// 		Expires: to.Ptr(time.Date(2022, time.July, 14, 19, 22, 50, 308022300, time.UTC)),
 	// 		Token: to.Ptr("foobartoken"),
 	// 	},
 	// }

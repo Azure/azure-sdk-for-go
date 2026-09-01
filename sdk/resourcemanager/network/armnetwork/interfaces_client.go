@@ -19,7 +19,7 @@ import (
 // InterfacesClient contains the methods for the Interfaces group.
 // Don't use this type directly, use NewInterfacesClient() instead.
 //
-// Generated from API versions 2018-10-01, 2025-07-01
+// Generated from API versions 2018-10-01, 2025-09-01
 type InterfacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -82,8 +82,7 @@ func (client *InterfacesClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -108,7 +107,7 @@ func (client *InterfacesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -157,8 +156,7 @@ func (client *InterfacesClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -183,7 +181,7 @@ func (client *InterfacesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -207,12 +205,7 @@ func (client *InterfacesClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return InterfacesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InterfacesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -238,15 +231,18 @@ func (client *InterfacesClient) getCreateRequest(ctx context.Context, resourceGr
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *InterfacesClient) getHandleResponse(resp *http.Response) (InterfacesClientGetResponse, error) {
+func (client *InterfacesClient) getHandleResponse(resp *http.Response, successCodes ...int) (InterfacesClientGetResponse, error) {
 	result := InterfacesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return InterfacesClientGetResponse{}, err
 	}
@@ -275,12 +271,7 @@ func (client *InterfacesClient) GetCloudServiceNetworkInterface(ctx context.Cont
 	if err != nil {
 		return InterfacesClientGetCloudServiceNetworkInterfaceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InterfacesClientGetCloudServiceNetworkInterfaceResponse{}, err
-	}
-	resp, err := client.getCloudServiceNetworkInterfaceHandleResponse(httpResp)
-	return resp, err
+	return client.getCloudServiceNetworkInterfaceHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCloudServiceNetworkInterfaceCreateRequest creates the GetCloudServiceNetworkInterface request.
@@ -314,15 +305,18 @@ func (client *InterfacesClient) getCloudServiceNetworkInterfaceCreateRequest(ctx
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getCloudServiceNetworkInterfaceHandleResponse handles the GetCloudServiceNetworkInterface response.
-func (client *InterfacesClient) getCloudServiceNetworkInterfaceHandleResponse(resp *http.Response) (InterfacesClientGetCloudServiceNetworkInterfaceResponse, error) {
+func (client *InterfacesClient) getCloudServiceNetworkInterfaceHandleResponse(resp *http.Response, successCodes ...int) (InterfacesClientGetCloudServiceNetworkInterfaceResponse, error) {
 	result := InterfacesClientGetCloudServiceNetworkInterfaceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return InterfacesClientGetCloudServiceNetworkInterfaceResponse{}, err
 	}
@@ -369,8 +363,7 @@ func (client *InterfacesClient) getEffectiveRouteTable(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -395,7 +388,7 @@ func (client *InterfacesClient) getEffectiveRouteTableCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -421,12 +414,7 @@ func (client *InterfacesClient) GetVirtualMachineScaleSetIPConfiguration(ctx con
 	if err != nil {
 		return InterfacesClientGetVirtualMachineScaleSetIPConfigurationResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InterfacesClientGetVirtualMachineScaleSetIPConfigurationResponse{}, err
-	}
-	resp, err := client.getVirtualMachineScaleSetIPConfigurationHandleResponse(httpResp)
-	return resp, err
+	return client.getVirtualMachineScaleSetIPConfigurationHandleResponse(httpResp, http.StatusOK)
 }
 
 // getVirtualMachineScaleSetIPConfigurationCreateRequest creates the GetVirtualMachineScaleSetIPConfiguration request.
@@ -471,8 +459,11 @@ func (client *InterfacesClient) getVirtualMachineScaleSetIPConfigurationCreateRe
 }
 
 // getVirtualMachineScaleSetIPConfigurationHandleResponse handles the GetVirtualMachineScaleSetIPConfiguration response.
-func (client *InterfacesClient) getVirtualMachineScaleSetIPConfigurationHandleResponse(resp *http.Response) (InterfacesClientGetVirtualMachineScaleSetIPConfigurationResponse, error) {
+func (client *InterfacesClient) getVirtualMachineScaleSetIPConfigurationHandleResponse(resp *http.Response, successCodes ...int) (InterfacesClientGetVirtualMachineScaleSetIPConfigurationResponse, error) {
 	result := InterfacesClientGetVirtualMachineScaleSetIPConfigurationResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InterfaceIPConfiguration); err != nil {
 		return InterfacesClientGetVirtualMachineScaleSetIPConfigurationResponse{}, err
 	}
@@ -498,12 +489,7 @@ func (client *InterfacesClient) GetVirtualMachineScaleSetNetworkInterface(ctx co
 	if err != nil {
 		return InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse{}, err
-	}
-	resp, err := client.getVirtualMachineScaleSetNetworkInterfaceHandleResponse(httpResp)
-	return resp, err
+	return client.getVirtualMachineScaleSetNetworkInterfaceHandleResponse(httpResp, http.StatusOK)
 }
 
 // getVirtualMachineScaleSetNetworkInterfaceCreateRequest creates the GetVirtualMachineScaleSetNetworkInterface request.
@@ -544,8 +530,11 @@ func (client *InterfacesClient) getVirtualMachineScaleSetNetworkInterfaceCreateR
 }
 
 // getVirtualMachineScaleSetNetworkInterfaceHandleResponse handles the GetVirtualMachineScaleSetNetworkInterface response.
-func (client *InterfacesClient) getVirtualMachineScaleSetNetworkInterfaceHandleResponse(resp *http.Response) (InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse, error) {
+func (client *InterfacesClient) getVirtualMachineScaleSetNetworkInterfaceHandleResponse(resp *http.Response, successCodes ...int) (InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse, error) {
 	result := InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse{}, err
 	}
@@ -566,43 +555,57 @@ func (client *InterfacesClient) NewListPager(resourceGroupName string, options *
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return InterfacesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InterfacesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *InterfacesClient) listCreateRequest(ctx context.Context, resourceGroupName string, _ *InterfacesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *InterfacesClient) listCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *InterfacesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *InterfacesClient) listHandleResponse(resp *http.Response) (InterfacesClientListResponse, error) {
+func (client *InterfacesClient) listHandleResponse(resp *http.Response, successCodes ...int) (InterfacesClientListResponse, error) {
 	result := InterfacesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InterfaceListResult); err != nil {
 		return InterfacesClientListResponse{}, err
 	}
@@ -622,39 +625,53 @@ func (client *InterfacesClient) NewListAllPager(options *InterfacesClientListAll
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return InterfacesClientListAllResponse{}, err
 			}
-			return client.listAllHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InterfacesClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAllCreateRequest creates the ListAll request.
-func (client *InterfacesClient) listAllCreateRequest(ctx context.Context, _ *InterfacesClientListAllOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkInterfaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *InterfacesClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *InterfacesClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkInterfaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAllHandleResponse handles the ListAll response.
-func (client *InterfacesClient) listAllHandleResponse(resp *http.Response) (InterfacesClientListAllResponse, error) {
+func (client *InterfacesClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (InterfacesClientListAllResponse, error) {
 	result := InterfacesClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InterfaceListResult); err != nil {
 		return InterfacesClientListAllResponse{}, err
 	}
@@ -677,47 +694,61 @@ func (client *InterfacesClient) NewListCloudServiceNetworkInterfacesPager(resour
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCloudServiceNetworkInterfacesCreateRequest(ctx, resourceGroupName, cloudServiceName, options)
-			}, nil)
+			req, err := client.listCloudServiceNetworkInterfacesCreateRequest(ctx, resourceGroupName, cloudServiceName, nextLink, options)
 			if err != nil {
 				return InterfacesClientListCloudServiceNetworkInterfacesResponse{}, err
 			}
-			return client.listCloudServiceNetworkInterfacesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InterfacesClientListCloudServiceNetworkInterfacesResponse{}, err
+			}
+			return client.listCloudServiceNetworkInterfacesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCloudServiceNetworkInterfacesCreateRequest creates the ListCloudServiceNetworkInterfaces request.
-func (client *InterfacesClient) listCloudServiceNetworkInterfacesCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, _ *InterfacesClientListCloudServiceNetworkInterfacesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/cloudServices/{cloudServiceName}/networkInterfaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *InterfacesClient) listCloudServiceNetworkInterfacesCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, nextLink string, _ *InterfacesClientListCloudServiceNetworkInterfacesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/cloudServices/{cloudServiceName}/networkInterfaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if cloudServiceName == "" {
+			return nil, errors.New("parameter cloudServiceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{cloudServiceName}", url.PathEscape(cloudServiceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudServiceName == "" {
-		return nil, errors.New("parameter cloudServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudServiceName}", url.PathEscape(cloudServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listCloudServiceNetworkInterfacesHandleResponse handles the ListCloudServiceNetworkInterfaces response.
-func (client *InterfacesClient) listCloudServiceNetworkInterfacesHandleResponse(resp *http.Response) (InterfacesClientListCloudServiceNetworkInterfacesResponse, error) {
+func (client *InterfacesClient) listCloudServiceNetworkInterfacesHandleResponse(resp *http.Response, successCodes ...int) (InterfacesClientListCloudServiceNetworkInterfacesResponse, error) {
 	result := InterfacesClientListCloudServiceNetworkInterfacesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InterfaceListResult); err != nil {
 		return InterfacesClientListCloudServiceNetworkInterfacesResponse{}, err
 	}
@@ -742,51 +773,65 @@ func (client *InterfacesClient) NewListCloudServiceRoleInstanceNetworkInterfaces
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCloudServiceRoleInstanceNetworkInterfacesCreateRequest(ctx, resourceGroupName, cloudServiceName, roleInstanceName, options)
-			}, nil)
+			req, err := client.listCloudServiceRoleInstanceNetworkInterfacesCreateRequest(ctx, resourceGroupName, cloudServiceName, roleInstanceName, nextLink, options)
 			if err != nil {
 				return InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse{}, err
 			}
-			return client.listCloudServiceRoleInstanceNetworkInterfacesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse{}, err
+			}
+			return client.listCloudServiceRoleInstanceNetworkInterfacesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCloudServiceRoleInstanceNetworkInterfacesCreateRequest creates the ListCloudServiceRoleInstanceNetworkInterfaces request.
-func (client *InterfacesClient) listCloudServiceRoleInstanceNetworkInterfacesCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, roleInstanceName string, _ *InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/networkInterfaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *InterfacesClient) listCloudServiceRoleInstanceNetworkInterfacesCreateRequest(ctx context.Context, resourceGroupName string, cloudServiceName string, roleInstanceName string, nextLink string, _ *InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/networkInterfaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if cloudServiceName == "" {
+			return nil, errors.New("parameter cloudServiceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{cloudServiceName}", url.PathEscape(cloudServiceName))
+		if roleInstanceName == "" {
+			return nil, errors.New("parameter roleInstanceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{roleInstanceName}", url.PathEscape(roleInstanceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudServiceName == "" {
-		return nil, errors.New("parameter cloudServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudServiceName}", url.PathEscape(cloudServiceName))
-	if roleInstanceName == "" {
-		return nil, errors.New("parameter roleInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{roleInstanceName}", url.PathEscape(roleInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listCloudServiceRoleInstanceNetworkInterfacesHandleResponse handles the ListCloudServiceRoleInstanceNetworkInterfaces response.
-func (client *InterfacesClient) listCloudServiceRoleInstanceNetworkInterfacesHandleResponse(resp *http.Response) (InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse, error) {
+func (client *InterfacesClient) listCloudServiceRoleInstanceNetworkInterfacesHandleResponse(resp *http.Response, successCodes ...int) (InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse, error) {
 	result := InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InterfaceListResult); err != nil {
 		return InterfacesClientListCloudServiceRoleInstanceNetworkInterfacesResponse{}, err
 	}
@@ -833,8 +878,7 @@ func (client *InterfacesClient) listEffectiveNetworkSecurityGroups(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -859,7 +903,7 @@ func (client *InterfacesClient) listEffectiveNetworkSecurityGroupsCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -881,58 +925,72 @@ func (client *InterfacesClient) NewListVirtualMachineScaleSetIPConfigurationsPag
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listVirtualMachineScaleSetIPConfigurationsCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, options)
-			}, nil)
+			req, err := client.listVirtualMachineScaleSetIPConfigurationsCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, nextLink, options)
 			if err != nil {
 				return InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse{}, err
 			}
-			return client.listVirtualMachineScaleSetIPConfigurationsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse{}, err
+			}
+			return client.listVirtualMachineScaleSetIPConfigurationsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listVirtualMachineScaleSetIPConfigurationsCreateRequest creates the ListVirtualMachineScaleSetIPConfigurations request.
-func (client *InterfacesClient) listVirtualMachineScaleSetIPConfigurationsCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, options *InterfacesClientListVirtualMachineScaleSetIPConfigurationsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipConfigurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *InterfacesClient) listVirtualMachineScaleSetIPConfigurationsCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, networkInterfaceName string, nextLink string, options *InterfacesClientListVirtualMachineScaleSetIPConfigurationsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipConfigurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if virtualMachineScaleSetName == "" {
+			return nil, errors.New("parameter virtualMachineScaleSetName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{virtualMachineScaleSetName}", url.PathEscape(virtualMachineScaleSetName))
+		if virtualmachineIndex == "" {
+			return nil, errors.New("parameter virtualmachineIndex cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{virtualmachineIndex}", url.PathEscape(virtualmachineIndex))
+		if networkInterfaceName == "" {
+			return nil, errors.New("parameter networkInterfaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{networkInterfaceName}", url.PathEscape(networkInterfaceName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualMachineScaleSetName == "" {
-		return nil, errors.New("parameter virtualMachineScaleSetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineScaleSetName}", url.PathEscape(virtualMachineScaleSetName))
-	if virtualmachineIndex == "" {
-		return nil, errors.New("parameter virtualmachineIndex cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualmachineIndex}", url.PathEscape(virtualmachineIndex))
-	if networkInterfaceName == "" {
-		return nil, errors.New("parameter networkInterfaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkInterfaceName}", url.PathEscape(networkInterfaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		reqQP.Set("api-version", version20181001)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20181001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listVirtualMachineScaleSetIPConfigurationsHandleResponse handles the ListVirtualMachineScaleSetIPConfigurations response.
-func (client *InterfacesClient) listVirtualMachineScaleSetIPConfigurationsHandleResponse(resp *http.Response) (InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse, error) {
+func (client *InterfacesClient) listVirtualMachineScaleSetIPConfigurationsHandleResponse(resp *http.Response, successCodes ...int) (InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse, error) {
 	result := InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InterfaceIPConfigurationListResult); err != nil {
 		return InterfacesClientListVirtualMachineScaleSetIPConfigurationsResponse{}, err
 	}
@@ -955,47 +1013,61 @@ func (client *InterfacesClient) NewListVirtualMachineScaleSetNetworkInterfacesPa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listVirtualMachineScaleSetNetworkInterfacesCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, options)
-			}, nil)
+			req, err := client.listVirtualMachineScaleSetNetworkInterfacesCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, nextLink, options)
 			if err != nil {
 				return InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse{}, err
 			}
-			return client.listVirtualMachineScaleSetNetworkInterfacesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse{}, err
+			}
+			return client.listVirtualMachineScaleSetNetworkInterfacesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listVirtualMachineScaleSetNetworkInterfacesCreateRequest creates the ListVirtualMachineScaleSetNetworkInterfaces request.
-func (client *InterfacesClient) listVirtualMachineScaleSetNetworkInterfacesCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, _ *InterfacesClientListVirtualMachineScaleSetNetworkInterfacesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/networkInterfaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *InterfacesClient) listVirtualMachineScaleSetNetworkInterfacesCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, nextLink string, _ *InterfacesClientListVirtualMachineScaleSetNetworkInterfacesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/networkInterfaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if virtualMachineScaleSetName == "" {
+			return nil, errors.New("parameter virtualMachineScaleSetName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{virtualMachineScaleSetName}", url.PathEscape(virtualMachineScaleSetName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualMachineScaleSetName == "" {
-		return nil, errors.New("parameter virtualMachineScaleSetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineScaleSetName}", url.PathEscape(virtualMachineScaleSetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20181001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20181001)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listVirtualMachineScaleSetNetworkInterfacesHandleResponse handles the ListVirtualMachineScaleSetNetworkInterfaces response.
-func (client *InterfacesClient) listVirtualMachineScaleSetNetworkInterfacesHandleResponse(resp *http.Response) (InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse, error) {
+func (client *InterfacesClient) listVirtualMachineScaleSetNetworkInterfacesHandleResponse(resp *http.Response, successCodes ...int) (InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse, error) {
 	result := InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InterfaceListResult); err != nil {
 		return InterfacesClientListVirtualMachineScaleSetNetworkInterfacesResponse{}, err
 	}
@@ -1018,51 +1090,65 @@ func (client *InterfacesClient) NewListVirtualMachineScaleSetVMNetworkInterfaces
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listVirtualMachineScaleSetVMNetworkInterfacesCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, options)
-			}, nil)
+			req, err := client.listVirtualMachineScaleSetVMNetworkInterfacesCreateRequest(ctx, resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, nextLink, options)
 			if err != nil {
 				return InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse{}, err
 			}
-			return client.listVirtualMachineScaleSetVMNetworkInterfacesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse{}, err
+			}
+			return client.listVirtualMachineScaleSetVMNetworkInterfacesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listVirtualMachineScaleSetVMNetworkInterfacesCreateRequest creates the ListVirtualMachineScaleSetVMNetworkInterfaces request.
-func (client *InterfacesClient) listVirtualMachineScaleSetVMNetworkInterfacesCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, _ *InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *InterfacesClient) listVirtualMachineScaleSetVMNetworkInterfacesCreateRequest(ctx context.Context, resourceGroupName string, virtualMachineScaleSetName string, virtualmachineIndex string, nextLink string, _ *InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if virtualMachineScaleSetName == "" {
+			return nil, errors.New("parameter virtualMachineScaleSetName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{virtualMachineScaleSetName}", url.PathEscape(virtualMachineScaleSetName))
+		if virtualmachineIndex == "" {
+			return nil, errors.New("parameter virtualmachineIndex cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{virtualmachineIndex}", url.PathEscape(virtualmachineIndex))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualMachineScaleSetName == "" {
-		return nil, errors.New("parameter virtualMachineScaleSetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualMachineScaleSetName}", url.PathEscape(virtualMachineScaleSetName))
-	if virtualmachineIndex == "" {
-		return nil, errors.New("parameter virtualmachineIndex cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualmachineIndex}", url.PathEscape(virtualmachineIndex))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20181001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20181001)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listVirtualMachineScaleSetVMNetworkInterfacesHandleResponse handles the ListVirtualMachineScaleSetVMNetworkInterfaces response.
-func (client *InterfacesClient) listVirtualMachineScaleSetVMNetworkInterfacesHandleResponse(resp *http.Response) (InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse, error) {
+func (client *InterfacesClient) listVirtualMachineScaleSetVMNetworkInterfacesHandleResponse(resp *http.Response, successCodes ...int) (InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse, error) {
 	result := InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.InterfaceListResult); err != nil {
 		return InterfacesClientListVirtualMachineScaleSetVMNetworkInterfacesResponse{}, err
 	}
@@ -1089,12 +1175,7 @@ func (client *InterfacesClient) UpdateTags(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return InterfacesClientUpdateTagsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return InterfacesClientUpdateTagsResponse{}, err
-	}
-	resp, err := client.updateTagsHandleResponse(httpResp)
-	return resp, err
+	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.
@@ -1117,7 +1198,7 @@ func (client *InterfacesClient) updateTagsCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1128,8 +1209,11 @@ func (client *InterfacesClient) updateTagsCreateRequest(ctx context.Context, res
 }
 
 // updateTagsHandleResponse handles the UpdateTags response.
-func (client *InterfacesClient) updateTagsHandleResponse(resp *http.Response) (InterfacesClientUpdateTagsResponse, error) {
+func (client *InterfacesClient) updateTagsHandleResponse(resp *http.Response, successCodes ...int) (InterfacesClientUpdateTagsResponse, error) {
 	result := InterfacesClientUpdateTagsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return InterfacesClientUpdateTagsResponse{}, err
 	}

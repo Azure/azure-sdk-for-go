@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-16-preview/extension/ExtensionPublisher_List.json
+// Generated from example definition: 2026-07-15/extension/ExtensionPublisher_List.json
 func ExampleExtensionPublisherClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

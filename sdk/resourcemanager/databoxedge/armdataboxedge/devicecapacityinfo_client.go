@@ -61,12 +61,7 @@ func (client *DeviceCapacityInfoClient) GetDeviceCapacityInfo(ctx context.Contex
 	if err != nil {
 		return DeviceCapacityInfoClientGetDeviceCapacityInfoResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeviceCapacityInfoClientGetDeviceCapacityInfoResponse{}, err
-	}
-	resp, err := client.getDeviceCapacityInfoHandleResponse(httpResp)
-	return resp, err
+	return client.getDeviceCapacityInfoHandleResponse(httpResp, http.StatusOK)
 }
 
 // getDeviceCapacityInfoCreateRequest creates the GetDeviceCapacityInfo request.
@@ -96,8 +91,11 @@ func (client *DeviceCapacityInfoClient) getDeviceCapacityInfoCreateRequest(ctx c
 }
 
 // getDeviceCapacityInfoHandleResponse handles the GetDeviceCapacityInfo response.
-func (client *DeviceCapacityInfoClient) getDeviceCapacityInfoHandleResponse(resp *http.Response) (DeviceCapacityInfoClientGetDeviceCapacityInfoResponse, error) {
+func (client *DeviceCapacityInfoClient) getDeviceCapacityInfoHandleResponse(resp *http.Response, successCodes ...int) (DeviceCapacityInfoClientGetDeviceCapacityInfoResponse, error) {
 	result := DeviceCapacityInfoClientGetDeviceCapacityInfoResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceCapacityInfo); err != nil {
 		return DeviceCapacityInfoClientGetDeviceCapacityInfoResponse{}, err
 	}

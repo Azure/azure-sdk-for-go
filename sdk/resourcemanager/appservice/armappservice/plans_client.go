@@ -87,8 +87,7 @@ func (client *PlansClient) createOrUpdate(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -148,12 +147,7 @@ func (client *PlansClient) CreateOrUpdateVnetRoute(ctx context.Context, resource
 	if err != nil {
 		return PlansClientCreateOrUpdateVnetRouteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientCreateOrUpdateVnetRouteResponse{}, err
-	}
-	resp, err := client.createOrUpdateVnetRouteHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateVnetRouteHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateVnetRouteCreateRequest creates the CreateOrUpdateVnetRoute request.
@@ -195,8 +189,11 @@ func (client *PlansClient) createOrUpdateVnetRouteCreateRequest(ctx context.Cont
 }
 
 // createOrUpdateVnetRouteHandleResponse handles the CreateOrUpdateVnetRoute response.
-func (client *PlansClient) createOrUpdateVnetRouteHandleResponse(resp *http.Response) (PlansClientCreateOrUpdateVnetRouteResponse, error) {
+func (client *PlansClient) createOrUpdateVnetRouteHandleResponse(resp *http.Response, successCodes ...int) (PlansClientCreateOrUpdateVnetRouteResponse, error) {
 	result := PlansClientCreateOrUpdateVnetRouteResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRoute); err != nil {
 		return PlansClientCreateOrUpdateVnetRouteResponse{}, err
 	}
@@ -225,8 +222,7 @@ func (client *PlansClient) Delete(ctx context.Context, resourceGroupName string,
 		return PlansClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientDeleteResponse{}, err
+		return PlansClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return PlansClientDeleteResponse{}, nil
 }
@@ -281,8 +277,7 @@ func (client *PlansClient) DeleteHybridConnection(ctx context.Context, resourceG
 		return PlansClientDeleteHybridConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientDeleteHybridConnectionResponse{}, err
+		return PlansClientDeleteHybridConnectionResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return PlansClientDeleteHybridConnectionResponse{}, nil
 }
@@ -344,8 +339,7 @@ func (client *PlansClient) DeleteVnetRoute(ctx context.Context, resourceGroupNam
 		return PlansClientDeleteVnetRouteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientDeleteVnetRouteResponse{}, err
+		return PlansClientDeleteVnetRouteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return PlansClientDeleteVnetRouteResponse{}, nil
 }
@@ -404,12 +398,7 @@ func (client *PlansClient) Get(ctx context.Context, resourceGroupName string, na
 	if err != nil {
 		return PlansClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -439,8 +428,11 @@ func (client *PlansClient) getCreateRequest(ctx context.Context, resourceGroupNa
 }
 
 // getHandleResponse handles the Get response.
-func (client *PlansClient) getHandleResponse(resp *http.Response) (PlansClientGetResponse, error) {
+func (client *PlansClient) getHandleResponse(resp *http.Response, successCodes ...int) (PlansClientGetResponse, error) {
 	result := PlansClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Plan); err != nil {
 		return PlansClientGetResponse{}, err
 	}
@@ -471,12 +463,7 @@ func (client *PlansClient) GetHybridConnection(ctx context.Context, resourceGrou
 	if err != nil {
 		return PlansClientGetHybridConnectionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientGetHybridConnectionResponse{}, err
-	}
-	resp, err := client.getHybridConnectionHandleResponse(httpResp)
-	return resp, err
+	return client.getHybridConnectionHandleResponse(httpResp, http.StatusOK)
 }
 
 // getHybridConnectionCreateRequest creates the GetHybridConnection request.
@@ -514,8 +501,11 @@ func (client *PlansClient) getHybridConnectionCreateRequest(ctx context.Context,
 }
 
 // getHybridConnectionHandleResponse handles the GetHybridConnection response.
-func (client *PlansClient) getHybridConnectionHandleResponse(resp *http.Response) (PlansClientGetHybridConnectionResponse, error) {
+func (client *PlansClient) getHybridConnectionHandleResponse(resp *http.Response, successCodes ...int) (PlansClientGetHybridConnectionResponse, error) {
 	result := PlansClientGetHybridConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnection); err != nil {
 		return PlansClientGetHybridConnectionResponse{}, err
 	}
@@ -544,12 +534,7 @@ func (client *PlansClient) GetHybridConnectionPlanLimit(ctx context.Context, res
 	if err != nil {
 		return PlansClientGetHybridConnectionPlanLimitResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientGetHybridConnectionPlanLimitResponse{}, err
-	}
-	resp, err := client.getHybridConnectionPlanLimitHandleResponse(httpResp)
-	return resp, err
+	return client.getHybridConnectionPlanLimitHandleResponse(httpResp, http.StatusOK)
 }
 
 // getHybridConnectionPlanLimitCreateRequest creates the GetHybridConnectionPlanLimit request.
@@ -579,8 +564,11 @@ func (client *PlansClient) getHybridConnectionPlanLimitCreateRequest(ctx context
 }
 
 // getHybridConnectionPlanLimitHandleResponse handles the GetHybridConnectionPlanLimit response.
-func (client *PlansClient) getHybridConnectionPlanLimitHandleResponse(resp *http.Response) (PlansClientGetHybridConnectionPlanLimitResponse, error) {
+func (client *PlansClient) getHybridConnectionPlanLimitHandleResponse(resp *http.Response, successCodes ...int) (PlansClientGetHybridConnectionPlanLimitResponse, error) {
 	result := PlansClientGetHybridConnectionPlanLimitResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionLimits); err != nil {
 		return PlansClientGetHybridConnectionPlanLimitResponse{}, err
 	}
@@ -610,12 +598,7 @@ func (client *PlansClient) GetRouteForVnet(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return PlansClientGetRouteForVnetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientGetRouteForVnetResponse{}, err
-	}
-	resp, err := client.getRouteForVnetHandleResponse(httpResp)
-	return resp, err
+	return client.getRouteForVnetHandleResponse(httpResp, http.StatusOK)
 }
 
 // getRouteForVnetCreateRequest creates the GetRouteForVnet request.
@@ -653,8 +636,11 @@ func (client *PlansClient) getRouteForVnetCreateRequest(ctx context.Context, res
 }
 
 // getRouteForVnetHandleResponse handles the GetRouteForVnet response.
-func (client *PlansClient) getRouteForVnetHandleResponse(resp *http.Response) (PlansClientGetRouteForVnetResponse, error) {
+func (client *PlansClient) getRouteForVnetHandleResponse(resp *http.Response, successCodes ...int) (PlansClientGetRouteForVnetResponse, error) {
 	result := PlansClientGetRouteForVnetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRouteArray); err != nil {
 		return PlansClientGetRouteForVnetResponse{}, err
 	}
@@ -683,12 +669,7 @@ func (client *PlansClient) GetServerFarmInstanceDetails(ctx context.Context, res
 	if err != nil {
 		return PlansClientGetServerFarmInstanceDetailsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientGetServerFarmInstanceDetailsResponse{}, err
-	}
-	resp, err := client.getServerFarmInstanceDetailsHandleResponse(httpResp)
-	return resp, err
+	return client.getServerFarmInstanceDetailsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getServerFarmInstanceDetailsCreateRequest creates the GetServerFarmInstanceDetails request.
@@ -718,8 +699,11 @@ func (client *PlansClient) getServerFarmInstanceDetailsCreateRequest(ctx context
 }
 
 // getServerFarmInstanceDetailsHandleResponse handles the GetServerFarmInstanceDetails response.
-func (client *PlansClient) getServerFarmInstanceDetailsHandleResponse(resp *http.Response) (PlansClientGetServerFarmInstanceDetailsResponse, error) {
+func (client *PlansClient) getServerFarmInstanceDetailsHandleResponse(resp *http.Response, successCodes ...int) (PlansClientGetServerFarmInstanceDetailsResponse, error) {
 	result := PlansClientGetServerFarmInstanceDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerFarmInstanceDetails); err != nil {
 		return PlansClientGetServerFarmInstanceDetailsResponse{}, err
 	}
@@ -748,12 +732,7 @@ func (client *PlansClient) GetServerFarmRdpPassword(ctx context.Context, resourc
 	if err != nil {
 		return PlansClientGetServerFarmRdpPasswordResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientGetServerFarmRdpPasswordResponse{}, err
-	}
-	resp, err := client.getServerFarmRdpPasswordHandleResponse(httpResp)
-	return resp, err
+	return client.getServerFarmRdpPasswordHandleResponse(httpResp, http.StatusOK)
 }
 
 // getServerFarmRdpPasswordCreateRequest creates the GetServerFarmRdpPassword request.
@@ -783,8 +762,11 @@ func (client *PlansClient) getServerFarmRdpPasswordCreateRequest(ctx context.Con
 }
 
 // getServerFarmRdpPasswordHandleResponse handles the GetServerFarmRdpPassword response.
-func (client *PlansClient) getServerFarmRdpPasswordHandleResponse(resp *http.Response) (PlansClientGetServerFarmRdpPasswordResponse, error) {
+func (client *PlansClient) getServerFarmRdpPasswordHandleResponse(resp *http.Response, successCodes ...int) (PlansClientGetServerFarmRdpPasswordResponse, error) {
 	result := PlansClientGetServerFarmRdpPasswordResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ServerFarmRdpDetails); err != nil {
 		return PlansClientGetServerFarmRdpPasswordResponse{}, err
 	}
@@ -812,12 +794,7 @@ func (client *PlansClient) GetServerFarmSKUs(ctx context.Context, resourceGroupN
 	if err != nil {
 		return PlansClientGetServerFarmSKUsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientGetServerFarmSKUsResponse{}, err
-	}
-	resp, err := client.getServerFarmSKUsHandleResponse(httpResp)
-	return resp, err
+	return client.getServerFarmSKUsHandleResponse(httpResp, http.StatusOK)
 }
 
 // getServerFarmSKUsCreateRequest creates the GetServerFarmSKUs request.
@@ -847,8 +824,11 @@ func (client *PlansClient) getServerFarmSKUsCreateRequest(ctx context.Context, r
 }
 
 // getServerFarmSKUsHandleResponse handles the GetServerFarmSKUs response.
-func (client *PlansClient) getServerFarmSKUsHandleResponse(resp *http.Response) (PlansClientGetServerFarmSKUsResponse, error) {
+func (client *PlansClient) getServerFarmSKUsHandleResponse(resp *http.Response, successCodes ...int) (PlansClientGetServerFarmSKUsResponse, error) {
 	result := PlansClientGetServerFarmSKUsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Interface); err != nil {
 		return PlansClientGetServerFarmSKUsResponse{}, err
 	}
@@ -878,12 +858,7 @@ func (client *PlansClient) GetVnetFromServerFarm(ctx context.Context, resourceGr
 	if err != nil {
 		return PlansClientGetVnetFromServerFarmResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientGetVnetFromServerFarmResponse{}, err
-	}
-	resp, err := client.getVnetFromServerFarmHandleResponse(httpResp)
-	return resp, err
+	return client.getVnetFromServerFarmHandleResponse(httpResp, http.StatusOK)
 }
 
 // getVnetFromServerFarmCreateRequest creates the GetVnetFromServerFarm request.
@@ -917,8 +892,11 @@ func (client *PlansClient) getVnetFromServerFarmCreateRequest(ctx context.Contex
 }
 
 // getVnetFromServerFarmHandleResponse handles the GetVnetFromServerFarm response.
-func (client *PlansClient) getVnetFromServerFarmHandleResponse(resp *http.Response) (PlansClientGetVnetFromServerFarmResponse, error) {
+func (client *PlansClient) getVnetFromServerFarmHandleResponse(resp *http.Response, successCodes ...int) (PlansClientGetVnetFromServerFarmResponse, error) {
 	result := PlansClientGetVnetFromServerFarmResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResource); err != nil {
 		return PlansClientGetVnetFromServerFarmResponse{}, err
 	}
@@ -948,12 +926,7 @@ func (client *PlansClient) GetVnetGateway(ctx context.Context, resourceGroupName
 	if err != nil {
 		return PlansClientGetVnetGatewayResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientGetVnetGatewayResponse{}, err
-	}
-	resp, err := client.getVnetGatewayHandleResponse(httpResp)
-	return resp, err
+	return client.getVnetGatewayHandleResponse(httpResp, http.StatusOK)
 }
 
 // getVnetGatewayCreateRequest creates the GetVnetGateway request.
@@ -991,8 +964,11 @@ func (client *PlansClient) getVnetGatewayCreateRequest(ctx context.Context, reso
 }
 
 // getVnetGatewayHandleResponse handles the GetVnetGateway response.
-func (client *PlansClient) getVnetGatewayHandleResponse(resp *http.Response) (PlansClientGetVnetGatewayResponse, error) {
+func (client *PlansClient) getVnetGatewayHandleResponse(resp *http.Response, successCodes ...int) (PlansClientGetVnetGatewayResponse, error) {
 	result := PlansClientGetVnetGatewayResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetGateway); err != nil {
 		return PlansClientGetVnetGatewayResponse{}, err
 	}
@@ -1014,42 +990,56 @@ func (client *PlansClient) NewListPager(options *PlansClientListOptions) *runtim
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return PlansClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PlansClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *PlansClient) listCreateRequest(ctx context.Context, options *PlansClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PlansClient) listCreateRequest(ctx context.Context, nextLink string, options *PlansClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	if options != nil && options.Detailed != nil {
-		reqQP.Set("detailed", strconv.FormatBool(*options.Detailed))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		if options != nil && options.Detailed != nil {
+			reqQP.Set("detailed", strconv.FormatBool(*options.Detailed))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *PlansClient) listHandleResponse(resp *http.Response) (PlansClientListResponse, error) {
+func (client *PlansClient) listHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListResponse, error) {
 	result := PlansClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PlanCollection); err != nil {
 		return PlansClientListResponse{}, err
 	}
@@ -1073,43 +1063,57 @@ func (client *PlansClient) NewListByResourceGroupPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return PlansClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PlansClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *PlansClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *PlansClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PlansClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *PlansClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *PlansClient) listByResourceGroupHandleResponse(resp *http.Response) (PlansClientListByResourceGroupResponse, error) {
+func (client *PlansClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListByResourceGroupResponse, error) {
 	result := PlansClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PlanCollection); err != nil {
 		return PlansClientListByResourceGroupResponse{}, err
 	}
@@ -1137,12 +1141,7 @@ func (client *PlansClient) ListCapabilities(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return PlansClientListCapabilitiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientListCapabilitiesResponse{}, err
-	}
-	resp, err := client.listCapabilitiesHandleResponse(httpResp)
-	return resp, err
+	return client.listCapabilitiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCapabilitiesCreateRequest creates the ListCapabilities request.
@@ -1172,8 +1171,11 @@ func (client *PlansClient) listCapabilitiesCreateRequest(ctx context.Context, re
 }
 
 // listCapabilitiesHandleResponse handles the ListCapabilities response.
-func (client *PlansClient) listCapabilitiesHandleResponse(resp *http.Response) (PlansClientListCapabilitiesResponse, error) {
+func (client *PlansClient) listCapabilitiesHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListCapabilitiesResponse, error) {
 	result := PlansClientListCapabilitiesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CapabilityArray); err != nil {
 		return PlansClientListCapabilitiesResponse{}, err
 	}
@@ -1204,12 +1206,7 @@ func (client *PlansClient) ListHybridConnectionKeys(ctx context.Context, resourc
 	if err != nil {
 		return PlansClientListHybridConnectionKeysResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientListHybridConnectionKeysResponse{}, err
-	}
-	resp, err := client.listHybridConnectionKeysHandleResponse(httpResp)
-	return resp, err
+	return client.listHybridConnectionKeysHandleResponse(httpResp, http.StatusOK)
 }
 
 // listHybridConnectionKeysCreateRequest creates the ListHybridConnectionKeys request.
@@ -1247,8 +1244,11 @@ func (client *PlansClient) listHybridConnectionKeysCreateRequest(ctx context.Con
 }
 
 // listHybridConnectionKeysHandleResponse handles the ListHybridConnectionKeys response.
-func (client *PlansClient) listHybridConnectionKeysHandleResponse(resp *http.Response) (PlansClientListHybridConnectionKeysResponse, error) {
+func (client *PlansClient) listHybridConnectionKeysHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListHybridConnectionKeysResponse, error) {
 	result := PlansClientListHybridConnectionKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionKey); err != nil {
 		return PlansClientListHybridConnectionKeysResponse{}, err
 	}
@@ -1273,47 +1273,61 @@ func (client *PlansClient) NewListHybridConnectionsPager(resourceGroupName strin
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listHybridConnectionsCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listHybridConnectionsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return PlansClientListHybridConnectionsResponse{}, err
 			}
-			return client.listHybridConnectionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PlansClientListHybridConnectionsResponse{}, err
+			}
+			return client.listHybridConnectionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listHybridConnectionsCreateRequest creates the ListHybridConnections request.
-func (client *PlansClient) listHybridConnectionsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *PlansClientListHybridConnectionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionRelays"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PlansClient) listHybridConnectionsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, _ *PlansClientListHybridConnectionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionRelays"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHybridConnectionsHandleResponse handles the ListHybridConnections response.
-func (client *PlansClient) listHybridConnectionsHandleResponse(resp *http.Response) (PlansClientListHybridConnectionsResponse, error) {
+func (client *PlansClient) listHybridConnectionsHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListHybridConnectionsResponse, error) {
 	result := PlansClientListHybridConnectionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionCollection); err != nil {
 		return PlansClientListHybridConnectionsResponse{}, err
 	}
@@ -1342,12 +1356,7 @@ func (client *PlansClient) ListRoutesForVnet(ctx context.Context, resourceGroupN
 	if err != nil {
 		return PlansClientListRoutesForVnetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientListRoutesForVnetResponse{}, err
-	}
-	resp, err := client.listRoutesForVnetHandleResponse(httpResp)
-	return resp, err
+	return client.listRoutesForVnetHandleResponse(httpResp, http.StatusOK)
 }
 
 // listRoutesForVnetCreateRequest creates the ListRoutesForVnet request.
@@ -1381,8 +1390,11 @@ func (client *PlansClient) listRoutesForVnetCreateRequest(ctx context.Context, r
 }
 
 // listRoutesForVnetHandleResponse handles the ListRoutesForVnet response.
-func (client *PlansClient) listRoutesForVnetHandleResponse(resp *http.Response) (PlansClientListRoutesForVnetResponse, error) {
+func (client *PlansClient) listRoutesForVnetHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListRoutesForVnetResponse, error) {
 	result := PlansClientListRoutesForVnetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRouteArray); err != nil {
 		return PlansClientListRoutesForVnetResponse{}, err
 	}
@@ -1406,50 +1418,64 @@ func (client *PlansClient) NewListUsagesPager(resourceGroupName string, name str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listUsagesCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listUsagesCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return PlansClientListUsagesResponse{}, err
 			}
-			return client.listUsagesHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PlansClientListUsagesResponse{}, err
+			}
+			return client.listUsagesHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listUsagesCreateRequest creates the ListUsages request.
-func (client *PlansClient) listUsagesCreateRequest(ctx context.Context, resourceGroupName string, name string, options *PlansClientListUsagesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/usages"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PlansClient) listUsagesCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, options *PlansClientListUsagesOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/usages"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listUsagesHandleResponse handles the ListUsages response.
-func (client *PlansClient) listUsagesHandleResponse(resp *http.Response) (PlansClientListUsagesResponse, error) {
+func (client *PlansClient) listUsagesHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListUsagesResponse, error) {
 	result := PlansClientListUsagesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmUsageQuotaCollection); err != nil {
 		return PlansClientListUsagesResponse{}, err
 	}
@@ -1477,12 +1503,7 @@ func (client *PlansClient) ListVnets(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return PlansClientListVnetsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientListVnetsResponse{}, err
-	}
-	resp, err := client.listVnetsHandleResponse(httpResp)
-	return resp, err
+	return client.listVnetsHandleResponse(httpResp, http.StatusOK)
 }
 
 // listVnetsCreateRequest creates the ListVnets request.
@@ -1512,8 +1533,11 @@ func (client *PlansClient) listVnetsCreateRequest(ctx context.Context, resourceG
 }
 
 // listVnetsHandleResponse handles the ListVnets response.
-func (client *PlansClient) listVnetsHandleResponse(resp *http.Response) (PlansClientListVnetsResponse, error) {
+func (client *PlansClient) listVnetsHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListVnetsResponse, error) {
 	result := PlansClientListVnetsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResourceArray); err != nil {
 		return PlansClientListVnetsResponse{}, err
 	}
@@ -1537,56 +1561,70 @@ func (client *PlansClient) NewListWebAppsPager(resourceGroupName string, name st
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listWebAppsCreateRequest(ctx, resourceGroupName, name, options)
-			}, nil)
+			req, err := client.listWebAppsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
 			if err != nil {
 				return PlansClientListWebAppsResponse{}, err
 			}
-			return client.listWebAppsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PlansClientListWebAppsResponse{}, err
+			}
+			return client.listWebAppsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listWebAppsCreateRequest creates the ListWebApps request.
-func (client *PlansClient) listWebAppsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *PlansClientListWebAppsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/sites"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PlansClient) listWebAppsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, options *PlansClientListWebAppsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/sites"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", *options.Top)
+		}
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.SkipToken != nil {
-		reqQP.Set("$skipToken", *options.SkipToken)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", *options.Top)
-	}
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listWebAppsHandleResponse handles the ListWebApps response.
-func (client *PlansClient) listWebAppsHandleResponse(resp *http.Response) (PlansClientListWebAppsResponse, error) {
+func (client *PlansClient) listWebAppsHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListWebAppsResponse, error) {
 	result := PlansClientListWebAppsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
 		return PlansClientListWebAppsResponse{}, err
 	}
@@ -1613,55 +1651,69 @@ func (client *PlansClient) NewListWebAppsByHybridConnectionPager(resourceGroupNa
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listWebAppsByHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
-			}, nil)
+			req, err := client.listWebAppsByHybridConnectionCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, nextLink, options)
 			if err != nil {
 				return PlansClientListWebAppsByHybridConnectionResponse{}, err
 			}
-			return client.listWebAppsByHybridConnectionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PlansClientListWebAppsByHybridConnectionResponse{}, err
+			}
+			return client.listWebAppsByHybridConnectionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listWebAppsByHybridConnectionCreateRequest creates the ListWebAppsByHybridConnection request.
-func (client *PlansClient) listWebAppsByHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, _ *PlansClientListWebAppsByHybridConnectionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/sites"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *PlansClient) listWebAppsByHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, nextLink string, _ *PlansClientListWebAppsByHybridConnectionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/sites"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		if namespaceName == "" {
+			return nil, errors.New("parameter namespaceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+		if relayName == "" {
+			return nil, errors.New("parameter relayName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{relayName}", url.PathEscape(relayName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if relayName == "" {
-		return nil, errors.New("parameter relayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{relayName}", url.PathEscape(relayName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listWebAppsByHybridConnectionHandleResponse handles the ListWebAppsByHybridConnection response.
-func (client *PlansClient) listWebAppsByHybridConnectionHandleResponse(resp *http.Response) (PlansClientListWebAppsByHybridConnectionResponse, error) {
+func (client *PlansClient) listWebAppsByHybridConnectionHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListWebAppsByHybridConnectionResponse, error) {
 	result := PlansClientListWebAppsByHybridConnectionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceCollection); err != nil {
 		return PlansClientListWebAppsByHybridConnectionResponse{}, err
 	}
@@ -1691,8 +1743,7 @@ func (client *PlansClient) RebootWorker(ctx context.Context, resourceGroupName s
 		return PlansClientRebootWorkerResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientRebootWorkerResponse{}, err
+		return PlansClientRebootWorkerResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return PlansClientRebootWorkerResponse{}, nil
 }
@@ -1749,12 +1800,7 @@ func (client *PlansClient) RecycleManagedInstanceWorker(ctx context.Context, res
 	if err != nil {
 		return PlansClientRecycleManagedInstanceWorkerResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientRecycleManagedInstanceWorkerResponse{}, err
-	}
-	resp, err := client.recycleManagedInstanceWorkerHandleResponse(httpResp)
-	return resp, err
+	return client.recycleManagedInstanceWorkerHandleResponse(httpResp, http.StatusOK)
 }
 
 // recycleManagedInstanceWorkerCreateRequest creates the RecycleManagedInstanceWorker request.
@@ -1788,8 +1834,11 @@ func (client *PlansClient) recycleManagedInstanceWorkerCreateRequest(ctx context
 }
 
 // recycleManagedInstanceWorkerHandleResponse handles the RecycleManagedInstanceWorker response.
-func (client *PlansClient) recycleManagedInstanceWorkerHandleResponse(resp *http.Response) (PlansClientRecycleManagedInstanceWorkerResponse, error) {
+func (client *PlansClient) recycleManagedInstanceWorkerHandleResponse(resp *http.Response, successCodes ...int) (PlansClientRecycleManagedInstanceWorkerResponse, error) {
 	result := PlansClientRecycleManagedInstanceWorkerResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Operation); err != nil {
 		return PlansClientRecycleManagedInstanceWorkerResponse{}, err
 	}
@@ -1818,8 +1867,7 @@ func (client *PlansClient) RestartWebApps(ctx context.Context, resourceGroupName
 		return PlansClientRestartWebAppsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientRestartWebAppsResponse{}, err
+		return PlansClientRestartWebAppsResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return PlansClientRestartWebAppsResponse{}, nil
 }
@@ -1874,12 +1922,7 @@ func (client *PlansClient) Update(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return PlansClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // updateCreateRequest creates the Update request.
@@ -1913,8 +1956,11 @@ func (client *PlansClient) updateCreateRequest(ctx context.Context, resourceGrou
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PlansClient) updateHandleResponse(resp *http.Response) (PlansClientUpdateResponse, error) {
+func (client *PlansClient) updateHandleResponse(resp *http.Response, successCodes ...int) (PlansClientUpdateResponse, error) {
 	result := PlansClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Plan); err != nil {
 		return PlansClientUpdateResponse{}, err
 	}
@@ -1945,12 +1991,7 @@ func (client *PlansClient) UpdateVnetGateway(ctx context.Context, resourceGroupN
 	if err != nil {
 		return PlansClientUpdateVnetGatewayResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientUpdateVnetGatewayResponse{}, err
-	}
-	resp, err := client.updateVnetGatewayHandleResponse(httpResp)
-	return resp, err
+	return client.updateVnetGatewayHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateVnetGatewayCreateRequest creates the UpdateVnetGateway request.
@@ -1992,8 +2033,11 @@ func (client *PlansClient) updateVnetGatewayCreateRequest(ctx context.Context, r
 }
 
 // updateVnetGatewayHandleResponse handles the UpdateVnetGateway response.
-func (client *PlansClient) updateVnetGatewayHandleResponse(resp *http.Response) (PlansClientUpdateVnetGatewayResponse, error) {
+func (client *PlansClient) updateVnetGatewayHandleResponse(resp *http.Response, successCodes ...int) (PlansClientUpdateVnetGatewayResponse, error) {
 	result := PlansClientUpdateVnetGatewayResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetGateway); err != nil {
 		return PlansClientUpdateVnetGatewayResponse{}, err
 	}
@@ -2024,12 +2068,7 @@ func (client *PlansClient) UpdateVnetRoute(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return PlansClientUpdateVnetRouteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PlansClientUpdateVnetRouteResponse{}, err
-	}
-	resp, err := client.updateVnetRouteHandleResponse(httpResp)
-	return resp, err
+	return client.updateVnetRouteHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateVnetRouteCreateRequest creates the UpdateVnetRoute request.
@@ -2071,8 +2110,11 @@ func (client *PlansClient) updateVnetRouteCreateRequest(ctx context.Context, res
 }
 
 // updateVnetRouteHandleResponse handles the UpdateVnetRoute response.
-func (client *PlansClient) updateVnetRouteHandleResponse(resp *http.Response) (PlansClientUpdateVnetRouteResponse, error) {
+func (client *PlansClient) updateVnetRouteHandleResponse(resp *http.Response, successCodes ...int) (PlansClientUpdateVnetRouteResponse, error) {
 	result := PlansClientUpdateVnetRouteResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRoute); err != nil {
 		return PlansClientUpdateVnetRouteResponse{}, err
 	}

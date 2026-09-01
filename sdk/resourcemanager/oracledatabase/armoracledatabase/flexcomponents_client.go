@@ -60,12 +60,7 @@ func (client *FlexComponentsClient) Get(ctx context.Context, location string, fl
 	if err != nil {
 		return FlexComponentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FlexComponentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -95,8 +90,11 @@ func (client *FlexComponentsClient) getCreateRequest(ctx context.Context, locati
 }
 
 // getHandleResponse handles the Get response.
-func (client *FlexComponentsClient) getHandleResponse(resp *http.Response) (FlexComponentsClientGetResponse, error) {
+func (client *FlexComponentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (FlexComponentsClientGetResponse, error) {
 	result := FlexComponentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FlexComponent); err != nil {
 		return FlexComponentsClientGetResponse{}, err
 	}
@@ -118,46 +116,60 @@ func (client *FlexComponentsClient) NewListByParentPager(location string, option
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByParentCreateRequest(ctx, location, options)
-			}, nil)
+			req, err := client.listByParentCreateRequest(ctx, location, nextLink, options)
 			if err != nil {
 				return FlexComponentsClientListByParentResponse{}, err
 			}
-			return client.listByParentHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FlexComponentsClientListByParentResponse{}, err
+			}
+			return client.listByParentHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByParentCreateRequest creates the ListByParent request.
-func (client *FlexComponentsClient) listByParentCreateRequest(ctx context.Context, location string, options *FlexComponentsClientListByParentOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/flexComponents"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *FlexComponentsClient) listByParentCreateRequest(ctx context.Context, location string, nextLink string, options *FlexComponentsClientListByParentOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/flexComponents"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	if options != nil && options.Shape != nil {
-		reqQP.Set("shape", string(*options.Shape))
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		if options != nil && options.Shape != nil {
+			reqQP.Set("shape", string(*options.Shape))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByParentHandleResponse handles the ListByParent response.
-func (client *FlexComponentsClient) listByParentHandleResponse(resp *http.Response) (FlexComponentsClientListByParentResponse, error) {
+func (client *FlexComponentsClient) listByParentHandleResponse(resp *http.Response, successCodes ...int) (FlexComponentsClientListByParentResponse, error) {
 	result := FlexComponentsClientListByParentResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FlexComponentListResult); err != nil {
 		return FlexComponentsClientListByParentResponse{}, err
 	}

@@ -19,7 +19,7 @@ import (
 // ResourceNavigationLinksClient contains the methods for the ResourceNavigationLinks group.
 // Don't use this type directly, use NewResourceNavigationLinksClient() instead.
 //
-// Generated from API version 2025-07-01
+// Generated from API version 2025-09-01
 type ResourceNavigationLinksClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -62,12 +62,7 @@ func (client *ResourceNavigationLinksClient) List(ctx context.Context, resourceG
 	if err != nil {
 		return ResourceNavigationLinksClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ResourceNavigationLinksClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
-	return resp, err
+	return client.listHandleResponse(httpResp, http.StatusOK)
 }
 
 // listCreateRequest creates the List request.
@@ -94,15 +89,18 @@ func (client *ResourceNavigationLinksClient) listCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701)
+	reqQP.Set("api-version", version20250901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *ResourceNavigationLinksClient) listHandleResponse(resp *http.Response) (ResourceNavigationLinksClientListResponse, error) {
+func (client *ResourceNavigationLinksClient) listHandleResponse(resp *http.Response, successCodes ...int) (ResourceNavigationLinksClientListResponse, error) {
 	result := ResourceNavigationLinksClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceNavigationLinksListResult); err != nil {
 		return ResourceNavigationLinksClientListResponse{}, err
 	}

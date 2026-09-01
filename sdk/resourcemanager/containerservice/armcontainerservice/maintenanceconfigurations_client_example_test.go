@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-05-01/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
+// Generated from example definition: 2026-06-01/MaintenanceConfigurationsCreate_Update_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,12 +30,12 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 				DurationHours: to.Ptr[int32](10),
 				NotAllowedDates: []*armcontainerservice.DateSpan{
 					{
-						End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-02-25"); return t }()),
-						Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-02-18"); return t }()),
+						End:   to.Ptr(time.Date(2023, time.February, 25, 0, 0, 0, 0, time.UTC)),
+						Start: to.Ptr(time.Date(2023, time.February, 18, 0, 0, 0, 0, time.UTC)),
 					},
 					{
-						End:   to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-01-05"); return t }()),
-						Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-12-23"); return t }()),
+						End:   to.Ptr(time.Date(2024, time.January, 5, 0, 0, 0, 0, time.UTC)),
+						Start: to.Ptr(time.Date(2023, time.December, 23, 0, 0, 0, 0, time.UTC)),
 					},
 				},
 				Schedule: &armcontainerservice.Schedule{
@@ -45,7 +45,7 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 						WeekIndex:      to.Ptr(armcontainerservice.TypeFirst),
 					},
 				},
-				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-01-01"); return t }()),
+				StartDate: to.Ptr(time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC)),
 				StartTime: to.Ptr("08:30"),
 				UTCOffset: to.Ptr("+05:30"),
 			},
@@ -66,12 +66,12 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 	// 				DurationHours: to.Ptr[int32](10),
 	// 				NotAllowedDates: []*armcontainerservice.DateSpan{
 	// 					{
-	// 						End: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-02-25"); return t}()),
-	// 						Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-02-18"); return t}()),
+	// 						End: to.Ptr(time.Date(2023, time.February, 25, 0, 0, 0, 0, time.UTC)),
+	// 						Start: to.Ptr(time.Date(2023, time.February, 18, 0, 0, 0, 0, time.UTC)),
 	// 					},
 	// 					{
-	// 						End: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-01-05"); return t}()),
-	// 						Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-12-23"); return t}()),
+	// 						End: to.Ptr(time.Date(2024, time.January, 5, 0, 0, 0, 0, time.UTC)),
+	// 						Start: to.Ptr(time.Date(2023, time.December, 23, 0, 0, 0, 0, time.UTC)),
 	// 					},
 	// 				},
 	// 				Schedule: &armcontainerservice.Schedule{
@@ -80,7 +80,7 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 	// 						IntervalWeeks: to.Ptr[int32](3),
 	// 					},
 	// 				},
-	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-01-01"); return t}()),
+	// 				StartDate: to.Ptr(time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 				StartTime: to.Ptr("08:30"),
 	// 				UTCOffset: to.Ptr("+05:30"),
 	// 			},
@@ -89,7 +89,7 @@ func ExampleMaintenanceConfigurationsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01/MaintenanceConfigurationsDelete_MaintenanceWindow.json
+// Generated from example definition: 2026-06-01/MaintenanceConfigurationsDelete_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -111,7 +111,7 @@ func ExampleMaintenanceConfigurationsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01/MaintenanceConfigurationsGet_MaintenanceWindow.json
+// Generated from example definition: 2026-06-01/MaintenanceConfigurationsGet_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,12 +138,12 @@ func ExampleMaintenanceConfigurationsClient_Get() {
 	// 				DurationHours: to.Ptr[int32](4),
 	// 				NotAllowedDates: []*armcontainerservice.DateSpan{
 	// 					{
-	// 						End: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-02-25"); return t}()),
-	// 						Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-02-18"); return t}()),
+	// 						End: to.Ptr(time.Date(2023, time.February, 25, 0, 0, 0, 0, time.UTC)),
+	// 						Start: to.Ptr(time.Date(2023, time.February, 18, 0, 0, 0, 0, time.UTC)),
 	// 					},
 	// 					{
-	// 						End: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-01-05"); return t}()),
-	// 						Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-12-23"); return t}()),
+	// 						End: to.Ptr(time.Date(2024, time.January, 5, 0, 0, 0, 0, time.UTC)),
+	// 						Start: to.Ptr(time.Date(2023, time.December, 23, 0, 0, 0, 0, time.UTC)),
 	// 					},
 	// 				},
 	// 				Schedule: &armcontainerservice.Schedule{
@@ -151,7 +151,7 @@ func ExampleMaintenanceConfigurationsClient_Get() {
 	// 						IntervalDays: to.Ptr[int32](3),
 	// 					},
 	// 				},
-	// 				StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-01-01"); return t}()),
+	// 				StartDate: to.Ptr(time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC)),
 	// 				StartTime: to.Ptr("09:30"),
 	// 				UTCOffset: to.Ptr("-07:00"),
 	// 			},
@@ -160,7 +160,7 @@ func ExampleMaintenanceConfigurationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01/MaintenanceConfigurationsList_MaintenanceWindow.json
+// Generated from example definition: 2026-06-01/MaintenanceConfigurationsList_MaintenanceWindow.json
 func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager() {
 		// 								IntervalDays: to.Ptr[int32](5),
 		// 							},
 		// 						},
-		// 						StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-01-01"); return t}()),
+		// 						StartDate: to.Ptr(time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 						StartTime: to.Ptr("13:30"),
 		// 						UTCOffset: to.Ptr("-07:00"),
 		// 					},
@@ -210,12 +210,12 @@ func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager() {
 		// 						DurationHours: to.Ptr[int32](5),
 		// 						NotAllowedDates: []*armcontainerservice.DateSpan{
 		// 							{
-		// 								End: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-02-25"); return t}()),
-		// 								Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-02-18"); return t}()),
+		// 								End: to.Ptr(time.Date(2023, time.February, 25, 0, 0, 0, 0, time.UTC)),
+		// 								Start: to.Ptr(time.Date(2023, time.February, 18, 0, 0, 0, 0, time.UTC)),
 		// 							},
 		// 							{
-		// 								End: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2024-01-05"); return t}()),
-		// 								Start: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-12-23"); return t}()),
+		// 								End: to.Ptr(time.Date(2024, time.January, 5, 0, 0, 0, 0, time.UTC)),
+		// 								Start: to.Ptr(time.Date(2023, time.December, 23, 0, 0, 0, 0, time.UTC)),
 		// 							},
 		// 						},
 		// 						Schedule: &armcontainerservice.Schedule{
@@ -224,7 +224,7 @@ func ExampleMaintenanceConfigurationsClient_NewListByManagedClusterPager() {
 		// 								IntervalMonths: to.Ptr[int32](3),
 		// 							},
 		// 						},
-		// 						StartDate: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2023-01-01"); return t}()),
+		// 						StartDate: to.Ptr(time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC)),
 		// 						StartTime: to.Ptr("08:30"),
 		// 						UTCOffset: to.Ptr("+00:00"),
 		// 					},

@@ -498,3 +498,13 @@ func TestNewUUID(t *testing.T) {
 	// xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 	require.Regexp(t, regexp.MustCompile(`[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}`), u)
 }
+
+func TestNewRequestForNextLink(t *testing.T) {
+	// NOTE: the full tests for this are in the exported package.
+	// we add a simple test here due to how code coverage is calculated.
+	const endpoint = "https://contoso.com"
+	const nextLink = "https://contoso.com/next"
+	req, err := NewRequestForNextLink(context.Background(), http.MethodGet, endpoint, nextLink)
+	require.NoError(t, err)
+	require.Equal(t, nextLink, req.Raw().URL.String())
+}

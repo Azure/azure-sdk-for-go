@@ -61,12 +61,7 @@ func (client *OperationStatusBackupVaultContextClient) Get(ctx context.Context, 
 	if err != nil {
 		return OperationStatusBackupVaultContextClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationStatusBackupVaultContextClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -100,8 +95,11 @@ func (client *OperationStatusBackupVaultContextClient) getCreateRequest(ctx cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *OperationStatusBackupVaultContextClient) getHandleResponse(resp *http.Response) (OperationStatusBackupVaultContextClientGetResponse, error) {
+func (client *OperationStatusBackupVaultContextClient) getHandleResponse(resp *http.Response, successCodes ...int) (OperationStatusBackupVaultContextClientGetResponse, error) {
 	result := OperationStatusBackupVaultContextClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationResource); err != nil {
 		return OperationStatusBackupVaultContextClientGetResponse{}, err
 	}

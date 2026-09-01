@@ -64,12 +64,7 @@ func (client *CGProfileClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return CGProfileClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return CGProfileClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -103,9 +98,12 @@ func (client *CGProfileClient) createOrUpdateCreateRequest(ctx context.Context, 
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CGProfileClient) createOrUpdateHandleResponse(resp *http.Response) (CGProfileClientCreateOrUpdateResponse, error) {
+func (client *CGProfileClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (CGProfileClientCreateOrUpdateResponse, error) {
 	result := CGProfileClientCreateOrUpdateResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerGroupProfile); err != nil {
@@ -136,8 +134,7 @@ func (client *CGProfileClient) Delete(ctx context.Context, resourceGroupName str
 		return CGProfileClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return CGProfileClientDeleteResponse{}, err
+		return CGProfileClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return CGProfileClientDeleteResponse{}, nil
 }
@@ -188,12 +185,7 @@ func (client *CGProfileClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return CGProfileClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CGProfileClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -223,8 +215,11 @@ func (client *CGProfileClient) getCreateRequest(ctx context.Context, resourceGro
 }
 
 // getHandleResponse handles the Get response.
-func (client *CGProfileClient) getHandleResponse(resp *http.Response) (CGProfileClientGetResponse, error) {
+func (client *CGProfileClient) getHandleResponse(resp *http.Response, successCodes ...int) (CGProfileClientGetResponse, error) {
 	result := CGProfileClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerGroupProfile); err != nil {
 		return CGProfileClientGetResponse{}, err
 	}
@@ -256,12 +251,7 @@ func (client *CGProfileClient) GetByRevisionNumber(ctx context.Context, resource
 	if err != nil {
 		return CGProfileClientGetByRevisionNumberResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CGProfileClientGetByRevisionNumberResponse{}, err
-	}
-	resp, err := client.getByRevisionNumberHandleResponse(httpResp)
-	return resp, err
+	return client.getByRevisionNumberHandleResponse(httpResp, http.StatusOK)
 }
 
 // getByRevisionNumberCreateRequest creates the GetByRevisionNumber request.
@@ -295,8 +285,11 @@ func (client *CGProfileClient) getByRevisionNumberCreateRequest(ctx context.Cont
 }
 
 // getByRevisionNumberHandleResponse handles the GetByRevisionNumber response.
-func (client *CGProfileClient) getByRevisionNumberHandleResponse(resp *http.Response) (CGProfileClientGetByRevisionNumberResponse, error) {
+func (client *CGProfileClient) getByRevisionNumberHandleResponse(resp *http.Response, successCodes ...int) (CGProfileClientGetByRevisionNumberResponse, error) {
 	result := CGProfileClientGetByRevisionNumberResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerGroupProfile); err != nil {
 		return CGProfileClientGetByRevisionNumberResponse{}, err
 	}
@@ -324,47 +317,61 @@ func (client *CGProfileClient) NewListAllRevisionsPager(resourceGroupName string
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllRevisionsCreateRequest(ctx, resourceGroupName, containerGroupProfileName, options)
-			}, nil)
+			req, err := client.listAllRevisionsCreateRequest(ctx, resourceGroupName, containerGroupProfileName, nextLink, options)
 			if err != nil {
 				return CGProfileClientListAllRevisionsResponse{}, err
 			}
-			return client.listAllRevisionsHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CGProfileClientListAllRevisionsResponse{}, err
+			}
+			return client.listAllRevisionsHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listAllRevisionsCreateRequest creates the ListAllRevisions request.
-func (client *CGProfileClient) listAllRevisionsCreateRequest(ctx context.Context, resourceGroupName string, containerGroupProfileName string, _ *CGProfileClientListAllRevisionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroupProfiles/{containerGroupProfileName}/revisions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *CGProfileClient) listAllRevisionsCreateRequest(ctx context.Context, resourceGroupName string, containerGroupProfileName string, nextLink string, _ *CGProfileClientListAllRevisionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroupProfiles/{containerGroupProfileName}/revisions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if containerGroupProfileName == "" {
+			return nil, errors.New("parameter containerGroupProfileName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{containerGroupProfileName}", url.PathEscape(containerGroupProfileName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if containerGroupProfileName == "" {
-		return nil, errors.New("parameter containerGroupProfileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerGroupProfileName}", url.PathEscape(containerGroupProfileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listAllRevisionsHandleResponse handles the ListAllRevisions response.
-func (client *CGProfileClient) listAllRevisionsHandleResponse(resp *http.Response) (CGProfileClientListAllRevisionsResponse, error) {
+func (client *CGProfileClient) listAllRevisionsHandleResponse(resp *http.Response, successCodes ...int) (CGProfileClientListAllRevisionsResponse, error) {
 	result := CGProfileClientListAllRevisionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerGroupProfileListResult); err != nil {
 		return CGProfileClientListAllRevisionsResponse{}, err
 	}
@@ -393,12 +400,7 @@ func (client *CGProfileClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return CGProfileClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CGProfileClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -432,9 +434,12 @@ func (client *CGProfileClient) updateCreateRequest(ctx context.Context, resource
 }
 
 // updateHandleResponse handles the Update response.
-func (client *CGProfileClient) updateHandleResponse(resp *http.Response) (CGProfileClientUpdateResponse, error) {
+func (client *CGProfileClient) updateHandleResponse(resp *http.Response, successCodes ...int) (CGProfileClientUpdateResponse, error) {
 	result := CGProfileClientUpdateResponse{}
-	if val := resp.Header.Get("x-ms-correlation-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Correlation-Request-Id"); val != "" {
 		result.XMSCorrelationRequestID = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ContainerGroupProfile); err != nil {

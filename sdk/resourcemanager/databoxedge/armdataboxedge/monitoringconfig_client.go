@@ -84,8 +84,7 @@ func (client *MonitoringConfigClient) createOrUpdate(ctx context.Context, device
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -167,8 +166,7 @@ func (client *MonitoringConfigClient) deleteOperation(ctx context.Context, devic
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -222,12 +220,7 @@ func (client *MonitoringConfigClient) Get(ctx context.Context, deviceName string
 	if err != nil {
 		return MonitoringConfigClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MonitoringConfigClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -261,8 +254,11 @@ func (client *MonitoringConfigClient) getCreateRequest(ctx context.Context, devi
 }
 
 // getHandleResponse handles the Get response.
-func (client *MonitoringConfigClient) getHandleResponse(resp *http.Response) (MonitoringConfigClientGetResponse, error) {
+func (client *MonitoringConfigClient) getHandleResponse(resp *http.Response, successCodes ...int) (MonitoringConfigClientGetResponse, error) {
 	result := MonitoringConfigClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitoringMetricConfiguration); err != nil {
 		return MonitoringConfigClientGetResponse{}, err
 	}
@@ -286,51 +282,65 @@ func (client *MonitoringConfigClient) NewListPager(deviceName string, roleName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, deviceName, roleName, resourceGroupName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, deviceName, roleName, resourceGroupName, nextLink, options)
 			if err != nil {
 				return MonitoringConfigClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MonitoringConfigClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *MonitoringConfigClient) listCreateRequest(ctx context.Context, deviceName string, roleName string, resourceGroupName string, _ *MonitoringConfigClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{roleName}/monitoringConfig"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *MonitoringConfigClient) listCreateRequest(ctx context.Context, deviceName string, roleName string, resourceGroupName string, nextLink string, _ *MonitoringConfigClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{roleName}/monitoringConfig"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if deviceName == "" {
+			return nil, errors.New("parameter deviceName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{deviceName}", url.PathEscape(deviceName))
+		if roleName == "" {
+			return nil, errors.New("parameter roleName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{roleName}", url.PathEscape(roleName))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if deviceName == "" {
-		return nil, errors.New("parameter deviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{deviceName}", url.PathEscape(deviceName))
-	if roleName == "" {
-		return nil, errors.New("parameter roleName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{roleName}", url.PathEscape(roleName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20231201)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *MonitoringConfigClient) listHandleResponse(resp *http.Response) (MonitoringConfigClientListResponse, error) {
+func (client *MonitoringConfigClient) listHandleResponse(resp *http.Response, successCodes ...int) (MonitoringConfigClientListResponse, error) {
 	result := MonitoringConfigClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MonitoringMetricConfigurationList); err != nil {
 		return MonitoringConfigClientListResponse{}, err
 	}

@@ -62,12 +62,7 @@ func (client *TicketsClient) CheckNameAvailability(ctx context.Context, checkNam
 	if err != nil {
 		return TicketsClientCheckNameAvailabilityResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TicketsClientCheckNameAvailabilityResponse{}, err
-	}
-	resp, err := client.checkNameAvailabilityHandleResponse(httpResp)
-	return resp, err
+	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -93,8 +88,11 @@ func (client *TicketsClient) checkNameAvailabilityCreateRequest(ctx context.Cont
 }
 
 // checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *TicketsClient) checkNameAvailabilityHandleResponse(resp *http.Response) (TicketsClientCheckNameAvailabilityResponse, error) {
+func (client *TicketsClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (TicketsClientCheckNameAvailabilityResponse, error) {
 	result := TicketsClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityOutput); err != nil {
 		return TicketsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -163,8 +161,7 @@ func (client *TicketsClient) create(ctx context.Context, supportTicketName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -214,12 +211,7 @@ func (client *TicketsClient) Get(ctx context.Context, supportTicketName string, 
 	if err != nil {
 		return TicketsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TicketsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -245,8 +237,11 @@ func (client *TicketsClient) getCreateRequest(ctx context.Context, supportTicket
 }
 
 // getHandleResponse handles the Get response.
-func (client *TicketsClient) getHandleResponse(resp *http.Response) (TicketsClientGetResponse, error) {
+func (client *TicketsClient) getHandleResponse(resp *http.Response, successCodes ...int) (TicketsClientGetResponse, error) {
 	result := TicketsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TicketDetails); err != nil {
 		return TicketsClientGetResponse{}, err
 	}
@@ -269,45 +264,59 @@ func (client *TicketsClient) NewListPager(options *TicketsClientListOptions) *ru
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return TicketsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TicketsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *TicketsClient) listCreateRequest(ctx context.Context, options *TicketsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TicketsClient) listCreateRequest(ctx context.Context, nextLink string, options *TicketsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20240401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("api-version", version20240401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *TicketsClient) listHandleResponse(resp *http.Response) (TicketsClientListResponse, error) {
+func (client *TicketsClient) listHandleResponse(resp *http.Response, successCodes ...int) (TicketsClientListResponse, error) {
 	result := TicketsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TicketsListResult); err != nil {
 		return TicketsClientListResponse{}, err
 	}
@@ -336,12 +345,7 @@ func (client *TicketsClient) Update(ctx context.Context, supportTicketName strin
 	if err != nil {
 		return TicketsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TicketsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -371,8 +375,11 @@ func (client *TicketsClient) updateCreateRequest(ctx context.Context, supportTic
 }
 
 // updateHandleResponse handles the Update response.
-func (client *TicketsClient) updateHandleResponse(resp *http.Response) (TicketsClientUpdateResponse, error) {
+func (client *TicketsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (TicketsClientUpdateResponse, error) {
 	result := TicketsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TicketDetails); err != nil {
 		return TicketsClientUpdateResponse{}, err
 	}

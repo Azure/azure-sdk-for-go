@@ -19,7 +19,7 @@ import (
 // SKUMixPlacementScoresClient contains the methods for the SKUMixPlacementScores group.
 // Don't use this type directly, use NewSKUMixPlacementScoresClient() instead.
 //
-// Generated from API version 2026-05-05-preview
+// Generated from API version 2026-09-05-preview
 type SKUMixPlacementScoresClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -82,7 +82,7 @@ func (client *SKUMixPlacementScoresClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260505Preview)
+	reqQP.Set("api-version", version20260905Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -139,7 +139,7 @@ func (client *SKUMixPlacementScoresClient) postCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260505Preview)
+	reqQP.Set("api-version", version20260905Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

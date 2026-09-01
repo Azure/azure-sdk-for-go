@@ -391,9 +391,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 			macClone := *ac.ModifiedAccessConditions
 			mac = &macClone
 		}
-		if mac.IfMatch == nil {
-			mac.IfMatch = dr.ETag
-		}
+		mac.IfMatch = dr.ETag
 		ac.ModifiedAccessConditions = mac
 		o.AccessConditions = ac
 	}

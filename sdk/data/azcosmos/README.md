@@ -33,16 +33,28 @@ CGO_ENABLED=1 CGO_LDFLAGS_ALLOW='^-Wl,-rpath,(@(executable_path|loader_path)|\$O
 
 `CGO_LDFLAGS_ALLOW` is required because the library is linked dynamically with executable-relative
 rpaths, which cgo rejects by default. That matches how the driver modules in
-[azure-cosmos-driver](https://github.com/Azure/azure-cosmos-driver) link, so a library shipped
-beside a binary wins over the path it was built from.
+[azure-cosmos-driver](https://github.com/Azure/azure-cosmos-driver) link: a library shipped beside a
+binary is found, and nothing else is searched.
 
-Committing these binaries is **temporary**. The distribution design puts the per-target libraries
-in their own Go modules in a separate repository; that repository exists and already carries a
-darwin/arm64 module, but not yet one for the platform CI runs on, so the copies here stand in until
-it does and are expected to be reverted. Only `linux/amd64` and `darwin/arm64` are present, because
-those are the platforms actually built and tested — another platform needs its own build from
+Nothing else is searched on purpose. The build directory is not an rpath, because it is an absolute
+path on whoever did the build — a module cache path for anyone consuming this — and baking it into
+a shipped binary makes the loader search a directory that someone else may be able to create on the
+host it runs on. Running the tests from the tree therefore needs that directory passed explicitly,
+which the commands below do; it reaches the test binary and never a consumer's.
+
+**Those committed binaries are temporary and are meant to be deleted.** Checking a build artifact
+into the repository is not the plan of record: the distribution design puts each target's library
+in its own Go module in [azure-cosmos-driver](https://github.com/Azure/azure-cosmos-driver),
+selected by `GOOS`/`GOARCH`. That repository exists and already carries a darwin/arm64 module, but
+not yet one for `linux/amd64`, which is the platform CI runs on — so the copies here stand in until
+it does.
+
+The trigger to remove them, and the steps, are recorded next to the files in
+[`internal/native/lib/README.md`](internal/native/lib/README.md). Only `linux/amd64` and
+`darwin/arm64` are present, because those are the platforms actually built and tested; another
+platform needs its own build from
 [azure_data_cosmos_driver_native](https://github.com/Azure/azure-sdk-for-rust/tree/main/sdk/cosmos/azure_data_cosmos_driver_native)
-dropped into the matching directory.
+dropped into the matching directory, which is the cost these files impose.
 
 `internal/native/azurecosmosdriver.h` is the header the driver generates, vendored here and pinned
 to the version in `driver.go`. That version is checked against the linked library when a client
@@ -71,9 +83,14 @@ internal/native/lib/linux_amd64/azure_data_cosmos_emulator \
   --config path/to/azcosmos/internal/testdata/emulator-config.json
 # {"event":"ready","accountEndpoint":"http://127.0.0.1:49151/", ...}
 
+# LIBDIR is darwin_arm64 or linux_amd64. It is passed through -ldflags rather than set as an
+# environment variable, because macOS strips DYLD_* from anything a protected process spawns.
+LIBDIR=$PWD/internal/native/lib/$(go env GOOS)_$(go env GOARCH)
+
 EMULATOR=1 AZCOSMOS_ENDPOINT=http://127.0.0.1:49151/ CGO_ENABLED=1 \
   CGO_LDFLAGS_ALLOW='^-Wl,-rpath,(@(executable_path|loader_path)|\$ORIGIN)$' \
-  go test -tags azcosmos_driver -run TestEmulator ./...
+  go test -tags azcosmos_driver -ldflags "-extldflags=-Wl,-rpath,$LIBDIR" \
+  -run TestEmulator ./...
 ```
 
 The container the tests use is declared in `internal/testdata/emulator-config.json`; its ids

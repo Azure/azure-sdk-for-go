@@ -12,19 +12,37 @@ package azcosmos
 // github.com/Azure/azure-cosmos-driver. A static archive would avoid the run-time search below,
 // but it is six times the size, which matters while these binaries are committed here.
 //
+// TEMPORARY: the -L and -rpath entries pointing into internal/native/lib go away with the
+// committed libraries themselves, once azure-cosmos-driver carries a module for every platform
+// this builds on. See internal/native/lib/README.md for the trigger and the steps.
+//
 // Because it is dynamic, the library has to be resolvable at run time and not just at build time.
-// The loader searches rpath entries in order, so the executable-relative ones come first: a library
-// shipped alongside a binary has to win over the path it happened to be built from. The build path
-// is kept last so that `go test` works without staging a copy, but it is only a fallback.
+// Only executable-relative rpaths are recorded, so a library shipped alongside a binary is found
+// and nothing else is searched.
 //
-// Building a package that imports this one therefore needs cgo's rpath allowlist opened, because
-// cgo rejects the executable-relative forms by default:
+// The build directory is deliberately not an rpath. ${SRCDIR} is an absolute path on whoever built
+// the binary — a module cache path for a consumer — and baking it in makes the loader search a
+// directory the running host may let someone else create, which is a library-injection foothold in
+// every binary built against this package. Point the loader at the library explicitly instead when
+// running from the tree, which is what the test invocations below do.
 //
-//	CGO_LDFLAGS_ALLOW='^-Wl,-rpath,(@(executable_path|loader_path)|\$ORIGIN)$' go test ./...
+// Building a package that imports this one needs cgo's rpath allowlist opened, because cgo rejects
+// the executable-relative forms by default. Running the tests from the tree additionally needs the
+// library directory as an rpath, because the test binary is built into a temporary directory and
+// not next to the library. That rpath is passed at the invocation rather than declared here, so it
+// reaches the test binary and never a consumer's:
+//
+//	CGO_LDFLAGS_ALLOW='^-Wl,-rpath,(@(executable_path|loader_path)|\$ORIGIN)$' \
+//	  go test -tags azcosmos_driver \
+//	    -ldflags "-extldflags=-Wl,-rpath,$PWD/internal/native/lib/darwin_arm64" ./...
+//
+// and on linux the same with linux_amd64. DYLD_LIBRARY_PATH is not an option on darwin: macOS
+// strips DYLD_* from the environment of anything a protected process spawns, so it does not
+// survive as far as the test binary.
 #cgo darwin,arm64 LDFLAGS: -L${SRCDIR}/internal/native/lib/darwin_arm64 -lazurecosmosdriver
-#cgo darwin,arm64 LDFLAGS: -Wl,-rpath,@executable_path -Wl,-rpath,@loader_path -Wl,-rpath,${SRCDIR}/internal/native/lib/darwin_arm64
+#cgo darwin,arm64 LDFLAGS: -Wl,-rpath,@executable_path -Wl,-rpath,@loader_path
 #cgo linux,amd64 LDFLAGS: -L${SRCDIR}/internal/native/lib/linux_amd64 -lazurecosmosdriver
-#cgo linux,amd64 LDFLAGS: -Wl,-rpath,$ORIGIN -Wl,-rpath,${SRCDIR}/internal/native/lib/linux_amd64
+#cgo linux,amd64 LDFLAGS: -Wl,-rpath,$ORIGIN
 
 #include "azurecosmosdriver.h"
 */

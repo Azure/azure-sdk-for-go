@@ -435,6 +435,10 @@ enum cosmos_CosmosReadConsistencyStrategy
    * Read the latest version across all regions (single-master / Strong).
    */
   COSMOS_READ_CONSISTENCY_STRATEGY_GLOBAL_STRONG = 4,
+  /**
+   * Read the latest committed version using a quorum read.
+   */
+  COSMOS_READ_CONSISTENCY_STRATEGY_LATEST_COMMITTED = 5,
 };
 #ifndef __cplusplus
 #if __STDC_VERSION__ >= 202311L
@@ -737,8 +741,8 @@ enum cosmos_sub_status_t
    */
   COSMOS_SUB_STATUS_CLIENT_FFI_PRECONDITION_ALREADY_SET = 20355,
   /**
-   * `CLIENT_FFI_UNSUPPORTED_OPERATION_FOR_MUTATOR` (20356). Reserved: mirrors
-   * the driver constant but no current wrapper path produces it.
+   * `CLIENT_FFI_UNSUPPORTED_OPERATION_FOR_MUTATOR` (20356). Returned when a
+   * request uses an operation that is unavailable in this wrapper build.
    */
   COSMOS_SUB_STATUS_CLIENT_FFI_UNSUPPORTED_OPERATION_FOR_MUTATOR = 20356,
   /**

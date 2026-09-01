@@ -83,6 +83,11 @@ extends:
       # until it does. This stage is expected to shrink to a module dependency at that point.
       - stage: DriverEmulator
         displayName: 'Cosmos Emulator (v2 driver)'
+        # A stage with no dependsOn implicitly depends on the one before it, which would queue this
+        # behind the Windows emulator stage above and skip it entirely whenever that stage fails.
+        # This stage shares nothing with it: it builds what it needs itself, from binaries that are
+        # already in the tree. An empty dependsOn is what makes that independence explicit.
+        dependsOn: []
         variables:
         - template: /eng/pipelines/templates/variables/globals.yml@self
         - template: /eng/pipelines/templates/variables/image.yml@self
@@ -106,8 +111,21 @@ extends:
             parameters:
               AgentImage: ubuntu
 
+          # The committed artifacts are verified before anything is made executable or run, because
+          # one of them is an executable this stage launches on the agent. A binary is not
+          # reviewable in a diff, so the checksums are what a reviewer is actually approving.
+          - script: |
+              set -euo pipefail
+              cd sdk/data/azcosmos/internal/native/lib
+              sha256sum -c SHA256SUMS
+
+              # Reads the Mach-O load command rather than shelling out to otool, which the linux
+              # agent does not have.
+              python3 check-install-name.py darwin_arm64/libazurecosmosdriver.dylib
+            displayName: 'Verify the committed driver artifacts'
+
           # Fail here rather than leaving the tests to fail at link time with a less obvious
-          # message, and confirm the committed library matches the header it is used with.
+          # message.
           - script: |
               set -euo pipefail
               test -f "$(DriverLibDir)/libazurecosmosdriver.so"
@@ -176,3 +194,7 @@ extends:
                 GOFLAGS: '-tags=azcosmos_driver'
                 CGO_ENABLED: '1'
                 CGO_LDFLAGS_ALLOW: $(CgoRpathAllow)
+                # The library directory is deliberately not an rpath in the shipped link line, so
+                # the test binary — which is built into a temporary directory, not next to the
+                # library — needs the loader pointed at it here. See cgo_native.go.
+                LD_LIBRARY_PATH: $(DriverLibDir)

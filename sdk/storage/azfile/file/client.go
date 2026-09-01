@@ -154,13 +154,11 @@ func (f *Client) Create(ctx context.Context, fileContentLength int64, options *C
 	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
 
 	if options != nil && options.OptionalBody != nil && options.TransactionalValidation != nil {
-		if _, ok := options.TransactionalValidation.(TransferValidationTypeMD5); !ok {
-			body, err := options.TransactionalValidation.Apply(options.OptionalBody, opts)
-			if err != nil {
-				return CreateResponse{}, err
-			}
-			opts.Optionalbody = body
+		body, err := options.TransactionalValidation.Apply(options.OptionalBody, opts)
+		if err != nil {
+			return CreateResponse{}, err
 		}
+		opts.Optionalbody = body
 	}
 
 	return f.generated().Create(ctx, fileContentLength, opts)

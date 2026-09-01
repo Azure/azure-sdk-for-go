@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
+	"strings"
 	"sync"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -19,20 +20,21 @@ import (
 // type have no effect here, and advertising options the client would silently ignore is worse than
 // not offering them. Every field below is one the driver honors.
 //
-// Honoring them is not yet wired up, though: the binding hands the driver its own defaults rather
-// than building driver options from these, so Routing, ApplicationID and
-// EnableContentResponseOnWrite currently have no effect. That is a gap in the binding rather than
-// in the driver, tracked as a known issue in the changelog.
-//
 // A nil *ClientOptions selects the defaults for every field.
 type ClientOptions struct {
 	// Routing decides the order in which the client considers the account's regions. The zero
-	// value leaves the order to the account; prefer setting it with [ProximityTo] or
-	// [PreferredRegions].
+	// value leaves the order to the account; prefer setting it with [PreferredRegions].
+	//
+	// [ProximityTo] is not supported yet and is rejected when the client is constructed rather
+	// than being ignored; see its documentation.
 	Routing RoutingStrategy
 
 	// ApplicationID is an application-specific identifier appended to the user agent sent with
-	// every request. Keep it short and free of personally identifiable information.
+	// every request. Keep it free of personally identifiable information.
+	//
+	// The driver limits it to 25 bytes of letters, digits and '-', '_', '.', '~'; anything else
+	// is rejected when the client is constructed. Prefer a stable, low-cardinality name such as
+	// "order-service" over anything per instance.
 	ApplicationID string
 
 	// EnableContentResponseOnWrite requests that writes return the resulting item. Leaving it
@@ -68,6 +70,11 @@ type Client struct {
 //
 // endpoint is the Cosmos DB account endpoint. cred is any [azcore.TokenCredential], such as the
 // implementations in the azidentity module. options may be nil to accept the defaults.
+//
+// Token credentials do not work in a driver-backed build yet: the driver supports them, but its C
+// ABI exposes no constructor for one, so the binding cannot build an account reference from a
+// credential and the client reports that on its first operation. Use [NewClientWithKey] until it
+// does.
 func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if cred == nil {
 		return nil, errors.New("azcosmos: credential must not be nil")
@@ -114,6 +121,9 @@ func newClient(endpoint string, accountKey string, options *ClientOptions) (*Cli
 	if options != nil {
 		client.options = *options
 		client.options.Routing = options.Routing.clone()
+	}
+	if err := client.options.validate(); err != nil {
+		return nil, err
 	}
 
 	driver, err := openDriver(driverConfig{
@@ -183,4 +193,34 @@ func (c *Client) NewContainer(databaseID string, containerID string) (*Container
 		return nil, err
 	}
 	return database.NewContainer(containerID)
+}
+
+// The driver's user agent suffix is limited to 25 bytes of HTTP-header-safe characters
+// (alphanumerics and '-', '_', '.', '~'). It reports a violation as a bare status with no detail,
+// so the rule is applied here where the offending field can be named.
+const (
+	maxApplicationIDLength    = 25
+	applicationIDSafeSpecials = "-_.~"
+)
+
+// validate reports the option values the driver cannot accept, so they fail when the client is
+// constructed rather than on an operation, or with an error that does not name the field.
+func (o ClientOptions) validate() error {
+	if len(o.ApplicationID) > maxApplicationIDLength {
+		return fmt.Errorf("azcosmos: ApplicationID %q is %d bytes; the limit is %d",
+			o.ApplicationID, len(o.ApplicationID), maxApplicationIDLength)
+	}
+	for _, r := range o.ApplicationID {
+		if r >= 'a' && r <= 'z' || r >= 'A' && r <= 'Z' || r >= '0' && r <= '9' {
+			continue
+		}
+		if strings.ContainsRune(applicationIDSafeSpecials, r) {
+			continue
+		}
+		return fmt.Errorf("azcosmos: ApplicationID %q contains %q; only letters, digits and %q are allowed",
+			o.ApplicationID, r, applicationIDSafeSpecials)
+	}
+
+	_, err := o.Routing.preferredRegionOrder()
+	return err
 }

@@ -129,7 +129,9 @@ func (r *reactor) drainOnce(batch []C.cosmos_completion_t, timeoutMillis uint32)
 //
 // The cookie is a cgo.Handle for the pendingOperation. A completion whose cookie is zero or no
 // longer valid is dropped: that means the submitting goroutine has already gone away, which is not
-// an error, and dereferencing it would be a use-after-free.
+// an error, and dereferencing it would be a use-after-free. Those paths return before translation,
+// so the completion still owns anything it carries and the free at the end of the drain reclaims
+// it.
 func (r *reactor) deliver(completion *C.cosmos_completion_t) {
 	cookie := uintptr(completion.user_data)
 	if cookie == 0 {
@@ -143,12 +145,15 @@ func (r *reactor) deliver(completion *C.cosmos_completion_t) {
 	}
 
 	// Translation copies every field it needs, because the completion's memory is reclaimed as
-	// soon as this drain returns.
+	// soon as this drain returns, and detaches any handle the completion carries.
+	result := translateCompletion(completion)
 	select {
-	case pending.result <- translateCompletion(completion):
+	case pending.result <- result:
 	default:
 		// The buffer is sized for exactly one result, so a full channel means the operation was
-		// already answered. Nothing to do.
+		// already answered. The result still has to be released: dropping one that detached a
+		// driver or container handle would leak it, because the completion no longer owns it.
+		result.release()
 	}
 }
 

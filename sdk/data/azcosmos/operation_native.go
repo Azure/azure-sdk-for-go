@@ -35,48 +35,78 @@ func (c *Client) execute(ctx context.Context, req itemRequest) (ItemResponse, []
 }
 
 // execute runs one operation to completion and returns its result.
-//
-// It submits the operation, then waits for either the driver's completion or the caller's context.
-// Cancelling the context cancels the operation at the driver rather than abandoning it, so the
-// driver stops work that no longer has a caller.
 func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemResponse, []byte, error) {
-	driver, err := d.ensureDriver()
+	driver, err := d.ensureDriver(ctx)
 	if err != nil {
 		return ItemResponse{}, nil, err
 	}
 
-	container, err := d.resolveContainer(req.databaseID, req.containerID)
+	container, err := d.resolveContainer(ctx, driver, req.databaseID, req.containerID)
 	if err != nil {
 		return ItemResponse{}, nil, err
 	}
 
 	req.options.EndToEndTimeout = endToEndTimeout(ctx, req.options.EndToEndTimeout)
 
+	result, err := d.awaitCompletion(ctx, "submitting the operation",
+		func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
+			return d.submit(driver, container, req, queue, cookie, preError)
+		})
+	if err != nil {
+		return ItemResponse{}, nil, err
+	}
+	return result.response, result.body, result.err
+}
+
+// awaitCompletion submits one operation and waits for its completion or the caller's context,
+// whichever comes first. Driver creation, container resolution and item operations all go through
+// it, so all three honor a context the same way.
+//
+// The submit closure receives what the driver needs to answer: the queue to post the completion
+// to, the cookie to round-trip onto it, and somewhere to report a pre-flight rejection. It returns
+// NULL when the operation was rejected before it started, which posts no completion.
+//
+// Cancelling the context cancels the operation at the driver rather than abandoning it, and then
+// still waits for the completion. The operation owns the cookie, so returning before it has been
+// posted would delete a handle the reactor is about to dereference.
+func (d *nativeDriver) awaitCompletion(
+	ctx context.Context,
+	doing string,
+	submit func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t,
+) (completionResult, error) {
 	// Buffered so the reactor can always deliver without blocking, even after this goroutine has
 	// stopped waiting because the context was cancelled.
 	pending := &pendingOperation{result: make(chan completionResult, 1)}
 	handle := cgo.NewHandle(pending)
-	// Freed only after the operation is known to be finished, because the driver round-trips the
+	// Deleted only once the operation is known to be finished, because the driver round-trips the
 	// cookie onto the completion and the reactor dereferences it.
 	defer handle.Delete()
 
-	op, err := d.submit(driver, container, req, handle)
-	if err != nil {
-		return ItemResponse{}, nil, err
+	var preError C.cosmos_status_code_t
+	op := submit(d.reactor.queue, C.intptr_t(handle), &preError)
+	if op == nil {
+		// A pre-flight rejection posts no completion, so it is reported here rather than through
+		// the queue.
+		httpStatus, subStatus := unpackStatus(preError)
+		return completionResult{}, &Error{
+			Code:       codeForRichError(false, httpStatus, subStatus),
+			StatusCode: httpStatus,
+			SubStatus:  subStatus,
+			Message:    "azcosmos: " + doing,
+		}
 	}
 	defer C.cosmos_operation_handle_free(op)
 
 	select {
 	case result := <-pending.result:
-		return result.response, result.body, result.err
+		return result, nil
 
 	case <-ctx.Done():
-		// Ask the driver to stop, then still wait for the completion. The operation is what owns
-		// the cookie, so returning before it has been posted would delete a handle the reactor is
-		// about to dereference.
 		C.cosmos_operation_handle_cancel(op)
-		<-pending.result
-		return ItemResponse{}, nil, ctx.Err()
+		// The result is still awaited, and released rather than returned: an operation that
+		// completed just as the context expired may carry a handle nobody is going to take.
+		(<-pending.result).release()
+		return completionResult{}, ctx.Err()
 	}
 }
 
@@ -100,7 +130,9 @@ func inspectRequestSentinels(kind operationKind) (maxItemCount int32) {
 	return int32(request.max_item_count)
 }
 
-// submit builds the request struct and hands it to the driver.
+// submit builds the request struct and hands it to the driver. It reports a pre-flight rejection
+// the way the C ABI does, by returning NULL and writing preError, which awaitCompletion turns into
+// an error.
 //
 // Every pointer in the struct is borrowed for the duration of the call: the driver copies what it
 // needs before returning, which is what makes the defers here safe.
@@ -108,8 +140,10 @@ func (d *nativeDriver) submit(
 	driver *C.cosmos_driver_t,
 	container *C.cosmos_container_ref_t,
 	req itemRequest,
-	handle cgo.Handle,
-) (*C.cosmos_operation_handle_t, error) {
+	queue *C.cosmos_completion_queue_t,
+	cookie C.intptr_t,
+	preError *C.cosmos_status_code_t,
+) *C.cosmos_operation_handle_t {
 	request := newOperationRequest(req.kind, container)
 
 	if req.itemID != "" {
@@ -148,54 +182,90 @@ func (d *nativeDriver) submit(
 	defer freeOptions()
 	request.options = options
 
-	var preError C.cosmos_status_code_t
-	op := C.cosmos_submit_singleton_operation(driver, &request, d.reactor.queue, C.intptr_t(handle), &preError) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
-	if op == nil {
-		// A pre-flight rejection posts no completion, so it is reported here rather than through
-		// the queue.
-		httpStatus, subStatus := unpackStatus(preError)
-		return nil, &Error{
-			Code:       codeForRichError(false, httpStatus, subStatus),
-			StatusCode: httpStatus,
-			SubStatus:  subStatus,
-			Message:    "azcosmos: submitting the operation",
-		}
-	}
-	return op, nil
+	return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
 }
 
 // resolveContainer returns the driver's handle for a container, resolving it on first use.
 //
 // Resolution reads the container's metadata from the gateway on a cache miss, so the handle is
-// cached per client: an item operation would otherwise pay for that lookup every call.
-func (d *nativeDriver) resolveContainer(databaseID, containerID string) (*C.cosmos_container_ref_t, error) {
+// cached per client: an item operation would otherwise pay for that lookup every call. It is
+// awaited rather than blocked on, so a miss does not make an operation ignore its context.
+//
+// The lock is not held across the resolution, so two callers can miss on the same container at
+// once. That is deliberate: holding it would serialize every miss behind one gateway round trip,
+// including misses for unrelated containers. The loser of the race frees its own handle and takes
+// the winner's, so the cache keeps exactly one handle per key.
+func (d *nativeDriver) resolveContainer(
+	ctx context.Context,
+	driver *C.cosmos_driver_t,
+	databaseID, containerID string,
+) (*C.cosmos_container_ref_t, error) {
 	key := databaseID + "/" + containerID
+
+	d.mu.Lock()
+	if d.closed {
+		d.mu.Unlock()
+		return nil, errClientClosed()
+	}
+	if container, ok := d.containers[key]; ok {
+		d.mu.Unlock()
+		return container, nil
+	}
+	d.mu.Unlock()
+
+	container, err := d.submitResolveContainer(ctx, driver, databaseID, containerID)
+	if err != nil {
+		return nil, err
+	}
 
 	d.mu.Lock()
 	defer d.mu.Unlock()
 
 	if d.closed {
-		return nil, &Error{Code: CodeClientClosed, Message: "the client has been closed"}
+		// Closed while the resolution was in flight, so close has already emptied the cache and
+		// this handle has no other owner.
+		C.cosmos_container_ref_free(container)
+		return nil, errClientClosed()
 	}
-	if container, ok := d.containers[key]; ok {
-		return container, nil
+	if existing, ok := d.containers[key]; ok {
+		C.cosmos_container_ref_free(container)
+		return existing, nil
 	}
-
-	cDatabaseID := C.CString(databaseID)
-	defer C.free(unsafe.Pointer(cDatabaseID))
-	cContainerID := C.CString(containerID)
-	defer C.free(unsafe.Pointer(cContainerID))
-
-	var container *C.cosmos_container_ref_t
-	var richErr *C.cosmos_error_t
-	status := C.cosmos_driver_resolve_container_blocking(d.runtime, d.driver, cDatabaseID, cContainerID, &container, &richErr) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
-	if err := statusError(status, richErr, "resolving the container"); err != nil {
-		return nil, err
-	}
-
 	if d.containers == nil {
 		d.containers = make(map[string]*C.cosmos_container_ref_t)
 	}
 	d.containers[key] = container
 	return container, nil
+}
+
+// submitResolveContainer runs one container resolution against the driver.
+func (d *nativeDriver) submitResolveContainer(
+	ctx context.Context,
+	driver *C.cosmos_driver_t,
+	databaseID, containerID string,
+) (*C.cosmos_container_ref_t, error) {
+	cDatabaseID := C.CString(databaseID)
+	defer C.free(unsafe.Pointer(cDatabaseID))
+	cContainerID := C.CString(containerID)
+	defer C.free(unsafe.Pointer(cContainerID))
+
+	result, err := d.awaitCompletion(ctx, "resolving the container",
+		func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
+			return C.cosmos_driver_resolve_container_submit(driver, cDatabaseID, cContainerID, queue, cookie, preError) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
+		})
+	if err != nil {
+		return nil, err
+	}
+	if result.err != nil {
+		result.release()
+		return nil, result.err
+	}
+	if result.container == nil {
+		result.release()
+		return nil, &Error{
+			Code:    CodeClientError,
+			Message: "azcosmos: the container was resolved but the completion carried no handle",
+		}
+	}
+	return result.container, nil
 }

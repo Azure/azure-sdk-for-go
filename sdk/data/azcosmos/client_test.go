@@ -294,3 +294,68 @@ func TestCloseWaitsForInFlightOperations(t *testing.T) {
 		t.Fatal("Close did not return after the in-flight operation finished")
 	}
 }
+
+// Options the driver cannot accept are rejected here rather than reaching it, because it reports
+// them as a bare status that names nothing.
+func TestNewClientWithKeyRejectsUnusableOptions(t *testing.T) {
+	credential, err := NewKeyCredential(testAccountKey)
+	require.NoError(t, err)
+
+	for _, tt := range []struct {
+		name    string
+		options ClientOptions
+		wantIn  string
+	}{
+		{
+			// 26 bytes, one over the driver's limit.
+			name:    "an application id past the length limit",
+			options: ClientOptions{ApplicationID: strings.Repeat("a", maxApplicationIDLength+1)},
+			wantIn:  "the limit is 25",
+		},
+		{
+			// A conventional user agent that the driver would reject for the slash alone.
+			name:    "an application id with an unsafe character",
+			options: ClientOptions{ApplicationID: "order-service/1.2.3"},
+			wantIn:  "only letters, digits and",
+		},
+		{
+			name:    "an application id with a space",
+			options: ClientOptions{ApplicationID: "order service"},
+			wantIn:  "only letters, digits and",
+		},
+		{
+			name:    "proximity routing",
+			options: ClientOptions{Routing: ProximityTo(RegionEastUS)},
+			wantIn:  "ProximityTo is not supported",
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			client, err := NewClientWithKey("https://myaccount.documents.azure.com", credential, &tt.options)
+
+			require.ErrorContains(t, err, tt.wantIn)
+			require.Nil(t, client)
+		})
+	}
+}
+
+// The values the driver does accept have to keep working, including the edge of the limit.
+func TestNewClientWithKeyAcceptsUsableOptions(t *testing.T) {
+	credential, err := NewKeyCredential(testAccountKey)
+	require.NoError(t, err)
+
+	for _, tt := range []struct {
+		name    string
+		options ClientOptions
+	}{
+		{"no application id", ClientOptions{}},
+		{"an application id at the length limit", ClientOptions{ApplicationID: strings.Repeat("a", maxApplicationIDLength)}},
+		{"every safe special character", ClientOptions{ApplicationID: "a-b_c.d~9"}},
+		{"preferred regions", ClientOptions{Routing: PreferredRegions(RegionEastUS, RegionWestUS)}},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			client, err := NewClientWithKey("https://myaccount.documents.azure.com", credential, &tt.options)
+			require.NoError(t, err)
+			require.NoError(t, client.Close())
+		})
+	}
+}

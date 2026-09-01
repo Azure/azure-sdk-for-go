@@ -24,6 +24,23 @@ type completionResult struct {
 	response ItemResponse
 	body     []byte
 	err      error
+
+	// driver and container are detached from the completion rather than copied, because they are
+	// handles and not data. A get_or_create completion carries the first and a resolve_container
+	// completion the second; every other completion carries neither.
+	//
+	// Detaching transfers ownership, so whoever ends up with this result owns them, and release
+	// is what closes that loop when nobody does.
+	driver    *C.cosmos_driver_t
+	container *C.cosmos_container_ref_t
+}
+
+// release frees the handles a result owns. It is for the paths that drop a result rather than
+// returning it, which would otherwise leak whatever the completion carried.
+func (r completionResult) release() {
+	// Freeing is a no-op on NULL, so the common case of a result carrying neither is free.
+	C.cosmos_driver_free(r.driver)
+	C.cosmos_container_ref_free(r.container)
 }
 
 // translateCompletion copies a completion into Go memory.
@@ -31,6 +48,19 @@ type completionResult struct {
 // Everything it reads is borrowed from the driver and reclaimed when the completion is freed at the
 // end of the drain, so every string and byte slice is copied rather than referenced.
 func translateCompletion(completion *C.cosmos_completion_t) completionResult {
+	result := translateCompletionOutcome(completion)
+
+	// Taken here rather than by the waiter, because the completion is freed at the end of this
+	// drain and a handle left on it would be reclaimed with it. Both return NULL when the
+	// completion carries nothing, so this is unconditional.
+	result.driver = C.cosmos_completion_take_driver(completion)
+	result.container = C.cosmos_completion_take_container(completion)
+	return result
+}
+
+// translateCompletionOutcome copies the data half of a completion, leaving the handles to
+// translateCompletion.
+func translateCompletionOutcome(completion *C.cosmos_completion_t) completionResult {
 	headers := readCompletionHeaders(completion)
 
 	response := ItemResponse{

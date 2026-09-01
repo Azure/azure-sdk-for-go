@@ -165,3 +165,57 @@ func TestOperationRequestUsesTheDriversUnsetSentinels(t *testing.T) {
 			"the driver reads < 0 as unset and rejects 0, so a zero here fails the operation")
 	}
 }
+
+// Client options reach the driver through a flat config, so the conversion is what decides whether
+// a setting has any effect at all.
+func TestClientOptionsConvertToTheDriversConfig(t *testing.T) {
+	t.Run("preferred regions are passed in order", func(t *testing.T) {
+		options, release, err := inspectNativeClientOptions(ClientOptions{
+			Routing: PreferredRegions(RegionWestUS, RegionEastUS),
+		})
+		require.NoError(t, err)
+		defer release()
+
+		require.Equal(t, []string{string(RegionWestUS), string(RegionEastUS)}, options.preferredRegions,
+			"the order is the preference, so it has to survive the conversion")
+	})
+
+	t.Run("no routing leaves the order to the account", func(t *testing.T) {
+		options, release, err := inspectNativeClientOptions(ClientOptions{})
+		require.NoError(t, err)
+		defer release()
+
+		require.Empty(t, options.preferredRegions)
+	})
+
+	t.Run("proximity routing is reported rather than ignored", func(t *testing.T) {
+		_, release, err := inspectNativeClientOptions(ClientOptions{Routing: ProximityTo(RegionEastUS)})
+		defer release()
+
+		require.ErrorIs(t, err, errProximityRoutingUnsupported,
+			"silently leaving the order to the account would hide that the request had no effect")
+	})
+
+	// The client-level value is sent explicitly rather than left unset, so the documented Go
+	// default holds even if the driver's default changes.
+	t.Run("the content response setting is sent explicitly", func(t *testing.T) {
+		for _, tt := range []struct {
+			name    string
+			enabled bool
+			want    int32
+		}{
+			{"disabled", false, 1},
+			{"enabled", true, 2},
+		} {
+			t.Run(tt.name, func(t *testing.T) {
+				options, release, err := inspectNativeClientOptions(ClientOptions{
+					EnableContentResponseOnWrite: tt.enabled,
+				})
+				require.NoError(t, err)
+				defer release()
+
+				require.Equal(t, tt.want, options.operationOptions.contentResponseOnWrite)
+			})
+		}
+	})
+}

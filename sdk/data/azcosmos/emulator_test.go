@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"sync"
 	"testing"
 	"time"
 
@@ -36,6 +37,12 @@ const (
 // emulatorClient returns a client for the emulator, or skips the test when one is not configured.
 func emulatorClient(t *testing.T) (*Client, string, string) {
 	t.Helper()
+	return emulatorClientWithOptions(t, nil)
+}
+
+// emulatorClientWithOptions is emulatorClient with the client options under test.
+func emulatorClientWithOptions(t *testing.T, options *ClientOptions) (*Client, string, string) {
+	t.Helper()
 
 	if os.Getenv("EMULATOR") == "" {
 		t.Skip("set EMULATOR to run tests against the Cosmos DB emulator")
@@ -57,7 +64,7 @@ func emulatorClient(t *testing.T) (*Client, string, string) {
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
 
-	client, err := NewClientWithKey(endpoint, cred, nil)
+	client, err := NewClientWithKey(endpoint, cred, options)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 
@@ -309,4 +316,112 @@ func TestEmulatorUnknownContainer(t *testing.T) {
 // to returns a pointer to v, for the tri-state option fields.
 func to[T any](v T) *T {
 	return &v
+}
+
+// emulatorContainerWithOptions returns a container client built with the options under test.
+func emulatorContainerWithOptions(t *testing.T, options *ClientOptions) *ContainerClient {
+	t.Helper()
+
+	client, databaseID, containerID := emulatorClientWithOptions(t, options)
+	container, err := client.NewContainer(databaseID, containerID)
+	require.NoError(t, err)
+	return container
+}
+
+// createForClientOptions creates an item and reports whether the service sent it back, which is
+// what the content-response setting controls.
+func createForClientOptions(t *testing.T, container *ContainerClient, operation *OperationOptions) bool {
+	t.Helper()
+
+	id := uniqueItemID(t)
+	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
+	require.NoError(t, err)
+
+	createOptions := &CreateItemOptions{}
+	if operation != nil {
+		createOptions.Operation = *operation
+	}
+	response, err := container.CreateItem(context.Background(), NewPartitionKeyString(id), id, item, createOptions)
+	require.NoError(t, err)
+	return len(response.Value) > 0
+}
+
+// The client-level content-response setting is only useful if an operation that does not set its
+// own inherits it, so that is what this asserts.
+func TestEmulatorClientContentResponseOnWrite(t *testing.T) {
+	for _, tt := range []struct {
+		name    string
+		enabled bool
+	}{
+		{"disabled", false},
+		{"enabled", true},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			container := emulatorContainerWithOptions(t, &ClientOptions{EnableContentResponseOnWrite: tt.enabled})
+
+			require.Equal(t, tt.enabled, createForClientOptions(t, container, nil),
+				"an operation that sets nothing inherits the client's setting")
+		})
+	}
+}
+
+// An operation that sets the value overrides the client, which is what makes the client value a
+// default rather than a policy.
+func TestEmulatorOperationContentResponseOverridesTheClient(t *testing.T) {
+	container := emulatorContainerWithOptions(t, &ClientOptions{EnableContentResponseOnWrite: true})
+
+	require.False(t, createForClientOptions(t, container, &OperationOptions{
+		EnableContentResponseOnWrite: to(false),
+	}), "the operation asked for no content and the client asked for content")
+}
+
+// Preferred regions name the account's only region, so this proves the driver accepted the order
+// rather than that it routed anywhere in particular; a single-region emulator cannot show more.
+func TestEmulatorPreferredRegions(t *testing.T) {
+	container := emulatorContainerWithOptions(t, &ClientOptions{Routing: PreferredRegions(RegionEastUS)})
+
+	createForClientOptions(t, container, nil)
+}
+
+// An application ID reaches the driver through the runtime's user-agent suffix, which the driver
+// validates and rejects with a bare status. The emulator does not report the user agent back, so
+// this covers that a value the driver accepts survives the whole path; rejection is covered by
+// TestNewClientWithKeyRejectsUnusableOptions, which needs no service.
+func TestEmulatorApplicationID(t *testing.T) {
+	// At the driver's 25-byte limit, so a regression in the limit shows up here too.
+	container := emulatorContainerWithOptions(t, &ClientOptions{ApplicationID: "azcosmos-go-v2-e2e-testin"})
+
+	createForClientOptions(t, container, nil)
+}
+
+// Callers that reach first use at the same time have to end up with the one driver the client
+// owns. A second creation would be a wasted account-properties fetch at best, and a handle the
+// client never frees at worst.
+func TestEmulatorConcurrentFirstUseCreatesOneDriver(t *testing.T) {
+	client, _, _ := emulatorClient(t)
+
+	const callers = 16
+	handles := make([]uintptr, callers)
+	errs := make([]error, callers)
+
+	// Released all at once so the callers actually contend, rather than the first one finishing
+	// while the rest are still being started.
+	start := make(chan struct{})
+	var wg sync.WaitGroup
+	for i := 0; i < callers; i++ {
+		wg.Add(1)
+		go func(i int) {
+			defer wg.Done()
+			<-start
+			handles[i], errs[i] = client.driver.ensureDriverHandle(context.Background())
+		}(i)
+	}
+	close(start)
+	wg.Wait()
+
+	for i := 0; i < callers; i++ {
+		require.NoError(t, errs[i])
+		require.NotZero(t, handles[i])
+		require.Equal(t, handles[0], handles[i], "every caller has to get the same driver")
+	}
 }

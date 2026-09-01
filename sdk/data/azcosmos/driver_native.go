@@ -12,6 +12,8 @@ package azcosmos
 import "C"
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"sync"
 	"time"
@@ -34,32 +36,50 @@ const driverAvailable = true
 // cache when it is freed, so a process-wide runtime would keep a closed client's driver alive and
 // hand it to the next client for the same endpoint, defeating [Client.Close].
 //
-// The runtime and the account reference are built when the client is constructed, because both are
-// local and validate their inputs. The driver itself is not: creating it fetches the account's
-// properties, so it does network I/O. Doing that in the constructor would make an unreachable
-// account a construction failure rather than an operation failure, so it is created on first use.
+// The runtime, the account reference and the completion queue are built when the client is
+// constructed, because all three are local and validate their inputs. The driver is not: creating
+// it fetches the account's properties, so it does network I/O. Doing that in the constructor would
+// make an unreachable account a construction failure rather than an operation failure, so it is
+// created on first use.
 //
-// First use does not make it cancellable. cosmos_driver_get_or_create_blocking blocks a thread
-// until the driver's own transport timeout, so an operation with a shorter deadline still waits
-// for it. Cancellation needs cosmos_driver_get_or_create_submit, which delivers its result through
-// a completion queue and so lands with the queue.
+// Creating the queue up front is what keeps that first use cancellable. The queue binds to the
+// runtime, not to the driver, so it can exist before there is a driver to answer through it —
+// which lets creation go through cosmos_driver_get_or_create_submit and be awaited like any other
+// operation, rather than through the blocking constructor that would pin a thread until the
+// driver's own transport timeout regardless of the caller's deadline.
 type nativeDriver struct {
+	// cfg is kept because driver options are applied when the driver is created, which is after
+	// the constructor has returned.
+	cfg     driverConfig
 	runtime *C.cosmos_runtime_t
 	account *C.cosmos_account_ref_t
 
-	// mu guards everything below it. It is held across driver creation so that a second caller
-	// waits for the first rather than starting its own, and so that close cannot free a driver
-	// that is still being created.
+	// mu guards everything below it. It is deliberately not held across driver creation or
+	// container resolution: both wait on the network, and holding it there would make a second
+	// caller block on the mutex where it cannot honor its own context.
+	//
+	// That means mu does not keep these handles alive for an operation's duration, and close
+	// does not wait for one to finish. Client.mu is what does: Close takes it for write, which
+	// blocks until every operation holding it for read has returned, so close only ever runs
+	// with nothing in flight. Calling into a nativeDriver outside Client.acquire breaks that,
+	// which is why nothing but a test does.
 	mu sync.Mutex
-	// created records that creation was attempted, so a failure is reported to every later
-	// caller rather than retried on every operation.
+	// created records that creation reached a verdict, so a failure is reported to every later
+	// caller rather than retried on every operation. A cancelled attempt is not a verdict; see
+	// ensureDriver.
 	created   bool
 	closed    bool
 	driver    *C.cosmos_driver_t
 	driverErr error
 
-	// reactor drains the completion queue operations are answered through. It is created with
-	// the driver, because the queue is bound to the runtime and only operations need it.
+	// creating is non-nil while an attempt is in flight and closed when it finishes. Waiters
+	// block on it rather than on mu, so a second caller can still honor its own context while
+	// the first caller's attempt runs.
+	creating chan struct{}
+
+	// reactor drains the completion queue operations are answered through. The queue binds to
+	// the runtime rather than the driver, so it is created with the client and is what makes
+	// driver creation itself awaitable.
 	reactor *reactor
 
 	// containers caches resolved container handles by "database/container". Resolving reads
@@ -103,15 +123,15 @@ func verifyDriverVersion() error {
 	}
 }
 
-// openDriver acquires the resources a client can acquire locally: the runtime and the account
-// reference, which together validate the endpoint and the key. The driver itself is created on
-// first use; see [nativeDriver].
+// openDriver acquires the resources a client can acquire locally: the runtime, the account
+// reference and the completion queue, none of which touch the network. The driver itself is
+// created on first use; see [nativeDriver].
 func openDriver(cfg driverConfig) (*nativeDriver, error) {
 	if cfg.usesTokenCredential() {
 		return nil, errTokenCredentialUnsupported
 	}
 
-	d := &nativeDriver{}
+	d := &nativeDriver{cfg: cfg}
 	if err := d.buildRuntime(); err != nil {
 		return nil, err
 	}
@@ -119,54 +139,180 @@ func openDriver(cfg driverConfig) (*nativeDriver, error) {
 		_ = d.close()
 		return nil, err
 	}
+	// Before the driver rather than after it, because creating the driver is itself answered
+	// through this queue.
+	var err error
+	if d.reactor, err = newReactor(d.runtime); err != nil {
+		_ = d.close()
+		return nil, err
+	}
 	return d, nil
 }
 
-// ensureDriver creates the driver on first use and returns it, or the failure that first attempt
-// produced. It is safe for concurrent use.
+// ensureDriver creates the driver on first use and returns it. It is safe for concurrent use.
+//
+// Creation is awaited rather than blocked on, so the caller's context bounds it. Only one attempt
+// runs at a time: a second caller waits on the first rather than starting its own, and waits on a
+// channel rather than on the mutex so its own context still applies.
+//
+// A verdict is cached, so a driver that cannot be created is reported to every later caller rather
+// than retried on every operation. A cancelled attempt is not a verdict: one caller's deadline
+// says nothing about the account, so the next caller starts fresh instead of inheriting a
+// cancellation it never asked for.
 //
 // It reports [CodeClientClosed] once the client is closed rather than a NULL handle, so that a
 // caller which reaches it without going through [Client.acquire] cannot pass NULL into the C ABI.
-//
-//nolint:unused // consumed once operations reach the driver.
-func (d *nativeDriver) ensureDriver() (*C.cosmos_driver_t, error) {
-	d.mu.Lock()
-	defer d.mu.Unlock()
+func (d *nativeDriver) ensureDriver(ctx context.Context) (*C.cosmos_driver_t, error) {
+	for {
+		d.mu.Lock()
+		if d.closed {
+			d.mu.Unlock()
+			return nil, errClientClosed()
+		}
+		if d.created {
+			driver, err := d.driver, d.driverErr
+			d.mu.Unlock()
+			return driver, err
+		}
+		if inFlight := d.creating; inFlight != nil {
+			d.mu.Unlock()
+			select {
+			case <-inFlight:
+				// The attempt finished; loop to read whatever verdict it reached, or to start
+				// a fresh attempt if it was cancelled.
+				continue
+			case <-ctx.Done():
+				return nil, ctx.Err()
+			}
+		}
 
-	if d.closed {
-		return nil, &Error{Code: CodeClientClosed, Message: "the client has been closed"}
-	}
-	if d.created {
-		return d.driver, d.driverErr
-	}
-	d.created = true
+		done := make(chan struct{})
+		d.creating = done
+		d.mu.Unlock()
 
+		driver, err := d.createDriver(ctx)
+
+		d.mu.Lock()
+		d.creating = nil
+		switch {
+		case d.closed:
+			// Closed while this was in flight, which only a caller outside Client.acquire can
+			// arrange. Nothing else owns the handle: it is published to d.driver by the default
+			// branch below and this branch is taken instead, so freeing it here is the only way
+			// it gets freed at all.
+			C.cosmos_driver_free(driver)
+			driver, err = nil, errClientClosed()
+		case isCancellation(err):
+			// Deliberately not recorded; see the doc comment.
+		default:
+			d.created, d.driver, d.driverErr = true, driver, err
+		}
+		d.mu.Unlock()
+		close(done)
+
+		return driver, err
+	}
+}
+
+// createDriver runs one driver-creation attempt.
+func (d *nativeDriver) createDriver(ctx context.Context) (*C.cosmos_driver_t, error) {
 	// Checked here rather than in openDriver so it runs once per client and on the path that
 	// actually calls into the driver, rather than on every construction.
-	if d.driverErr = verifyDriverVersion(); d.driverErr != nil {
-		return nil, d.driverErr
+	if err := verifyDriverVersion(); err != nil {
+		return nil, err
 	}
 
-	var richErr *C.cosmos_error_t
-	// NULL driver options selects the defaults; per-client options are applied per operation.
-	status := C.cosmos_driver_get_or_create_blocking(d.runtime, d.account, nil, &d.driver, &richErr) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
-	if d.driverErr = statusError(status, richErr, "creating the driver"); d.driverErr != nil {
-		return nil, d.driverErr
+	options, err := d.buildDriverOptions()
+	if err != nil {
+		return nil, err
 	}
+	// The submit call clones the options, so freeing them once it returns is safe.
+	defer C.cosmos_driver_options_free(options)
 
-	// The queue is only needed once operations can run, so it is created with the driver rather
-	// than at construction.
-	if d.reactor, d.driverErr = newReactor(d.runtime); d.driverErr != nil {
-		return nil, d.driverErr
+	result, err := d.awaitCompletion(ctx, "creating the driver",
+		func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
+			return C.cosmos_driver_get_or_create_submit(d.runtime, d.account, options, queue, cookie, preError) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
+		})
+	if err != nil {
+		return nil, err
 	}
-	return d.driver, nil
+	if result.err != nil {
+		result.release()
+		return nil, result.err
+	}
+	if result.driver == nil {
+		// A successful completion that carries no driver would otherwise be returned as a NULL
+		// handle and fail later, somewhere with no connection to this call.
+		result.release()
+		return nil, &Error{
+			Code:    CodeClientError,
+			Message: "azcosmos: the driver was created but the completion carried no handle",
+		}
+	}
+	return result.driver, nil
+}
+
+// ensureDriverHandle is ensureDriver with the handle as an integer, so a test can compare identity
+// across callers. It exists because cgo is not permitted in _test.go files, which leaves a test no
+// way to hold a *C.cosmos_driver_t of its own.
+func (d *nativeDriver) ensureDriverHandle(ctx context.Context) (uintptr, error) {
+	driver, err := d.ensureDriver(ctx)
+	return uintptr(unsafe.Pointer(driver)), err
+}
+
+// isCancellation reports whether an attempt was abandoned rather than answered.
+//
+// It covers the driver's own cancelled completion as well as the caller's context, because the
+// distinction that matters is whether anything was learned about the account, and a cancellation
+// of either kind means nothing was.
+func isCancellation(err error) bool {
+	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+		return true
+	}
+	var cosmosErr *Error
+	return errors.As(err, &cosmosErr) && cosmosErr.Code == CodeOperationCancelled
+}
+
+// errClientClosed is the failure every entry point reports once the client is closed.
+func errClientClosed() error {
+	return &Error{Code: CodeClientClosed, Message: "the client has been closed"}
+}
+
+// buildDriverOptions builds the driver's options from the client's. The account is cloned into
+// them, so the returned handle outlives the reference passed here.
+func (d *nativeDriver) buildDriverOptions() (*C.cosmos_driver_options_t, error) {
+	config, release, err := d.cfg.options.toNative()
+	if err != nil {
+		return nil, err
+	}
+	defer release()
+
+	var options *C.cosmos_driver_options_t
+	status := C.cosmos_driver_options_build(d.account, config, &options) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
+	if err := statusError(status, nil, "building the driver options"); err != nil {
+		return nil, err
+	}
+	return options, nil
 }
 
 // buildRuntime creates the Tokio runtime the driver executes on.
+//
+// ApplicationID is applied here rather than with the other client options because the C ABI carries
+// the user agent on the runtime, not on the driver.
 func (d *nativeDriver) buildRuntime() error {
+	// Seeded from the defaults so that fields this binding does not set keep the driver's values
+	// rather than a Go zero.
+	options := C.cosmos_runtime_options_default()
+
+	if d.cfg.options.ApplicationID != "" {
+		// Copied into the runtime before the call returns, so freeing it here is safe.
+		suffix := C.CString(d.cfg.options.ApplicationID)
+		defer C.free(unsafe.Pointer(suffix))
+		options.user_agent_suffix = suffix
+	}
+
 	var richErr *C.cosmos_error_t
-	// A NULL options pointer selects the driver's defaults for every field.
-	status := C.cosmos_runtime_build(nil, &d.runtime, &richErr) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
+	status := C.cosmos_runtime_build(&options, &d.runtime, &richErr) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
 	return statusError(status, richErr, "building the driver runtime")
 }
 
@@ -192,8 +338,9 @@ func (d *nativeDriver) close() error {
 	if d == nil {
 		return nil
 	}
-	// Taking the lock waits for a driver creation that is still running, so it is never freed
-	// while the C call that produces it is in flight.
+	// Freeing here is only safe because the caller guarantees no operation is in flight; see
+	// nativeDriver.mu. The lock below orders this against a concurrent state read, not against
+	// an operation, which it can no longer wait for.
 	d.mu.Lock()
 	defer d.mu.Unlock()
 	d.closed = true

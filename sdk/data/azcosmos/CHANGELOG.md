@@ -27,20 +27,21 @@
   default build needs no C toolchain and works with `CGO_ENABLED=0`. The driver is created on first
   use rather than at construction, because creating it reads the account's properties.
   See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
+* Creating the driver and resolving a container are awaited through the completion queue rather
+  than blocked on, so the caller's context bounds them. Against an endpoint that never answers, a
+  200ms deadline is now honored in 200ms rather than after the driver's own transport timeout,
+  measured at over fifteen seconds. A context that expires is not cached as a creation failure, so
+  one caller's deadline does not break the client for everyone else.
+  See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
 * `ReadItem` and `CreateItem` run against the driver in that build. Operations are answered through
   a completion queue, so many can be in flight against one client without holding a thread each,
   and the caller's context both cancels the operation and bounds it.
   See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
-
-### Known Issues
-
 * `ClientOptions.Routing`, `ClientOptions.ApplicationID` and
-  `ClientOptions.EnableContentResponseOnWrite` are accepted but not yet applied: the binding passes
-  the driver its defaults, so these have no effect. `OperationOptions.EnableContentResponseOnWrite`
-  does apply. See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
-* Token credentials are not supported by the driver binding. The C ABI exposes no constructor for
-  one, so `NewClient` reports it as unsupported and `NewClientWithKey` is the working path.
-  See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
+  `ClientOptions.EnableContentResponseOnWrite` now reach the driver.
+  `OperationOptions.EnableContentResponseOnWrite` overrides the client's value. Values the driver
+  cannot accept are reported when the client is constructed, naming the field, rather than as the
+  bare status the driver returns. See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
 
 ### Breaking Changes
 

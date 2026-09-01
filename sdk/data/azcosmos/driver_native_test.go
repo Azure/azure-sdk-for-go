@@ -6,8 +6,11 @@
 package azcosmos
 
 import (
+	"context"
+	"fmt"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -92,12 +95,12 @@ func TestNativeDriverCreationContactsTheAccount(t *testing.T) {
 	require.NoError(t, err)
 	t.Cleanup(func() { _ = client.Close() })
 
-	driver, err := client.driver.ensureDriver()
+	driver, err := client.driver.ensureDriver(context.Background())
 	require.NoError(t, err)
 	require.NotNil(t, driver)
 
 	// The result is cached, so a second call neither refetches nor returns a different handle.
-	again, err := client.driver.ensureDriver()
+	again, err := client.driver.ensureDriver(context.Background())
 	require.NoError(t, err)
 	require.Equal(t, driver, again)
 }
@@ -127,7 +130,7 @@ func TestNativeEnsureDriverAfterCloseIsRejected(t *testing.T) {
 	d := client.driver
 	require.NoError(t, client.Close())
 
-	driver, err := d.ensureDriver()
+	driver, err := d.ensureDriver(context.Background())
 	require.Nil(t, driver, "a closed client must not yield a handle")
 	require.Error(t, err)
 
@@ -147,7 +150,7 @@ func TestNativeUnreachableAccountReportsTransportFailure(t *testing.T) {
 	require.NoError(t, err)
 	t.Cleanup(func() { _ = client.Close() })
 
-	_, err = client.driver.ensureDriver()
+	_, err = client.driver.ensureDriver(context.Background())
 	require.Error(t, err)
 
 	var cosmosErr *Error
@@ -156,6 +159,91 @@ func TestNativeUnreachableAccountReportsTransportFailure(t *testing.T) {
 	require.False(t, cosmosErr.FromWire, "no service responded")
 
 	// The failure is remembered rather than retried on every operation.
-	_, again := client.driver.ensureDriver()
+	_, again := client.driver.ensureDriver(context.Background())
 	require.Equal(t, err, again)
+}
+
+// blackholeEndpoint is TEST-NET-1, reserved by RFC 5737 and routed nowhere, so a connection to it
+// hangs rather than being refused. That is what makes it useful here: a refused connection would
+// fail fast on its own and prove nothing about cancellation.
+const blackholeEndpoint = "https://192.0.2.1/"
+
+// Creating the driver reads the account's properties, so it does network I/O and has to honor the
+// caller's context. It is submitted to the completion queue rather than run through the driver's
+// blocking constructor precisely so that it can: against an endpoint that never answers, the
+// blocking constructor returns only after the driver's own transport timeout, measured at over
+// fifteen seconds, no matter what deadline the caller set.
+func TestNativeDriverCreationHonorsContext(t *testing.T) {
+	cred, err := NewKeyCredential(emulatorKey)
+	require.NoError(t, err)
+
+	client, err := NewClientWithKey(blackholeEndpoint, cred, nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { _ = client.Close() })
+
+	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
+	defer cancel()
+
+	start := time.Now()
+	driver, err := client.driver.ensureDriver(ctx)
+	elapsed := time.Since(start)
+
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.Nil(t, driver)
+	// Generously above the deadline and far below the transport timeout, so this fails if the
+	// blocking constructor comes back rather than on a slow machine.
+	require.Less(t, elapsed, 5*time.Second,
+		"the deadline was not honored; creation ran to the driver's own timeout instead")
+}
+
+// A context that expired is the caller's verdict, not the account's, so it must not be cached the
+// way a real creation failure is. Otherwise one caller's short deadline would permanently break a
+// client that every other caller could have used.
+func TestNativeCancelledDriverCreationIsNotRemembered(t *testing.T) {
+	cred, err := NewKeyCredential(emulatorKey)
+	require.NoError(t, err)
+
+	client, err := NewClientWithKey(blackholeEndpoint, cred, nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { _ = client.Close() })
+
+	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
+	defer cancel()
+
+	_, err = client.driver.ensureDriver(ctx)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+
+	// Asserted on the state rather than on a second attempt, because a second attempt against an
+	// endpoint that never answers would have to wait out the transport timeout to say the same
+	// thing. created is what a later caller reads to decide between a cached verdict and a fresh
+	// attempt.
+	client.driver.mu.Lock()
+	defer client.driver.mu.Unlock()
+	require.False(t, client.driver.created, "a cancelled attempt reached no verdict")
+	require.True(t, isCancellation(err), "the classifier ensureDriver branches on has to agree")
+	require.NoError(t, client.driver.driverErr, "nothing should have been recorded")
+	require.Nil(t, client.driver.creating, "the attempt is over")
+}
+
+// isCancellation decides whether a failed attempt is recorded as the client's verdict, so it has
+// to treat the driver's own cancelled completion the same as the caller's context. Neither says
+// anything about the account, and recording either would break the client for every later caller.
+func TestIsCancellation(t *testing.T) {
+	for _, tt := range []struct {
+		name string
+		err  error
+		want bool
+	}{
+		{"a cancelled context", context.Canceled, true},
+		{"an expired deadline", context.DeadlineExceeded, true},
+		{"a wrapped context error", fmt.Errorf("creating the driver: %w", context.Canceled), true},
+		{"the driver's cancelled completion", &Error{Code: CodeOperationCancelled}, true},
+		{"an unreachable account", &Error{Code: CodeTransportFailure}, false},
+		{"a rejected request", &Error{Code: CodeClientError}, false},
+		{"no failure", nil, false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			require.Equal(t, tt.want, isCancellation(tt.err))
+		})
+	}
 }

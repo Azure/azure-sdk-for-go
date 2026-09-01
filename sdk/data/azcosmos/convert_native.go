@@ -223,3 +223,83 @@ func nativeReadConsistencyStrategy(s ReadConsistencyStrategy) (int32, bool) {
 	value, ok := s.toNative()
 	return int32(value), ok
 }
+
+// toNative builds the driver's per-client options config. The returned function releases it.
+//
+// The config is flat: preferred regions plus the operation options every operation starts from.
+// [ClientOptions.ApplicationID] is not here because the ABI carries the user agent on the runtime;
+// see nativeDriver.buildRuntime.
+func (o ClientOptions) toNative() (*C.cosmos_driver_options_config_t, func(), error) {
+	config := (*C.cosmos_driver_options_config_t)(C.malloc(C.size_t(unsafe.Sizeof(C.cosmos_driver_options_config_t{}))))
+	*config = C.cosmos_driver_options_config_default()
+
+	// Passed explicitly rather than left unset, so that the documented Go default holds even if
+	// the driver's own default changes.
+	contentResponse := o.EnableContentResponseOnWrite
+	operationOptions, releaseOperationOptions := OperationOptions{
+		EnableContentResponseOnWrite: &contentResponse,
+	}.toNative()
+	config.operation_options = operationOptions
+
+	var allocations []unsafe.Pointer
+	release := func() {
+		for _, value := range allocations {
+			C.free(value)
+		}
+		releaseOperationOptions()
+		C.free(unsafe.Pointer(config))
+	}
+
+	regions, err := o.Routing.preferredRegionOrder()
+	if err != nil {
+		release()
+		return nil, func() {}, err
+	}
+	if len(regions) > 0 {
+		size := C.size_t(len(regions)) * C.size_t(unsafe.Sizeof(uintptr(0)))
+		array := (**C.char)(C.malloc(size))
+		allocations = append(allocations, unsafe.Pointer(array))
+
+		values := unsafe.Slice(array, len(regions))
+		for i, region := range regions {
+			value := C.CString(string(region))
+			allocations = append(allocations, unsafe.Pointer(value))
+			values[i] = value
+		}
+		config.preferred_regions = (**C.char)(unsafe.Pointer(array))
+		config.preferred_regions_len = C.uintptr_t(len(regions))
+	}
+
+	return config, release, nil
+}
+
+// nativeClientOptions is a converted client option set, in Go types.
+type nativeClientOptions struct {
+	preferredRegions []string
+	operationOptions nativeOperationOptions
+}
+
+// inspectNativeClientOptions converts a client option set and reads the result back.
+func inspectNativeClientOptions(o ClientOptions) (nativeClientOptions, func(), error) {
+	config, release, err := o.toNative()
+	if err != nil {
+		return nativeClientOptions{}, func() {}, err
+	}
+
+	out := nativeClientOptions{}
+	if config.preferred_regions != nil && config.preferred_regions_len > 0 {
+		regions := unsafe.Slice((**C.char)(unsafe.Pointer(config.preferred_regions)), int(config.preferred_regions_len))
+		out.preferredRegions = make([]string, len(regions))
+		for i, region := range regions {
+			out.preferredRegions[i] = C.GoString(region)
+		}
+	}
+	if config.operation_options != nil {
+		out.operationOptions = nativeOperationOptions{
+			readConsistencyStrategy: int32(config.operation_options.read_consistency_strategy),
+			contentResponseOnWrite:  int32(config.operation_options.content_response_on_write),
+			endToEndTimeoutMillis:   int64(config.operation_options.end_to_end_timeout_ms),
+		}
+	}
+	return out, release, nil
+}

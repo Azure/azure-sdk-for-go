@@ -20,6 +20,9 @@ type RoutingStrategy struct {
 // be where the application runs, or the nearest Azure region to it.
 //
 // The estimates are built into the SDK and may not match the round-trip times actually observed.
+//
+// It is not supported yet: a client configured with it fails to construct rather than silently
+// leaving the order to the account. Use [PreferredRegions] until it is.
 func ProximityTo(region Region) RoutingStrategy {
 	return RoutingStrategy{proximityTo: region}
 }
@@ -34,4 +37,28 @@ func PreferredRegions(regions ...Region) RoutingStrategy {
 func (r RoutingStrategy) clone() RoutingStrategy {
 	r.preferredRegions = append([]Region(nil), r.preferredRegions...)
 	return r
+}
+
+// errProximityRoutingUnsupported is returned when a client is created with [ProximityTo].
+//
+// Resolving a region to an order is a client-side table lookup, not something the driver does: the
+// C ABI takes a region list, so the SDK has to supply one. The Rust SDK's table is ~10k generated
+// lines and has not been ported yet, so asking for proximity routing fails rather than quietly
+// leaving the order to the account.
+//
+// It is reported when the client is constructed, matching errTokenCredentialUnsupported: resolving
+// the order needs no driver, so there is no reason to defer it to the first operation.
+var errProximityRoutingUnsupported = &Error{
+	Code: CodeClientError,
+	Message: "ProximityTo is not supported yet; list the regions explicitly with PreferredRegions, " +
+		"most preferred first",
+}
+
+// preferredRegionOrder resolves the strategy to the region order the driver takes. The zero value
+// resolves to none, which leaves the order to the account.
+func (r RoutingStrategy) preferredRegionOrder() ([]Region, error) {
+	if r.proximityTo != "" {
+		return nil, errProximityRoutingUnsupported
+	}
+	return r.preferredRegions, nil
 }

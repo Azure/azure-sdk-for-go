@@ -62,6 +62,9 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
 		},
+		Properties: &armrelay.NamespaceProperties{
+			MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
+		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -83,6 +86,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	// 			MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-5849"),
 	// 			ProvisioningState: to.Ptr("Created"),
 	// 			ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-5849.servicebus.windows-int.net:443/"),
+	// 			MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 	// 		},
 	// 		SKU: &armrelay.SKU{
 	// 			Name: to.Ptr(armrelay.SKUNameStandard),
@@ -294,6 +298,7 @@ func ExampleNamespacesClient_Get() {
 	// 			ProvisioningState: to.Ptr("Succeeded"),
 	// 			ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-01.servicebus.windows.net:443/"),
 	// 			UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 38, 34, 533000000, time.UTC)),
+	// 			MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 	// 		},
 	// 		SKU: &armrelay.SKU{
 	// 			Name: to.Ptr(armrelay.SKUNameStandard),
@@ -428,6 +433,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-01.servicebus.windows.net:443/"),
 		// 					UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 59, 413172400, time.UTC)),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -449,6 +455,7 @@ func ExampleNamespacesClient_NewListPager() {
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-02.servicebus.windows.net:443/"),
 		// 					UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 49, 413172400, time.UTC)),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -553,6 +560,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-3054"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-3054.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -570,6 +578,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:oaisdjfoiasdjfoiajsdfoijasd"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://oaisdjfoiasdjfoiajsdfoijasd.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -587,6 +596,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:abc123"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://abc123.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -604,6 +614,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-5849"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-5849.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -623,6 +634,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-4984"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-4984.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -640,6 +652,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-5606"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-5606.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -657,6 +670,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-7703"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-7703.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -674,6 +688,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:zzzzzzzzzzzzzzzzzzzzzz-00001"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://zzzzzzzzzzzzzzzzzzzzzz-00001.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -691,6 +706,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-3919"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-3919.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -708,6 +724,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:aiosdjfaoidjasdoijasdfoijasdfofijsdf"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://aiosdjfaoidjasdoijasdfoijasdfofijsdf.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -725,6 +742,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-3413"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-3413.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -742,6 +760,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-8695"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-8695.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -759,6 +778,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-4801"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-4801.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -776,6 +796,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relaynamespace-2812"),
 		// 					ProvisioningState: to.Ptr("Succeeded"),
 		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayNamespace-2812.servicebus.windows-int.net:443/"),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
 		// 				},
 		// 				SKU: &armrelay.SKU{
 		// 					Name: to.Ptr(armrelay.SKUNameStandard),
@@ -868,6 +889,9 @@ func ExampleNamespacesClient_Update() {
 			"tag5": to.Ptr("value5"),
 			"tag6": to.Ptr("value6"),
 		},
+		Properties: &armrelay.NamespaceProperties{
+			MinimumTLSVersion: to.Ptr(armrelay.TLSVersion13),
+		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -884,6 +908,7 @@ func ExampleNamespacesClient_Update() {
 	// 		Properties: &armrelay.NamespaceProperties{
 	// 			MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-Relayrelaynamespace-01"),
 	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			MinimumTLSVersion: to.Ptr(armrelay.TLSVersion13),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"tag3": to.Ptr("value3"),

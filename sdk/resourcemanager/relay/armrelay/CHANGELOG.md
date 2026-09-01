@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0 (2026-07-25)
+## 2.1.0 (2026-09-01)
 ### Features Added
 
 - New enum type `TLSVersion` with values `TLSVersion12`, `TLSVersion13`

@@ -13,13 +13,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
 // ManagedClustersClient contains the methods for the ManagedClusters group.
 // Don't use this type directly, use NewManagedClustersClient() instead.
 //
-// Generated from API version 2026-06-01
+// Generated from API version 2026-06-02-preview
 type ManagedClustersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -117,7 +118,7 @@ func (client *ManagedClustersClient) abortLatestOperationCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -188,7 +189,7 @@ func (client *ManagedClustersClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -269,7 +270,10 @@ func (client *ManagedClustersClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
+	if options != nil && options.IgnorePodDisruptionBudget != nil {
+		reqQP.Set("ignore-pod-disruption-budget", strconv.FormatBool(*options.IgnorePodDisruptionBudget))
+	}
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["if-match"] = []string{*options.IfMatch}
@@ -319,7 +323,7 @@ func (client *ManagedClustersClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -388,7 +392,7 @@ func (client *ManagedClustersClient) getAccessProfileCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -454,7 +458,7 @@ func (client *ManagedClustersClient) getCommandResultCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -471,6 +475,69 @@ func (client *ManagedClustersClient) getCommandResultHandleResponse(resp *http.R
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RunCommandResult); err != nil {
 		return ManagedClustersClientGetCommandResultResponse{}, err
+	}
+	return result, nil
+}
+
+// GetGuardrailsVersions - Gets supported Guardrails version in the specified subscription and location.
+//
+// Contains Guardrails version along with its support info and whether it is a default version.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - location - The name of the Azure region.
+//   - version - Safeguards version
+//   - options - ManagedClustersClientGetGuardrailsVersionsOptions contains the optional parameters for the ManagedClustersClient.GetGuardrailsVersions
+//     method.
+func (client *ManagedClustersClient) GetGuardrailsVersions(ctx context.Context, location string, version string, options *ManagedClustersClientGetGuardrailsVersionsOptions) (ManagedClustersClientGetGuardrailsVersionsResponse, error) {
+	var err error
+	const operationName = "ManagedClustersClient.GetGuardrailsVersions"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getGuardrailsVersionsCreateRequest(ctx, location, version, options)
+	if err != nil {
+		return ManagedClustersClientGetGuardrailsVersionsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ManagedClustersClientGetGuardrailsVersionsResponse{}, err
+	}
+	return client.getGuardrailsVersionsHandleResponse(httpResp, http.StatusOK)
+}
+
+// getGuardrailsVersionsCreateRequest creates the GetGuardrailsVersions request.
+func (client *ManagedClustersClient) getGuardrailsVersionsCreateRequest(ctx context.Context, location string, version string, _ *ManagedClustersClientGetGuardrailsVersionsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/guardrailsVersions/{version}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if version == "" {
+		return nil, errors.New("parameter version cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260602Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getGuardrailsVersionsHandleResponse handles the GetGuardrailsVersions response.
+func (client *ManagedClustersClient) getGuardrailsVersionsHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientGetGuardrailsVersionsResponse, error) {
+	result := ManagedClustersClientGetGuardrailsVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GuardrailsAvailableVersion); err != nil {
+		return ManagedClustersClientGetGuardrailsVersionsResponse{}, err
 	}
 	return result, nil
 }
@@ -520,7 +587,7 @@ func (client *ManagedClustersClient) getMeshRevisionProfileCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -586,7 +653,7 @@ func (client *ManagedClustersClient) getMeshUpgradeProfileCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -600,6 +667,69 @@ func (client *ManagedClustersClient) getMeshUpgradeProfileHandleResponse(resp *h
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MeshUpgradeProfile); err != nil {
 		return ManagedClustersClientGetMeshUpgradeProfileResponse{}, err
+	}
+	return result, nil
+}
+
+// GetSafeguardsVersions - Gets supported Safeguards version in the specified subscription and location.
+//
+// Contains Safeguards version along with its support info and whether it is a default version.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - location - The name of the Azure region.
+//   - version - Safeguards version
+//   - options - ManagedClustersClientGetSafeguardsVersionsOptions contains the optional parameters for the ManagedClustersClient.GetSafeguardsVersions
+//     method.
+func (client *ManagedClustersClient) GetSafeguardsVersions(ctx context.Context, location string, version string, options *ManagedClustersClientGetSafeguardsVersionsOptions) (ManagedClustersClientGetSafeguardsVersionsResponse, error) {
+	var err error
+	const operationName = "ManagedClustersClient.GetSafeguardsVersions"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getSafeguardsVersionsCreateRequest(ctx, location, version, options)
+	if err != nil {
+		return ManagedClustersClientGetSafeguardsVersionsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ManagedClustersClientGetSafeguardsVersionsResponse{}, err
+	}
+	return client.getSafeguardsVersionsHandleResponse(httpResp, http.StatusOK)
+}
+
+// getSafeguardsVersionsCreateRequest creates the GetSafeguardsVersions request.
+func (client *ManagedClustersClient) getSafeguardsVersionsCreateRequest(ctx context.Context, location string, version string, _ *ManagedClustersClientGetSafeguardsVersionsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/safeguardsVersions/{version}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	if version == "" {
+		return nil, errors.New("parameter version cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260602Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getSafeguardsVersionsHandleResponse handles the GetSafeguardsVersions response.
+func (client *ManagedClustersClient) getSafeguardsVersionsHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientGetSafeguardsVersionsResponse, error) {
+	result := ManagedClustersClientGetSafeguardsVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SafeguardsAvailableVersion); err != nil {
+		return ManagedClustersClientGetSafeguardsVersionsResponse{}, err
 	}
 	return result, nil
 }
@@ -647,7 +777,7 @@ func (client *ManagedClustersClient) getUpgradeProfileCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -713,7 +843,7 @@ func (client *ManagedClustersClient) listCreateRequest(ctx context.Context, next
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601)
+		reqQP.Set("api-version", version20260602Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -785,7 +915,7 @@ func (client *ManagedClustersClient) listByResourceGroupCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601)
+		reqQP.Set("api-version", version20260602Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -847,7 +977,7 @@ func (client *ManagedClustersClient) listClusterAdminCredentialsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	if options != nil && options.ServerFqdn != nil {
 		reqQP.Set("server-fqdn", *options.ServerFqdn)
 	}
@@ -911,7 +1041,7 @@ func (client *ManagedClustersClient) listClusterMonitoringUserCredentialsCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	if options != nil && options.ServerFqdn != nil {
 		reqQP.Set("server-fqdn", *options.ServerFqdn)
 	}
@@ -975,7 +1105,7 @@ func (client *ManagedClustersClient) listClusterUserCredentialsCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	if options != nil && options.Format != nil {
 		reqQP.Set("format", string(*options.Format))
 	}
@@ -995,6 +1125,80 @@ func (client *ManagedClustersClient) listClusterUserCredentialsHandleResponse(re
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CredentialResults); err != nil {
 		return ManagedClustersClientListClusterUserCredentialsResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListGuardrailsVersionsPager - Gets a list of supported Guardrails versions in the specified subscription and location.
+//
+// Contains list of Guardrails version along with its support info and whether it is a default version.
+//   - location - The name of the Azure region.
+//   - options - ManagedClustersClientListGuardrailsVersionsOptions contains the optional parameters for the ManagedClustersClient.NewListGuardrailsVersionsPager
+//     method.
+func (client *ManagedClustersClient) NewListGuardrailsVersionsPager(location string, options *ManagedClustersClientListGuardrailsVersionsOptions) *runtime.Pager[ManagedClustersClientListGuardrailsVersionsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ManagedClustersClientListGuardrailsVersionsResponse]{
+		More: func(page ManagedClustersClientListGuardrailsVersionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ManagedClustersClientListGuardrailsVersionsResponse) (ManagedClustersClientListGuardrailsVersionsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedClustersClient.NewListGuardrailsVersionsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listGuardrailsVersionsCreateRequest(ctx, location, nextLink, options)
+			if err != nil {
+				return ManagedClustersClientListGuardrailsVersionsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedClustersClientListGuardrailsVersionsResponse{}, err
+			}
+			return client.listGuardrailsVersionsHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listGuardrailsVersionsCreateRequest creates the ListGuardrailsVersions request.
+func (client *ManagedClustersClient) listGuardrailsVersionsCreateRequest(ctx context.Context, location string, nextLink string, _ *ManagedClustersClientListGuardrailsVersionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/guardrailsVersions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260602Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listGuardrailsVersionsHandleResponse handles the ListGuardrailsVersions response.
+func (client *ManagedClustersClient) listGuardrailsVersionsHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListGuardrailsVersionsResponse, error) {
+	result := ManagedClustersClientListGuardrailsVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.GuardrailsAvailableVersionsList); err != nil {
+		return ManagedClustersClientListGuardrailsVersionsResponse{}, err
 	}
 	return result, nil
 }
@@ -1040,7 +1244,7 @@ func (client *ManagedClustersClient) listKubernetesVersionsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1113,7 +1317,7 @@ func (client *ManagedClustersClient) listMeshRevisionProfilesCreateRequest(ctx c
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601)
+		reqQP.Set("api-version", version20260602Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -1190,7 +1394,7 @@ func (client *ManagedClustersClient) listMeshUpgradeProfilesCreateRequest(ctx co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601)
+		reqQP.Set("api-version", version20260602Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -1271,7 +1475,7 @@ func (client *ManagedClustersClient) listOutboundNetworkDependenciesEndpointsCre
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601)
+		reqQP.Set("api-version", version20260602Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -1288,6 +1492,155 @@ func (client *ManagedClustersClient) listOutboundNetworkDependenciesEndpointsHan
 		return ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
 	return result, nil
+}
+
+// NewListSafeguardsVersionsPager - Gets a list of supported Safeguards versions in the specified subscription and location.
+//
+// Contains list of Safeguards version along with its support info and whether it is a default version.
+//   - location - The name of the Azure region.
+//   - options - ManagedClustersClientListSafeguardsVersionsOptions contains the optional parameters for the ManagedClustersClient.NewListSafeguardsVersionsPager
+//     method.
+func (client *ManagedClustersClient) NewListSafeguardsVersionsPager(location string, options *ManagedClustersClientListSafeguardsVersionsOptions) *runtime.Pager[ManagedClustersClientListSafeguardsVersionsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ManagedClustersClientListSafeguardsVersionsResponse]{
+		More: func(page ManagedClustersClientListSafeguardsVersionsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ManagedClustersClientListSafeguardsVersionsResponse) (ManagedClustersClientListSafeguardsVersionsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedClustersClient.NewListSafeguardsVersionsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listSafeguardsVersionsCreateRequest(ctx, location, nextLink, options)
+			if err != nil {
+				return ManagedClustersClientListSafeguardsVersionsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedClustersClientListSafeguardsVersionsResponse{}, err
+			}
+			return client.listSafeguardsVersionsHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listSafeguardsVersionsCreateRequest creates the ListSafeguardsVersions request.
+func (client *ManagedClustersClient) listSafeguardsVersionsCreateRequest(ctx context.Context, location string, nextLink string, _ *ManagedClustersClientListSafeguardsVersionsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/locations/{location}/safeguardsVersions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if location == "" {
+			return nil, errors.New("parameter location cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260602Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listSafeguardsVersionsHandleResponse handles the ListSafeguardsVersions response.
+func (client *ManagedClustersClient) listSafeguardsVersionsHandleResponse(resp *http.Response, successCodes ...int) (ManagedClustersClientListSafeguardsVersionsResponse, error) {
+	result := ManagedClustersClientListSafeguardsVersionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SafeguardsAvailableVersionsList); err != nil {
+		return ManagedClustersClientListSafeguardsVersionsResponse{}, err
+	}
+	return result, nil
+}
+
+// BeginRebalanceLoadBalancers - Rebalance nodes across specific load balancers.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the managed cluster resource.
+//   - parameters - The names of the load balancers to be rebalanced. If set to empty, all load balancers will be rebalanced.
+//   - options - ManagedClustersClientBeginRebalanceLoadBalancersOptions contains the optional parameters for the ManagedClustersClient.BeginRebalanceLoadBalancers
+//     method.
+func (client *ManagedClustersClient) BeginRebalanceLoadBalancers(ctx context.Context, resourceGroupName string, resourceName string, parameters RebalanceLoadBalancersRequestBody, options *ManagedClustersClientBeginRebalanceLoadBalancersOptions) (*runtime.Poller[ManagedClustersClientRebalanceLoadBalancersResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.rebalanceLoadBalancers(ctx, resourceGroupName, resourceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedClustersClientRebalanceLoadBalancersResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedClustersClientRebalanceLoadBalancersResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// RebalanceLoadBalancers - Rebalance nodes across specific load balancers.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedClustersClient) rebalanceLoadBalancers(ctx context.Context, resourceGroupName string, resourceName string, parameters RebalanceLoadBalancersRequestBody, options *ManagedClustersClientBeginRebalanceLoadBalancersOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedClustersClient.BeginRebalanceLoadBalancers"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.rebalanceLoadBalancersCreateRequest(ctx, resourceGroupName, resourceName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// rebalanceLoadBalancersCreateRequest creates the RebalanceLoadBalancers request.
+func (client *ManagedClustersClient) rebalanceLoadBalancersCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, parameters RebalanceLoadBalancersRequestBody, _ *ManagedClustersClientBeginRebalanceLoadBalancersOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/rebalanceLoadBalancers"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260602Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // BeginResetAADProfile - Reset the AAD Profile of a managed cluster.
@@ -1362,7 +1715,7 @@ func (client *ManagedClustersClient) resetAADProfileCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -1441,7 +1794,7 @@ func (client *ManagedClustersClient) resetServicePrincipalProfileCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -1521,7 +1874,7 @@ func (client *ManagedClustersClient) rotateClusterCertificatesCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -1591,7 +1944,7 @@ func (client *ManagedClustersClient) rotateServiceAccountSigningKeysCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -1668,7 +2021,7 @@ func (client *ManagedClustersClient) runCommandCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1747,7 +2100,7 @@ func (client *ManagedClustersClient) startCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -1827,7 +2180,7 @@ func (client *ManagedClustersClient) stopCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -1898,7 +2251,7 @@ func (client *ManagedClustersClient) updateTagsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
+	reqQP.Set("api-version", version20260602Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {

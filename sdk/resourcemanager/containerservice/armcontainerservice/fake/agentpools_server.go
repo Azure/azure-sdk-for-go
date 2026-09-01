@@ -26,6 +26,10 @@ type AgentPoolsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginAbortLatestOperation func(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *armcontainerservice.AgentPoolsClientBeginAbortLatestOperationOptions) (resp azfake.PollerResponder[armcontainerservice.AgentPoolsClientAbortLatestOperationResponse], errResp azfake.ErrorResponder)
 
+	// BeginCompleteUpgrade is the fake for method AgentPoolsClient.BeginCompleteUpgrade
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginCompleteUpgrade func(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *armcontainerservice.AgentPoolsClientBeginCompleteUpgradeOptions) (resp azfake.PollerResponder[armcontainerservice.AgentPoolsClientCompleteUpgradeResponse], errResp azfake.ErrorResponder)
+
 	// BeginCreateOrUpdate is the fake for method AgentPoolsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters armcontainerservice.AgentPool, options *armcontainerservice.AgentPoolsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcontainerservice.AgentPoolsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -54,6 +58,14 @@ type AgentPoolsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, resourceName string, options *armcontainerservice.AgentPoolsClientListOptions) (resp azfake.PagerResponder[armcontainerservice.AgentPoolsClientListResponse])
 
+	// ListBootstrapData is the fake for method AgentPoolsClient.ListBootstrapData
+	// HTTP status codes to indicate success: http.StatusOK
+	ListBootstrapData func(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, body armcontainerservice.ListBootstrapDataRequest, options *armcontainerservice.AgentPoolsClientListBootstrapDataOptions) (resp azfake.Responder[armcontainerservice.AgentPoolsClientListBootstrapDataResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method AgentPoolsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, parameters armcontainerservice.AgentPoolUpdate, options *armcontainerservice.AgentPoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerservice.AgentPoolsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// BeginUpgradeNodeImageVersion is the fake for method AgentPoolsClient.BeginUpgradeNodeImageVersion
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginUpgradeNodeImageVersion func(ctx context.Context, resourceGroupName string, resourceName string, agentPoolName string, options *armcontainerservice.AgentPoolsClientBeginUpgradeNodeImageVersionOptions) (resp azfake.PollerResponder[armcontainerservice.AgentPoolsClientUpgradeNodeImageVersionResponse], errResp azfake.ErrorResponder)
@@ -66,10 +78,12 @@ func NewAgentPoolsServerTransport(srv *AgentPoolsServer) *AgentPoolsServerTransp
 	return &AgentPoolsServerTransport{
 		srv:                          srv,
 		beginAbortLatestOperation:    newTracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientAbortLatestOperationResponse]](),
+		beginCompleteUpgrade:         newTracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientCompleteUpgradeResponse]](),
 		beginCreateOrUpdate:          newTracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientCreateOrUpdateResponse]](),
 		beginDelete:                  newTracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientDeleteResponse]](),
 		beginDeleteMachines:          newTracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientDeleteMachinesResponse]](),
 		newListPager:                 newTracker[azfake.PagerResponder[armcontainerservice.AgentPoolsClientListResponse]](),
+		beginUpdate:                  newTracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientUpdateResponse]](),
 		beginUpgradeNodeImageVersion: newTracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientUpgradeNodeImageVersionResponse]](),
 	}
 }
@@ -79,10 +93,12 @@ func NewAgentPoolsServerTransport(srv *AgentPoolsServer) *AgentPoolsServerTransp
 type AgentPoolsServerTransport struct {
 	srv                          *AgentPoolsServer
 	beginAbortLatestOperation    *tracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientAbortLatestOperationResponse]]
+	beginCompleteUpgrade         *tracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientCompleteUpgradeResponse]]
 	beginCreateOrUpdate          *tracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientCreateOrUpdateResponse]]
 	beginDelete                  *tracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientDeleteResponse]]
 	beginDeleteMachines          *tracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientDeleteMachinesResponse]]
 	newListPager                 *tracker[azfake.PagerResponder[armcontainerservice.AgentPoolsClientListResponse]]
+	beginUpdate                  *tracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientUpdateResponse]]
 	beginUpgradeNodeImageVersion *tracker[azfake.PollerResponder[armcontainerservice.AgentPoolsClientUpgradeNodeImageVersionResponse]]
 }
 
@@ -109,6 +125,8 @@ func (a *AgentPoolsServerTransport) dispatchToMethodFake(req *http.Request, meth
 			switch method {
 			case "AgentPoolsClient.BeginAbortLatestOperation":
 				res.resp, res.err = a.dispatchBeginAbortLatestOperation(req)
+			case "AgentPoolsClient.BeginCompleteUpgrade":
+				res.resp, res.err = a.dispatchBeginCompleteUpgrade(req)
 			case "AgentPoolsClient.BeginCreateOrUpdate":
 				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
 			case "AgentPoolsClient.BeginDelete":
@@ -123,6 +141,10 @@ func (a *AgentPoolsServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = a.dispatchGetUpgradeProfile(req)
 			case "AgentPoolsClient.NewListPager":
 				res.resp, res.err = a.dispatchNewListPager(req)
+			case "AgentPoolsClient.ListBootstrapData":
+				res.resp, res.err = a.dispatchListBootstrapData(req)
+			case "AgentPoolsClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
 			case "AgentPoolsClient.BeginUpgradeNodeImageVersion":
 				res.resp, res.err = a.dispatchBeginUpgradeNodeImageVersion(req)
 			default:
@@ -184,6 +206,54 @@ func (a *AgentPoolsServerTransport) dispatchBeginAbortLatestOperation(req *http.
 	}
 	if !server.PollerResponderMore(beginAbortLatestOperation) {
 		a.beginAbortLatestOperation.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (a *AgentPoolsServerTransport) dispatchBeginCompleteUpgrade(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginCompleteUpgrade == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCompleteUpgrade not implemented")}
+	}
+	beginCompleteUpgrade := a.beginCompleteUpgrade.get(req)
+	if beginCompleteUpgrade == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agentPools/(?P<agentPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/completeUpgrade`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		agentPoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agentPoolName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginCompleteUpgrade(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCompleteUpgrade = &respr
+		a.beginCompleteUpgrade.add(req, beginCompleteUpgrade)
+	}
+
+	resp, err := server.PollerResponderNext(beginCompleteUpgrade, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		a.beginCompleteUpgrade.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCompleteUpgrade) {
+		a.beginCompleteUpgrade.remove(req)
 	}
 
 	return resp, nil
@@ -508,6 +578,106 @@ func (a *AgentPoolsServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	if !server.PagerResponderMore(newListPager) {
 		a.newListPager.remove(req)
 	}
+	return resp, nil
+}
+
+func (a *AgentPoolsServerTransport) dispatchListBootstrapData(req *http.Request) (*http.Response, error) {
+	if a.srv.ListBootstrapData == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListBootstrapData not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agentPools/(?P<agentPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listBootstrapData`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcontainerservice.ListBootstrapDataRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	agentPoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agentPoolName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.ListBootstrapData(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PoolBootstrapData, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AgentPoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/agentPools/(?P<agentPoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerservice.AgentPoolUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		agentPoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("agentPoolName")])
+		if err != nil {
+			return nil, err
+		}
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "if-match"))
+		var options *armcontainerservice.AgentPoolsClientBeginUpdateOptions
+		if ifMatchParam != nil {
+			options = &armcontainerservice.AgentPoolsClientBeginUpdateOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, agentPoolNameParam, body, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
+	}
+
 	return resp, nil
 }
 

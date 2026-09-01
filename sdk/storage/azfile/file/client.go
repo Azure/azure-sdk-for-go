@@ -152,6 +152,17 @@ func (f *Client) URL() string {
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/create-file.
 func (f *Client) Create(ctx context.Context, fileContentLength int64, options *CreateOptions) (CreateResponse, error) {
 	opts := options.format(f.getClientOptions().FileRequestIntent, f.getClientOptions().AllowTrailingDot)
+
+	if options != nil && options.OptionalBody != nil && options.TransactionalValidation != nil {
+		if _, ok := options.TransactionalValidation.(TransferValidationTypeMD5); !ok {
+			body, err := options.TransactionalValidation.Apply(options.OptionalBody, opts)
+			if err != nil {
+				return CreateResponse{}, err
+			}
+			opts.Optionalbody = body
+		}
+	}
+
 	return f.generated().Create(ctx, fileContentLength, opts)
 }
 

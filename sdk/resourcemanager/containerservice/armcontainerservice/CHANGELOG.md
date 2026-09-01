@@ -1,6 +1,6 @@
 # Release History
 
-## 9.6.0-beta.1 (2026-08-27)
+## 9.6.0-beta.1 (2026-09-01)
 ### Features Added
 
 - New value `AgentPoolModeMachines`, `AgentPoolModeManagedSystem` added to enum type `AgentPoolMode`

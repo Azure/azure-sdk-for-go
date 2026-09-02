@@ -6,42 +6,20 @@
 
 ### Features Added
 
-* Added the error and response model. `Error` classifies a failure with a `Code`, alongside the
-  status and sub-status, message, request charge, activity ID, session token, ETag, retry-after and
-  error document, and whether the service or the client produced it. Retrieve it with `errors.As`
-  and branch on `Code`; a cancelled operation also unwraps to `context.Canceled`. `Response` and
-  `ItemResponse` carry the values an operation reports.
-  See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
-* Added `PartitionKey`, including hierarchical keys via the `Append*` methods. Null and undefined
-  components are distinct, because they route differently.
+* Added the error and response model: `Error` classifies a failure with a `Code` and reports whether
+  the service or the client produced it, and `Response`/`ItemResponse` carry what an operation
+  returns. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
+* Added `PartitionKey`, including hierarchical keys. Null and undefined components are distinct,
+  because they route differently.
   See [PR 27333](https://github.com/Azure/azure-sdk-for-go/pull/27333).
-* Added `Client`, `DatabaseClient` and `ContainerClient` with `ClientOptions` and the `NewClient`
-  and `NewClientWithKey` constructors. `NewKeyCredential` validates the account key, so a malformed
-  one is reported at construction rather than on every operation.
-  See [PR 27334](https://github.com/Azure/azure-sdk-for-go/pull/27334).
-* Added `ContainerClient.ReadItem` and `ContainerClient.CreateItem` with their options types, which
-  share an `OperationOptions`. `CreateItem` takes the item's id alongside its body, because the
-  driver addresses the item by it.
+* Added `Client`, `DatabaseClient` and `ContainerClient` with `ClientOptions`, `NewClient` and
+  `NewClientWithKey`. See [PR 27334](https://github.com/Azure/azure-sdk-for-go/pull/27334).
+* Added `ContainerClient.ReadItem` and `ContainerClient.CreateItem` with their options types.
   See [PR 27336](https://github.com/Azure/azure-sdk-for-go/pull/27336).
-* Added the driver binding behind the `azcosmos_driver` build tag, which is off by default so the
-  default build needs no C toolchain and works with `CGO_ENABLED=0`. The driver is created on first
-  use rather than at construction, because creating it reads the account's properties.
+* Added the Cosmos driver binding for cgo builds on `linux/amd64` and `darwin/arm64`. `ReadItem` and
+  `CreateItem` run against the driver, including `LatestCommitted` reads; `Client.Initialize`
+  eagerly fills account and routing caches.
   See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
-* Creating the driver and resolving a container are awaited through the completion queue rather
-  than blocked on, so the caller's context bounds them. Against an endpoint that never answers, a
-  200ms deadline is now honored in 200ms rather than after the driver's own transport timeout,
-  measured at over fifteen seconds. A context that expires is not cached as a creation failure, so
-  one caller's deadline does not break the client for everyone else.
-  See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
-* `ReadItem` and `CreateItem` run against the driver in that build. Operations are answered through
-  a completion queue, so many can be in flight against one client without holding a thread each,
-  and the caller's context both cancels the operation and bounds it.
-  See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
-* `ClientOptions.Routing`, `ClientOptions.ApplicationID` and
-  `ClientOptions.EnableContentResponseOnWrite` now reach the driver.
-  `OperationOptions.EnableContentResponseOnWrite` overrides the client's value. Values the driver
-  cannot accept are reported when the client is constructed, naming the field, rather than as the
-  bare status the driver returns. See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
 
 ### Breaking Changes
 

@@ -15,7 +15,7 @@ import (
 func newTestContainer(t *testing.T) *ContainerClient {
 	t.Helper()
 
-	client, err := NewClientWithKey("https://myaccount.documents.azure.com", mustKeyCredential(t), nil)
+	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil)
 	require.NoError(t, err)
 	container, err := client.NewContainer("db", "items")
 	require.NoError(t, err)

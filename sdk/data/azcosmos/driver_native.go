@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-//go:build cgo && azcosmos_driver
+//go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
 package azcosmos
 
@@ -23,8 +23,7 @@ import (
 )
 
 // This is the build of the package that binds to azure_data_cosmos_driver_native. It is selected
-// only with `-tags azcosmos_driver` and CGO_ENABLED=1, because it needs a C toolchain at build
-// time and libazurecosmosdriver on the linker path. The default build uses driver_stub.go.
+// automatically when cgo is enabled on a target for which this module carries a native archive.
 
 // driverAvailable reports whether this build can reach the Cosmos driver.
 const driverAvailable = true
@@ -36,20 +35,15 @@ const driverAvailable = true
 // cache when it is freed, so a process-wide runtime would keep a closed client's driver alive and
 // hand it to the next client for the same endpoint, defeating [Client.Close].
 //
-// The runtime, the account reference and the completion queue are built when the client is
-// constructed, because all three are local and validate their inputs. The driver is not: creating
-// it fetches the account's properties, so it does network I/O. Doing that in the constructor would
-// make an unreachable account a construction failure rather than an operation failure, so it is
-// created on first use.
+// The runtime, account reference and completion queue are built locally. Initialize or the first
+// operation creates the driver, which fetches account properties, seeds routing state and creates
+// the account transport.
 //
-// Creating the queue up front is what keeps that first use cancellable. The queue binds to the
-// runtime, not to the driver, so it can exist before there is a driver to answer through it —
-// which lets creation go through cosmos_driver_get_or_create_submit and be awaited like any other
-// operation, rather than through the blocking constructor that would pin a thread until the
-// driver's own transport timeout regardless of the caller's deadline.
+// The queue binds to the runtime, not to the driver, so it exists before driver creation and makes
+// that network work cancellable through cosmos_driver_get_or_create_submit.
 type nativeDriver struct {
-	// cfg is kept because driver options are applied when the driver is created, which is after
-	// the constructor has returned.
+	// cfg is kept across the local setup in openDriver and the asynchronous driver creation that
+	// follows it.
 	cfg     driverConfig
 	runtime *C.cosmos_runtime_t
 	account *C.cosmos_account_ref_t
@@ -88,6 +82,12 @@ type nativeDriver struct {
 	containers map[string]*C.cosmos_container_ref_t
 }
 
+// initialize eagerly creates the driver, which fills its account-properties and routing caches.
+func (d *nativeDriver) initialize(ctx context.Context) error {
+	_, err := d.ensureDriver(ctx)
+	return err
+}
+
 // errTokenCredentialUnsupported is returned when a client is created with a token credential.
 //
 // The driver supports them (AccountReference::with_credential), but the C ABI does not expose a
@@ -104,7 +104,7 @@ var errTokenCredentialUnsupported = &Error{
 // The header is vendored, so the binding compiles against one version and links against whatever
 // archive it was given. A mismatch is not a compile error: it is a struct layout or a calling
 // convention that has quietly moved, which surfaces as corrupted values or a crash somewhere far
-// from the cause. Checking once at construction turns that into a message that names the problem.
+// from the cause. Checking on first initialization turns that into a message that names the problem.
 //
 // The ABI carries no major-version concept yet, so this compares the whole version. Once it does,
 // this should relax to a compatible range rather than an exact match, which is what the
@@ -124,8 +124,8 @@ func verifyDriverVersion() error {
 }
 
 // openDriver acquires the resources a client can acquire locally: the runtime, the account
-// reference and the completion queue, none of which touch the network. The driver itself is
-// created on first use; see [nativeDriver].
+// reference and the completion queue, none of which touch the network. Initialize and operations
+// create the driver separately so that network work receives their context.
 func openDriver(cfg driverConfig) (*nativeDriver, error) {
 	if cfg.usesTokenCredential() {
 		return nil, errTokenCredentialUnsupported
@@ -149,7 +149,8 @@ func openDriver(cfg driverConfig) (*nativeDriver, error) {
 	return d, nil
 }
 
-// ensureDriver creates the driver on first use and returns it. It is safe for concurrent use.
+// ensureDriver returns the initialized driver, creating it if necessary. It is safe for concurrent
+// use.
 //
 // Creation is awaited rather than blocked on, so the caller's context bounds it. Only one attempt
 // runs at a time: a second caller waits on the first rather than starting its own, and waits on a
@@ -252,14 +253,6 @@ func (d *nativeDriver) createDriver(ctx context.Context) (*C.cosmos_driver_t, er
 	return result.driver, nil
 }
 
-// ensureDriverHandle is ensureDriver with the handle as an integer, so a test can compare identity
-// across callers. It exists because cgo is not permitted in _test.go files, which leaves a test no
-// way to hold a *C.cosmos_driver_t of its own.
-func (d *nativeDriver) ensureDriverHandle(ctx context.Context) (uintptr, error) {
-	driver, err := d.ensureDriver(ctx)
-	return uintptr(unsafe.Pointer(driver)), err
-}
-
 // isCancellation reports whether an attempt was abandoned rather than answered.
 //
 // It covers the driver's own cancelled completion as well as the caller's context, because the
@@ -313,7 +306,25 @@ func (d *nativeDriver) buildRuntime() error {
 
 	var richErr *C.cosmos_error_t
 	status := C.cosmos_runtime_build(&options, &d.runtime, &richErr) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
-	return statusError(status, richErr, "building the driver runtime")
+	err := statusError(status, richErr, "building the driver runtime")
+	if err == nil || d.cfg.options.ApplicationID == "" {
+		return err
+	}
+
+	// ApplicationID is the only runtime option this binding changes from the driver's defaults.
+	// The C ABI reports an invalid value as a bare status with no field name, so identify the field
+	// without duplicating the driver's validation rule.
+	var cosmosErr *Error
+	if errors.As(err, &cosmosErr) &&
+		cosmosErr.SubStatus == int(C.COSMOS_SUB_STATUS_CLIENT_FFI_INVALID_OPTION_VALUE) {
+		cosmosErr.Message = "azcosmos: the Cosmos driver rejected ClientOptions.ApplicationID"
+	}
+	return err
+}
+
+// nativeInvalidOptionSubStatus exposes the C ABI value to tests, which cannot import C directly.
+func nativeInvalidOptionSubStatus() int {
+	return int(C.COSMOS_SUB_STATUS_CLIENT_FFI_INVALID_OPTION_VALUE)
 }
 
 // buildAccount creates the account reference that names the endpoint and carries the key.

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-//go:build !cgo || !azcosmos_driver
+//go:build !cgo || !((darwin && !ios && arm64) || (linux && !android && amd64))
 
 package azcosmos
 
@@ -21,6 +21,11 @@ const driverAvailable = false
 
 // nativeDriver holds no resources in this build.
 type nativeDriver struct{}
+
+// initialize reports that the diagnostic build has no driver to initialize.
+func (d *nativeDriver) initialize(context.Context) error {
+	return errDriverUnavailable
+}
 
 // openDriver reports success without acquiring anything. Operations fail when they are called,
 // with a message that says what the build is missing, rather than at construction.

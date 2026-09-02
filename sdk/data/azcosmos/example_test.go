@@ -31,6 +31,10 @@ func exampleContainer() (*azcosmos.ContainerClient, func()) {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
+	if err := client.Initialize(context.Background()); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
 
 	container, err := client.NewContainer("myDatabase", "myContainer")
 	if err != nil {
@@ -63,6 +67,10 @@ func ExampleNewClient() {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
+	if err := client.Initialize(context.Background()); err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
 
 	container, err := client.NewContainer("myDatabase", "myContainer")
 	if err != nil {
@@ -91,7 +99,12 @@ func ExampleNewClientWithKey() {
 	client, err := azcosmos.NewClientWithKey("https://myaccount.documents.azure.com", cred, &azcosmos.ClientOptions{
 		Routing: azcosmos.ProximityTo(azcosmos.RegionEastUS),
 	})
+
 	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	if err := client.Initialize(context.Background()); err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}

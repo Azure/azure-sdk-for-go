@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-//go:build cgo && azcosmos_driver
+//go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
 package azcosmos
 
@@ -126,6 +126,8 @@ func (s ReadConsistencyStrategy) toNative() (C.int32_t, bool) {
 		return C.COSMOS_READ_CONSISTENCY_STRATEGY_EVENTUAL, true
 	case ReadConsistencyStrategySession:
 		return C.COSMOS_READ_CONSISTENCY_STRATEGY_SESSION, true
+	case ReadConsistencyStrategyLatestCommitted:
+		return C.COSMOS_READ_CONSISTENCY_STRATEGY_LATEST_COMMITTED, true
 	case ReadConsistencyStrategyGlobalStrong:
 		return C.COSMOS_READ_CONSISTENCY_STRATEGY_GLOBAL_STRONG, true
 	default:

@@ -73,10 +73,7 @@ extends:
               EnvVars:
                 EMULATOR: 'true'
 
-      # The v2 driver binding needs a native library and a build tag, neither of which the stage
-      # above provides, so it runs separately rather than complicating that one.
-      #
-      # The library and the emulator are committed under internal/native/lib rather than built
+      # The driver and the emulator are committed under internal/native/lib rather than built
       # here. Building them needs crates.io, which the agents cannot reach, and the distribution
       # design puts these binaries in their own modules in a separate repository anyway. That
       # repository does not yet carry a module for this platform, so the committed copies stand in
@@ -93,10 +90,6 @@ extends:
         - template: /eng/pipelines/templates/variables/image.yml@self
         - name: DriverLibDir
           value: $(Build.SourcesDirectory)/sdk/data/azcosmos/internal/native/lib/linux_amd64
-        # cgo rejects executable-relative rpaths by default, and the driver modules use them so a
-        # library shipped beside a binary wins over the path it was built from.
-        - name: CgoRpathAllow
-          value: '^-Wl,-rpath,(@(executable_path|loader_path)|\$ORIGIN)$'
         jobs:
         - job: RunDriverEmulatorTests
           displayName: Run the driver emulator tests
@@ -116,22 +109,18 @@ extends:
           # reviewable in a diff, so the checksums are what a reviewer is actually approving.
           - script: |
               set -euo pipefail
-              cd sdk/data/azcosmos/internal/native/lib
-              sha256sum -c SHA256SUMS
-
-              # Reads the Mach-O load command rather than shelling out to otool, which the linux
-              # agent does not have.
-              python3 check-install-name.py darwin_arm64/libazurecosmosdriver.dylib
+              cd sdk/data/azcosmos
+              sha256sum -c internal/native/lib/SHA256SUMS
             displayName: 'Verify the committed driver artifacts'
 
           # Fail here rather than leaving the tests to fail at link time with a less obvious
           # message.
           - script: |
               set -euo pipefail
-              test -f "$(DriverLibDir)/libazurecosmosdriver.so"
+              test -f "sdk/data/azcosmos/internal/native/linuxamd64/libazurecosmosdriver.syso"
               test -f "$(DriverLibDir)/azure_data_cosmos_emulator"
               chmod +x "$(DriverLibDir)/azure_data_cosmos_emulator"
-              file "$(DriverLibDir)/libazurecosmosdriver.so"
+              file "sdk/data/azcosmos/internal/native/linuxamd64/libazurecosmosdriver.syso"
             displayName: 'Check the committed driver artifacts'
 
           # The emulator writes one JSON record to stdout once every listener is bound, and logs to
@@ -166,19 +155,6 @@ extends:
 
           - template: /eng/pipelines/templates/steps/create-go-workspace.yml@self
 
-          # The shared template forwards EnvVars only to its test step, so its own build and vet
-          # steps would compile the stub and leave the binding unchecked. Nothing else in the
-          # repository builds with this tag, so without this the cgo code is never vetted at all.
-          - script: |
-              set -euo pipefail
-              cd sdk/data/azcosmos
-              go build -tags=azcosmos_driver ./...
-              go vet -tags=azcosmos_driver ./...
-            displayName: 'Build and vet the driver binding'
-            env:
-              CGO_ENABLED: '1'
-              CGO_LDFLAGS_ALLOW: $(CgoRpathAllow)
-
           - template:  /eng/pipelines/templates/steps/build-test.yml@self
             parameters:
               ServiceDirectory: 'data/azcosmos'
@@ -188,13 +164,4 @@ extends:
               EnvVars:
                 EMULATOR: 'true'
                 AZCOSMOS_ENDPOINT: $(EmulatorEndpoint)
-                # The binding is behind a build tag, and the shared test template has no parameter
-                # for one, so it is injected through the go command's own environment variable
-                # rather than by changing a template the Go central team owns.
-                GOFLAGS: '-tags=azcosmos_driver'
                 CGO_ENABLED: '1'
-                CGO_LDFLAGS_ALLOW: $(CgoRpathAllow)
-                # The library directory is deliberately not an rpath in the shipped link line, so
-                # the test binary — which is built into a temporary directory, not next to the
-                # library — needs the loader pointed at it here. See cgo_native.go.
-                LD_LIBRARY_PATH: $(DriverLibDir)

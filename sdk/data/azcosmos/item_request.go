@@ -41,7 +41,7 @@ type itemRequest struct {
 var errDriverUnavailable = &Error{
 	Code: CodeClientError,
 	Message: "azcosmos: this build cannot reach the Cosmos driver. " +
-		"v2 requires CGO_ENABLED=1, a target-compatible C toolchain, and the azcosmos_driver build tag",
+		"v2 requires CGO_ENABLED=1, a supported target, and a target-compatible C toolchain",
 }
 
 // endToEndTimeout resolves the budget the driver should bound the operation by, given the caller's

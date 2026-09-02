@@ -8,39 +8,32 @@ This client library enables client applications to connect to Azure Cosmos DB vi
 
 This is the v2 major version of the module and it is **not usable yet**. The v2 surface is being
 assembled incrementally so that it can be reviewed as it lands. This release covers the error and
-response model, partition keys, client construction, and reading and creating single items; the
-item operations are not wired to the driver yet and report that they are not implemented.
+response model, partition keys, client construction, and reading and creating single items.
 
 v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so that
 routing, retries, session handling, failover behavior and query fan-out are consistent across the
 Cosmos DB SDKs. The decision record is
 [`docs/adr/0001-go-v2-uses-ffi.md`](docs/adr/0001-go-v2-uses-ffi.md).
 
-### Building against the driver
+### Building with the driver
 
-The driver binding is behind the `azcosmos_driver` build tag and is **off by default**, so the
-default build needs no C toolchain and works with `CGO_ENABLED=0`. In that build the client can be
-constructed and the API compiled against, and operations report that they are not implemented.
-
-Selecting the binding needs cgo and the `azcosmos_driver` tag. The native library is committed
-under `internal/native/lib/<goos>_<goarch>`, so no separate build step is required for the
-platforms that are present:
+The driver binding is selected automatically when cgo is enabled on glibc `linux/amd64` or
+`darwin/arm64`. No build tag or linker environment variable is required:
 
 ```sh
-CGO_ENABLED=1 CGO_LDFLAGS_ALLOW='^-Wl,-rpath,(@(executable_path|loader_path)|\$ORIGIN)$' \
-  go build -tags azcosmos_driver ./...
+go build ./...
 ```
 
-`CGO_LDFLAGS_ALLOW` is required because the library is linked dynamically with executable-relative
-rpaths, which cgo rejects by default. That matches how the driver modules in
-[azure-cosmos-driver](https://github.com/Azure/azure-cosmos-driver) link: a library shipped beside a
-binary is found, and nothing else is searched.
+The native archives are committed as `.syso` files in target-specific internal packages, so Go
+preserves them in module zips and vendored builds and links the matching package automatically. No
+separate driver build or runtime sidecar is required; the resulting executable is self-contained.
 
-Nothing else is searched on purpose. The build directory is not an rpath, because it is an absolute
-path on whoever did the build — a module cache path for anyone consuming this — and baking it into
-a shipped binary makes the loader search a directory that someone else may be able to create on the
-host it runs on. Running the tests from the tree therefore needs that directory passed explicitly,
-which the commands below do; it reaches the test binary and never a consumer's.
+`CGO_ENABLED=0` and unsupported platforms select `driver_stub.go`. That diagnostic build keeps the
+API compilable, but operations report that the driver is unavailable.
+
+Alpine and other musl-based Linux distributions are not supported yet. The bundled Linux archive
+is built for glibc, and the build reports that limitation explicitly rather than linking Rust code
+compiled for a different libc ABI.
 
 **Those committed binaries are temporary and are meant to be deleted.** Checking a build artifact
 into the repository is not the plan of record: the distribution design puts each target's library
@@ -49,17 +42,32 @@ selected by `GOOS`/`GOARCH`. That repository exists and already carries a darwin
 not yet one for `linux/amd64`, which is the platform CI runs on — so the copies here stand in until
 it does.
 
-The trigger to remove them, and the steps, are recorded next to the files in
+The trigger to remove them, and the steps, are recorded in
 [`internal/native/lib/README.md`](internal/native/lib/README.md). Only `linux/amd64` and
 `darwin/arm64` are present, because those are the platforms actually built and tested; another
 platform needs its own build from
 [azure_data_cosmos_driver_native](https://github.com/Azure/azure-sdk-for-rust/tree/main/sdk/cosmos/azure_data_cosmos_driver_native)
 dropped into the matching directory, which is the cost these files impose.
 
-`internal/native/azurecosmosdriver.h` is the header the driver generates, vendored here and pinned
-to the version in `driver.go`. That version is checked against the linked library when a client
-first reaches the driver, because a header and a library from different versions do not fail to
-compile — they fail as moved struct offsets somewhere far from the cause.
+`azurecosmosdriver.h` is the header the driver generates, vendored here and pinned to the version
+in `driver.go`. That version is checked against the linked archive when a client is constructed,
+because a header and a library from different versions do not fail to compile — they fail as moved
+struct offsets somewhere far from the cause.
+
+### Client initialization
+
+`NewClient` and `NewClientWithKey` perform no network I/O. Call `Client.Initialize` with a context
+to initialize eagerly: it probes the account's HTTP capabilities, fetches and caches account
+properties, seeds the routing state, and creates the account transport. An unreachable or
+unauthorized account is then reported before the first operation, and the context bounds the work.
+
+Calling `Initialize` is optional. The first operation performs the same initialization lazily when
+it has not already run. The diagnostic build has no driver to initialize and reports that through
+`Initialize`.
+
+Container metadata is not fetched during client construction because the client does not know which
+containers the application will use. The first operation on a container resolves and caches that
+container's metadata.
 
 Two limits apply to the driver-backed build today, both upstream gaps rather than choices this
 module makes:
@@ -83,14 +91,7 @@ internal/native/lib/linux_amd64/azure_data_cosmos_emulator \
   --config path/to/azcosmos/internal/testdata/emulator-config.json
 # {"event":"ready","accountEndpoint":"http://127.0.0.1:49151/", ...}
 
-# LIBDIR is darwin_arm64 or linux_amd64. It is passed through -ldflags rather than set as an
-# environment variable, because macOS strips DYLD_* from anything a protected process spawns.
-LIBDIR=$PWD/internal/native/lib/$(go env GOOS)_$(go env GOARCH)
-
-EMULATOR=1 AZCOSMOS_ENDPOINT=http://127.0.0.1:49151/ CGO_ENABLED=1 \
-  CGO_LDFLAGS_ALLOW='^-Wl,-rpath,(@(executable_path|loader_path)|\$ORIGIN)$' \
-  go test -tags azcosmos_driver -ldflags "-extldflags=-Wl,-rpath,$LIBDIR" \
-  -run TestEmulator ./...
+EMULATOR=1 AZCOSMOS_ENDPOINT=http://127.0.0.1:49151/ go test -run TestEmulator ./...
 ```
 
 The container the tests use is declared in `internal/testdata/emulator-config.json`; its ids
@@ -102,7 +103,7 @@ default to `itemdb` and `items` and can be overridden with `AZCOSMOS_DATABASE` a
 ### Prerequisites
 
 * An Azure subscription or free Azure Cosmos DB trial account
-* A C toolchain, but only to build with the `azcosmos_driver` tag
+* A C toolchain on a supported driver platform
 
 Note: If you don't have an Azure subscription, create a free account before you begin.
 You can Try Azure Cosmos DB for free without an Azure subscription, free of charge and commitments, or create an Azure Cosmos DB free tier account, with the first 400 RU/s and 5 GB of storage for free. You can also use the Azure Cosmos DB Emulator with a URI of https://localhost:8081. For the key to use with the emulator, see [how to develop with the emulator](https://learn.microsoft.com/azure/cosmos-db/how-to-develop-emulator).

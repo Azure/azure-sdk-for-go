@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-//go:build cgo && azcosmos_driver
+//go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
 package azcosmos
 
@@ -10,7 +10,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"sync"
 	"testing"
 	"time"
 
@@ -23,7 +22,7 @@ import (
 //
 // They are gated on the EMULATOR environment variable, which is what the module's ci.yml already
 // sets for its Cosmos Emulator stage, so they run there without further wiring and skip everywhere
-// else. They also need a driver-backed build, hence the build tag.
+// else.
 //
 // A container has to exist before they run. Creating one needs container management operations,
 // which are not bound yet, so the database and container ids are taken from the environment and
@@ -42,6 +41,15 @@ func emulatorClient(t *testing.T) (*Client, string, string) {
 
 // emulatorClientWithOptions is emulatorClient with the client options under test.
 func emulatorClientWithOptions(t *testing.T, options *ClientOptions) (*Client, string, string) {
+	return emulatorClientConfigured(t, options, true)
+}
+
+// emulatorClientConfigured optionally initializes the client before returning it.
+func emulatorClientConfigured(
+	t *testing.T,
+	options *ClientOptions,
+	initialize bool,
+) (*Client, string, string) {
 	t.Helper()
 
 	if os.Getenv("EMULATOR") == "" {
@@ -67,6 +75,9 @@ func emulatorClientWithOptions(t *testing.T, options *ClientOptions) (*Client, s
 	client, err := NewClientWithKey(endpoint, cred, options)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
+	if initialize {
+		require.NoError(t, client.Initialize(t.Context()))
+	}
 
 	return client, databaseID, containerID
 }
@@ -242,6 +253,34 @@ func TestEmulatorSessionTokenRoundTrips(t *testing.T) {
 	require.NotEmpty(t, read.Value)
 }
 
+// LatestCommitted is a quorum read independent of the account's default consistency level. A live
+// round trip proves the ABI discriminant reaches the driver and service rather than only mapping
+// correctly in the converter.
+func TestEmulatorLatestCommittedRead(t *testing.T) {
+	container := emulatorContainer(t)
+	ctx := t.Context()
+
+	id := uniqueItemID(t)
+	pk := NewPartitionKeyString(id)
+	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
+	require.NoError(t, err)
+
+	_, err = container.CreateItem(ctx, pk, id, item, nil)
+	require.NoError(t, err)
+
+	read, err := container.ReadItem(ctx, pk, id, &ReadItemOptions{
+		Operation: OperationOptions{
+			ConsistencyStrategy: ReadConsistencyStrategyLatestCommitted,
+		},
+	})
+	require.NoError(t, err)
+
+	var value map[string]any
+	require.NoError(t, json.Unmarshal(read.Value, &value))
+	require.Equal(t, id, value["id"])
+	require.Equal(t, id, value["pk"])
+}
+
 // Cancelling the context has to stop the operation and report the context's own error, so that
 // errors.Is against context.Canceled works the way callers expect of any Go API.
 func TestEmulatorCancelledContext(t *testing.T) {
@@ -384,9 +423,8 @@ func TestEmulatorPreferredRegions(t *testing.T) {
 }
 
 // An application ID reaches the driver through the runtime's user-agent suffix, which the driver
-// validates and rejects with a bare status. The emulator does not report the user agent back, so
-// this covers that a value the driver accepts survives the whole path; rejection is covered by
-// TestNewClientWithKeyRejectsUnusableOptions, which needs no service.
+// validates. The emulator does not report the user agent back, so this covers that a value the
+// driver accepts survives initialization and a request.
 func TestEmulatorApplicationID(t *testing.T) {
 	// At the driver's 25-byte limit, so a regression in the limit shows up here too.
 	container := emulatorContainerWithOptions(t, &ClientOptions{ApplicationID: "azcosmos-go-v2-e2e-testin"})
@@ -394,34 +432,42 @@ func TestEmulatorApplicationID(t *testing.T) {
 	createForClientOptions(t, container, nil)
 }
 
-// Callers that reach first use at the same time have to end up with the one driver the client
-// owns. A second creation would be a wasted account-properties fetch at best, and a handle the
-// client never frees at worst.
-func TestEmulatorConcurrentFirstUseCreatesOneDriver(t *testing.T) {
+// Initialize does not return until it has fetched account properties and seeded routing state. A
+// later operation therefore sees the same cached driver handle.
+func TestEmulatorInitializeCreatesDriver(t *testing.T) {
 	client, _, _ := emulatorClient(t)
 
-	const callers = 16
-	handles := make([]uintptr, callers)
-	errs := make([]error, callers)
+	client.driver.mu.Lock()
+	created := client.driver.created
+	driver := client.driver.driver
+	client.driver.mu.Unlock()
 
-	// Released all at once so the callers actually contend, rather than the first one finishing
-	// while the rest are still being started.
-	start := make(chan struct{})
-	var wg sync.WaitGroup
-	for i := 0; i < callers; i++ {
-		wg.Add(1)
-		go func(i int) {
-			defer wg.Done()
-			<-start
-			handles[i], errs[i] = client.driver.ensureDriverHandle(context.Background())
-		}(i)
-	}
-	close(start)
-	wg.Wait()
+	require.True(t, created)
+	require.NotNil(t, driver)
+	again, err := client.driver.ensureDriver(t.Context())
+	require.NoError(t, err)
+	require.Equal(t, driver, again)
+}
 
-	for i := 0; i < callers; i++ {
-		require.NoError(t, errs[i])
-		require.NotZero(t, handles[i])
-		require.Equal(t, handles[0], handles[i], "every caller has to get the same driver")
-	}
+// Initialize is optional: the first operation performs the same work when callers skip it.
+func TestEmulatorOperationInitializesLazily(t *testing.T) {
+	client, databaseID, containerID := emulatorClientConfigured(t, nil, false)
+
+	client.driver.mu.Lock()
+	require.False(t, client.driver.created)
+	client.driver.mu.Unlock()
+
+	container, err := client.NewContainer(databaseID, containerID)
+	require.NoError(t, err)
+	id := uniqueItemID(t)
+	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
+	require.NoError(t, err)
+
+	_, err = container.CreateItem(t.Context(), NewPartitionKeyString(id), id, item, nil)
+	require.NoError(t, err)
+
+	client.driver.mu.Lock()
+	require.True(t, client.driver.created)
+	require.NotNil(t, client.driver.driver)
+	client.driver.mu.Unlock()
 }

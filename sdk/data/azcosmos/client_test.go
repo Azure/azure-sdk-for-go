@@ -31,7 +31,7 @@ func mustKeyCredential(t *testing.T) KeyCredential {
 func newTestClient(t *testing.T) *Client {
 	t.Helper()
 
-	client, err := NewClientWithKey("https://myaccount.documents.azure.com", mustKeyCredential(t), nil)
+	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil)
 	require.NoError(t, err)
 	return client
 }
@@ -61,6 +61,20 @@ func TestNewClientAcceptsTokenCredential(t *testing.T) {
 func TestNewClientRejectsNilCredential(t *testing.T) {
 	_, err := NewClient("https://myaccount.documents.azure.com", nil, nil)
 	require.Error(t, err)
+}
+
+func TestInitializeRejectsNilContext(t *testing.T) {
+	client := newTestClient(t)
+	err := client.Initialize(nil) //nolint:staticcheck // verifies the guard
+	require.Error(t, err)
+}
+
+func TestInitializeReportsUnavailableDriver(t *testing.T) {
+	if driverAvailable {
+		t.Skip("the driver is available in this build")
+	}
+	client := newTestClient(t)
+	require.ErrorIs(t, client.Initialize(t.Context()), errDriverUnavailable)
 }
 
 // The zero value is what a caller gets if they ignore the error from NewKeyCredential.
@@ -135,9 +149,7 @@ func TestNewClientRejectsNonAbsoluteEndpoint(t *testing.T) {
 }
 
 func TestNewClientAcceptsAbsoluteEndpoint(t *testing.T) {
-	cred := mustKeyCredential(t)
-
-	client, err := NewClientWithKey("https://myaccount.documents.azure.com", cred, nil)
+	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil)
 	require.NoError(t, err)
 	require.Equal(t, "https://myaccount.documents.azure.com", client.Endpoint())
 }
@@ -146,9 +158,10 @@ func TestNewClientAcceptsAbsoluteEndpoint(t *testing.T) {
 // the routing order of a client that has already been created.
 func TestNewClientCopiesRoutingRegions(t *testing.T) {
 	regions := []Region{RegionWestUS, RegionEastUS}
-	client, err := NewClientWithKey("https://myaccount.documents.azure.com", mustKeyCredential(t), &ClientOptions{
+	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, &ClientOptions{
 		Routing: PreferredRegions(regions...),
 	})
+
 	require.NoError(t, err)
 
 	regions[0] = RegionNorthEurope
@@ -190,9 +203,7 @@ func TestCloseIsIdempotentAndConcurrencySafe(t *testing.T) {
 }
 
 func TestNewDatabaseAndNewContainer(t *testing.T) {
-	cred := mustKeyCredential(t)
-	client, err := NewClientWithKey("https://myaccount.documents.azure.com", cred, nil)
-	require.NoError(t, err)
+	client := newTestClient(t)
 
 	database, err := client.NewDatabase("db")
 	require.NoError(t, err)
@@ -209,11 +220,9 @@ func TestNewDatabaseAndNewContainer(t *testing.T) {
 }
 
 func TestNewDatabaseAndNewContainerRejectEmptyIDs(t *testing.T) {
-	cred := mustKeyCredential(t)
-	client, err := NewClientWithKey("https://myaccount.documents.azure.com", cred, nil)
-	require.NoError(t, err)
+	client := newTestClient(t)
 
-	_, err = client.NewDatabase("")
+	_, err := client.NewDatabase("")
 	require.Error(t, err)
 
 	_, err = client.NewContainer("db", "")
@@ -295,8 +304,7 @@ func TestCloseWaitsForInFlightOperations(t *testing.T) {
 	}
 }
 
-// Options the driver cannot accept are rejected here rather than reaching it, because it reports
-// them as a bare status that names nothing.
+// Options the binding cannot implement are rejected when the client is constructed.
 func TestNewClientWithKeyRejectsUnusableOptions(t *testing.T) {
 	credential, err := NewKeyCredential(testAccountKey)
 	require.NoError(t, err)
@@ -307,30 +315,21 @@ func TestNewClientWithKeyRejectsUnusableOptions(t *testing.T) {
 		wantIn  string
 	}{
 		{
-			// 26 bytes, one over the driver's limit.
-			name:    "an application id past the length limit",
-			options: ClientOptions{ApplicationID: strings.Repeat("a", maxApplicationIDLength+1)},
-			wantIn:  "the limit is 25",
-		},
-		{
-			// A conventional user agent that the driver would reject for the slash alone.
-			name:    "an application id with an unsafe character",
-			options: ClientOptions{ApplicationID: "order-service/1.2.3"},
-			wantIn:  "only letters, digits and",
-		},
-		{
-			name:    "an application id with a space",
-			options: ClientOptions{ApplicationID: "order service"},
-			wantIn:  "only letters, digits and",
-		},
-		{
 			name:    "proximity routing",
 			options: ClientOptions{Routing: ProximityTo(RegionEastUS)},
 			wantIn:  "ProximityTo is not supported",
 		},
+		{
+			name:    "application id with NUL",
+			options: ClientOptions{ApplicationID: "order\x00service"},
+			wantIn:  "must not contain a NUL byte",
+		},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			client, err := NewClientWithKey("https://myaccount.documents.azure.com", credential, &tt.options)
+			client, err := NewClientWithKey(
+				"https://myaccount.documents.azure.com",
+				credential,
+				&tt.options)
 
 			require.ErrorContains(t, err, tt.wantIn)
 			require.Nil(t, client)
@@ -338,22 +337,17 @@ func TestNewClientWithKeyRejectsUnusableOptions(t *testing.T) {
 	}
 }
 
-// The values the driver does accept have to keep working, including the edge of the limit.
+// The values the binding can pass through have to survive local construction.
 func TestNewClientWithKeyAcceptsUsableOptions(t *testing.T) {
-	credential, err := NewKeyCredential(testAccountKey)
-	require.NoError(t, err)
-
 	for _, tt := range []struct {
 		name    string
 		options ClientOptions
 	}{
-		{"no application id", ClientOptions{}},
-		{"an application id at the length limit", ClientOptions{ApplicationID: strings.Repeat("a", maxApplicationIDLength)}},
-		{"every safe special character", ClientOptions{ApplicationID: "a-b_c.d~9"}},
+		{"defaults", ClientOptions{}},
 		{"preferred regions", ClientOptions{Routing: PreferredRegions(RegionEastUS, RegionWestUS)}},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			client, err := NewClientWithKey("https://myaccount.documents.azure.com", credential, &tt.options)
+			client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, &tt.options)
 			require.NoError(t, err)
 			require.NoError(t, client.Close())
 		})

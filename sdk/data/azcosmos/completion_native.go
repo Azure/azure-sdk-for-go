@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-//go:build cgo && azcosmos_driver
+//go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
 package azcosmos
 

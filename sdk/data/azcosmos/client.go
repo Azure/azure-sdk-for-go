@@ -4,6 +4,7 @@
 package azcosmos
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/url"
@@ -32,9 +33,9 @@ type ClientOptions struct {
 	// ApplicationID is an application-specific identifier appended to the user agent sent with
 	// every request. Keep it free of personally identifiable information.
 	//
-	// The driver limits it to 25 bytes of letters, digits and '-', '_', '.', '~'; anything else
-	// is rejected when the client is constructed. Prefer a stable, low-cardinality name such as
-	// "order-service" over anything per instance.
+	// The value is passed unchanged to the driver, which validates it when the client is
+	// constructed. Prefer a stable, low-cardinality name such as "order-service" over anything
+	// per instance.
 	ApplicationID string
 
 	// EnableContentResponseOnWrite requests that writes return the resulting item. Leaving it
@@ -69,12 +70,12 @@ type Client struct {
 // NewClient creates a client that authenticates with Microsoft Entra ID.
 //
 // endpoint is the Cosmos DB account endpoint. cred is any [azcore.TokenCredential], such as the
-// implementations in the azidentity module. options may be nil to accept the defaults.
+// implementations in the azidentity module. options may be nil to accept the defaults. Construction
+// performs no network I/O; call [Client.Initialize] to fill account-level caches eagerly.
 //
 // Token credentials do not work in a driver-backed build yet: the driver supports them, but its C
 // ABI exposes no constructor for one, so the binding cannot build an account reference from a
-// credential and the client reports that on its first operation. Use [NewClientWithKey] until it
-// does.
+// credential and the constructor reports that immediately. Use [NewClientWithKey] until it does.
 func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if cred == nil {
 		return nil, errors.New("azcosmos: credential must not be nil")
@@ -85,7 +86,8 @@ func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOpti
 // NewClientWithKey creates a client that authenticates with an account key.
 //
 // Prefer [NewClient] where possible; account keys grant full access to the account and cannot be
-// scoped down. options may be nil to accept the defaults.
+// scoped down. options may be nil to accept the defaults. Construction performs no network I/O;
+// call [Client.Initialize] to fill account-level caches eagerly.
 func NewClientWithKey(endpoint string, cred KeyCredential, options *ClientOptions) (*Client, error) {
 	if cred.accountKey == "" {
 		return nil, errors.New("azcosmos: credential must be created with NewKeyCredential")
@@ -136,6 +138,23 @@ func newClient(endpoint string, accountKey string, options *ClientOptions) (*Cli
 	}
 	client.driver = driver
 	return client, nil
+}
+
+// Initialize eagerly creates the driver and fills its account-properties and routing caches.
+//
+// Initialize is idempotent and safe for concurrent use. Operations also initialize lazily, so
+// callers only need this when they want readiness and initialization failures before the first
+// operation.
+func (c *Client) Initialize(ctx context.Context) error {
+	if ctx == nil {
+		return errors.New("azcosmos: context must not be nil")
+	}
+	release, err := c.acquire()
+	if err != nil {
+		return err
+	}
+	defer release()
+	return c.driver.initialize(ctx)
 }
 
 // Endpoint returns the Cosmos DB account endpoint the client was created with.
@@ -195,30 +214,13 @@ func (c *Client) NewContainer(databaseID string, containerID string) (*Container
 	return database.NewContainer(containerID)
 }
 
-// The driver's user agent suffix is limited to 25 bytes of HTTP-header-safe characters
-// (alphanumerics and '-', '_', '.', '~'). It reports a violation as a bare status with no detail,
-// so the rule is applied here where the offending field can be named.
-const (
-	maxApplicationIDLength    = 25
-	applicationIDSafeSpecials = "-_.~"
-)
-
-// validate reports the option values the driver cannot accept, so they fail when the client is
-// constructed rather than on an operation, or with an error that does not name the field.
+// validate reports option values the binding cannot implement. Values the driver understands are
+// passed through and validated there, so this package does not duplicate its rules.
 func (o ClientOptions) validate() error {
-	if len(o.ApplicationID) > maxApplicationIDLength {
-		return fmt.Errorf("azcosmos: ApplicationID %q is %d bytes; the limit is %d",
-			o.ApplicationID, len(o.ApplicationID), maxApplicationIDLength)
-	}
-	for _, r := range o.ApplicationID {
-		if r >= 'a' && r <= 'z' || r >= 'A' && r <= 'Z' || r >= '0' && r <= '9' {
-			continue
-		}
-		if strings.ContainsRune(applicationIDSafeSpecials, r) {
-			continue
-		}
-		return fmt.Errorf("azcosmos: ApplicationID %q contains %q; only letters, digits and %q are allowed",
-			o.ApplicationID, r, applicationIDSafeSpecials)
+	// The C ABI takes a NUL-terminated string. Passing an embedded NUL through C.CString would
+	// silently truncate the value before the driver could validate it.
+	if strings.IndexByte(o.ApplicationID, 0) >= 0 {
+		return errors.New("azcosmos: ClientOptions.ApplicationID must not contain a NUL byte")
 	}
 
 	_, err := o.Routing.preferredRegionOrder()

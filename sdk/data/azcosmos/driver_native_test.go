@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-//go:build cgo && azcosmos_driver
+//go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
 package azcosmos
 
@@ -37,6 +37,31 @@ func TestNativeRuntimeAndAccountLifecycle(t *testing.T) {
 	require.Nil(t, d.runtime, "close must not leave a dangling handle")
 	require.Nil(t, d.account)
 	require.NoError(t, d.close(), "close is idempotent")
+}
+
+// ApplicationID is passed unchanged to the driver, which remains the source of truth for its
+// validation rules. The C ABI reports only an invalid-option status, so the binding adds the field
+// name without duplicating the rule.
+func TestNativeRuntimeRejectsInvalidApplicationID(t *testing.T) {
+	for _, applicationID := range []string{
+		"order-service/1.2.3",
+		"order service",
+		"abcdefghijklmnopqrstuvwxyz",
+	} {
+		t.Run(applicationID, func(t *testing.T) {
+			d := &nativeDriver{cfg: driverConfig{options: ClientOptions{ApplicationID: applicationID}}}
+
+			err := d.buildRuntime()
+
+			var cosmosErr *Error
+			require.ErrorAs(t, err, &cosmosErr)
+			require.Equal(t, CodeClientError, cosmosErr.Code)
+			require.Equal(t, nativeInvalidOptionSubStatus(), cosmosErr.SubStatus)
+			require.Contains(t, cosmosErr.Message, "ClientOptions.ApplicationID")
+			require.NotContains(t, cosmosErr.Message, applicationID, "do not echo telemetry identifiers")
+			require.Nil(t, d.runtime)
+		})
+	}
 }
 
 // Repeated cycles catch a handle that close forgets to release, which a single cycle would not.
@@ -80,9 +105,9 @@ func TestNativeTokenCredentialRejected(t *testing.T) {
 	require.ErrorIs(t, err, errTokenCredentialUnsupported)
 }
 
-// Creating the driver fetches the account's properties, so it does network I/O and is deferred to
-// first use rather than done in the constructor. This exercises that first use.
-func TestNativeDriverCreationContactsTheAccount(t *testing.T) {
+// Initialize creates the driver and fills the account-properties and routing caches. The cached
+// handle proves a later operation will not initialize again.
+func TestNativeInitializeCreatesTheDriver(t *testing.T) {
 	endpoint := os.Getenv("AZCOSMOS_EMULATOR_ENDPOINT")
 	if endpoint == "" {
 		t.Skip("set AZCOSMOS_EMULATOR_ENDPOINT to run against a live emulator")
@@ -95,6 +120,7 @@ func TestNativeDriverCreationContactsTheAccount(t *testing.T) {
 	require.NoError(t, err)
 	t.Cleanup(func() { _ = client.Close() })
 
+	require.NoError(t, client.Initialize(t.Context()))
 	driver, err := client.driver.ensureDriver(context.Background())
 	require.NoError(t, err)
 	require.NotNil(t, driver)
@@ -105,15 +131,14 @@ func TestNativeDriverCreationContactsTheAccount(t *testing.T) {
 	require.Equal(t, driver, again)
 }
 
-// Construction must not reach the network: an unreachable account is an operation failure, not a
-// construction failure, and the constructor has no context to cancel a network call with.
+// Construction is local, so an unreachable account does not make it fail.
 func TestNativeConstructionDoesNotContactTheAccount(t *testing.T) {
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
 
 	// Port 1 is reserved and never listening, so reaching it would fail rather than hang.
 	client, err := NewClientWithKey("https://127.0.0.1:1", cred, nil)
-	require.NoError(t, err, "construction should not depend on the account being reachable")
+	require.NoError(t, err)
 	require.NoError(t, client.Close())
 }
 
@@ -123,7 +148,7 @@ func TestNativeEnsureDriverAfterCloseIsRejected(t *testing.T) {
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
 
-	client, err := NewClientWithKey("https://myaccount.documents.azure.com", cred, nil)
+	client, err := newClient("https://myaccount.documents.azure.com", cred.key(), nil)
 	require.NoError(t, err)
 
 	// Captured before Close, which drops the client's reference to it.
@@ -146,7 +171,7 @@ func TestNativeUnreachableAccountReportsTransportFailure(t *testing.T) {
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
 
-	client, err := NewClientWithKey("https://127.0.0.1:1", cred, nil)
+	client, err := newClient("https://127.0.0.1:1", cred.key(), nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { _ = client.Close() })
 
@@ -177,19 +202,18 @@ func TestNativeDriverCreationHonorsContext(t *testing.T) {
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
 
+	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
+	defer cancel()
+
 	client, err := NewClientWithKey(blackholeEndpoint, cred, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { _ = client.Close() })
 
-	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
-	defer cancel()
-
 	start := time.Now()
-	driver, err := client.driver.ensureDriver(ctx)
+	err = client.Initialize(ctx)
 	elapsed := time.Since(start)
 
 	require.ErrorIs(t, err, context.DeadlineExceeded)
-	require.Nil(t, driver)
 	// Generously above the deadline and far below the transport timeout, so this fails if the
 	// blocking constructor comes back rather than on a slow machine.
 	require.Less(t, elapsed, 5*time.Second,
@@ -203,7 +227,7 @@ func TestNativeCancelledDriverCreationIsNotRemembered(t *testing.T) {
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
 
-	client, err := NewClientWithKey(blackholeEndpoint, cred, nil)
+	client, err := newClient(blackholeEndpoint, cred.key(), nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { _ = client.Close() })
 

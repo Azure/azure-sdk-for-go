@@ -35,8 +35,8 @@ func (client *FileSystemClient) ListBlobHierarchySegmentCreateRequest(ctx contex
 }
 
 // ListBlobHierarchySegmentHandleResponse handles the ListBlobHierarchySegment response.
-func (client *FileSystemClient) ListBlobHierarchySegmentHandleResponse(resp *http.Response) (FileSystemClientListPathHierarchySegmentResponse, error) {
-	return client.listBlobHierarchySegmentHandleResponse(resp)
+func (client *FileSystemClient) ListBlobHierarchySegmentHandleResponse(resp *http.Response, successCodes ...int) (FileSystemClientListPathHierarchySegmentResponse, error) {
+	return client.listBlobHierarchySegmentHandleResponse(resp, successCodes...)
 }
 
 func (client *FileSystemClient) ListPathsCreateRequest(ctx context.Context, recursive bool, options *FileSystemClientListPathsOptions) (*policy.Request, error) {
@@ -44,6 +44,6 @@ func (client *FileSystemClient) ListPathsCreateRequest(ctx context.Context, recu
 }
 
 // ListPathsHandleResponse handles the ListPaths response.
-func (client *FileSystemClient) ListPathsHandleResponse(resp *http.Response) (FileSystemClientListPathsResponse, error) {
-	return client.listPathsHandleResponse(resp)
+func (client *FileSystemClient) ListPathsHandleResponse(resp *http.Response, successCodes ...int) (FileSystemClientListPathsResponse, error) {
+	return client.listPathsHandleResponse(resp, successCodes...)
 }

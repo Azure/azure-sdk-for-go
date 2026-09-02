@@ -19,7 +19,7 @@ import (
 // OperationsClient - Lists all the operations supported by Microsoft.ProviderHub.
 // Don't use this type directly, use NewOperationsClient() instead.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-10-01
 type OperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -83,7 +83,7 @@ func (client *OperationsClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,7 +123,7 @@ func (client *OperationsClient) Delete(ctx context.Context, providerNamespace st
 	if err != nil {
 		return OperationsClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
 		return OperationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return OperationsClientDeleteResponse{}, nil
@@ -145,7 +145,7 @@ func (client *OperationsClient) deleteCreateRequest(ctx context.Context, provide
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -193,7 +193,7 @@ func (client *OperationsClient) listCreateRequest(ctx context.Context, nextLink 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20240901)
+		reqQP.Set("api-version", version20251001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -250,7 +250,7 @@ func (client *OperationsClient) listByProviderRegistrationCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -262,7 +262,7 @@ func (client *OperationsClient) listByProviderRegistrationHandleResponse(resp *h
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OperationsDefinitionArray); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperationsPutContent); err != nil {
 		return OperationsClientListByProviderRegistrationResponse{}, err
 	}
 	return result, nil

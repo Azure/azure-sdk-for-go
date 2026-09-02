@@ -1,5 +1,25 @@
 # Release History
 
+## 0.3.0 (2026-09-02)
+### Breaking Changes
+
+- Type of `SKU.Name` has been changed from `*string` to `*SKUName`
+- Type of `SKU.Tier` has been changed from `*string` to `*SKUTier`
+
+### Features Added
+
+- New value `ProvisioningStateAccepted` added to enum type `ProvisioningState`
+- New enum type `SKUName` with values `SKUNameManagedOps`
+- New enum type `SKUTier` with values `SKUTierEssential`
+- New struct `ErrorDetails`
+- New field `ErrorDetails` in struct `AzureMonitorInformation`
+- New field `ErrorDetails` in struct `ChangeTrackingInformation`
+- New field `ErrorDetails` in struct `DefenderCspmInformation`
+- New field `ErrorDetails` in struct `DefenderForServersInformation`
+- New field `ErrorDetails` in struct `GuestConfigurationInformation`
+- New field `ErrorDetails` in struct `UpdateManagerInformation`
+
+
 ## 0.2.0 (2026-03-06)
 ### Breaking Changes
 

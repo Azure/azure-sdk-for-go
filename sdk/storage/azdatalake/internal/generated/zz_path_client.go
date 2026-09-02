@@ -41,12 +41,7 @@ func (client *PathClient) AppendData(ctx context.Context, body io.ReadSeekCloser
 	if err != nil {
 		return PathClientAppendDataResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return PathClientAppendDataResponse{}, err
-	}
-	resp, err := client.appendDataHandleResponse(httpResp)
-	return resp, err
+	return client.appendDataHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // appendDataCreateRequest creates the AppendData request.
@@ -115,19 +110,22 @@ func (client *PathClient) appendDataCreateRequest(ctx context.Context, body io.R
 }
 
 // appendDataHandleResponse handles the AppendData response.
-func (client *PathClient) appendDataHandleResponse(resp *http.Response) (PathClientAppendDataResponse, error) {
+func (client *PathClient) appendDataHandleResponse(resp *http.Response, successCodes ...int) (PathClientAppendDataResponse, error) {
 	result := PathClientAppendDataResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-content-crc64"); val != "" {
+	if val := resp.Header.Get("X-Ms-Content-Crc64"); val != "" {
 		contentCRC64, err := base64.StdEncoding.DecodeString(val)
 		if err != nil {
 			return PathClientAppendDataResponse{}, err
 		}
 		result.ContentCRC64 = contentCRC64
 	}
-	if val := resp.Header.Get("Content-MD5"); val != "" {
+	if val := resp.Header.Get("Content-Md5"); val != "" {
 		result.ContentMD5 = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -137,33 +135,33 @@ func (client *PathClient) appendDataHandleResponse(resp *http.Response) (PathCli
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+	if val := resp.Header.Get("X-Ms-Encryption-Key-Sha256"); val != "" {
 		result.EncryptionKeySHA256 = &val
 	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return PathClientAppendDataResponse{}, err
 		}
 		result.IsServerEncrypted = &isServerEncrypted
 	}
-	if val := resp.Header.Get("x-ms-lease-renewed"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Renewed"); val != "" {
 		leaseRenewed, err := strconv.ParseBool(val)
 		if err != nil {
 			return PathClientAppendDataResponse{}, err
 		}
 		result.LeaseRenewed = &leaseRenewed
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-structured-body"); val != "" {
+	if val := resp.Header.Get("X-Ms-Structured-Body"); val != "" {
 		result.StructuredBodyType = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -185,12 +183,7 @@ func (client *PathClient) Create(ctx context.Context, options *PathClientCreateO
 	if err != nil {
 		return PathClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return PathClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -311,9 +304,12 @@ func (client *PathClient) createCreateRequest(ctx context.Context, options *Path
 }
 
 // createHandleResponse handles the Create response.
-func (client *PathClient) createHandleResponse(resp *http.Response) (PathClientCreateResponse, error) {
+func (client *PathClient) createHandleResponse(resp *http.Response, successCodes ...int) (PathClientCreateResponse, error) {
 	result := PathClientCreateResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Content-Length"); val != "" {
@@ -323,7 +319,7 @@ func (client *PathClient) createHandleResponse(resp *http.Response) (PathClientC
 		}
 		result.ContentLength = &contentLength
 	}
-	if val := resp.Header.Get("x-ms-continuation"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation"); val != "" {
 		result.Continuation = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -333,13 +329,13 @@ func (client *PathClient) createHandleResponse(resp *http.Response) (PathClientC
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+	if val := resp.Header.Get("X-Ms-Encryption-Key-Sha256"); val != "" {
 		result.EncryptionKeySHA256 = &val
 	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return PathClientCreateResponse{}, err
@@ -353,10 +349,10 @@ func (client *PathClient) createHandleResponse(resp *http.Response) (PathClientC
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -376,12 +372,7 @@ func (client *PathClient) Delete(ctx context.Context, options *PathClientDeleteO
 	if err != nil {
 		return PathClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return PathClientDeleteResponse{}, err
-	}
-	resp, err := client.deleteHandleResponse(httpResp)
-	return resp, err
+	return client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -427,12 +418,15 @@ func (client *PathClient) deleteCreateRequest(ctx context.Context, options *Path
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *PathClient) deleteHandleResponse(resp *http.Response) (PathClientDeleteResponse, error) {
+func (client *PathClient) deleteHandleResponse(resp *http.Response, successCodes ...int) (PathClientDeleteResponse, error) {
 	result := PathClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-continuation"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation"); val != "" {
 		result.Continuation = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -442,13 +436,13 @@ func (client *PathClient) deleteHandleResponse(resp *http.Response) (PathClientD
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-deletion-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Deletion-Id"); val != "" {
 		result.DeletionID = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -467,12 +461,7 @@ func (client *PathClient) FlushData(ctx context.Context, options *PathClientFlus
 	if err != nil {
 		return PathClientFlushDataResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PathClientFlushDataResponse{}, err
-	}
-	resp, err := client.flushDataHandleResponse(httpResp)
-	return resp, err
+	return client.flushDataHandleResponse(httpResp, http.StatusOK)
 }
 
 // flushDataCreateRequest creates the FlushData request.
@@ -558,9 +547,12 @@ func (client *PathClient) flushDataCreateRequest(ctx context.Context, options *P
 }
 
 // flushDataHandleResponse handles the FlushData response.
-func (client *PathClient) flushDataHandleResponse(resp *http.Response) (PathClientFlushDataResponse, error) {
+func (client *PathClient) flushDataHandleResponse(resp *http.Response, successCodes ...int) (PathClientFlushDataResponse, error) {
 	result := PathClientFlushDataResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Content-Length"); val != "" {
@@ -577,13 +569,13 @@ func (client *PathClient) flushDataHandleResponse(resp *http.Response) (PathClie
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+	if val := resp.Header.Get("X-Ms-Encryption-Key-Sha256"); val != "" {
 		result.EncryptionKeySHA256 = &val
 	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return PathClientFlushDataResponse{}, err
@@ -597,17 +589,17 @@ func (client *PathClient) flushDataHandleResponse(resp *http.Response) (PathClie
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-renewed"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Renewed"); val != "" {
 		leaseRenewed, err := strconv.ParseBool(val)
 		if err != nil {
 			return PathClientFlushDataResponse{}, err
 		}
 		result.LeaseRenewed = &leaseRenewed
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -628,12 +620,7 @@ func (client *PathClient) GetProperties(ctx context.Context, options *PathClient
 	if err != nil {
 		return PathClientGetPropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PathClientGetPropertiesResponse{}, err
-	}
-	resp, err := client.getPropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.getPropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
@@ -676,9 +663,12 @@ func (client *PathClient) getPropertiesCreateRequest(ctx context.Context, option
 }
 
 // getPropertiesHandleResponse handles the GetProperties response.
-func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (PathClientGetPropertiesResponse, error) {
+func (client *PathClient) getPropertiesHandleResponse(resp *http.Response, successCodes ...int) (PathClientGetPropertiesResponse, error) {
 	result := PathClientGetPropertiesResponse{}
-	if val := resp.Header.Get("x-ms-acl"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Acl"); val != "" {
 		result.ACL = &val
 	}
 	if val := resp.Header.Get("Accept-Ranges"); val != "" {
@@ -687,7 +677,7 @@ func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (Path
 	if val := resp.Header.Get("Cache-Control"); val != "" {
 		result.CacheControl = &val
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Content-Disposition"); val != "" {
@@ -706,7 +696,7 @@ func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (Path
 		}
 		result.ContentLength = &contentLength
 	}
-	if val := resp.Header.Get("Content-MD5"); val != "" {
+	if val := resp.Header.Get("Content-Md5"); val != "" {
 		result.ContentMD5 = &val
 	}
 	if val := resp.Header.Get("Content-Range"); val != "" {
@@ -715,7 +705,7 @@ func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (Path
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
 	}
-	if val := resp.Header.Get("x-ms-creation-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Creation-Time"); val != "" {
 		creationTime, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return PathClientGetPropertiesResponse{}, err
@@ -729,29 +719,29 @@ func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (Path
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-encryption-context"); val != "" {
+	if val := resp.Header.Get("X-Ms-Encryption-Context"); val != "" {
 		result.EncryptionContext = &val
 	}
-	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+	if val := resp.Header.Get("X-Ms-Encryption-Key-Sha256"); val != "" {
 		result.EncryptionKeySHA256 = &val
 	}
-	if val := resp.Header.Get("x-ms-encryption-scope"); val != "" {
+	if val := resp.Header.Get("X-Ms-Encryption-Scope"); val != "" {
 		result.EncryptionScope = &val
 	}
-	if val := resp.Header.Get("x-ms-expiry-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Expiry-Time"); val != "" {
 		expiresOn, err := time.Parse(time.RFC1123, val)
 		if err != nil {
 			return PathClientGetPropertiesResponse{}, err
 		}
 		result.ExpiresOn = &expiresOn
 	}
-	if val := resp.Header.Get("x-ms-group"); val != "" {
+	if val := resp.Header.Get("X-Ms-Group"); val != "" {
 		result.Group = &val
 	}
-	if val := resp.Header.Get("x-ms-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return PathClientGetPropertiesResponse{}, err
@@ -765,31 +755,31 @@ func (client *PathClient) getPropertiesHandleResponse(resp *http.Response) (Path
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Duration"); val != "" {
 		result.LeaseDuration = &val
 	}
-	if val := resp.Header.Get("x-ms-lease-state"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-State"); val != "" {
 		result.LeaseState = &val
 	}
-	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Status"); val != "" {
 		result.LeaseStatus = &val
 	}
-	if val := resp.Header.Get("x-ms-owner"); val != "" {
+	if val := resp.Header.Get("X-Ms-Owner"); val != "" {
 		result.Owner = &val
 	}
-	if val := resp.Header.Get("x-ms-permissions"); val != "" {
+	if val := resp.Header.Get("X-Ms-Permissions"); val != "" {
 		result.Permissions = &val
 	}
-	if val := resp.Header.Get("x-ms-properties"); val != "" {
+	if val := resp.Header.Get("X-Ms-Properties"); val != "" {
 		result.Properties = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-resource-type"); val != "" {
+	if val := resp.Header.Get("X-Ms-Resource-Type"); val != "" {
 		result.ResourceType = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -816,12 +806,7 @@ func (client *PathClient) Lease(ctx context.Context, leaseAction PathLeaseAction
 	if err != nil {
 		return PathClientLeaseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PathClientLeaseResponse{}, err
-	}
-	resp, err := client.leaseHandleResponse(httpResp)
-	return resp, err
+	return client.leaseHandleResponse(httpResp, http.StatusOK)
 }
 
 // leaseCreateRequest creates the Lease request.
@@ -868,9 +853,12 @@ func (client *PathClient) leaseCreateRequest(ctx context.Context, leaseAction Pa
 }
 
 // leaseHandleResponse handles the Lease response.
-func (client *PathClient) leaseHandleResponse(resp *http.Response) (PathClientLeaseResponse, error) {
+func (client *PathClient) leaseHandleResponse(resp *http.Response, successCodes ...int) (PathClientLeaseResponse, error) {
 	result := PathClientLeaseResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -880,7 +868,7 @@ func (client *PathClient) leaseHandleResponse(resp *http.Response) (PathClientLe
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -890,16 +878,16 @@ func (client *PathClient) leaseHandleResponse(resp *http.Response) (PathClientLe
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Id"); val != "" {
 		result.LeaseID = &val
 	}
-	if val := resp.Header.Get("x-ms-lease-time"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Time"); val != "" {
 		result.LeaseTime = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -919,12 +907,7 @@ func (client *PathClient) Read(ctx context.Context, options *PathClientReadOptio
 	if err != nil {
 		return PathClientReadResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PathClientReadResponse{}, err
-	}
-	resp, err := client.readHandleResponse(httpResp)
-	return resp, err
+	return client.readHandleResponse(httpResp, http.StatusOK)
 }
 
 // readCreateRequest creates the Read request.
@@ -978,15 +961,18 @@ func (client *PathClient) readCreateRequest(ctx context.Context, options *PathCl
 }
 
 // readHandleResponse handles the Read response.
-func (client *PathClient) readHandleResponse(resp *http.Response) (PathClientReadResponse, error) {
-	result := PathClientReadResponse{Body: resp.Body}
+func (client *PathClient) readHandleResponse(resp *http.Response, successCodes ...int) (PathClientReadResponse, error) {
+	result := PathClientReadResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Accept-Ranges"); val != "" {
 		result.AcceptRanges = &val
 	}
 	if val := resp.Header.Get("Cache-Control"); val != "" {
 		result.CacheControl = &val
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Content-Disposition"); val != "" {
@@ -1005,7 +991,7 @@ func (client *PathClient) readHandleResponse(resp *http.Response) (PathClientRea
 		}
 		result.ContentLength = &contentLength
 	}
-	if val := resp.Header.Get("Content-MD5"); val != "" {
+	if val := resp.Header.Get("Content-Md5"); val != "" {
 		result.ContentMD5 = &val
 	}
 	if val := resp.Header.Get("Content-Range"); val != "" {
@@ -1021,13 +1007,13 @@ func (client *PathClient) readHandleResponse(resp *http.Response) (PathClientRea
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
-	if val := resp.Header.Get("x-ms-encryption-key-sha256"); val != "" {
+	if val := resp.Header.Get("X-Ms-Encryption-Key-Sha256"); val != "" {
 		result.EncryptionKeySHA256 = &val
 	}
-	if val := resp.Header.Get("x-ms-request-server-encrypted"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Server-Encrypted"); val != "" {
 		isServerEncrypted, err := strconv.ParseBool(val)
 		if err != nil {
 			return PathClientReadResponse{}, err
@@ -1041,27 +1027,28 @@ func (client *PathClient) readHandleResponse(resp *http.Response) (PathClientRea
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-lease-duration"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Duration"); val != "" {
 		result.LeaseDuration = &val
 	}
-	if val := resp.Header.Get("x-ms-lease-state"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-State"); val != "" {
 		result.LeaseState = &val
 	}
-	if val := resp.Header.Get("x-ms-lease-status"); val != "" {
+	if val := resp.Header.Get("X-Ms-Lease-Status"); val != "" {
 		result.LeaseStatus = &val
 	}
-	if val := resp.Header.Get("x-ms-properties"); val != "" {
+	if val := resp.Header.Get("X-Ms-Properties"); val != "" {
 		result.Properties = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-resource-type"); val != "" {
+	if val := resp.Header.Get("X-Ms-Resource-Type"); val != "" {
 		result.ResourceType = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
+	result.Body = resp.Body
 	return result, nil
 }
 
@@ -1078,12 +1065,7 @@ func (client *PathClient) SetAccessControl(ctx context.Context, options *PathCli
 	if err != nil {
 		return PathClientSetAccessControlResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PathClientSetAccessControlResponse{}, err
-	}
-	resp, err := client.setAccessControlHandleResponse(httpResp)
-	return resp, err
+	return client.setAccessControlHandleResponse(httpResp, http.StatusOK)
 }
 
 // setAccessControlCreateRequest creates the SetAccessControl request.
@@ -1133,9 +1115,12 @@ func (client *PathClient) setAccessControlCreateRequest(ctx context.Context, opt
 }
 
 // setAccessControlHandleResponse handles the SetAccessControl response.
-func (client *PathClient) setAccessControlHandleResponse(resp *http.Response) (PathClientSetAccessControlResponse, error) {
+func (client *PathClient) setAccessControlHandleResponse(resp *http.Response, successCodes ...int) (PathClientSetAccessControlResponse, error) {
 	result := PathClientSetAccessControlResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1145,7 +1130,7 @@ func (client *PathClient) setAccessControlHandleResponse(resp *http.Response) (P
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -1155,10 +1140,10 @@ func (client *PathClient) setAccessControlHandleResponse(resp *http.Response) (P
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1181,12 +1166,7 @@ func (client *PathClient) SetAccessControlRecursive(ctx context.Context, mode Pa
 	if err != nil {
 		return PathClientSetAccessControlRecursiveResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PathClientSetAccessControlRecursiveResponse{}, err
-	}
-	resp, err := client.setAccessControlRecursiveHandleResponse(httpResp)
-	return resp, err
+	return client.setAccessControlRecursiveHandleResponse(httpResp, http.StatusOK)
 }
 
 // setAccessControlRecursiveCreateRequest creates the SetAccessControlRecursive request.
@@ -1223,12 +1203,15 @@ func (client *PathClient) setAccessControlRecursiveCreateRequest(ctx context.Con
 }
 
 // setAccessControlRecursiveHandleResponse handles the SetAccessControlRecursive response.
-func (client *PathClient) setAccessControlRecursiveHandleResponse(resp *http.Response) (PathClientSetAccessControlRecursiveResponse, error) {
+func (client *PathClient) setAccessControlRecursiveHandleResponse(resp *http.Response, successCodes ...int) (PathClientSetAccessControlRecursiveResponse, error) {
 	result := PathClientSetAccessControlRecursiveResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-continuation"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation"); val != "" {
 		result.Continuation = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1238,10 +1221,10 @@ func (client *PathClient) setAccessControlRecursiveHandleResponse(resp *http.Res
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SetAccessControlRecursiveResponse); err != nil {
@@ -1264,12 +1247,7 @@ func (client *PathClient) SetExpiry(ctx context.Context, expiryOptions PathExpir
 	if err != nil {
 		return PathClientSetExpiryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PathClientSetExpiryResponse{}, err
-	}
-	resp, err := client.setExpiryHandleResponse(httpResp)
-	return resp, err
+	return client.setExpiryHandleResponse(httpResp, http.StatusOK)
 }
 
 // setExpiryCreateRequest creates the SetExpiry request.
@@ -1296,9 +1274,12 @@ func (client *PathClient) setExpiryCreateRequest(ctx context.Context, expiryOpti
 }
 
 // setExpiryHandleResponse handles the SetExpiry response.
-func (client *PathClient) setExpiryHandleResponse(resp *http.Response) (PathClientSetExpiryResponse, error) {
+func (client *PathClient) setExpiryHandleResponse(resp *http.Response, successCodes ...int) (PathClientSetExpiryResponse, error) {
 	result := PathClientSetExpiryResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1308,7 +1289,7 @@ func (client *PathClient) setExpiryHandleResponse(resp *http.Response) (PathClie
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -1318,10 +1299,10 @@ func (client *PathClient) setExpiryHandleResponse(resp *http.Response) (PathClie
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1340,12 +1321,7 @@ func (client *PathClient) Undelete(ctx context.Context, options *PathClientUndel
 	if err != nil {
 		return PathClientUndeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PathClientUndeleteResponse{}, err
-	}
-	resp, err := client.undeleteHandleResponse(httpResp)
-	return resp, err
+	return client.undeleteHandleResponse(httpResp, http.StatusOK)
 }
 
 // undeleteCreateRequest creates the Undelete request.
@@ -1371,9 +1347,12 @@ func (client *PathClient) undeleteCreateRequest(ctx context.Context, options *Pa
 }
 
 // undeleteHandleResponse handles the Undelete response.
-func (client *PathClient) undeleteHandleResponse(resp *http.Response) (PathClientUndeleteResponse, error) {
+func (client *PathClient) undeleteHandleResponse(resp *http.Response, successCodes ...int) (PathClientUndeleteResponse, error) {
 	result := PathClientUndeleteResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1383,13 +1362,13 @@ func (client *PathClient) undeleteHandleResponse(resp *http.Response) (PathClien
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-resource-type"); val != "" {
+	if val := resp.Header.Get("X-Ms-Resource-Type"); val != "" {
 		result.ResourceType = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -1418,12 +1397,7 @@ func (client *PathClient) Update(ctx context.Context, action PathUpdateAction, b
 	if err != nil {
 		return PathClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PathClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
@@ -1526,15 +1500,18 @@ func (client *PathClient) updateCreateRequest(ctx context.Context, action PathUp
 }
 
 // updateHandleResponse handles the Update response.
-func (client *PathClient) updateHandleResponse(resp *http.Response) (PathClientUpdateResponse, error) {
+func (client *PathClient) updateHandleResponse(resp *http.Response, successCodes ...int) (PathClientUpdateResponse, error) {
 	result := PathClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Accept-Ranges"); val != "" {
 		result.AcceptRanges = &val
 	}
 	if val := resp.Header.Get("Cache-Control"); val != "" {
 		result.CacheControl = &val
 	}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Content-Disposition"); val != "" {
@@ -1553,13 +1530,13 @@ func (client *PathClient) updateHandleResponse(resp *http.Response) (PathClientU
 		}
 		result.ContentLength = &contentLength
 	}
-	if val := resp.Header.Get("Content-MD5"); val != "" {
+	if val := resp.Header.Get("Content-Md5"); val != "" {
 		result.ContentMD5 = &val
 	}
 	if val := resp.Header.Get("Content-Range"); val != "" {
 		result.ContentRange = &val
 	}
-	if val := resp.Header.Get("x-ms-continuation"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation"); val != "" {
 		result.Continuation = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -1569,7 +1546,7 @@ func (client *PathClient) updateHandleResponse(resp *http.Response) (PathClientU
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -1579,13 +1556,13 @@ func (client *PathClient) updateHandleResponse(resp *http.Response) (PathClientU
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-properties"); val != "" {
+	if val := resp.Header.Get("X-Ms-Properties"); val != "" {
 		result.Properties = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SetAccessControlRecursiveResponse); err != nil {

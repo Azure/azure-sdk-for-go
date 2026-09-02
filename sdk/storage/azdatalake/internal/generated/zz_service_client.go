@@ -49,10 +49,7 @@ func (client *ServiceClient) NewListFileSystemsPager(resource AccountResourceTyp
 			if err != nil {
 				return ServiceClientListFileSystemsResponse{}, err
 			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ServiceClientListFileSystemsResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listFileSystemsHandleResponse(resp)
+			return client.listFileSystemsHandleResponse(resp, http.StatusOK)
 		},
 	})
 }
@@ -87,12 +84,15 @@ func (client *ServiceClient) listFileSystemsCreateRequest(ctx context.Context, r
 }
 
 // listFileSystemsHandleResponse handles the ListFileSystems response.
-func (client *ServiceClient) listFileSystemsHandleResponse(resp *http.Response) (ServiceClientListFileSystemsResponse, error) {
+func (client *ServiceClient) listFileSystemsHandleResponse(resp *http.Response, successCodes ...int) (ServiceClientListFileSystemsResponse, error) {
 	result := ServiceClientListFileSystemsResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-continuation"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation"); val != "" {
 		result.Continuation = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -102,10 +102,10 @@ func (client *ServiceClient) listFileSystemsHandleResponse(resp *http.Response) 
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FileSystemList); err != nil {

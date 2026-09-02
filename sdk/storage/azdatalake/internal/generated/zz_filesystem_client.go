@@ -41,12 +41,7 @@ func (client *FileSystemClient) Create(ctx context.Context, resource FileSystemR
 	if err != nil {
 		return FileSystemClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return FileSystemClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
@@ -72,9 +67,12 @@ func (client *FileSystemClient) createCreateRequest(ctx context.Context, resourc
 }
 
 // createHandleResponse handles the Create response.
-func (client *FileSystemClient) createHandleResponse(resp *http.Response) (FileSystemClientCreateResponse, error) {
+func (client *FileSystemClient) createHandleResponse(resp *http.Response, successCodes ...int) (FileSystemClientCreateResponse, error) {
 	result := FileSystemClientCreateResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -84,7 +82,7 @@ func (client *FileSystemClient) createHandleResponse(resp *http.Response) (FileS
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -94,13 +92,13 @@ func (client *FileSystemClient) createHandleResponse(resp *http.Response) (FileS
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-namespace-enabled"); val != "" {
+	if val := resp.Header.Get("X-Ms-Namespace-Enabled"); val != "" {
 		result.NamespaceEnabled = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -125,12 +123,7 @@ func (client *FileSystemClient) Delete(ctx context.Context, resource FileSystemR
 	if err != nil {
 		return FileSystemClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return FileSystemClientDeleteResponse{}, err
-	}
-	resp, err := client.deleteHandleResponse(httpResp)
-	return resp, err
+	return client.deleteHandleResponse(httpResp, http.StatusAccepted)
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -159,9 +152,12 @@ func (client *FileSystemClient) deleteCreateRequest(ctx context.Context, resourc
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *FileSystemClient) deleteHandleResponse(resp *http.Response) (FileSystemClientDeleteResponse, error) {
+func (client *FileSystemClient) deleteHandleResponse(resp *http.Response, successCodes ...int) (FileSystemClientDeleteResponse, error) {
 	result := FileSystemClientDeleteResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -171,10 +167,10 @@ func (client *FileSystemClient) deleteHandleResponse(resp *http.Response) (FileS
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -195,12 +191,7 @@ func (client *FileSystemClient) GetProperties(ctx context.Context, resource File
 	if err != nil {
 		return FileSystemClientGetPropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FileSystemClientGetPropertiesResponse{}, err
-	}
-	resp, err := client.getPropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.getPropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // getPropertiesCreateRequest creates the GetProperties request.
@@ -223,9 +214,12 @@ func (client *FileSystemClient) getPropertiesCreateRequest(ctx context.Context, 
 }
 
 // getPropertiesHandleResponse handles the GetProperties response.
-func (client *FileSystemClient) getPropertiesHandleResponse(resp *http.Response) (FileSystemClientGetPropertiesResponse, error) {
+func (client *FileSystemClient) getPropertiesHandleResponse(resp *http.Response, successCodes ...int) (FileSystemClientGetPropertiesResponse, error) {
 	result := FileSystemClientGetPropertiesResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -235,7 +229,7 @@ func (client *FileSystemClient) getPropertiesHandleResponse(resp *http.Response)
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -245,16 +239,16 @@ func (client *FileSystemClient) getPropertiesHandleResponse(resp *http.Response)
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-namespace-enabled"); val != "" {
+	if val := resp.Header.Get("X-Ms-Namespace-Enabled"); val != "" {
 		result.NamespaceEnabled = &val
 	}
-	if val := resp.Header.Get("x-ms-properties"); val != "" {
+	if val := resp.Header.Get("X-Ms-Properties"); val != "" {
 		result.Properties = &val
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil
@@ -274,12 +268,7 @@ func (client *FileSystemClient) ListBlobHierarchySegment(ctx context.Context, op
 	if err != nil {
 		return FileSystemClientListPathHierarchySegmentResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FileSystemClientListPathHierarchySegmentResponse{}, err
-	}
-	resp, err := client.listBlobHierarchySegmentHandleResponse(httpResp)
-	return resp, err
+	return client.listBlobHierarchySegmentHandleResponse(httpResp, http.StatusOK)
 }
 
 // listBlobHierarchySegmentCreateRequest creates the ListBlobHierarchySegment request.
@@ -321,13 +310,13 @@ func (client *FileSystemClient) listBlobHierarchySegmentCreateRequest(ctx contex
 }
 
 // listBlobHierarchySegmentHandleResponse handles the ListBlobHierarchySegment response.
-func (client *FileSystemClient) listBlobHierarchySegmentHandleResponse(resp *http.Response) (FileSystemClientListPathHierarchySegmentResponse, error) {
+func (client *FileSystemClient) listBlobHierarchySegmentHandleResponse(resp *http.Response, successCodes ...int) (FileSystemClientListPathHierarchySegmentResponse, error) {
 	result := FileSystemClientListPathHierarchySegmentResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
-		result.ClientRequestID = &val
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
 	}
-	if val := resp.Header.Get("Content-Type"); val != "" {
-		result.ContentType = &val
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
+		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
@@ -336,10 +325,10 @@ func (client *FileSystemClient) listBlobHierarchySegmentHandleResponse(resp *htt
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListPathsHierarchySegmentResponse); err != nil {
@@ -373,10 +362,7 @@ func (client *FileSystemClient) NewListPathsPager(recursive bool, options *FileS
 			if err != nil {
 				return FileSystemClientListPathsResponse{}, err
 			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return FileSystemClientListPathsResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listPathsHandleResponse(resp)
+			return client.listPathsHandleResponse(resp, http.StatusOK)
 		},
 	})
 }
@@ -418,12 +404,15 @@ func (client *FileSystemClient) listPathsCreateRequest(ctx context.Context, recu
 }
 
 // listPathsHandleResponse handles the ListPaths response.
-func (client *FileSystemClient) listPathsHandleResponse(resp *http.Response) (FileSystemClientListPathsResponse, error) {
+func (client *FileSystemClient) listPathsHandleResponse(resp *http.Response, successCodes ...int) (FileSystemClientListPathsResponse, error) {
 	result := FileSystemClientListPathsResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-continuation"); val != "" {
+	if val := resp.Header.Get("X-Ms-Continuation"); val != "" {
 		result.Continuation = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -433,7 +422,7 @@ func (client *FileSystemClient) listPathsHandleResponse(resp *http.Response) (Fi
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -443,10 +432,10 @@ func (client *FileSystemClient) listPathsHandleResponse(resp *http.Response) (Fi
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PathList); err != nil {
@@ -471,12 +460,7 @@ func (client *FileSystemClient) SetProperties(ctx context.Context, resource File
 	if err != nil {
 		return FileSystemClientSetPropertiesResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return FileSystemClientSetPropertiesResponse{}, err
-	}
-	resp, err := client.setPropertiesHandleResponse(httpResp)
-	return resp, err
+	return client.setPropertiesHandleResponse(httpResp, http.StatusOK)
 }
 
 // setPropertiesCreateRequest creates the SetProperties request.
@@ -508,9 +492,12 @@ func (client *FileSystemClient) setPropertiesCreateRequest(ctx context.Context, 
 }
 
 // setPropertiesHandleResponse handles the SetProperties response.
-func (client *FileSystemClient) setPropertiesHandleResponse(resp *http.Response) (FileSystemClientSetPropertiesResponse, error) {
+func (client *FileSystemClient) setPropertiesHandleResponse(resp *http.Response, successCodes ...int) (FileSystemClientSetPropertiesResponse, error) {
 	result := FileSystemClientSetPropertiesResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -520,7 +507,7 @@ func (client *FileSystemClient) setPropertiesHandleResponse(resp *http.Response)
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -530,10 +517,10 @@ func (client *FileSystemClient) setPropertiesHandleResponse(resp *http.Response)
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil

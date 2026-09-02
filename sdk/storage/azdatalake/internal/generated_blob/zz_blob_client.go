@@ -38,12 +38,7 @@ func (client *BlobClient) SetExpiry(ctx context.Context, expiryOptions ExpiryOpt
 	if err != nil {
 		return BlobClientSetExpiryResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobClientSetExpiryResponse{}, err
-	}
-	resp, err := client.setExpiryHandleResponse(httpResp)
-	return resp, err
+	return client.setExpiryHandleResponse(httpResp, http.StatusOK)
 }
 
 // setExpiryCreateRequest creates the SetExpiry request.
@@ -70,9 +65,12 @@ func (client *BlobClient) setExpiryCreateRequest(ctx context.Context, expiryOpti
 }
 
 // setExpiryHandleResponse handles the SetExpiry response.
-func (client *BlobClient) setExpiryHandleResponse(resp *http.Response) (BlobClientSetExpiryResponse, error) {
+func (client *BlobClient) setExpiryHandleResponse(resp *http.Response, successCodes ...int) (BlobClientSetExpiryResponse, error) {
 	result := BlobClientSetExpiryResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -82,7 +80,7 @@ func (client *BlobClient) setExpiryHandleResponse(resp *http.Response) (BlobClie
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = (*azcore.ETag)(&val)
 	}
 	if val := resp.Header.Get("Last-Modified"); val != "" {
@@ -92,10 +90,10 @@ func (client *BlobClient) setExpiryHandleResponse(resp *http.Response) (BlobClie
 		}
 		result.LastModified = &lastModified
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	return result, nil

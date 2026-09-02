@@ -41,12 +41,7 @@ func (client *ServiceClient) GetUserDelegationKey(ctx context.Context, keyInfo K
 	if err != nil {
 		return ServiceClientGetUserDelegationKeyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ServiceClientGetUserDelegationKeyResponse{}, err
-	}
-	resp, err := client.getUserDelegationKeyHandleResponse(httpResp)
-	return resp, err
+	return client.getUserDelegationKeyHandleResponse(httpResp, http.StatusOK)
 }
 
 // getUserDelegationKeyCreateRequest creates the GetUserDelegationKey request.
@@ -74,9 +69,12 @@ func (client *ServiceClient) getUserDelegationKeyCreateRequest(ctx context.Conte
 }
 
 // getUserDelegationKeyHandleResponse handles the GetUserDelegationKey response.
-func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Response) (ServiceClientGetUserDelegationKeyResponse, error) {
+func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Response, successCodes ...int) (ServiceClientGetUserDelegationKeyResponse, error) {
 	result := ServiceClientGetUserDelegationKeyResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -86,10 +84,10 @@ func (client *ServiceClient) getUserDelegationKeyHandleResponse(resp *http.Respo
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.UserDelegationKey); err != nil {
@@ -122,10 +120,7 @@ func (client *ServiceClient) NewListContainersSegmentPager(options *ServiceClien
 			if err != nil {
 				return ServiceClientListFileSystemsSegmentResponse{}, err
 			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ServiceClientListFileSystemsSegmentResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listContainersSegmentHandleResponse(resp)
+			return client.listContainersSegmentHandleResponse(resp, http.StatusOK)
 		},
 	})
 }
@@ -163,9 +158,12 @@ func (client *ServiceClient) listContainersSegmentCreateRequest(ctx context.Cont
 }
 
 // listContainersSegmentHandleResponse handles the ListContainersSegment response.
-func (client *ServiceClient) listContainersSegmentHandleResponse(resp *http.Response) (ServiceClientListFileSystemsSegmentResponse, error) {
+func (client *ServiceClient) listContainersSegmentHandleResponse(resp *http.Response, successCodes ...int) (ServiceClientListFileSystemsSegmentResponse, error) {
 	result := ServiceClientListFileSystemsSegmentResponse{}
-	if val := resp.Header.Get("x-ms-client-request-id"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
 	if val := resp.Header.Get("Date"); val != "" {
@@ -175,10 +173,10 @@ func (client *ServiceClient) listContainersSegmentHandleResponse(resp *http.Resp
 		}
 		result.Date = &date
 	}
-	if val := resp.Header.Get("x-ms-request-id"); val != "" {
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
 		result.RequestID = &val
 	}
-	if val := resp.Header.Get("x-ms-version"); val != "" {
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
 	}
 	if err := runtime.UnmarshalAsXML(resp, &result.ListFileSystemsSegmentResponse); err != nil {

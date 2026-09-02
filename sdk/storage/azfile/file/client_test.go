@@ -5261,6 +5261,46 @@ func TestFileUploadRangeStructuredMessageBody(t *testing.T) {
 	_require.Equal(strconv.Itoa(contentSize), sclHeader[0])
 }
 
+func TestFileCreateStructuredMessageBody(t *testing.T) {
+	_require := require.New(t)
+
+	log.SetListener(nil)
+
+	const contentSize = 2048
+	const segmentSize = 512
+	content := make([]byte, contentSize)
+	_, err := rand.Read(content)
+	_require.NoError(err)
+
+	encoder := shared.NewSMEncoder(streaming.NopCloser(bytes.NewReader(content)), int64(contentSize), segmentSize)
+	expectedBody, err := io.ReadAll(encoder)
+	_require.NoError(err)
+	_require.Greater(len(expectedBody), contentSize)
+
+	transport := &captureBodyTransport{}
+	fileClient, err := file.NewClientWithNoCredential("https://fake/share/file", &file.ClientOptions{
+		ClientOptions: policy.ClientOptions{
+			Transport: transport,
+		},
+	})
+	_require.NoError(err)
+
+	_, err = fileClient.Create(context.Background(), int64(contentSize), &file.CreateOptions{
+		OptionalBody:            streaming.NopCloser(bytes.NewReader(content)),
+		TransactionalValidation: file.TransferValidationTypeComputeStructuredMessageCRC64(segmentSize),
+	})
+	_require.NoError(err)
+
+	_require.Equal(expectedBody, transport.capturedBody)
+
+	sbHeader := foldedHeaderValues(transport.capturedHeaders, "x-ms-structured-body")
+	_require.Len(sbHeader, 1)
+	_require.Equal(shared.SMHeaderValue, sbHeader[0])
+	sclHeader := foldedHeaderValues(transport.capturedHeaders, "x-ms-structured-content-length")
+	_require.Len(sclHeader, 1)
+	_require.Equal(strconv.Itoa(contentSize), sclHeader[0])
+}
+
 // TODO: Add tests for retry header options
 
 func (f *FileRecordedTestsSuite) TestCreateHardLinkNFS() {

@@ -11,6 +11,7 @@
 * Fixed WASM compilation by using heap-allocated buffers on JS targets.
 
 ### Other Changes
+* Optimized `DownloadBuffer` and `DownloadFile` to use an initial GET request instead of a HEAD (GetProperties) call for blob size discovery. For small blobs (<=4MB), the entire content is returned in a single request, reducing download latency by ~50%.
 
 ## 1.8.1-beta.1 (2026-07-24)
 

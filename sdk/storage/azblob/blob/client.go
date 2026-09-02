@@ -364,6 +364,14 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		return 0, err
 	}
 
+	if dr.ContentRange == nil && dr.ContentLength == nil {
+		// A 304 Not Modified response (from If-None-Match / If-Modified-Since conditions)
+		// has no body or size headers. Close the body and surface as an error so callers
+		// see the same behavior as the prior GetProperties path.
+		_ = dr.Body.Close()
+		return 0, fmt.Errorf("response contained no content headers; this may indicate a 304 Not Modified due to access conditions")
+	}
+
 	var totalSize int64
 	if dr.ContentRange != nil {
 		totalSize = parseContentRangeTotal(*dr.ContentRange)
@@ -371,11 +379,8 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 			_ = dr.Body.Close()
 			return 0, fmt.Errorf("unable to parse total size from Content-Range header: %s", *dr.ContentRange)
 		}
-	} else if dr.ContentLength != nil {
-		totalSize = *dr.ContentLength + o.Range.Offset
 	} else {
-		_ = dr.Body.Close()
-		return 0, fmt.Errorf("response missing both Content-Range and Content-Length headers")
+		totalSize = *dr.ContentLength + o.Range.Offset
 	}
 
 	count = totalSize - o.Range.Offset

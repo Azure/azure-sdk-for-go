@@ -87,7 +87,7 @@ func (m *ManagementServerTransport) dispatchCheckAmlFSSubnets(req *http.Request)
 	if m.srv.CheckAmlFSSubnets == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckAmlFSSubnets not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageCache/checkAmlFSSubnets`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/checkAmlFSSubnets`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -122,7 +122,7 @@ func (m *ManagementServerTransport) dispatchGetRequiredAmlFSSubnetsSize(req *htt
 	if m.srv.GetRequiredAmlFSSubnetsSize == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetRequiredAmlFSSubnetsSize not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.StorageCache/getRequiredAmlFSSubnetsSize`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.StorageCache/getRequiredAmlFSSubnetsSize`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

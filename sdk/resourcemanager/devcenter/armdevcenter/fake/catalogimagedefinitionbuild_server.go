@@ -99,7 +99,7 @@ func (c *CatalogImageDefinitionBuildServerTransport) dispatchBeginCancel(req *ht
 	}
 	beginCancel := c.beginCancel.get(req)
 	if beginCancel == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/devcenters/(?P<devCenterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/imageDefinitions/(?P<imageDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<buildName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/devcenters/(?P<devCenterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/catalogs/(?P<catalogName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/imageDefinitions/(?P<imageDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<buildName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -153,7 +153,7 @@ func (c *CatalogImageDefinitionBuildServerTransport) dispatchGet(req *http.Reque
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/devcenters/(?P<devCenterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/imageDefinitions/(?P<imageDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<buildName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/devcenters/(?P<devCenterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/catalogs/(?P<catalogName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/imageDefinitions/(?P<imageDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<buildName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -198,7 +198,7 @@ func (c *CatalogImageDefinitionBuildServerTransport) dispatchGetBuildDetails(req
 	if c.srv.GetBuildDetails == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetBuildDetails not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DevCenter/devcenters/(?P<devCenterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/catalogs/(?P<catalogName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/imageDefinitions/(?P<imageDefinitionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/builds/(?P<buildName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getBuildDetails`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DevCenter/devcenters/(?P<devCenterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/catalogs/(?P<catalogName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/imageDefinitions/(?P<imageDefinitionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/builds/(?P<buildName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getBuildDetails`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {

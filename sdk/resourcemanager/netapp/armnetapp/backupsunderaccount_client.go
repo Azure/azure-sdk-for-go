@@ -30,6 +30,9 @@ type BackupsUnderAccountClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBackupsUnderAccountClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupsUnderAccountClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -91,7 +94,7 @@ func (client *BackupsUnderAccountClient) migrateBackups(ctx context.Context, res
 func (client *BackupsUnderAccountClient) migrateBackupsCreateRequest(ctx context.Context, resourceGroupName string, accountName string, body BackupsMigrationRequest, _ *BackupsUnderAccountClientBeginMigrateBackupsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/migrateBackups"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

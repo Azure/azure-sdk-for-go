@@ -72,6 +72,68 @@ func ExampleExemptionsClient_CreateOrUpdate_createOrUpdateAPolicyExemption() {
 	// }
 }
 
+// Generated from example definition: 2026-01-01-preview/createOrUpdatePolicyExemptionWithExemptionManagementMode.json
+func ExampleExemptionsClient_CreateOrUpdate_createOrUpdateAPolicyExemptionWithExemptionManagementMode() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpolicy.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExemptionsClient().CreateOrUpdate(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster", "DemoExpensiveVM", armpolicy.Exemption{
+		Properties: &armpolicy.ExemptionProperties{
+			PolicyAssignmentID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
+			PolicyDefinitionReferenceIDs: []*string{
+				to.Ptr("Limit_Skus"),
+			},
+			ExemptionCategory: to.Ptr(armpolicy.ExemptionCategoryWaiver),
+			DisplayName:       to.Ptr("Exempt demo cluster"),
+			Description:       to.Ptr("Exempt demo cluster from limit sku"),
+			Metadata: map[string]any{
+				"reason": "Temporary exemption for a expensive VM demo",
+			},
+			ExemptionManagementMode: to.Ptr(armpolicy.ExemptionManagementModeUserSelfServe),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpolicy.ExemptionsClientCreateOrUpdateResponse{
+	// 	Exemption: armpolicy.Exemption{
+	// 		Properties: &armpolicy.ExemptionProperties{
+	// 			PolicyAssignmentID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
+	// 			PolicyDefinitionReferenceIDs: []*string{
+	// 				to.Ptr("Limit_Skus"),
+	// 			},
+	// 			ExemptionCategory: to.Ptr(armpolicy.ExemptionCategoryWaiver),
+	// 			DisplayName: to.Ptr("Exempt demo cluster"),
+	// 			Description: to.Ptr("Exempt demo cluster from limit sku"),
+	// 			Metadata: map[string]any{
+	// 				"reason": "Temporary exemption for a expensive VM demo",
+	// 			},
+	// 			ExemptionManagementMode: to.Ptr(armpolicy.ExemptionManagementModeUserSelfServe),
+	// 		},
+	// 		SystemData: &armpolicy.SystemData{
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armpolicy.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.July, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armpolicy.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.July, 1, 2, 1, 1, 107505600, time.UTC)),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster/providers/Microsoft.Authorization/policyExemptions/DemoExpensiveVM"),
+	// 		Type: to.Ptr("Microsoft.Authorization/policyExemptions"),
+	// 		Name: to.Ptr("DemoExpensiveVM"),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-01-01-preview/createOrUpdatePolicyExemptionWithResourceSelectors.json
 func ExampleExemptionsClient_CreateOrUpdate_createOrUpdateAPolicyExemptionWithResourceSelectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -608,8 +670,60 @@ func ExampleExemptionsClient_NewListForResourceGroupPager() {
 	}
 }
 
+// Generated from example definition: 2026-01-01-preview/updatePolicyExemptionWithExemptionManagementMode.json
+func ExampleExemptionsClient_Update_updateAPolicyExemptionWithExemptionManagementMode() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpolicy.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewExemptionsClient().Update(ctx, "subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster", "DemoExpensiveVM", armpolicy.ExemptionUpdate{
+		Properties: &armpolicy.ExemptionUpdateProperties{
+			ExemptionManagementMode: to.Ptr(armpolicy.ExemptionManagementModeAdmin),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpolicy.ExemptionsClientUpdateResponse{
+	// 	Exemption: armpolicy.Exemption{
+	// 		Properties: &armpolicy.ExemptionProperties{
+	// 			PolicyAssignmentID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/providers/Microsoft.Authorization/policyAssignments/CostManagement"),
+	// 			PolicyDefinitionReferenceIDs: []*string{
+	// 				to.Ptr("Limit_Skus"),
+	// 			},
+	// 			ExemptionCategory: to.Ptr(armpolicy.ExemptionCategoryWaiver),
+	// 			DisplayName: to.Ptr("Exempt demo cluster"),
+	// 			Description: to.Ptr("Exempt demo cluster from limit sku"),
+	// 			Metadata: map[string]any{
+	// 				"reason": "Temporary exemption for a expensive VM demo",
+	// 			},
+	// 			ExemptionManagementMode: to.Ptr(armpolicy.ExemptionManagementModeAdmin),
+	// 		},
+	// 		SystemData: &armpolicy.SystemData{
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armpolicy.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.July, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armpolicy.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.July, 1, 2, 1, 1, 107505600, time.UTC)),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/ae640e6b-ba3e-4256-9d62-2993eecfa6f2/resourceGroups/demoCluster/providers/Microsoft.Authorization/policyExemptions/DemoExpensiveVM"),
+	// 		Type: to.Ptr("Microsoft.Authorization/policyExemptions"),
+	// 		Name: to.Ptr("DemoExpensiveVM"),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-01-01-preview/updatePolicyExemptionWithResourceSelectors.json
-func ExampleExemptionsClient_Update() {
+func ExampleExemptionsClient_Update_updateAPolicyExemptionWithResourceSelectors() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)

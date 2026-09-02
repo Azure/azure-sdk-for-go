@@ -22,7 +22,7 @@ import (
 // ComputesServer is a fake server for instances of the armcognitiveservices.ComputesClient type.
 type ComputesServer struct {
 	// BeginCreateOrUpdate is the fake for method ComputesClient.BeginCreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, computeName string, resource armcognitiveservices.Compute, options *armcognitiveservices.ComputesClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcognitiveservices.ComputesClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ComputesClient.BeginDelete
@@ -48,10 +48,6 @@ type ComputesServer struct {
 	// BeginStop is the fake for method ComputesClient.BeginStop
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginStop func(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *armcognitiveservices.ComputesClientBeginStopOptions) (resp azfake.PollerResponder[armcognitiveservices.ComputesClientStopResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method ComputesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, computeName string, properties armcognitiveservices.Compute, options *armcognitiveservices.ComputesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcognitiveservices.ComputesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewComputesServerTransport creates a new instance of ComputesServerTransport with the provided implementation.
@@ -66,7 +62,6 @@ func NewComputesServerTransport(srv *ComputesServer) *ComputesServerTransport {
 		beginRestart:        newTracker[azfake.PollerResponder[armcognitiveservices.ComputesClientRestartResponse]](),
 		beginStart:          newTracker[azfake.PollerResponder[armcognitiveservices.ComputesClientStartResponse]](),
 		beginStop:           newTracker[azfake.PollerResponder[armcognitiveservices.ComputesClientStopResponse]](),
-		beginUpdate:         newTracker[azfake.PollerResponder[armcognitiveservices.ComputesClientUpdateResponse]](),
 	}
 }
 
@@ -80,7 +75,6 @@ type ComputesServerTransport struct {
 	beginRestart        *tracker[azfake.PollerResponder[armcognitiveservices.ComputesClientRestartResponse]]
 	beginStart          *tracker[azfake.PollerResponder[armcognitiveservices.ComputesClientStartResponse]]
 	beginStop           *tracker[azfake.PollerResponder[armcognitiveservices.ComputesClientStopResponse]]
-	beginUpdate         *tracker[azfake.PollerResponder[armcognitiveservices.ComputesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ComputesServerTransport.
@@ -118,8 +112,6 @@ func (c *ComputesServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = c.dispatchBeginStart(req)
 			case "ComputesClient.BeginStop":
 				res.resp, res.err = c.dispatchBeginStop(req)
-			case "ComputesClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -177,9 +169,9 @@ func (c *ComputesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request)
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		c.beginCreateOrUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreateOrUpdate) {
 		c.beginCreateOrUpdate.remove(req)
@@ -453,58 +445,6 @@ func (c *ComputesServerTransport) dispatchBeginStop(req *http.Request) (*http.Re
 	}
 	if !server.PollerResponderMore(beginStop) {
 		c.beginStop.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (c *ComputesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CognitiveServices/accounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcognitiveservices.Compute](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		computeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("computeName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, accountNameParam, computeNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
 	}
 
 	return resp, nil

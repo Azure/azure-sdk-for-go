@@ -97,7 +97,7 @@ func (k *KeyValuesServerTransport) dispatchCreateOrUpdate(req *http.Request) (*h
 	if k.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppConfiguration/configurationStores/(?P<configStoreName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/keyValues/(?P<keyValueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppConfiguration/configurationStores/(?P<configStoreName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/keyValues/(?P<keyValueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -140,7 +140,7 @@ func (k *KeyValuesServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	}
 	beginDelete := k.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppConfiguration/configurationStores/(?P<configStoreName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/keyValues/(?P<keyValueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppConfiguration/configurationStores/(?P<configStoreName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/keyValues/(?P<keyValueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -186,7 +186,7 @@ func (k *KeyValuesServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if k.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AppConfiguration/configurationStores/(?P<configStoreName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/keyValues/(?P<keyValueName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AppConfiguration/configurationStores/(?P<configStoreName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/keyValues/(?P<keyValueName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

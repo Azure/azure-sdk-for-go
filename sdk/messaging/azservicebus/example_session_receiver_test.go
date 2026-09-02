@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 )
@@ -46,6 +47,24 @@ func ExampleClient_AcceptSessionForQueue() {
 
 		fmt.Printf("Received message from session ID \"%s\" and completed it", *message.SessionID)
 	}
+}
+
+func ExampleSessionReceiver_PurgeMessages() {
+	sessionID := "exampleSessionId"
+	sessionReceiver, err := client.AcceptSessionForQueue(context.TODO(), "exampleSessionQueue", sessionID, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	defer func() { _ = sessionReceiver.Close(context.TODO()) }()
+
+	result, err := sessionReceiver.PurgeMessages(context.TODO(), nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	fmt.Printf("Removed %d messages from session %s.", result.DeletedCount, sessionID)
 }
 
 func ExampleClient_AcceptSessionForSubscription() {

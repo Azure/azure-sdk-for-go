@@ -668,7 +668,7 @@ func TestConnectionErrorReadFailsOverWhenGlobalEndpointIsUnreachable(t *testing.
 	// routing decision after failover is observable. "East US" (badSrv)
 	// is the user's application region (index 0); "Central US" (goodSrv)
 	// is the next preferred.
-	lc := newLocationCache([]string{"East US", "Central US"}, *badURL, true /*enableCrossRegionRetries*/)
+	lc := newLocationCache([]string{"East US", "Central US"}, *badURL, true /*enableCrossRegionRetries*/, true /*enableEndpointDiscovery*/)
 	require.NoError(t, lc.update(
 		[]accountRegion{{Name: "East US", Endpoint: badSrv.URL()}},
 		[]accountRegion{
@@ -832,7 +832,7 @@ func TestAmbiguousConnectionErrorReadFailsOver(t *testing.T) {
 	gemServer.SetError(&net.DNSError{})
 	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
 
-	lc := newLocationCache([]string{"East US", "Central US"}, *badURL, true /*enableCrossRegionRetries*/)
+	lc := newLocationCache([]string{"East US", "Central US"}, *badURL, true /*enableCrossRegionRetries*/, true /*enableEndpointDiscovery*/)
 	require.NoError(t, lc.update(
 		[]accountRegion{{Name: "East US", Endpoint: badSrv.URL()}},
 		[]accountRegion{
@@ -1195,7 +1195,7 @@ func TestWriteForbiddenFailsOverToHealthyRegion(t *testing.T) {
 	gemServer.SetError(&net.DNSError{})
 	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
 
-	lc := newLocationCache([]string{"East US", "Central US"}, *badURL, true /*enableCrossRegionRetries*/)
+	lc := newLocationCache([]string{"East US", "Central US"}, *badURL, true /*enableCrossRegionRetries*/, true /*enableEndpointDiscovery*/)
 	require.NoError(t, lc.update(
 		[]accountRegion{
 			{Name: "East US", Endpoint: badSrv.URL()},
@@ -1275,7 +1275,7 @@ func TestConnectionErrorFailoverResetsNonZeroRetryCount(t *testing.T) {
 	gemServer.SetError(&net.DNSError{})
 	internalPipeline := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: gemServer})
 
-	lc := newLocationCache([]string{"East US", "Central US"}, *badURL, true)
+	lc := newLocationCache([]string{"East US", "Central US"}, *badURL, true, true /*enableEndpointDiscovery*/)
 	require.NoError(t, lc.update(
 		[]accountRegion{{Name: "East US", Endpoint: badSrv.URL()}},
 		[]accountRegion{

@@ -91,7 +91,7 @@ func (r *jsonReadCloser) Close() error { return nil }
 func newGEMWithTransport(t *testing.T, preferred []string, transport policy.Transporter, refresh time.Duration) *globalEndpointManager {
 	t.Helper()
 	pl := azruntime.NewPipeline("azcosmosgemtest", "v1.0.0", azruntime.PipelineOptions{}, &policy.ClientOptions{Transport: transport})
-	gem, err := newGlobalEndpointManager("https://fake.documents.azure.com:443/", pl, preferred, refresh, true)
+	gem, err := newGlobalEndpointManager("https://fake.documents.azure.com:443/", pl, preferred, refresh, true, true /*enableEndpointDiscovery*/)
 	require.NoError(t, err)
 	return gem
 }

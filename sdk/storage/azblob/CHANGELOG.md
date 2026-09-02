@@ -5,7 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
-* `DownloadBuffer` and `DownloadFile` now use ETag locking to ensure consistency across parallel chunk requests. If a blob is modified during a multi-chunk download, subsequent requests will fail with `ConditionNotMet` instead of silently returning data from mixed blob versions.
+* `DownloadBuffer` and `DownloadFile` now use ETag locking to ensure consistency across parallel chunk requests when the blob size is not specified upfront (i.e., `Range.Count` is zero). If a blob is modified during a multi-chunk download, subsequent requests will fail with `ConditionNotMet` instead of silently returning data from mixed blob versions.
 
 ### Bugs Fixed
 

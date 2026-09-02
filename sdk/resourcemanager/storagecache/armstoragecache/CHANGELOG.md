@@ -1,6 +1,6 @@
 # Release History
 
-## 4.3.0 (2026-08-17)
+## 4.3.0 (2026-09-02)
 ### Features Added
 
 - New enum type `RebalanceJobAdminStatus` with values `RebalanceJobAdminStatusActive`, `RebalanceJobAdminStatusCancel`

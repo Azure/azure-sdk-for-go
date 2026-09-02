@@ -70,7 +70,7 @@ type updateFlight struct {
 	genAtStart uint64
 }
 
-func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration, enableCrossRegionRetries bool) (*globalEndpointManager, error) {
+func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline, preferredLocations []string, refreshTimeInterval time.Duration, enableCrossRegionRetries bool, enableEndpointDiscovery bool) (*globalEndpointManager, error) {
 	endpoint, err := url.Parse(clientEndpoint)
 	if err != nil {
 		return &globalEndpointManager{}, err
@@ -84,15 +84,15 @@ func newGlobalEndpointManager(clientEndpoint string, pipeline azruntime.Pipeline
 		clientEndpoint:      clientEndpoint,
 		pipeline:            pipeline,
 		preferredLocations:  preferredLocations,
-		locationCache:       newLocationCache(preferredLocations, *endpoint, enableCrossRegionRetries),
+		locationCache:       newLocationCache(preferredLocations, *endpoint, enableCrossRegionRetries, enableEndpointDiscovery),
 		refreshTimeInterval: refreshTimeInterval,
 		lastUpdateTime:      time.Time{},
 	}
 
 	log.Writef(EventEndpointManager,
 		"Initializing Global Endpoint Manager: endpoint=%s, preferredLocations=%v, "+
-			"refreshInterval=%v, enableCrossRegionRetries=%v",
-		clientEndpoint, preferredLocations, refreshTimeInterval, enableCrossRegionRetries)
+			"refreshInterval=%v, enableCrossRegionRetries=%v, enableEndpointDiscovery=%v",
+		clientEndpoint, preferredLocations, refreshTimeInterval, enableCrossRegionRetries, enableEndpointDiscovery)
 
 	return gem, nil
 }

@@ -15,6 +15,14 @@ type ClientOptions struct {
 	EnableContentResponseOnWrite bool
 	// PreferredRegions is a list of regions to be used when initializing the client in case the default region fails.
 	PreferredRegions []string
+	// DisableEndpointDiscovery turns off the SDK's global endpoint discovery. When true,
+	// the account's advertised writable/readable locations are ignored for routing and
+	// every request is sent to the endpoint the client was constructed with. This is
+	// required in environments where the account advertises an internal document endpoint
+	// (e.g. *.docdb.azs) that is not reachable from the client's network and all traffic
+	// must instead flow through the externally-routable endpoint (e.g. via a reverse proxy).
+	// The default is false (discovery enabled), matching prior behavior.
+	DisableEndpointDiscovery bool
 	// PriorityLevel defines the default priority level for all requests made by this client.
 	// This feature is currently in preview. For more information, see https://aka.ms/CosmosDB/PriorityBasedExecution
 	// Valid values are PriorityLevelHigh and PriorityLevelLow.

@@ -2,6 +2,12 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
+## 1.6.0-beta.4 (Unreleased)
+
+### Features Added
+
+* Added `ClientOptions.DisableEndpointDiscovery`. When set to `true`, the client ignores the account's advertised readable/writable locations for routing and sends every request to the endpoint the client was constructed with. This supports environments where the account advertises a document endpoint whose host is not reachable from the client's network and all traffic must instead flow through the endpoint the client was created with (e.g. a reverse proxy on a different domain).
+
 ## 1.6.0-beta.3 (2026-09-01)
 
 ### Bugs Fixed

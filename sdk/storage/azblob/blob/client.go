@@ -338,6 +338,11 @@ func (b *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o 
 
 // Concurrent Download Functions -----------------------------------------------------------------------------------------
 
+type downloadProgress struct {
+	byteCount     int64
+	byteCountLock sync.Mutex
+}
+
 // downloadBuffer downloads an Azure blob to a WriterAt in parallel.
 // It uses an initial GetBlob (GET) request instead of GetProperties (HEAD) to determine the blob size,
 // eliminating an extra round trip for small blobs where the entire content is returned in the initial response.
@@ -351,8 +356,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		return b.parallelDownload(ctx, writer, o, count)
 	}
 
-	initialRange := HTTPRange{Offset: o.Range.Offset, Count: o.BlockSize}
-	dr, err := b.DownloadStream(ctx, o.getDownloadBlobOptions(initialRange, nil))
+	dr, err := b.DownloadStream(ctx, o.getDownloadBlobOptions(HTTPRange{Offset: o.Range.Offset, Count: o.BlockSize}, nil))
 	if err != nil {
 		if bloberror.HasCode(err, bloberror.InvalidRange) {
 			return 0, nil
@@ -407,15 +411,14 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 		return 0, nil
 	}
 
-	progress := int64(0)
-	progressLock := &sync.Mutex{}
+	prog := &downloadProgress{}
 	var body io.ReadCloser = dr.NewRetryReader(ctx, &o.RetryReaderOptionsPerBlock)
 	if o.Progress != nil {
 		body = streaming.NewResponseProgress(body, func(bytesTransferred int64) {
-			progressLock.Lock()
-			progress = bytesTransferred
-			o.Progress(progress)
-			progressLock.Unlock()
+			prog.byteCountLock.Lock()
+			prog.byteCount = bytesTransferred
+			o.Progress(prog.byteCount)
+			prog.byteCountLock.Unlock()
 		})
 	}
 	_, err = io.Copy(shared.NewSectionWriter(writer, 0, initialChunkSize), body)
@@ -437,7 +440,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 	}
 
 	remaining := count - initialChunkSize
-	remainingDownloaded, err := b.parallelDownloadFrom(ctx, writer, o, initialChunkSize, remaining, &progress, progressLock)
+	remainingDownloaded, err := b.parallelDownloadFrom(ctx, writer, o, initialChunkSize, remaining, prog)
 	if err != nil {
 		return 0, err
 	}
@@ -446,8 +449,7 @@ func (b *Client) downloadBuffer(ctx context.Context, writer io.WriterAt, o downl
 
 func (b *Client) parallelDownload(ctx context.Context, writer io.WriterAt, o downloadOptions, count int64) (int64, error) {
 	dataDownloaded := int64(0)
-	progress := int64(0)
-	progressLock := &sync.Mutex{}
+	prog := &downloadProgress{}
 
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
 		OperationName: "downloadBlobToWriterAt",
@@ -467,10 +469,10 @@ func (b *Client) parallelDownload(ctx context.Context, writer io.WriterAt, o dow
 				body = streaming.NewResponseProgress(body, func(bytesTransferred int64) {
 					diff := bytesTransferred - rangeProgress
 					rangeProgress = bytesTransferred
-					progressLock.Lock()
-					progress += diff
-					o.Progress(progress)
-					progressLock.Unlock()
+					prog.byteCountLock.Lock()
+					prog.byteCount += diff
+					o.Progress(prog.byteCount)
+					prog.byteCountLock.Unlock()
 				})
 			}
 			if _, err = io.Copy(shared.NewSectionWriter(writer, chunkStart, count), body); err != nil {
@@ -491,7 +493,7 @@ func (b *Client) parallelDownload(ctx context.Context, writer io.WriterAt, o dow
 	return dataDownloaded, nil
 }
 
-func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o downloadOptions, writerOffset int64, remaining int64, progress *int64, progressLock *sync.Mutex) (int64, error) {
+func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o downloadOptions, writerOffset int64, remaining int64, prog *downloadProgress) (int64, error) {
 	dataDownloaded := int64(0)
 
 	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
@@ -512,10 +514,10 @@ func (b *Client) parallelDownloadFrom(ctx context.Context, writer io.WriterAt, o
 				body = streaming.NewResponseProgress(body, func(bytesTransferred int64) {
 					diff := bytesTransferred - rangeProgress
 					rangeProgress = bytesTransferred
-					progressLock.Lock()
-					*progress += diff
-					o.Progress(*progress)
-					progressLock.Unlock()
+					prog.byteCountLock.Lock()
+					prog.byteCount += diff
+					o.Progress(prog.byteCount)
+					prog.byteCountLock.Unlock()
 				})
 			}
 			if _, err = io.Copy(shared.NewSectionWriter(writer, chunkStart+writerOffset, count), body); err != nil {

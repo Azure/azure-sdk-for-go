@@ -157,14 +157,17 @@ func (r *SessionReceiver) ReceiveDeferredMessages(ctx context.Context, sequenceN
 // DeleteMessages deletes up to maxMessageCount messages from this session that
 // were enqueued before the configured time. The service limit is 500 for Basic
 // and Standard and 4,000 for Premium. Currently, batch delete is not supported
-// when partitioning is enabled.
+// when partitioning is enabled. A dispatched request is not automatically
+// retried. If the call returns an error, its deletion outcome is unknown.
 func (r *SessionReceiver) DeleteMessages(ctx context.Context, maxMessageCount int, options *DeleteMessagesOptions) (*DeleteMessagesResult, error) {
 	return r.inner.deleteMessages(ctx, maxMessageCount, options, func() *string { return r.sessionID })
 }
 
 // PurgeMessages deletes messages from this session that were enqueued before the
 // purge started or BeforeEnqueueTime. Currently, purge is not supported when
-// partitioning is enabled.
+// partitioning is enabled. Individual destructive requests are not retried. If
+// the call returns an error, the purge can be partial and its exact outcome is
+// unknown.
 func (r *SessionReceiver) PurgeMessages(ctx context.Context, options *PurgeMessagesOptions) (*PurgeMessagesResult, error) {
 	return r.inner.purgeMessages(ctx, options, func() *string { return r.sessionID })
 }

@@ -6,6 +6,7 @@ package azservicebus
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -201,7 +202,7 @@ func TestReceiverDeleteMessages(t *testing.T) {
 
 func TestReceiverDeleteMessagesDoesNotRedispatchAfterRPCError(t *testing.T) {
 	receiver, rpcLink, links := newBatchDeleteReceiver()
-	rpcLink.err = fmt.Errorf("response outcome is unknown")
+	rpcLink.err = &amqp.LinkError{}
 
 	result, err := receiver.DeleteMessages(context.Background(), 50, nil)
 	require.Error(t, err)
@@ -209,6 +210,7 @@ func TestReceiverDeleteMessagesDoesNotRedispatchAfterRPCError(t *testing.T) {
 	require.Len(t, rpcLink.sent, 1)
 	require.Equal(t, 1, links.getCalls)
 	require.Equal(t, 1, links.retryCalls)
+	require.Equal(t, 1, links.CloseIfNeededCalled)
 }
 
 func TestReceiverPurgeMessagesUsesFixedCutoffAndStopsOnZero(t *testing.T) {
@@ -264,7 +266,13 @@ func TestReceiverPurgeMessagesAllowsServiceToEnforceBatchSizeLimit(t *testing.T)
 }
 
 func TestReceiverPurgeMessagesRejectsInvalidBatchSizeBeforeLinkSetup(t *testing.T) {
-	for _, invalidCount := range []int{0, -1, maxDirectDeleteMessageCount + 1} {
+	invalidCounts := []int{0, -1}
+	if strconv.IntSize > 32 {
+		tooLarge := maxDirectDeleteMessageCount
+		tooLarge++
+		invalidCounts = append(invalidCounts, tooLarge)
+	}
+	for _, invalidCount := range invalidCounts {
 		receiver, rpcLink, links := newBatchDeleteReceiver()
 
 		result, err := receiver.PurgeMessages(context.Background(), &PurgeMessagesOptions{
@@ -275,6 +283,19 @@ func TestReceiverPurgeMessagesRejectsInvalidBatchSizeBeforeLinkSetup(t *testing.
 		require.Empty(t, rpcLink.sent)
 		require.Zero(t, links.getCalls)
 	}
+}
+
+func TestReceiverPurgeMessagesDoesNotRedispatchAfterRPCError(t *testing.T) {
+	receiver, rpcLink, links := newBatchDeleteReceiver()
+	rpcLink.err = &amqp.LinkError{}
+
+	result, err := receiver.PurgeMessages(context.Background(), nil)
+	require.Error(t, err)
+	require.Nil(t, result)
+	require.Len(t, rpcLink.sent, 1)
+	require.Equal(t, 1, links.getCalls)
+	require.Equal(t, 1, links.retryCalls)
+	require.Equal(t, 1, links.CloseIfNeededCalled)
 }
 
 func TestSessionReceiverDeleteMessagesIncludesSessionID(t *testing.T) {

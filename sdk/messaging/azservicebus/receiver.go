@@ -320,8 +320,8 @@ func (r *Receiver) deleteMessages(ctx context.Context, maxMessageCount int, opti
 		sessionID = getSessionID()
 	}
 
-	deletedCount, err := internal.BatchDeleteMessages(
-		ctx, links.RPC, links.Receiver.LinkName(), int32(maxMessageCount), cutoff, sessionID)
+	deletedCount, err := r.executeBatchDelete(
+		ctx, links, int32(maxMessageCount), cutoff, sessionID)
 	if err != nil {
 		return nil, internal.TransformError(err)
 	}
@@ -390,8 +390,8 @@ func (r *Receiver) purgeMessages(ctx context.Context, options *PurgeMessagesOpti
 
 	var totalDeleted int64
 	for {
-		deletedCount, err := internal.BatchDeleteMessages(
-			ctx, links.RPC, links.Receiver.LinkName(), int32(maxMessageCountPerBatch), cutoff, sessionID)
+		deletedCount, err := r.executeBatchDelete(
+			ctx, links, int32(maxMessageCountPerBatch), cutoff, sessionID)
 		if err != nil {
 			return nil, internal.TransformError(err)
 		}
@@ -401,6 +401,15 @@ func (r *Receiver) purgeMessages(ctx context.Context, options *PurgeMessagesOpti
 			return &PurgeMessagesResult{DeletedCount: totalDeleted}, nil
 		}
 	}
+}
+
+func (r *Receiver) executeBatchDelete(ctx context.Context, links *internal.LinksWithID, maxMessageCount int32, cutoff time.Time, sessionID *string) (int64, error) {
+	deletedCount, err := internal.BatchDeleteMessages(
+		ctx, links.RPC, links.Receiver.LinkName(), maxMessageCount, cutoff, sessionID)
+	if err != nil {
+		r.amqpLinks.CloseIfNeeded(context.Background(), err)
+	}
+	return deletedCount, err
 }
 
 func (r *Receiver) getBatchDeleteLinks(ctx context.Context) (*internal.LinksWithID, error) {

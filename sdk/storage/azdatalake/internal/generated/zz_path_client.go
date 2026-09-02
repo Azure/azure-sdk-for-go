@@ -1211,6 +1211,9 @@ func (client *PathClient) setAccessControlRecursiveHandleResponse(resp *http.Res
 	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
+	}
 	if val := resp.Header.Get("X-Ms-Continuation"); val != "" {
 		result.Continuation = &val
 	}
@@ -1535,6 +1538,9 @@ func (client *PathClient) updateHandleResponse(resp *http.Response, successCodes
 	}
 	if val := resp.Header.Get("Content-Range"); val != "" {
 		result.ContentRange = &val
+	}
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
 	}
 	if val := resp.Header.Get("X-Ms-Continuation"); val != "" {
 		result.Continuation = &val

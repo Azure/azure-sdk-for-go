@@ -92,6 +92,9 @@ func (client *ServiceClient) listFileSystemsHandleResponse(resp *http.Response, 
 	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
 		result.ClientRequestID = &val
 	}
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
+	}
 	if val := resp.Header.Get("X-Ms-Continuation"); val != "" {
 		result.Continuation = &val
 	}

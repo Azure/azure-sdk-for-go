@@ -1,5 +1,5 @@
 directory: "specification/storage/data-plane/BlobStorage/SdkDatalakeGo"
-commit: 8ea236243a558726329859dda1384f7a3ff242d8
+commit: d3b945fecd41154a224759bc6ef80826f37eaef5
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 
 - specification/storage/data-plane/BlobStorage/Common

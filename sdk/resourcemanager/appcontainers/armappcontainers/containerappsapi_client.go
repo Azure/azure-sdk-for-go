@@ -19,7 +19,7 @@ import (
 // ContainerAppsAPIClient contains the methods for the ContainerAppsAPI group.
 // Don't use this type directly, use NewContainerAppsAPIClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type ContainerAppsAPIClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -77,9 +77,9 @@ func (client *ContainerAppsAPIClient) getCustomDomainVerificationIDCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"text/plain"}
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -89,12 +89,9 @@ func (client *ContainerAppsAPIClient) getCustomDomainVerificationIDHandleRespons
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	body, err := runtime.Payload(resp)
-	if err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.Value); err != nil {
 		return ContainerAppsAPIClientGetCustomDomainVerificationIDResponse{}, err
 	}
-	txt := string(body)
-	result.Value = &txt
 	return result, nil
 }
 
@@ -148,7 +145,7 @@ func (client *ContainerAppsAPIClient) jobExecutionCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

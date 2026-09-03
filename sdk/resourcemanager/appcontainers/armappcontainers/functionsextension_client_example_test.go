@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/FunctionsExtension_Post.json
+// Generated from example definition: 2026-07-01/FunctionsExtension_Post.json
 func ExampleFunctionsExtensionClient_InvokeFunctionsHost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,6 +30,6 @@ func ExampleFunctionsExtensionClient_InvokeFunctionsHost() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappcontainers.FunctionsExtensionClientInvokeFunctionsHostResponse{
-	// 	Value: to.Ptr("{\"status\":\"success\"}"),
+	// 	Value: to.Ptr("{\"State\":\"Running\"}"),
 	// }
 }

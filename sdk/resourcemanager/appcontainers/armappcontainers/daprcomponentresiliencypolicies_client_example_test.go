@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/DaprComponentResiliencyPolicy_CreateOrUpdate_AllOptions.json
+// Generated from example definition: 2026-07-01/DaprComponentResiliencyPolicy_CreateOrUpdate_AllOptions.json
 func ExampleDaprComponentResiliencyPoliciesClient_CreateOrUpdate_createOrUpdateDaprComponentResiliencyPolicyWithAllOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleDaprComponentResiliencyPoliciesClient_CreateOrUpdate_createOrUpdateD
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/DaprComponentResiliencyPolicy_CreateOrUpdate_OutboundOnly.json
+// Generated from example definition: 2026-07-01/DaprComponentResiliencyPolicy_CreateOrUpdate_OutboundOnly.json
 func ExampleDaprComponentResiliencyPoliciesClient_CreateOrUpdate_createOrUpdateDaprComponentResiliencyPolicyWithOutboundPolicyOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,7 @@ func ExampleDaprComponentResiliencyPoliciesClient_CreateOrUpdate_createOrUpdateD
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/DaprComponentResiliencyPolicy_CreateOrUpdate_SparseOptions.json
+// Generated from example definition: 2026-07-01/DaprComponentResiliencyPolicy_CreateOrUpdate_SparseOptions.json
 func ExampleDaprComponentResiliencyPoliciesClient_CreateOrUpdate_createOrUpdateDaprComponentResiliencyPolicyWithSparseOptions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleDaprComponentResiliencyPoliciesClient_CreateOrUpdate_createOrUpdateD
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/DaprComponentResiliencyPolicies_Delete.json
+// Generated from example definition: 2026-07-01/DaprComponentResiliencyPolicies_Delete.json
 func ExampleDaprComponentResiliencyPoliciesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +268,7 @@ func ExampleDaprComponentResiliencyPoliciesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/DaprComponentResiliencyPolicies_Get.json
+// Generated from example definition: 2026-07-01/DaprComponentResiliencyPolicies_Get.json
 func ExampleDaprComponentResiliencyPoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -330,7 +330,7 @@ func ExampleDaprComponentResiliencyPoliciesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/DaprComponentResiliencyPolicies_List.json
+// Generated from example definition: 2026-07-01/DaprComponentResiliencyPolicies_List.json
 func ExampleDaprComponentResiliencyPoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -356,7 +356,7 @@ func ExampleDaprComponentResiliencyPoliciesClient_NewListPager() {
 		// 	DaprComponentResiliencyPoliciesCollection: armappcontainers.DaprComponentResiliencyPoliciesCollection{
 		// 		Value: []*armappcontainers.DaprComponentResiliencyPolicy{
 		// 			{
-		// 				Name: to.Ptr("something"),
+		// 				Name: to.Ptr("myresiliencypolicy"),
 		// 				Type: to.Ptr("Microsoft.App/managedEnvironments/daprComponents/resiliencyPolicies"),
 		// 				ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/myenvironment/daprComponents/mydaprcomponent/resiliencyPolicies/myresiliencypolicy"),
 		// 				Properties: &armappcontainers.DaprComponentResiliencyPolicyProperties{

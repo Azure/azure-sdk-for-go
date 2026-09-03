@@ -19,7 +19,7 @@ import (
 // ManagedEnvironmentsClient contains the methods for the ManagedEnvironments group.
 // Don't use this type directly, use NewManagedEnvironmentsClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type ManagedEnvironmentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,6 +42,74 @@ func NewManagedEnvironmentsClient(subscriptionID string, credential azcore.Token
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// CheckMigrationEligibility - Checks whether a Managed Environment can be migrated to a target mode.
+//
+// Checks whether a Managed Environment can be migrated to a target mode.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the Environment.
+//   - body - The migration eligibility check request.
+//   - options - ManagedEnvironmentsClientCheckMigrationEligibilityOptions contains the optional parameters for the ManagedEnvironmentsClient.CheckMigrationEligibility
+//     method.
+func (client *ManagedEnvironmentsClient) CheckMigrationEligibility(ctx context.Context, resourceGroupName string, environmentName string, body CheckMigrationEligibilityRequest, options *ManagedEnvironmentsClientCheckMigrationEligibilityOptions) (ManagedEnvironmentsClientCheckMigrationEligibilityResponse, error) {
+	var err error
+	const operationName = "ManagedEnvironmentsClient.CheckMigrationEligibility"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.checkMigrationEligibilityCreateRequest(ctx, resourceGroupName, environmentName, body, options)
+	if err != nil {
+		return ManagedEnvironmentsClientCheckMigrationEligibilityResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ManagedEnvironmentsClientCheckMigrationEligibilityResponse{}, err
+	}
+	return client.checkMigrationEligibilityHandleResponse(httpResp, http.StatusOK)
+}
+
+// checkMigrationEligibilityCreateRequest creates the CheckMigrationEligibility request.
+func (client *ManagedEnvironmentsClient) checkMigrationEligibilityCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, body CheckMigrationEligibilityRequest, _ *ManagedEnvironmentsClientCheckMigrationEligibilityOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/checkMigrationEligibility"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if environmentName == "" {
+		return nil, errors.New("parameter environmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// checkMigrationEligibilityHandleResponse handles the CheckMigrationEligibility response.
+func (client *ManagedEnvironmentsClient) checkMigrationEligibilityHandleResponse(resp *http.Response, successCodes ...int) (ManagedEnvironmentsClientCheckMigrationEligibilityResponse, error) {
+	result := ManagedEnvironmentsClientCheckMigrationEligibilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckMigrationEligibilityResponse); err != nil {
+		return ManagedEnvironmentsClientCheckMigrationEligibilityResponse{}, err
+	}
+	return result, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a Managed Environment.
@@ -114,7 +182,7 @@ func (client *ManagedEnvironmentsClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -193,7 +261,7 @@ func (client *ManagedEnvironmentsClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -242,7 +310,7 @@ func (client *ManagedEnvironmentsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -305,7 +373,7 @@ func (client *ManagedEnvironmentsClient) getAuthTokenCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -378,7 +446,7 @@ func (client *ManagedEnvironmentsClient) listByResourceGroupCreateRequest(ctx co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -447,7 +515,7 @@ func (client *ManagedEnvironmentsClient) listBySubscriptionCreateRequest(ctx con
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -526,7 +594,7 @@ func (client *ManagedEnvironmentsClient) listWorkloadProfileStatesCreateRequest(
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -615,7 +683,7 @@ func (client *ManagedEnvironmentsClient) updateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

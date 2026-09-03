@@ -156,6 +156,9 @@ func (c *Client) Initialize(ctx context.Context) error {
 		return err
 	}
 	defer release()
+	if err := ctx.Err(); err != nil {
+		return err
+	}
 	return c.driver.initialize(ctx)
 }
 

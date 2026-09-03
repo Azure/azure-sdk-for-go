@@ -60,18 +60,18 @@ type nativeDriver struct {
 	// with nothing in flight. Calling into a nativeDriver outside Client.acquire breaks that,
 	// which is why nothing but a test does.
 	mu sync.Mutex
-	// created records that creation reached a verdict, so a failure is reported to every later
-	// caller rather than retried on every operation. A cancelled attempt is not a verdict; see
-	// ensureDriver.
-	created   bool
-	closed    bool
-	driver    *C.cosmos_driver_t
-	driverErr error
+	// created records that initialization succeeded. Failures are not cached because transport,
+	// service and token acquisition can recover while this long-lived client remains in use.
+	created bool
+	closed  bool
+	driver  *C.cosmos_driver_t
 
-	// creating is non-nil while an attempt is in flight and closed when it finishes. Waiters
-	// block on it rather than on mu, so a second caller can still honor its own context while
-	// the first caller's attempt runs.
-	creating chan struct{}
+	// creating is non-nil while an attempt is in flight. Existing waiters receive that attempt's
+	// result, while callers arriving after it finishes may start a retry.
+	creating *driverCreation
+
+	// beforeCreationWait is a test hook for observing that a caller joined an in-flight attempt.
+	beforeCreationWait func()
 
 	// reactor drains the completion queue operations are answered through. The queue binds to
 	// the runtime rather than the driver, so it is created with the client and is what makes
@@ -82,6 +82,12 @@ type nativeDriver struct {
 	// container metadata from the gateway on a miss, so an item operation would otherwise pay
 	// for that lookup on every call.
 	containers map[string]*C.cosmos_container_ref_t
+}
+
+type driverCreation struct {
+	done   chan struct{}
+	driver *C.cosmos_driver_t
+	err    error
 }
 
 // initialize eagerly creates the driver, which fills its account-properties and routing caches.
@@ -158,63 +164,59 @@ func openDriver(cfg driverConfig) (*nativeDriver, error) {
 // runs at a time: a second caller waits on the first rather than starting its own, and waits on a
 // channel rather than on the mutex so its own context still applies.
 //
-// A verdict is cached, so a driver that cannot be created is reported to every later caller rather
-// than retried on every operation. A cancelled attempt is not a verdict: one caller's deadline
-// says nothing about the account, so the next caller starts fresh instead of inheriting a
-// cancellation it never asked for.
+// Only successful initialization is cached. A failed transport, service or token request can
+// recover, so the next caller starts a fresh attempt rather than inheriting a stale failure.
 //
 // It reports [CodeClientClosed] once the client is closed rather than a NULL handle, so that a
 // caller which reaches it without going through [Client.acquire] cannot pass NULL into the C ABI.
 func (d *nativeDriver) ensureDriver(ctx context.Context) (*C.cosmos_driver_t, error) {
-	for {
-		d.mu.Lock()
-		if d.closed {
-			d.mu.Unlock()
-			return nil, errClientClosed()
-		}
-		if d.created {
-			driver, err := d.driver, d.driverErr
-			d.mu.Unlock()
-			return driver, err
-		}
-		if inFlight := d.creating; inFlight != nil {
-			d.mu.Unlock()
-			select {
-			case <-inFlight:
-				// The attempt finished; loop to read whatever verdict it reached, or to start
-				// a fresh attempt if it was cancelled.
-				continue
-			case <-ctx.Done():
-				return nil, ctx.Err()
-			}
-		}
-
-		done := make(chan struct{})
-		d.creating = done
+	d.mu.Lock()
+	if d.closed {
 		d.mu.Unlock()
-
-		driver, err := d.createDriver(ctx)
-
-		d.mu.Lock()
-		d.creating = nil
-		switch {
-		case d.closed:
-			// Closed while this was in flight, which only a caller outside Client.acquire can
-			// arrange. Nothing else owns the handle: it is published to d.driver by the default
-			// branch below and this branch is taken instead, so freeing it here is the only way
-			// it gets freed at all.
-			C.cosmos_driver_free(driver)
-			driver, err = nil, errClientClosed()
-		case isCancellation(err):
-			// Deliberately not recorded; see the doc comment.
-		default:
-			d.created, d.driver, d.driverErr = true, driver, err
-		}
-		d.mu.Unlock()
-		close(done)
-
-		return driver, err
+		return nil, errClientClosed()
 	}
+	if d.created {
+		driver := d.driver
+		d.mu.Unlock()
+		return driver, nil
+	}
+	if inFlight := d.creating; inFlight != nil {
+		d.mu.Unlock()
+		if d.beforeCreationWait != nil {
+			d.beforeCreationWait()
+		}
+		select {
+		case <-inFlight.done:
+			return inFlight.driver, inFlight.err
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		}
+	}
+
+	attempt := &driverCreation{done: make(chan struct{})}
+	d.creating = attempt
+	d.mu.Unlock()
+
+	driver, err := d.createDriver(ctx)
+
+	d.mu.Lock()
+	d.creating = nil
+	switch {
+	case d.closed:
+		// Closed while this was in flight, which only a caller outside Client.acquire can
+		// arrange. Nothing else owns the handle: it is published to d.driver by the default
+		// branch below and this branch is taken instead, so freeing it here is the only way
+		// it gets freed at all.
+		C.cosmos_driver_free(driver)
+		driver, err = nil, errClientClosed()
+	case err == nil:
+		d.created, d.driver = true, driver
+	}
+	attempt.driver, attempt.err = driver, err
+	close(attempt.done)
+	d.mu.Unlock()
+
+	return driver, err
 }
 
 // createDriver runs one driver-creation attempt.
@@ -247,19 +249,6 @@ func (d *nativeDriver) createDriver(ctx context.Context) (*C.cosmos_driver_t, er
 		}
 	}
 	return result.driver, nil
-}
-
-// isCancellation reports whether an attempt was abandoned rather than answered.
-//
-// It covers the driver's own cancelled completion as well as the caller's context, because the
-// distinction that matters is whether anything was learned about the account, and a cancellation
-// of either kind means nothing was.
-func isCancellation(err error) bool {
-	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
-		return true
-	}
-	var cosmosErr *Error
-	return errors.As(err, &cosmosErr) && cosmosErr.Code == CodeOperationCancelled
 }
 
 // errClientClosed is the failure every entry point reports once the client is closed.

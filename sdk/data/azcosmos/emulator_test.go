@@ -8,8 +8,10 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -101,6 +103,23 @@ func (c *recordingTokenCredential) GetToken(
 	c.requests <- append([]string(nil), options.Scopes...)
 	return azcore.AccessToken{
 		Token:     "emulator-access-token",
+		ExpiresOn: time.Now().Add(time.Hour),
+	}, nil
+}
+
+type recoveringTokenCredential struct {
+	attempts atomic.Int32
+}
+
+func (c *recoveringTokenCredential) GetToken(
+	_ context.Context,
+	_ policy.TokenRequestOptions,
+) (azcore.AccessToken, error) {
+	if c.attempts.Add(1) <= 2 {
+		return azcore.AccessToken{}, errors.New("temporary token acquisition failure")
+	}
+	return azcore.AccessToken{
+		Token:     "recovered-access-token",
 		ExpiresOn: time.Now().Add(time.Hour),
 	}, nil
 }
@@ -495,6 +514,25 @@ func TestEmulatorTokenCredential(t *testing.T) {
 	read, err := container.ReadItem(t.Context(), NewPartitionKeyString(id), id, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, read.Value)
+}
+
+// Rust retries token acquisition twice within one initialization. Once those transient failures
+// are exhausted, a later Initialize must start a fresh driver-creation attempt.
+func TestEmulatorInitializationRecoversFromTokenFailure(t *testing.T) {
+	endpoint, _, _ := emulatorConfiguration(t)
+	credential := &recoveringTokenCredential{}
+	client, err := NewClient(endpoint, credential, nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
+
+	err = client.Initialize(t.Context())
+	var cosmosErr *Error
+	require.ErrorAs(t, err, &cosmosErr)
+	require.Equal(t, CodeAuthenticationFailed, cosmosErr.Code)
+	require.Equal(t, int32(2), credential.attempts.Load())
+
+	require.NoError(t, client.Initialize(t.Context()))
+	require.Equal(t, int32(3), credential.attempts.Load())
 }
 
 // Initialize is optional: the first operation performs the same work when callers skip it.

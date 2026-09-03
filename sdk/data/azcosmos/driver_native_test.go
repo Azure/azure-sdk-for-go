@@ -7,10 +7,11 @@ package azcosmos
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"net"
 	"os"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -115,6 +116,23 @@ type blockingTokenCredential struct {
 	stoppedOnce sync.Once
 }
 
+type gatedFailingTokenCredential struct {
+	attempts atomic.Int32
+	started  chan struct{}
+	release  chan struct{}
+	once     sync.Once
+}
+
+func (c *gatedFailingTokenCredential) GetToken(
+	_ context.Context,
+	_ policy.TokenRequestOptions,
+) (azcore.AccessToken, error) {
+	c.attempts.Add(1)
+	c.once.Do(func() { close(c.started) })
+	<-c.release
+	return azcore.AccessToken{}, errors.New("temporary token failure")
+}
+
 func (c *blockingTokenCredential) GetToken(
 	ctx context.Context,
 	_ policy.TokenRequestOptions,
@@ -186,6 +204,50 @@ func TestNativeCancellationAfterSubmission(t *testing.T) {
 	case <-time.After(time.Second):
 		t.Fatal("Close did not stop the deliberately blocked token acquisition")
 	}
+}
+
+// Callers already waiting on one failed attempt all receive that result. Only a caller arriving
+// after it finishes may start a retry.
+func TestConcurrentCallersShareFailedInitialization(t *testing.T) {
+	credential := &gatedFailingTokenCredential{
+		started: make(chan struct{}),
+		release: make(chan struct{}),
+	}
+	client, err := NewClient("https://myaccount.documents.azure.com", credential, nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
+
+	const callers = 8
+	waiting := make(chan struct{}, callers-1)
+	client.driver.beforeCreationWait = func() { waiting <- struct{}{} }
+	results := make(chan error, callers)
+
+	// Start the leader first and wait until its token request proves native initialization is in
+	// flight before releasing the remaining callers.
+	go func() { results <- client.Initialize(context.Background()) }()
+	<-credential.started
+	for range callers - 1 {
+		go func() {
+			results <- client.Initialize(context.Background())
+		}()
+	}
+	for range callers - 1 {
+		<-waiting
+	}
+	close(credential.release)
+
+	var first error
+	for range callers {
+		err := <-results
+		require.Error(t, err)
+		if first == nil {
+			first = err
+		} else {
+			require.Same(t, first, err)
+		}
+	}
+	require.Equal(t, int32(2), credential.attempts.Load(),
+		"Rust retries twice inside one shared initialization attempt")
 }
 
 // Initialize creates the driver and fills the account-properties and routing caches. The cached
@@ -266,9 +328,13 @@ func TestNativeUnreachableAccountReportsTransportFailure(t *testing.T) {
 	require.Equal(t, CodeTransportFailure, cosmosErr.Code)
 	require.False(t, cosmosErr.FromWire, "no service responded")
 
-	// The failure is remembered rather than retried on every operation.
+	client.driver.mu.Lock()
+	require.False(t, client.driver.created, "failed initialization must remain retryable")
+	client.driver.mu.Unlock()
+
+	// A later call makes a fresh attempt rather than returning a cached error.
 	_, again := client.driver.ensureDriver(context.Background())
-	require.Equal(t, err, again)
+	require.Error(t, again)
 }
 
 // localBlackholeEndpoint accepts connections without completing TLS, so initialization stalls
@@ -362,9 +428,7 @@ func TestNativeEndToEndTimeoutBoundsLazyInitialization(t *testing.T) {
 		"the explicit budget started after lazy initialization instead of at operation entry")
 }
 
-// A context that expired is the caller's verdict, not the account's, so it must not be cached the
-// way a real creation failure is. Otherwise one caller's short deadline would permanently break a
-// client that every other caller could have used.
+// A context that expired must leave initialization retryable.
 func TestNativeCancelledDriverCreationIsNotRemembered(t *testing.T) {
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
@@ -379,37 +443,28 @@ func TestNativeCancelledDriverCreationIsNotRemembered(t *testing.T) {
 	_, err = client.driver.ensureDriver(ctx)
 	require.ErrorIs(t, err, context.DeadlineExceeded)
 
-	// Asserted on the state rather than on a second attempt, because a second attempt against an
-	// endpoint that never answers would have to wait out the transport timeout to say the same
-	// thing. created is what a later caller reads to decide between a cached verdict and a fresh
-	// attempt.
 	client.driver.mu.Lock()
 	defer client.driver.mu.Unlock()
 	require.False(t, client.driver.created, "a cancelled attempt reached no verdict")
-	require.True(t, isCancellation(err), "the classifier ensureDriver branches on has to agree")
-	require.NoError(t, client.driver.driverErr, "nothing should have been recorded")
 	require.Nil(t, client.driver.creating, "the attempt is over")
 }
 
-// isCancellation decides whether a failed attempt is recorded as the client's verdict, so it has
-// to treat the driver's own cancelled completion the same as the caller's context. Neither says
-// anything about the account, and recording either would break the client for every later caller.
-func TestIsCancellation(t *testing.T) {
-	for _, tt := range []struct {
-		name string
-		err  error
-		want bool
-	}{
-		{"a cancelled context", context.Canceled, true},
-		{"an expired deadline", context.DeadlineExceeded, true},
-		{"a wrapped context error", fmt.Errorf("creating the driver: %w", context.Canceled), true},
-		{"the driver's cancelled completion", &Error{Code: CodeOperationCancelled}, true},
-		{"an unreachable account", &Error{Code: CodeTransportFailure}, false},
-		{"a rejected request", &Error{Code: CodeClientError}, false},
-		{"no failure", nil, false},
-	} {
-		t.Run(tt.name, func(t *testing.T) {
-			require.Equal(t, tt.want, isCancellation(tt.err))
-		})
+func TestPreCancelledInitializeDoesNotSubmit(t *testing.T) {
+	credential := &blockingTokenCredential{
+		started: make(chan struct{}),
+		stopped: make(chan struct{}),
+	}
+	client, err := NewClient("https://myaccount.documents.azure.com", credential, nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
+
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	require.ErrorIs(t, client.Initialize(ctx), context.Canceled)
+
+	select {
+	case <-credential.started:
+		t.Fatal("pre-cancelled Initialize submitted native driver creation")
+	default:
 	}
 }

@@ -93,6 +93,18 @@ type DefaultRolloutsClientStopResponse struct {
 	// placeholder for future response values
 }
 
+// ManifestsClientCreateOrUpdateResponse contains the response from method ManifestsClient.CreateOrUpdate.
+type ManifestsClientCreateOrUpdateResponse struct {
+	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
+	ManifestInfo
+}
+
+// ManifestsClientGetResponse contains the response from method ManifestsClient.Get.
+type ManifestsClientGetResponse struct {
+	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
+	ManifestInfo
+}
+
 // NewRegionFrontloadReleaseClientCreateOrUpdateResponse contains the response from method NewRegionFrontloadReleaseClient.CreateOrUpdate.
 type NewRegionFrontloadReleaseClientCreateOrUpdateResponse struct {
 	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
@@ -151,7 +163,8 @@ type OperationsClientDeleteResponse struct {
 
 // OperationsClientListByProviderRegistrationResponse contains the response from method OperationsClient.ListByProviderRegistration.
 type OperationsClientListByProviderRegistrationResponse struct {
-	OperationsDefinitionArray []*OperationsDefinition
+	// Concrete proxy resource types can be created by aliasing this type using a specific property type.
+	OperationsPutContent
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

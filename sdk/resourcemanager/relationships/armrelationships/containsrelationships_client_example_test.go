@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/ContainsRelationships_ListByResourceGroup.json
+// Generated from example definition: 2026-08-01/ContainsRelationships_ListByResourceGroup.json
 func ExampleContainsRelationshipsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,13 +65,13 @@ func ExampleContainsRelationshipsClient_NewListByResourceGroupPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.Relationships/contains?api-version=2026-03-01-preview&$skipToken=abc123"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/resourceGroups/testrg/providers/Microsoft.Relationships/contains?api-version=2026-08-01&$skipToken=abc123"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/ContainsRelationships_ListBySubscription.json
+// Generated from example definition: 2026-08-01/ContainsRelationships_ListBySubscription.json
 func ExampleContainsRelationshipsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleContainsRelationshipsClient_NewListBySubscriptionPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/providers/Microsoft.Relationships/contains?api-version=2026-03-01-preview&$skipToken=abc123"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/a925f2f7-5c63-4b7b-8799-25a5f97bc3b2/providers/Microsoft.Relationships/contains?api-version=2026-08-01&$skipToken=abc123"),
 		// 	},
 		// }
 	}

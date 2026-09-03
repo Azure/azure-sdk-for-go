@@ -16,6 +16,29 @@ type ContainsRelationshipsClientListBySubscriptionResponse struct {
 	ContainsRelationshipListResult
 }
 
+// DependencyOfRelationshipsByServiceGroupClientCreateOrUpdateResponse contains the response from method DependencyOfRelationshipsByServiceGroupClient.BeginCreateOrUpdate.
+type DependencyOfRelationshipsByServiceGroupClientCreateOrUpdateResponse struct {
+	// Defines a dependencyOf relationship resource.
+	DependencyOfRelationship
+}
+
+// DependencyOfRelationshipsByServiceGroupClientDeleteResponse contains the response from method DependencyOfRelationshipsByServiceGroupClient.BeginDelete.
+type DependencyOfRelationshipsByServiceGroupClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// DependencyOfRelationshipsByServiceGroupClientGetResponse contains the response from method DependencyOfRelationshipsByServiceGroupClient.Get.
+type DependencyOfRelationshipsByServiceGroupClientGetResponse struct {
+	// Defines a dependencyOf relationship resource.
+	DependencyOfRelationship
+}
+
+// DependencyOfRelationshipsByServiceGroupClientListResponse contains the response from method DependencyOfRelationshipsByServiceGroupClient.NewListPager.
+type DependencyOfRelationshipsByServiceGroupClientListResponse struct {
+	// The response of a DependencyOfRelationship list operation.
+	DependencyOfRelationshipListResult
+}
+
 // DependencyOfRelationshipsClientCreateOrUpdateResponse contains the response from method DependencyOfRelationshipsClient.BeginCreateOrUpdate.
 type DependencyOfRelationshipsClientCreateOrUpdateResponse struct {
 	// Defines a dependencyOf relationship resource.

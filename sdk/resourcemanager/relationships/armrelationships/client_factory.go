@@ -37,6 +37,13 @@ func (c *ClientFactory) NewContainsRelationshipsClient(subscriptionID string) *C
 	}
 }
 
+// NewDependencyOfRelationshipsByServiceGroupClient creates a new instance of DependencyOfRelationshipsByServiceGroupClient.
+func (c *ClientFactory) NewDependencyOfRelationshipsByServiceGroupClient() *DependencyOfRelationshipsByServiceGroupClient {
+	return &DependencyOfRelationshipsByServiceGroupClient{
+		internal: c.internal,
+	}
+}
+
 // NewDependencyOfRelationshipsClient creates a new instance of DependencyOfRelationshipsClient.
 func (c *ClientFactory) NewDependencyOfRelationshipsClient() *DependencyOfRelationshipsClient {
 	return &DependencyOfRelationshipsClient{

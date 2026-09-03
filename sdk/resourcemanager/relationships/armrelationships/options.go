@@ -18,6 +18,32 @@ type ContainsRelationshipsClientListBySubscriptionOptions struct {
 	Filter *string
 }
 
+// DependencyOfRelationshipsByServiceGroupClientBeginCreateOrUpdateOptions contains the optional parameters for the DependencyOfRelationshipsByServiceGroupClient.BeginCreateOrUpdate
+// method.
+type DependencyOfRelationshipsByServiceGroupClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DependencyOfRelationshipsByServiceGroupClientBeginDeleteOptions contains the optional parameters for the DependencyOfRelationshipsByServiceGroupClient.BeginDelete
+// method.
+type DependencyOfRelationshipsByServiceGroupClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// DependencyOfRelationshipsByServiceGroupClientGetOptions contains the optional parameters for the DependencyOfRelationshipsByServiceGroupClient.Get
+// method.
+type DependencyOfRelationshipsByServiceGroupClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DependencyOfRelationshipsByServiceGroupClientListOptions contains the optional parameters for the DependencyOfRelationshipsByServiceGroupClient.NewListPager
+// method.
+type DependencyOfRelationshipsByServiceGroupClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // DependencyOfRelationshipsClientBeginCreateOrUpdateOptions contains the optional parameters for the DependencyOfRelationshipsClient.BeginCreateOrUpdate
 // method.
 type DependencyOfRelationshipsClientBeginCreateOrUpdateOptions struct {

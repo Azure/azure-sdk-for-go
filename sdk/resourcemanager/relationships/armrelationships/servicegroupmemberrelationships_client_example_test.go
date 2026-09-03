@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/ServiceGroupMemberRelationships_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01/ServiceGroupMemberRelationships_CreateOrUpdate.json
 func ExampleServiceGroupMemberRelationshipsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExampleServiceGroupMemberRelationshipsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ServiceGroupMemberRelationships_Delete.json
+// Generated from example definition: 2026-08-01/ServiceGroupMemberRelationships_Delete.json
 func ExampleServiceGroupMemberRelationshipsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleServiceGroupMemberRelationshipsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/ServiceGroupMemberRelationships_Get.json
+// Generated from example definition: 2026-08-01/ServiceGroupMemberRelationships_Get.json
 func ExampleServiceGroupMemberRelationshipsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleServiceGroupMemberRelationshipsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ServiceGroupMemberRelationships_ListByParent.json
+// Generated from example definition: 2026-08-01/ServiceGroupMemberRelationships_ListByParent.json
 func ExampleServiceGroupMemberRelationshipsClient_NewListByParentPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

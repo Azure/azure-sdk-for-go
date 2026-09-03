@@ -19,7 +19,7 @@ import (
 // ContainsRelationshipsClient contains the methods for the ContainsRelationships group.
 // Don't use this type directly, use NewContainsRelationshipsClient() instead.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-08-01
 type ContainsRelationshipsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -97,7 +97,7 @@ func (client *ContainsRelationshipsClient) listByResourceGroupCreateRequest(ctx 
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20260301Preview)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -167,7 +167,7 @@ func (client *ContainsRelationshipsClient) listBySubscriptionCreateRequest(ctx c
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20260301Preview)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

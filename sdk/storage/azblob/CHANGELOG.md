@@ -9,6 +9,7 @@
 
 ### Bugs Fixed
 
+* Fixed CRLF injection vulnerability in Blob Batch subrequest serialization. Header values containing CR or LF characters are now rejected before serialization, preventing header injection in batch requests.
 * Fixed WASM compilation by using heap-allocated buffers on JS targets.
 * Fixed Structured Message CRC64 download validation being skipped when the final payload byte exactly fills the caller's read buffer; the trailing segment footer and message trailer CRC64 are now drained and validated in the same `Read`.
 * Fixed transient `net.Error`/`io.ErrUnexpectedEOF` failures during a Structured Message download not being retried: the decoder now preserves the error chain with `%w` and the retry reader classifies retryable errors with `errors.Is`/`errors.As`.

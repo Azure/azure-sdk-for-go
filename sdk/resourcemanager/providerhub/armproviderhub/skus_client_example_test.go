@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub/v4"
 	"log"
 )
 
-// Generated from example definition: 2024-09-01/Skus_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01/Skus_CreateOrUpdate.json
 func ExampleSKUsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,18 +28,18 @@ func ExampleSKUsClient_CreateOrUpdate() {
 			SKUSettings: []*armproviderhub.SKUSetting{
 				{
 					Name: to.Ptr("freeSku"),
-					Kind: to.Ptr("Standard"),
 					Tier: to.Ptr("Tier1"),
+					Kind: to.Ptr("Standard"),
 				},
 				{
 					Name: to.Ptr("premiumSku"),
+					Tier: to.Ptr("Tier2"),
+					Kind: to.Ptr("Premium"),
 					Costs: []*armproviderhub.SKUCost{
 						{
 							MeterID: to.Ptr("xxx"),
 						},
 					},
-					Kind: to.Ptr("Premium"),
-					Tier: to.Ptr("Tier2"),
 				},
 			},
 		},
@@ -52,22 +52,22 @@ func ExampleSKUsClient_CreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.SKUsClientCreateOrUpdateResponse{
 	// 	SKUResource: armproviderhub.SKUResource{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/skus/sku1"),
 	// 		Name: to.Ptr("Microsoft.Contoso/employees/sku1"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/skus"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/skus/sku1"),
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Skus_CreateOrUpdateNestedResourceTypeFirst.json
+// Generated from example definition: 2025-10-01/Skus_CreateOrUpdateNestedResourceTypeFirst.json
 func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeFirst() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,18 +83,18 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeFirst() {
 			SKUSettings: []*armproviderhub.SKUSetting{
 				{
 					Name: to.Ptr("freeSku"),
-					Kind: to.Ptr("Standard"),
 					Tier: to.Ptr("Tier1"),
+					Kind: to.Ptr("Standard"),
 				},
 				{
 					Name: to.Ptr("premiumSku"),
+					Tier: to.Ptr("Tier2"),
+					Kind: to.Ptr("Premium"),
 					Costs: []*armproviderhub.SKUCost{
 						{
 							MeterID: to.Ptr("xxx"),
 						},
 					},
-					Kind: to.Ptr("Premium"),
-					Tier: to.Ptr("Tier2"),
 				},
 			},
 		},
@@ -107,22 +107,22 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeFirst() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.SKUsClientCreateOrUpdateNestedResourceTypeFirstResponse{
 	// 	SKUResource: armproviderhub.SKUResource{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/skus/sku1"),
 	// 		Name: to.Ptr("Microsoft.Contoso/employees/nestedEmployee/sku1"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/skus"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/skus/sku1"),
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Skus_CreateOrUpdateNestedResourceTypeSecond.json
+// Generated from example definition: 2025-10-01/Skus_CreateOrUpdateNestedResourceTypeSecond.json
 func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeSecond() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,18 +138,18 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeSecond() {
 			SKUSettings: []*armproviderhub.SKUSetting{
 				{
 					Name: to.Ptr("freeSku"),
-					Kind: to.Ptr("Standard"),
 					Tier: to.Ptr("Tier1"),
+					Kind: to.Ptr("Standard"),
 				},
 				{
 					Name: to.Ptr("premiumSku"),
+					Tier: to.Ptr("Tier2"),
+					Kind: to.Ptr("Premium"),
 					Costs: []*armproviderhub.SKUCost{
 						{
 							MeterID: to.Ptr("xxx"),
 						},
 					},
-					Kind: to.Ptr("Premium"),
-					Tier: to.Ptr("Tier2"),
 				},
 			},
 		},
@@ -162,22 +162,22 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeSecond() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.SKUsClientCreateOrUpdateNestedResourceTypeSecondResponse{
 	// 	SKUResource: armproviderhub.SKUResource{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/resourcetypeRegistrations/nestedEmployee2/skus/sku1"),
 	// 		Name: to.Ptr("Microsoft.Contoso/employees/nestedEmployee/nestedEmployee2/sku1"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/skus"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/resourcetypeRegistrations/nestedEmployee2/skus/sku1"),
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Skus_CreateOrUpdateNestedResourceTypeThird.json
+// Generated from example definition: 2025-10-01/Skus_CreateOrUpdateNestedResourceTypeThird.json
 func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeThird() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,18 +193,18 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeThird() {
 			SKUSettings: []*armproviderhub.SKUSetting{
 				{
 					Name: to.Ptr("freeSku"),
-					Kind: to.Ptr("Standard"),
 					Tier: to.Ptr("Tier1"),
+					Kind: to.Ptr("Standard"),
 				},
 				{
 					Name: to.Ptr("premiumSku"),
+					Tier: to.Ptr("Tier2"),
+					Kind: to.Ptr("Premium"),
 					Costs: []*armproviderhub.SKUCost{
 						{
 							MeterID: to.Ptr("xxx"),
 						},
 					},
-					Kind: to.Ptr("Premium"),
-					Tier: to.Ptr("Tier2"),
 				},
 			},
 		},
@@ -217,22 +217,22 @@ func ExampleSKUsClient_CreateOrUpdateNestedResourceTypeThird() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.SKUsClientCreateOrUpdateNestedResourceTypeThirdResponse{
 	// 	SKUResource: armproviderhub.SKUResource{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/resourcetypeRegistrations/nestedEmployee2/resourcetypeRegistrations/nestedEmployee3/skus/sku1"),
 	// 		Name: to.Ptr("Microsoft.Contoso/employees/nestedEmployee/nestedEmployee2/nestedEmployee3/sku1"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/skus"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/resourcetypeRegistrations/nestedEmployee2/resourcetypeRegistrations/nestedEmployee3/skus/sku1"),
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Skus_Delete.json
+// Generated from example definition: 2025-10-01/Skus_Delete.json
 func ExampleSKUsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -254,7 +254,7 @@ func ExampleSKUsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Skus_DeleteNestedResourceTypeFirst.json
+// Generated from example definition: 2025-10-01/Skus_DeleteNestedResourceTypeFirst.json
 func ExampleSKUsClient_DeleteNestedResourceTypeFirst() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -276,7 +276,7 @@ func ExampleSKUsClient_DeleteNestedResourceTypeFirst() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Skus_DeleteNestedResourceTypeSecond.json
+// Generated from example definition: 2025-10-01/Skus_DeleteNestedResourceTypeSecond.json
 func ExampleSKUsClient_DeleteNestedResourceTypeSecond() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -298,7 +298,7 @@ func ExampleSKUsClient_DeleteNestedResourceTypeSecond() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Skus_DeleteNestedResourceTypeThird.json
+// Generated from example definition: 2025-10-01/Skus_DeleteNestedResourceTypeThird.json
 func ExampleSKUsClient_DeleteNestedResourceTypeThird() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,7 +320,7 @@ func ExampleSKUsClient_DeleteNestedResourceTypeThird() {
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Skus_Get.json
+// Generated from example definition: 2025-10-01/Skus_Get.json
 func ExampleSKUsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,41 +340,41 @@ func ExampleSKUsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.SKUsClientGetResponse{
 	// 	SKUResource: armproviderhub.SKUResource{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/skus/sku1"),
 	// 		Name: to.Ptr("Microsoft.Contoso/employees/sku1"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/skus"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/skus/sku1"),
 	// 		Properties: &armproviderhub.SKUResourceProperties{
 	// 			SKUSettings: []*armproviderhub.SKUSetting{
 	// 				{
 	// 					Name: to.Ptr("freeSku"),
-	// 					Kind: to.Ptr("Standard"),
 	// 					Tier: to.Ptr("Tier1"),
+	// 					Kind: to.Ptr("Standard"),
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("premiumSku"),
+	// 					Tier: to.Ptr("Tier2"),
+	// 					Kind: to.Ptr("Premium"),
 	// 					Costs: []*armproviderhub.SKUCost{
 	// 						{
 	// 							MeterID: to.Ptr("xxx"),
 	// 						},
 	// 					},
-	// 					Kind: to.Ptr("Premium"),
-	// 					Tier: to.Ptr("Tier2"),
 	// 				},
 	// 			},
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Skus_GetNestedResourceTypeFirst.json
+// Generated from example definition: 2025-10-01/Skus_GetNestedResourceTypeFirst.json
 func ExampleSKUsClient_GetNestedResourceTypeFirst() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -394,41 +394,41 @@ func ExampleSKUsClient_GetNestedResourceTypeFirst() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.SKUsClientGetNestedResourceTypeFirstResponse{
 	// 	SKUResource: armproviderhub.SKUResource{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/skus/sku1"),
 	// 		Name: to.Ptr("Microsoft.Contoso/employees/nestedEmployee/sku1"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/skus"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/skus/sku1"),
 	// 		Properties: &armproviderhub.SKUResourceProperties{
 	// 			SKUSettings: []*armproviderhub.SKUSetting{
 	// 				{
 	// 					Name: to.Ptr("freeSku"),
-	// 					Kind: to.Ptr("Standard"),
 	// 					Tier: to.Ptr("Tier1"),
+	// 					Kind: to.Ptr("Standard"),
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("premiumSku"),
+	// 					Tier: to.Ptr("Tier2"),
+	// 					Kind: to.Ptr("Premium"),
 	// 					Costs: []*armproviderhub.SKUCost{
 	// 						{
 	// 							MeterID: to.Ptr("xxx"),
 	// 						},
 	// 					},
-	// 					Kind: to.Ptr("Premium"),
-	// 					Tier: to.Ptr("Tier2"),
 	// 				},
 	// 			},
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Skus_GetNestedResourceTypeSecond.json
+// Generated from example definition: 2025-10-01/Skus_GetNestedResourceTypeSecond.json
 func ExampleSKUsClient_GetNestedResourceTypeSecond() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -448,41 +448,41 @@ func ExampleSKUsClient_GetNestedResourceTypeSecond() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.SKUsClientGetNestedResourceTypeSecondResponse{
 	// 	SKUResource: armproviderhub.SKUResource{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/resourcetypeRegistrations/nestedEmployee2/skus/sku1"),
 	// 		Name: to.Ptr("Microsoft.Contoso/employees/nestedEmployee/nestedEmployee2/sku1"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/skus"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/resourcetypeRegistrations/nestedEmployee2/skus/sku1"),
 	// 		Properties: &armproviderhub.SKUResourceProperties{
 	// 			SKUSettings: []*armproviderhub.SKUSetting{
 	// 				{
 	// 					Name: to.Ptr("freeSku"),
-	// 					Kind: to.Ptr("Standard"),
 	// 					Tier: to.Ptr("Tier1"),
+	// 					Kind: to.Ptr("Standard"),
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("premiumSku"),
+	// 					Tier: to.Ptr("Tier2"),
+	// 					Kind: to.Ptr("Premium"),
 	// 					Costs: []*armproviderhub.SKUCost{
 	// 						{
 	// 							MeterID: to.Ptr("xxx"),
 	// 						},
 	// 					},
-	// 					Kind: to.Ptr("Premium"),
-	// 					Tier: to.Ptr("Tier2"),
 	// 				},
 	// 			},
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Skus_GetNestedResourceTypeThird.json
+// Generated from example definition: 2025-10-01/Skus_GetNestedResourceTypeThird.json
 func ExampleSKUsClient_GetNestedResourceTypeThird() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -502,41 +502,41 @@ func ExampleSKUsClient_GetNestedResourceTypeThird() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armproviderhub.SKUsClientGetNestedResourceTypeThirdResponse{
 	// 	SKUResource: armproviderhub.SKUResource{
+	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/resourcetypeRegistrations/nestedEmployee2/resourcetypeRegistrations/nestedEmployee3/skus/sku1"),
 	// 		Name: to.Ptr("Microsoft.Contoso/employees/nestedEmployee/nestedEmployee2/nestedEmployee3/sku1"),
 	// 		Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/skus"),
-	// 		ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/resourcetypeRegistrations/nestedEmployee2/resourcetypeRegistrations/nestedEmployee3/skus/sku1"),
 	// 		Properties: &armproviderhub.SKUResourceProperties{
 	// 			SKUSettings: []*armproviderhub.SKUSetting{
 	// 				{
 	// 					Name: to.Ptr("freeSku"),
-	// 					Kind: to.Ptr("Standard"),
 	// 					Tier: to.Ptr("Tier1"),
+	// 					Kind: to.Ptr("Standard"),
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("premiumSku"),
+	// 					Tier: to.Ptr("Tier2"),
+	// 					Kind: to.Ptr("Premium"),
 	// 					Costs: []*armproviderhub.SKUCost{
 	// 						{
 	// 							MeterID: to.Ptr("xxx"),
 	// 						},
 	// 					},
-	// 					Kind: to.Ptr("Premium"),
-	// 					Tier: to.Ptr("Tier2"),
 	// 				},
 	// 			},
 	// 		},
 	// 		SystemData: &armproviderhub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-09-01/Skus_ListByResourceTypeRegistrations.json
+// Generated from example definition: 2025-10-01/Skus_ListByResourceTypeRegistrations.json
 func ExampleSKUsClient_NewListByResourceTypeRegistrationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -562,35 +562,35 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsPager() {
 		// 	SKUResourceArrayResponseWithContinuation: armproviderhub.SKUResourceArrayResponseWithContinuation{
 		// 		Value: []*armproviderhub.SKUResource{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/skus/sku1"),
 		// 				Name: to.Ptr("Microsoft.Contoso/employees/sku1"),
 		// 				Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/skus"),
-		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/skus/sku1"),
 		// 				Properties: &armproviderhub.SKUResourceProperties{
 		// 					SKUSettings: []*armproviderhub.SKUSetting{
 		// 						{
 		// 							Name: to.Ptr("freeSku"),
-		// 							Kind: to.Ptr("Standard"),
 		// 							Tier: to.Ptr("Tier1"),
+		// 							Kind: to.Ptr("Standard"),
 		// 						},
 		// 						{
 		// 							Name: to.Ptr("premiumSku"),
+		// 							Tier: to.Ptr("Tier2"),
+		// 							Kind: to.Ptr("Premium"),
 		// 							Costs: []*armproviderhub.SKUCost{
 		// 								{
 		// 									MeterID: to.Ptr("xxx"),
 		// 								},
 		// 							},
-		// 							Kind: to.Ptr("Premium"),
-		// 							Tier: to.Ptr("Tier2"),
 		// 						},
 		// 					},
 		// 				},
 		// 				SystemData: &armproviderhub.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -599,7 +599,7 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsPager() {
 	}
 }
 
-// Generated from example definition: 2024-09-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeFirst.json
+// Generated from example definition: 2025-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeFirst.json
 func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeFirstPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -625,35 +625,35 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeFirst
 		// 	SKUResourceArrayResponseWithContinuation: armproviderhub.SKUResourceArrayResponseWithContinuation{
 		// 		Value: []*armproviderhub.SKUResource{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/skus/sku1"),
 		// 				Name: to.Ptr("Microsoft.Contoso/employees/nestedEmployee/sku1"),
 		// 				Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/skus"),
-		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/skus/sku1"),
 		// 				Properties: &armproviderhub.SKUResourceProperties{
 		// 					SKUSettings: []*armproviderhub.SKUSetting{
 		// 						{
 		// 							Name: to.Ptr("freeSku"),
-		// 							Kind: to.Ptr("Standard"),
 		// 							Tier: to.Ptr("Tier1"),
+		// 							Kind: to.Ptr("Standard"),
 		// 						},
 		// 						{
 		// 							Name: to.Ptr("premiumSku"),
+		// 							Tier: to.Ptr("Tier2"),
+		// 							Kind: to.Ptr("Premium"),
 		// 							Costs: []*armproviderhub.SKUCost{
 		// 								{
 		// 									MeterID: to.Ptr("xxx"),
 		// 								},
 		// 							},
-		// 							Kind: to.Ptr("Premium"),
-		// 							Tier: to.Ptr("Tier2"),
 		// 						},
 		// 					},
 		// 				},
 		// 				SystemData: &armproviderhub.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -662,7 +662,7 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeFirst
 	}
 }
 
-// Generated from example definition: 2024-09-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeSecond.json
+// Generated from example definition: 2025-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeSecond.json
 func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeSecondPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -688,35 +688,35 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeSecon
 		// 	SKUResourceArrayResponseWithContinuation: armproviderhub.SKUResourceArrayResponseWithContinuation{
 		// 		Value: []*armproviderhub.SKUResource{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/resourcetypeRegistrations/nestedEmployee2/skus/sku1"),
 		// 				Name: to.Ptr("Microsoft.Contoso/employees/nestedEmployee/nestedEmployee2/sku1"),
 		// 				Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/skus"),
-		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/resourcetypeRegistrations/nestedEmployee2/skus/sku1"),
 		// 				Properties: &armproviderhub.SKUResourceProperties{
 		// 					SKUSettings: []*armproviderhub.SKUSetting{
 		// 						{
 		// 							Name: to.Ptr("freeSku"),
-		// 							Kind: to.Ptr("Standard"),
 		// 							Tier: to.Ptr("Tier1"),
+		// 							Kind: to.Ptr("Standard"),
 		// 						},
 		// 						{
 		// 							Name: to.Ptr("premiumSku"),
+		// 							Tier: to.Ptr("Tier2"),
+		// 							Kind: to.Ptr("Premium"),
 		// 							Costs: []*armproviderhub.SKUCost{
 		// 								{
 		// 									MeterID: to.Ptr("xxx"),
 		// 								},
 		// 							},
-		// 							Kind: to.Ptr("Premium"),
-		// 							Tier: to.Ptr("Tier2"),
 		// 						},
 		// 					},
 		// 				},
 		// 				SystemData: &armproviderhub.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -725,7 +725,7 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeSecon
 	}
 }
 
-// Generated from example definition: 2024-09-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeThird.json
+// Generated from example definition: 2025-10-01/Skus_ListByResourceTypeRegistrationsNestedResourceTypeThird.json
 func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeThirdPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -751,35 +751,35 @@ func ExampleSKUsClient_NewListByResourceTypeRegistrationsNestedResourceTypeThird
 		// 	SKUResourceArrayResponseWithContinuation: armproviderhub.SKUResourceArrayResponseWithContinuation{
 		// 		Value: []*armproviderhub.SKUResource{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/resourcetypeRegistrations/nestedEmployee2/resourcetypeRegistrations/nestedEmployee3/skus/sku1"),
 		// 				Name: to.Ptr("Microsoft.Contoso/employees/nestedEmployee/nestedEmployee2/nestedEmployee3/sku1"),
 		// 				Type: to.Ptr("Microsoft.ProviderHub/providerRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/resourcetypeRegistrations/skus"),
-		// 				ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso/resourcetypeRegistrations/employees/resourcetypeRegistrations/nestedEmployee/resourcetypeRegistrations/nestedEmployee2/resourcetypeRegistrations/nestedEmployee3/skus/sku1"),
 		// 				Properties: &armproviderhub.SKUResourceProperties{
 		// 					SKUSettings: []*armproviderhub.SKUSetting{
 		// 						{
 		// 							Name: to.Ptr("freeSku"),
-		// 							Kind: to.Ptr("Standard"),
 		// 							Tier: to.Ptr("Tier1"),
+		// 							Kind: to.Ptr("Standard"),
 		// 						},
 		// 						{
 		// 							Name: to.Ptr("premiumSku"),
+		// 							Tier: to.Ptr("Tier2"),
+		// 							Kind: to.Ptr("Premium"),
 		// 							Costs: []*armproviderhub.SKUCost{
 		// 								{
 		// 									MeterID: to.Ptr("xxx"),
 		// 								},
 		// 							},
-		// 							Kind: to.Ptr("Premium"),
-		// 							Tier: to.Ptr("Tier2"),
 		// 						},
 		// 					},
 		// 				},
 		// 				SystemData: &armproviderhub.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armproviderhub.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 		// 				},
 		// 			},
 		// 		},

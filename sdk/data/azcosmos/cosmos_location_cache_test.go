@@ -94,7 +94,7 @@ func CreateDatabaseAccount(useMultipleWriteLocations bool, enforceSingleMasterWr
 }
 
 func ResetLocationCache() *locationCache {
-	lc := newLocationCache(prefLocs, *defaultEndpoint, true, true /*enableEndpointDiscovery*/)
+	lc := newLocationCache(prefLocs, *defaultEndpoint, true, false /*disableEndpointDiscovery*/)
 	lc.enableCrossRegionRetries = true
 	return lc
 }
@@ -477,7 +477,7 @@ func TestResolveServiceEndpointWithEndpointDiscoveryDisabled(t *testing.T) {
 	// read and write operations. This is the behavior relied on when the
 	// account is reached through an endpoint on a different domain than the
 	// one it advertises.
-	lc := newLocationCache(prefLocs, *defaultEndpoint, true /*enableCrossRegionRetries*/, false /*enableEndpointDiscovery*/)
+	lc := newLocationCache(prefLocs, *defaultEndpoint, true /*enableCrossRegionRetries*/, true /*disableEndpointDiscovery*/)
 	dbAcct := CreateDatabaseAccount(true, false)
 	if err := lc.update(dbAcct.WriteRegions, dbAcct.ReadRegions, nil, &dbAcct.EnableMultipleWriteLocations); err != nil {
 		t.Fatalf("Received error updating location cache: %s", err.Error())
@@ -497,7 +497,7 @@ func TestResolveServiceEndpointWithEndpointDiscoveryDisabled(t *testing.T) {
 func TestResolveServiceEndpointWithEndpointDiscoveryEnabled(t *testing.T) {
 	// Sanity check the inverse: with discovery enabled the cache resolves to
 	// the account's advertised regional endpoints, not the default endpoint.
-	lc := newLocationCache(prefLocs, *defaultEndpoint, true /*enableCrossRegionRetries*/, true /*enableEndpointDiscovery*/)
+	lc := newLocationCache(prefLocs, *defaultEndpoint, true /*enableCrossRegionRetries*/, false /*disableEndpointDiscovery*/)
 	dbAcct := CreateDatabaseAccount(true, false)
 	if err := lc.update(dbAcct.WriteRegions, dbAcct.ReadRegions, nil, &dbAcct.EnableMultipleWriteLocations); err != nil {
 		t.Fatalf("Received error updating location cache: %s", err.Error())

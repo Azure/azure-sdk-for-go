@@ -64,7 +64,7 @@ type locationCache struct {
 	locationInfo                      databaseAccountLocationsInfo
 	defaultEndpoint                   url.URL
 	enableCrossRegionRetries          bool
-	enableEndpointDiscovery           bool
+	disableEndpointDiscovery          bool
 	locationUnavailabilityInfoMap     map[url.URL]locationUnavailabilityInfo
 	mapMutex                          sync.RWMutex
 	lastUpdateTime                    time.Time
@@ -72,7 +72,7 @@ type locationCache struct {
 	unavailableLocationExpirationTime time.Duration
 }
 
-func newLocationCache(prefLocations []string, defaultEndpoint url.URL, enableCrossRegionRetries bool, enableEndpointDiscovery bool) *locationCache {
+func newLocationCache(prefLocations []string, defaultEndpoint url.URL, enableCrossRegionRetries bool, disableEndpointDiscovery bool) *locationCache {
 	prefRegions := make([]regionId, len(prefLocations))
 	for i, loc := range prefLocations {
 		prefRegions[i] = newRegionId(loc)
@@ -83,7 +83,7 @@ func newLocationCache(prefLocations []string, defaultEndpoint url.URL, enableCro
 		locationUnavailabilityInfoMap:     make(map[url.URL]locationUnavailabilityInfo),
 		unavailableLocationExpirationTime: defaultExpirationTime,
 		enableCrossRegionRetries:          enableCrossRegionRetries,
-		enableEndpointDiscovery:           enableEndpointDiscovery,
+		disableEndpointDiscovery:          disableEndpointDiscovery,
 	}
 }
 
@@ -191,7 +191,7 @@ func (lc *locationCache) resolveServiceEndpoint(locationIndex int, resourceType 
 	// was constructed with. This keeps all traffic on the externally-routable
 	// endpoint even though the account advertises an internal document endpoint
 	// that is unreachable from this network.
-	if !lc.enableEndpointDiscovery {
+	if lc.disableEndpointDiscovery {
 		return lc.defaultEndpoint
 	}
 	if (isWriteOperation || useWriteEndpoint) && !lc.canUseMultipleWriteLocsToRoute(resourceType) {

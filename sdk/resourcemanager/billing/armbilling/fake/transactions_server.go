@@ -126,7 +126,7 @@ func (t *TransactionsServerTransport) dispatchGetTransactionSummaryByInvoice(req
 	if t.srv.GetTransactionSummaryByInvoice == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetTransactionSummaryByInvoice not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoices/(?P<invoiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transactionSummary`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoices/(?P<invoiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transactionSummary`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -171,7 +171,7 @@ func (t *TransactionsServerTransport) dispatchNewListByBillingProfilePager(req *
 	}
 	newListByBillingProfilePager := t.newListByBillingProfilePager.get(req)
 	if newListByBillingProfilePager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transactions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transactions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -259,7 +259,7 @@ func (t *TransactionsServerTransport) dispatchNewListByCustomerPager(req *http.R
 	}
 	newListByCustomerPager := t.newListByCustomerPager.get(req)
 	if newListByCustomerPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transactions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customers/(?P<customerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transactions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -351,7 +351,7 @@ func (t *TransactionsServerTransport) dispatchNewListByInvoicePager(req *http.Re
 	}
 	newListByInvoicePager := t.newListByInvoicePager.get(req)
 	if newListByInvoicePager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoices/(?P<invoiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transactions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoices/(?P<invoiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transactions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -431,7 +431,7 @@ func (t *TransactionsServerTransport) dispatchNewListByInvoiceSectionPager(req *
 	}
 	newListByInvoiceSectionPager := t.newListByInvoiceSectionPager.get(req)
 	if newListByInvoiceSectionPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transactions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoiceSections/(?P<invoiceSectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transactions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -523,7 +523,7 @@ func (t *TransactionsServerTransport) dispatchBeginTransactionsDownloadByInvoice
 	}
 	beginTransactionsDownloadByInvoice := t.beginTransactionsDownloadByInvoice.get(req)
 	if beginTransactionsDownloadByInvoice == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoices/(?P<invoiceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/transactionsDownload`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoices/(?P<invoiceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/transactionsDownload`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

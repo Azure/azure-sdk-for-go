@@ -31,6 +31,9 @@ type DatabaseMigrationsSQLDbClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDatabaseMigrationsSQLDbClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DatabaseMigrationsSQLDbClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -93,7 +96,7 @@ func (client *DatabaseMigrationsSQLDbClient) cancel(ctx context.Context, resourc
 func (client *DatabaseMigrationsSQLDbClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, parameters MigrationOperationInput, _ *DatabaseMigrationsSQLDbClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{sqlDbInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}/cancel"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -173,7 +176,7 @@ func (client *DatabaseMigrationsSQLDbClient) createOrUpdate(ctx context.Context,
 func (client *DatabaseMigrationsSQLDbClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, parameters DatabaseMigrationSQLDb, _ *DatabaseMigrationsSQLDbClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{sqlDbInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -253,7 +256,7 @@ func (client *DatabaseMigrationsSQLDbClient) deleteOperation(ctx context.Context
 func (client *DatabaseMigrationsSQLDbClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, options *DatabaseMigrationsSQLDbClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{sqlDbInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -309,7 +312,7 @@ func (client *DatabaseMigrationsSQLDbClient) Get(ctx context.Context, resourceGr
 func (client *DatabaseMigrationsSQLDbClient) getCreateRequest(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, options *DatabaseMigrationsSQLDbClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{sqlDbInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -404,7 +407,7 @@ func (client *DatabaseMigrationsSQLDbClient) retry(ctx context.Context, resource
 func (client *DatabaseMigrationsSQLDbClient) retryCreateRequest(ctx context.Context, resourceGroupName string, sqlDbInstanceName string, targetDbName string, migrationOperationInput MigrationOperationInput, _ *DatabaseMigrationsSQLDbClientBeginRetryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{sqlDbInstanceName}/providers/Microsoft.DataMigration/databaseMigrations/{targetDbName}/retry"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

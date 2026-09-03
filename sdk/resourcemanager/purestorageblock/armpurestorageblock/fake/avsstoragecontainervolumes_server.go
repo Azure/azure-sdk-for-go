@@ -110,7 +110,7 @@ func (a *AvsStorageContainerVolumesServerTransport) dispatchBeginDelete(req *htt
 	}
 	beginDelete := a.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/avsStorageContainers/(?P<storageContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/avsStorageContainers/(?P<storageContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -160,7 +160,7 @@ func (a *AvsStorageContainerVolumesServerTransport) dispatchGet(req *http.Reques
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/avsStorageContainers/(?P<storageContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/avsStorageContainers/(?P<storageContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -203,7 +203,7 @@ func (a *AvsStorageContainerVolumesServerTransport) dispatchNewListByAvsStorageC
 	}
 	newListByAvsStorageContainerPager := a.newListByAvsStorageContainerPager.get(req)
 	if newListByAvsStorageContainerPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/avsStorageContainers/(?P<storageContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/avsStorageContainers/(?P<storageContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -248,7 +248,7 @@ func (a *AvsStorageContainerVolumesServerTransport) dispatchBeginUpdate(req *htt
 	}
 	beginUpdate := a.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/avsStorageContainers/(?P<storageContainerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/volumes/(?P<volumeId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/PureStorage\.Block/storagePools/(?P<storagePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/avsStorageContainers/(?P<storageContainerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

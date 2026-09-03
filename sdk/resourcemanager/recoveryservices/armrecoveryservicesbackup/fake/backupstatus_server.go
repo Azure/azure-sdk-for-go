@@ -81,7 +81,7 @@ func (b *BackupStatusServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if b.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/locations/(?P<azureRegion>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupStatus`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/locations/(?P<azureRegion>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupStatus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

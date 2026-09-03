@@ -31,6 +31,9 @@ type WebAppsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWebAppsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WebAppsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -72,7 +75,7 @@ func (client *WebAppsClient) AddPremierAddOn(ctx context.Context, resourceGroupN
 func (client *WebAppsClient) addPremierAddOnCreateRequest(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, premierAddOn PremierAddOn, _ *WebAppsClientAddPremierAddOnOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons/{premierAddOnName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -142,7 +145,7 @@ func (client *WebAppsClient) AddPremierAddOnSlot(ctx context.Context, resourceGr
 func (client *WebAppsClient) addPremierAddOnSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, premierAddOn PremierAddOn, _ *WebAppsClientAddPremierAddOnSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/premieraddons/{premierAddOnName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -217,7 +220,7 @@ func (client *WebAppsClient) AnalyzeCustomHostname(ctx context.Context, resource
 func (client *WebAppsClient) analyzeCustomHostnameCreateRequest(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientAnalyzeCustomHostnameOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/analyzeCustomHostname"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -284,7 +287,7 @@ func (client *WebAppsClient) AnalyzeCustomHostnameSlot(ctx context.Context, reso
 func (client *WebAppsClient) analyzeCustomHostnameSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientAnalyzeCustomHostnameSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/analyzeCustomHostname"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -358,7 +361,7 @@ func (client *WebAppsClient) ApplySlotConfigToProduction(ctx context.Context, re
 func (client *WebAppsClient) applySlotConfigToProductionCreateRequest(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, _ *WebAppsClientApplySlotConfigToProductionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/applySlotConfig"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -417,7 +420,7 @@ func (client *WebAppsClient) ApplySlotConfigurationSlot(ctx context.Context, res
 func (client *WebAppsClient) applySlotConfigurationSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, _ *WebAppsClientApplySlotConfigurationSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/applySlotConfig"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -500,7 +503,7 @@ func (client *WebAppsClient) approveOrRejectPrivateEndpointConnection(ctx contex
 func (client *WebAppsClient) approveOrRejectPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, privateEndpointWrapper RemotePrivateEndpointConnectionARMResource, _ *WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -582,7 +585,7 @@ func (client *WebAppsClient) approveOrRejectPrivateEndpointConnectionSlot(ctx co
 func (client *WebAppsClient) approveOrRejectPrivateEndpointConnectionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, privateEndpointWrapper RemotePrivateEndpointConnectionARMResource, _ *WebAppsClientBeginApproveOrRejectPrivateEndpointConnectionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -645,7 +648,7 @@ func (client *WebAppsClient) Backup(ctx context.Context, resourceGroupName strin
 func (client *WebAppsClient) backupCreateRequest(ctx context.Context, resourceGroupName string, name string, request BackupRequest, _ *WebAppsClientBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backup"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -713,7 +716,7 @@ func (client *WebAppsClient) BackupSlot(ctx context.Context, resourceGroupName s
 func (client *WebAppsClient) backupSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, request BackupRequest, _ *WebAppsClientBackupSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backup"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -786,7 +789,7 @@ func (client *WebAppsClient) CreateDeployment(ctx context.Context, resourceGroup
 func (client *WebAppsClient) createDeploymentCreateRequest(ctx context.Context, resourceGroupName string, name string, id string, deployment Deployment, _ *WebAppsClientCreateDeploymentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -856,7 +859,7 @@ func (client *WebAppsClient) CreateDeploymentSlot(ctx context.Context, resourceG
 func (client *WebAppsClient) createDeploymentSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, id string, slot string, deployment Deployment, _ *WebAppsClientCreateDeploymentSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -957,7 +960,7 @@ func (client *WebAppsClient) createFunction(ctx context.Context, resourceGroupNa
 func (client *WebAppsClient) createFunctionCreateRequest(ctx context.Context, resourceGroupName string, name string, functionName string, functionEnvelope FunctionEnvelope, _ *WebAppsClientBeginCreateFunctionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1039,7 +1042,7 @@ func (client *WebAppsClient) createInstanceFunctionSlot(ctx context.Context, res
 func (client *WebAppsClient) createInstanceFunctionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, functionEnvelope FunctionEnvelope, _ *WebAppsClientBeginCreateInstanceFunctionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1128,7 +1131,7 @@ func (client *WebAppsClient) createInstanceMSDeployOperation(ctx context.Context
 func (client *WebAppsClient) createInstanceMSDeployOperationCreateRequest(ctx context.Context, resourceGroupName string, name string, instanceID string, msDeploy MSDeploy, _ *WebAppsClientBeginCreateInstanceMSDeployOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/extensions/MSDeploy"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1214,7 +1217,7 @@ func (client *WebAppsClient) createInstanceMSDeployOperationSlot(ctx context.Con
 func (client *WebAppsClient) createInstanceMSDeployOperationSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, msDeploy MSDeploy, _ *WebAppsClientBeginCreateInstanceMSDeployOperationSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/extensions/MSDeploy"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1302,7 +1305,7 @@ func (client *WebAppsClient) createMSDeployOperation(ctx context.Context, resour
 func (client *WebAppsClient) createMSDeployOperationCreateRequest(ctx context.Context, resourceGroupName string, name string, msDeploy MSDeploy, _ *WebAppsClientBeginCreateMSDeployOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/MSDeploy"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1383,7 +1386,7 @@ func (client *WebAppsClient) createMSDeployOperationSlot(ctx context.Context, re
 func (client *WebAppsClient) createMSDeployOperationSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, msDeploy MSDeploy, _ *WebAppsClientBeginCreateMSDeployOperationSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/extensions/MSDeploy"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1442,7 +1445,7 @@ func (client *WebAppsClient) CreateOneDeployOperation(ctx context.Context, resou
 func (client *WebAppsClient) createOneDeployOperationCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientCreateOneDeployOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/onedeploy"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1530,7 +1533,7 @@ func (client *WebAppsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 func (client *WebAppsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, siteEnvelope Site, _ *WebAppsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1586,7 +1589,7 @@ func (client *WebAppsClient) CreateOrUpdateConfiguration(ctx context.Context, re
 func (client *WebAppsClient) createOrUpdateConfigurationCreateRequest(ctx context.Context, resourceGroupName string, name string, siteConfig SiteConfigResource, _ *WebAppsClientCreateOrUpdateConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1655,7 +1658,7 @@ func (client *WebAppsClient) CreateOrUpdateConfigurationSlot(ctx context.Context
 func (client *WebAppsClient) createOrUpdateConfigurationSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, siteConfig SiteConfigResource, _ *WebAppsClientCreateOrUpdateConfigurationSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1729,7 +1732,7 @@ func (client *WebAppsClient) CreateOrUpdateDomainOwnershipIdentifier(ctx context
 func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierCreateRequest(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, domainOwnershipIdentifier Identifier, _ *WebAppsClientCreateOrUpdateDomainOwnershipIdentifierOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1800,7 +1803,7 @@ func (client *WebAppsClient) CreateOrUpdateDomainOwnershipIdentifierSlot(ctx con
 func (client *WebAppsClient) createOrUpdateDomainOwnershipIdentifierSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, domainOwnershipIdentifier Identifier, _ *WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1875,7 +1878,7 @@ func (client *WebAppsClient) CreateOrUpdateFunctionSecret(ctx context.Context, r
 func (client *WebAppsClient) createOrUpdateFunctionSecretCreateRequest(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, key KeyInfo, _ *WebAppsClientCreateOrUpdateFunctionSecretOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1949,7 +1952,7 @@ func (client *WebAppsClient) CreateOrUpdateFunctionSecretSlot(ctx context.Contex
 func (client *WebAppsClient) createOrUpdateFunctionSecretSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, slot string, key KeyInfo, _ *WebAppsClientCreateOrUpdateFunctionSecretSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}/keys/{keyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2030,7 +2033,7 @@ func (client *WebAppsClient) CreateOrUpdateHostNameBinding(ctx context.Context, 
 func (client *WebAppsClient) createOrUpdateHostNameBindingCreateRequest(ctx context.Context, resourceGroupName string, name string, hostName string, hostNameBinding HostNameBinding, _ *WebAppsClientCreateOrUpdateHostNameBindingOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings/{hostName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2100,7 +2103,7 @@ func (client *WebAppsClient) CreateOrUpdateHostNameBindingSlot(ctx context.Conte
 func (client *WebAppsClient) createOrUpdateHostNameBindingSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, hostName string, slot string, hostNameBinding HostNameBinding, _ *WebAppsClientCreateOrUpdateHostNameBindingSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings/{hostName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2178,7 +2181,7 @@ func (client *WebAppsClient) CreateOrUpdateHostSecret(ctx context.Context, resou
 func (client *WebAppsClient) createOrUpdateHostSecretCreateRequest(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, key KeyInfo, _ *WebAppsClientCreateOrUpdateHostSecretOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/{keyType}/{keyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2252,7 +2255,7 @@ func (client *WebAppsClient) CreateOrUpdateHostSecretSlot(ctx context.Context, r
 func (client *WebAppsClient) createOrUpdateHostSecretSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, slot string, key KeyInfo, _ *WebAppsClientCreateOrUpdateHostSecretSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/{keyType}/{keyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2334,7 +2337,7 @@ func (client *WebAppsClient) CreateOrUpdateHybridConnection(ctx context.Context,
 func (client *WebAppsClient) createOrUpdateHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, connectionEnvelope HybridConnection, _ *WebAppsClientCreateOrUpdateHybridConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2408,7 +2411,7 @@ func (client *WebAppsClient) CreateOrUpdateHybridConnectionSlot(ctx context.Cont
 func (client *WebAppsClient) createOrUpdateHybridConnectionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, connectionEnvelope HybridConnection, _ *WebAppsClientCreateOrUpdateHybridConnectionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2489,7 +2492,7 @@ func (client *WebAppsClient) CreateOrUpdatePublicCertificate(ctx context.Context
 func (client *WebAppsClient) createOrUpdatePublicCertificateCreateRequest(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, publicCertificate PublicCertificate, _ *WebAppsClientCreateOrUpdatePublicCertificateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publicCertificates/{publicCertificateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2559,7 +2562,7 @@ func (client *WebAppsClient) CreateOrUpdatePublicCertificateSlot(ctx context.Con
 func (client *WebAppsClient) createOrUpdatePublicCertificateSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, slot string, publicCertificate PublicCertificate, _ *WebAppsClientCreateOrUpdatePublicCertificateSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publicCertificates/{publicCertificateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2637,7 +2640,7 @@ func (client *WebAppsClient) CreateOrUpdateRelayServiceConnection(ctx context.Co
 func (client *WebAppsClient) createOrUpdateRelayServiceConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, entityName string, connectionEnvelope RelayServiceConnectionEntity, _ *WebAppsClientCreateOrUpdateRelayServiceConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection/{entityName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2708,7 +2711,7 @@ func (client *WebAppsClient) CreateOrUpdateRelayServiceConnectionSlot(ctx contex
 func (client *WebAppsClient) createOrUpdateRelayServiceConnectionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, connectionEnvelope RelayServiceConnectionEntity, _ *WebAppsClientCreateOrUpdateRelayServiceConnectionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection/{entityName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2785,7 +2788,7 @@ func (client *WebAppsClient) CreateOrUpdateSiteContainer(ctx context.Context, re
 func (client *WebAppsClient) createOrUpdateSiteContainerCreateRequest(ctx context.Context, resourceGroupName string, name string, containerName string, request SiteContainer, _ *WebAppsClientCreateOrUpdateSiteContainerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sitecontainers/{containerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2860,7 +2863,7 @@ func (client *WebAppsClient) CreateOrUpdateSiteContainerSlot(ctx context.Context
 func (client *WebAppsClient) createOrUpdateSiteContainerSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, containerName string, request SiteContainer, _ *WebAppsClientCreateOrUpdateSiteContainerSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sitecontainers/{containerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -2961,7 +2964,7 @@ func (client *WebAppsClient) createOrUpdateSlot(ctx context.Context, resourceGro
 func (client *WebAppsClient) createOrUpdateSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope Site, _ *WebAppsClientBeginCreateOrUpdateSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3045,7 +3048,7 @@ func (client *WebAppsClient) createOrUpdateSourceControl(ctx context.Context, re
 func (client *WebAppsClient) createOrUpdateSourceControlCreateRequest(ctx context.Context, resourceGroupName string, name string, siteSourceControl SiteSourceControl, _ *WebAppsClientBeginCreateOrUpdateSourceControlOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3127,7 +3130,7 @@ func (client *WebAppsClient) createOrUpdateSourceControlSlot(ctx context.Context
 func (client *WebAppsClient) createOrUpdateSourceControlSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl SiteSourceControl, _ *WebAppsClientBeginCreateOrUpdateSourceControlSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3192,7 +3195,7 @@ func (client *WebAppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionWithChec
 func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithCheckCreateRequest(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork, _ *WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3267,7 +3270,7 @@ func (client *WebAppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionWithChec
 func (client *WebAppsClient) createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, connectionEnvelope SwiftVirtualNetwork, _ *WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkConfig/virtualNetwork"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3341,7 +3344,7 @@ func (client *WebAppsClient) CreateOrUpdateVnetConnection(ctx context.Context, r
 func (client *WebAppsClient) createOrUpdateVnetConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope VnetInfoResource, _ *WebAppsClientCreateOrUpdateVnetConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3415,7 +3418,7 @@ func (client *WebAppsClient) CreateOrUpdateVnetConnectionGateway(ctx context.Con
 func (client *WebAppsClient) createOrUpdateVnetConnectionGatewayCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, _ *WebAppsClientCreateOrUpdateVnetConnectionGatewayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3489,7 +3492,7 @@ func (client *WebAppsClient) CreateOrUpdateVnetConnectionGatewaySlot(ctx context
 func (client *WebAppsClient) createOrUpdateVnetConnectionGatewaySlotCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, connectionEnvelope VnetGateway, _ *WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3568,7 +3571,7 @@ func (client *WebAppsClient) CreateOrUpdateVnetConnectionSlot(ctx context.Contex
 func (client *WebAppsClient) createOrUpdateVnetConnectionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, connectionEnvelope VnetInfoResource, _ *WebAppsClientCreateOrUpdateVnetConnectionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3645,7 +3648,7 @@ func (client *WebAppsClient) Delete(ctx context.Context, resourceGroupName strin
 func (client *WebAppsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3704,7 +3707,7 @@ func (client *WebAppsClient) DeleteBackup(ctx context.Context, resourceGroupName
 func (client *WebAppsClient) deleteBackupCreateRequest(ctx context.Context, resourceGroupName string, name string, backupID string, _ *WebAppsClientDeleteBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3761,7 +3764,7 @@ func (client *WebAppsClient) DeleteBackupConfiguration(ctx context.Context, reso
 func (client *WebAppsClient) deleteBackupConfigurationCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientDeleteBackupConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3815,7 +3818,7 @@ func (client *WebAppsClient) DeleteBackupConfigurationSlot(ctx context.Context, 
 func (client *WebAppsClient) deleteBackupConfigurationSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientDeleteBackupConfigurationSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/backup"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3871,7 +3874,7 @@ func (client *WebAppsClient) DeleteBackupSlot(ctx context.Context, resourceGroup
 func (client *WebAppsClient) deleteBackupSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, _ *WebAppsClientDeleteBackupSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/{backupId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3933,7 +3936,7 @@ func (client *WebAppsClient) DeleteContinuousWebJob(ctx context.Context, resourc
 func (client *WebAppsClient) deleteContinuousWebJobCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, _ *WebAppsClientDeleteContinuousWebJobOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/continuouswebjobs/{webJobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -3989,7 +3992,7 @@ func (client *WebAppsClient) DeleteContinuousWebJobSlot(ctx context.Context, res
 func (client *WebAppsClient) deleteContinuousWebJobSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, _ *WebAppsClientDeleteContinuousWebJobSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/continuouswebjobs/{webJobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -4051,7 +4054,7 @@ func (client *WebAppsClient) DeleteDeployment(ctx context.Context, resourceGroup
 func (client *WebAppsClient) deleteDeploymentCreateRequest(ctx context.Context, resourceGroupName string, name string, id string, _ *WebAppsClientDeleteDeploymentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -4107,7 +4110,7 @@ func (client *WebAppsClient) DeleteDeploymentSlot(ctx context.Context, resourceG
 func (client *WebAppsClient) deleteDeploymentSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, id string, slot string, _ *WebAppsClientDeleteDeploymentSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -4169,7 +4172,7 @@ func (client *WebAppsClient) DeleteDomainOwnershipIdentifier(ctx context.Context
 func (client *WebAppsClient) deleteDomainOwnershipIdentifierCreateRequest(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, _ *WebAppsClientDeleteDomainOwnershipIdentifierOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -4225,7 +4228,7 @@ func (client *WebAppsClient) DeleteDomainOwnershipIdentifierSlot(ctx context.Con
 func (client *WebAppsClient) deleteDomainOwnershipIdentifierSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, _ *WebAppsClientDeleteDomainOwnershipIdentifierSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -4286,7 +4289,7 @@ func (client *WebAppsClient) DeleteFunction(ctx context.Context, resourceGroupNa
 func (client *WebAppsClient) deleteFunctionCreateRequest(ctx context.Context, resourceGroupName string, name string, functionName string, _ *WebAppsClientDeleteFunctionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -4342,7 +4345,7 @@ func (client *WebAppsClient) DeleteFunctionSecret(ctx context.Context, resourceG
 func (client *WebAppsClient) deleteFunctionSecretCreateRequest(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, _ *WebAppsClientDeleteFunctionSecretOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/keys/{keyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -4402,7 +4405,7 @@ func (client *WebAppsClient) DeleteFunctionSecretSlot(ctx context.Context, resou
 func (client *WebAppsClient) deleteFunctionSecretSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, functionName string, keyName string, slot string, _ *WebAppsClientDeleteFunctionSecretSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}/keys/{keyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -4468,7 +4471,7 @@ func (client *WebAppsClient) DeleteHostNameBinding(ctx context.Context, resource
 func (client *WebAppsClient) deleteHostNameBindingCreateRequest(ctx context.Context, resourceGroupName string, name string, hostName string, _ *WebAppsClientDeleteHostNameBindingOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings/{hostName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -4527,7 +4530,7 @@ func (client *WebAppsClient) DeleteHostNameBindingSlot(ctx context.Context, reso
 func (client *WebAppsClient) deleteHostNameBindingSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, hostName string, _ *WebAppsClientDeleteHostNameBindingSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings/{hostName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -4590,7 +4593,7 @@ func (client *WebAppsClient) DeleteHostSecret(ctx context.Context, resourceGroup
 func (client *WebAppsClient) deleteHostSecretCreateRequest(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, _ *WebAppsClientDeleteHostSecretOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/{keyType}/{keyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -4650,7 +4653,7 @@ func (client *WebAppsClient) DeleteHostSecretSlot(ctx context.Context, resourceG
 func (client *WebAppsClient) deleteHostSecretSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, keyType string, keyName string, slot string, _ *WebAppsClientDeleteHostSecretSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/{keyType}/{keyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -4717,7 +4720,7 @@ func (client *WebAppsClient) DeleteHybridConnection(ctx context.Context, resourc
 func (client *WebAppsClient) deleteHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, _ *WebAppsClientDeleteHybridConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -4777,7 +4780,7 @@ func (client *WebAppsClient) DeleteHybridConnectionSlot(ctx context.Context, res
 func (client *WebAppsClient) deleteHybridConnectionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, _ *WebAppsClientDeleteHybridConnectionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -4841,7 +4844,7 @@ func (client *WebAppsClient) DeleteInstanceFunctionSlot(ctx context.Context, res
 func (client *WebAppsClient) deleteInstanceFunctionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, _ *WebAppsClientDeleteInstanceFunctionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -4903,7 +4906,7 @@ func (client *WebAppsClient) DeleteInstanceProcess(ctx context.Context, resource
 func (client *WebAppsClient) deleteInstanceProcessCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, _ *WebAppsClientDeleteInstanceProcessOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/processes/{processId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -4965,7 +4968,7 @@ func (client *WebAppsClient) DeleteInstanceProcessSlot(ctx context.Context, reso
 func (client *WebAppsClient) deleteInstanceProcessSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, _ *WebAppsClientDeleteInstanceProcessSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/processes/{processId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -5031,7 +5034,7 @@ func (client *WebAppsClient) DeletePremierAddOn(ctx context.Context, resourceGro
 func (client *WebAppsClient) deletePremierAddOnCreateRequest(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, _ *WebAppsClientDeletePremierAddOnOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons/{premierAddOnName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -5087,7 +5090,7 @@ func (client *WebAppsClient) DeletePremierAddOnSlot(ctx context.Context, resourc
 func (client *WebAppsClient) deletePremierAddOnSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, _ *WebAppsClientDeletePremierAddOnSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/premieraddons/{premierAddOnName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -5170,7 +5173,7 @@ func (client *WebAppsClient) deletePrivateEndpointConnection(ctx context.Context
 func (client *WebAppsClient) deletePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, _ *WebAppsClientBeginDeletePrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -5248,7 +5251,7 @@ func (client *WebAppsClient) deletePrivateEndpointConnectionSlot(ctx context.Con
 func (client *WebAppsClient) deletePrivateEndpointConnectionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, _ *WebAppsClientBeginDeletePrivateEndpointConnectionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -5312,7 +5315,7 @@ func (client *WebAppsClient) DeleteProcess(ctx context.Context, resourceGroupNam
 func (client *WebAppsClient) deleteProcessCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, _ *WebAppsClientDeleteProcessOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes/{processId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -5370,7 +5373,7 @@ func (client *WebAppsClient) DeleteProcessSlot(ctx context.Context, resourceGrou
 func (client *WebAppsClient) deleteProcessSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, slot string, _ *WebAppsClientDeleteProcessSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/processes/{processId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -5432,7 +5435,7 @@ func (client *WebAppsClient) DeletePublicCertificate(ctx context.Context, resour
 func (client *WebAppsClient) deletePublicCertificateCreateRequest(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, _ *WebAppsClientDeletePublicCertificateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publicCertificates/{publicCertificateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -5491,7 +5494,7 @@ func (client *WebAppsClient) DeletePublicCertificateSlot(ctx context.Context, re
 func (client *WebAppsClient) deletePublicCertificateSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, publicCertificateName string, _ *WebAppsClientDeletePublicCertificateSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publicCertificates/{publicCertificateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -5553,7 +5556,7 @@ func (client *WebAppsClient) DeleteRelayServiceConnection(ctx context.Context, r
 func (client *WebAppsClient) deleteRelayServiceConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, entityName string, _ *WebAppsClientDeleteRelayServiceConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection/{entityName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -5609,7 +5612,7 @@ func (client *WebAppsClient) DeleteRelayServiceConnectionSlot(ctx context.Contex
 func (client *WebAppsClient) deleteRelayServiceConnectionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, _ *WebAppsClientDeleteRelayServiceConnectionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection/{entityName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -5671,7 +5674,7 @@ func (client *WebAppsClient) DeleteSiteContainer(ctx context.Context, resourceGr
 func (client *WebAppsClient) deleteSiteContainerCreateRequest(ctx context.Context, resourceGroupName string, name string, containerName string, _ *WebAppsClientDeleteSiteContainerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sitecontainers/{containerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -5731,7 +5734,7 @@ func (client *WebAppsClient) DeleteSiteContainerSlot(ctx context.Context, resour
 func (client *WebAppsClient) deleteSiteContainerSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, containerName string, _ *WebAppsClientDeleteSiteContainerSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sitecontainers/{containerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -5793,7 +5796,7 @@ func (client *WebAppsClient) DeleteSiteExtension(ctx context.Context, resourceGr
 func (client *WebAppsClient) deleteSiteExtensionCreateRequest(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, _ *WebAppsClientDeleteSiteExtensionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/siteextensions/{siteExtensionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -5849,7 +5852,7 @@ func (client *WebAppsClient) DeleteSiteExtensionSlot(ctx context.Context, resour
 func (client *WebAppsClient) deleteSiteExtensionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, _ *WebAppsClientDeleteSiteExtensionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/siteextensions/{siteExtensionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -5910,7 +5913,7 @@ func (client *WebAppsClient) DeleteSlot(ctx context.Context, resourceGroupName s
 func (client *WebAppsClient) deleteSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientDeleteSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -5973,7 +5976,7 @@ func (client *WebAppsClient) DeleteSourceControl(ctx context.Context, resourceGr
 func (client *WebAppsClient) deleteSourceControlCreateRequest(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientDeleteSourceControlOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -6031,7 +6034,7 @@ func (client *WebAppsClient) DeleteSourceControlSlot(ctx context.Context, resour
 func (client *WebAppsClient) deleteSourceControlSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientDeleteSourceControlSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -6091,7 +6094,7 @@ func (client *WebAppsClient) DeleteSwiftVirtualNetwork(ctx context.Context, reso
 func (client *WebAppsClient) deleteSwiftVirtualNetworkCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientDeleteSwiftVirtualNetworkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -6146,7 +6149,7 @@ func (client *WebAppsClient) DeleteSwiftVirtualNetworkSlot(ctx context.Context, 
 func (client *WebAppsClient) deleteSwiftVirtualNetworkSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientDeleteSwiftVirtualNetworkSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkConfig/virtualNetwork"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -6204,7 +6207,7 @@ func (client *WebAppsClient) DeleteTriggeredWebJob(ctx context.Context, resource
 func (client *WebAppsClient) deleteTriggeredWebJobCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, _ *WebAppsClientDeleteTriggeredWebJobOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/triggeredwebjobs/{webJobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -6260,7 +6263,7 @@ func (client *WebAppsClient) DeleteTriggeredWebJobSlot(ctx context.Context, reso
 func (client *WebAppsClient) deleteTriggeredWebJobSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, _ *WebAppsClientDeleteTriggeredWebJobSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/triggeredwebjobs/{webJobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -6322,7 +6325,7 @@ func (client *WebAppsClient) DeleteVnetConnection(ctx context.Context, resourceG
 func (client *WebAppsClient) deleteVnetConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, _ *WebAppsClientDeleteVnetConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -6378,7 +6381,7 @@ func (client *WebAppsClient) DeleteVnetConnectionSlot(ctx context.Context, resou
 func (client *WebAppsClient) deleteVnetConnectionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, _ *WebAppsClientDeleteVnetConnectionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -6439,7 +6442,7 @@ func (client *WebAppsClient) DeployWorkflowArtifacts(ctx context.Context, resour
 func (client *WebAppsClient) deployWorkflowArtifactsCreateRequest(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientDeployWorkflowArtifactsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployWorkflowArtifacts"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -6500,7 +6503,7 @@ func (client *WebAppsClient) DeployWorkflowArtifactsSlot(ctx context.Context, re
 func (client *WebAppsClient) deployWorkflowArtifactsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientDeployWorkflowArtifactsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployWorkflowArtifacts"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -6563,7 +6566,7 @@ func (client *WebAppsClient) DiscoverBackup(ctx context.Context, resourceGroupNa
 func (client *WebAppsClient) discoverBackupCreateRequest(ctx context.Context, resourceGroupName string, name string, request RestoreRequest, _ *WebAppsClientDiscoverBackupOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/discoverbackup"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -6634,7 +6637,7 @@ func (client *WebAppsClient) DiscoverBackupSlot(ctx context.Context, resourceGro
 func (client *WebAppsClient) discoverBackupSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, request RestoreRequest, _ *WebAppsClientDiscoverBackupSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/discoverbackup"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -6708,7 +6711,7 @@ func (client *WebAppsClient) GenerateNewSitePublishingPassword(ctx context.Conte
 func (client *WebAppsClient) generateNewSitePublishingPasswordCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGenerateNewSitePublishingPasswordOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/newpassword"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -6762,7 +6765,7 @@ func (client *WebAppsClient) GenerateNewSitePublishingPasswordSlot(ctx context.C
 func (client *WebAppsClient) generateNewSitePublishingPasswordSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGenerateNewSitePublishingPasswordSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/newpassword"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -6815,7 +6818,7 @@ func (client *WebAppsClient) Get(ctx context.Context, resourceGroupName string, 
 func (client *WebAppsClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -6879,7 +6882,7 @@ func (client *WebAppsClient) GetAppSettingKeyVaultReference(ctx context.Context,
 func (client *WebAppsClient) getAppSettingKeyVaultReferenceCreateRequest(ctx context.Context, resourceGroupName string, name string, appSettingKey string, _ *WebAppsClientGetAppSettingKeyVaultReferenceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/configreferences/appsettings/{appSettingKey}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -6945,7 +6948,7 @@ func (client *WebAppsClient) GetAppSettingKeyVaultReferenceSlot(ctx context.Cont
 func (client *WebAppsClient) getAppSettingKeyVaultReferenceSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, appSettingKey string, slot string, _ *WebAppsClientGetAppSettingKeyVaultReferenceSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/configreferences/appsettings/{appSettingKey}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -7027,7 +7030,7 @@ func (client *WebAppsClient) getAppSettingsKeyVaultReferencesCreateRequest(ctx c
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/configreferences/appsettings"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -7106,7 +7109,7 @@ func (client *WebAppsClient) getAppSettingsKeyVaultReferencesSlotCreateRequest(c
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/configreferences/appsettings"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -7177,7 +7180,7 @@ func (client *WebAppsClient) GetAuthSettings(ctx context.Context, resourceGroupN
 func (client *WebAppsClient) getAuthSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetAuthSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettings/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -7241,7 +7244,7 @@ func (client *WebAppsClient) GetAuthSettingsSlot(ctx context.Context, resourceGr
 func (client *WebAppsClient) getAuthSettingsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetAuthSettingsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/authsettings/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -7308,7 +7311,7 @@ func (client *WebAppsClient) GetAuthSettingsV2(ctx context.Context, resourceGrou
 func (client *WebAppsClient) getAuthSettingsV2CreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetAuthSettingsV2Options) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettingsV2/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -7372,7 +7375,7 @@ func (client *WebAppsClient) GetAuthSettingsV2Slot(ctx context.Context, resource
 func (client *WebAppsClient) getAuthSettingsV2SlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetAuthSettingsV2SlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/authsettingsV2/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -7439,7 +7442,7 @@ func (client *WebAppsClient) GetAuthSettingsV2WithoutSecrets(ctx context.Context
 func (client *WebAppsClient) getAuthSettingsV2WithoutSecretsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetAuthSettingsV2WithoutSecretsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettingsV2"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -7503,7 +7506,7 @@ func (client *WebAppsClient) GetAuthSettingsV2WithoutSecretsSlot(ctx context.Con
 func (client *WebAppsClient) getAuthSettingsV2WithoutSecretsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetAuthSettingsV2WithoutSecretsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/authsettingsV2"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -7570,7 +7573,7 @@ func (client *WebAppsClient) GetBackupConfiguration(ctx context.Context, resourc
 func (client *WebAppsClient) getBackupConfigurationCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetBackupConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -7634,7 +7637,7 @@ func (client *WebAppsClient) GetBackupConfigurationSlot(ctx context.Context, res
 func (client *WebAppsClient) getBackupConfigurationSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetBackupConfigurationSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/backup/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -7701,7 +7704,7 @@ func (client *WebAppsClient) GetBackupStatus(ctx context.Context, resourceGroupN
 func (client *WebAppsClient) getBackupStatusCreateRequest(ctx context.Context, resourceGroupName string, name string, backupID string, _ *WebAppsClientGetBackupStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -7767,7 +7770,7 @@ func (client *WebAppsClient) GetBackupStatusSlot(ctx context.Context, resourceGr
 func (client *WebAppsClient) getBackupStatusSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, _ *WebAppsClientGetBackupStatusSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/{backupId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -7840,7 +7843,7 @@ func (client *WebAppsClient) GetConfiguration(ctx context.Context, resourceGroup
 func (client *WebAppsClient) getConfigurationCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -7906,7 +7909,7 @@ func (client *WebAppsClient) GetConfigurationSlot(ctx context.Context, resourceG
 func (client *WebAppsClient) getConfigurationSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetConfigurationSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -7974,7 +7977,7 @@ func (client *WebAppsClient) GetConfigurationSnapshot(ctx context.Context, resou
 func (client *WebAppsClient) getConfigurationSnapshotCreateRequest(ctx context.Context, resourceGroupName string, name string, snapshotID string, _ *WebAppsClientGetConfigurationSnapshotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web/snapshots/{snapshotId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -8040,7 +8043,7 @@ func (client *WebAppsClient) GetConfigurationSnapshotSlot(ctx context.Context, r
 func (client *WebAppsClient) getConfigurationSnapshotSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, snapshotID string, slot string, _ *WebAppsClientGetConfigurationSnapshotSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web/snapshots/{snapshotId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -8111,7 +8114,7 @@ func (client *WebAppsClient) GetContainerLogsZip(ctx context.Context, resourceGr
 func (client *WebAppsClient) getContainerLogsZipCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetContainerLogsZipOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/containerlogs/zip/download"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -8177,7 +8180,7 @@ func (client *WebAppsClient) GetContainerLogsZipSlot(ctx context.Context, resour
 func (client *WebAppsClient) getContainerLogsZipSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetContainerLogsZipSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/containerlogs/zip/download"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -8247,7 +8250,7 @@ func (client *WebAppsClient) GetContinuousWebJob(ctx context.Context, resourceGr
 func (client *WebAppsClient) getContinuousWebJobCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, _ *WebAppsClientGetContinuousWebJobOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/continuouswebjobs/{webJobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -8313,7 +8316,7 @@ func (client *WebAppsClient) GetContinuousWebJobSlot(ctx context.Context, resour
 func (client *WebAppsClient) getContinuousWebJobSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, _ *WebAppsClientGetContinuousWebJobSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/continuouswebjobs/{webJobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -8384,7 +8387,7 @@ func (client *WebAppsClient) GetDeployment(ctx context.Context, resourceGroupNam
 func (client *WebAppsClient) getDeploymentCreateRequest(ctx context.Context, resourceGroupName string, name string, id string, _ *WebAppsClientGetDeploymentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -8450,7 +8453,7 @@ func (client *WebAppsClient) GetDeploymentSlot(ctx context.Context, resourceGrou
 func (client *WebAppsClient) getDeploymentSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, id string, slot string, _ *WebAppsClientGetDeploymentSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -8521,7 +8524,7 @@ func (client *WebAppsClient) GetDiagnosticLogsConfiguration(ctx context.Context,
 func (client *WebAppsClient) getDiagnosticLogsConfigurationCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetDiagnosticLogsConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/logs"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -8586,7 +8589,7 @@ func (client *WebAppsClient) GetDiagnosticLogsConfigurationSlot(ctx context.Cont
 func (client *WebAppsClient) getDiagnosticLogsConfigurationSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetDiagnosticLogsConfigurationSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/logs"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -8654,7 +8657,7 @@ func (client *WebAppsClient) GetDomainOwnershipIdentifier(ctx context.Context, r
 func (client *WebAppsClient) getDomainOwnershipIdentifierCreateRequest(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, _ *WebAppsClientGetDomainOwnershipIdentifierOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -8720,7 +8723,7 @@ func (client *WebAppsClient) GetDomainOwnershipIdentifierSlot(ctx context.Contex
 func (client *WebAppsClient) getDomainOwnershipIdentifierSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, _ *WebAppsClientGetDomainOwnershipIdentifierSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -8790,7 +8793,7 @@ func (client *WebAppsClient) GetFtpAllowed(ctx context.Context, resourceGroupNam
 func (client *WebAppsClient) getFtpAllowedCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetFtpAllowedOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/basicPublishingCredentialsPolicies/ftp"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -8853,7 +8856,7 @@ func (client *WebAppsClient) GetFtpAllowedSlot(ctx context.Context, resourceGrou
 func (client *WebAppsClient) getFtpAllowedSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetFtpAllowedSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/basicPublishingCredentialsPolicies/ftp"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -8920,7 +8923,7 @@ func (client *WebAppsClient) GetFunction(ctx context.Context, resourceGroupName 
 func (client *WebAppsClient) getFunctionCreateRequest(ctx context.Context, resourceGroupName string, name string, functionName string, _ *WebAppsClientGetFunctionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -8987,7 +8990,7 @@ func (client *WebAppsClient) GetFunctionsAdminToken(ctx context.Context, resourc
 func (client *WebAppsClient) getFunctionsAdminTokenCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetFunctionsAdminTokenOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/admin/token"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -9051,7 +9054,7 @@ func (client *WebAppsClient) GetFunctionsAdminTokenSlot(ctx context.Context, res
 func (client *WebAppsClient) getFunctionsAdminTokenSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetFunctionsAdminTokenSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/admin/token"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -9119,7 +9122,7 @@ func (client *WebAppsClient) GetHostNameBinding(ctx context.Context, resourceGro
 func (client *WebAppsClient) getHostNameBindingCreateRequest(ctx context.Context, resourceGroupName string, name string, hostName string, _ *WebAppsClientGetHostNameBindingOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings/{hostName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -9188,7 +9191,7 @@ func (client *WebAppsClient) GetHostNameBindingSlot(ctx context.Context, resourc
 func (client *WebAppsClient) getHostNameBindingSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, hostName string, _ *WebAppsClientGetHostNameBindingSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings/{hostName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -9261,7 +9264,7 @@ func (client *WebAppsClient) GetHybridConnection(ctx context.Context, resourceGr
 func (client *WebAppsClient) getHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, _ *WebAppsClientGetHybridConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -9331,7 +9334,7 @@ func (client *WebAppsClient) GetHybridConnectionSlot(ctx context.Context, resour
 func (client *WebAppsClient) getHybridConnectionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, _ *WebAppsClientGetHybridConnectionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -9405,7 +9408,7 @@ func (client *WebAppsClient) GetInstanceFunctionSlot(ctx context.Context, resour
 func (client *WebAppsClient) getInstanceFunctionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, _ *WebAppsClientGetInstanceFunctionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -9475,7 +9478,7 @@ func (client *WebAppsClient) GetInstanceInfo(ctx context.Context, resourceGroupN
 func (client *WebAppsClient) getInstanceInfoCreateRequest(ctx context.Context, resourceGroupName string, name string, instanceID string, _ *WebAppsClientGetInstanceInfoOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -9541,7 +9544,7 @@ func (client *WebAppsClient) GetInstanceInfoSlot(ctx context.Context, resourceGr
 func (client *WebAppsClient) getInstanceInfoSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, instanceID string, slot string, _ *WebAppsClientGetInstanceInfoSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -9613,7 +9616,7 @@ func (client *WebAppsClient) GetInstanceMSDeployLog(ctx context.Context, resourc
 func (client *WebAppsClient) getInstanceMSDeployLogCreateRequest(ctx context.Context, resourceGroupName string, name string, instanceID string, _ *WebAppsClientGetInstanceMSDeployLogOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/extensions/MSDeploy/log"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -9682,7 +9685,7 @@ func (client *WebAppsClient) GetInstanceMSDeployLogSlot(ctx context.Context, res
 func (client *WebAppsClient) getInstanceMSDeployLogSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, _ *WebAppsClientGetInstanceMSDeployLogSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/extensions/MSDeploy/log"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -9754,7 +9757,7 @@ func (client *WebAppsClient) GetInstanceMsDeployStatus(ctx context.Context, reso
 func (client *WebAppsClient) getInstanceMsDeployStatusCreateRequest(ctx context.Context, resourceGroupName string, name string, instanceID string, _ *WebAppsClientGetInstanceMsDeployStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/extensions/MSDeploy"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -9823,7 +9826,7 @@ func (client *WebAppsClient) GetInstanceMsDeployStatusSlot(ctx context.Context, 
 func (client *WebAppsClient) getInstanceMsDeployStatusSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, instanceID string, _ *WebAppsClientGetInstanceMsDeployStatusSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/extensions/MSDeploy"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -9893,7 +9896,7 @@ func (client *WebAppsClient) GetInstanceProcess(ctx context.Context, resourceGro
 func (client *WebAppsClient) getInstanceProcessCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, _ *WebAppsClientGetInstanceProcessOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/processes/{processId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -9963,7 +9966,7 @@ func (client *WebAppsClient) GetInstanceProcessDump(ctx context.Context, resourc
 func (client *WebAppsClient) getInstanceProcessDumpCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, instanceID string, _ *WebAppsClientGetInstanceProcessDumpOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/processes/{processId}/dump"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -10035,7 +10038,7 @@ func (client *WebAppsClient) GetInstanceProcessDumpSlot(ctx context.Context, res
 func (client *WebAppsClient) getInstanceProcessDumpSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, _ *WebAppsClientGetInstanceProcessDumpSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/processes/{processId}/dump"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -10111,7 +10114,7 @@ func (client *WebAppsClient) GetInstanceProcessModule(ctx context.Context, resou
 func (client *WebAppsClient) getInstanceProcessModuleCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, instanceID string, _ *WebAppsClientGetInstanceProcessModuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/processes/{processId}/modules/{baseAddress}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -10185,7 +10188,7 @@ func (client *WebAppsClient) GetInstanceProcessModuleSlot(ctx context.Context, r
 func (client *WebAppsClient) getInstanceProcessModuleSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, slot string, instanceID string, _ *WebAppsClientGetInstanceProcessModuleSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/processes/{processId}/modules/{baseAddress}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -10263,7 +10266,7 @@ func (client *WebAppsClient) GetInstanceProcessSlot(ctx context.Context, resourc
 func (client *WebAppsClient) getInstanceProcessSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, slot string, instanceID string, _ *WebAppsClientGetInstanceProcessSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/processes/{processId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -10340,7 +10343,7 @@ func (client *WebAppsClient) GetInstanceWorkflowSlot(ctx context.Context, resour
 func (client *WebAppsClient) getInstanceWorkflowSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, workflowName string, _ *WebAppsClientGetInstanceWorkflowSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/workflows/{workflowName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -10410,7 +10413,7 @@ func (client *WebAppsClient) GetMSDeployLog(ctx context.Context, resourceGroupNa
 func (client *WebAppsClient) getMSDeployLogCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetMSDeployLogOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/MSDeploy/log"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -10474,7 +10477,7 @@ func (client *WebAppsClient) GetMSDeployLogSlot(ctx context.Context, resourceGro
 func (client *WebAppsClient) getMSDeployLogSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetMSDeployLogSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/extensions/MSDeploy/log"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -10541,7 +10544,7 @@ func (client *WebAppsClient) GetMSDeployStatus(ctx context.Context, resourceGrou
 func (client *WebAppsClient) getMSDeployStatusCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetMSDeployStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/MSDeploy"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -10605,7 +10608,7 @@ func (client *WebAppsClient) GetMSDeployStatusSlot(ctx context.Context, resource
 func (client *WebAppsClient) getMSDeployStatusSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetMSDeployStatusSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/extensions/MSDeploy"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -10673,7 +10676,7 @@ func (client *WebAppsClient) GetMigrateMySQLStatus(ctx context.Context, resource
 func (client *WebAppsClient) getMigrateMySQLStatusCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetMigrateMySQLStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migratemysql/status"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -10738,7 +10741,7 @@ func (client *WebAppsClient) GetMigrateMySQLStatusSlot(ctx context.Context, reso
 func (client *WebAppsClient) getMigrateMySQLStatusSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetMigrateMySQLStatusSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/migratemysql/status"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -10806,7 +10809,7 @@ func (client *WebAppsClient) GetNetworkTraceOperation(ctx context.Context, resou
 func (client *WebAppsClient) getNetworkTraceOperationCreateRequest(ctx context.Context, resourceGroupName string, name string, operationID string, _ *WebAppsClientGetNetworkTraceOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/operationresults/{operationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -10872,7 +10875,7 @@ func (client *WebAppsClient) GetNetworkTraceOperationSlot(ctx context.Context, r
 func (client *WebAppsClient) getNetworkTraceOperationSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, _ *WebAppsClientGetNetworkTraceOperationSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/operationresults/{operationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -10942,7 +10945,7 @@ func (client *WebAppsClient) GetNetworkTraceOperationSlotV2(ctx context.Context,
 func (client *WebAppsClient) getNetworkTraceOperationSlotV2CreateRequest(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, _ *WebAppsClientGetNetworkTraceOperationSlotV2Options) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTraces/current/operationresults/{operationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -11014,7 +11017,7 @@ func (client *WebAppsClient) GetNetworkTraceOperationV2(ctx context.Context, res
 func (client *WebAppsClient) getNetworkTraceOperationV2CreateRequest(ctx context.Context, resourceGroupName string, name string, operationID string, _ *WebAppsClientGetNetworkTraceOperationV2Options) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTraces/current/operationresults/{operationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -11082,7 +11085,7 @@ func (client *WebAppsClient) GetNetworkTraces(ctx context.Context, resourceGroup
 func (client *WebAppsClient) getNetworkTracesCreateRequest(ctx context.Context, resourceGroupName string, name string, operationID string, _ *WebAppsClientGetNetworkTracesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/{operationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -11148,7 +11151,7 @@ func (client *WebAppsClient) GetNetworkTracesSlot(ctx context.Context, resourceG
 func (client *WebAppsClient) getNetworkTracesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, _ *WebAppsClientGetNetworkTracesSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/{operationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -11218,7 +11221,7 @@ func (client *WebAppsClient) GetNetworkTracesSlotV2(ctx context.Context, resourc
 func (client *WebAppsClient) getNetworkTracesSlotV2CreateRequest(ctx context.Context, resourceGroupName string, name string, operationID string, slot string, _ *WebAppsClientGetNetworkTracesSlotV2Options) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTraces/{operationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -11290,7 +11293,7 @@ func (client *WebAppsClient) GetNetworkTracesV2(ctx context.Context, resourceGro
 func (client *WebAppsClient) getNetworkTracesV2CreateRequest(ctx context.Context, resourceGroupName string, name string, operationID string, _ *WebAppsClientGetNetworkTracesV2Options) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTraces/{operationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -11357,7 +11360,7 @@ func (client *WebAppsClient) GetOneDeployStatus(ctx context.Context, resourceGro
 func (client *WebAppsClient) getOneDeployStatusCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetOneDeployStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/extensions/onedeploy"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -11420,7 +11423,7 @@ func (client *WebAppsClient) GetPremierAddOn(ctx context.Context, resourceGroupN
 func (client *WebAppsClient) getPremierAddOnCreateRequest(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, _ *WebAppsClientGetPremierAddOnOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons/{premierAddOnName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -11486,7 +11489,7 @@ func (client *WebAppsClient) GetPremierAddOnSlot(ctx context.Context, resourceGr
 func (client *WebAppsClient) getPremierAddOnSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, _ *WebAppsClientGetPremierAddOnSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/premieraddons/{premierAddOnName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -11558,7 +11561,7 @@ func (client *WebAppsClient) GetPrivateAccess(ctx context.Context, resourceGroup
 func (client *WebAppsClient) getPrivateAccessCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetPrivateAccessOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/privateAccess/virtualNetworks"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -11623,7 +11626,7 @@ func (client *WebAppsClient) GetPrivateAccessSlot(ctx context.Context, resourceG
 func (client *WebAppsClient) getPrivateAccessSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetPrivateAccessSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/privateAccess/virtualNetworks"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -11691,7 +11694,7 @@ func (client *WebAppsClient) GetPrivateEndpointConnection(ctx context.Context, r
 func (client *WebAppsClient) getPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, _ *WebAppsClientGetPrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -11769,7 +11772,7 @@ func (client *WebAppsClient) getPrivateEndpointConnectionListCreateRequest(ctx c
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/privateEndpointConnections"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -11849,7 +11852,7 @@ func (client *WebAppsClient) getPrivateEndpointConnectionListSlotCreateRequest(c
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/privateEndpointConnections"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -11920,7 +11923,7 @@ func (client *WebAppsClient) GetPrivateEndpointConnectionSlot(ctx context.Contex
 func (client *WebAppsClient) getPrivateEndpointConnectionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, privateEndpointConnectionName string, slot string, _ *WebAppsClientGetPrivateEndpointConnectionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -11991,7 +11994,7 @@ func (client *WebAppsClient) GetPrivateLinkResources(ctx context.Context, resour
 func (client *WebAppsClient) getPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetPrivateLinkResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/privateLinkResources"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -12055,7 +12058,7 @@ func (client *WebAppsClient) GetPrivateLinkResourcesSlot(ctx context.Context, re
 func (client *WebAppsClient) getPrivateLinkResourcesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetPrivateLinkResourcesSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/privateLinkResources"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -12122,7 +12125,7 @@ func (client *WebAppsClient) GetProcess(ctx context.Context, resourceGroupName s
 func (client *WebAppsClient) getProcessCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, _ *WebAppsClientGetProcessOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes/{processId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -12189,7 +12192,7 @@ func (client *WebAppsClient) GetProcessDump(ctx context.Context, resourceGroupNa
 func (client *WebAppsClient) getProcessDumpCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, _ *WebAppsClientGetProcessDumpOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes/{processId}/dump"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -12257,7 +12260,7 @@ func (client *WebAppsClient) GetProcessDumpSlot(ctx context.Context, resourceGro
 func (client *WebAppsClient) getProcessDumpSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, slot string, _ *WebAppsClientGetProcessDumpSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/processes/{processId}/dump"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -12332,7 +12335,7 @@ func (client *WebAppsClient) GetProcessModule(ctx context.Context, resourceGroup
 func (client *WebAppsClient) getProcessModuleCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, _ *WebAppsClientGetProcessModuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes/{processId}/modules/{baseAddress}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -12402,7 +12405,7 @@ func (client *WebAppsClient) GetProcessModuleSlot(ctx context.Context, resourceG
 func (client *WebAppsClient) getProcessModuleSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, baseAddress string, slot string, _ *WebAppsClientGetProcessModuleSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/processes/{processId}/modules/{baseAddress}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -12475,7 +12478,7 @@ func (client *WebAppsClient) GetProcessSlot(ctx context.Context, resourceGroupNa
 func (client *WebAppsClient) getProcessSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, processID string, slot string, _ *WebAppsClientGetProcessSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/processes/{processId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -12571,7 +12574,7 @@ func (client *WebAppsClient) getProductionSiteDeploymentStatus(ctx context.Conte
 func (client *WebAppsClient) getProductionSiteDeploymentStatusCreateRequest(ctx context.Context, resourceGroupName string, name string, deploymentStatusID string, _ *WebAppsClientBeginGetProductionSiteDeploymentStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deploymentStatus/{deploymentStatusId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -12627,7 +12630,7 @@ func (client *WebAppsClient) GetPublicCertificate(ctx context.Context, resourceG
 func (client *WebAppsClient) getPublicCertificateCreateRequest(ctx context.Context, resourceGroupName string, name string, publicCertificateName string, _ *WebAppsClientGetPublicCertificateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publicCertificates/{publicCertificateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -12696,7 +12699,7 @@ func (client *WebAppsClient) GetPublicCertificateSlot(ctx context.Context, resou
 func (client *WebAppsClient) getPublicCertificateSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, publicCertificateName string, _ *WebAppsClientGetPublicCertificateSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publicCertificates/{publicCertificateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -12768,7 +12771,7 @@ func (client *WebAppsClient) GetRelayServiceConnection(ctx context.Context, reso
 func (client *WebAppsClient) getRelayServiceConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, entityName string, _ *WebAppsClientGetRelayServiceConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection/{entityName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -12834,7 +12837,7 @@ func (client *WebAppsClient) GetRelayServiceConnectionSlot(ctx context.Context, 
 func (client *WebAppsClient) getRelayServiceConnectionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, _ *WebAppsClientGetRelayServiceConnectionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection/{entityName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -12904,7 +12907,7 @@ func (client *WebAppsClient) GetScmAllowed(ctx context.Context, resourceGroupNam
 func (client *WebAppsClient) getScmAllowedCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetScmAllowedOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/basicPublishingCredentialsPolicies/scm"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -12967,7 +12970,7 @@ func (client *WebAppsClient) GetScmAllowedSlot(ctx context.Context, resourceGrou
 func (client *WebAppsClient) getScmAllowedSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetScmAllowedSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/basicPublishingCredentialsPolicies/scm"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -13034,7 +13037,7 @@ func (client *WebAppsClient) GetSiteConnectionStringKeyVaultReference(ctx contex
 func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceCreateRequest(ctx context.Context, resourceGroupName string, name string, connectionStringKey string, _ *WebAppsClientGetSiteConnectionStringKeyVaultReferenceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/configreferences/connectionstrings/{connectionStringKey}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -13100,7 +13103,7 @@ func (client *WebAppsClient) GetSiteConnectionStringKeyVaultReferenceSlot(ctx co
 func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferenceSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, connectionStringKey string, slot string, _ *WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/configreferences/connectionstrings/{connectionStringKey}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -13182,7 +13185,7 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesCreateRequ
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/configreferences/connectionstrings"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -13261,7 +13264,7 @@ func (client *WebAppsClient) getSiteConnectionStringKeyVaultReferencesSlotCreate
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/configreferences/connectionstrings"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -13334,7 +13337,7 @@ func (client *WebAppsClient) GetSiteContainer(ctx context.Context, resourceGroup
 func (client *WebAppsClient) getSiteContainerCreateRequest(ctx context.Context, resourceGroupName string, name string, containerName string, _ *WebAppsClientGetSiteContainerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sitecontainers/{containerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -13404,7 +13407,7 @@ func (client *WebAppsClient) GetSiteContainerSlot(ctx context.Context, resourceG
 func (client *WebAppsClient) getSiteContainerSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, containerName string, _ *WebAppsClientGetSiteContainerSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sitecontainers/{containerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -13476,7 +13479,7 @@ func (client *WebAppsClient) GetSiteExtension(ctx context.Context, resourceGroup
 func (client *WebAppsClient) getSiteExtensionCreateRequest(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, _ *WebAppsClientGetSiteExtensionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/siteextensions/{siteExtensionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -13542,7 +13545,7 @@ func (client *WebAppsClient) GetSiteExtensionSlot(ctx context.Context, resourceG
 func (client *WebAppsClient) getSiteExtensionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, _ *WebAppsClientGetSiteExtensionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/siteextensions/{siteExtensionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -13613,7 +13616,7 @@ func (client *WebAppsClient) GetSitePhpErrorLogFlag(ctx context.Context, resourc
 func (client *WebAppsClient) getSitePhpErrorLogFlagCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetSitePhpErrorLogFlagOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/phplogging"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -13677,7 +13680,7 @@ func (client *WebAppsClient) GetSitePhpErrorLogFlagSlot(ctx context.Context, res
 func (client *WebAppsClient) getSitePhpErrorLogFlagSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetSitePhpErrorLogFlagSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/phplogging"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -13744,7 +13747,7 @@ func (client *WebAppsClient) GetSlot(ctx context.Context, resourceGroupName stri
 func (client *WebAppsClient) getSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -13838,7 +13841,7 @@ func (client *WebAppsClient) getSlotSiteDeploymentStatusSlot(ctx context.Context
 func (client *WebAppsClient) getSlotSiteDeploymentStatusSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, deploymentStatusID string, _ *WebAppsClientBeginGetSlotSiteDeploymentStatusSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deploymentStatus/{deploymentStatusId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -13897,7 +13900,7 @@ func (client *WebAppsClient) GetSourceControl(ctx context.Context, resourceGroup
 func (client *WebAppsClient) getSourceControlCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetSourceControlOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -13962,7 +13965,7 @@ func (client *WebAppsClient) GetSourceControlSlot(ctx context.Context, resourceG
 func (client *WebAppsClient) getSourceControlSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetSourceControlSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -14029,7 +14032,7 @@ func (client *WebAppsClient) GetSwiftVirtualNetworkConnection(ctx context.Contex
 func (client *WebAppsClient) getSwiftVirtualNetworkConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetSwiftVirtualNetworkConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -14094,7 +14097,7 @@ func (client *WebAppsClient) GetSwiftVirtualNetworkConnectionSlot(ctx context.Co
 func (client *WebAppsClient) getSwiftVirtualNetworkConnectionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetSwiftVirtualNetworkConnectionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkConfig/virtualNetwork"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -14162,7 +14165,7 @@ func (client *WebAppsClient) GetTriggeredWebJob(ctx context.Context, resourceGro
 func (client *WebAppsClient) getTriggeredWebJobCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, _ *WebAppsClientGetTriggeredWebJobOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/triggeredwebjobs/{webJobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -14231,7 +14234,7 @@ func (client *WebAppsClient) GetTriggeredWebJobHistory(ctx context.Context, reso
 func (client *WebAppsClient) getTriggeredWebJobHistoryCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, id string, _ *WebAppsClientGetTriggeredWebJobHistoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/triggeredwebjobs/{webJobName}/history/{id}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -14301,7 +14304,7 @@ func (client *WebAppsClient) GetTriggeredWebJobHistorySlot(ctx context.Context, 
 func (client *WebAppsClient) getTriggeredWebJobHistorySlotCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, id string, slot string, _ *WebAppsClientGetTriggeredWebJobHistorySlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/triggeredwebjobs/{webJobName}/history/{id}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -14375,7 +14378,7 @@ func (client *WebAppsClient) GetTriggeredWebJobSlot(ctx context.Context, resourc
 func (client *WebAppsClient) getTriggeredWebJobSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, _ *WebAppsClientGetTriggeredWebJobSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/triggeredwebjobs/{webJobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -14447,7 +14450,7 @@ func (client *WebAppsClient) GetVnetConnection(ctx context.Context, resourceGrou
 func (client *WebAppsClient) getVnetConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, _ *WebAppsClientGetVnetConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -14516,7 +14519,7 @@ func (client *WebAppsClient) GetVnetConnectionGateway(ctx context.Context, resou
 func (client *WebAppsClient) getVnetConnectionGatewayCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, _ *WebAppsClientGetVnetConnectionGatewayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -14586,7 +14589,7 @@ func (client *WebAppsClient) GetVnetConnectionGatewaySlot(ctx context.Context, r
 func (client *WebAppsClient) getVnetConnectionGatewaySlotCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, _ *WebAppsClientGetVnetConnectionGatewaySlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -14660,7 +14663,7 @@ func (client *WebAppsClient) GetVnetConnectionSlot(ctx context.Context, resource
 func (client *WebAppsClient) getVnetConnectionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, _ *WebAppsClientGetVnetConnectionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -14731,7 +14734,7 @@ func (client *WebAppsClient) GetWebJob(ctx context.Context, resourceGroupName st
 func (client *WebAppsClient) getWebJobCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, _ *WebAppsClientGetWebJobOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/webjobs/{webJobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -14796,7 +14799,7 @@ func (client *WebAppsClient) GetWebJobSlot(ctx context.Context, resourceGroupNam
 func (client *WebAppsClient) getWebJobSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, _ *WebAppsClientGetWebJobSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/webjobs/{webJobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -14867,7 +14870,7 @@ func (client *WebAppsClient) GetWebSiteContainerLogs(ctx context.Context, resour
 func (client *WebAppsClient) getWebSiteContainerLogsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientGetWebSiteContainerLogsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/containerlogs"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -14933,7 +14936,7 @@ func (client *WebAppsClient) GetWebSiteContainerLogsSlot(ctx context.Context, re
 func (client *WebAppsClient) getWebSiteContainerLogsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientGetWebSiteContainerLogsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/containerlogs"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -15002,7 +15005,7 @@ func (client *WebAppsClient) GetWorkflow(ctx context.Context, resourceGroupName 
 func (client *WebAppsClient) getWorkflowCreateRequest(ctx context.Context, resourceGroupName string, name string, workflowName string, _ *WebAppsClientGetWorkflowOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/workflows/{workflowName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -15094,7 +15097,7 @@ func (client *WebAppsClient) installSiteExtension(ctx context.Context, resourceG
 func (client *WebAppsClient) installSiteExtensionCreateRequest(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, _ *WebAppsClientBeginInstallSiteExtensionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/siteextensions/{siteExtensionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -15172,7 +15175,7 @@ func (client *WebAppsClient) installSiteExtensionSlot(ctx context.Context, resou
 func (client *WebAppsClient) installSiteExtensionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, siteExtensionID string, slot string, _ *WebAppsClientBeginInstallSiteExtensionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/siteextensions/{siteExtensionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -15230,7 +15233,7 @@ func (client *WebAppsClient) IsCloneable(ctx context.Context, resourceGroupName 
 func (client *WebAppsClient) isCloneableCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientIsCloneableOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/iscloneable"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -15293,7 +15296,7 @@ func (client *WebAppsClient) IsCloneableSlot(ctx context.Context, resourceGroupN
 func (client *WebAppsClient) isCloneableSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientIsCloneableSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/iscloneable"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -15368,7 +15371,7 @@ func (client *WebAppsClient) listCreateRequest(ctx context.Context, nextLink str
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/sites"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -15428,7 +15431,7 @@ func (client *WebAppsClient) ListApplicationSettings(ctx context.Context, resour
 func (client *WebAppsClient) listApplicationSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListApplicationSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/appsettings/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -15492,7 +15495,7 @@ func (client *WebAppsClient) ListApplicationSettingsSlot(ctx context.Context, re
 func (client *WebAppsClient) listApplicationSettingsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListApplicationSettingsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/appsettings/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -15559,7 +15562,7 @@ func (client *WebAppsClient) ListAzureStorageAccounts(ctx context.Context, resou
 func (client *WebAppsClient) listAzureStorageAccountsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListAzureStorageAccountsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/azurestorageaccounts/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -15623,7 +15626,7 @@ func (client *WebAppsClient) ListAzureStorageAccountsSlot(ctx context.Context, r
 func (client *WebAppsClient) listAzureStorageAccountsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListAzureStorageAccountsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/azurestorageaccounts/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -15696,7 +15699,7 @@ func (client *WebAppsClient) ListBackupStatusSecrets(ctx context.Context, resour
 func (client *WebAppsClient) listBackupStatusSecretsCreateRequest(ctx context.Context, resourceGroupName string, name string, backupID string, request BackupRequest, _ *WebAppsClientListBackupStatusSecretsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -15770,7 +15773,7 @@ func (client *WebAppsClient) ListBackupStatusSecretsSlot(ctx context.Context, re
 func (client *WebAppsClient) listBackupStatusSecretsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request BackupRequest, _ *WebAppsClientListBackupStatusSecretsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/{backupId}/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -15855,7 +15858,7 @@ func (client *WebAppsClient) listBackupsCreateRequest(ctx context.Context, resou
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -15935,7 +15938,7 @@ func (client *WebAppsClient) listBackupsSlotCreateRequest(ctx context.Context, r
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -16019,7 +16022,7 @@ func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesCreateRequest
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/basicPublishingCredentialsPolicies"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -16099,7 +16102,7 @@ func (client *WebAppsClient) listBasicPublishingCredentialsPoliciesSlotCreateReq
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/basicPublishingCredentialsPolicies"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -16181,7 +16184,7 @@ func (client *WebAppsClient) listByResourceGroupCreateRequest(ctx context.Contex
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -16261,7 +16264,7 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoCreateRequest(ctx cont
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web/snapshots"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -16343,7 +16346,7 @@ func (client *WebAppsClient) listConfigurationSnapshotInfoSlotCreateRequest(ctx 
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web/snapshots"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -16426,7 +16429,7 @@ func (client *WebAppsClient) listConfigurationsCreateRequest(ctx context.Context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -16506,7 +16509,7 @@ func (client *WebAppsClient) listConfigurationsSlotCreateRequest(ctx context.Con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -16578,7 +16581,7 @@ func (client *WebAppsClient) ListConnectionStrings(ctx context.Context, resource
 func (client *WebAppsClient) listConnectionStringsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListConnectionStringsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/connectionstrings/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -16642,7 +16645,7 @@ func (client *WebAppsClient) ListConnectionStringsSlot(ctx context.Context, reso
 func (client *WebAppsClient) listConnectionStringsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListConnectionStringsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/connectionstrings/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -16720,7 +16723,7 @@ func (client *WebAppsClient) listContinuousWebJobsCreateRequest(ctx context.Cont
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/continuouswebjobs"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -16800,7 +16803,7 @@ func (client *WebAppsClient) listContinuousWebJobsSlotCreateRequest(ctx context.
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/continuouswebjobs"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -16873,7 +16876,7 @@ func (client *WebAppsClient) ListDeploymentLog(ctx context.Context, resourceGrou
 func (client *WebAppsClient) listDeploymentLogCreateRequest(ctx context.Context, resourceGroupName string, name string, id string, _ *WebAppsClientListDeploymentLogOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments/{id}/log"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -16939,7 +16942,7 @@ func (client *WebAppsClient) ListDeploymentLogSlot(ctx context.Context, resource
 func (client *WebAppsClient) listDeploymentLogSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, id string, slot string, _ *WebAppsClientListDeploymentLogSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments/{id}/log"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -17021,7 +17024,7 @@ func (client *WebAppsClient) listDeploymentsCreateRequest(ctx context.Context, r
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deployments"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -17101,7 +17104,7 @@ func (client *WebAppsClient) listDeploymentsSlotCreateRequest(ctx context.Contex
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deployments"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -17184,7 +17187,7 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersCreateRequest(ctx con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -17264,7 +17267,7 @@ func (client *WebAppsClient) listDomainOwnershipIdentifiersSlotCreateRequest(ctx
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/domainOwnershipIdentifiers"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -17337,7 +17340,7 @@ func (client *WebAppsClient) ListFunctionKeys(ctx context.Context, resourceGroup
 func (client *WebAppsClient) listFunctionKeysCreateRequest(ctx context.Context, resourceGroupName string, name string, functionName string, _ *WebAppsClientListFunctionKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/listkeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -17403,7 +17406,7 @@ func (client *WebAppsClient) ListFunctionKeysSlot(ctx context.Context, resourceG
 func (client *WebAppsClient) listFunctionKeysSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, _ *WebAppsClientListFunctionKeysSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}/listkeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -17475,7 +17478,7 @@ func (client *WebAppsClient) ListFunctionSecrets(ctx context.Context, resourceGr
 func (client *WebAppsClient) listFunctionSecretsCreateRequest(ctx context.Context, resourceGroupName string, name string, functionName string, _ *WebAppsClientListFunctionSecretsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions/{functionName}/listsecrets"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -17541,7 +17544,7 @@ func (client *WebAppsClient) ListFunctionSecretsSlot(ctx context.Context, resour
 func (client *WebAppsClient) listFunctionSecretsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, functionName string, slot string, _ *WebAppsClientListFunctionSecretsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions/{functionName}/listsecrets"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -17623,7 +17626,7 @@ func (client *WebAppsClient) listFunctionsCreateRequest(ctx context.Context, res
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/functions"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -17690,7 +17693,7 @@ func (client *WebAppsClient) ListHostKeys(ctx context.Context, resourceGroupName
 func (client *WebAppsClient) listHostKeysCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListHostKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/listkeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -17754,7 +17757,7 @@ func (client *WebAppsClient) ListHostKeysSlot(ctx context.Context, resourceGroup
 func (client *WebAppsClient) listHostKeysSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListHostKeysSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/listkeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -17832,7 +17835,7 @@ func (client *WebAppsClient) listHostNameBindingsCreateRequest(ctx context.Conte
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostNameBindings"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -17912,7 +17915,7 @@ func (client *WebAppsClient) listHostNameBindingsSlotCreateRequest(ctx context.C
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hostNameBindings"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -17984,7 +17987,7 @@ func (client *WebAppsClient) ListHybridConnections(ctx context.Context, resource
 func (client *WebAppsClient) listHybridConnectionsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListHybridConnectionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridConnectionRelays"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -18048,7 +18051,7 @@ func (client *WebAppsClient) ListHybridConnectionsSlot(ctx context.Context, reso
 func (client *WebAppsClient) listHybridConnectionsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListHybridConnectionsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridConnectionRelays"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -18127,7 +18130,7 @@ func (client *WebAppsClient) listInstanceFunctionsSlotCreateRequest(ctx context.
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/functions"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -18210,7 +18213,7 @@ func (client *WebAppsClient) listInstanceIdentifiersCreateRequest(ctx context.Co
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -18290,7 +18293,7 @@ func (client *WebAppsClient) listInstanceIdentifiersSlotCreateRequest(ctx contex
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -18373,7 +18376,7 @@ func (client *WebAppsClient) listInstanceProcessModulesCreateRequest(ctx context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/processes/{processId}/modules"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -18460,7 +18463,7 @@ func (client *WebAppsClient) listInstanceProcessModulesSlotCreateRequest(ctx con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/processes/{processId}/modules"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -18551,7 +18554,7 @@ func (client *WebAppsClient) listInstanceProcessThreadsCreateRequest(ctx context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/processes/{processId}/threads"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -18638,7 +18641,7 @@ func (client *WebAppsClient) listInstanceProcessThreadsSlotCreateRequest(ctx con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/processes/{processId}/threads"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -18733,7 +18736,7 @@ func (client *WebAppsClient) listInstanceProcessesCreateRequest(ctx context.Cont
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/instances/{instanceId}/processes"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -18821,7 +18824,7 @@ func (client *WebAppsClient) listInstanceProcessesSlotCreateRequest(ctx context.
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/instances/{instanceId}/processes"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -18909,7 +18912,7 @@ func (client *WebAppsClient) listInstanceWorkflowsSlotCreateRequest(ctx context.
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/workflows"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -18980,7 +18983,7 @@ func (client *WebAppsClient) ListMetadata(ctx context.Context, resourceGroupName
 func (client *WebAppsClient) listMetadataCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListMetadataOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/metadata/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -19044,7 +19047,7 @@ func (client *WebAppsClient) ListMetadataSlot(ctx context.Context, resourceGroup
 func (client *WebAppsClient) listMetadataSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListMetadataSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/metadata/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -19112,7 +19115,7 @@ func (client *WebAppsClient) ListNetworkFeatures(ctx context.Context, resourceGr
 func (client *WebAppsClient) listNetworkFeaturesCreateRequest(ctx context.Context, resourceGroupName string, name string, view string, _ *WebAppsClientListNetworkFeaturesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkFeatures/{view}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -19178,7 +19181,7 @@ func (client *WebAppsClient) ListNetworkFeaturesSlot(ctx context.Context, resour
 func (client *WebAppsClient) listNetworkFeaturesSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, view string, slot string, _ *WebAppsClientListNetworkFeaturesSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkFeatures/{view}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -19260,7 +19263,7 @@ func (client *WebAppsClient) listPerfMonCountersCreateRequest(ctx context.Contex
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/perfcounters"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -19343,7 +19346,7 @@ func (client *WebAppsClient) listPerfMonCountersSlotCreateRequest(ctx context.Co
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/perfcounters"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -19418,7 +19421,7 @@ func (client *WebAppsClient) ListPremierAddOns(ctx context.Context, resourceGrou
 func (client *WebAppsClient) listPremierAddOnsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListPremierAddOnsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -19482,7 +19485,7 @@ func (client *WebAppsClient) ListPremierAddOnsSlot(ctx context.Context, resource
 func (client *WebAppsClient) listPremierAddOnsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListPremierAddOnsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/premieraddons"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -19562,7 +19565,7 @@ func (client *WebAppsClient) listProcessModulesCreateRequest(ctx context.Context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes/{processId}/modules"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -19645,7 +19648,7 @@ func (client *WebAppsClient) listProcessModulesSlotCreateRequest(ctx context.Con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/processes/{processId}/modules"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -19733,7 +19736,7 @@ func (client *WebAppsClient) listProcessThreadsCreateRequest(ctx context.Context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes/{processId}/threads"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -19815,7 +19818,7 @@ func (client *WebAppsClient) listProcessThreadsSlotCreateRequest(ctx context.Con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/processes/{processId}/threads"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -19904,7 +19907,7 @@ func (client *WebAppsClient) listProcessesCreateRequest(ctx context.Context, res
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/processes"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -19986,7 +19989,7 @@ func (client *WebAppsClient) listProcessesSlotCreateRequest(ctx context.Context,
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/processes"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -20069,7 +20072,7 @@ func (client *WebAppsClient) listProductionSiteDeploymentStatusesCreateRequest(c
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/deploymentStatus"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -20148,7 +20151,7 @@ func (client *WebAppsClient) listPublicCertificatesCreateRequest(ctx context.Con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publicCertificates"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -20228,7 +20231,7 @@ func (client *WebAppsClient) listPublicCertificatesSlotCreateRequest(ctx context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publicCertificates"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -20324,7 +20327,7 @@ func (client *WebAppsClient) listPublishingCredentials(ctx context.Context, reso
 func (client *WebAppsClient) listPublishingCredentialsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientBeginListPublishingCredentialsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/publishingcredentials/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -20400,7 +20403,7 @@ func (client *WebAppsClient) listPublishingCredentialsSlot(ctx context.Context, 
 func (client *WebAppsClient) listPublishingCredentialsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientBeginListPublishingCredentialsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/publishingcredentials/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -20457,7 +20460,7 @@ func (client *WebAppsClient) ListPublishingProfileXMLWithSecrets(ctx context.Con
 func (client *WebAppsClient) listPublishingProfileXMLWithSecretsCreateRequest(ctx context.Context, resourceGroupName string, name string, publishingProfileOptions CsmPublishingProfileOptions, _ *WebAppsClientListPublishingProfileXMLWithSecretsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/publishxml"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -20529,7 +20532,7 @@ func (client *WebAppsClient) ListPublishingProfileXMLWithSecretsSlot(ctx context
 func (client *WebAppsClient) listPublishingProfileXMLWithSecretsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, publishingProfileOptions CsmPublishingProfileOptions, _ *WebAppsClientListPublishingProfileXMLWithSecretsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/publishxml"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -20602,7 +20605,7 @@ func (client *WebAppsClient) ListRelayServiceConnections(ctx context.Context, re
 func (client *WebAppsClient) listRelayServiceConnectionsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListRelayServiceConnectionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -20666,7 +20669,7 @@ func (client *WebAppsClient) ListRelayServiceConnectionsSlot(ctx context.Context
 func (client *WebAppsClient) listRelayServiceConnectionsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListRelayServiceConnectionsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -20744,7 +20747,7 @@ func (client *WebAppsClient) listSiteBackupsCreateRequest(ctx context.Context, r
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/listbackups"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -20824,7 +20827,7 @@ func (client *WebAppsClient) listSiteBackupsSlotCreateRequest(ctx context.Contex
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/listbackups"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -20907,7 +20910,7 @@ func (client *WebAppsClient) listSiteContainersCreateRequest(ctx context.Context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sitecontainers"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -20988,7 +20991,7 @@ func (client *WebAppsClient) listSiteContainersSlotCreateRequest(ctx context.Con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sitecontainers"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -21071,7 +21074,7 @@ func (client *WebAppsClient) listSiteExtensionsCreateRequest(ctx context.Context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/siteextensions"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -21151,7 +21154,7 @@ func (client *WebAppsClient) listSiteExtensionsSlotCreateRequest(ctx context.Con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/siteextensions"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -21223,7 +21226,7 @@ func (client *WebAppsClient) ListSitePushSettings(ctx context.Context, resourceG
 func (client *WebAppsClient) listSitePushSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListSitePushSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/pushsettings/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -21287,7 +21290,7 @@ func (client *WebAppsClient) ListSitePushSettingsSlot(ctx context.Context, resou
 func (client *WebAppsClient) listSitePushSettingsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListSitePushSettingsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/pushsettings/list"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -21354,7 +21357,7 @@ func (client *WebAppsClient) ListSlotConfigurationNames(ctx context.Context, res
 func (client *WebAppsClient) listSlotConfigurationNamesCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListSlotConfigurationNamesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/slotConfigNames"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -21429,7 +21432,7 @@ func (client *WebAppsClient) listSlotDifferencesFromProductionCreateRequest(ctx 
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsdiffs"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -21514,7 +21517,7 @@ func (client *WebAppsClient) listSlotDifferencesSlotCreateRequest(ctx context.Co
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsdiffs"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -21603,7 +21606,7 @@ func (client *WebAppsClient) listSlotSiteDeploymentStatusesSlotCreateRequest(ctx
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/deploymentStatus"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -21685,7 +21688,7 @@ func (client *WebAppsClient) listSlotsCreateRequest(ctx context.Context, resourc
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -21764,7 +21767,7 @@ func (client *WebAppsClient) listSnapshotsCreateRequest(ctx context.Context, res
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshots"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -21843,7 +21846,7 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondaryCreateRequest(ctx conte
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/snapshotsdr"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -21923,7 +21926,7 @@ func (client *WebAppsClient) listSnapshotsFromDRSecondarySlotCreateRequest(ctx c
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/snapshotsdr"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -22007,7 +22010,7 @@ func (client *WebAppsClient) listSnapshotsSlotCreateRequest(ctx context.Context,
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/snapshots"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -22079,7 +22082,7 @@ func (client *WebAppsClient) ListSyncFunctionTriggers(ctx context.Context, resou
 func (client *WebAppsClient) listSyncFunctionTriggersCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListSyncFunctionTriggersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/listsyncfunctiontriggerstatus"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -22143,7 +22146,7 @@ func (client *WebAppsClient) ListSyncFunctionTriggersSlot(ctx context.Context, r
 func (client *WebAppsClient) listSyncFunctionTriggersSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListSyncFunctionTriggersSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/listsyncfunctiontriggerstatus"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -22212,7 +22215,7 @@ func (client *WebAppsClient) ListSyncStatus(ctx context.Context, resourceGroupNa
 func (client *WebAppsClient) listSyncStatusCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListSyncStatusOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/listsyncstatus"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -22266,7 +22269,7 @@ func (client *WebAppsClient) ListSyncStatusSlot(ctx context.Context, resourceGro
 func (client *WebAppsClient) listSyncStatusSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListSyncStatusSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/listsyncstatus"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -22332,7 +22335,7 @@ func (client *WebAppsClient) listTriggeredWebJobHistoryCreateRequest(ctx context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/triggeredwebjobs/{webJobName}/history"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -22414,7 +22417,7 @@ func (client *WebAppsClient) listTriggeredWebJobHistorySlotCreateRequest(ctx con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/triggeredwebjobs/{webJobName}/history"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -22501,7 +22504,7 @@ func (client *WebAppsClient) listTriggeredWebJobsCreateRequest(ctx context.Conte
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/triggeredwebjobs"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -22581,7 +22584,7 @@ func (client *WebAppsClient) listTriggeredWebJobsSlotCreateRequest(ctx context.C
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/triggeredwebjobs"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -22663,7 +22666,7 @@ func (client *WebAppsClient) listUsagesCreateRequest(ctx context.Context, resour
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/usages"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -22746,7 +22749,7 @@ func (client *WebAppsClient) listUsagesSlotCreateRequest(ctx context.Context, re
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/usages"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -22821,7 +22824,7 @@ func (client *WebAppsClient) ListVnetConnections(ctx context.Context, resourceGr
 func (client *WebAppsClient) listVnetConnectionsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListVnetConnectionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -22886,7 +22889,7 @@ func (client *WebAppsClient) ListVnetConnectionsSlot(ctx context.Context, resour
 func (client *WebAppsClient) listVnetConnectionsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListVnetConnectionsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -22963,7 +22966,7 @@ func (client *WebAppsClient) listWebJobsCreateRequest(ctx context.Context, resou
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/webjobs"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -23043,7 +23046,7 @@ func (client *WebAppsClient) listWebJobsSlotCreateRequest(ctx context.Context, r
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/webjobs"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -23126,7 +23129,7 @@ func (client *WebAppsClient) listWorkflowsCreateRequest(ctx context.Context, res
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/workflows"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -23194,7 +23197,7 @@ func (client *WebAppsClient) ListWorkflowsConnections(ctx context.Context, resou
 func (client *WebAppsClient) listWorkflowsConnectionsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientListWorkflowsConnectionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/listWorkflowsConnections"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -23258,7 +23261,7 @@ func (client *WebAppsClient) ListWorkflowsConnectionsSlot(ctx context.Context, r
 func (client *WebAppsClient) listWorkflowsConnectionsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientListWorkflowsConnectionsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/listWorkflowsConnections"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -23350,7 +23353,7 @@ func (client *WebAppsClient) migrateMySQL(ctx context.Context, resourceGroupName
 func (client *WebAppsClient) migrateMySQLCreateRequest(ctx context.Context, resourceGroupName string, name string, migrationRequestEnvelope MigrateMySQLRequest, _ *WebAppsClientBeginMigrateMySQLOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migratemysql"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -23428,7 +23431,7 @@ func (client *WebAppsClient) migrateStorage(ctx context.Context, subscriptionNam
 func (client *WebAppsClient) migrateStorageCreateRequest(ctx context.Context, subscriptionName string, resourceGroupName string, name string, migrationOptions StorageMigrationOptions, _ *WebAppsClientBeginMigrateStorageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/migrate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -23486,7 +23489,7 @@ func (client *WebAppsClient) PutPrivateAccessVnet(ctx context.Context, resourceG
 func (client *WebAppsClient) putPrivateAccessVnetCreateRequest(ctx context.Context, resourceGroupName string, name string, access PrivateAccess, _ *WebAppsClientPutPrivateAccessVnetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/privateAccess/virtualNetworks"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -23556,7 +23559,7 @@ func (client *WebAppsClient) PutPrivateAccessVnetSlot(ctx context.Context, resou
 func (client *WebAppsClient) putPrivateAccessVnetSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, access PrivateAccess, _ *WebAppsClientPutPrivateAccessVnetSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/privateAccess/virtualNetworks"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -23631,7 +23634,7 @@ func (client *WebAppsClient) RecoverSiteConfigurationSnapshot(ctx context.Contex
 func (client *WebAppsClient) recoverSiteConfigurationSnapshotCreateRequest(ctx context.Context, resourceGroupName string, name string, snapshotID string, _ *WebAppsClientRecoverSiteConfigurationSnapshotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web/snapshots/{snapshotId}/recover"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -23687,7 +23690,7 @@ func (client *WebAppsClient) RecoverSiteConfigurationSnapshotSlot(ctx context.Co
 func (client *WebAppsClient) recoverSiteConfigurationSnapshotSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, snapshotID string, slot string, _ *WebAppsClientRecoverSiteConfigurationSnapshotSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web/snapshots/{snapshotId}/recover"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -23750,7 +23753,7 @@ func (client *WebAppsClient) ResetProductionSlotConfig(ctx context.Context, reso
 func (client *WebAppsClient) resetProductionSlotConfigCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientResetProductionSlotConfigOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/resetSlotConfig"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -23806,7 +23809,7 @@ func (client *WebAppsClient) ResetSlotConfigurationSlot(ctx context.Context, res
 func (client *WebAppsClient) resetSlotConfigurationSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientResetSlotConfigurationSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/resetSlotConfig"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -23862,7 +23865,7 @@ func (client *WebAppsClient) Restart(ctx context.Context, resourceGroupName stri
 func (client *WebAppsClient) restartCreateRequest(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restart"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -23921,7 +23924,7 @@ func (client *WebAppsClient) RestartSlot(ctx context.Context, resourceGroupName 
 func (client *WebAppsClient) restartSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientRestartSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/restart"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -24006,7 +24009,7 @@ func (client *WebAppsClient) restore(ctx context.Context, resourceGroupName stri
 func (client *WebAppsClient) restoreCreateRequest(ctx context.Context, resourceGroupName string, name string, backupID string, request RestoreRequest, _ *WebAppsClientBeginRestoreOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/backups/{backupId}/restore"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -24089,7 +24092,7 @@ func (client *WebAppsClient) restoreFromBackupBlob(ctx context.Context, resource
 func (client *WebAppsClient) restoreFromBackupBlobCreateRequest(ctx context.Context, resourceGroupName string, name string, request RestoreRequest, _ *WebAppsClientBeginRestoreFromBackupBlobOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restoreFromBackupBlob"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -24169,7 +24172,7 @@ func (client *WebAppsClient) restoreFromBackupBlobSlot(ctx context.Context, reso
 func (client *WebAppsClient) restoreFromBackupBlobSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, request RestoreRequest, _ *WebAppsClientBeginRestoreFromBackupBlobSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/restoreFromBackupBlob"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -24252,7 +24255,7 @@ func (client *WebAppsClient) restoreFromDeletedApp(ctx context.Context, resource
 func (client *WebAppsClient) restoreFromDeletedAppCreateRequest(ctx context.Context, resourceGroupName string, name string, restoreRequest DeletedAppRestoreRequest, _ *WebAppsClientBeginRestoreFromDeletedAppOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restoreFromDeletedApp"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -24332,7 +24335,7 @@ func (client *WebAppsClient) restoreFromDeletedAppSlot(ctx context.Context, reso
 func (client *WebAppsClient) restoreFromDeletedAppSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest DeletedAppRestoreRequest, _ *WebAppsClientBeginRestoreFromDeletedAppSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/restoreFromDeletedApp"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -24413,7 +24416,7 @@ func (client *WebAppsClient) restoreSlot(ctx context.Context, resourceGroupName 
 func (client *WebAppsClient) restoreSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, backupID string, slot string, request RestoreRequest, _ *WebAppsClientBeginRestoreSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/backups/{backupId}/restore"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -24501,7 +24504,7 @@ func (client *WebAppsClient) restoreSnapshot(ctx context.Context, resourceGroupN
 func (client *WebAppsClient) restoreSnapshotCreateRequest(ctx context.Context, resourceGroupName string, name string, restoreRequest SnapshotRestoreRequest, _ *WebAppsClientBeginRestoreSnapshotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/restoreSnapshot"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -24582,7 +24585,7 @@ func (client *WebAppsClient) restoreSnapshotSlot(ctx context.Context, resourceGr
 func (client *WebAppsClient) restoreSnapshotSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, restoreRequest SnapshotRestoreRequest, _ *WebAppsClientBeginRestoreSnapshotSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/restoreSnapshot"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -24644,7 +24647,7 @@ func (client *WebAppsClient) RunTriggeredWebJob(ctx context.Context, resourceGro
 func (client *WebAppsClient) runTriggeredWebJobCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, _ *WebAppsClientRunTriggeredWebJobOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/triggeredwebjobs/{webJobName}/run"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -24700,7 +24703,7 @@ func (client *WebAppsClient) RunTriggeredWebJobSlot(ctx context.Context, resourc
 func (client *WebAppsClient) runTriggeredWebJobSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, _ *WebAppsClientRunTriggeredWebJobSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/triggeredwebjobs/{webJobName}/run"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -24760,7 +24763,7 @@ func (client *WebAppsClient) Start(ctx context.Context, resourceGroupName string
 func (client *WebAppsClient) startCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/start"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -24814,7 +24817,7 @@ func (client *WebAppsClient) StartContinuousWebJob(ctx context.Context, resource
 func (client *WebAppsClient) startContinuousWebJobCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, _ *WebAppsClientStartContinuousWebJobOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/continuouswebjobs/{webJobName}/start"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -24870,7 +24873,7 @@ func (client *WebAppsClient) StartContinuousWebJobSlot(ctx context.Context, reso
 func (client *WebAppsClient) startContinuousWebJobSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, _ *WebAppsClientStartContinuousWebJobSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/continuouswebjobs/{webJobName}/start"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -24952,7 +24955,7 @@ func (client *WebAppsClient) startNetworkTrace(ctx context.Context, resourceGrou
 func (client *WebAppsClient) startNetworkTraceCreateRequest(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientBeginStartNetworkTraceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/startNetworkTrace"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -25037,7 +25040,7 @@ func (client *WebAppsClient) startNetworkTraceSlot(ctx context.Context, resource
 func (client *WebAppsClient) startNetworkTraceSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientBeginStartNetworkTraceSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/startNetworkTrace"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -25104,7 +25107,7 @@ func (client *WebAppsClient) StartSlot(ctx context.Context, resourceGroupName st
 func (client *WebAppsClient) startSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientStartSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/start"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -25158,7 +25161,7 @@ func (client *WebAppsClient) StartWebSiteNetworkTrace(ctx context.Context, resou
 func (client *WebAppsClient) startWebSiteNetworkTraceCreateRequest(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientStartWebSiteNetworkTraceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/start"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -25254,7 +25257,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperation(ctx context.Conte
 func (client *WebAppsClient) startWebSiteNetworkTraceOperationCreateRequest(ctx context.Context, resourceGroupName string, name string, options *WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/startOperation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -25339,7 +25342,7 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationSlot(ctx context.C
 func (client *WebAppsClient) startWebSiteNetworkTraceOperationSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/startOperation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -25404,7 +25407,7 @@ func (client *WebAppsClient) StartWebSiteNetworkTraceSlot(ctx context.Context, r
 func (client *WebAppsClient) startWebSiteNetworkTraceSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, options *WebAppsClientStartWebSiteNetworkTraceSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/start"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -25482,7 +25485,7 @@ func (client *WebAppsClient) Stop(ctx context.Context, resourceGroupName string,
 func (client *WebAppsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/stop"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -25536,7 +25539,7 @@ func (client *WebAppsClient) StopContinuousWebJob(ctx context.Context, resourceG
 func (client *WebAppsClient) stopContinuousWebJobCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, _ *WebAppsClientStopContinuousWebJobOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/continuouswebjobs/{webJobName}/stop"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -25592,7 +25595,7 @@ func (client *WebAppsClient) StopContinuousWebJobSlot(ctx context.Context, resou
 func (client *WebAppsClient) stopContinuousWebJobSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, webJobName string, slot string, _ *WebAppsClientStopContinuousWebJobSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/continuouswebjobs/{webJobName}/stop"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -25653,7 +25656,7 @@ func (client *WebAppsClient) StopNetworkTrace(ctx context.Context, resourceGroup
 func (client *WebAppsClient) stopNetworkTraceCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientStopNetworkTraceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/stopNetworkTrace"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -25707,7 +25710,7 @@ func (client *WebAppsClient) StopNetworkTraceSlot(ctx context.Context, resourceG
 func (client *WebAppsClient) stopNetworkTraceSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientStopNetworkTraceSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/stopNetworkTrace"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -25764,7 +25767,7 @@ func (client *WebAppsClient) StopSlot(ctx context.Context, resourceGroupName str
 func (client *WebAppsClient) stopSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientStopSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/stop"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -25821,7 +25824,7 @@ func (client *WebAppsClient) StopWebSiteNetworkTrace(ctx context.Context, resour
 func (client *WebAppsClient) stopWebSiteNetworkTraceCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientStopWebSiteNetworkTraceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkTrace/stop"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -25875,7 +25878,7 @@ func (client *WebAppsClient) StopWebSiteNetworkTraceSlot(ctx context.Context, re
 func (client *WebAppsClient) stopWebSiteNetworkTraceSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientStopWebSiteNetworkTraceSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkTrace/stop"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -25954,7 +25957,7 @@ func (client *WebAppsClient) swapSlot(ctx context.Context, resourceGroupName str
 func (client *WebAppsClient) swapSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, slotSwapEntity CsmSlotEntity, _ *WebAppsClientBeginSwapSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/slotsswap"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -26037,7 +26040,7 @@ func (client *WebAppsClient) swapSlotWithProduction(ctx context.Context, resourc
 func (client *WebAppsClient) swapSlotWithProductionCreateRequest(ctx context.Context, resourceGroupName string, name string, slotSwapEntity CsmSlotEntity, _ *WebAppsClientBeginSwapSlotWithProductionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slotsswap"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -26094,7 +26097,7 @@ func (client *WebAppsClient) SyncFunctionTriggers(ctx context.Context, resourceG
 func (client *WebAppsClient) syncFunctionTriggersCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientSyncFunctionTriggersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/syncfunctiontriggers"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -26148,7 +26151,7 @@ func (client *WebAppsClient) SyncFunctionTriggersSlot(ctx context.Context, resou
 func (client *WebAppsClient) syncFunctionTriggersSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientSyncFunctionTriggersSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/syncfunctiontriggers"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -26204,7 +26207,7 @@ func (client *WebAppsClient) SyncFunctions(ctx context.Context, resourceGroupNam
 func (client *WebAppsClient) syncFunctionsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientSyncFunctionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/host/default/sync"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -26258,7 +26261,7 @@ func (client *WebAppsClient) SyncFunctionsSlot(ctx context.Context, resourceGrou
 func (client *WebAppsClient) syncFunctionsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientSyncFunctionsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/host/default/sync"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -26314,7 +26317,7 @@ func (client *WebAppsClient) SyncRepository(ctx context.Context, resourceGroupNa
 func (client *WebAppsClient) syncRepositoryCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientSyncRepositoryOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sync"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -26368,7 +26371,7 @@ func (client *WebAppsClient) SyncRepositorySlot(ctx context.Context, resourceGro
 func (client *WebAppsClient) syncRepositorySlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, _ *WebAppsClientSyncRepositorySlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sync"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -26422,7 +26425,7 @@ func (client *WebAppsClient) Update(ctx context.Context, resourceGroupName strin
 func (client *WebAppsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, name string, siteEnvelope SitePatchResource, _ *WebAppsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -26490,7 +26493,7 @@ func (client *WebAppsClient) UpdateApplicationSettings(ctx context.Context, reso
 func (client *WebAppsClient) updateApplicationSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, appSettings StringDictionary, _ *WebAppsClientUpdateApplicationSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/appsettings"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -26559,7 +26562,7 @@ func (client *WebAppsClient) UpdateApplicationSettingsSlot(ctx context.Context, 
 func (client *WebAppsClient) updateApplicationSettingsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, appSettings StringDictionary, _ *WebAppsClientUpdateApplicationSettingsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/appsettings"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -26631,7 +26634,7 @@ func (client *WebAppsClient) UpdateAuthSettings(ctx context.Context, resourceGro
 func (client *WebAppsClient) updateAuthSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, siteAuthSettings SiteAuthSettings, _ *WebAppsClientUpdateAuthSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettings"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -26700,7 +26703,7 @@ func (client *WebAppsClient) UpdateAuthSettingsSlot(ctx context.Context, resourc
 func (client *WebAppsClient) updateAuthSettingsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, siteAuthSettings SiteAuthSettings, _ *WebAppsClientUpdateAuthSettingsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/authsettings"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -26772,7 +26775,7 @@ func (client *WebAppsClient) UpdateAuthSettingsV2(ctx context.Context, resourceG
 func (client *WebAppsClient) updateAuthSettingsV2CreateRequest(ctx context.Context, resourceGroupName string, name string, siteAuthSettingsV2 SiteAuthSettingsV2, _ *WebAppsClientUpdateAuthSettingsV2Options) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/authsettingsV2"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -26841,7 +26844,7 @@ func (client *WebAppsClient) UpdateAuthSettingsV2Slot(ctx context.Context, resou
 func (client *WebAppsClient) updateAuthSettingsV2SlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, siteAuthSettingsV2 SiteAuthSettingsV2, _ *WebAppsClientUpdateAuthSettingsV2SlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/authsettingsV2"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -26913,7 +26916,7 @@ func (client *WebAppsClient) UpdateAzureStorageAccounts(ctx context.Context, res
 func (client *WebAppsClient) updateAzureStorageAccountsCreateRequest(ctx context.Context, resourceGroupName string, name string, azureStorageAccounts AzureStoragePropertyDictionaryResource, _ *WebAppsClientUpdateAzureStorageAccountsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/azurestorageaccounts"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -26982,7 +26985,7 @@ func (client *WebAppsClient) UpdateAzureStorageAccountsSlot(ctx context.Context,
 func (client *WebAppsClient) updateAzureStorageAccountsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, azureStorageAccounts AzureStoragePropertyDictionaryResource, _ *WebAppsClientUpdateAzureStorageAccountsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/azurestorageaccounts"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -27054,7 +27057,7 @@ func (client *WebAppsClient) UpdateBackupConfiguration(ctx context.Context, reso
 func (client *WebAppsClient) updateBackupConfigurationCreateRequest(ctx context.Context, resourceGroupName string, name string, request BackupRequest, _ *WebAppsClientUpdateBackupConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/backup"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -27123,7 +27126,7 @@ func (client *WebAppsClient) UpdateBackupConfigurationSlot(ctx context.Context, 
 func (client *WebAppsClient) updateBackupConfigurationSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, request BackupRequest, _ *WebAppsClientUpdateBackupConfigurationSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/backup"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -27195,7 +27198,7 @@ func (client *WebAppsClient) UpdateConfiguration(ctx context.Context, resourceGr
 func (client *WebAppsClient) updateConfigurationCreateRequest(ctx context.Context, resourceGroupName string, name string, siteConfig SiteConfigResource, _ *WebAppsClientUpdateConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -27264,7 +27267,7 @@ func (client *WebAppsClient) UpdateConfigurationSlot(ctx context.Context, resour
 func (client *WebAppsClient) updateConfigurationSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, siteConfig SiteConfigResource, _ *WebAppsClientUpdateConfigurationSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/web"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -27336,7 +27339,7 @@ func (client *WebAppsClient) UpdateConnectionStrings(ctx context.Context, resour
 func (client *WebAppsClient) updateConnectionStringsCreateRequest(ctx context.Context, resourceGroupName string, name string, connectionStrings ConnectionStringDictionary, _ *WebAppsClientUpdateConnectionStringsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/connectionstrings"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -27405,7 +27408,7 @@ func (client *WebAppsClient) UpdateConnectionStringsSlot(ctx context.Context, re
 func (client *WebAppsClient) updateConnectionStringsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, connectionStrings ConnectionStringDictionary, _ *WebAppsClientUpdateConnectionStringsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/connectionstrings"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -27477,7 +27480,7 @@ func (client *WebAppsClient) UpdateDiagnosticLogsConfig(ctx context.Context, res
 func (client *WebAppsClient) updateDiagnosticLogsConfigCreateRequest(ctx context.Context, resourceGroupName string, name string, siteLogsConfig SiteLogsConfig, _ *WebAppsClientUpdateDiagnosticLogsConfigOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/logs"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -27547,7 +27550,7 @@ func (client *WebAppsClient) UpdateDiagnosticLogsConfigSlot(ctx context.Context,
 func (client *WebAppsClient) updateDiagnosticLogsConfigSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, siteLogsConfig SiteLogsConfig, _ *WebAppsClientUpdateDiagnosticLogsConfigSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/logs"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -27620,7 +27623,7 @@ func (client *WebAppsClient) UpdateDomainOwnershipIdentifier(ctx context.Context
 func (client *WebAppsClient) updateDomainOwnershipIdentifierCreateRequest(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, domainOwnershipIdentifier Identifier, _ *WebAppsClientUpdateDomainOwnershipIdentifierOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -27691,7 +27694,7 @@ func (client *WebAppsClient) UpdateDomainOwnershipIdentifierSlot(ctx context.Con
 func (client *WebAppsClient) updateDomainOwnershipIdentifierSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, domainOwnershipIdentifierName string, slot string, domainOwnershipIdentifier Identifier, _ *WebAppsClientUpdateDomainOwnershipIdentifierSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -27766,7 +27769,7 @@ func (client *WebAppsClient) UpdateFtpAllowed(ctx context.Context, resourceGroup
 func (client *WebAppsClient) updateFtpAllowedCreateRequest(ctx context.Context, resourceGroupName string, name string, csmPublishingAccessPoliciesEntity CsmPublishingCredentialsPoliciesEntity, _ *WebAppsClientUpdateFtpAllowedOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/basicPublishingCredentialsPolicies/ftp"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -27833,7 +27836,7 @@ func (client *WebAppsClient) UpdateFtpAllowedSlot(ctx context.Context, resourceG
 func (client *WebAppsClient) updateFtpAllowedSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, csmPublishingAccessPoliciesEntity CsmPublishingCredentialsPoliciesEntity, _ *WebAppsClientUpdateFtpAllowedSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/basicPublishingCredentialsPolicies/ftp"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -27907,7 +27910,7 @@ func (client *WebAppsClient) UpdateHybridConnection(ctx context.Context, resourc
 func (client *WebAppsClient) updateHybridConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, connectionEnvelope HybridConnection, _ *WebAppsClientUpdateHybridConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -27981,7 +27984,7 @@ func (client *WebAppsClient) UpdateHybridConnectionSlot(ctx context.Context, res
 func (client *WebAppsClient) updateHybridConnectionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, slot string, connectionEnvelope HybridConnection, _ *WebAppsClientUpdateHybridConnectionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -28060,7 +28063,7 @@ func (client *WebAppsClient) UpdateMachineKey(ctx context.Context, resourceGroup
 func (client *WebAppsClient) updateMachineKeyCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *WebAppsClientUpdateMachineKeyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/updatemachinekey"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -28123,7 +28126,7 @@ func (client *WebAppsClient) UpdateMetadata(ctx context.Context, resourceGroupNa
 func (client *WebAppsClient) updateMetadataCreateRequest(ctx context.Context, resourceGroupName string, name string, metadata StringDictionary, _ *WebAppsClientUpdateMetadataOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/metadata"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -28192,7 +28195,7 @@ func (client *WebAppsClient) UpdateMetadataSlot(ctx context.Context, resourceGro
 func (client *WebAppsClient) updateMetadataSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, metadata StringDictionary, _ *WebAppsClientUpdateMetadataSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/metadata"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -28265,7 +28268,7 @@ func (client *WebAppsClient) UpdatePremierAddOn(ctx context.Context, resourceGro
 func (client *WebAppsClient) updatePremierAddOnCreateRequest(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, premierAddOn PremierAddOnPatchResource, _ *WebAppsClientUpdatePremierAddOnOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/premieraddons/{premierAddOnName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -28335,7 +28338,7 @@ func (client *WebAppsClient) UpdatePremierAddOnSlot(ctx context.Context, resourc
 func (client *WebAppsClient) updatePremierAddOnSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, premierAddOnName string, slot string, premierAddOn PremierAddOnPatchResource, _ *WebAppsClientUpdatePremierAddOnSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/premieraddons/{premierAddOnName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -28412,7 +28415,7 @@ func (client *WebAppsClient) UpdateRelayServiceConnection(ctx context.Context, r
 func (client *WebAppsClient) updateRelayServiceConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, entityName string, connectionEnvelope RelayServiceConnectionEntity, _ *WebAppsClientUpdateRelayServiceConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hybridconnection/{entityName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -28482,7 +28485,7 @@ func (client *WebAppsClient) UpdateRelayServiceConnectionSlot(ctx context.Contex
 func (client *WebAppsClient) updateRelayServiceConnectionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, entityName string, slot string, connectionEnvelope RelayServiceConnectionEntity, _ *WebAppsClientUpdateRelayServiceConnectionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/hybridconnection/{entityName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -28557,7 +28560,7 @@ func (client *WebAppsClient) UpdateScmAllowed(ctx context.Context, resourceGroup
 func (client *WebAppsClient) updateScmAllowedCreateRequest(ctx context.Context, resourceGroupName string, name string, csmPublishingAccessPoliciesEntity CsmPublishingCredentialsPoliciesEntity, _ *WebAppsClientUpdateScmAllowedOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/basicPublishingCredentialsPolicies/scm"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -28624,7 +28627,7 @@ func (client *WebAppsClient) UpdateScmAllowedSlot(ctx context.Context, resourceG
 func (client *WebAppsClient) updateScmAllowedSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, csmPublishingAccessPoliciesEntity CsmPublishingCredentialsPoliciesEntity, _ *WebAppsClientUpdateScmAllowedSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/basicPublishingCredentialsPolicies/scm"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -28696,7 +28699,7 @@ func (client *WebAppsClient) UpdateSitePushSettings(ctx context.Context, resourc
 func (client *WebAppsClient) updateSitePushSettingsCreateRequest(ctx context.Context, resourceGroupName string, name string, pushSettings PushSettings, _ *WebAppsClientUpdateSitePushSettingsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/pushsettings"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -28765,7 +28768,7 @@ func (client *WebAppsClient) UpdateSitePushSettingsSlot(ctx context.Context, res
 func (client *WebAppsClient) updateSitePushSettingsSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, pushSettings PushSettings, _ *WebAppsClientUpdateSitePushSettingsSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/config/pushsettings"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -28837,7 +28840,7 @@ func (client *WebAppsClient) UpdateSlot(ctx context.Context, resourceGroupName s
 func (client *WebAppsClient) updateSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, siteEnvelope SitePatchResource, _ *WebAppsClientUpdateSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -28910,7 +28913,7 @@ func (client *WebAppsClient) UpdateSlotConfigurationNames(ctx context.Context, r
 func (client *WebAppsClient) updateSlotConfigurationNamesCreateRequest(ctx context.Context, resourceGroupName string, name string, slotConfigNames SlotConfigNamesResource, _ *WebAppsClientUpdateSlotConfigurationNamesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/slotConfigNames"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -28978,7 +28981,7 @@ func (client *WebAppsClient) UpdateSourceControl(ctx context.Context, resourceGr
 func (client *WebAppsClient) updateSourceControlCreateRequest(ctx context.Context, resourceGroupName string, name string, siteSourceControl SiteSourceControl, _ *WebAppsClientUpdateSourceControlOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/sourcecontrols/web"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -29048,7 +29051,7 @@ func (client *WebAppsClient) UpdateSourceControlSlot(ctx context.Context, resour
 func (client *WebAppsClient) updateSourceControlSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, siteSourceControl SiteSourceControl, _ *WebAppsClientUpdateSourceControlSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/sourcecontrols/web"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -29124,7 +29127,7 @@ func (client *WebAppsClient) UpdateSwiftVirtualNetworkConnectionWithCheck(ctx co
 func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckCreateRequest(ctx context.Context, resourceGroupName string, name string, connectionEnvelope SwiftVirtualNetwork, _ *WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/networkConfig/virtualNetwork"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -29199,7 +29202,7 @@ func (client *WebAppsClient) UpdateSwiftVirtualNetworkConnectionWithCheckSlot(ct
 func (client *WebAppsClient) updateSwiftVirtualNetworkConnectionWithCheckSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, slot string, connectionEnvelope SwiftVirtualNetwork, _ *WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/networkConfig/virtualNetwork"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -29272,7 +29275,7 @@ func (client *WebAppsClient) UpdateVnetConnection(ctx context.Context, resourceG
 func (client *WebAppsClient) updateVnetConnectionCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, connectionEnvelope VnetInfoResource, _ *WebAppsClientUpdateVnetConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -29346,7 +29349,7 @@ func (client *WebAppsClient) UpdateVnetConnectionGateway(ctx context.Context, re
 func (client *WebAppsClient) updateVnetConnectionGatewayCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, connectionEnvelope VnetGateway, _ *WebAppsClientUpdateVnetConnectionGatewayOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -29420,7 +29423,7 @@ func (client *WebAppsClient) UpdateVnetConnectionGatewaySlot(ctx context.Context
 func (client *WebAppsClient) updateVnetConnectionGatewaySlotCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, gatewayName string, slot string, connectionEnvelope VnetGateway, _ *WebAppsClientUpdateVnetConnectionGatewaySlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -29499,7 +29502,7 @@ func (client *WebAppsClient) UpdateVnetConnectionSlot(ctx context.Context, resou
 func (client *WebAppsClient) updateVnetConnectionSlotCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, slot string, connectionEnvelope VnetInfoResource, _ *WebAppsClientUpdateVnetConnectionSlotOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/slots/{slot}/virtualNetworkConnections/{vnetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

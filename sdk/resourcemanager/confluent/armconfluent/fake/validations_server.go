@@ -87,7 +87,7 @@ func (v *ValidationsServerTransport) dispatchValidateOrganization(req *http.Requ
 	if v.srv.ValidateOrganization == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ValidateOrganization not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Confluent/validations/(?P<organizationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/orgvalidate`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/validations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/orgvalidate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -124,7 +124,7 @@ func (v *ValidationsServerTransport) dispatchValidateOrganizationV2(req *http.Re
 	if v.srv.ValidateOrganizationV2 == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ValidateOrganizationV2 not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Confluent/validations/(?P<organizationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/orgvalidateV2`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Confluent/validations/(?P<organizationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/orgvalidateV2`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

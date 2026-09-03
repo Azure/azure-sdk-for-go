@@ -30,6 +30,9 @@ type ServerFactory struct {
 	// AgentDeploymentsServer contains the fakes for client AgentDeploymentsClient
 	AgentDeploymentsServer AgentDeploymentsServer
 
+	// ArcDeploymentsServer contains the fakes for client ArcDeploymentsClient
+	ArcDeploymentsServer ArcDeploymentsServer
+
 	// CommitmentPlansServer contains the fakes for client CommitmentPlansClient
 	CommitmentPlansServer CommitmentPlansServer
 
@@ -170,6 +173,7 @@ type ServerFactoryTransport struct {
 	trAccountsServer                               *AccountsServerTransport
 	trAgentApplicationsServer                      *AgentApplicationsServerTransport
 	trAgentDeploymentsServer                       *AgentDeploymentsServerTransport
+	trArcDeploymentsServer                         *ArcDeploymentsServerTransport
 	trCommitmentPlansServer                        *CommitmentPlansServerTransport
 	trCommitmentTiersServer                        *CommitmentTiersServerTransport
 	trComputeOperationsServer                      *ComputeOperationsServerTransport
@@ -248,6 +252,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAgentDeploymentsServerTransport(&s.srv.AgentDeploymentsServer)
 		})
 		resp, err = s.trAgentDeploymentsServer.Do(req)
+	case "ArcDeploymentsClient":
+		initServer(&s.trMu, &s.trArcDeploymentsServer, func() *ArcDeploymentsServerTransport {
+			return NewArcDeploymentsServerTransport(&s.srv.ArcDeploymentsServer)
+		})
+		resp, err = s.trArcDeploymentsServer.Do(req)
 	case "CommitmentPlansClient":
 		initServer(&s.trMu, &s.trCommitmentPlansServer, func() *CommitmentPlansServerTransport {
 			return NewCommitmentPlansServerTransport(&s.srv.CommitmentPlansServer)

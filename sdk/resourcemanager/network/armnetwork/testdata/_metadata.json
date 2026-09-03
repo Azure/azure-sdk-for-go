@@ -3,5 +3,5 @@
     "Microsoft.Network": "2025-09-01",
     "Microsoft.Compute": "2018-10-01"
   },
-  "emitterVersion": "0.16.0"
+  "emitterVersion": "0.17.3"
 }

@@ -132,7 +132,7 @@ func (v *VPNLinkConnectionsServerTransport) dispatchNewGetAllSharedKeysPager(req
 	}
 	newGetAllSharedKeysPager := v.newGetAllSharedKeysPager.get(req)
 	if newGetAllSharedKeysPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnLinkConnections/(?P<linkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedKeys`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnConnections/(?P<connectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnLinkConnections/(?P<linkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedKeys`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -179,7 +179,7 @@ func (v *VPNLinkConnectionsServerTransport) dispatchGetDefaultSharedKey(req *htt
 	if v.srv.GetDefaultSharedKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetDefaultSharedKey not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnLinkConnections/(?P<linkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedKeys/default`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnConnections/(?P<connectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnLinkConnections/(?P<linkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedKeys/default`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -222,7 +222,7 @@ func (v *VPNLinkConnectionsServerTransport) dispatchBeginGetIkeSas(req *http.Req
 	}
 	beginGetIkeSas := v.beginGetIkeSas.get(req)
 	if beginGetIkeSas == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnLinkConnections/(?P<linkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getikesas`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnConnections/(?P<connectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnLinkConnections/(?P<linkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getikesas`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -274,7 +274,7 @@ func (v *VPNLinkConnectionsServerTransport) dispatchNewListByVPNConnectionPager(
 	}
 	newListByVPNConnectionPager := v.newListByVPNConnectionPager.get(req)
 	if newListByVPNConnectionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnLinkConnections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnConnections/(?P<connectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnLinkConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -317,7 +317,7 @@ func (v *VPNLinkConnectionsServerTransport) dispatchListDefaultSharedKey(req *ht
 	if v.srv.ListDefaultSharedKey == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListDefaultSharedKey not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnLinkConnections/(?P<linkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedKeys/default/listSharedKey`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnConnections/(?P<connectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnLinkConnections/(?P<linkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedKeys/default/listSharedKey`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -360,7 +360,7 @@ func (v *VPNLinkConnectionsServerTransport) dispatchBeginResetConnection(req *ht
 	}
 	beginResetConnection := v.beginResetConnection.get(req)
 	if beginResetConnection == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnLinkConnections/(?P<linkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resetconnection`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnConnections/(?P<connectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnLinkConnections/(?P<linkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resetconnection`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -412,7 +412,7 @@ func (v *VPNLinkConnectionsServerTransport) dispatchBeginSetOrInitDefaultSharedK
 	}
 	beginSetOrInitDefaultSharedKey := v.beginSetOrInitDefaultSharedKey.get(req)
 	if beginSetOrInitDefaultSharedKey == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnConnections/(?P<connectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/vpnLinkConnections/(?P<linkConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sharedKeys/default`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/vpnGateways/(?P<gatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnConnections/(?P<connectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/vpnLinkConnections/(?P<linkConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sharedKeys/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

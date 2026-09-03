@@ -183,7 +183,7 @@ func (b *BulkActionsServerTransport) dispatchBeginCancel(req *http.Request) (*ht
 	}
 	beginCancel := b.beginCancel.get(req)
 	if beginCancel == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/launchBulkInstancesOperations/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/launchBulkInstancesOperations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -231,7 +231,7 @@ func (b *BulkActionsServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 	}
 	beginCreateOrUpdate := b.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/launchBulkInstancesOperations/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/launchBulkInstancesOperations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -283,7 +283,7 @@ func (b *BulkActionsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	}
 	beginDelete := b.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/launchBulkInstancesOperations/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/launchBulkInstancesOperations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -340,7 +340,7 @@ func (b *BulkActionsServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if b.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/launchBulkInstancesOperations/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/launchBulkInstancesOperations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -377,7 +377,7 @@ func (b *BulkActionsServerTransport) dispatchGetOperationStatus(req *http.Reques
 	if b.srv.GetOperationStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetOperationStatus not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/operations/(?P<id>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operations/(?P<id>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -412,7 +412,7 @@ func (b *BulkActionsServerTransport) dispatchNewListByResourceGroupPager(req *ht
 	}
 	newListByResourceGroupPager := b.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/launchBulkInstancesOperations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/launchBulkInstancesOperations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -453,7 +453,7 @@ func (b *BulkActionsServerTransport) dispatchNewListBySubscriptionPager(req *htt
 	}
 	newListBySubscriptionPager := b.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/launchBulkInstancesOperations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/launchBulkInstancesOperations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -490,7 +490,7 @@ func (b *BulkActionsServerTransport) dispatchNewListVirtualMachinesPager(req *ht
 	}
 	newListVirtualMachinesPager := b.newListVirtualMachinesPager.get(req)
 	if newListVirtualMachinesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/launchBulkInstancesOperations/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachines`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/launchBulkInstancesOperations/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachines`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -543,7 +543,7 @@ func (b *BulkActionsServerTransport) dispatchVirtualMachinesCancelOperations(req
 	if b.srv.VirtualMachinesCancelOperations == nil {
 		return nil, &nonRetriableError{errors.New("fake for method VirtualMachinesCancelOperations not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachinesCancelOperations`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachinesCancelOperations`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -576,7 +576,7 @@ func (b *BulkActionsServerTransport) dispatchVirtualMachinesExecuteCreate(req *h
 	if b.srv.VirtualMachinesExecuteCreate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method VirtualMachinesExecuteCreate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachinesExecuteCreate`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachinesExecuteCreate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -609,7 +609,7 @@ func (b *BulkActionsServerTransport) dispatchVirtualMachinesExecuteDeallocate(re
 	if b.srv.VirtualMachinesExecuteDeallocate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method VirtualMachinesExecuteDeallocate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachinesExecuteDeallocate`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachinesExecuteDeallocate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -642,7 +642,7 @@ func (b *BulkActionsServerTransport) dispatchVirtualMachinesExecuteDelete(req *h
 	if b.srv.VirtualMachinesExecuteDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method VirtualMachinesExecuteDelete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachinesExecuteDelete`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachinesExecuteDelete`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -675,7 +675,7 @@ func (b *BulkActionsServerTransport) dispatchVirtualMachinesExecuteHibernate(req
 	if b.srv.VirtualMachinesExecuteHibernate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method VirtualMachinesExecuteHibernate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachinesExecuteHibernate`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachinesExecuteHibernate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -708,7 +708,7 @@ func (b *BulkActionsServerTransport) dispatchVirtualMachinesExecuteStart(req *ht
 	if b.srv.VirtualMachinesExecuteStart == nil {
 		return nil, &nonRetriableError{errors.New("fake for method VirtualMachinesExecuteStart not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachinesExecuteStart`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachinesExecuteStart`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -741,7 +741,7 @@ func (b *BulkActionsServerTransport) dispatchVirtualMachinesGetOperationStatus(r
 	if b.srv.VirtualMachinesGetOperationStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method VirtualMachinesGetOperationStatus not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualMachinesGetOperationStatus`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ComputeBulkActions/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualMachinesGetOperationStatus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

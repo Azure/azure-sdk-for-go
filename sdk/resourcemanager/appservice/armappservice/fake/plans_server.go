@@ -275,7 +275,7 @@ func (p *PlansServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*
 	}
 	beginCreateOrUpdate := p.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -321,7 +321,7 @@ func (p *PlansServerTransport) dispatchCreateOrUpdateVnetRoute(req *http.Request
 	if p.srv.CreateOrUpdateVnetRoute == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdateVnetRoute not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections/(?P<vnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routes/(?P<routeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections/(?P<vnetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routes/(?P<routeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -366,7 +366,7 @@ func (p *PlansServerTransport) dispatchDelete(req *http.Request) (*http.Response
 	if p.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -399,7 +399,7 @@ func (p *PlansServerTransport) dispatchDeleteHybridConnection(req *http.Request)
 	if p.srv.DeleteHybridConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteHybridConnection not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridConnectionNamespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/relays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridConnectionNamespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/relays/(?P<relayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -440,7 +440,7 @@ func (p *PlansServerTransport) dispatchDeleteVnetRoute(req *http.Request) (*http
 	if p.srv.DeleteVnetRoute == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteVnetRoute not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections/(?P<vnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routes/(?P<routeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections/(?P<vnetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routes/(?P<routeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -481,7 +481,7 @@ func (p *PlansServerTransport) dispatchGet(req *http.Request) (*http.Response, e
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -514,7 +514,7 @@ func (p *PlansServerTransport) dispatchGetHybridConnection(req *http.Request) (*
 	if p.srv.GetHybridConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetHybridConnection not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridConnectionNamespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/relays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridConnectionNamespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/relays/(?P<relayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -555,7 +555,7 @@ func (p *PlansServerTransport) dispatchGetHybridConnectionPlanLimit(req *http.Re
 	if p.srv.GetHybridConnectionPlanLimit == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetHybridConnectionPlanLimit not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridConnectionPlanLimits/limit`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridConnectionPlanLimits/limit`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -588,7 +588,7 @@ func (p *PlansServerTransport) dispatchGetRouteForVnet(req *http.Request) (*http
 	if p.srv.GetRouteForVnet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetRouteForVnet not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections/(?P<vnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routes/(?P<routeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections/(?P<vnetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routes/(?P<routeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -629,7 +629,7 @@ func (p *PlansServerTransport) dispatchGetServerFarmInstanceDetails(req *http.Re
 	if p.srv.GetServerFarmInstanceDetails == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetServerFarmInstanceDetails not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listinstances`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listinstances`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -662,7 +662,7 @@ func (p *PlansServerTransport) dispatchGetServerFarmRdpPassword(req *http.Reques
 	if p.srv.GetServerFarmRdpPassword == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetServerFarmRdpPassword not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getrdppassword`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getrdppassword`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -695,7 +695,7 @@ func (p *PlansServerTransport) dispatchGetServerFarmSKUs(req *http.Request) (*ht
 	if p.srv.GetServerFarmSKUs == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetServerFarmSKUs not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/skus`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -728,7 +728,7 @@ func (p *PlansServerTransport) dispatchGetVnetFromServerFarm(req *http.Request) 
 	if p.srv.GetVnetFromServerFarm == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetVnetFromServerFarm not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections/(?P<vnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections/(?P<vnetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -765,7 +765,7 @@ func (p *PlansServerTransport) dispatchGetVnetGateway(req *http.Request) (*http.
 	if p.srv.GetVnetGateway == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetVnetGateway not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections/(?P<vnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections/(?P<vnetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gateways/(?P<gatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -808,7 +808,7 @@ func (p *PlansServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 	}
 	newListPager := p.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -852,7 +852,7 @@ func (p *PlansServerTransport) dispatchNewListByResourceGroupPager(req *http.Req
 	}
 	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -887,7 +887,7 @@ func (p *PlansServerTransport) dispatchListCapabilities(req *http.Request) (*htt
 	if p.srv.ListCapabilities == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListCapabilities not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capabilities`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capabilities`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -920,7 +920,7 @@ func (p *PlansServerTransport) dispatchListHybridConnectionKeys(req *http.Reques
 	if p.srv.ListHybridConnectionKeys == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListHybridConnectionKeys not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridConnectionNamespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/relays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listKeys`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridConnectionNamespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/relays/(?P<relayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -963,7 +963,7 @@ func (p *PlansServerTransport) dispatchNewListHybridConnectionsPager(req *http.R
 	}
 	newListHybridConnectionsPager := p.newListHybridConnectionsPager.get(req)
 	if newListHybridConnectionsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridConnectionRelays`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridConnectionRelays`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1002,7 +1002,7 @@ func (p *PlansServerTransport) dispatchListRoutesForVnet(req *http.Request) (*ht
 	if p.srv.ListRoutesForVnet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListRoutesForVnet not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections/(?P<vnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routes`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections/(?P<vnetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routes`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -1041,7 +1041,7 @@ func (p *PlansServerTransport) dispatchNewListUsagesPager(req *http.Request) (*h
 	}
 	newListUsagesPager := p.newListUsagesPager.get(req)
 	if newListUsagesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1088,7 +1088,7 @@ func (p *PlansServerTransport) dispatchListVnets(req *http.Request) (*http.Respo
 	if p.srv.ListVnets == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListVnets not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -1123,7 +1123,7 @@ func (p *PlansServerTransport) dispatchNewListWebAppsPager(req *http.Request) (*
 	}
 	newListWebAppsPager := p.newListWebAppsPager.get(req)
 	if newListWebAppsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sites`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sites`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -1176,7 +1176,7 @@ func (p *PlansServerTransport) dispatchNewListWebAppsByHybridConnectionPager(req
 	}
 	newListWebAppsByHybridConnectionPager := p.newListWebAppsByHybridConnectionPager.get(req)
 	if newListWebAppsByHybridConnectionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/hybridConnectionNamespaces/(?P<namespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/relays/(?P<relayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/sites`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hybridConnectionNamespaces/(?P<namespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/relays/(?P<relayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/sites`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -1223,7 +1223,7 @@ func (p *PlansServerTransport) dispatchRebootWorker(req *http.Request) (*http.Re
 	if p.srv.RebootWorker == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RebootWorker not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workers/(?P<workerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reboot`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workers/(?P<workerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reboot`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -1260,7 +1260,7 @@ func (p *PlansServerTransport) dispatchRecycleManagedInstanceWorker(req *http.Re
 	if p.srv.RecycleManagedInstanceWorker == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RecycleManagedInstanceWorker not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workers/(?P<workerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recycleinstance`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workers/(?P<workerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recycleinstance`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -1297,7 +1297,7 @@ func (p *PlansServerTransport) dispatchRestartWebApps(req *http.Request) (*http.
 	if p.srv.RestartWebApps == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RestartWebApps not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restartSites`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restartSites`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -1341,7 +1341,7 @@ func (p *PlansServerTransport) dispatchUpdate(req *http.Request) (*http.Response
 	if p.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -1378,7 +1378,7 @@ func (p *PlansServerTransport) dispatchUpdateVnetGateway(req *http.Request) (*ht
 	if p.srv.UpdateVnetGateway == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateVnetGateway not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections/(?P<vnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/gateways/(?P<gatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections/(?P<vnetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/gateways/(?P<gatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -1423,7 +1423,7 @@ func (p *PlansServerTransport) dispatchUpdateVnetRoute(req *http.Request) (*http
 	if p.srv.UpdateVnetRoute == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateVnetRoute not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkConnections/(?P<vnetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/routes/(?P<routeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkConnections/(?P<vnetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routes/(?P<routeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {

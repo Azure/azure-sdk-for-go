@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesCreate.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesCreate.json
 func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,6 +30,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreate() {
 			ClusteringPolicy:         to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
 			DeferUpgrade:             to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
 			EvictionPolicy:           to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
+			NotifyKeyspaceEvents:     to.Ptr("KEA"),
 			Modules: []*armredisenterprise.Module{
 				{
 					Name: to.Ptr("RedisBloom"),
@@ -71,6 +72,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreate() {
 	// 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
 	// 			DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
 	// 			EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
+	// 			NotifyKeyspaceEvents: to.Ptr("KEA"),
 	// 			Modules: []*armredisenterprise.Module{
 	// 				{
 	// 					Name: to.Ptr("RedisBloom"),
@@ -101,7 +103,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesCreateWithGeoReplication.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesCreateWithGeoReplication.json
 func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateWithActiveGeoReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +131,8 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateWithActive
 					},
 				},
 			},
-			Port: to.Ptr[int32](10000),
+			NotifyKeyspaceEvents: to.Ptr("KEA"),
+			Port:                 to.Ptr[int32](10000),
 		},
 	}, nil)
 	if err != nil {
@@ -166,6 +169,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateWithActive
 	// 					},
 	// 				},
 	// 			},
+	// 			NotifyKeyspaceEvents: to.Ptr("KEA"),
 	// 			Port: to.Ptr[int32](10000),
 	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateUpdating),
 	// 			RedisVersion: to.Ptr("6.0"),
@@ -175,7 +179,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateWithActive
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesNoClusterCacheCreate.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesNoClusterCacheCreate.json
 func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateNoClusterCache() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,10 +192,11 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateNoClusterC
 	}
 	poller, err := clientFactory.NewDatabasesClient().BeginCreate(ctx, "rg1", "cache1", "default", armredisenterprise.Database{
 		Properties: &armredisenterprise.DatabaseCreateProperties{
-			ClientProtocol:   to.Ptr(armredisenterprise.ProtocolEncrypted),
-			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyNoCluster),
-			EvictionPolicy:   to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
-			Port:             to.Ptr[int32](10000),
+			ClientProtocol:       to.Ptr(armredisenterprise.ProtocolEncrypted),
+			ClusteringPolicy:     to.Ptr(armredisenterprise.ClusteringPolicyNoCluster),
+			EvictionPolicy:       to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
+			NotifyKeyspaceEvents: to.Ptr(""),
+			Port:                 to.Ptr[int32](10000),
 		},
 	}, nil)
 	if err != nil {
@@ -215,6 +220,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateNoClusterC
 	// 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyNoCluster),
 	// 			DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
 	// 			EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
+	// 			NotifyKeyspaceEvents: to.Ptr(""),
 	// 			Port: to.Ptr[int32](10000),
 	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateUpdating),
 	// 			RedisVersion: to.Ptr("7.2"),
@@ -224,7 +230,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateNoClusterC
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesDelete.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesDelete.json
 func ExampleDatabasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -250,7 +256,7 @@ func ExampleDatabasesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesExport.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesExport.json
 func ExampleDatabasesClient_BeginExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,7 +284,7 @@ func ExampleDatabasesClient_BeginExport() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesFlush.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesFlush.json
 func ExampleDatabasesClient_BeginFlush() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -309,7 +315,7 @@ func ExampleDatabasesClient_BeginFlush() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesForceLink.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesForceLink.json
 func ExampleDatabasesClient_BeginForceLinkToReplicationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -342,7 +348,7 @@ func ExampleDatabasesClient_BeginForceLinkToReplicationGroup() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesForceUnlink.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesForceUnlink.json
 func ExampleDatabasesClient_BeginForceUnlink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -372,7 +378,7 @@ func ExampleDatabasesClient_BeginForceUnlink() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesGet.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesGet.json
 func ExampleDatabasesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -401,6 +407,7 @@ func ExampleDatabasesClient_Get() {
 	// 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyOSSCluster),
 	// 			DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
 	// 			EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
+	// 			NotifyKeyspaceEvents: to.Ptr(""),
 	// 			Modules: []*armredisenterprise.Module{
 	// 				{
 	// 					Name: to.Ptr("RediSearch"),
@@ -421,7 +428,7 @@ func ExampleDatabasesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesImport.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesImport.json
 func ExampleDatabasesClient_BeginImport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -452,7 +459,7 @@ func ExampleDatabasesClient_BeginImport() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesListByCluster.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesListByCluster.json
 func ExampleDatabasesClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -487,6 +494,7 @@ func ExampleDatabasesClient_NewListByClusterPager() {
 		// 					ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyOSSCluster),
 		// 					DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
 		// 					EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
+		// 					NotifyKeyspaceEvents: to.Ptr(""),
 		// 					Modules: []*armredisenterprise.Module{
 		// 						{
 		// 							Name: to.Ptr("RediSearch"),
@@ -510,7 +518,7 @@ func ExampleDatabasesClient_NewListByClusterPager() {
 	}
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesListKeys.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesListKeys.json
 func ExampleDatabasesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -536,7 +544,7 @@ func ExampleDatabasesClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesRegenerateKey.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesRegenerateKey.json
 func ExampleDatabasesClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -568,7 +576,7 @@ func ExampleDatabasesClient_BeginRegenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesNoClusterCacheUpdateClustering.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesNoClusterCacheUpdateClustering.json
 func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdateClusteringOnNoClusterCache() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -581,10 +589,11 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdateClustering
 	}
 	poller, err := clientFactory.NewDatabasesClient().BeginUpdate(ctx, "rg1", "cache1", "default", armredisenterprise.DatabaseUpdate{
 		Properties: &armredisenterprise.DatabaseUpdateProperties{
-			ClientProtocol:   to.Ptr(armredisenterprise.ProtocolEncrypted),
-			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
-			EvictionPolicy:   to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
-			Port:             to.Ptr[int32](10000),
+			ClientProtocol:       to.Ptr(armredisenterprise.ProtocolEncrypted),
+			ClusteringPolicy:     to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
+			EvictionPolicy:       to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
+			NotifyKeyspaceEvents: to.Ptr(""),
+			Port:                 to.Ptr[int32](10000),
 		},
 	}, nil)
 	if err != nil {
@@ -608,6 +617,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdateClustering
 	// 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyEnterpriseCluster),
 	// 			DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
 	// 			EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyNoEviction),
+	// 			NotifyKeyspaceEvents: to.Ptr(""),
 	// 			Port: to.Ptr[int32](10000),
 	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateUpdating),
 	// 			RedisVersion: to.Ptr("7.2"),
@@ -617,7 +627,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdateClustering
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesUpdate.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesUpdate.json
 func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -633,6 +643,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdate() {
 			AccessKeysAuthentication: to.Ptr(armredisenterprise.AccessKeysAuthenticationEnabled),
 			ClientProtocol:           to.Ptr(armredisenterprise.ProtocolEncrypted),
 			EvictionPolicy:           to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
+			NotifyKeyspaceEvents:     to.Ptr("KEA"),
 			Persistence: &armredisenterprise.Persistence{
 				RdbEnabled:   to.Ptr(true),
 				RdbFrequency: to.Ptr(armredisenterprise.RdbFrequencyTwelveH),
@@ -660,6 +671,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdate() {
 	// 			ClusteringPolicy: to.Ptr(armredisenterprise.ClusteringPolicyOSSCluster),
 	// 			DeferUpgrade: to.Ptr(armredisenterprise.DeferUpgradeSettingNotDeferred),
 	// 			EvictionPolicy: to.Ptr(armredisenterprise.EvictionPolicyAllKeysLRU),
+	// 			NotifyKeyspaceEvents: to.Ptr("KEA"),
 	// 			Modules: []*armredisenterprise.Module{
 	// 				{
 	// 					Name: to.Ptr("RediSearch"),
@@ -680,7 +692,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/RedisEnterpriseDatabasesUpgradeDBRedisVersion.json
+// Generated from example definition: 2026-06-01-preview/RedisEnterpriseDatabasesUpgradeDBRedisVersion.json
 func ExampleDatabasesClient_BeginUpgradeDBRedisVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

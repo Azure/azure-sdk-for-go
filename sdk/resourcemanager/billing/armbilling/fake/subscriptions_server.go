@@ -195,7 +195,7 @@ func (s *SubscriptionsServerTransport) dispatchBeginCancel(req *http.Request) (*
 	}
 	beginCancel := s.beginCancel.get(req)
 	if beginCancel == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingSubscriptions/(?P<billingSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -243,7 +243,7 @@ func (s *SubscriptionsServerTransport) dispatchBeginDelete(req *http.Request) (*
 	}
 	beginDelete := s.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingSubscriptions/(?P<billingSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -285,7 +285,7 @@ func (s *SubscriptionsServerTransport) dispatchGet(req *http.Request) (*http.Res
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingSubscriptions/(?P<billingSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -326,7 +326,7 @@ func (s *SubscriptionsServerTransport) dispatchGetByBillingProfile(req *http.Req
 	if s.srv.GetByBillingProfile == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetByBillingProfile not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingSubscriptions/(?P<billingSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -373,7 +373,7 @@ func (s *SubscriptionsServerTransport) dispatchNewListByBillingAccountPager(req 
 	}
 	newListByBillingAccountPager := s.newListByBillingAccountPager.get(req)
 	if newListByBillingAccountPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingSubscriptions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -466,7 +466,7 @@ func (s *SubscriptionsServerTransport) dispatchNewListByBillingProfilePager(req 
 	}
 	newListByBillingProfilePager := s.newListByBillingProfilePager.get(req)
 	if newListByBillingProfilePager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingSubscriptions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -553,7 +553,7 @@ func (s *SubscriptionsServerTransport) dispatchNewListByCustomerPager(req *http.
 	}
 	newListByCustomerPager := s.newListByCustomerPager.get(req)
 	if newListByCustomerPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingSubscriptions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customers/(?P<customerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -644,7 +644,7 @@ func (s *SubscriptionsServerTransport) dispatchNewListByCustomerAtBillingAccount
 	}
 	newListByCustomerAtBillingAccountPager := s.newListByCustomerAtBillingAccountPager.get(req)
 	if newListByCustomerAtBillingAccountPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customers/(?P<customerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingSubscriptions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customers/(?P<customerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -731,7 +731,7 @@ func (s *SubscriptionsServerTransport) dispatchNewListByEnrollmentAccountPager(r
 	}
 	newListByEnrollmentAccountPager := s.newListByEnrollmentAccountPager.get(req)
 	if newListByEnrollmentAccountPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/enrollmentAccounts/(?P<enrollmentAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingSubscriptions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/enrollmentAccounts/(?P<enrollmentAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -811,7 +811,7 @@ func (s *SubscriptionsServerTransport) dispatchNewListByInvoiceSectionPager(req 
 	}
 	newListByInvoiceSectionPager := s.newListByInvoiceSectionPager.get(req)
 	if newListByInvoiceSectionPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/invoiceSections/(?P<invoiceSectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingSubscriptions`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/invoiceSections/(?P<invoiceSectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -902,7 +902,7 @@ func (s *SubscriptionsServerTransport) dispatchBeginMerge(req *http.Request) (*h
 	}
 	beginMerge := s.beginMerge.get(req)
 	if beginMerge == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingSubscriptions/(?P<billingSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/merge`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/merge`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -950,7 +950,7 @@ func (s *SubscriptionsServerTransport) dispatchBeginMove(req *http.Request) (*ht
 	}
 	beginMove := s.beginMove.get(req)
 	if beginMove == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingSubscriptions/(?P<billingSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/move`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/move`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -998,7 +998,7 @@ func (s *SubscriptionsServerTransport) dispatchBeginSplit(req *http.Request) (*h
 	}
 	beginSplit := s.beginSplit.get(req)
 	if beginSplit == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingSubscriptions/(?P<billingSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/split`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/split`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -1046,7 +1046,7 @@ func (s *SubscriptionsServerTransport) dispatchBeginUpdate(req *http.Request) (*
 	}
 	beginUpdate := s.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingSubscriptions/(?P<billingSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -1092,7 +1092,7 @@ func (s *SubscriptionsServerTransport) dispatchValidateMoveEligibility(req *http
 	if s.srv.ValidateMoveEligibility == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ValidateMoveEligibility not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingSubscriptions/(?P<billingSubscriptionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateMoveEligibility`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingSubscriptions/(?P<billingSubscriptionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validateMoveEligibility`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

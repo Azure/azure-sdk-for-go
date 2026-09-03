@@ -117,7 +117,7 @@ func (w *WhatIfResultsAtSubscriptionServerTransport) dispatchBeginCreateOrUpdate
 	}
 	beginCreateOrUpdate := w.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -159,7 +159,7 @@ func (w *WhatIfResultsAtSubscriptionServerTransport) dispatchDelete(req *http.Re
 	if w.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -207,7 +207,7 @@ func (w *WhatIfResultsAtSubscriptionServerTransport) dispatchGet(req *http.Reque
 	if w.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -238,7 +238,7 @@ func (w *WhatIfResultsAtSubscriptionServerTransport) dispatchNewListPager(req *h
 	}
 	newListPager := w.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -271,7 +271,7 @@ func (w *WhatIfResultsAtSubscriptionServerTransport) dispatchBeginWhatIf(req *ht
 	}
 	beginWhatIf := w.beginWhatIf.get(req)
 	if beginWhatIf == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/whatIf`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deploymentStacksWhatIfResults/(?P<deploymentStacksWhatIfResultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/whatIf`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

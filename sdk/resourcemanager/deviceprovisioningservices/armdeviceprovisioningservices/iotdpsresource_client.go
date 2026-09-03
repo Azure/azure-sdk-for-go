@@ -30,6 +30,9 @@ type IotDpsResourceClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIotDpsResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IotDpsResourceClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,7 +73,7 @@ func (client *IotDpsResourceClient) CheckProvisioningServiceNameAvailability(ctx
 func (client *IotDpsResourceClient) checkProvisioningServiceNameAvailabilityCreateRequest(ctx context.Context, arguments OperationInputs, _ *IotDpsResourceClientCheckProvisioningServiceNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Devices/checkProvisioningServiceNameAvailability"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -154,7 +157,7 @@ func (client *IotDpsResourceClient) createOrUpdate(ctx context.Context, resource
 func (client *IotDpsResourceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, iotDpsDescription ProvisioningServiceDescription, _ *IotDpsResourceClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -233,7 +236,7 @@ func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnection(ctx 
 func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, _ *IotDpsResourceClientBeginCreateOrUpdatePrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -311,7 +314,7 @@ func (client *IotDpsResourceClient) deleteOperation(ctx context.Context, provisi
 func (client *IotDpsResourceClient) deleteCreateRequest(ctx context.Context, provisioningServiceName string, resourceGroupName string, _ *IotDpsResourceClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if provisioningServiceName == "" {
@@ -382,7 +385,7 @@ func (client *IotDpsResourceClient) deletePrivateEndpointConnection(ctx context.
 func (client *IotDpsResourceClient) deletePrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, _ *IotDpsResourceClientBeginDeletePrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -433,7 +436,7 @@ func (client *IotDpsResourceClient) Get(ctx context.Context, provisioningService
 func (client *IotDpsResourceClient) getCreateRequest(ctx context.Context, provisioningServiceName string, resourceGroupName string, _ *IotDpsResourceClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if provisioningServiceName == "" {
@@ -494,7 +497,7 @@ func (client *IotDpsResourceClient) GetOperationResult(ctx context.Context, oper
 func (client *IotDpsResourceClient) getOperationResultCreateRequest(ctx context.Context, operationID string, resourceGroupName string, provisioningServiceName string, asyncinfo string, _ *IotDpsResourceClientGetOperationResultOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/operationresults/{operationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if operationID == "" {
@@ -561,7 +564,7 @@ func (client *IotDpsResourceClient) GetPrivateEndpointConnection(ctx context.Con
 func (client *IotDpsResourceClient) getPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, privateEndpointConnectionName string, _ *IotDpsResourceClientGetPrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -627,7 +630,7 @@ func (client *IotDpsResourceClient) GetPrivateLinkResources(ctx context.Context,
 func (client *IotDpsResourceClient) getPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, groupID string, _ *IotDpsResourceClientGetPrivateLinkResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateLinkResources/{groupId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -702,7 +705,7 @@ func (client *IotDpsResourceClient) listByResourceGroupCreateRequest(ctx context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -773,7 +776,7 @@ func (client *IotDpsResourceClient) listBySubscriptionCreateRequest(ctx context.
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Devices/provisioningServices"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -841,7 +844,7 @@ func (client *IotDpsResourceClient) listKeysCreateRequest(ctx context.Context, p
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/listkeys"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if provisioningServiceName == "" {
@@ -906,7 +909,7 @@ func (client *IotDpsResourceClient) ListKeysForKeyName(ctx context.Context, prov
 func (client *IotDpsResourceClient) listKeysForKeyNameCreateRequest(ctx context.Context, provisioningServiceName string, keyName string, resourceGroupName string, _ *IotDpsResourceClientListKeysForKeyNameOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/keys/{keyName}/listkeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if provisioningServiceName == "" {
@@ -971,7 +974,7 @@ func (client *IotDpsResourceClient) ListPrivateEndpointConnections(ctx context.C
 func (client *IotDpsResourceClient) listPrivateEndpointConnectionsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *IotDpsResourceClientListPrivateEndpointConnectionsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateEndpointConnections"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1032,7 +1035,7 @@ func (client *IotDpsResourceClient) ListPrivateLinkResources(ctx context.Context
 func (client *IotDpsResourceClient) listPrivateLinkResourcesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *IotDpsResourceClientListPrivateLinkResourcesOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{resourceName}/privateLinkResources"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1103,7 +1106,7 @@ func (client *IotDpsResourceClient) listValidSKUsCreateRequest(ctx context.Conte
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}/skus"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if provisioningServiceName == "" {
@@ -1192,7 +1195,7 @@ func (client *IotDpsResourceClient) update(ctx context.Context, resourceGroupNam
 func (client *IotDpsResourceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, provisioningServiceName string, provisioningServiceTags TagsResource, _ *IotDpsResourceClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/provisioningServices/{provisioningServiceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

@@ -92,7 +92,7 @@ func (e *ExtensionMetadataV2ServerTransport) dispatchGet(req *http.Request) (*ht
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.HybridCompute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisher>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensionTypes/(?P<extensionType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions/(?P<version>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.HybridCompute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publishers/(?P<publisher>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensionTypes/(?P<extensionType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions/(?P<version>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -135,7 +135,7 @@ func (e *ExtensionMetadataV2ServerTransport) dispatchNewListPager(req *http.Requ
 	}
 	newListPager := e.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.HybridCompute/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/publishers/(?P<publisher>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensionTypes/(?P<extensionType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/versions`
+		const regexStr = `/providers/Microsoft\.HybridCompute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publishers/(?P<publisher>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensionTypes/(?P<extensionType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

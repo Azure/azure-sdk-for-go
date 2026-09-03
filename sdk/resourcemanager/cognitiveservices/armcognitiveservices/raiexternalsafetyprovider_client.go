@@ -19,7 +19,7 @@ import (
 // RaiExternalSafetyProviderClient contains the methods for the RaiExternalSafetyProvider group.
 // Don't use this type directly, use NewRaiExternalSafetyProviderClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-07-15-preview
 type RaiExternalSafetyProviderClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -61,12 +61,7 @@ func (client *RaiExternalSafetyProviderClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return RaiExternalSafetyProviderClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return RaiExternalSafetyProviderClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -85,7 +80,7 @@ func (client *RaiExternalSafetyProviderClient) createOrUpdateCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -96,8 +91,11 @@ func (client *RaiExternalSafetyProviderClient) createOrUpdateCreateRequest(ctx c
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *RaiExternalSafetyProviderClient) createOrUpdateHandleResponse(resp *http.Response) (RaiExternalSafetyProviderClientCreateOrUpdateResponse, error) {
+func (client *RaiExternalSafetyProviderClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (RaiExternalSafetyProviderClientCreateOrUpdateResponse, error) {
 	result := RaiExternalSafetyProviderClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiExternalSafetyProviderSchema); err != nil {
 		return RaiExternalSafetyProviderClientCreateOrUpdateResponse{}, err
 	}
@@ -143,8 +141,7 @@ func (client *RaiExternalSafetyProviderClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
@@ -165,7 +162,7 @@ func (client *RaiExternalSafetyProviderClient) deleteCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -189,12 +186,7 @@ func (client *RaiExternalSafetyProviderClient) Get(ctx context.Context, safetyPr
 	if err != nil {
 		return RaiExternalSafetyProviderClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RaiExternalSafetyProviderClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -213,15 +205,18 @@ func (client *RaiExternalSafetyProviderClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260715Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *RaiExternalSafetyProviderClient) getHandleResponse(resp *http.Response) (RaiExternalSafetyProviderClientGetResponse, error) {
+func (client *RaiExternalSafetyProviderClient) getHandleResponse(resp *http.Response, successCodes ...int) (RaiExternalSafetyProviderClientGetResponse, error) {
 	result := RaiExternalSafetyProviderClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiExternalSafetyProviderSchema); err != nil {
 		return RaiExternalSafetyProviderClientGetResponse{}, err
 	}

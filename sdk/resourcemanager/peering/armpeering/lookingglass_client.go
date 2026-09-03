@@ -30,6 +30,9 @@ type LookingGlassClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewLookingGlassClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LookingGlassClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,7 +72,7 @@ func (client *LookingGlassClient) Invoke(ctx context.Context, command LookingGla
 func (client *LookingGlassClient) invokeCreateRequest(ctx context.Context, command LookingGlassCommand, sourceType LookingGlassSourceType, sourceLocation string, destinationIP string, _ *LookingGlassClientInvokeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Peering/lookingGlass"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))

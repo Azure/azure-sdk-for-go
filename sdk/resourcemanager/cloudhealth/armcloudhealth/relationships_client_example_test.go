@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/Relationships_CreateOrUpdate.json
+// Generated from example definition: 2026-09-01-preview/Relationships_CreateOrUpdate.json
 func ExampleRelationshipsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleRelationshipsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Relationships_Delete.json
+// Generated from example definition: 2026-09-01-preview/Relationships_Delete.json
 func ExampleRelationshipsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleRelationshipsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Relationships_Get.json
+// Generated from example definition: 2026-09-01-preview/Relationships_Get.json
 func ExampleRelationshipsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleRelationshipsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Relationships_ListByHealthModel.json
+// Generated from example definition: 2026-09-01-preview/Relationships_ListByHealthModel.json
 func ExampleRelationshipsClient_NewListByHealthModelPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

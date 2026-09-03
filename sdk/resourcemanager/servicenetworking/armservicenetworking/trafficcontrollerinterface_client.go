@@ -19,7 +19,7 @@ import (
 // TrafficControllerInterfaceClient contains the methods for the TrafficControllerInterface group.
 // Don't use this type directly, use NewTrafficControllerInterfaceClient() instead.
 //
-// Generated from API version 2025-03-01-preview
+// Generated from API version 2026-03-01
 type TrafficControllerInterfaceClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -111,7 +111,7 @@ func (client *TrafficControllerInterfaceClient) createOrUpdateCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301Preview)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -186,7 +186,7 @@ func (client *TrafficControllerInterfaceClient) deleteCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301Preview)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -234,7 +234,7 @@ func (client *TrafficControllerInterfaceClient) getCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301Preview)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -305,7 +305,7 @@ func (client *TrafficControllerInterfaceClient) listByResourceGroupCreateRequest
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250301Preview)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -372,7 +372,7 @@ func (client *TrafficControllerInterfaceClient) listBySubscriptionCreateRequest(
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250301Preview)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -435,7 +435,7 @@ func (client *TrafficControllerInterfaceClient) updateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250301Preview)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

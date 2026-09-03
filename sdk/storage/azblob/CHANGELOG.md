@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+* `DownloadBuffer` and `DownloadFile` now use ETag locking to ensure consistency across parallel chunk requests when the blob size is not specified upfront (i.e., `Range.Count` is zero). If a blob is modified during a multi-chunk download, subsequent requests will fail with `ConditionNotMet` instead of silently returning data from mixed blob versions.
 
 ### Bugs Fixed
 
@@ -19,6 +20,7 @@
 * Premature EOF during Structured Message framing reads (header, segment footer, or message trailer) now wraps `io.ErrUnexpectedEOF` so `RetryReader` classifies truncated framing as retryable.
 
 ### Other Changes
+* Optimized `DownloadBuffer` and `DownloadFile` to use an initial GET request instead of a HEAD (GetProperties) call for blob size discovery. For small blobs (<=4MB), the entire content is returned in a single request, reducing download latency by ~50%.
 
 ## 1.8.1-beta.1 (2026-07-24)
 

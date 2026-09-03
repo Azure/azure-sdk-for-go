@@ -31,7 +31,7 @@ func exampleContainer() (*azcosmos.ContainerClient, func()) {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	if err := client.Initialize(context.Background()); err != nil {
+	if err := client.Initialize(context.TODO()); err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
@@ -67,7 +67,7 @@ func ExampleNewClient() {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	if err := client.Initialize(context.Background()); err != nil {
+	if err := client.Initialize(context.TODO()); err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
@@ -87,24 +87,23 @@ func ExampleNewClient() {
 
 // An account key authenticates too, though Entra ID is preferable where it is available.
 //
-// Routing is worth setting: naming the region the application runs in lets the SDK order the
-// account's regions by proximity to it, rather than leaving the order to the account.
+// Routing is worth setting when the preferred region order is known.
 func ExampleNewClientWithKey() {
-	cred, err := azcosmos.NewKeyCredential("myAccountKey")
+	cred, err := azcosmos.NewKeyCredential("bXktYWNjb3VudC1rZXk=")
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
 
 	client, err := azcosmos.NewClientWithKey("https://myaccount.documents.azure.com", cred, &azcosmos.ClientOptions{
-		Routing: azcosmos.ProximityTo(azcosmos.RegionEastUS),
+		Routing: azcosmos.PreferredRegions(azcosmos.RegionEastUS),
 	})
 
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}
-	if err := client.Initialize(context.Background()); err != nil {
+	if err := client.Initialize(context.TODO()); err != nil {
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)
 	}

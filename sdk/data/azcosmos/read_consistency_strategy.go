@@ -3,6 +3,8 @@
 
 package azcosmos
 
+import "fmt"
+
 // ReadConsistencyStrategy selects how fresh a read must be.
 //
 // This is deliberately not the account's consistency level. A strategy can relax a read or request
@@ -37,3 +39,19 @@ const (
 	// is only available on accounts whose consistency level permits it.
 	ReadConsistencyStrategyGlobalStrong ReadConsistencyStrategy = "GlobalStrong"
 )
+
+// validate rejects values the numeric driver ABI cannot represent. The empty value is the only
+// unset sentinel; unlike service string enums, an unknown value cannot be forwarded.
+func (s ReadConsistencyStrategy) validate() error {
+	switch s {
+	case ReadConsistencyStrategyUnset,
+		ReadConsistencyStrategyDefault,
+		ReadConsistencyStrategyEventual,
+		ReadConsistencyStrategySession,
+		ReadConsistencyStrategyLatestCommitted,
+		ReadConsistencyStrategyGlobalStrong:
+		return nil
+	default:
+		return fmt.Errorf("azcosmos: unknown read consistency strategy %q", s)
+	}
+}

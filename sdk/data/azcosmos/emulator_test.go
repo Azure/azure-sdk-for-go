@@ -14,6 +14,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/stretchr/testify/require"
 )
 
@@ -52,22 +53,7 @@ func emulatorClientConfigured(
 ) (*Client, string, string) {
 	t.Helper()
 
-	if os.Getenv("EMULATOR") == "" {
-		t.Skip("set EMULATOR to run tests against the Cosmos DB emulator")
-	}
-
-	endpoint := os.Getenv("AZCOSMOS_ENDPOINT")
-	if endpoint == "" {
-		endpoint = emulatorEndpoint
-	}
-	databaseID := os.Getenv("AZCOSMOS_DATABASE")
-	if databaseID == "" {
-		databaseID = "itemdb"
-	}
-	containerID := os.Getenv("AZCOSMOS_CONTAINER")
-	if containerID == "" {
-		containerID = "items"
-	}
+	endpoint, databaseID, containerID := emulatorConfiguration(t)
 
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
@@ -80,6 +66,43 @@ func emulatorClientConfigured(
 	}
 
 	return client, databaseID, containerID
+}
+
+func emulatorConfiguration(t *testing.T) (endpoint, databaseID, containerID string) {
+	t.Helper()
+
+	if os.Getenv("EMULATOR") == "" {
+		t.Skip("set EMULATOR to run tests against the Cosmos DB emulator")
+	}
+
+	endpoint = os.Getenv("AZCOSMOS_ENDPOINT")
+	if endpoint == "" {
+		endpoint = emulatorEndpoint
+	}
+	databaseID = os.Getenv("AZCOSMOS_DATABASE")
+	if databaseID == "" {
+		databaseID = "itemdb"
+	}
+	containerID = os.Getenv("AZCOSMOS_CONTAINER")
+	if containerID == "" {
+		containerID = "items"
+	}
+	return
+}
+
+type recordingTokenCredential struct {
+	requests chan []string
+}
+
+func (c *recordingTokenCredential) GetToken(
+	_ context.Context,
+	options policy.TokenRequestOptions,
+) (azcore.AccessToken, error) {
+	c.requests <- append([]string(nil), options.Scopes...)
+	return azcore.AccessToken{
+		Token:     "emulator-access-token",
+		ExpiresOn: time.Now().Add(time.Hour),
+	}, nil
 }
 
 // emulatorContainer returns a container client for the emulator.
@@ -281,9 +304,8 @@ func TestEmulatorLatestCommittedRead(t *testing.T) {
 	require.Equal(t, id, value["pk"])
 }
 
-// Cancelling the context has to stop the operation and report the context's own error, so that
-// errors.Is against context.Canceled works the way callers expect of any Go API.
-func TestEmulatorCancelledContext(t *testing.T) {
+// A context cancelled before an operation is submitted fails through the public fast path.
+func TestEmulatorPreCancelledContext(t *testing.T) {
 	container := emulatorContainer(t)
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -447,6 +469,32 @@ func TestEmulatorInitializeCreatesDriver(t *testing.T) {
 	again, err := client.driver.ensureDriver(t.Context())
 	require.NoError(t, err)
 	require.Equal(t, driver, again)
+}
+
+// Token acquisition crosses from Rust into Go and completes asynchronously back into Rust. A full
+// operation proves the callback, token lifetime and account reference all survive that round trip.
+func TestEmulatorTokenCredential(t *testing.T) {
+	endpoint, databaseID, containerID := emulatorConfiguration(t)
+	credential := &recordingTokenCredential{requests: make(chan []string, 1)}
+
+	client, err := NewClient(endpoint, credential, nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
+	require.NoError(t, client.Initialize(t.Context()))
+
+	require.Equal(t, []string{"https://cosmos.azure.com/.default"}, <-credential.requests)
+
+	container, err := client.NewContainer(databaseID, containerID)
+	require.NoError(t, err)
+	id := uniqueItemID(t)
+	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
+	require.NoError(t, err)
+
+	_, err = container.CreateItem(t.Context(), NewPartitionKeyString(id), id, item, nil)
+	require.NoError(t, err)
+	read, err := container.ReadItem(t.Context(), NewPartitionKeyString(id), id, nil)
+	require.NoError(t, err)
+	require.NotEmpty(t, read.Value)
 }
 
 // Initialize is optional: the first operation performs the same work when callers skip it.

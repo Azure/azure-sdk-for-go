@@ -72,15 +72,11 @@ type Client struct {
 // endpoint is the Cosmos DB account endpoint. cred is any [azcore.TokenCredential], such as the
 // implementations in the azidentity module. options may be nil to accept the defaults. Construction
 // performs no network I/O; call [Client.Initialize] to fill account-level caches eagerly.
-//
-// Token credentials do not work in a driver-backed build yet: the driver supports them, but its C
-// ABI exposes no constructor for one, so the binding cannot build an account reference from a
-// credential and the constructor reports that immediately. Use [NewClientWithKey] until it does.
 func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
 	if cred == nil {
 		return nil, errors.New("azcosmos: credential must not be nil")
 	}
-	return newClient(endpoint, "", options)
+	return newClient(endpoint, "", cred, options)
 }
 
 // NewClientWithKey creates a client that authenticates with an account key.
@@ -92,7 +88,7 @@ func NewClientWithKey(endpoint string, cred KeyCredential, options *ClientOption
 	if cred.accountKey == "" {
 		return nil, errors.New("azcosmos: credential must be created with NewKeyCredential")
 	}
-	return newClient(endpoint, cred.accountKey, options)
+	return newClient(endpoint, cred.accountKey, nil, options)
 }
 
 // newClient validates the inputs shared by every constructor and opens the client's driver
@@ -100,7 +96,12 @@ func NewClientWithKey(endpoint string, cred KeyCredential, options *ClientOption
 //
 // accountKey is empty when the caller supplied a token credential. In builds that are not bound to
 // the driver no resources are acquired, and operations report that they are not implemented.
-func newClient(endpoint string, accountKey string, options *ClientOptions) (*Client, error) {
+func newClient(
+	endpoint string,
+	accountKey string,
+	tokenCredential azcore.TokenCredential,
+	options *ClientOptions,
+) (*Client, error) {
 	parsed, err := url.Parse(endpoint)
 	if err != nil {
 		return nil, fmt.Errorf("azcosmos: parsing endpoint: %w", err)
@@ -129,9 +130,10 @@ func newClient(endpoint string, accountKey string, options *ClientOptions) (*Cli
 	}
 
 	driver, err := openDriver(driverConfig{
-		endpoint:   endpoint,
-		accountKey: accountKey,
-		options:    client.options,
+		endpoint:        endpoint,
+		accountKey:      accountKey,
+		tokenCredential: tokenCredential,
+		options:         client.options,
 	})
 	if err != nil {
 		return nil, err
@@ -162,15 +164,18 @@ func (c *Client) Endpoint() string {
 	return c.endpoint
 }
 
-// Close releases the driver resources the client owns. It first waits for the client's in-flight
-// operations to finish, and afterwards every operation on the client fails with [CodeClientClosed]
-// rather than reaching the driver.
+// Close releases the driver resources the client owns. It cancels active token acquisition, then
+// waits for the client's in-flight operations to finish. Afterwards every operation on the client
+// fails with [CodeClientClosed] rather than reaching the driver.
 //
 // Close is idempotent and safe to call concurrently; every caller observes the same result. It
 // returns an error only when the client could not be torn down cleanly, in which case the
 // resources are released anyway, so there is nothing to retry.
 func (c *Client) Close() error {
 	c.closeOnce.Do(func() {
+		// Signal host token acquisition before waiting for operations. Initialize can be holding
+		// the read lock while GetToken waits on this cancellation.
+		c.driver.cancel()
 		// Taking the write lock blocks until every operation holding it for read has finished,
 		// and keeps later operations out once closed is set.
 		c.mu.Lock()

@@ -46,8 +46,8 @@ func (r RoutingStrategy) clone() RoutingStrategy {
 // lines and has not been ported yet, so asking for proximity routing fails rather than quietly
 // leaving the order to the account.
 //
-// It is reported when the client is constructed, matching errTokenCredentialUnsupported: resolving
-// the order needs no driver, so there is no reason to defer it to the first operation.
+// It is reported when the client is constructed: resolving the order needs no driver, so there is
+// no reason to defer it to the first operation.
 var errProximityRoutingUnsupported = &Error{
 	Code: CodeClientError,
 	Message: "ProximityTo is not supported yet; list the regions explicitly with PreferredRegions, " +

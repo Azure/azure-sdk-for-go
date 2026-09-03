@@ -34,10 +34,10 @@ Nothing else here depends on these files, so the revert is self-contained.
 ## Integrity and provenance
 
 Built from a clean checkout of `Azure/azure-sdk-for-rust` at commit
-`2bc179cf6ff5c22e249fd10d944c8e946bb712d2`, which is on `main`, with no local modifications:
+`a05f024d22cd0a70f6ccac5e310cbbbaf40bf20e`, which is on `main`, with no local modifications:
 
 ```sh
-git worktree add --detach /tmp/rustclean 2bc179cf6ff5c22e249fd10d944c8e946bb712d2
+git worktree add --detach /tmp/rustclean a05f024d22cd0a70f6ccac5e310cbbbaf40bf20e
 
 # darwin/arm64.
 cd /tmp/rustclean/sdk/cosmos/azure_data_cosmos_driver_native

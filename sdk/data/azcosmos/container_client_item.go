@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"context"
 	"errors"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
@@ -56,6 +57,20 @@ func (c *ContainerClient) ReadItem(ctx context.Context, partitionKey PartitionKe
 	if itemID == "" {
 		return ItemResponse{}, errors.New("azcosmos: item id must not be empty")
 	}
+	if options != nil {
+		if err := options.Operation.ConsistencyStrategy.validate(); err != nil {
+			return ItemResponse{}, err
+		}
+		if err := options.SessionToken.validate(); err != nil {
+			return ItemResponse{}, err
+		}
+		if options.IfNoneMatchETag != nil &&
+			strings.IndexByte(string(*options.IfNoneMatchETag), 0) >= 0 {
+			return ItemResponse{}, errors.New(
+				"azcosmos: IfNoneMatchETag must not contain a NUL byte",
+			)
+		}
+	}
 	// The client is consulted before the context so that a call made after Close reports
 	// CodeClientClosed, which Close guarantees, rather than whatever the caller's context happens
 	// to say. Shutdown is exactly when both are likely to be true at once.
@@ -99,10 +114,9 @@ func (c *ContainerClient) ReadItem(ctx context.Context, partitionKey PartitionKe
 // created and must match the item's own id property. item is the JSON encoding of the item.
 // options may be nil.
 //
-// The id is taken separately rather than read out of item because the driver addresses the item by
-// it: passing it explicitly avoids parsing the caller's payload to recover something the caller
-// already knows, and reports a mismatch as a Go error rather than a driver rejection. The Rust SDK
-// takes it the same way for the same reason.
+// The id is taken separately because the driver ABI requires an item reference. The SDK passes the
+// id and item through unchanged and does not parse the payload to compare them; callers must provide
+// matching values, and service behavior is undefined when they differ.
 //
 // When an item with the same id already exists the returned error is an [Error] with [Error.Code]
 // set to [CodeConflict]. The response carries the created item only when content responses are
@@ -117,6 +131,11 @@ func (c *ContainerClient) CreateItem(ctx context.Context, partitionKey Partition
 	}
 	if len(item) == 0 {
 		return ItemResponse{}, errors.New("azcosmos: item must not be empty")
+	}
+	if options != nil {
+		if err := options.SessionToken.validate(); err != nil {
+			return ItemResponse{}, err
+		}
 	}
 	// The client is consulted before the context so that a call made after Close reports
 	// CodeClientClosed, which Close guarantees, rather than whatever the caller's context happens

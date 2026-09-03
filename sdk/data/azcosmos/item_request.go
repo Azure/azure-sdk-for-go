@@ -74,3 +74,15 @@ func endToEndTimeout(ctx context.Context, explicit time.Duration) time.Duration 
 	}
 	return remaining
 }
+
+// contextWithEndToEndTimeout starts an explicit operation budget at public operation entry, so
+// lazy driver creation and container resolution consume the same budget as the item request.
+func contextWithEndToEndTimeout(
+	ctx context.Context,
+	explicit time.Duration,
+) (context.Context, context.CancelFunc) {
+	if explicit <= 0 {
+		return ctx, func() {}
+	}
+	return context.WithTimeout(ctx, explicit)
+}

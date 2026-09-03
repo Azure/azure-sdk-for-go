@@ -9,13 +9,14 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/stretchr/testify/require"
 )
 
 func newTestContainer(t *testing.T) *ContainerClient {
 	t.Helper()
 
-	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil)
+	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, nil)
 	require.NoError(t, err)
 	container, err := client.NewContainer("db", "items")
 	require.NoError(t, err)
@@ -165,6 +166,61 @@ func TestReadConsistencyStrategyUnsetIsNotDefault(t *testing.T) {
 
 	var zero ReadConsistencyStrategy
 	require.Equal(t, ReadConsistencyStrategyUnset, zero, "the zero value must mean inherit")
+}
+
+func TestReadItemRejectsUnknownConsistencyStrategy(t *testing.T) {
+	container := newTestContainer(t)
+
+	_, err := container.ReadItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		&ReadItemOptions{
+			Operation: OperationOptions{
+				ConsistencyStrategy: ReadConsistencyStrategy("LatestCommited"),
+			},
+		},
+	)
+
+	require.ErrorContains(t, err, "unknown read consistency strategy")
+	require.NotErrorIs(t, err, errDriverUnavailable,
+		"argument validation should run before the operation is attempted")
+}
+
+func TestItemOperationsRejectNULSessionToken(t *testing.T) {
+	container := newTestContainer(t)
+	token := SessionToken("1:2\x00:3")
+
+	_, err := container.ReadItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		&ReadItemOptions{SessionToken: token},
+	)
+	require.ErrorContains(t, err, "session token must not contain a NUL byte")
+
+	_, err = container.CreateItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		[]byte(`{"id":"item-1","pk":"pk"}`),
+		&CreateItemOptions{SessionToken: token},
+	)
+	require.ErrorContains(t, err, "session token must not contain a NUL byte")
+}
+
+func TestReadItemRejectsNULETag(t *testing.T) {
+	container := newTestContainer(t)
+	etag := azcore.ETag("\"etag\x00suffix\"")
+
+	_, err := container.ReadItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		&ReadItemOptions{IfNoneMatchETag: &etag},
+	)
+
+	require.ErrorContains(t, err, "IfNoneMatchETag must not contain a NUL byte")
 }
 
 // The driver's budget is what guarantees an operation terminates: cancelling the context stops it

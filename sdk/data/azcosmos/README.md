@@ -50,7 +50,7 @@ platform needs its own build from
 dropped into the matching directory, which is the cost these files impose.
 
 `azurecosmosdriver.h` is the header the driver generates, vendored here and pinned to the version
-in `driver.go`. That version is checked against the linked archive when a client is constructed,
+in `driver.go`. That version is checked against the linked archive during first initialization,
 because a header and a library from different versions do not fail to compile — they fail as moved
 struct offsets somewhere far from the cause.
 
@@ -69,12 +69,7 @@ Container metadata is not fetched during client construction because the client 
 containers the application will use. The first operation on a container resolves and caches that
 container's metadata.
 
-Two limits apply to the driver-backed build today, both upstream gaps rather than choices this
-module makes:
-
-* Only account keys work. The C ABI has no constructor for a token credential, so [`NewClient`]
-  reports that it is unsupported and [`NewClientWithKey`] is the working path.
-* v1's WebAssembly support does not carry over.
+One limit applies to the driver-backed build today: v1's WebAssembly support does not carry over.
 
 ### Running the end-to-end tests
 

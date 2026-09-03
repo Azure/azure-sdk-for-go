@@ -8,6 +8,27 @@ package azcosmos
 /*
 #include <stdlib.h>
 #include "azurecosmosdriver.h"
+
+static cosmos_value_t cosmos_test_string_value(const char *value) {
+	cosmos_value_t out = {0};
+	out.kind = COSMOS_VALUE_KIND_STRING;
+	out.payload.string_value = value;
+	return out;
+}
+
+static cosmos_value_t cosmos_test_i64_value(int64_t value) {
+	cosmos_value_t out = {0};
+	out.kind = COSMOS_VALUE_KIND_I64;
+	out.payload.i64_value = value;
+	return out;
+}
+
+static cosmos_value_t cosmos_test_f64_value(double value) {
+	cosmos_value_t out = {0};
+	out.kind = COSMOS_VALUE_KIND_F64;
+	out.payload.f64_value = value;
+	return out;
+}
 */
 import "C"
 
@@ -221,4 +242,67 @@ func headerInt(value *C.cosmos_value_t) int64 {
 	default:
 		return 0
 	}
+}
+
+// syntheticThrottledCompletion builds and translates a C-owned completion for native tests. Every
+// borrowed buffer is freed before it returns, so assertions also prove the translator copied out.
+func syntheticThrottledCompletion(packedSubStatus int) *Error {
+	var allocations []unsafe.Pointer
+	cString := func(value string) *C.char {
+		ptr := C.CString(value)
+		allocations = append(allocations, unsafe.Pointer(ptr))
+		return ptr
+	}
+	defer func() {
+		for _, allocation := range allocations {
+			C.free(allocation)
+		}
+	}()
+
+	const headerCount = 6
+	headerMemory := C.malloc(C.size_t(headerCount) * C.size_t(unsafe.Sizeof(C.cosmos_response_header_t{})))
+	defer C.free(headerMemory)
+	headers := unsafe.Slice((*C.cosmos_response_header_t)(headerMemory), headerCount)
+	headers[0] = C.cosmos_response_header_t{
+		id:    C.COSMOS_HEADER_ID_REQUEST_CHARGE,
+		value: C.cosmos_test_f64_value(4.5),
+	}
+	headers[1] = C.cosmos_response_header_t{
+		id:    C.COSMOS_HEADER_ID_ACTIVITY_ID,
+		value: C.cosmos_test_string_value(cString("activity-123")),
+	}
+	headers[2] = C.cosmos_response_header_t{
+		id:    C.COSMOS_HEADER_ID_SESSION_TOKEN,
+		value: C.cosmos_test_string_value(cString("1:2")),
+	}
+	headers[3] = C.cosmos_response_header_t{
+		id:    C.COSMOS_HEADER_ID_ETAG,
+		value: C.cosmos_test_string_value(cString("\"etag\"")),
+	}
+	headers[4] = C.cosmos_response_header_t{
+		id:    C.COSMOS_HEADER_ID_SUB_STATUS,
+		value: C.cosmos_test_i64_value(3200),
+	}
+	headers[5] = C.cosmos_response_header_t{
+		id:    C.COSMOS_HEADER_ID_RETRY_AFTER_MS,
+		value: C.cosmos_test_i64_value(125),
+	}
+
+	body := []byte(`{"code":"TooManyRequests","message":"slow down"}`)
+	bodyMemory := C.CBytes(body)
+	defer C.free(bodyMemory)
+
+	completion := C.cosmos_completion_t{
+		outcome:          C.COSMOS_COMPLETION_OUTCOME_ERROR,
+		status:           C.cosmos_status_code_t((429 << 16) | packedSubStatus),
+		http_status_code: 429,
+		is_from_wire:     1,
+		message:          cString("Request rate is large."),
+		headers:          (*C.cosmos_response_header_t)(headerMemory),
+		headers_len:      headerCount,
+		body:             (*C.uint8_t)(bodyMemory),
+		body_len:         C.uintptr_t(len(body)),
+	}
+	result := translateCompletion(&completion)
+	return result.err.(*Error)
 }

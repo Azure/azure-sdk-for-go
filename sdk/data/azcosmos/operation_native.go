@@ -36,6 +36,9 @@ func (c *Client) execute(ctx context.Context, req itemRequest) (ItemResponse, []
 
 // execute runs one operation to completion and returns its result.
 func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemResponse, []byte, error) {
+	ctx, cancel := contextWithEndToEndTimeout(ctx, req.options.EndToEndTimeout)
+	defer cancel()
+
 	driver, err := d.ensureDriver(ctx)
 	if err != nil {
 		return ItemResponse{}, nil, err
@@ -46,7 +49,9 @@ func (d *nativeDriver) execute(ctx context.Context, req itemRequest) (ItemRespon
 		return ItemResponse{}, nil, err
 	}
 
-	req.options.EndToEndTimeout = endToEndTimeout(ctx, req.options.EndToEndTimeout)
+	// Initialization and resolution have already spent part of the budget, so the operation gets
+	// only what remains rather than restarting the configured duration.
+	req.options.EndToEndTimeout = endToEndTimeout(ctx, 0)
 
 	result, err := d.awaitCompletion(ctx, "submitting the operation",
 		func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {

@@ -6,6 +6,7 @@
 package azcosmos
 
 import (
+	"sync"
 	"testing"
 	"time"
 
@@ -66,11 +67,13 @@ func TestReactorCloseDoesNotWaitOutTheTimeout(t *testing.T) {
 	require.NoError(t, d.buildRuntime())
 	t.Cleanup(func() { _ = d.close() })
 
-	r, err := newReactor(d.runtime)
+	waitStarted := make(chan struct{})
+	var waitStartedOnce sync.Once
+	r, err := newReactorWithWait(d.runtime, 10_000, func() {
+		waitStartedOnce.Do(func() { close(waitStarted) })
+	})
 	require.NoError(t, err)
-
-	// Let the loop reach the wait call rather than closing before it has started.
-	time.Sleep(20 * time.Millisecond)
+	<-waitStarted
 
 	done := make(chan struct{})
 	go func() {
@@ -80,7 +83,7 @@ func TestReactorCloseDoesNotWaitOutTheTimeout(t *testing.T) {
 
 	select {
 	case <-done:
-	case <-time.After(completionWaitMillis * time.Millisecond * 4):
+	case <-time.After(time.Second):
 		t.Fatal("close blocked; the queue shutdown did not wake the wait call")
 	}
 }

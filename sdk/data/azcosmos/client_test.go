@@ -31,30 +31,26 @@ func mustKeyCredential(t *testing.T) KeyCredential {
 func newTestClient(t *testing.T) *Client {
 	t.Helper()
 
-	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil)
+	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, nil)
 	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
 	return client
 }
 
 type fakeTokenCredential struct{}
 
 func (fakeTokenCredential) GetToken(context.Context, policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	return azcore.AccessToken{}, nil
+	return azcore.AccessToken{
+		Token:     "test-access-token",
+		ExpiresOn: time.Now().Add(time.Hour),
+	}, nil
 }
 
-// Token credentials are accepted by the API but cannot reach the driver: the C ABI exposes no
-// constructor for one, so a driver-backed build has to refuse rather than fail later.
+// Token credentials are accepted without network I/O; Initialize or an operation acquires a token.
 func TestNewClientAcceptsTokenCredential(t *testing.T) {
 	client, err := NewClient("https://myaccount.documents.azure.com", fakeTokenCredential{}, nil)
-	if driverAvailable {
-		require.Error(t, err)
-		var cosmosErr *Error
-		require.ErrorAs(t, err, &cosmosErr)
-		require.Equal(t, CodeClientError, cosmosErr.Code)
-		require.Contains(t, cosmosErr.Message, "token credentials are not supported")
-		return
-	}
 	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
 	require.Equal(t, "https://myaccount.documents.azure.com", client.Endpoint())
 }
 
@@ -149,8 +145,9 @@ func TestNewClientRejectsNonAbsoluteEndpoint(t *testing.T) {
 }
 
 func TestNewClientAcceptsAbsoluteEndpoint(t *testing.T) {
-	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil)
+	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, nil)
 	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
 	require.Equal(t, "https://myaccount.documents.azure.com", client.Endpoint())
 }
 
@@ -158,11 +155,12 @@ func TestNewClientAcceptsAbsoluteEndpoint(t *testing.T) {
 // the routing order of a client that has already been created.
 func TestNewClientCopiesRoutingRegions(t *testing.T) {
 	regions := []Region{RegionWestUS, RegionEastUS}
-	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, &ClientOptions{
+	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, &ClientOptions{
 		Routing: PreferredRegions(regions...),
 	})
 
 	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
 
 	regions[0] = RegionNorthEurope
 	require.Equal(t, []Region{RegionWestUS, RegionEastUS}, client.options.Routing.preferredRegions)
@@ -347,7 +345,7 @@ func TestNewClientWithKeyAcceptsUsableOptions(t *testing.T) {
 		{"preferred regions", ClientOptions{Routing: PreferredRegions(RegionEastUS, RegionWestUS)}},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, &tt.options)
+			client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, &tt.options)
 			require.NoError(t, err)
 			require.NoError(t, client.Close())
 		})

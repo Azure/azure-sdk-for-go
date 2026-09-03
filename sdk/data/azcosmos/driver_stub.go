@@ -22,6 +22,9 @@ const driverAvailable = false
 // nativeDriver holds no resources in this build.
 type nativeDriver struct{}
 
+// cancel is a no-op because the diagnostic build owns no credential callback.
+func (d *nativeDriver) cancel() {}
+
 // initialize reports that the diagnostic build has no driver to initialize.
 func (d *nativeDriver) initialize(context.Context) error {
 	return errDriverUnavailable

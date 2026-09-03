@@ -8,10 +8,14 @@ package azcosmos
 import (
 	"context"
 	"fmt"
+	"net"
 	"os"
+	"sync"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/stretchr/testify/require"
 )
 
@@ -98,11 +102,90 @@ func TestNativeAccountRejectsMalformedEndpoint(t *testing.T) {
 	require.Contains(t, cosmosErr.Message, "account endpoint URL")
 }
 
-// The driver supports token credentials but the C ABI has no constructor for one, so this is the
-// binding refusing rather than the driver.
-func TestNativeTokenCredentialRejected(t *testing.T) {
-	_, err := NewClient("https://myaccount.documents.azure.com", fakeTokenCredential{}, nil)
-	require.ErrorIs(t, err, errTokenCredentialUnsupported)
+func TestNativeTokenCredentialAccepted(t *testing.T) {
+	client, err := NewClient("https://myaccount.documents.azure.com", fakeTokenCredential{}, nil)
+	require.NoError(t, err)
+	require.NoError(t, client.Close())
+}
+
+type blockingTokenCredential struct {
+	started     chan struct{}
+	stopped     chan struct{}
+	startedOnce sync.Once
+	stoppedOnce sync.Once
+}
+
+func (c *blockingTokenCredential) GetToken(
+	ctx context.Context,
+	_ policy.TokenRequestOptions,
+) (azcore.AccessToken, error) {
+	c.startedOnce.Do(func() { close(c.started) })
+	<-ctx.Done()
+	c.stoppedOnce.Do(func() { close(c.stopped) })
+	return azcore.AccessToken{}, ctx.Err()
+}
+
+// Close signals client-lifetime token cancellation before it waits for Initialize's read lock.
+func TestCloseCancelsTokenAcquisition(t *testing.T) {
+	credential := &blockingTokenCredential{
+		started: make(chan struct{}),
+		stopped: make(chan struct{}),
+	}
+	client, err := NewClient("https://myaccount.documents.azure.com", credential, nil)
+	require.NoError(t, err)
+
+	initialized := make(chan error, 1)
+	go func() { initialized <- client.Initialize(context.Background()) }()
+	<-credential.started
+
+	closed := make(chan error, 1)
+	go func() { closed <- client.Close() }()
+
+	select {
+	case err := <-initialized:
+		var cosmosErr *Error
+		require.ErrorAs(t, err, &cosmosErr)
+		require.Equal(t, CodeAuthenticationFailed, cosmosErr.Code)
+	case <-time.After(time.Second):
+		t.Fatal("Initialize did not return after Close cancelled token acquisition")
+	}
+	select {
+	case err := <-closed:
+		require.NoError(t, err)
+	case <-time.After(time.Second):
+		t.Fatal("Close did not return after token acquisition stopped")
+	}
+}
+
+// The token callback proves driver creation has been submitted before cancellation. Initialize
+// must cancel the native operation and await its terminal completion before returning.
+func TestNativeCancellationAfterSubmission(t *testing.T) {
+	credential := &blockingTokenCredential{
+		started: make(chan struct{}),
+		stopped: make(chan struct{}),
+	}
+	client, err := NewClient("https://myaccount.documents.azure.com", credential, nil)
+	require.NoError(t, err)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	initialized := make(chan error, 1)
+	go func() { initialized <- client.Initialize(ctx) }()
+	<-credential.started
+	cancel()
+
+	select {
+	case err := <-initialized:
+		require.ErrorIs(t, err, context.Canceled)
+	case <-time.After(time.Second):
+		t.Fatal("Initialize did not await the terminal cancellation completion")
+	}
+
+	require.NoError(t, client.Close())
+	select {
+	case <-credential.stopped:
+	case <-time.After(time.Second):
+		t.Fatal("Close did not stop the deliberately blocked token acquisition")
+	}
 }
 
 // Initialize creates the driver and fills the account-properties and routing caches. The cached
@@ -148,7 +231,7 @@ func TestNativeEnsureDriverAfterCloseIsRejected(t *testing.T) {
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
 
-	client, err := newClient("https://myaccount.documents.azure.com", cred.key(), nil)
+	client, err := newClient("https://myaccount.documents.azure.com", cred.key(), nil, nil)
 	require.NoError(t, err)
 
 	// Captured before Close, which drops the client's reference to it.
@@ -171,7 +254,7 @@ func TestNativeUnreachableAccountReportsTransportFailure(t *testing.T) {
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
 
-	client, err := newClient("https://127.0.0.1:1", cred.key(), nil)
+	client, err := newClient("https://127.0.0.1:1", cred.key(), nil, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { _ = client.Close() })
 
@@ -188,10 +271,44 @@ func TestNativeUnreachableAccountReportsTransportFailure(t *testing.T) {
 	require.Equal(t, err, again)
 }
 
-// blackholeEndpoint is TEST-NET-1, reserved by RFC 5737 and routed nowhere, so a connection to it
-// hangs rather than being refused. That is what makes it useful here: a refused connection would
-// fail fast on its own and prove nothing about cancellation.
-const blackholeEndpoint = "https://192.0.2.1/"
+// localBlackholeEndpoint accepts connections without completing TLS, so initialization stalls
+// deterministically until its context expires.
+func localBlackholeEndpoint(t *testing.T) string {
+	t.Helper()
+
+	listener, err := net.Listen("tcp", "127.0.0.1:0")
+	require.NoError(t, err)
+
+	var (
+		mu          sync.Mutex
+		connections []net.Conn
+	)
+	acceptDone := make(chan struct{})
+	go func() {
+		defer close(acceptDone)
+		for {
+			connection, err := listener.Accept()
+			if err != nil {
+				return
+			}
+			mu.Lock()
+			connections = append(connections, connection)
+			mu.Unlock()
+		}
+	}()
+
+	t.Cleanup(func() {
+		require.NoError(t, listener.Close())
+		<-acceptDone
+		mu.Lock()
+		defer mu.Unlock()
+		for _, connection := range connections {
+			require.NoError(t, connection.Close())
+		}
+	})
+
+	return "https://" + listener.Addr().String()
+}
 
 // Creating the driver reads the account's properties, so it does network I/O and has to honor the
 // caller's context. It is submitted to the completion queue rather than run through the driver's
@@ -205,7 +322,7 @@ func TestNativeDriverCreationHonorsContext(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
 	defer cancel()
 
-	client, err := NewClientWithKey(blackholeEndpoint, cred, nil)
+	client, err := NewClientWithKey(localBlackholeEndpoint(t), cred, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { _ = client.Close() })
 
@@ -220,6 +337,31 @@ func TestNativeDriverCreationHonorsContext(t *testing.T) {
 		"the deadline was not honored; creation ran to the driver's own timeout instead")
 }
 
+// An explicit end-to-end timeout starts before lazy driver creation, not after initialization and
+// container resolution have already consumed their own unbounded time.
+func TestNativeEndToEndTimeoutBoundsLazyInitialization(t *testing.T) {
+	cred, err := NewKeyCredential(emulatorKey)
+	require.NoError(t, err)
+	client, err := NewClientWithKey(localBlackholeEndpoint(t), cred, nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { _ = client.Close() })
+	container, err := client.NewContainer("db", "items")
+	require.NoError(t, err)
+
+	start := time.Now()
+	_, err = container.ReadItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		&ReadItemOptions{Operation: OperationOptions{EndToEndTimeout: 200 * time.Millisecond}},
+	)
+	elapsed := time.Since(start)
+
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+	require.Less(t, elapsed, 5*time.Second,
+		"the explicit budget started after lazy initialization instead of at operation entry")
+}
+
 // A context that expired is the caller's verdict, not the account's, so it must not be cached the
 // way a real creation failure is. Otherwise one caller's short deadline would permanently break a
 // client that every other caller could have used.
@@ -227,7 +369,7 @@ func TestNativeCancelledDriverCreationIsNotRemembered(t *testing.T) {
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
 
-	client, err := newClient(blackholeEndpoint, cred.key(), nil)
+	client, err := newClient(localBlackholeEndpoint(t), cred.key(), nil, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { _ = client.Close() })
 

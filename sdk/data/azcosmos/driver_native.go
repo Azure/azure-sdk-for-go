@@ -48,6 +48,8 @@ type nativeDriver struct {
 	runtime *C.cosmos_runtime_t
 	account *C.cosmos_account_ref_t
 
+	tokenProvider *tokenProviderState
+
 	// mu guards everything below it. It is deliberately not held across driver creation or
 	// container resolution: both wait on the network, and holding it there would make a second
 	// caller block on the mutex where it cannot honor its own context.
@@ -88,14 +90,11 @@ func (d *nativeDriver) initialize(ctx context.Context) error {
 	return err
 }
 
-// errTokenCredentialUnsupported is returned when a client is created with a token credential.
-//
-// The driver supports them (AccountReference::with_credential), but the C ABI does not expose a
-// constructor for one: bridging an async Rust TokenCredential through C is deferred upstream, so
-// cosmos_account_ref_with_master_key is the only account reference this binding can build.
-var errTokenCredentialUnsupported = &Error{
-	Code:    CodeClientError,
-	Message: "token credentials are not supported by the Cosmos driver yet; use NewClientWithKey",
+// cancel stops host token acquisition before Close waits for in-flight operations.
+func (d *nativeDriver) cancel() {
+	if d != nil && d.tokenProvider != nil {
+		d.tokenProvider.cancel()
+	}
 }
 
 // verifyDriverVersion reports whether the library that was linked is the one this package was
@@ -127,10 +126,6 @@ func verifyDriverVersion() error {
 // reference and the completion queue, none of which touch the network. Initialize and operations
 // create the driver separately so that network work receives their context.
 func openDriver(cfg driverConfig) (*nativeDriver, error) {
-	if cfg.usesTokenCredential() {
-		return nil, errTokenCredentialUnsupported
-	}
-
 	d := &nativeDriver{cfg: cfg}
 	if err := d.buildRuntime(); err != nil {
 		return nil, err
@@ -139,6 +134,8 @@ func openDriver(cfg driverConfig) (*nativeDriver, error) {
 		_ = d.close()
 		return nil, err
 	}
+	// The token-provider handle now owns the credential reference.
+	d.cfg.tokenCredential = nil
 	// Before the driver rather than after it, because creating the driver is itself answered
 	// through this queue.
 	var err error
@@ -329,6 +326,10 @@ func nativeInvalidOptionSubStatus() int {
 
 // buildAccount creates the account reference that names the endpoint and carries the key.
 func (d *nativeDriver) buildAccount(cfg driverConfig) error {
+	if cfg.usesTokenCredential() {
+		return d.buildTokenAccount(cfg)
+	}
+
 	endpoint := C.CString(cfg.endpoint)
 	defer C.free(unsafe.Pointer(endpoint))
 	// The key is copied into a Rust Secret before the call returns, so freeing it here is safe.

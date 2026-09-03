@@ -39,6 +39,9 @@ const completionWaitMillis = 250
 type reactor struct {
 	queue *C.cosmos_completion_queue_t
 
+	waitMillis uint32
+	beforeWait func()
+
 	// stop is closed to ask the loop to finish. done is closed by the loop when it has.
 	stop chan struct{}
 	done chan struct{}
@@ -56,6 +59,15 @@ type pendingOperation struct {
 
 // newReactor creates a completion queue on the runtime and starts draining it.
 func newReactor(rt *C.cosmos_runtime_t) (*reactor, error) {
+	return newReactorWithWait(rt, completionWaitMillis, nil)
+}
+
+// newReactorWithWait is newReactor with a configurable wait and observation hook for tests.
+func newReactorWithWait(
+	rt *C.cosmos_runtime_t,
+	waitMillis uint32,
+	beforeWait func(),
+) (*reactor, error) {
 	options := C.cosmos_completion_queue_options_t{
 		capacity_hint: C.uint32_t(completionBatch),
 		max_capacity:  0, // unbounded; the driver's own backpressure applies
@@ -73,9 +85,11 @@ func newReactor(rt *C.cosmos_runtime_t) (*reactor, error) {
 	}
 
 	r := &reactor{
-		queue: queue,
-		stop:  make(chan struct{}),
-		done:  make(chan struct{}),
+		queue:      queue,
+		waitMillis: waitMillis,
+		beforeWait: beforeWait,
+		stop:       make(chan struct{}),
+		done:       make(chan struct{}),
 	}
 	go r.run()
 	return r, nil
@@ -101,7 +115,10 @@ func (r *reactor) run() {
 			return
 		default:
 		}
-		r.drainOnce(batch, completionWaitMillis)
+		if r.beforeWait != nil {
+			r.beforeWait()
+		}
+		r.drainOnce(batch, r.waitMillis)
 	}
 }
 
@@ -159,9 +176,9 @@ func (r *reactor) deliver(completion *C.cosmos_completion_t) {
 
 // close stops the reactor and releases the queue. It is idempotent.
 //
-// Shutting the queue down first unblocks the wait call rather than waiting out its timeout, and
-// causes the driver to post cancelled completions for anything still in flight, so operations
-// blocked on a result are answered rather than left hanging.
+// Shutting the queue down first unblocks its wait call and rejects new submissions; it does not
+// cancel operations already in flight. Client.Close reaches this path only after its lifetime lock
+// has drained every operation.
 func (r *reactor) close() {
 	if r == nil {
 		return

@@ -103,7 +103,8 @@ func (d *nativeDriver) cancel() {
 // The header is vendored, so the binding compiles against one version and links against whatever
 // archive it was given. A mismatch is not a compile error: it is a struct layout or a calling
 // convention that has quietly moved, which surfaces as corrupted values or a crash somewhere far
-// from the cause. Checking on first initialization turns that into a message that names the problem.
+// from the cause. Checking before any struct-sensitive ABI call turns that into a message that
+// names the problem.
 //
 // The ABI carries no major-version concept yet, so this compares the whole version. Once it does,
 // this should relax to a compatible range rather than an exact match, which is what the
@@ -126,6 +127,10 @@ func verifyDriverVersion() error {
 // reference and the completion queue, none of which touch the network. Initialize and operations
 // create the driver separately so that network work receives their context.
 func openDriver(cfg driverConfig) (*nativeDriver, error) {
+	if err := verifyDriverVersion(); err != nil {
+		return nil, err
+	}
+
 	d := &nativeDriver{cfg: cfg}
 	if err := d.buildRuntime(); err != nil {
 		return nil, err
@@ -214,12 +219,6 @@ func (d *nativeDriver) ensureDriver(ctx context.Context) (*C.cosmos_driver_t, er
 
 // createDriver runs one driver-creation attempt.
 func (d *nativeDriver) createDriver(ctx context.Context) (*C.cosmos_driver_t, error) {
-	// Checked here rather than in openDriver so it runs once per client and on the path that
-	// actually calls into the driver, rather than on every construction.
-	if err := verifyDriverVersion(); err != nil {
-		return nil, err
-	}
-
 	options, err := d.buildDriverOptions()
 	if err != nil {
 		return nil, err

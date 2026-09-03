@@ -127,6 +127,15 @@ func TestOperationOptionsToNativeCarriesEveryField(t *testing.T) {
 	require.Equal(t, []string{string(RegionEastUS), string(RegionWestEurope)}, options.excludedRegions)
 }
 
+func TestOperationOptionsClampsSubMillisecondTimeout(t *testing.T) {
+	options, release := inspectNativeOperationOptions(OperationOptions{
+		EndToEndTimeout: time.Nanosecond,
+	})
+	t.Cleanup(release)
+
+	require.Equal(t, int64(1), options.endToEndTimeoutMillis)
+}
+
 // Every strategy has to map to a distinct discriminant, which catches both a mis-mapping and two
 // cases having been given the same value.
 func TestReadConsistencyStrategyToNativeIsInjective(t *testing.T) {

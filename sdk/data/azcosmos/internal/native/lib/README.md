@@ -82,8 +82,9 @@ strings -a internal/native/darwinarm64/libazurecosmosdriver.syso |
 the libraries cannot disagree.
 
 `SHA256SUMS` records the bytes that were reviewed. CI verifies it before it makes the emulator
-executable and runs it, so a substituted artifact fails the build rather than executing on an
-agent. Regenerate it in this directory whenever a library is replaced:
+executable, detecting corruption after checkout. The checksum is committed beside the artifacts,
+so it is not independent provenance attestation: both remain inside the same code-review trust
+boundary. Regenerate it in this directory whenever a library is replaced:
 
 ```sh
 shasum -a 256 internal/native/darwinarm64/libazurecosmosdriver.syso \
@@ -92,8 +93,8 @@ shasum -a 256 internal/native/darwinarm64/libazurecosmosdriver.syso \
 ```
 
 Anything replacing these must come from a clean checkout of a public commit, with that commit
-recorded here. A binary is not reviewable in a diff, so this section and the checksums are what a
-reviewer is actually approving.
+recorded here. A binary is not reviewable in a diff, so reviewers must assess the recorded source
+and build recipe as well as the checksum. Independent artifact attestation is tracked separately.
 
 ## While they are still here
 

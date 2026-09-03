@@ -50,9 +50,9 @@ platform needs its own build from
 dropped into the matching directory, which is the cost these files impose.
 
 `azurecosmosdriver.h` is the header the driver generates, vendored here and pinned to the version
-in `driver.go`. That version is checked against the linked archive during first initialization,
-because a header and a library from different versions do not fail to compile — they fail as moved
-struct offsets somewhere far from the cause.
+in `driver.go`. That version is checked against the linked archive before any struct-sensitive ABI
+call during construction, because a header and a library from different versions do not fail to
+compile — they fail as moved struct offsets somewhere far from the cause.
 
 ### Client initialization
 

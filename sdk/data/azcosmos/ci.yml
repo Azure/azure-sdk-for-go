@@ -104,14 +104,14 @@ extends:
             parameters:
               AgentImage: ubuntu
 
-          # The committed artifacts are verified before anything is made executable or run, because
-          # one of them is an executable this stage launches on the agent. A binary is not
-          # reviewable in a diff, so the checksums are what a reviewer is actually approving.
+          # Detect checkout corruption before making the emulator executable. The checksum and
+          # binary share one review trust boundary; this is integrity checking, not independent
+          # provenance attestation.
           - script: |
               set -euo pipefail
               cd sdk/data/azcosmos
               sha256sum -c internal/native/lib/SHA256SUMS
-            displayName: 'Verify the committed driver artifacts'
+            displayName: 'Check committed artifact integrity'
 
           # Fail here rather than leaving the tests to fail at link time with a less obvious
           # message.

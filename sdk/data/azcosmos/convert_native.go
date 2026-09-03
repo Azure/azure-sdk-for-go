@@ -96,7 +96,8 @@ func (o OperationOptions) toNative() (*C.cosmos_operation_options_t, func()) {
 		}
 	}
 	if o.EndToEndTimeout > 0 {
-		options.end_to_end_timeout_ms = C.int64_t(o.EndToEndTimeout.Milliseconds())
+		milliseconds := max(o.EndToEndTimeout.Milliseconds(), 1)
+		options.end_to_end_timeout_ms = C.int64_t(milliseconds)
 	}
 	if len(o.ExcludedRegions) > 0 {
 		size := C.size_t(len(o.ExcludedRegions)) * C.size_t(unsafe.Sizeof(uintptr(0)))

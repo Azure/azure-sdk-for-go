@@ -11,6 +11,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
@@ -120,6 +121,24 @@ func (c *recoveringTokenCredential) GetToken(
 	}
 	return azcore.AccessToken{
 		Token:     "recovered-access-token",
+		ExpiresOn: time.Now().Add(time.Hour),
+	}, nil
+}
+
+type delayedTokenCredential struct {
+	started chan struct{}
+	release chan struct{}
+	once    sync.Once
+}
+
+func (c *delayedTokenCredential) GetToken(
+	_ context.Context,
+	_ policy.TokenRequestOptions,
+) (azcore.AccessToken, error) {
+	c.once.Do(func() { close(c.started) })
+	<-c.release
+	return azcore.AccessToken{
+		Token:     "delayed-access-token",
 		ExpiresOn: time.Now().Add(time.Hour),
 	}, nil
 }
@@ -533,6 +552,36 @@ func TestEmulatorInitializationRecoversFromTokenFailure(t *testing.T) {
 
 	require.NoError(t, client.Initialize(t.Context()))
 	require.Equal(t, int32(3), credential.attempts.Load())
+}
+
+// A follower with a live context must not inherit the leader's cancellation. It retries after the
+// shared attempt ends and can still initialize the client.
+func TestEmulatorInitializationFollowerOutlivesLeader(t *testing.T) {
+	endpoint, _, _ := emulatorConfiguration(t)
+	credential := &delayedTokenCredential{
+		started: make(chan struct{}),
+		release: make(chan struct{}),
+	}
+	client, err := NewClient(endpoint, credential, nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
+
+	waiting := make(chan struct{}, 1)
+	client.driver.beforeCreationWait = func() { waiting <- struct{}{} }
+
+	leaderCtx, cancelLeader := context.WithCancel(t.Context())
+	leaderResult := make(chan error, 1)
+	go func() { leaderResult <- client.Initialize(leaderCtx) }()
+	<-credential.started
+
+	followerResult := make(chan error, 1)
+	go func() { followerResult <- client.Initialize(t.Context()) }()
+	<-waiting
+
+	cancelLeader()
+	require.ErrorIs(t, <-leaderResult, context.Canceled)
+	close(credential.release)
+	require.NoError(t, <-followerResult)
 }
 
 // Initialize is optional: the first operation performs the same work when callers skip it.

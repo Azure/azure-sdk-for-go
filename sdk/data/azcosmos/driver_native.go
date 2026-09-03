@@ -170,53 +170,58 @@ func openDriver(cfg driverConfig) (*nativeDriver, error) {
 // It reports [CodeClientClosed] once the client is closed rather than a NULL handle, so that a
 // caller which reaches it without going through [Client.acquire] cannot pass NULL into the C ABI.
 func (d *nativeDriver) ensureDriver(ctx context.Context) (*C.cosmos_driver_t, error) {
-	d.mu.Lock()
-	if d.closed {
-		d.mu.Unlock()
-		return nil, errClientClosed()
-	}
-	if d.created {
-		driver := d.driver
-		d.mu.Unlock()
-		return driver, nil
-	}
-	if inFlight := d.creating; inFlight != nil {
-		d.mu.Unlock()
-		if d.beforeCreationWait != nil {
-			d.beforeCreationWait()
+	for {
+		d.mu.Lock()
+		if d.closed {
+			d.mu.Unlock()
+			return nil, errClientClosed()
 		}
-		select {
-		case <-inFlight.done:
-			return inFlight.driver, inFlight.err
-		case <-ctx.Done():
-			return nil, ctx.Err()
+		if d.created {
+			driver := d.driver
+			d.mu.Unlock()
+			return driver, nil
 		}
+		if inFlight := d.creating; inFlight != nil {
+			d.mu.Unlock()
+			if d.beforeCreationWait != nil {
+				d.beforeCreationWait()
+			}
+			select {
+			case <-inFlight.done:
+				if isCancellation(inFlight.err) && ctx.Err() == nil {
+					continue
+				}
+				return inFlight.driver, inFlight.err
+			case <-ctx.Done():
+				return nil, ctx.Err()
+			}
+		}
+
+		attempt := &driverCreation{done: make(chan struct{})}
+		d.creating = attempt
+		d.mu.Unlock()
+
+		driver, err := d.createDriver(ctx)
+
+		d.mu.Lock()
+		d.creating = nil
+		switch {
+		case d.closed:
+			// Closed while this was in flight, which only a caller outside Client.acquire can
+			// arrange. Nothing else owns the handle: it is published to d.driver by the default
+			// branch below and this branch is taken instead, so freeing it here is the only way
+			// it gets freed at all.
+			C.cosmos_driver_free(driver)
+			driver, err = nil, errClientClosed()
+		case err == nil:
+			d.created, d.driver = true, driver
+		}
+		attempt.driver, attempt.err = driver, err
+		close(attempt.done)
+		d.mu.Unlock()
+
+		return driver, err
 	}
-
-	attempt := &driverCreation{done: make(chan struct{})}
-	d.creating = attempt
-	d.mu.Unlock()
-
-	driver, err := d.createDriver(ctx)
-
-	d.mu.Lock()
-	d.creating = nil
-	switch {
-	case d.closed:
-		// Closed while this was in flight, which only a caller outside Client.acquire can
-		// arrange. Nothing else owns the handle: it is published to d.driver by the default
-		// branch below and this branch is taken instead, so freeing it here is the only way
-		// it gets freed at all.
-		C.cosmos_driver_free(driver)
-		driver, err = nil, errClientClosed()
-	case err == nil:
-		d.created, d.driver = true, driver
-	}
-	attempt.driver, attempt.err = driver, err
-	close(attempt.done)
-	d.mu.Unlock()
-
-	return driver, err
 }
 
 // createDriver runs one driver-creation attempt.
@@ -254,6 +259,10 @@ func (d *nativeDriver) createDriver(ctx context.Context) (*C.cosmos_driver_t, er
 // errClientClosed is the failure every entry point reports once the client is closed.
 func errClientClosed() error {
 	return &Error{Code: CodeClientClosed, Message: "the client has been closed"}
+}
+
+func isCancellation(err error) bool {
+	return errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded)
 }
 
 // buildDriverOptions builds the driver's options from the client's. The account is cloned into

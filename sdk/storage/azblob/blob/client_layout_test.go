@@ -33,6 +33,11 @@ type fakeLayoutResponder struct {
 	layoutResponses       map[string]*http.Response
 	getPropertiesResponse *http.Response
 
+	// size overrides the blob size the fake serves reads against, for the tests whose blob has
+	// no layout to take it from. eTag likewise overrides the ETag returned on reads.
+	size int64
+	eTag string
+
 	// mu guards the fields below. Do is invoked concurrently by the chunk download goroutines,
 	// so every access must be synchronized.
 	mu                  sync.Mutex
@@ -136,27 +141,89 @@ func (f *fakeLayoutResponder) Do(req *http.Request) (*http.Response, error) {
 		}
 		f.downloadIfMatch = append(f.downloadIfMatch, req.Header.Get("If-Match"))
 		f.mu.Unlock()
-		// Download
+
+		// Download. The service clamps a requested range to the end of the blob and answers with
+		// a Content-Range naming the blob's total size, which is how the managed download learns
+		// the size from its initial request, so the fake has to do the same.
+		blobSize, etag := f.blobSize(), f.blobETag()
+
+		// A conditional read of a different version fails, exactly as the service would answer.
+		if ifMatch := req.Header.Get("If-Match"); ifMatch != "" && etag != "" && ifMatch != etag {
+			return &http.Response{
+				StatusCode: http.StatusPreconditionFailed,
+				Body:       io.NopCloser(bytes.NewReader([]byte{})),
+				Header:     http.Header{},
+			}, nil
+		}
+
+		start, end := requestedRange(rawHeaderValue(req.Header, "x-ms-range"))
+		if blobSize > 0 && end >= blobSize {
+			end = blobSize - 1
+		}
+		if end < start {
+			return &http.Response{
+				StatusCode: http.StatusRequestedRangeNotSatisfiable,
+				Body:       io.NopCloser(bytes.NewReader([]byte{})),
+				Header:     http.Header{},
+			}, nil
+		}
 		header := http.Header{}
-		header.Set("Content-Length", strconv.FormatInt(rangeLength(req.Header.Get("x-ms-range")), 10))
+		header.Set("Content-Length", strconv.FormatInt(end-start+1, 10))
+		header.Set("Content-Range", fmt.Sprintf("bytes %d-%d/%d", start, end, blobSize))
+		if etag != "" {
+			header.Set("ETag", etag)
+		}
 		return &http.Response{
 			StatusCode: http.StatusPartialContent,
-			Body:       io.NopCloser(bytes.NewReader([]byte{})),
+			Body:       io.NopCloser(bytes.NewReader(make([]byte, end-start+1))),
 			Header:     header,
 		}, nil
 	}
 	return nil, fmt.Errorf("unexpected request: %s %s", req.Method, req.URL.Path)
 }
 
-// rangeLength returns the number of bytes covered by an "bytes=start-end" range header.
-func rangeLength(r string) int64 {
-	var start, end int64
-	if _, err := fmt.Sscanf(r, "bytes=%d-%d", &start, &end); err != nil {
-		return 0
+// blobSize is the size the fake serves reads against. It defaults to the layout's content
+// length, which is what most tests set, and size is set explicitly by the tests that exercise a
+// blob with no usable layout.
+func (f *fakeLayoutResponder) blobSize() int64 {
+	if f.size > 0 {
+		return f.size
 	}
-	return end - start + 1
+	return f.l.contentLength
 }
 
+// blobETag is the ETag the fake returns on reads, defaulting to the layout's.
+func (f *fakeLayoutResponder) blobETag() string {
+	if f.eTag != "" {
+		return f.eTag
+	}
+	if f.l.eTag != nil {
+		return string(*f.l.eTag)
+	}
+	return ""
+}
+
+// rawHeaderValue reads a header the way the generated clients write it. They assign directly
+// into the header map using the wire casing, e.g. Header["x-ms-range"], which http.Header.Get
+// cannot see because it canonicalizes the name to "X-Ms-Range".
+func rawHeaderValue(h http.Header, name string) string {
+	if v := h.Get(name); v != "" {
+		return v
+	}
+	if v := h[name]; len(v) > 0 {
+		return v[0]
+	}
+	return ""
+}
+
+// requestedRange returns the start and end offsets of an "bytes=start-end" range header.
+func requestedRange(r string) (int64, int64) {
+	var start, end int64
+	if _, err := fmt.Sscanf(r, "bytes=%d-%d", &start, &end); err != nil {
+		return 0, -1
+	}
+	return start, end
+}
 func newMockLayoutResponse(contentLength int64, eTag string, layout generated.BlobLayout, statusCode int) *http.Response {
 	if statusCode == 0 || statusCode == http.StatusOK {
 		data, _ := xml.Marshal(layout)
@@ -289,7 +356,7 @@ func buildLayout(n int, rangeSize int64, endpointCount int, etag *azcore.ETag) l
 // Tests
 
 func TestDownloadBufferWithLayoutAwareRoutingError(t *testing.T) {
-	f := &fakeLayoutResponder{}
+	f := &fakeLayoutResponder{size: 300, eTag: "etag"}
 	client, err := NewClientWithNoCredential("https://fake/blob/path", &ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			Transport: f,
@@ -297,31 +364,35 @@ func TestDownloadBufferWithLayoutAwareRoutingError(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	buff := make([]byte, 0)
+	buff := make([]byte, 300)
 	// 412 should trigger an error
 	f.layoutResponses = map[string]*http.Response{"": newMockLayoutResponse(0, "etag", generated.BlobLayout{}, http.StatusPreconditionFailed)}
 	_, err = client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
 		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          100,
 	})
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "412")
 
-	// 400 should trigger a fallback to get  properties
+	// 400 means the service can't supply a layout, so the remainder is read from the
+	// client's configured endpoint. The size and ETag already came from the initial read, so
+	// there is no GetProperties fallback any more.
 	f.reset()
 	f.layoutResponses = map[string]*http.Response{"": newMockLayoutResponse(0, "etag", generated.BlobLayout{}, http.StatusBadRequest)}
-	f.getPropertiesResponse = newMockGetPropertiesResponse(0, "etag")
 	_, err = client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
 		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          100,
 	})
 	require.NoError(t, err)
-	layoutCalls, localityGets, _, getPropsCalled := f.counts()
+	layoutCalls, localityGets, normalGets, getPropsCalled := f.counts()
 	require.Equal(t, 1, layoutCalls)
-	require.True(t, getPropsCalled)
+	require.False(t, getPropsCalled, "the initial read supplies the size, so GetProperties is never issued")
 	require.Zero(t, localityGets)
+	require.Equal(t, 3, normalGets, "the initial read plus the two remaining chunks")
 }
 
 func TestDownloadBufferWithLayoutAwareRoutingNoLayout(t *testing.T) {
-	f := &fakeLayoutResponder{}
+	f := &fakeLayoutResponder{size: 300, eTag: "etag"}
 	client, err := NewClientWithNoCredential("https://fake/blob/path", &ClientOptions{
 		ClientOptions: policy.ClientOptions{
 			Transport: f,
@@ -329,16 +400,17 @@ func TestDownloadBufferWithLayoutAwareRoutingNoLayout(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	buff := make([]byte, 0)
-	f.layoutResponses = map[string]*http.Response{"": newMockLayoutResponse(10, "etag", generated.BlobLayout{}, http.StatusOK)}
+	buff := make([]byte, 300)
+	f.layoutResponses = map[string]*http.Response{"": newMockLayoutResponse(300, "etag", generated.BlobLayout{}, http.StatusOK)}
 	_, err = client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
 		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          100,
 	})
 	require.NoError(t, err)
 	layoutCalls, localityGets, normalGets, getPropsCalled := f.counts()
 	require.Equal(t, 1, layoutCalls)
 	require.False(t, getPropsCalled)
-	require.Equal(t, 1, normalGets)
+	require.Equal(t, 3, normalGets, "a blob with no layout is read entirely from the configured endpoint")
 	require.Zero(t, localityGets)
 }
 
@@ -360,13 +432,14 @@ func TestDownloadBufferWithLayoutAwareRoutingWithLayout(t *testing.T) {
 	buff := make([]byte, 300)
 	_, err := client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
 		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          100,
 	})
 	require.NoError(t, err)
 	layoutCalls, localityGets, normalGets, getPropsCalled := f.counts()
 	require.GreaterOrEqual(t, layoutCalls, 1)
 	require.False(t, getPropsCalled)
-	require.Greater(t, localityGets, 0)
-	require.Zero(t, normalGets)
+	require.Equal(t, 2, localityGets, "the chunks after the initial read are routed by the layout")
+	require.Equal(t, 1, normalGets, "the initial read precedes the layout, so it uses the configured endpoint")
 }
 
 func TestDownloadBufferWithLayoutAwareRoutingMultiplePages(t *testing.T) {
@@ -389,14 +462,15 @@ func TestDownloadBufferWithLayoutAwareRoutingMultiplePages(t *testing.T) {
 	buff := make([]byte, 500)
 	_, err := client.DownloadBuffer(context.Background(), buff, &DownloadBufferOptions{
 		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          100,
 	})
 	require.NoError(t, err)
 	// With maxRangesPerPage=3 in splitLayoutToPages, 5 ranges should create 2 pages
 	layoutCalls, localityGets, normalGets, getPropsCalled := f.counts()
 	require.GreaterOrEqual(t, layoutCalls, 2)
 	require.False(t, getPropsCalled)
-	require.Greater(t, localityGets, 0)
-	require.Zero(t, normalGets)
+	require.Equal(t, 4, localityGets)
+	require.Equal(t, 1, normalGets, "only the initial read bypasses the layout")
 }
 
 // TestDownloadBufferLayoutFetchedOncePerDownload is the regression test for layout caching: the
@@ -418,8 +492,8 @@ func TestDownloadBufferLayoutFetchedOncePerDownload(t *testing.T) {
 	require.NoError(t, err)
 
 	layoutCalls, localityGets, normalGets, getPropsCalled := f.counts()
-	require.Equal(t, numRanges, localityGets, "every chunk should be routed to a locality endpoint")
-	require.Zero(t, normalGets)
+	require.Equal(t, numRanges-1, localityGets, "every chunk after the initial read is routed to a locality endpoint")
+	require.Equal(t, 1, normalGets, "the initial read precedes the layout")
 	require.False(t, getPropsCalled)
 	// splitLayoutToPages uses maxRangesPerPage=3, so 20 ranges => 7 pages, each fetched exactly once.
 	require.Equal(t, 7, layoutCalls, "layout must be fetched once per download, not once per chunk")
@@ -429,8 +503,9 @@ func TestDownloadBufferLayoutFetchedOncePerDownload(t *testing.T) {
 // fetched once and reused by every chunk instead of re-requested per chunk.
 func TestDownloadBufferFallbackCachedAcrossChunks(t *testing.T) {
 	f := &fakeLayoutResponder{
-		layoutResponses:       map[string]*http.Response{"": newMockLayoutResponse(0, "etag", generated.BlobLayout{}, http.StatusBadRequest)},
-		getPropertiesResponse: newMockGetPropertiesResponse(2000, "etag"),
+		layoutResponses: map[string]*http.Response{"": newMockLayoutResponse(0, "etag", generated.BlobLayout{}, http.StatusBadRequest)},
+		size:            2000,
+		eTag:            "etag",
 	}
 	client := newFakeLayoutClient(t, f)
 
@@ -443,15 +518,15 @@ func TestDownloadBufferFallbackCachedAcrossChunks(t *testing.T) {
 
 	layoutCalls, localityGets, normalGets, getPropsCalled := f.counts()
 	require.Equal(t, 1, layoutCalls, "the fallback decision must be cached, not re-requested per chunk")
-	require.True(t, getPropsCalled)
-	require.Equal(t, 20, normalGets)
+	require.False(t, getPropsCalled)
+	require.Equal(t, 20, normalGets, "the initial read plus the 19 remaining chunks")
 	require.Zero(t, localityGets)
 }
 
 // TestDownloadBufferLayoutDisabled verifies the legacy path is untouched: no GetLayout request is
 // issued at all when layout-aware routing is explicitly disabled, and no If-Match is added.
 func TestDownloadBufferLayoutDisabled(t *testing.T) {
-	f := &fakeLayoutResponder{getPropertiesResponse: newMockGetPropertiesResponse(300, "etag")}
+	f := &fakeLayoutResponder{size: 300, eTag: "etag"}
 	client := newFakeLayoutClient(t, f)
 
 	_, err := client.DownloadBuffer(context.Background(), make([]byte, 300), &DownloadBufferOptions{
@@ -462,20 +537,25 @@ func TestDownloadBufferLayoutDisabled(t *testing.T) {
 
 	layoutCalls, localityGets, normalGets, getPropsCalled := f.counts()
 	require.Zero(t, layoutCalls, "no layout request should be made when routing is disabled")
-	require.True(t, getPropsCalled)
+	require.False(t, getPropsCalled)
 	require.Equal(t, 3, normalGets)
 	require.Zero(t, localityGets)
-	for _, v := range f.ifMatchHeaders() {
-		require.Empty(t, v, "the legacy path must not add an If-Match of its own")
+	headers := f.ifMatchHeaders()
+	require.Len(t, headers, 3)
+	require.Empty(t, headers[0], "the initial read carries only the caller's own conditions")
+	for _, v := range headers[1:] {
+		require.Equal(t, "etag", v, "the remaining chunks are locked to the initial read's ETag")
 	}
 }
 
-// TestDownloadBufferFallbackNoETagLock verifies that when the service can't supply a layout and the
-// download falls back to GetProperties, no If-Match is added either.
-func TestDownloadBufferFallbackNoETagLock(t *testing.T) {
+// TestDownloadBufferFallbackETagLock verifies that when the service can't supply a layout, the
+// remaining chunks are still locked to the version the initial read returned. Before the initial
+// read replaced GetProperties there was nothing to lock to on this path, so no If-Match was sent.
+func TestDownloadBufferFallbackETagLock(t *testing.T) {
 	f := &fakeLayoutResponder{
-		layoutResponses:       map[string]*http.Response{"": newMockLayoutResponse(0, "etag", generated.BlobLayout{}, http.StatusBadRequest)},
-		getPropertiesResponse: newMockGetPropertiesResponse(300, "etag"),
+		layoutResponses: map[string]*http.Response{"": newMockLayoutResponse(0, "etag", generated.BlobLayout{}, http.StatusBadRequest)},
+		size:            300,
+		eTag:            "etag",
 	}
 	client := newFakeLayoutClient(t, f)
 
@@ -486,10 +566,64 @@ func TestDownloadBufferFallbackNoETagLock(t *testing.T) {
 	require.NoError(t, err)
 
 	_, _, _, getPropsCalled := f.counts()
-	require.True(t, getPropsCalled)
-	for _, v := range f.ifMatchHeaders() {
-		require.Empty(t, v, "the GetProperties fallback must not add an If-Match")
+	require.False(t, getPropsCalled, "the initial read supplies the size, so GetProperties is never issued")
+
+	headers := f.ifMatchHeaders()
+	require.Len(t, headers, 3)
+	require.Empty(t, headers[0], "the initial read carries only the caller's own conditions")
+	for _, v := range headers[1:] {
+		require.Equal(t, "etag", v, "the remaining chunks stay locked to the initial read even without a layout")
 	}
+}
+
+// TestDownloadBufferUserETagAnchorsInitialRead verifies how a caller-supplied If-Match is handled
+// now that the download opens with a real read: the condition is applied to that first request,
+// and the version it returns is what the remaining chunks are locked to.
+func TestDownloadBufferUserETagAnchorsInitialRead(t *testing.T) {
+	blobETag := azcore.ETag("layout-etag")
+	l := buildLayout(3, 100, 2, &blobETag)
+
+	f := newFakeLayoutResponder(l, nil)
+	client := newFakeLayoutClient(t, f)
+
+	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          100,
+		AccessConditions: &AccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &blobETag},
+		},
+	})
+	require.NoError(t, err)
+
+	headers := f.ifMatchHeaders()
+	require.Len(t, headers, 3)
+	for _, v := range headers {
+		require.Equal(t, string(blobETag), v, "the caller's condition is applied to every request of the download")
+	}
+}
+
+// A caller-supplied If-Match naming a version the blob is no longer at must fail the download on
+// the very first request rather than quietly reading some other version.
+func TestDownloadBufferStaleUserETagFails(t *testing.T) {
+	blobETag := azcore.ETag("layout-etag")
+	staleETag := azcore.ETag("stale-etag")
+	l := buildLayout(3, 100, 2, &blobETag)
+
+	f := newFakeLayoutResponder(l, nil)
+	client := newFakeLayoutClient(t, f)
+
+	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
+		LayoutAwareRouting: LayoutAwareRoutingEnabled,
+		BlockSize:          100,
+		AccessConditions: &AccessConditions{
+			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &staleETag},
+		},
+	})
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "412")
+
+	layoutCalls, _, _, _ := f.counts()
+	require.Zero(t, layoutCalls, "the download fails before a layout is ever requested")
 }
 
 // TestDownloadBufferLayoutDefaultEnabled verifies that leaving LayoutAwareRouting unset (the zero
@@ -508,9 +642,9 @@ func TestDownloadBufferLayoutDefaultEnabled(t *testing.T) {
 
 	layoutCalls, localityGets, normalGets, getPropsCalled := f.counts()
 	require.NotZero(t, layoutCalls, "the default must fetch the layout")
-	require.Equal(t, 3, localityGets, "every chunk should be routed to a locality endpoint by default")
-	require.Zero(t, normalGets)
-	require.False(t, getPropsCalled, "the layout response supplies the length, so GetProperties is unnecessary")
+	require.Equal(t, 2, localityGets, "every chunk after the initial read is routed to a locality endpoint by default")
+	require.Equal(t, 1, normalGets, "the initial read precedes the layout")
+	require.False(t, getPropsCalled, "the initial read supplies the length, so GetProperties is unnecessary")
 }
 
 // TestDownloadBufferLayoutETagLock verifies the ETag returned by GetLayout is used to lock every
@@ -531,34 +665,9 @@ func TestDownloadBufferLayoutETagLock(t *testing.T) {
 
 	headers := f.ifMatchHeaders()
 	require.Len(t, headers, 6)
-	for _, v := range headers {
-		require.Equal(t, string(etag), v, "every chunk must be ETag-locked to the layout response")
-	}
-}
-
-// TestDownloadBufferUserETagWins verifies a caller-supplied If-Match is not overwritten by the
-// ETag from the layout response.
-func TestDownloadBufferUserETagWins(t *testing.T) {
-	layoutETag := azcore.ETag("layout-etag")
-	userETag := azcore.ETag("user-etag")
-	l := buildLayout(3, 100, 2, &layoutETag)
-
-	f := newFakeLayoutResponder(l, nil)
-	client := newFakeLayoutClient(t, f)
-
-	_, err := client.DownloadBuffer(context.Background(), make([]byte, l.contentLength), &DownloadBufferOptions{
-		LayoutAwareRouting: LayoutAwareRoutingEnabled,
-		BlockSize:          100,
-		AccessConditions: &AccessConditions{
-			ModifiedAccessConditions: &ModifiedAccessConditions{IfMatch: &userETag},
-		},
-	})
-	require.NoError(t, err)
-
-	headers := f.ifMatchHeaders()
-	require.NotEmpty(t, headers)
-	for _, v := range headers {
-		require.Equal(t, string(userETag), v, "a caller-supplied If-Match must take precedence")
+	require.Empty(t, headers[0], "the initial read carries only the caller's own conditions")
+	for _, v := range headers[1:] {
+		require.Equal(t, string(etag), v, "every remaining chunk must be ETag-locked to the initial read")
 	}
 }
 
@@ -669,9 +778,8 @@ func TestDownloadBufferCountWithLayoutStillETagLocks(t *testing.T) {
 
 	headers := f.ifMatchHeaders()
 	require.Len(t, headers, 2)
-	for _, v := range headers {
-		require.Equal(t, string(etag), v)
-	}
+	require.Empty(t, headers[0], "the initial read carries only the caller's own conditions")
+	require.Equal(t, string(etag), headers[1], "the remaining chunk is locked to the initial read's ETag")
 }
 
 // TestGetLayoutPagerLocksETagAcrossPages verifies that, when the caller doesn't supply an If-Match

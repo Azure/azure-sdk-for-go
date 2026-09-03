@@ -5,6 +5,7 @@
 ### Features Added
 * Exported `ShareNFSSettings` and `ShareNFSSettingsEncryptionInTransit` types.
 * Added structured message (XSM/1.0) CRC64 content validation for `azfile` uploads and downloads via the new `TransferValidationTypeComputeStructuredMessageCRC64` transfer validation option.
+* Added `TransactionalValidation` support on `CreateOptions` for structured message CRC64 content validation when creating a file with initial data.
 
 ### Breaking Changes
 

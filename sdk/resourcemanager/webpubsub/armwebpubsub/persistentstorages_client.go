@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// SharedPrivateLinkResourcesClient contains the methods for the SharedPrivateLinkResources group.
-// Don't use this type directly, use NewSharedPrivateLinkResourcesClient() instead.
+// PersistentStoragesClient contains the methods for the PersistentStorages group.
+// Don't use this type directly, use NewPersistentStoragesClient() instead.
 //
 // Generated from API version 2025-12-01-preview
-type SharedPrivateLinkResourcesClient struct {
+type PersistentStoragesClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewSharedPrivateLinkResourcesClient creates a new instance of SharedPrivateLinkResourcesClient with the specified values.
+// NewPersistentStoragesClient creates a new instance of PersistentStoragesClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewSharedPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SharedPrivateLinkResourcesClient, error) {
+func NewPersistentStoragesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PersistentStoragesClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,44 +37,47 @@ func NewSharedPrivateLinkResourcesClient(subscriptionID string, credential azcor
 	if err != nil {
 		return nil, err
 	}
-	client := &SharedPrivateLinkResourcesClient{
+	client := &PersistentStoragesClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create or update a shared private link resource
+// BeginCreateOrUpdate - Create or update a persistent storage.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.BeginCreateOrUpdate
+//   - resourceName - The name of the resource.
+//   - name - Persistent storage name.
+//   - parameters - The resource of persistent storage and its properties
+//   - options - PersistentStoragesClientBeginCreateOrUpdateOptions contains the optional parameters for the PersistentStoragesClient.BeginCreateOrUpdate
 //     method.
-func (client *SharedPrivateLinkResourcesClient) BeginCreateOrUpdate(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, parameters SharedPrivateLinkResource, options *SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions) (*runtime.Poller[SharedPrivateLinkResourcesClientCreateOrUpdateResponse], error) {
+func (client *PersistentStoragesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, name string, parameters PersistentStorage, options *PersistentStoragesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PersistentStoragesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, name, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SharedPrivateLinkResourcesClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PersistentStoragesClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SharedPrivateLinkResourcesClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PersistentStoragesClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// CreateOrUpdate - Create or update a shared private link resource
+// CreateOrUpdate - Create or update a persistent storage.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SharedPrivateLinkResourcesClient) createOrUpdate(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, parameters SharedPrivateLinkResource, options *SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *PersistentStoragesClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, name string, parameters PersistentStorage, options *PersistentStoragesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SharedPrivateLinkResourcesClient.BeginCreateOrUpdate"
+	const operationName = "PersistentStoragesClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters, options)
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, name, parameters, options)
 	if err != nil {
 		return nil, err
 	}
@@ -89,16 +92,12 @@ func (client *SharedPrivateLinkResourcesClient) createOrUpdate(ctx context.Conte
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *SharedPrivateLinkResourcesClient) createOrUpdateCreateRequest(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, parameters SharedPrivateLinkResource, _ *SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}"
+func (client *PersistentStoragesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, name string, parameters PersistentStorage, _ *PersistentStoragesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/persistentStorages/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if sharedPrivateLinkResourceName == "" {
-		return nil, errors.New("parameter sharedPrivateLinkResourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sharedPrivateLinkResourceName}", url.PathEscape(sharedPrivateLinkResourceName))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -107,6 +106,10 @@ func (client *SharedPrivateLinkResourcesClient) createOrUpdateCreateRequest(ctx 
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -122,37 +125,39 @@ func (client *SharedPrivateLinkResourcesClient) createOrUpdateCreateRequest(ctx 
 	return req, nil
 }
 
-// BeginDelete - Delete the specified shared private link resource
+// BeginDelete - Delete a persistent storage.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - SharedPrivateLinkResourcesClientBeginDeleteOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.BeginDelete
+//   - resourceName - The name of the resource.
+//   - name - Persistent storage name.
+//   - options - PersistentStoragesClientBeginDeleteOptions contains the optional parameters for the PersistentStoragesClient.BeginDelete
 //     method.
-func (client *SharedPrivateLinkResourcesClient) BeginDelete(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, options *SharedPrivateLinkResourcesClientBeginDeleteOptions) (*runtime.Poller[SharedPrivateLinkResourcesClientDeleteResponse], error) {
+func (client *PersistentStoragesClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, name string, options *PersistentStoragesClientBeginDeleteOptions) (*runtime.Poller[PersistentStoragesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, sharedPrivateLinkResourceName, resourceGroupName, resourceName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SharedPrivateLinkResourcesClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PersistentStoragesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SharedPrivateLinkResourcesClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PersistentStoragesClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// Delete - Delete the specified shared private link resource
+// Delete - Delete a persistent storage.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SharedPrivateLinkResourcesClient) deleteOperation(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, options *SharedPrivateLinkResourcesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PersistentStoragesClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, name string, options *PersistentStoragesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "SharedPrivateLinkResourcesClient.BeginDelete"
+	const operationName = "PersistentStoragesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, sharedPrivateLinkResourceName, resourceGroupName, resourceName, options)
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, name, options)
 	if err != nil {
 		return nil, err
 	}
@@ -160,23 +165,19 @@ func (client *SharedPrivateLinkResourcesClient) deleteOperation(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
 		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, _ *SharedPrivateLinkResourcesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}"
+func (client *PersistentStoragesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, name string, _ *PersistentStoragesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/persistentStorages/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if sharedPrivateLinkResourceName == "" {
-		return nil, errors.New("parameter sharedPrivateLinkResourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sharedPrivateLinkResourceName}", url.PathEscape(sharedPrivateLinkResourceName))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -185,6 +186,10 @@ func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -195,39 +200,36 @@ func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.
 	return req, nil
 }
 
-// Get - Get the specified shared private link resource
+// Get - Get a persistent storage.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - SharedPrivateLinkResourcesClientGetOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.Get
-//     method.
-func (client *SharedPrivateLinkResourcesClient) Get(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, options *SharedPrivateLinkResourcesClientGetOptions) (SharedPrivateLinkResourcesClientGetResponse, error) {
+//   - resourceName - The name of the resource.
+//   - name - Persistent storage name.
+//   - options - PersistentStoragesClientGetOptions contains the optional parameters for the PersistentStoragesClient.Get method.
+func (client *PersistentStoragesClient) Get(ctx context.Context, resourceGroupName string, resourceName string, name string, options *PersistentStoragesClientGetOptions) (PersistentStoragesClientGetResponse, error) {
 	var err error
-	const operationName = "SharedPrivateLinkResourcesClient.Get"
+	const operationName = "PersistentStoragesClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, sharedPrivateLinkResourceName, resourceGroupName, resourceName, options)
+	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, name, options)
 	if err != nil {
-		return SharedPrivateLinkResourcesClientGetResponse{}, err
+		return PersistentStoragesClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return SharedPrivateLinkResourcesClientGetResponse{}, err
+		return PersistentStoragesClientGetResponse{}, err
 	}
 	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
-func (client *SharedPrivateLinkResourcesClient) getCreateRequest(ctx context.Context, sharedPrivateLinkResourceName string, resourceGroupName string, resourceName string, _ *SharedPrivateLinkResourcesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}"
+func (client *PersistentStoragesClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, name string, _ *PersistentStoragesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/persistentStorages/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if sharedPrivateLinkResourceName == "" {
-		return nil, errors.New("parameter sharedPrivateLinkResourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sharedPrivateLinkResourceName}", url.PathEscape(sharedPrivateLinkResourceName))
 	if resourceGroupName == "" {
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
@@ -236,6 +238,10 @@ func (client *SharedPrivateLinkResourcesClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -248,40 +254,40 @@ func (client *SharedPrivateLinkResourcesClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *SharedPrivateLinkResourcesClient) getHandleResponse(resp *http.Response, successCodes ...int) (SharedPrivateLinkResourcesClientGetResponse, error) {
-	result := SharedPrivateLinkResourcesClientGetResponse{}
+func (client *PersistentStoragesClient) getHandleResponse(resp *http.Response, successCodes ...int) (PersistentStoragesClientGetResponse, error) {
+	result := PersistentStoragesClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SharedPrivateLinkResource); err != nil {
-		return SharedPrivateLinkResourcesClientGetResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.PersistentStorage); err != nil {
+		return PersistentStoragesClientGetResponse{}, err
 	}
 	return result, nil
 }
 
-// NewListPager - List shared private link resources
+// NewListPager - List all persistent storages.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - resourceName - The name of the resource.
-//   - options - SharedPrivateLinkResourcesClientListOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.NewListPager
+//   - options - PersistentStoragesClientListOptions contains the optional parameters for the PersistentStoragesClient.NewListPager
 //     method.
-func (client *SharedPrivateLinkResourcesClient) NewListPager(resourceGroupName string, resourceName string, options *SharedPrivateLinkResourcesClientListOptions) *runtime.Pager[SharedPrivateLinkResourcesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SharedPrivateLinkResourcesClientListResponse]{
-		More: func(page SharedPrivateLinkResourcesClientListResponse) bool {
+func (client *PersistentStoragesClient) NewListPager(resourceGroupName string, resourceName string, options *PersistentStoragesClientListOptions) *runtime.Pager[PersistentStoragesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PersistentStoragesClientListResponse]{
+		More: func(page PersistentStoragesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *SharedPrivateLinkResourcesClientListResponse) (SharedPrivateLinkResourcesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SharedPrivateLinkResourcesClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *PersistentStoragesClientListResponse) (PersistentStoragesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PersistentStoragesClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listCreateRequest(ctx, resourceGroupName, resourceName, nextLink, options)
 			if err != nil {
-				return SharedPrivateLinkResourcesClientListResponse{}, err
+				return PersistentStoragesClientListResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return SharedPrivateLinkResourcesClientListResponse{}, err
+				return PersistentStoragesClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp, http.StatusOK)
 		},
@@ -290,12 +296,12 @@ func (client *SharedPrivateLinkResourcesClient) NewListPager(resourceGroupName s
 }
 
 // listCreateRequest creates the List request.
-func (client *SharedPrivateLinkResourcesClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *SharedPrivateLinkResourcesClientListOptions) (*policy.Request, error) {
+func (client *PersistentStoragesClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, nextLink string, _ *PersistentStoragesClientListOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/sharedPrivateLinkResources"
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/persistentStorages"
 		if client.subscriptionID == "" {
 			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
@@ -325,13 +331,13 @@ func (client *SharedPrivateLinkResourcesClient) listCreateRequest(ctx context.Co
 }
 
 // listHandleResponse handles the List response.
-func (client *SharedPrivateLinkResourcesClient) listHandleResponse(resp *http.Response, successCodes ...int) (SharedPrivateLinkResourcesClientListResponse, error) {
-	result := SharedPrivateLinkResourcesClientListResponse{}
+func (client *PersistentStoragesClient) listHandleResponse(resp *http.Response, successCodes ...int) (PersistentStoragesClientListResponse, error) {
+	result := PersistentStoragesClientListResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SharedPrivateLinkResourceList); err != nil {
-		return SharedPrivateLinkResourcesClientListResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.PersistentStorageList); err != nil {
+		return PersistentStoragesClientListResponse{}, err
 	}
 	return result, nil
 }

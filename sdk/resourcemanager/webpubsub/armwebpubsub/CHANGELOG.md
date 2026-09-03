@@ -1,5 +1,24 @@
 # Release History
 
+## 1.4.0-beta.2 (2026-09-03)
+### Features Added
+
+- New enum type `GroupPresenceEventName` with values `GroupPresenceEventNameJoined`, `GroupPresenceEventNameLeft`
+- New function `*ClientFactory.NewPersistentStoragesClient() *PersistentStoragesClient`
+- New function `NewPersistentStoragesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PersistentStoragesClient, error)`
+- New function `*PersistentStoragesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, name string, parameters PersistentStorage, options *PersistentStoragesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PersistentStoragesClientCreateOrUpdateResponse], error)`
+- New function `*PersistentStoragesClient.BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, name string, options *PersistentStoragesClientBeginDeleteOptions) (*runtime.Poller[PersistentStoragesClientDeleteResponse], error)`
+- New function `*PersistentStoragesClient.Get(ctx context.Context, resourceGroupName string, resourceName string, name string, options *PersistentStoragesClientGetOptions) (PersistentStoragesClientGetResponse, error)`
+- New function `*PersistentStoragesClient.NewListPager(resourceGroupName string, resourceName string, options *PersistentStoragesClientListOptions) *runtime.Pager[PersistentStoragesClientListResponse]`
+- New struct `ChatSettings`
+- New struct `GroupPresenceEventFilters`
+- New struct `PersistentStorage`
+- New struct `PersistentStorageList`
+- New struct `PersistentStorageProperties`
+- New field `GroupPresenceEvents` in struct `EventHandler`
+- New field `Chat` in struct `HubProperties`
+
+
 ## 1.4.0-beta.1 (2026-05-25)
 ### Features Added
 

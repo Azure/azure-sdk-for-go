@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubPrivateLinkResources_List.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubPrivateLinkResources_List.json
 func ExamplePrivateLinkResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,12 +35,8 @@ func ExamplePrivateLinkResourcesClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armwebpubsub.PrivateLinkResourcesClientListResponse{
 		// 	PrivateLinkResourceList: armwebpubsub.PrivateLinkResourceList{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subid/providers/Microsoft.SignalRService/...pathToMoreResults..."),
 		// 		Value: []*armwebpubsub.PrivateLinkResource{
 		// 			{
-		// 				Name: to.Ptr("myPrivateLink"),
-		// 				Type: to.Ptr("privateLinkResources"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateLinkResources/myPrivateLink"),
 		// 				Properties: &armwebpubsub.PrivateLinkResourceProperties{
 		// 					GroupID: to.Ptr("webpubsub"),
 		// 					RequiredMembers: []*string{
@@ -53,31 +49,35 @@ func ExamplePrivateLinkResourcesClient_NewListPager() {
 		// 						{
 		// 							Name: to.Ptr("site"),
 		// 							Properties: &armwebpubsub.ShareablePrivateLinkResourceProperties{
-		// 								Type: to.Ptr("Microsoft.Web/sites"),
 		// 								Description: to.Ptr("Azure App Service can be used as an upstream"),
 		// 								GroupID: to.Ptr("sites"),
+		// 								Type: to.Ptr("Microsoft.Web/sites"),
 		// 							},
 		// 						},
 		// 						{
 		// 							Name: to.Ptr("vault"),
 		// 							Properties: &armwebpubsub.ShareablePrivateLinkResourceProperties{
-		// 								Type: to.Ptr("Microsoft.KeyVault/vaults"),
 		// 								Description: to.Ptr("Azure Key Vault can be used as credentials store"),
 		// 								GroupID: to.Ptr("vault"),
+		// 								Type: to.Ptr("Microsoft.KeyVault/vaults"),
 		// 							},
 		// 						},
 		// 						{
 		// 							Name: to.Ptr("table"),
 		// 							Properties: &armwebpubsub.ShareablePrivateLinkResourceProperties{
-		// 								Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 		// 								Description: to.Ptr("Azure Storage Table can be used as message store"),
 		// 								GroupID: to.Ptr("table"),
+		// 								Type: to.Ptr("Microsoft.Storage/storageAccounts"),
 		// 							},
 		// 						},
 		// 					},
 		// 				},
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateLinkResources/myPrivateLink"),
+		// 				Name: to.Ptr("myPrivateLink"),
+		// 				Type: to.Ptr("privateLinkResources"),
 		// 			},
 		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subid/providers/Microsoft.SignalRService/...pathToMoreResults..."),
 		// 	},
 		// }
 	}

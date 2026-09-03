@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubCustomCertificates_CreateOrUpdate.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubCustomCertificates_CreateOrUpdate.json
 func ExampleCustomCertificatesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,20 +42,20 @@ func ExampleCustomCertificatesClient_BeginCreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armwebpubsub.CustomCertificatesClientCreateOrUpdateResponse{
 	// 	CustomCertificate: armwebpubsub.CustomCertificate{
-	// 		Name: to.Ptr("myCert"),
-	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub/customCertificates"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/customCertificates/myCert"),
 	// 		Properties: &armwebpubsub.CustomCertificateProperties{
+	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 	// 			KeyVaultBaseURI: to.Ptr("https://myvault.keyvault.azure.net/"),
 	// 			KeyVaultSecretName: to.Ptr("mycert"),
 	// 			KeyVaultSecretVersion: to.Ptr("bb6a44b2743f47f68dad0d6cc9756432"),
-	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/customCertificates/myCert"),
+	// 		Name: to.Ptr("myCert"),
+	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub/customCertificates"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubCustomCertificates_Delete.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubCustomCertificates_Delete.json
 func ExampleCustomCertificatesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleCustomCertificatesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubCustomCertificates_Get.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubCustomCertificates_Get.json
 func ExampleCustomCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,20 +97,20 @@ func ExampleCustomCertificatesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armwebpubsub.CustomCertificatesClientGetResponse{
 	// 	CustomCertificate: armwebpubsub.CustomCertificate{
-	// 		Name: to.Ptr("myCert"),
-	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub/customCertificates"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/customCertificates/myCert"),
 	// 		Properties: &armwebpubsub.CustomCertificateProperties{
+	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 	// 			KeyVaultBaseURI: to.Ptr("https://myvault.keyvault.azure.net/"),
 	// 			KeyVaultSecretName: to.Ptr("mycert"),
 	// 			KeyVaultSecretVersion: to.Ptr("bb6a44b2743f47f68dad0d6cc9756432"),
-	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/customCertificates/myCert"),
+	// 		Name: to.Ptr("myCert"),
+	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub/customCertificates"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubCustomCertificates_List.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubCustomCertificates_List.json
 func ExampleCustomCertificatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,15 +136,15 @@ func ExampleCustomCertificatesClient_NewListPager() {
 		// 	CustomCertificateList: armwebpubsub.CustomCertificateList{
 		// 		Value: []*armwebpubsub.CustomCertificate{
 		// 			{
-		// 				Name: to.Ptr("myCert"),
-		// 				Type: to.Ptr("Microsoft.SignalRService/WebPubSub/customCertificates"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/customCertificates/myCert"),
 		// 				Properties: &armwebpubsub.CustomCertificateProperties{
+		// 					ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 		// 					KeyVaultBaseURI: to.Ptr("https://myvault.keyvault.azure.net/"),
 		// 					KeyVaultSecretName: to.Ptr("mycert"),
 		// 					KeyVaultSecretVersion: to.Ptr("bb6a44b2743f47f68dad0d6cc9756432"),
-		// 					ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 		// 				},
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/customCertificates/myCert"),
+		// 				Name: to.Ptr("myCert"),
+		// 				Type: to.Ptr("Microsoft.SignalRService/WebPubSub/customCertificates"),
 		// 			},
 		// 		},
 		// 	},

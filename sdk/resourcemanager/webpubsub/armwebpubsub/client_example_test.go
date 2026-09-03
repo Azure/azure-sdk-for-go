@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01-preview/WebPubSub_CheckNameAvailability.json
+// Generated from example definition: 2025-12-01-preview/WebPubSub_CheckNameAvailability.json
 func ExampleClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -24,8 +24,8 @@ func ExampleClient_CheckNameAvailability() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewClient().CheckNameAvailability(ctx, "eastus", armwebpubsub.NameAvailabilityParameters{
-		Name: to.Ptr("myWebPubSubService"),
 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
+		Name: to.Ptr("myWebPubSubService"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -35,14 +35,14 @@ func ExampleClient_CheckNameAvailability() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armwebpubsub.ClientCheckNameAvailabilityResponse{
 	// 	NameAvailability: armwebpubsub.NameAvailability{
-	// 		Message: to.Ptr("The name is already taken. Please try a different name."),
 	// 		NameAvailable: to.Ptr(false),
 	// 		Reason: to.Ptr("AlreadyExists"),
+	// 		Message: to.Ptr("The name is already taken. Please try a different name."),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSub_CreateOrUpdate.json
+// Generated from example definition: 2025-12-01-preview/WebPubSub_CreateOrUpdate.json
 func ExampleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,25 +54,31 @@ func ExampleClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myWebPubSubService", armwebpubsub.ResourceInfo{
-		Identity: &armwebpubsub.ManagedIdentity{
-			Type: to.Ptr(armwebpubsub.ManagedIdentityTypeSystemAssigned),
+		SKU: &armwebpubsub.ResourceSKU{
+			Name:     to.Ptr("Premium_P1"),
+			Tier:     to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
+			Capacity: to.Ptr[int32](1),
 		},
-		Kind:     to.Ptr(armwebpubsub.ServiceKindWebPubSub),
-		Location: to.Ptr("eastus"),
 		Properties: &armwebpubsub.Properties{
-			DisableAADAuth:   to.Ptr(false),
-			DisableLocalAuth: to.Ptr(false),
+			TLS: &armwebpubsub.TLSSettings{
+				ClientCertEnabled: to.Ptr(false),
+			},
 			LiveTraceConfiguration: &armwebpubsub.LiveTraceConfiguration{
+				Enabled: to.Ptr("false"),
 				Categories: []*armwebpubsub.LiveTraceCategory{
 					{
 						Name:    to.Ptr("ConnectivityLogs"),
 						Enabled: to.Ptr("true"),
 					},
 				},
-				Enabled: to.Ptr("false"),
 			},
 			NetworkACLs: &armwebpubsub.NetworkACLs{
 				DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
+				PublicNetwork: &armwebpubsub.NetworkACL{
+					Allow: []*armwebpubsub.WebPubSubRequestType{
+						to.Ptr(armwebpubsub.WebPubSubRequestTypeClientConnection),
+					},
+				},
 				PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
 					{
 						Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
@@ -81,25 +87,19 @@ func ExampleClient_BeginCreateOrUpdate() {
 						},
 					},
 				},
-				PublicNetwork: &armwebpubsub.NetworkACL{
-					Allow: []*armwebpubsub.WebPubSubRequestType{
-						to.Ptr(armwebpubsub.WebPubSubRequestTypeClientConnection),
-					},
-				},
 			},
 			PublicNetworkAccess: to.Ptr("Enabled"),
+			DisableLocalAuth:    to.Ptr(false),
+			DisableAADAuth:      to.Ptr(false),
 			SocketIO: &armwebpubsub.SocketIOSettings{
 				ServiceMode: to.Ptr("Serverless"),
 			},
-			TLS: &armwebpubsub.TLSSettings{
-				ClientCertEnabled: to.Ptr(false),
-			},
 		},
-		SKU: &armwebpubsub.ResourceSKU{
-			Name:     to.Ptr("Premium_P1"),
-			Capacity: to.Ptr[int32](1),
-			Tier:     to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
+		Kind: to.Ptr(armwebpubsub.ServiceKindWebPubSub),
+		Identity: &armwebpubsub.ManagedIdentity{
+			Type: to.Ptr(armwebpubsub.ManagedIdentityTypeSystemAssigned),
 		},
+		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 		},
@@ -116,17 +116,94 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armwebpubsub.ClientCreateOrUpdateResponse{
 	// 	ResourceInfo: armwebpubsub.ResourceInfo{
-	// 		Name: to.Ptr("myWebPubSubService"),
-	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService"),
-	// 		Identity: &armwebpubsub.ManagedIdentity{
-	// 			Type: to.Ptr(armwebpubsub.ManagedIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		SKU: &armwebpubsub.ResourceSKU{
+	// 			Name: to.Ptr("Premium_P1"),
+	// 			Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
+	// 			Size: to.Ptr("P1"),
+	// 			Capacity: to.Ptr[int32](1),
 	// 		},
-	// 		Kind: to.Ptr(armwebpubsub.ServiceKindWebPubSub),
-	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armwebpubsub.Properties{
+	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+	// 			ExternalIP: to.Ptr("10.0.0.1"),
+	// 			HostName: to.Ptr("mywebpubsubservice.webpubsub.azure.com"),
+	// 			PublicPort: to.Ptr[int32](443),
+	// 			ServerPort: to.Ptr[int32](443),
+	// 			Version: to.Ptr("1.0"),
+	// 			PrivateEndpointConnections: []*armwebpubsub.PrivateEndpointConnection{
+	// 				{
+	// 					Properties: &armwebpubsub.PrivateEndpointConnectionProperties{
+	// 						ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+	// 						PrivateEndpoint: &armwebpubsub.PrivateEndpoint{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
+	// 							Status: to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
+	// 							ActionsRequired: to.Ptr("None"),
+	// 						},
+	// 					},
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+	// 					Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+	// 					Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
+	// 					SystemData: &armwebpubsub.SystemData{
+	// 						CreatedBy: to.Ptr("string"),
+	// 						CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+	// 						CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+	// 						LastModifiedBy: to.Ptr("string"),
+	// 						LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+	// 						LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+	// 					},
+	// 				},
+	// 			},
+	// 			TLS: &armwebpubsub.TLSSettings{
+	// 				ClientCertEnabled: to.Ptr(true),
+	// 			},
+	// 			LiveTraceConfiguration: &armwebpubsub.LiveTraceConfiguration{
+	// 				Enabled: to.Ptr("false"),
+	// 				Categories: []*armwebpubsub.LiveTraceCategory{
+	// 					{
+	// 						Name: to.Ptr("ConnectivityLogs"),
+	// 						Enabled: to.Ptr("true"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ResourceLogConfiguration: &armwebpubsub.ResourceLogConfiguration{
+	// 				Categories: []*armwebpubsub.ResourceLogCategory{
+	// 					{
+	// 						Name: to.Ptr("ConnectivityLogs"),
+	// 						Enabled: to.Ptr("true"),
+	// 					},
+	// 				},
+	// 			},
+	// 			NetworkACLs: &armwebpubsub.NetworkACLs{
+	// 				DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
+	// 				PublicNetwork: &armwebpubsub.NetworkACL{
+	// 					Allow: []*armwebpubsub.WebPubSubRequestType{
+	// 						to.Ptr(armwebpubsub.WebPubSubRequestTypeClientConnection),
+	// 					},
+	// 				},
+	// 				PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
+	// 					{
+	// 						Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+	// 						Allow: []*armwebpubsub.WebPubSubRequestType{
+	// 							to.Ptr(armwebpubsub.WebPubSubRequestTypeServerConnection),
+	// 						},
+	// 					},
+	// 				},
+	// 				IPRules: []*armwebpubsub.IPRule{
+	// 					{
+	// 						Value: to.Ptr("123.456.789.123/24"),
+	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					},
+	// 					{
+	// 						Value: to.Ptr("123.456.789.123"),
+	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					},
+	// 					{
+	// 						Value: to.Ptr("AppService"),
+	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					},
+	// 				},
+	// 			},
 	// 			ApplicationFirewall: &armwebpubsub.ApplicationFirewallSettings{
 	// 				ClientConnectionCountRules: []armwebpubsub.ClientConnectionCountRuleClassification{
 	// 					&armwebpubsub.ThrottleByJwtSignatureRule{
@@ -146,135 +223,58 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 				ClientTrafficControlRules: []armwebpubsub.ClientTrafficControlRuleClassification{
 	// 					&armwebpubsub.TrafficThrottleByJwtSignatureRule{
 	// 						Type: to.Ptr(armwebpubsub.ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtSignatureRule),
-	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 						MaxInboundMessageBytes: to.Ptr[int64](1073741824),
+	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 					},
 	// 					&armwebpubsub.TrafficThrottleByUserIDRule{
 	// 						Type: to.Ptr(armwebpubsub.ClientTrafficControlRuleDiscriminatorTrafficThrottleByUserIDRule),
-	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 						MaxInboundMessageBytes: to.Ptr[int64](1073741824),
+	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 					},
 	// 					&armwebpubsub.TrafficThrottleByJwtCustomClaimRule{
 	// 						Type: to.Ptr(armwebpubsub.ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtCustomClaimRule),
-	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 						ClaimName: to.Ptr("claimName"),
 	// 						MaxInboundMessageBytes: to.Ptr[int64](1073741824),
+	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 					},
 	// 				},
 	// 				MaxClientConnectionLifetimeInSeconds: to.Ptr[int64](5),
 	// 			},
-	// 			DisableAADAuth: to.Ptr(false),
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			ExternalIP: to.Ptr("10.0.0.1"),
-	// 			HostName: to.Ptr("mywebpubsubservice.webpubsub.azure.com"),
-	// 			LiveTraceConfiguration: &armwebpubsub.LiveTraceConfiguration{
-	// 				Categories: []*armwebpubsub.LiveTraceCategory{
-	// 					{
-	// 						Name: to.Ptr("ConnectivityLogs"),
-	// 						Enabled: to.Ptr("true"),
-	// 					},
-	// 				},
-	// 				Enabled: to.Ptr("false"),
-	// 			},
-	// 			NetworkACLs: &armwebpubsub.NetworkACLs{
-	// 				DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
-	// 				IPRules: []*armwebpubsub.IPRule{
-	// 					{
-	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
-	// 						Value: to.Ptr("123.456.789.123/24"),
-	// 					},
-	// 					{
-	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
-	// 						Value: to.Ptr("123.456.789.123"),
-	// 					},
-	// 					{
-	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
-	// 						Value: to.Ptr("AppService"),
-	// 					},
-	// 				},
-	// 				PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
-	// 					{
-	// 						Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 						Allow: []*armwebpubsub.WebPubSubRequestType{
-	// 							to.Ptr(armwebpubsub.WebPubSubRequestTypeServerConnection),
-	// 						},
-	// 					},
-	// 				},
-	// 				PublicNetwork: &armwebpubsub.NetworkACL{
-	// 					Allow: []*armwebpubsub.WebPubSubRequestType{
-	// 						to.Ptr(armwebpubsub.WebPubSubRequestTypeClientConnection),
-	// 					},
-	// 				},
-	// 			},
-	// 			PrivateEndpointConnections: []*armwebpubsub.PrivateEndpointConnection{
-	// 				{
-	// 					Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 					Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 					Properties: &armwebpubsub.PrivateEndpointConnectionProperties{
-	// 						PrivateEndpoint: &armwebpubsub.PrivateEndpoint{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
-	// 						},
-	// 						PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
-	// 							ActionsRequired: to.Ptr("None"),
-	// 							Status: to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
-	// 						},
-	// 						ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
-	// 					},
-	// 					SystemData: &armwebpubsub.SystemData{
-	// 						CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-	// 						CreatedBy: to.Ptr("string"),
-	// 						CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 						LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-	// 						LastModifiedBy: to.Ptr("string"),
-	// 						LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 	// 			PublicNetworkAccess: to.Ptr("Enabled"),
-	// 			PublicPort: to.Ptr[int32](443),
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			DisableAADAuth: to.Ptr(false),
 	// 			RegionEndpointEnabled: to.Ptr("Enabled"),
-	// 			ResourceLogConfiguration: &armwebpubsub.ResourceLogConfiguration{
-	// 				Categories: []*armwebpubsub.ResourceLogCategory{
-	// 					{
-	// 						Name: to.Ptr("ConnectivityLogs"),
-	// 						Enabled: to.Ptr("true"),
-	// 					},
-	// 				},
-	// 			},
 	// 			ResourceStopped: to.Ptr("false"),
-	// 			ServerPort: to.Ptr[int32](443),
 	// 			SocketIO: &armwebpubsub.SocketIOSettings{
 	// 				ServiceMode: to.Ptr("Serverless"),
 	// 			},
-	// 			TLS: &armwebpubsub.TLSSettings{
-	// 				ClientCertEnabled: to.Ptr(true),
-	// 			},
-	// 			Version: to.Ptr("1.0"),
 	// 		},
-	// 		SKU: &armwebpubsub.ResourceSKU{
-	// 			Name: to.Ptr("Premium_P1"),
-	// 			Capacity: to.Ptr[int32](1),
-	// 			Size: to.Ptr("P1"),
-	// 			Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
+	// 		Kind: to.Ptr(armwebpubsub.ServiceKindWebPubSub),
+	// 		Identity: &armwebpubsub.ManagedIdentity{
+	// 			Type: to.Ptr(armwebpubsub.ManagedIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
-	// 		SystemData: &armwebpubsub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-	// 			CreatedBy: to.Ptr("string"),
-	// 			CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("string"),
-	// 			LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 		},
+	// 		Location: to.Ptr("eastus"),
 	// 		Tags: map[string]*string{
 	// 			"key1": to.Ptr("value1"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService"),
+	// 		Name: to.Ptr("myWebPubSubService"),
+	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
+	// 		SystemData: &armwebpubsub.SystemData{
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSub_Delete.json
+// Generated from example definition: 2025-12-01-preview/WebPubSub_Delete.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -300,7 +300,7 @@ func ExampleClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSub_Get.json
+// Generated from example definition: 2025-12-01-preview/WebPubSub_Get.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,17 +320,94 @@ func ExampleClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armwebpubsub.ClientGetResponse{
 	// 	ResourceInfo: armwebpubsub.ResourceInfo{
-	// 		Name: to.Ptr("myWebPubSubService"),
-	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService"),
-	// 		Identity: &armwebpubsub.ManagedIdentity{
-	// 			Type: to.Ptr(armwebpubsub.ManagedIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		SKU: &armwebpubsub.ResourceSKU{
+	// 			Name: to.Ptr("Premium_P1"),
+	// 			Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
+	// 			Size: to.Ptr("P1"),
+	// 			Capacity: to.Ptr[int32](1),
 	// 		},
-	// 		Kind: to.Ptr(armwebpubsub.ServiceKindWebPubSub),
-	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armwebpubsub.Properties{
+	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+	// 			ExternalIP: to.Ptr("10.0.0.1"),
+	// 			HostName: to.Ptr("mywebpubsubservice.webpubsub.azure.com"),
+	// 			PublicPort: to.Ptr[int32](443),
+	// 			ServerPort: to.Ptr[int32](443),
+	// 			Version: to.Ptr("1.0"),
+	// 			PrivateEndpointConnections: []*armwebpubsub.PrivateEndpointConnection{
+	// 				{
+	// 					Properties: &armwebpubsub.PrivateEndpointConnectionProperties{
+	// 						ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+	// 						PrivateEndpoint: &armwebpubsub.PrivateEndpoint{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
+	// 							Status: to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
+	// 							ActionsRequired: to.Ptr("None"),
+	// 						},
+	// 					},
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+	// 					Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+	// 					Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
+	// 					SystemData: &armwebpubsub.SystemData{
+	// 						CreatedBy: to.Ptr("string"),
+	// 						CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+	// 						CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+	// 						LastModifiedBy: to.Ptr("string"),
+	// 						LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+	// 						LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+	// 					},
+	// 				},
+	// 			},
+	// 			TLS: &armwebpubsub.TLSSettings{
+	// 				ClientCertEnabled: to.Ptr(true),
+	// 			},
+	// 			LiveTraceConfiguration: &armwebpubsub.LiveTraceConfiguration{
+	// 				Enabled: to.Ptr("false"),
+	// 				Categories: []*armwebpubsub.LiveTraceCategory{
+	// 					{
+	// 						Name: to.Ptr("ConnectivityLogs"),
+	// 						Enabled: to.Ptr("true"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ResourceLogConfiguration: &armwebpubsub.ResourceLogConfiguration{
+	// 				Categories: []*armwebpubsub.ResourceLogCategory{
+	// 					{
+	// 						Name: to.Ptr("ConnectivityLogs"),
+	// 						Enabled: to.Ptr("true"),
+	// 					},
+	// 				},
+	// 			},
+	// 			NetworkACLs: &armwebpubsub.NetworkACLs{
+	// 				DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
+	// 				PublicNetwork: &armwebpubsub.NetworkACL{
+	// 					Allow: []*armwebpubsub.WebPubSubRequestType{
+	// 						to.Ptr(armwebpubsub.WebPubSubRequestTypeClientConnection),
+	// 					},
+	// 				},
+	// 				PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
+	// 					{
+	// 						Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+	// 						Allow: []*armwebpubsub.WebPubSubRequestType{
+	// 							to.Ptr(armwebpubsub.WebPubSubRequestTypeServerConnection),
+	// 						},
+	// 					},
+	// 				},
+	// 				IPRules: []*armwebpubsub.IPRule{
+	// 					{
+	// 						Value: to.Ptr("123.456.789.123/24"),
+	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					},
+	// 					{
+	// 						Value: to.Ptr("123.456.789.123"),
+	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					},
+	// 					{
+	// 						Value: to.Ptr("AppService"),
+	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					},
+	// 				},
+	// 			},
 	// 			ApplicationFirewall: &armwebpubsub.ApplicationFirewallSettings{
 	// 				ClientConnectionCountRules: []armwebpubsub.ClientConnectionCountRuleClassification{
 	// 					&armwebpubsub.ThrottleByJwtSignatureRule{
@@ -350,135 +427,58 @@ func ExampleClient_Get() {
 	// 				ClientTrafficControlRules: []armwebpubsub.ClientTrafficControlRuleClassification{
 	// 					&armwebpubsub.TrafficThrottleByJwtSignatureRule{
 	// 						Type: to.Ptr(armwebpubsub.ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtSignatureRule),
-	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 						MaxInboundMessageBytes: to.Ptr[int64](1073741824),
+	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 					},
 	// 					&armwebpubsub.TrafficThrottleByUserIDRule{
 	// 						Type: to.Ptr(armwebpubsub.ClientTrafficControlRuleDiscriminatorTrafficThrottleByUserIDRule),
-	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 						MaxInboundMessageBytes: to.Ptr[int64](1073741824),
+	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 					},
 	// 					&armwebpubsub.TrafficThrottleByJwtCustomClaimRule{
 	// 						Type: to.Ptr(armwebpubsub.ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtCustomClaimRule),
-	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 						ClaimName: to.Ptr("claimName"),
 	// 						MaxInboundMessageBytes: to.Ptr[int64](1073741824),
+	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 					},
 	// 				},
 	// 				MaxClientConnectionLifetimeInSeconds: to.Ptr[int64](5),
 	// 			},
-	// 			DisableAADAuth: to.Ptr(false),
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			ExternalIP: to.Ptr("10.0.0.1"),
-	// 			HostName: to.Ptr("mywebpubsubservice.webpubsub.azure.com"),
-	// 			LiveTraceConfiguration: &armwebpubsub.LiveTraceConfiguration{
-	// 				Categories: []*armwebpubsub.LiveTraceCategory{
-	// 					{
-	// 						Name: to.Ptr("ConnectivityLogs"),
-	// 						Enabled: to.Ptr("true"),
-	// 					},
-	// 				},
-	// 				Enabled: to.Ptr("false"),
-	// 			},
-	// 			NetworkACLs: &armwebpubsub.NetworkACLs{
-	// 				DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
-	// 				IPRules: []*armwebpubsub.IPRule{
-	// 					{
-	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
-	// 						Value: to.Ptr("123.456.789.123/24"),
-	// 					},
-	// 					{
-	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
-	// 						Value: to.Ptr("123.456.789.123"),
-	// 					},
-	// 					{
-	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
-	// 						Value: to.Ptr("AppService"),
-	// 					},
-	// 				},
-	// 				PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
-	// 					{
-	// 						Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 						Allow: []*armwebpubsub.WebPubSubRequestType{
-	// 							to.Ptr(armwebpubsub.WebPubSubRequestTypeServerConnection),
-	// 						},
-	// 					},
-	// 				},
-	// 				PublicNetwork: &armwebpubsub.NetworkACL{
-	// 					Allow: []*armwebpubsub.WebPubSubRequestType{
-	// 						to.Ptr(armwebpubsub.WebPubSubRequestTypeClientConnection),
-	// 					},
-	// 				},
-	// 			},
-	// 			PrivateEndpointConnections: []*armwebpubsub.PrivateEndpointConnection{
-	// 				{
-	// 					Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 					Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 					Properties: &armwebpubsub.PrivateEndpointConnectionProperties{
-	// 						PrivateEndpoint: &armwebpubsub.PrivateEndpoint{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
-	// 						},
-	// 						PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
-	// 							ActionsRequired: to.Ptr("None"),
-	// 							Status: to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
-	// 						},
-	// 						ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
-	// 					},
-	// 					SystemData: &armwebpubsub.SystemData{
-	// 						CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-	// 						CreatedBy: to.Ptr("string"),
-	// 						CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 						LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-	// 						LastModifiedBy: to.Ptr("string"),
-	// 						LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 	// 			PublicNetworkAccess: to.Ptr("Enabled"),
-	// 			PublicPort: to.Ptr[int32](443),
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			DisableAADAuth: to.Ptr(false),
 	// 			RegionEndpointEnabled: to.Ptr("Enabled"),
-	// 			ResourceLogConfiguration: &armwebpubsub.ResourceLogConfiguration{
-	// 				Categories: []*armwebpubsub.ResourceLogCategory{
-	// 					{
-	// 						Name: to.Ptr("ConnectivityLogs"),
-	// 						Enabled: to.Ptr("true"),
-	// 					},
-	// 				},
-	// 			},
 	// 			ResourceStopped: to.Ptr("false"),
-	// 			ServerPort: to.Ptr[int32](443),
 	// 			SocketIO: &armwebpubsub.SocketIOSettings{
 	// 				ServiceMode: to.Ptr("Serverless"),
 	// 			},
-	// 			TLS: &armwebpubsub.TLSSettings{
-	// 				ClientCertEnabled: to.Ptr(true),
-	// 			},
-	// 			Version: to.Ptr("1.0"),
 	// 		},
-	// 		SKU: &armwebpubsub.ResourceSKU{
-	// 			Name: to.Ptr("Premium_P1"),
-	// 			Capacity: to.Ptr[int32](1),
-	// 			Size: to.Ptr("P1"),
-	// 			Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
+	// 		Kind: to.Ptr(armwebpubsub.ServiceKindWebPubSub),
+	// 		Identity: &armwebpubsub.ManagedIdentity{
+	// 			Type: to.Ptr(armwebpubsub.ManagedIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
-	// 		SystemData: &armwebpubsub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-	// 			CreatedBy: to.Ptr("string"),
-	// 			CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("string"),
-	// 			LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 		},
+	// 		Location: to.Ptr("eastus"),
 	// 		Tags: map[string]*string{
 	// 			"key1": to.Ptr("value1"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService"),
+	// 		Name: to.Ptr("myWebPubSubService"),
+	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
+	// 		SystemData: &armwebpubsub.SystemData{
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSub_ListByResourceGroup.json
+// Generated from example definition: 2025-12-01-preview/WebPubSub_ListByResourceGroup.json
 func ExampleClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -504,17 +504,94 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 	ResourceInfoList: armwebpubsub.ResourceInfoList{
 		// 		Value: []*armwebpubsub.ResourceInfo{
 		// 			{
-		// 				Name: to.Ptr("myWebPubSubService"),
-		// 				Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService"),
-		// 				Identity: &armwebpubsub.ManagedIdentity{
-		// 					Type: to.Ptr(armwebpubsub.ManagedIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				SKU: &armwebpubsub.ResourceSKU{
+		// 					Name: to.Ptr("Premium_P1"),
+		// 					Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
+		// 					Size: to.Ptr("P1"),
+		// 					Capacity: to.Ptr[int32](1),
 		// 				},
-		// 				Kind: to.Ptr(armwebpubsub.ServiceKindWebPubSub),
-		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armwebpubsub.Properties{
+		// 					ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+		// 					ExternalIP: to.Ptr("10.0.0.1"),
+		// 					HostName: to.Ptr("mywebpubsubservice.webpubsub.azure.com"),
+		// 					PublicPort: to.Ptr[int32](443),
+		// 					ServerPort: to.Ptr[int32](443),
+		// 					Version: to.Ptr("1.0"),
+		// 					PrivateEndpointConnections: []*armwebpubsub.PrivateEndpointConnection{
+		// 						{
+		// 							Properties: &armwebpubsub.PrivateEndpointConnectionProperties{
+		// 								ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+		// 								PrivateEndpoint: &armwebpubsub.PrivateEndpoint{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
+		// 									Status: to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
+		// 									ActionsRequired: to.Ptr("None"),
+		// 								},
+		// 							},
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+		// 							Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+		// 							Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
+		// 							SystemData: &armwebpubsub.SystemData{
+		// 								CreatedBy: to.Ptr("string"),
+		// 								CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+		// 								CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+		// 								LastModifiedBy: to.Ptr("string"),
+		// 								LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+		// 								LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+		// 							},
+		// 						},
+		// 					},
+		// 					TLS: &armwebpubsub.TLSSettings{
+		// 						ClientCertEnabled: to.Ptr(true),
+		// 					},
+		// 					LiveTraceConfiguration: &armwebpubsub.LiveTraceConfiguration{
+		// 						Enabled: to.Ptr("false"),
+		// 						Categories: []*armwebpubsub.LiveTraceCategory{
+		// 							{
+		// 								Name: to.Ptr("ConnectivityLogs"),
+		// 								Enabled: to.Ptr("true"),
+		// 							},
+		// 						},
+		// 					},
+		// 					ResourceLogConfiguration: &armwebpubsub.ResourceLogConfiguration{
+		// 						Categories: []*armwebpubsub.ResourceLogCategory{
+		// 							{
+		// 								Name: to.Ptr("ConnectivityLogs"),
+		// 								Enabled: to.Ptr("true"),
+		// 							},
+		// 						},
+		// 					},
+		// 					NetworkACLs: &armwebpubsub.NetworkACLs{
+		// 						DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
+		// 						PublicNetwork: &armwebpubsub.NetworkACL{
+		// 							Allow: []*armwebpubsub.WebPubSubRequestType{
+		// 								to.Ptr(armwebpubsub.WebPubSubRequestTypeClientConnection),
+		// 							},
+		// 						},
+		// 						PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
+		// 							{
+		// 								Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+		// 								Allow: []*armwebpubsub.WebPubSubRequestType{
+		// 									to.Ptr(armwebpubsub.WebPubSubRequestTypeServerConnection),
+		// 								},
+		// 							},
+		// 						},
+		// 						IPRules: []*armwebpubsub.IPRule{
+		// 							{
+		// 								Value: to.Ptr("123.456.789.123/24"),
+		// 								Action: to.Ptr(armwebpubsub.ACLActionAllow),
+		// 							},
+		// 							{
+		// 								Value: to.Ptr("123.456.789.123"),
+		// 								Action: to.Ptr(armwebpubsub.ACLActionAllow),
+		// 							},
+		// 							{
+		// 								Value: to.Ptr("AppService"),
+		// 								Action: to.Ptr(armwebpubsub.ACLActionAllow),
+		// 							},
+		// 						},
+		// 					},
 		// 					ApplicationFirewall: &armwebpubsub.ApplicationFirewallSettings{
 		// 						ClientConnectionCountRules: []armwebpubsub.ClientConnectionCountRuleClassification{
 		// 							&armwebpubsub.ThrottleByJwtSignatureRule{
@@ -534,129 +611,52 @@ func ExampleClient_NewListByResourceGroupPager() {
 		// 						ClientTrafficControlRules: []armwebpubsub.ClientTrafficControlRuleClassification{
 		// 							&armwebpubsub.TrafficThrottleByJwtSignatureRule{
 		// 								Type: to.Ptr(armwebpubsub.ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtSignatureRule),
-		// 								AggregationWindowInSeconds: to.Ptr[int32](60),
 		// 								MaxInboundMessageBytes: to.Ptr[int64](1073741824),
+		// 								AggregationWindowInSeconds: to.Ptr[int32](60),
 		// 							},
 		// 							&armwebpubsub.TrafficThrottleByUserIDRule{
 		// 								Type: to.Ptr(armwebpubsub.ClientTrafficControlRuleDiscriminatorTrafficThrottleByUserIDRule),
-		// 								AggregationWindowInSeconds: to.Ptr[int32](60),
 		// 								MaxInboundMessageBytes: to.Ptr[int64](1073741824),
+		// 								AggregationWindowInSeconds: to.Ptr[int32](60),
 		// 							},
 		// 							&armwebpubsub.TrafficThrottleByJwtCustomClaimRule{
 		// 								Type: to.Ptr(armwebpubsub.ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtCustomClaimRule),
-		// 								AggregationWindowInSeconds: to.Ptr[int32](60),
 		// 								ClaimName: to.Ptr("claimName"),
 		// 								MaxInboundMessageBytes: to.Ptr[int64](1073741824),
+		// 								AggregationWindowInSeconds: to.Ptr[int32](60),
 		// 							},
 		// 						},
 		// 						MaxClientConnectionLifetimeInSeconds: to.Ptr[int64](5),
 		// 					},
-		// 					DisableAADAuth: to.Ptr(false),
-		// 					DisableLocalAuth: to.Ptr(false),
-		// 					ExternalIP: to.Ptr("10.0.0.1"),
-		// 					HostName: to.Ptr("mywebpubsubservice.webpubsub.azure.com"),
-		// 					LiveTraceConfiguration: &armwebpubsub.LiveTraceConfiguration{
-		// 						Categories: []*armwebpubsub.LiveTraceCategory{
-		// 							{
-		// 								Name: to.Ptr("ConnectivityLogs"),
-		// 								Enabled: to.Ptr("true"),
-		// 							},
-		// 						},
-		// 						Enabled: to.Ptr("false"),
-		// 					},
-		// 					NetworkACLs: &armwebpubsub.NetworkACLs{
-		// 						DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
-		// 						IPRules: []*armwebpubsub.IPRule{
-		// 							{
-		// 								Action: to.Ptr(armwebpubsub.ACLActionAllow),
-		// 								Value: to.Ptr("123.456.789.123/24"),
-		// 							},
-		// 							{
-		// 								Action: to.Ptr(armwebpubsub.ACLActionAllow),
-		// 								Value: to.Ptr("123.456.789.123"),
-		// 							},
-		// 							{
-		// 								Action: to.Ptr(armwebpubsub.ACLActionAllow),
-		// 								Value: to.Ptr("AppService"),
-		// 							},
-		// 						},
-		// 						PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
-		// 							{
-		// 								Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-		// 								Allow: []*armwebpubsub.WebPubSubRequestType{
-		// 									to.Ptr(armwebpubsub.WebPubSubRequestTypeServerConnection),
-		// 								},
-		// 							},
-		// 						},
-		// 						PublicNetwork: &armwebpubsub.NetworkACL{
-		// 							Allow: []*armwebpubsub.WebPubSubRequestType{
-		// 								to.Ptr(armwebpubsub.WebPubSubRequestTypeClientConnection),
-		// 							},
-		// 						},
-		// 					},
-		// 					PrivateEndpointConnections: []*armwebpubsub.PrivateEndpointConnection{
-		// 						{
-		// 							Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-		// 							Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-		// 							Properties: &armwebpubsub.PrivateEndpointConnectionProperties{
-		// 								PrivateEndpoint: &armwebpubsub.PrivateEndpoint{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
-		// 								},
-		// 								PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
-		// 									ActionsRequired: to.Ptr("None"),
-		// 									Status: to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
-		// 								},
-		// 								ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
-		// 							},
-		// 							SystemData: &armwebpubsub.SystemData{
-		// 								CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-		// 								CreatedBy: to.Ptr("string"),
-		// 								CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-		// 								LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-		// 								LastModifiedBy: to.Ptr("string"),
-		// 								LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 		// 					PublicNetworkAccess: to.Ptr("Enabled"),
-		// 					PublicPort: to.Ptr[int32](443),
+		// 					DisableLocalAuth: to.Ptr(false),
+		// 					DisableAADAuth: to.Ptr(false),
 		// 					RegionEndpointEnabled: to.Ptr("Enabled"),
-		// 					ResourceLogConfiguration: &armwebpubsub.ResourceLogConfiguration{
-		// 						Categories: []*armwebpubsub.ResourceLogCategory{
-		// 							{
-		// 								Name: to.Ptr("ConnectivityLogs"),
-		// 								Enabled: to.Ptr("true"),
-		// 							},
-		// 						},
-		// 					},
 		// 					ResourceStopped: to.Ptr("false"),
-		// 					ServerPort: to.Ptr[int32](443),
 		// 					SocketIO: &armwebpubsub.SocketIOSettings{
 		// 						ServiceMode: to.Ptr("Serverless"),
 		// 					},
-		// 					TLS: &armwebpubsub.TLSSettings{
-		// 						ClientCertEnabled: to.Ptr(true),
-		// 					},
-		// 					Version: to.Ptr("1.0"),
 		// 				},
-		// 				SKU: &armwebpubsub.ResourceSKU{
-		// 					Name: to.Ptr("Premium_P1"),
-		// 					Capacity: to.Ptr[int32](1),
-		// 					Size: to.Ptr("P1"),
-		// 					Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
+		// 				Kind: to.Ptr(armwebpubsub.ServiceKindWebPubSub),
+		// 				Identity: &armwebpubsub.ManagedIdentity{
+		// 					Type: to.Ptr(armwebpubsub.ManagedIdentityTypeSystemAssigned),
+		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
-		// 				SystemData: &armwebpubsub.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-		// 					CreatedBy: to.Ptr("string"),
-		// 					CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("string"),
-		// 					LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-		// 				},
+		// 				Location: to.Ptr("eastus"),
 		// 				Tags: map[string]*string{
 		// 					"key1": to.Ptr("value1"),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService"),
+		// 				Name: to.Ptr("myWebPubSubService"),
+		// 				Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
+		// 				SystemData: &armwebpubsub.SystemData{
+		// 					CreatedBy: to.Ptr("string"),
+		// 					CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("string"),
+		// 					LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -665,7 +665,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSub_ListBySubscription.json
+// Generated from example definition: 2025-12-01-preview/WebPubSub_ListBySubscription.json
 func ExampleClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -691,17 +691,94 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 	ResourceInfoList: armwebpubsub.ResourceInfoList{
 		// 		Value: []*armwebpubsub.ResourceInfo{
 		// 			{
-		// 				Name: to.Ptr("myWebPubSubService"),
-		// 				Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService"),
-		// 				Identity: &armwebpubsub.ManagedIdentity{
-		// 					Type: to.Ptr(armwebpubsub.ManagedIdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				SKU: &armwebpubsub.ResourceSKU{
+		// 					Name: to.Ptr("Premium_P1"),
+		// 					Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
+		// 					Size: to.Ptr("P1"),
+		// 					Capacity: to.Ptr[int32](1),
 		// 				},
-		// 				Kind: to.Ptr(armwebpubsub.ServiceKindWebPubSub),
-		// 				Location: to.Ptr("eastus"),
 		// 				Properties: &armwebpubsub.Properties{
+		// 					ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+		// 					ExternalIP: to.Ptr("10.0.0.1"),
+		// 					HostName: to.Ptr("mywebpubsubservice.webpubsub.azure.com"),
+		// 					PublicPort: to.Ptr[int32](443),
+		// 					ServerPort: to.Ptr[int32](443),
+		// 					Version: to.Ptr("1.0"),
+		// 					PrivateEndpointConnections: []*armwebpubsub.PrivateEndpointConnection{
+		// 						{
+		// 							Properties: &armwebpubsub.PrivateEndpointConnectionProperties{
+		// 								ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+		// 								PrivateEndpoint: &armwebpubsub.PrivateEndpoint{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
+		// 									Status: to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
+		// 									ActionsRequired: to.Ptr("None"),
+		// 								},
+		// 							},
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+		// 							Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+		// 							Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
+		// 							SystemData: &armwebpubsub.SystemData{
+		// 								CreatedBy: to.Ptr("string"),
+		// 								CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+		// 								CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+		// 								LastModifiedBy: to.Ptr("string"),
+		// 								LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+		// 								LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+		// 							},
+		// 						},
+		// 					},
+		// 					TLS: &armwebpubsub.TLSSettings{
+		// 						ClientCertEnabled: to.Ptr(true),
+		// 					},
+		// 					LiveTraceConfiguration: &armwebpubsub.LiveTraceConfiguration{
+		// 						Enabled: to.Ptr("false"),
+		// 						Categories: []*armwebpubsub.LiveTraceCategory{
+		// 							{
+		// 								Name: to.Ptr("ConnectivityLogs"),
+		// 								Enabled: to.Ptr("true"),
+		// 							},
+		// 						},
+		// 					},
+		// 					ResourceLogConfiguration: &armwebpubsub.ResourceLogConfiguration{
+		// 						Categories: []*armwebpubsub.ResourceLogCategory{
+		// 							{
+		// 								Name: to.Ptr("ConnectivityLogs"),
+		// 								Enabled: to.Ptr("true"),
+		// 							},
+		// 						},
+		// 					},
+		// 					NetworkACLs: &armwebpubsub.NetworkACLs{
+		// 						DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
+		// 						PublicNetwork: &armwebpubsub.NetworkACL{
+		// 							Allow: []*armwebpubsub.WebPubSubRequestType{
+		// 								to.Ptr(armwebpubsub.WebPubSubRequestTypeClientConnection),
+		// 							},
+		// 						},
+		// 						PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
+		// 							{
+		// 								Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+		// 								Allow: []*armwebpubsub.WebPubSubRequestType{
+		// 									to.Ptr(armwebpubsub.WebPubSubRequestTypeServerConnection),
+		// 								},
+		// 							},
+		// 						},
+		// 						IPRules: []*armwebpubsub.IPRule{
+		// 							{
+		// 								Value: to.Ptr("123.456.789.123/24"),
+		// 								Action: to.Ptr(armwebpubsub.ACLActionAllow),
+		// 							},
+		// 							{
+		// 								Value: to.Ptr("123.456.789.123"),
+		// 								Action: to.Ptr(armwebpubsub.ACLActionAllow),
+		// 							},
+		// 							{
+		// 								Value: to.Ptr("AppService"),
+		// 								Action: to.Ptr(armwebpubsub.ACLActionAllow),
+		// 							},
+		// 						},
+		// 					},
 		// 					ApplicationFirewall: &armwebpubsub.ApplicationFirewallSettings{
 		// 						ClientConnectionCountRules: []armwebpubsub.ClientConnectionCountRuleClassification{
 		// 							&armwebpubsub.ThrottleByJwtSignatureRule{
@@ -721,129 +798,52 @@ func ExampleClient_NewListBySubscriptionPager() {
 		// 						ClientTrafficControlRules: []armwebpubsub.ClientTrafficControlRuleClassification{
 		// 							&armwebpubsub.TrafficThrottleByJwtSignatureRule{
 		// 								Type: to.Ptr(armwebpubsub.ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtSignatureRule),
-		// 								AggregationWindowInSeconds: to.Ptr[int32](60),
 		// 								MaxInboundMessageBytes: to.Ptr[int64](1073741824),
+		// 								AggregationWindowInSeconds: to.Ptr[int32](60),
 		// 							},
 		// 							&armwebpubsub.TrafficThrottleByUserIDRule{
 		// 								Type: to.Ptr(armwebpubsub.ClientTrafficControlRuleDiscriminatorTrafficThrottleByUserIDRule),
-		// 								AggregationWindowInSeconds: to.Ptr[int32](60),
 		// 								MaxInboundMessageBytes: to.Ptr[int64](1073741824),
+		// 								AggregationWindowInSeconds: to.Ptr[int32](60),
 		// 							},
 		// 							&armwebpubsub.TrafficThrottleByJwtCustomClaimRule{
 		// 								Type: to.Ptr(armwebpubsub.ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtCustomClaimRule),
-		// 								AggregationWindowInSeconds: to.Ptr[int32](60),
 		// 								ClaimName: to.Ptr("claimName"),
 		// 								MaxInboundMessageBytes: to.Ptr[int64](1073741824),
+		// 								AggregationWindowInSeconds: to.Ptr[int32](60),
 		// 							},
 		// 						},
 		// 						MaxClientConnectionLifetimeInSeconds: to.Ptr[int64](5),
 		// 					},
-		// 					DisableAADAuth: to.Ptr(false),
-		// 					DisableLocalAuth: to.Ptr(false),
-		// 					ExternalIP: to.Ptr("10.0.0.1"),
-		// 					HostName: to.Ptr("mywebpubsubservice.webpubsub.azure.com"),
-		// 					LiveTraceConfiguration: &armwebpubsub.LiveTraceConfiguration{
-		// 						Categories: []*armwebpubsub.LiveTraceCategory{
-		// 							{
-		// 								Name: to.Ptr("ConnectivityLogs"),
-		// 								Enabled: to.Ptr("true"),
-		// 							},
-		// 						},
-		// 						Enabled: to.Ptr("false"),
-		// 					},
-		// 					NetworkACLs: &armwebpubsub.NetworkACLs{
-		// 						DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
-		// 						IPRules: []*armwebpubsub.IPRule{
-		// 							{
-		// 								Action: to.Ptr(armwebpubsub.ACLActionAllow),
-		// 								Value: to.Ptr("123.456.789.123/24"),
-		// 							},
-		// 							{
-		// 								Action: to.Ptr(armwebpubsub.ACLActionAllow),
-		// 								Value: to.Ptr("123.456.789.123"),
-		// 							},
-		// 							{
-		// 								Action: to.Ptr(armwebpubsub.ACLActionAllow),
-		// 								Value: to.Ptr("AppService"),
-		// 							},
-		// 						},
-		// 						PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
-		// 							{
-		// 								Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-		// 								Allow: []*armwebpubsub.WebPubSubRequestType{
-		// 									to.Ptr(armwebpubsub.WebPubSubRequestTypeServerConnection),
-		// 								},
-		// 							},
-		// 						},
-		// 						PublicNetwork: &armwebpubsub.NetworkACL{
-		// 							Allow: []*armwebpubsub.WebPubSubRequestType{
-		// 								to.Ptr(armwebpubsub.WebPubSubRequestTypeClientConnection),
-		// 							},
-		// 						},
-		// 					},
-		// 					PrivateEndpointConnections: []*armwebpubsub.PrivateEndpointConnection{
-		// 						{
-		// 							Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-		// 							Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
-		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-		// 							Properties: &armwebpubsub.PrivateEndpointConnectionProperties{
-		// 								PrivateEndpoint: &armwebpubsub.PrivateEndpoint{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
-		// 								},
-		// 								PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
-		// 									ActionsRequired: to.Ptr("None"),
-		// 									Status: to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
-		// 								},
-		// 								ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
-		// 							},
-		// 							SystemData: &armwebpubsub.SystemData{
-		// 								CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-		// 								CreatedBy: to.Ptr("string"),
-		// 								CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-		// 								LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-		// 								LastModifiedBy: to.Ptr("string"),
-		// 								LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 		// 					PublicNetworkAccess: to.Ptr("Enabled"),
-		// 					PublicPort: to.Ptr[int32](443),
+		// 					DisableLocalAuth: to.Ptr(false),
+		// 					DisableAADAuth: to.Ptr(false),
 		// 					RegionEndpointEnabled: to.Ptr("Enabled"),
-		// 					ResourceLogConfiguration: &armwebpubsub.ResourceLogConfiguration{
-		// 						Categories: []*armwebpubsub.ResourceLogCategory{
-		// 							{
-		// 								Name: to.Ptr("ConnectivityLogs"),
-		// 								Enabled: to.Ptr("true"),
-		// 							},
-		// 						},
-		// 					},
 		// 					ResourceStopped: to.Ptr("false"),
-		// 					ServerPort: to.Ptr[int32](443),
 		// 					SocketIO: &armwebpubsub.SocketIOSettings{
 		// 						ServiceMode: to.Ptr("Serverless"),
 		// 					},
-		// 					TLS: &armwebpubsub.TLSSettings{
-		// 						ClientCertEnabled: to.Ptr(true),
-		// 					},
-		// 					Version: to.Ptr("1.0"),
 		// 				},
-		// 				SKU: &armwebpubsub.ResourceSKU{
-		// 					Name: to.Ptr("Premium_P1"),
-		// 					Capacity: to.Ptr[int32](1),
-		// 					Size: to.Ptr("P1"),
-		// 					Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
+		// 				Kind: to.Ptr(armwebpubsub.ServiceKindWebPubSub),
+		// 				Identity: &armwebpubsub.ManagedIdentity{
+		// 					Type: to.Ptr(armwebpubsub.ManagedIdentityTypeSystemAssigned),
+		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
-		// 				SystemData: &armwebpubsub.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-		// 					CreatedBy: to.Ptr("string"),
-		// 					CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("string"),
-		// 					LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-		// 				},
+		// 				Location: to.Ptr("eastus"),
 		// 				Tags: map[string]*string{
 		// 					"key1": to.Ptr("value1"),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService"),
+		// 				Name: to.Ptr("myWebPubSubService"),
+		// 				Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
+		// 				SystemData: &armwebpubsub.SystemData{
+		// 					CreatedBy: to.Ptr("string"),
+		// 					CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("string"),
+		// 					LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -852,7 +852,7 @@ func ExampleClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSub_ListKeys.json
+// Generated from example definition: 2025-12-01-preview/WebPubSub_ListKeys.json
 func ExampleClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -876,7 +876,7 @@ func ExampleClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSub_ListReplicaSkus.json
+// Generated from example definition: 2025-12-01-preview/WebPubSub_ListReplicaSkus.json
 func ExampleClient_ListReplicaSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -898,57 +898,30 @@ func ExampleClient_ListReplicaSKUs() {
 	// 	SKUList: armwebpubsub.SKUList{
 	// 		Value: []*armwebpubsub.SKU{
 	// 			{
-	// 				Capacity: &armwebpubsub.SKUCapacity{
-	// 					Default: to.Ptr[int32](1),
-	// 					AllowedValues: []*int32{
-	// 						to.Ptr[int32](1),
-	// 					},
-	// 					Maximum: to.Ptr[int32](1),
-	// 					Minimum: to.Ptr[int32](0),
-	// 					ScaleType: to.Ptr(armwebpubsub.ScaleTypeManual),
-	// 				},
 	// 				ResourceType: to.Ptr("Microsoft.SignalRService/WebPubSub/replicas"),
 	// 				SKU: &armwebpubsub.ResourceSKU{
 	// 					Name: to.Ptr("Free_F1"),
 	// 					Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierFree),
 	// 				},
-	// 			},
-	// 			{
 	// 				Capacity: &armwebpubsub.SKUCapacity{
+	// 					Minimum: to.Ptr[int32](0),
+	// 					Maximum: to.Ptr[int32](1),
 	// 					Default: to.Ptr[int32](1),
 	// 					AllowedValues: []*int32{
 	// 						to.Ptr[int32](1),
-	// 						to.Ptr[int32](2),
-	// 						to.Ptr[int32](3),
-	// 						to.Ptr[int32](4),
-	// 						to.Ptr[int32](5),
-	// 						to.Ptr[int32](6),
-	// 						to.Ptr[int32](7),
-	// 						to.Ptr[int32](8),
-	// 						to.Ptr[int32](9),
-	// 						to.Ptr[int32](10),
-	// 						to.Ptr[int32](20),
-	// 						to.Ptr[int32](30),
-	// 						to.Ptr[int32](40),
-	// 						to.Ptr[int32](50),
-	// 						to.Ptr[int32](60),
-	// 						to.Ptr[int32](70),
-	// 						to.Ptr[int32](80),
-	// 						to.Ptr[int32](90),
-	// 						to.Ptr[int32](100),
 	// 					},
-	// 					Maximum: to.Ptr[int32](100),
-	// 					Minimum: to.Ptr[int32](0),
 	// 					ScaleType: to.Ptr(armwebpubsub.ScaleTypeManual),
 	// 				},
+	// 			},
+	// 			{
 	// 				ResourceType: to.Ptr("Microsoft.SignalRService/WebPubSub/replicas"),
 	// 				SKU: &armwebpubsub.ResourceSKU{
 	// 					Name: to.Ptr("Standard_S1"),
 	// 					Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierStandard),
 	// 				},
-	// 			},
-	// 			{
 	// 				Capacity: &armwebpubsub.SKUCapacity{
+	// 					Minimum: to.Ptr[int32](0),
+	// 					Maximum: to.Ptr[int32](100),
 	// 					Default: to.Ptr[int32](1),
 	// 					AllowedValues: []*int32{
 	// 						to.Ptr[int32](1),
@@ -971,14 +944,41 @@ func ExampleClient_ListReplicaSKUs() {
 	// 						to.Ptr[int32](90),
 	// 						to.Ptr[int32](100),
 	// 					},
-	// 					Maximum: to.Ptr[int32](100),
-	// 					Minimum: to.Ptr[int32](0),
-	// 					ScaleType: to.Ptr(armwebpubsub.ScaleTypeAutomatic),
+	// 					ScaleType: to.Ptr(armwebpubsub.ScaleTypeManual),
 	// 				},
+	// 			},
+	// 			{
 	// 				ResourceType: to.Ptr("Microsoft.SignalRService/WebPubSub/replicas"),
 	// 				SKU: &armwebpubsub.ResourceSKU{
 	// 					Name: to.Ptr("Premium_P1"),
 	// 					Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierStandard),
+	// 				},
+	// 				Capacity: &armwebpubsub.SKUCapacity{
+	// 					Minimum: to.Ptr[int32](0),
+	// 					Maximum: to.Ptr[int32](100),
+	// 					Default: to.Ptr[int32](1),
+	// 					AllowedValues: []*int32{
+	// 						to.Ptr[int32](1),
+	// 						to.Ptr[int32](2),
+	// 						to.Ptr[int32](3),
+	// 						to.Ptr[int32](4),
+	// 						to.Ptr[int32](5),
+	// 						to.Ptr[int32](6),
+	// 						to.Ptr[int32](7),
+	// 						to.Ptr[int32](8),
+	// 						to.Ptr[int32](9),
+	// 						to.Ptr[int32](10),
+	// 						to.Ptr[int32](20),
+	// 						to.Ptr[int32](30),
+	// 						to.Ptr[int32](40),
+	// 						to.Ptr[int32](50),
+	// 						to.Ptr[int32](60),
+	// 						to.Ptr[int32](70),
+	// 						to.Ptr[int32](80),
+	// 						to.Ptr[int32](90),
+	// 						to.Ptr[int32](100),
+	// 					},
+	// 					ScaleType: to.Ptr(armwebpubsub.ScaleTypeAutomatic),
 	// 				},
 	// 			},
 	// 		},
@@ -986,7 +986,7 @@ func ExampleClient_ListReplicaSKUs() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSub_ListSkus.json
+// Generated from example definition: 2025-12-01-preview/WebPubSub_ListSkus.json
 func ExampleClient_ListSKUs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1008,57 +1008,30 @@ func ExampleClient_ListSKUs() {
 	// 	SKUList: armwebpubsub.SKUList{
 	// 		Value: []*armwebpubsub.SKU{
 	// 			{
-	// 				Capacity: &armwebpubsub.SKUCapacity{
-	// 					Default: to.Ptr[int32](1),
-	// 					AllowedValues: []*int32{
-	// 						to.Ptr[int32](1),
-	// 					},
-	// 					Maximum: to.Ptr[int32](1),
-	// 					Minimum: to.Ptr[int32](0),
-	// 					ScaleType: to.Ptr(armwebpubsub.ScaleTypeManual),
-	// 				},
 	// 				ResourceType: to.Ptr("Microsoft.SignalRService/WebPubSub"),
 	// 				SKU: &armwebpubsub.ResourceSKU{
 	// 					Name: to.Ptr("Free_F1"),
 	// 					Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierFree),
 	// 				},
-	// 			},
-	// 			{
 	// 				Capacity: &armwebpubsub.SKUCapacity{
+	// 					Minimum: to.Ptr[int32](0),
+	// 					Maximum: to.Ptr[int32](1),
 	// 					Default: to.Ptr[int32](1),
 	// 					AllowedValues: []*int32{
 	// 						to.Ptr[int32](1),
-	// 						to.Ptr[int32](2),
-	// 						to.Ptr[int32](3),
-	// 						to.Ptr[int32](4),
-	// 						to.Ptr[int32](5),
-	// 						to.Ptr[int32](6),
-	// 						to.Ptr[int32](7),
-	// 						to.Ptr[int32](8),
-	// 						to.Ptr[int32](9),
-	// 						to.Ptr[int32](10),
-	// 						to.Ptr[int32](20),
-	// 						to.Ptr[int32](30),
-	// 						to.Ptr[int32](40),
-	// 						to.Ptr[int32](50),
-	// 						to.Ptr[int32](60),
-	// 						to.Ptr[int32](70),
-	// 						to.Ptr[int32](80),
-	// 						to.Ptr[int32](90),
-	// 						to.Ptr[int32](100),
 	// 					},
-	// 					Maximum: to.Ptr[int32](100),
-	// 					Minimum: to.Ptr[int32](0),
 	// 					ScaleType: to.Ptr(armwebpubsub.ScaleTypeManual),
 	// 				},
+	// 			},
+	// 			{
 	// 				ResourceType: to.Ptr("Microsoft.SignalRService/WebPubSub"),
 	// 				SKU: &armwebpubsub.ResourceSKU{
 	// 					Name: to.Ptr("Standard_S1"),
 	// 					Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierStandard),
 	// 				},
-	// 			},
-	// 			{
 	// 				Capacity: &armwebpubsub.SKUCapacity{
+	// 					Minimum: to.Ptr[int32](0),
+	// 					Maximum: to.Ptr[int32](100),
 	// 					Default: to.Ptr[int32](1),
 	// 					AllowedValues: []*int32{
 	// 						to.Ptr[int32](1),
@@ -1081,14 +1054,41 @@ func ExampleClient_ListSKUs() {
 	// 						to.Ptr[int32](90),
 	// 						to.Ptr[int32](100),
 	// 					},
-	// 					Maximum: to.Ptr[int32](100),
-	// 					Minimum: to.Ptr[int32](0),
-	// 					ScaleType: to.Ptr(armwebpubsub.ScaleTypeAutomatic),
+	// 					ScaleType: to.Ptr(armwebpubsub.ScaleTypeManual),
 	// 				},
+	// 			},
+	// 			{
 	// 				ResourceType: to.Ptr("Microsoft.SignalRService/WebPubSub/replicas"),
 	// 				SKU: &armwebpubsub.ResourceSKU{
 	// 					Name: to.Ptr("Premium_P1"),
 	// 					Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierStandard),
+	// 				},
+	// 				Capacity: &armwebpubsub.SKUCapacity{
+	// 					Minimum: to.Ptr[int32](0),
+	// 					Maximum: to.Ptr[int32](100),
+	// 					Default: to.Ptr[int32](1),
+	// 					AllowedValues: []*int32{
+	// 						to.Ptr[int32](1),
+	// 						to.Ptr[int32](2),
+	// 						to.Ptr[int32](3),
+	// 						to.Ptr[int32](4),
+	// 						to.Ptr[int32](5),
+	// 						to.Ptr[int32](6),
+	// 						to.Ptr[int32](7),
+	// 						to.Ptr[int32](8),
+	// 						to.Ptr[int32](9),
+	// 						to.Ptr[int32](10),
+	// 						to.Ptr[int32](20),
+	// 						to.Ptr[int32](30),
+	// 						to.Ptr[int32](40),
+	// 						to.Ptr[int32](50),
+	// 						to.Ptr[int32](60),
+	// 						to.Ptr[int32](70),
+	// 						to.Ptr[int32](80),
+	// 						to.Ptr[int32](90),
+	// 						to.Ptr[int32](100),
+	// 					},
+	// 					ScaleType: to.Ptr(armwebpubsub.ScaleTypeAutomatic),
 	// 				},
 	// 			},
 	// 		},
@@ -1096,7 +1096,7 @@ func ExampleClient_ListSKUs() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSub_RegenerateKey.json
+// Generated from example definition: 2025-12-01-preview/WebPubSub_RegenerateKey.json
 func ExampleClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1126,7 +1126,7 @@ func ExampleClient_BeginRegenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSub_Restart.json
+// Generated from example definition: 2025-12-01-preview/WebPubSub_Restart.json
 func ExampleClient_BeginRestart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1147,7 +1147,7 @@ func ExampleClient_BeginRestart() {
 	}
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSub_Update.json
+// Generated from example definition: 2025-12-01-preview/WebPubSub_Update.json
 func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1159,25 +1159,31 @@ func ExampleClient_BeginUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "myResourceGroup", "myWebPubSubService", armwebpubsub.ResourceInfo{
-		Identity: &armwebpubsub.ManagedIdentity{
-			Type: to.Ptr(armwebpubsub.ManagedIdentityTypeSystemAssigned),
+		SKU: &armwebpubsub.ResourceSKU{
+			Name:     to.Ptr("Premium_P1"),
+			Tier:     to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
+			Capacity: to.Ptr[int32](1),
 		},
-		Kind:     to.Ptr(armwebpubsub.ServiceKindWebPubSub),
-		Location: to.Ptr("eastus"),
 		Properties: &armwebpubsub.Properties{
-			DisableAADAuth:   to.Ptr(false),
-			DisableLocalAuth: to.Ptr(false),
+			TLS: &armwebpubsub.TLSSettings{
+				ClientCertEnabled: to.Ptr(false),
+			},
 			LiveTraceConfiguration: &armwebpubsub.LiveTraceConfiguration{
+				Enabled: to.Ptr("false"),
 				Categories: []*armwebpubsub.LiveTraceCategory{
 					{
 						Name:    to.Ptr("ConnectivityLogs"),
 						Enabled: to.Ptr("true"),
 					},
 				},
-				Enabled: to.Ptr("false"),
 			},
 			NetworkACLs: &armwebpubsub.NetworkACLs{
 				DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
+				PublicNetwork: &armwebpubsub.NetworkACL{
+					Allow: []*armwebpubsub.WebPubSubRequestType{
+						to.Ptr(armwebpubsub.WebPubSubRequestTypeClientConnection),
+					},
+				},
 				PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
 					{
 						Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
@@ -1186,25 +1192,19 @@ func ExampleClient_BeginUpdate() {
 						},
 					},
 				},
-				PublicNetwork: &armwebpubsub.NetworkACL{
-					Allow: []*armwebpubsub.WebPubSubRequestType{
-						to.Ptr(armwebpubsub.WebPubSubRequestTypeClientConnection),
-					},
-				},
 			},
 			PublicNetworkAccess: to.Ptr("Enabled"),
+			DisableLocalAuth:    to.Ptr(false),
+			DisableAADAuth:      to.Ptr(false),
 			SocketIO: &armwebpubsub.SocketIOSettings{
 				ServiceMode: to.Ptr("Serverless"),
 			},
-			TLS: &armwebpubsub.TLSSettings{
-				ClientCertEnabled: to.Ptr(false),
-			},
 		},
-		SKU: &armwebpubsub.ResourceSKU{
-			Name:     to.Ptr("Premium_P1"),
-			Capacity: to.Ptr[int32](1),
-			Tier:     to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
+		Kind: to.Ptr(armwebpubsub.ServiceKindWebPubSub),
+		Identity: &armwebpubsub.ManagedIdentity{
+			Type: to.Ptr(armwebpubsub.ManagedIdentityTypeSystemAssigned),
 		},
+		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 		},
@@ -1221,17 +1221,94 @@ func ExampleClient_BeginUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armwebpubsub.ClientUpdateResponse{
 	// 	ResourceInfo: armwebpubsub.ResourceInfo{
-	// 		Name: to.Ptr("myWebPubSubService"),
-	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService"),
-	// 		Identity: &armwebpubsub.ManagedIdentity{
-	// 			Type: to.Ptr(armwebpubsub.ManagedIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		SKU: &armwebpubsub.ResourceSKU{
+	// 			Name: to.Ptr("Premium_P1"),
+	// 			Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
+	// 			Size: to.Ptr("P1"),
+	// 			Capacity: to.Ptr[int32](1),
 	// 		},
-	// 		Kind: to.Ptr(armwebpubsub.ServiceKindWebPubSub),
-	// 		Location: to.Ptr("eastus"),
 	// 		Properties: &armwebpubsub.Properties{
+	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+	// 			ExternalIP: to.Ptr("10.0.0.1"),
+	// 			HostName: to.Ptr("mywebpubsubservice.webpubsub.azure.com"),
+	// 			PublicPort: to.Ptr[int32](443),
+	// 			ServerPort: to.Ptr[int32](443),
+	// 			Version: to.Ptr("1.0"),
+	// 			PrivateEndpointConnections: []*armwebpubsub.PrivateEndpointConnection{
+	// 				{
+	// 					Properties: &armwebpubsub.PrivateEndpointConnectionProperties{
+	// 						ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+	// 						PrivateEndpoint: &armwebpubsub.PrivateEndpoint{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
+	// 							Status: to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
+	// 							ActionsRequired: to.Ptr("None"),
+	// 						},
+	// 					},
+	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+	// 					Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+	// 					Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
+	// 					SystemData: &armwebpubsub.SystemData{
+	// 						CreatedBy: to.Ptr("string"),
+	// 						CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+	// 						CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+	// 						LastModifiedBy: to.Ptr("string"),
+	// 						LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+	// 						LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+	// 					},
+	// 				},
+	// 			},
+	// 			TLS: &armwebpubsub.TLSSettings{
+	// 				ClientCertEnabled: to.Ptr(true),
+	// 			},
+	// 			LiveTraceConfiguration: &armwebpubsub.LiveTraceConfiguration{
+	// 				Enabled: to.Ptr("false"),
+	// 				Categories: []*armwebpubsub.LiveTraceCategory{
+	// 					{
+	// 						Name: to.Ptr("ConnectivityLogs"),
+	// 						Enabled: to.Ptr("true"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ResourceLogConfiguration: &armwebpubsub.ResourceLogConfiguration{
+	// 				Categories: []*armwebpubsub.ResourceLogCategory{
+	// 					{
+	// 						Name: to.Ptr("ConnectivityLogs"),
+	// 						Enabled: to.Ptr("true"),
+	// 					},
+	// 				},
+	// 			},
+	// 			NetworkACLs: &armwebpubsub.NetworkACLs{
+	// 				DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
+	// 				PublicNetwork: &armwebpubsub.NetworkACL{
+	// 					Allow: []*armwebpubsub.WebPubSubRequestType{
+	// 						to.Ptr(armwebpubsub.WebPubSubRequestTypeClientConnection),
+	// 					},
+	// 				},
+	// 				PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
+	// 					{
+	// 						Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+	// 						Allow: []*armwebpubsub.WebPubSubRequestType{
+	// 							to.Ptr(armwebpubsub.WebPubSubRequestTypeServerConnection),
+	// 						},
+	// 					},
+	// 				},
+	// 				IPRules: []*armwebpubsub.IPRule{
+	// 					{
+	// 						Value: to.Ptr("123.456.789.123/24"),
+	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					},
+	// 					{
+	// 						Value: to.Ptr("123.456.789.123"),
+	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					},
+	// 					{
+	// 						Value: to.Ptr("AppService"),
+	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
+	// 					},
+	// 				},
+	// 			},
 	// 			ApplicationFirewall: &armwebpubsub.ApplicationFirewallSettings{
 	// 				ClientConnectionCountRules: []armwebpubsub.ClientConnectionCountRuleClassification{
 	// 					&armwebpubsub.ThrottleByJwtSignatureRule{
@@ -1251,129 +1328,52 @@ func ExampleClient_BeginUpdate() {
 	// 				ClientTrafficControlRules: []armwebpubsub.ClientTrafficControlRuleClassification{
 	// 					&armwebpubsub.TrafficThrottleByJwtSignatureRule{
 	// 						Type: to.Ptr(armwebpubsub.ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtSignatureRule),
-	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 						MaxInboundMessageBytes: to.Ptr[int64](1073741824),
+	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 					},
 	// 					&armwebpubsub.TrafficThrottleByUserIDRule{
 	// 						Type: to.Ptr(armwebpubsub.ClientTrafficControlRuleDiscriminatorTrafficThrottleByUserIDRule),
-	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 						MaxInboundMessageBytes: to.Ptr[int64](1073741824),
+	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 					},
 	// 					&armwebpubsub.TrafficThrottleByJwtCustomClaimRule{
 	// 						Type: to.Ptr(armwebpubsub.ClientTrafficControlRuleDiscriminatorTrafficThrottleByJwtCustomClaimRule),
-	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 						ClaimName: to.Ptr("claimName"),
 	// 						MaxInboundMessageBytes: to.Ptr[int64](1073741824),
+	// 						AggregationWindowInSeconds: to.Ptr[int32](60),
 	// 					},
 	// 				},
 	// 				MaxClientConnectionLifetimeInSeconds: to.Ptr[int64](5),
 	// 			},
-	// 			DisableAADAuth: to.Ptr(false),
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			ExternalIP: to.Ptr("10.0.0.1"),
-	// 			HostName: to.Ptr("mywebpubsubservice.webpubsub.azure.com"),
-	// 			LiveTraceConfiguration: &armwebpubsub.LiveTraceConfiguration{
-	// 				Categories: []*armwebpubsub.LiveTraceCategory{
-	// 					{
-	// 						Name: to.Ptr("ConnectivityLogs"),
-	// 						Enabled: to.Ptr("true"),
-	// 					},
-	// 				},
-	// 				Enabled: to.Ptr("false"),
-	// 			},
-	// 			NetworkACLs: &armwebpubsub.NetworkACLs{
-	// 				DefaultAction: to.Ptr(armwebpubsub.ACLActionDeny),
-	// 				IPRules: []*armwebpubsub.IPRule{
-	// 					{
-	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
-	// 						Value: to.Ptr("123.456.789.123/24"),
-	// 					},
-	// 					{
-	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
-	// 						Value: to.Ptr("123.456.789.123"),
-	// 					},
-	// 					{
-	// 						Action: to.Ptr(armwebpubsub.ACLActionAllow),
-	// 						Value: to.Ptr("AppService"),
-	// 					},
-	// 				},
-	// 				PrivateEndpoints: []*armwebpubsub.PrivateEndpointACL{
-	// 					{
-	// 						Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 						Allow: []*armwebpubsub.WebPubSubRequestType{
-	// 							to.Ptr(armwebpubsub.WebPubSubRequestTypeServerConnection),
-	// 						},
-	// 					},
-	// 				},
-	// 				PublicNetwork: &armwebpubsub.NetworkACL{
-	// 					Allow: []*armwebpubsub.WebPubSubRequestType{
-	// 						to.Ptr(armwebpubsub.WebPubSubRequestTypeClientConnection),
-	// 					},
-	// 				},
-	// 			},
-	// 			PrivateEndpointConnections: []*armwebpubsub.PrivateEndpointConnection{
-	// 				{
-	// 					Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 					Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
-	// 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 					Properties: &armwebpubsub.PrivateEndpointConnectionProperties{
-	// 						PrivateEndpoint: &armwebpubsub.PrivateEndpoint{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
-	// 						},
-	// 						PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
-	// 							ActionsRequired: to.Ptr("None"),
-	// 							Status: to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
-	// 						},
-	// 						ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
-	// 					},
-	// 					SystemData: &armwebpubsub.SystemData{
-	// 						CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-	// 						CreatedBy: to.Ptr("string"),
-	// 						CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 						LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-	// 						LastModifiedBy: to.Ptr("string"),
-	// 						LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 	// 			PublicNetworkAccess: to.Ptr("Enabled"),
-	// 			PublicPort: to.Ptr[int32](443),
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			DisableAADAuth: to.Ptr(false),
 	// 			RegionEndpointEnabled: to.Ptr("Enabled"),
-	// 			ResourceLogConfiguration: &armwebpubsub.ResourceLogConfiguration{
-	// 				Categories: []*armwebpubsub.ResourceLogCategory{
-	// 					{
-	// 						Name: to.Ptr("ConnectivityLogs"),
-	// 						Enabled: to.Ptr("true"),
-	// 					},
-	// 				},
-	// 			},
 	// 			ResourceStopped: to.Ptr("false"),
-	// 			ServerPort: to.Ptr[int32](443),
 	// 			SocketIO: &armwebpubsub.SocketIOSettings{
 	// 				ServiceMode: to.Ptr("Serverless"),
 	// 			},
-	// 			TLS: &armwebpubsub.TLSSettings{
-	// 				ClientCertEnabled: to.Ptr(true),
-	// 			},
-	// 			Version: to.Ptr("1.0"),
 	// 		},
-	// 		SKU: &armwebpubsub.ResourceSKU{
-	// 			Name: to.Ptr("Premium_P1"),
-	// 			Capacity: to.Ptr[int32](1),
-	// 			Size: to.Ptr("P1"),
-	// 			Tier: to.Ptr(armwebpubsub.WebPubSubSKUTierPremium),
+	// 		Kind: to.Ptr(armwebpubsub.ServiceKindWebPubSub),
+	// 		Identity: &armwebpubsub.ManagedIdentity{
+	// 			Type: to.Ptr(armwebpubsub.ManagedIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
-	// 		SystemData: &armwebpubsub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-	// 			CreatedBy: to.Ptr("string"),
-	// 			CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("string"),
-	// 			LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 		},
+	// 		Location: to.Ptr("eastus"),
 	// 		Tags: map[string]*string{
 	// 			"key1": to.Ptr("value1"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService"),
+	// 		Name: to.Ptr("myWebPubSubService"),
+	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub"),
+	// 		SystemData: &armwebpubsub.SystemData{
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }

@@ -149,6 +149,29 @@ type OperationsClientListResponse struct {
 	OperationList
 }
 
+// PersistentStoragesClientCreateOrUpdateResponse contains the response from method PersistentStoragesClient.BeginCreateOrUpdate.
+type PersistentStoragesClientCreateOrUpdateResponse struct {
+	// A persistent storage
+	PersistentStorage
+}
+
+// PersistentStoragesClientDeleteResponse contains the response from method PersistentStoragesClient.BeginDelete.
+type PersistentStoragesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PersistentStoragesClientGetResponse contains the response from method PersistentStoragesClient.Get.
+type PersistentStoragesClientGetResponse struct {
+	// A persistent storage
+	PersistentStorage
+}
+
+// PersistentStoragesClientListResponse contains the response from method PersistentStoragesClient.NewListPager.
+type PersistentStoragesClientListResponse struct {
+	// Persistent storages list
+	PersistentStorageList
+}
+
 // PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
 type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// placeholder for future response values

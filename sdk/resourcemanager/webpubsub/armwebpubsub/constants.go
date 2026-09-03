@@ -5,7 +5,7 @@
 package armwebpubsub
 
 const (
-	version20250101Preview string = "2025-01-01-preview"
+	version20251201Preview string = "2025-12-01-preview"
 )
 
 // ACLAction - Azure Networking ACL Action.
@@ -105,6 +105,24 @@ const (
 func PossibleEventListenerFilterDiscriminatorValues() []EventListenerFilterDiscriminator {
 	return []EventListenerFilterDiscriminator{
 		EventListenerFilterDiscriminatorEventName,
+	}
+}
+
+// GroupPresenceEventName - Allowed event names for group presence events.
+type GroupPresenceEventName string
+
+const (
+	// GroupPresenceEventNameJoined - Event triggered when a connection joins a group.
+	GroupPresenceEventNameJoined GroupPresenceEventName = "joined"
+	// GroupPresenceEventNameLeft - Event triggered when a connection leaves a group.
+	GroupPresenceEventNameLeft GroupPresenceEventName = "left"
+)
+
+// PossibleGroupPresenceEventNameValues returns the possible values for the GroupPresenceEventName const type.
+func PossibleGroupPresenceEventNameValues() []GroupPresenceEventName {
+	return []GroupPresenceEventName{
+		GroupPresenceEventNameJoined,
+		GroupPresenceEventNameLeft,
 	}
 }
 

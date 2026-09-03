@@ -30,6 +30,9 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
+	// PersistentStoragesServer contains the fakes for client PersistentStoragesClient
+	PersistentStoragesServer PersistentStoragesServer
+
 	// PrivateEndpointConnectionsServer contains the fakes for client PrivateEndpointConnectionsClient
 	PrivateEndpointConnectionsServer PrivateEndpointConnectionsServer
 
@@ -68,6 +71,7 @@ type ServerFactoryTransport struct {
 	trCustomDomainsServer                     *CustomDomainsServerTransport
 	trHubsServer                              *HubsServerTransport
 	trOperationsServer                        *OperationsServerTransport
+	trPersistentStoragesServer                *PersistentStoragesServerTransport
 	trPrivateEndpointConnectionsServer        *PrivateEndpointConnectionsServerTransport
 	trPrivateLinkResourcesServer              *PrivateLinkResourcesServerTransport
 	trReplicaSharedPrivateLinkResourcesServer *ReplicaSharedPrivateLinkResourcesServerTransport
@@ -108,6 +112,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "PersistentStoragesClient":
+		initServer(&s.trMu, &s.trPersistentStoragesServer, func() *PersistentStoragesServerTransport {
+			return NewPersistentStoragesServerTransport(&s.srv.PersistentStoragesServer)
+		})
+		resp, err = s.trPersistentStoragesServer.Do(req)
 	case "PrivateEndpointConnectionsClient":
 		initServer(&s.trMu, &s.trPrivateEndpointConnectionsServer, func() *PrivateEndpointConnectionsServerTransport {
 			return NewPrivateEndpointConnectionsServerTransport(&s.srv.PrivateEndpointConnectionsServer)

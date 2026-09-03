@@ -6,5 +6,5 @@ package armwebpubsub
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/webpubsub/armwebpubsub"
-	moduleVersion = "v1.4.0-beta.1"
+	moduleVersion = "v1.4.0-beta.2"
 )

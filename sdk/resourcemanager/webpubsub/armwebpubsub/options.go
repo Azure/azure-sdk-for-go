@@ -141,6 +141,30 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// PersistentStoragesClientBeginCreateOrUpdateOptions contains the optional parameters for the PersistentStoragesClient.BeginCreateOrUpdate
+// method.
+type PersistentStoragesClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PersistentStoragesClientBeginDeleteOptions contains the optional parameters for the PersistentStoragesClient.BeginDelete
+// method.
+type PersistentStoragesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PersistentStoragesClientGetOptions contains the optional parameters for the PersistentStoragesClient.Get method.
+type PersistentStoragesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PersistentStoragesClientListOptions contains the optional parameters for the PersistentStoragesClient.NewListPager method.
+type PersistentStoragesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
 // method.
 type PrivateEndpointConnectionsClientBeginDeleteOptions struct {

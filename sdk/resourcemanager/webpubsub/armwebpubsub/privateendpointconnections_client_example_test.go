@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubPrivateEndpointConnections_Delete.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubPrivateEndpointConnections_Delete.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubPrivateEndpointConnections_Get.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubPrivateEndpointConnections_Get.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,35 +58,35 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armwebpubsub.PrivateEndpointConnectionsClientGetResponse{
 	// 	PrivateEndpointConnection: armwebpubsub.PrivateEndpointConnection{
-	// 		Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 	// 		Properties: &armwebpubsub.PrivateEndpointConnectionProperties{
-	// 			GroupIDs: []*string{
-	// 				to.Ptr("webpubsub"),
-	// 			},
+	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 	// 			PrivateEndpoint: &armwebpubsub.PrivateEndpoint{
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
 	// 			},
-	// 			PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
-	// 				ActionsRequired: to.Ptr("None"),
-	// 				Status: to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
+	// 			GroupIDs: []*string{
+	// 				to.Ptr("webpubsub"),
 	// 			},
-	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+	// 			PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
+	// 				Status: to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
+	// 				ActionsRequired: to.Ptr("None"),
+	// 			},
 	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+	// 		Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
 	// 		SystemData: &armwebpubsub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubPrivateEndpointConnections_List.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubPrivateEndpointConnections_List.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,29 +112,29 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 		// 	PrivateEndpointConnectionList: armwebpubsub.PrivateEndpointConnectionList{
 		// 		Value: []*armwebpubsub.PrivateEndpointConnection{
 		// 			{
-		// 				Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-		// 				Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 		// 				Properties: &armwebpubsub.PrivateEndpointConnectionProperties{
-		// 					GroupIDs: []*string{
-		// 						to.Ptr("webpubsub"),
-		// 					},
+		// 					ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 		// 					PrivateEndpoint: &armwebpubsub.PrivateEndpoint{
 		// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
 		// 					},
-		// 					PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
-		// 						ActionsRequired: to.Ptr("None"),
-		// 						Status: to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
+		// 					GroupIDs: []*string{
+		// 						to.Ptr("webpubsub"),
 		// 					},
-		// 					ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+		// 					PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
+		// 						Status: to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
+		// 						ActionsRequired: to.Ptr("None"),
+		// 					},
 		// 				},
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+		// 				Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+		// 				Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
 		// 				SystemData: &armwebpubsub.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
 		// 					CreatedBy: to.Ptr("string"),
 		// 					CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+		// 					CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
 		// 					LastModifiedBy: to.Ptr("string"),
 		// 					LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -143,7 +143,7 @@ func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-01-01-preview/WebPubSubPrivateEndpointConnections_Update.json
+// Generated from example definition: 2025-12-01-preview/WebPubSubPrivateEndpointConnections_Update.json
 func ExamplePrivateEndpointConnectionsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,8 +158,8 @@ func ExamplePrivateEndpointConnectionsClient_Update() {
 		Properties: &armwebpubsub.PrivateEndpointConnectionProperties{
 			PrivateEndpoint: &armwebpubsub.PrivateEndpoint{},
 			PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
-				ActionsRequired: to.Ptr("None"),
 				Status:          to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
+				ActionsRequired: to.Ptr("None"),
 			},
 		},
 	}, nil)
@@ -171,29 +171,29 @@ func ExamplePrivateEndpointConnectionsClient_Update() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armwebpubsub.PrivateEndpointConnectionsClientUpdateResponse{
 	// 	PrivateEndpointConnection: armwebpubsub.PrivateEndpointConnection{
-	// 		Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
-	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
 	// 		Properties: &armwebpubsub.PrivateEndpointConnectionProperties{
-	// 			GroupIDs: []*string{
-	// 				to.Ptr("webpubsub"),
-	// 			},
+	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
 	// 			PrivateEndpoint: &armwebpubsub.PrivateEndpoint{
 	// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
 	// 			},
-	// 			PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
-	// 				ActionsRequired: to.Ptr("None"),
-	// 				Status: to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
+	// 			GroupIDs: []*string{
+	// 				to.Ptr("webpubsub"),
 	// 			},
-	// 			ProvisioningState: to.Ptr(armwebpubsub.ProvisioningStateSucceeded),
+	// 			PrivateLinkServiceConnectionState: &armwebpubsub.PrivateLinkServiceConnectionState{
+	// 				Status: to.Ptr(armwebpubsub.PrivateLinkServiceConnectionStatusApproved),
+	// 				ActionsRequired: to.Ptr("None"),
+	// 			},
 	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.SignalRService/WebPubSub/myWebPubSubService/privateEndpointConnections/mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+	// 		Name: to.Ptr("mywebpubsubservice.1fa229cd-bf3f-47f0-8c49-afb36723997e"),
+	// 		Type: to.Ptr("Microsoft.SignalRService/WebPubSub/privateEndpointConnections"),
 	// 		SystemData: &armwebpubsub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
 	// 			CreatedBy: to.Ptr("string"),
 	// 			CreatedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
+	// 			CreatedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
 	// 			LastModifiedBy: to.Ptr("string"),
 	// 			LastModifiedByType: to.Ptr(armwebpubsub.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2015, time.February, 3, 4, 5, 6, 0, time.UTC)),
 	// 		},
 	// 	},
 	// }

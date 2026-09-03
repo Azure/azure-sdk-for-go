@@ -8,6 +8,7 @@
 
 ### Bugs Fixed
 
+* Fixed CRLF injection vulnerability in Blob Batch subrequest serialization. Header values containing CR or LF characters are now rejected before serialization, preventing header injection in batch requests.
 * Fixed WASM compilation by using heap-allocated buffers on JS targets.
 
 ### Other Changes

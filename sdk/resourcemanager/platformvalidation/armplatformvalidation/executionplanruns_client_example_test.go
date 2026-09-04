@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01-preview/ExecutionPlanRuns_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ExecutionPlanRuns_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleExecutionPlanRunsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleExecutionPlanRunsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01-preview/ExecutionPlanRuns_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ExecutionPlanRuns_Delete_MaximumSet_Gen.json
 func ExampleExecutionPlanRunsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleExecutionPlanRunsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01-preview/ExecutionPlanRuns_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ExecutionPlanRuns_Get_MaximumSet_Gen.json
 func ExampleExecutionPlanRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleExecutionPlanRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01-preview/ExecutionPlanRuns_ListByExecutionPlan_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ExecutionPlanRuns_ListByExecutionPlan_MaximumSet_Gen.json
 func ExampleExecutionPlanRunsClient_NewListByExecutionPlanPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01-preview/CloudValidations_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudValidations_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleCloudValidationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleCloudValidationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01-preview/CloudValidations_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudValidations_Delete_MaximumSet_Gen.json
 func ExampleCloudValidationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -97,7 +97,7 @@ func ExampleCloudValidationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01-preview/CloudValidations_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudValidations_Get_MaximumSet_Gen.json
 func ExampleCloudValidationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleCloudValidationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01-preview/CloudValidations_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudValidations_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleCloudValidationsClient_NewListByResourceGroupPager_cloudValidationsListByResourceGroupMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -209,7 +209,7 @@ func ExampleCloudValidationsClient_NewListByResourceGroupPager_cloudValidationsL
 	}
 }
 
-// Generated from example definition: 2026-07-01-preview/CloudValidations_ListByResourceGroup_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudValidations_ListByResourceGroup_MinimumSet_Gen.json
 func ExampleCloudValidationsClient_NewListByResourceGroupPager_cloudValidationsListByResourceGroupMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleCloudValidationsClient_NewListByResourceGroupPager_cloudValidationsL
 	}
 }
 
-// Generated from example definition: 2026-07-01-preview/CloudValidations_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudValidations_ListBySubscription_MaximumSet_Gen.json
 func ExampleCloudValidationsClient_NewListBySubscriptionPager_cloudValidationsListBySubscriptionMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,7 +307,7 @@ func ExampleCloudValidationsClient_NewListBySubscriptionPager_cloudValidationsLi
 	}
 }
 
-// Generated from example definition: 2026-07-01-preview/CloudValidations_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudValidations_ListBySubscription_MinimumSet_Gen.json
 func ExampleCloudValidationsClient_NewListBySubscriptionPager_cloudValidationsListBySubscriptionMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -344,7 +344,7 @@ func ExampleCloudValidationsClient_NewListBySubscriptionPager_cloudValidationsLi
 	}
 }
 
-// Generated from example definition: 2026-07-01-preview/CloudValidations_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/CloudValidations_Update_MaximumSet_Gen.json
 func ExampleCloudValidationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

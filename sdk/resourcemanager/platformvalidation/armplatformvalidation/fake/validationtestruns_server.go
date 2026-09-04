@@ -21,14 +21,6 @@ import (
 
 // ValidationTestRunsServer is a fake server for instances of the armplatformvalidation.ValidationTestRunsClient type.
 type ValidationTestRunsServer struct {
-	// BeginCreateOrUpdate is the fake for method ValidationTestRunsClient.BeginCreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, executionPlanRunName string, validationTestRunName string, resource armplatformvalidation.ValidationTestRun, options *armplatformvalidation.ValidationTestRunsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armplatformvalidation.ValidationTestRunsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
-	// BeginDelete is the fake for method ValidationTestRunsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, executionPlanRunName string, validationTestRunName string, options *armplatformvalidation.ValidationTestRunsClientBeginDeleteOptions) (resp azfake.PollerResponder[armplatformvalidation.ValidationTestRunsClientDeleteResponse], errResp azfake.ErrorResponder)
-
 	// Get is the fake for method ValidationTestRunsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, executionPlanRunName string, validationTestRunName string, options *armplatformvalidation.ValidationTestRunsClientGetOptions) (resp azfake.Responder[armplatformvalidation.ValidationTestRunsClientGetResponse], errResp azfake.ErrorResponder)
@@ -44,8 +36,6 @@ type ValidationTestRunsServer struct {
 func NewValidationTestRunsServerTransport(srv *ValidationTestRunsServer) *ValidationTestRunsServerTransport {
 	return &ValidationTestRunsServerTransport{
 		srv:                            srv,
-		beginCreateOrUpdate:            newTracker[azfake.PollerResponder[armplatformvalidation.ValidationTestRunsClientCreateOrUpdateResponse]](),
-		beginDelete:                    newTracker[azfake.PollerResponder[armplatformvalidation.ValidationTestRunsClientDeleteResponse]](),
 		newListByExecutionPlanRunPager: newTracker[azfake.PagerResponder[armplatformvalidation.ValidationTestRunsClientListByExecutionPlanRunResponse]](),
 	}
 }
@@ -54,8 +44,6 @@ func NewValidationTestRunsServerTransport(srv *ValidationTestRunsServer) *Valida
 // Don't use this type directly, use NewValidationTestRunsServerTransport instead.
 type ValidationTestRunsServerTransport struct {
 	srv                            *ValidationTestRunsServer
-	beginCreateOrUpdate            *tracker[azfake.PollerResponder[armplatformvalidation.ValidationTestRunsClientCreateOrUpdateResponse]]
-	beginDelete                    *tracker[azfake.PollerResponder[armplatformvalidation.ValidationTestRunsClientDeleteResponse]]
 	newListByExecutionPlanRunPager *tracker[azfake.PagerResponder[armplatformvalidation.ValidationTestRunsClientListByExecutionPlanRunResponse]]
 }
 
@@ -80,10 +68,6 @@ func (v *ValidationTestRunsServerTransport) dispatchToMethodFake(req *http.Reque
 		}
 		if !intercepted {
 			switch method {
-			case "ValidationTestRunsClient.BeginCreateOrUpdate":
-				res.resp, res.err = v.dispatchBeginCreateOrUpdate(req)
-			case "ValidationTestRunsClient.BeginDelete":
-				res.resp, res.err = v.dispatchBeginDelete(req)
 			case "ValidationTestRunsClient.Get":
 				res.resp, res.err = v.dispatchGet(req)
 			case "ValidationTestRunsClient.NewListByExecutionPlanRunPager":
@@ -102,122 +86,6 @@ func (v *ValidationTestRunsServerTransport) dispatchToMethodFake(req *http.Reque
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (v *ValidationTestRunsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
-	}
-	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
-	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PlatformValidation/cloudValidations/(?P<cloudValidationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validationExecutionPlans/(?P<validationExecutionPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executionPlanRuns/(?P<executionPlanRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validationTestRuns/(?P<validationTestRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 7 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armplatformvalidation.ValidationTestRun](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudValidationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudValidationName")])
-		if err != nil {
-			return nil, err
-		}
-		validationExecutionPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("validationExecutionPlanName")])
-		if err != nil {
-			return nil, err
-		}
-		executionPlanRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("executionPlanRunName")])
-		if err != nil {
-			return nil, err
-		}
-		validationTestRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("validationTestRunName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, cloudValidationNameParam, validationExecutionPlanNameParam, executionPlanRunNameParam, validationTestRunNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginCreateOrUpdate = &respr
-		v.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		v.beginCreateOrUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginCreateOrUpdate) {
-		v.beginCreateOrUpdate.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (v *ValidationTestRunsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginDelete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
-	}
-	beginDelete := v.beginDelete.get(req)
-	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.PlatformValidation/cloudValidations/(?P<cloudValidationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validationExecutionPlans/(?P<validationExecutionPlanName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executionPlanRuns/(?P<executionPlanRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validationTestRuns/(?P<validationTestRunName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 7 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		cloudValidationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("cloudValidationName")])
-		if err != nil {
-			return nil, err
-		}
-		validationExecutionPlanNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("validationExecutionPlanName")])
-		if err != nil {
-			return nil, err
-		}
-		executionPlanRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("executionPlanRunName")])
-		if err != nil {
-			return nil, err
-		}
-		validationTestRunNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("validationTestRunName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginDelete(req.Context(), resourceGroupNameParam, cloudValidationNameParam, validationExecutionPlanNameParam, executionPlanRunNameParam, validationTestRunNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginDelete = &respr
-		v.beginDelete.add(req, beginDelete)
-	}
-
-	resp, err := server.PollerResponderNext(beginDelete, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		v.beginDelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginDelete) {
-		v.beginDelete.remove(req)
-	}
-
-	return resp, nil
 }
 
 func (v *ValidationTestRunsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {

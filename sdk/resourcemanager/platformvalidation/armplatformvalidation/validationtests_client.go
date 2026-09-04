@@ -19,7 +19,7 @@ import (
 // ValidationTestsClient contains the methods for the ValidationTests group.
 // Don't use this type directly, use NewValidationTestsClient() instead.
 //
-// Generated from API version 2026-07-01-preview
+// Generated from API version 2026-08-01-preview
 type ValidationTestsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -78,7 +78,7 @@ func (client *ValidationTestsClient) getCreateRequest(ctx context.Context, valid
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -147,7 +147,7 @@ func (client *ValidationTestsClient) listBySubscriptionCreateRequest(ctx context
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20260701Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

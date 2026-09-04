@@ -1430,7 +1430,6 @@ func (v ValidationTestRunProperties) MarshalJSON() ([]byte, error) {
 	populateTime[datetime.RFC3339](objectMap, "reportedAt", v.ReportedAt, true)
 	populateTime[datetime.RFC3339](objectMap, "startedAt", v.StartedAt, true)
 	populate(objectMap, "status", v.Status)
-	populate(objectMap, "testCategoryIds", v.TestCategoryIDs)
 	populate(objectMap, "testId", v.TestID)
 	return json.Marshal(objectMap)
 }
@@ -1470,9 +1469,6 @@ func (v *ValidationTestRunProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &v.Status)
-			delete(rawMsg, key)
-		case "testCategoryIds":
-			err = unpopulate(val, "TestCategoryIDs", &v.TestCategoryIDs)
 			delete(rawMsg, key)
 		case "testId":
 			err = unpopulate(val, "TestID", &v.TestID)

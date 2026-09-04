@@ -115,17 +115,6 @@ type ValidationTestCategoriesClientListBySubscriptionResponse struct {
 	ValidationTestCategoryListResult
 }
 
-// ValidationTestRunsClientCreateOrUpdateResponse contains the response from method ValidationTestRunsClient.BeginCreateOrUpdate.
-type ValidationTestRunsClientCreateOrUpdateResponse struct {
-	// Validation Test Run represents execution instance(s) of a Validation Test instance under execution plan.
-	ValidationTestRun
-}
-
-// ValidationTestRunsClientDeleteResponse contains the response from method ValidationTestRunsClient.BeginDelete.
-type ValidationTestRunsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
 // ValidationTestRunsClientGetResponse contains the response from method ValidationTestRunsClient.Get.
 type ValidationTestRunsClientGetResponse struct {
 	// Validation Test Run represents execution instance(s) of a Validation Test instance under execution plan.

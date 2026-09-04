@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01-preview/ValidationExecutionPlans_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ValidationExecutionPlans_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleValidationExecutionPlansClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -73,7 +73,7 @@ func ExampleValidationExecutionPlansClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01-preview/ValidationExecutionPlans_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ValidationExecutionPlans_Delete_MaximumSet_Gen.json
 func ExampleValidationExecutionPlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -94,7 +94,7 @@ func ExampleValidationExecutionPlansClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01-preview/ValidationExecutionPlans_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ValidationExecutionPlans_Get_MaximumSet_Gen.json
 func ExampleValidationExecutionPlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleValidationExecutionPlansClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01-preview/ValidationExecutionPlans_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ValidationExecutionPlans_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleValidationExecutionPlansClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleValidationExecutionPlansClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01-preview/ValidationExecutionPlans_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ValidationExecutionPlans_Update_MaximumSet_Gen.json
 func ExampleValidationExecutionPlansClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

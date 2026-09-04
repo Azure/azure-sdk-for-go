@@ -19,7 +19,7 @@ import (
 // ValidationTestRunsClient contains the methods for the ValidationTestRuns group.
 // Don't use this type directly, use NewValidationTestRunsClient() instead.
 //
-// Generated from API version 2026-07-01-preview
+// Generated from API version 2026-08-01-preview
 type ValidationTestRunsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -39,182 +39,6 @@ func NewValidationTestRunsClient(subscriptionID string, credential azcore.TokenC
 		internal:       cl,
 	}
 	return client, nil
-}
-
-// BeginCreateOrUpdate - Create or update a validation test run
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - cloudValidationName - The name of the CloudValidation
-//   - validationExecutionPlanName - The name of the ValidationExecutionPlan
-//   - executionPlanRunName - The name of the ExecutionPlanRun
-//   - validationTestRunName - The name of the ValidationTestRun
-//   - resource - Resource create parameters.
-//   - options - ValidationTestRunsClientBeginCreateOrUpdateOptions contains the optional parameters for the ValidationTestRunsClient.BeginCreateOrUpdate
-//     method.
-func (client *ValidationTestRunsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, executionPlanRunName string, validationTestRunName string, resource ValidationTestRun, options *ValidationTestRunsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ValidationTestRunsClientCreateOrUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName, validationTestRunName, resource, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ValidationTestRunsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ValidationTestRunsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdate - Create or update a validation test run
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ValidationTestRunsClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, executionPlanRunName string, validationTestRunName string, resource ValidationTestRun, options *ValidationTestRunsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ValidationTestRunsClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName, validationTestRunName, resource, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ValidationTestRunsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, executionPlanRunName string, validationTestRunName string, resource ValidationTestRun, _ *ValidationTestRunsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PlatformValidation/cloudValidations/{cloudValidationName}/validationExecutionPlans/{validationExecutionPlanName}/executionPlanRuns/{executionPlanRunName}/validationTestRuns/{validationTestRunName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudValidationName == "" {
-		return nil, errors.New("parameter cloudValidationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudValidationName}", url.PathEscape(cloudValidationName))
-	if validationExecutionPlanName == "" {
-		return nil, errors.New("parameter validationExecutionPlanName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{validationExecutionPlanName}", url.PathEscape(validationExecutionPlanName))
-	if executionPlanRunName == "" {
-		return nil, errors.New("parameter executionPlanRunName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{executionPlanRunName}", url.PathEscape(executionPlanRunName))
-	if validationTestRunName == "" {
-		return nil, errors.New("parameter validationTestRunName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{validationTestRunName}", url.PathEscape(validationTestRunName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginDelete - Delete a validation test run
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - cloudValidationName - The name of the CloudValidation
-//   - validationExecutionPlanName - The name of the ValidationExecutionPlan
-//   - executionPlanRunName - The name of the ExecutionPlanRun
-//   - validationTestRunName - The name of the ValidationTestRun
-//   - options - ValidationTestRunsClientBeginDeleteOptions contains the optional parameters for the ValidationTestRunsClient.BeginDelete
-//     method.
-func (client *ValidationTestRunsClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, executionPlanRunName string, validationTestRunName string, options *ValidationTestRunsClientBeginDeleteOptions) (*runtime.Poller[ValidationTestRunsClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName, validationTestRunName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ValidationTestRunsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ValidationTestRunsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Delete a validation test run
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ValidationTestRunsClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, executionPlanRunName string, validationTestRunName string, options *ValidationTestRunsClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ValidationTestRunsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, cloudValidationName, validationExecutionPlanName, executionPlanRunName, validationTestRunName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *ValidationTestRunsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, executionPlanRunName string, validationTestRunName string, _ *ValidationTestRunsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PlatformValidation/cloudValidations/{cloudValidationName}/validationExecutionPlans/{validationExecutionPlanName}/executionPlanRuns/{executionPlanRunName}/validationTestRuns/{validationTestRunName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cloudValidationName == "" {
-		return nil, errors.New("parameter cloudValidationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cloudValidationName}", url.PathEscape(cloudValidationName))
-	if validationExecutionPlanName == "" {
-		return nil, errors.New("parameter validationExecutionPlanName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{validationExecutionPlanName}", url.PathEscape(validationExecutionPlanName))
-	if executionPlanRunName == "" {
-		return nil, errors.New("parameter executionPlanRunName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{executionPlanRunName}", url.PathEscape(executionPlanRunName))
-	if validationTestRunName == "" {
-		return nil, errors.New("parameter validationTestRunName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{validationTestRunName}", url.PathEscape(validationTestRunName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Get - Get a validation test run details
@@ -274,7 +98,7 @@ func (client *ValidationTestRunsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -360,7 +184,7 @@ func (client *ValidationTestRunsClient) listByExecutionPlanRunCreateRequest(ctx 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260701Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

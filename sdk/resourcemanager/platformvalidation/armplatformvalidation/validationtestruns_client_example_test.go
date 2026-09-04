@@ -6,102 +6,12 @@ package armplatformvalidation_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/platformvalidation/armplatformvalidation"
 	"log"
 )
 
-// Generated from example definition: 2026-07-01-preview/ValidationTestRuns_CreateOrUpdate_MaximumSet_Gen.json
-func ExampleValidationTestRunsClient_BeginCreateOrUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewValidationTestRunsClient().BeginCreateOrUpdate(ctx, "rgvalidate", "cvtest01", "veptest01", "veprun01", "vtrun01", armplatformvalidation.ValidationTestRun{
-		Properties: &armplatformvalidation.ValidationTestRunProperties{
-			TestID: to.Ptr("validation-test-001"),
-			TestCategoryIDs: []*string{
-				to.Ptr("cat-network"),
-				to.Ptr("cat-security"),
-			},
-			InputsJSON: to.Ptr("{\"region\":\"eastus\",\"sku\":\"standard\"}"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armplatformvalidation.ValidationTestRunsClientCreateOrUpdateResponse{
-	// 	ValidationTestRun: armplatformvalidation.ValidationTestRun{
-	// 		Properties: &armplatformvalidation.ValidationTestRunProperties{
-	// 			Status: to.Ptr(armplatformvalidation.ValidationTestRunStatusCompleted),
-	// 			ProvisioningState: to.Ptr(armplatformvalidation.ValidationTestRunProvisioningStateSucceeded),
-	// 			StartedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 25, 394000000, time.UTC)),
-	// 			ReportedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 53, 25, 394000000, time.UTC)),
-	// 			CompletedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 54, 25, 394000000, time.UTC)),
-	// 			TestID: to.Ptr("validation-test-001"),
-	// 			TestCategoryIDs: []*string{
-	// 				to.Ptr("cat-network"),
-	// 				to.Ptr("cat-security"),
-	// 			},
-	// 			InputsJSON: to.Ptr("{\"region\":\"eastus\",\"sku\":\"standard\"}"),
-	// 			PassDetails: []*armplatformvalidation.ValidationTestPassDetails{
-	// 				{
-	// 					ResultCode: to.Ptr("AllChecksPassed"),
-	// 					TestName: to.Ptr("ConnectivityTest"),
-	// 					ResultDetails: to.Ptr("All checks completed successfully."),
-	// 				},
-	// 			},
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/7BB14EC4-B6DC-4C0C-807F-C3562C790F07/resourceGroups/rgvalidate/providers/Microsoft.PlatformValidation/cloudValidations/cvtest01/validationExecutionPlans/veptest01/executionPlanRuns/veprun01/validationTestRuns/vtrun01"),
-	// 		Name: to.Ptr("vtrun01"),
-	// 		Type: to.Ptr("Microsoft.PlatformValidation/cloudValidations/validationExecutionPlans/executionPlanRuns/validationTestRuns"),
-	// 		SystemData: &armplatformvalidation.SystemData{
-	// 			CreatedBy: to.Ptr("user@example.com"),
-	// 			CreatedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 22, 926000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user@example.com"),
-	// 			LastModifiedByType: to.Ptr(armplatformvalidation.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 54, 25, 394000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-01-preview/ValidationTestRuns_Delete_MaximumSet_Gen.json
-func ExampleValidationTestRunsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armplatformvalidation.NewClientFactory("7BB14EC4-B6DC-4C0C-807F-C3562C790F07", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewValidationTestRunsClient().BeginDelete(ctx, "rgvalidate", "cvtest01", "veptest01", "veprun01", "vtrun01", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01-preview/ValidationTestRuns_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ValidationTestRuns_Get_MaximumSet_Gen.json
 func ExampleValidationTestRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,9 +38,6 @@ func ExampleValidationTestRunsClient_Get() {
 	// 			ReportedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 25, 394000000, time.UTC)),
 	// 			CompletedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 25, 394000000, time.UTC)),
 	// 			TestID: to.Ptr("qmkpbdngsyiheycligzqmn"),
-	// 			TestCategoryIDs: []*string{
-	// 				to.Ptr("qnevpbqydngoiqit"),
-	// 			},
 	// 			InputsJSON: to.Ptr("flnjygtgkshypkrektdq"),
 	// 			PassDetails: []*armplatformvalidation.ValidationTestPassDetails{
 	// 				{
@@ -785,7 +692,7 @@ func ExampleValidationTestRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01-preview/ValidationTestRuns_ListByExecutionPlanRun_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ValidationTestRuns_ListByExecutionPlanRun_MaximumSet_Gen.json
 func ExampleValidationTestRunsClient_NewListByExecutionPlanRunPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -818,9 +725,6 @@ func ExampleValidationTestRunsClient_NewListByExecutionPlanRunPager() {
 		// 					ReportedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 25, 394000000, time.UTC)),
 		// 					CompletedAt: to.Ptr(time.Date(2026, time.June, 1, 11, 52, 25, 394000000, time.UTC)),
 		// 					TestID: to.Ptr("qmkpbdngsyiheycligzqmn"),
-		// 					TestCategoryIDs: []*string{
-		// 						to.Ptr("qnevpbqydngoiqit"),
-		// 					},
 		// 					InputsJSON: to.Ptr("flnjygtgkshypkrektdq"),
 		// 					PassDetails: []*armplatformvalidation.ValidationTestPassDetails{
 		// 						{

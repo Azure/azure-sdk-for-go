@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01-preview/ValidationTests_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ValidationTests_Get_MaximumSet_Gen.json
 func ExampleValidationTestsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleValidationTestsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01-preview/ValidationTests_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ValidationTests_ListBySubscription_MaximumSet_Gen.json
 func ExampleValidationTestsClient_NewListBySubscriptionPager_validationTestsListBySubscriptionMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleValidationTestsClient_NewListBySubscriptionPager_validationTestsList
 	}
 }
 
-// Generated from example definition: 2026-07-01-preview/ValidationTests_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: 2026-08-01-preview/ValidationTests_ListBySubscription_MinimumSet_Gen.json
 func ExampleValidationTestsClient_NewListBySubscriptionPager_validationTestsListBySubscriptionMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

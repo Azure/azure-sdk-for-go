@@ -123,20 +123,6 @@ type ValidationTestCategoriesClientListBySubscriptionOptions struct {
 	Filter *string
 }
 
-// ValidationTestRunsClientBeginCreateOrUpdateOptions contains the optional parameters for the ValidationTestRunsClient.BeginCreateOrUpdate
-// method.
-type ValidationTestRunsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ValidationTestRunsClientBeginDeleteOptions contains the optional parameters for the ValidationTestRunsClient.BeginDelete
-// method.
-type ValidationTestRunsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // ValidationTestRunsClientGetOptions contains the optional parameters for the ValidationTestRunsClient.Get method.
 type ValidationTestRunsClientGetOptions struct {
 	// placeholder for future optional parameters

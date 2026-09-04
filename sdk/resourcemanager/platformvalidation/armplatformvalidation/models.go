@@ -600,10 +600,6 @@ type ValidationTestRunProperties struct {
 	// This value is returned as-is in get responses, so it must not contain credentials or other secrets.
 	InputsJSON *string
 
-	// The names of the validation test categories (ValidationTestCategory resource names, not ARM resource IDs) associated with
-	// this test run.
-	TestCategoryIDs []*string
-
 	// The name of the validation test (ValidationTest resource name, not an ARM resource ID) in the validation test catalog.
 	TestID *string
 

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/CreateOrUpdateSharedPrivateLinkResource.json
+// Generated from example definition: 2026-09-01-preview/CreateOrUpdateSharedPrivateLinkResource.json
 func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/DeleteSharedPrivateLinkResource.json
+// Generated from example definition: 2026-09-01-preview/DeleteSharedPrivateLinkResource.json
 func ExampleSharedPrivateLinkResourcesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleSharedPrivateLinkResourcesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/GetSharedPrivateLinkResource.json
+// Generated from example definition: 2026-09-01-preview/GetSharedPrivateLinkResource.json
 func ExampleSharedPrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleSharedPrivateLinkResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/ListSharedPrivateLinkResourcesByService.json
+// Generated from example definition: 2026-09-01-preview/ListSharedPrivateLinkResourcesByService.json
 func ExampleSharedPrivateLinkResourcesClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

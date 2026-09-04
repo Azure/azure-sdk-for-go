@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/ListSupportedPrivateLinkResources.json
+// Generated from example definition: 2026-09-01-preview/ListSupportedPrivateLinkResources.json
 func ExamplePrivateLinkResourcesClient_NewListSupportedPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -1761,6 +1761,7 @@ func (s *ContainerUnrecordedTestsSuite) TestSetNullAccessPolicy() {
 }
 
 func (s *ContainerRecordedTestsSuite) TestContainerGetSetPermissionsMultiplePolicies() {
+	// NOTE: this is temporary and should be removed when tests are re-recorded
 	require.NoError(s.T(), recording.SetDefaultMatcher(s.T(),
 		&recording.SetDefaultMatcherOptions{
 			CompareBodies:   to.Ptr(false),

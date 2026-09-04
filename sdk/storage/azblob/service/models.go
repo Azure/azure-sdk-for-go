@@ -352,6 +352,7 @@ func (o *BatchDeleteOptions) format() *generated.BlobClientDeleteOptions {
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 
@@ -377,6 +378,9 @@ func (o *BatchSetTierOptions) format() *generated.BlobClientSetTierOptions {
 	}
 	if o.AccessConditions != nil && o.AccessConditions.LeaseAccessConditions != nil {
 		opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+	}
+	if o.AccessConditions != nil && o.AccessConditions.ModifiedAccessConditions != nil {
+		opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 	}
 
 	return opts

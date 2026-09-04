@@ -70,6 +70,7 @@ func (o *CreateOptions) format() *generated.AppendBlobClientCreateOptions {
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 	if o.HTTPHeaders != nil {
@@ -128,6 +129,7 @@ func (o *AppendBlockOptions) format() *generated.AppendBlobClientAppendBlockOpti
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 	if o.CPKInfo != nil {
@@ -194,6 +196,7 @@ func (o *AppendBlockFromURLOptions) format() *generated.AppendBlobClientAppendBl
 			options.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			options.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			options.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			options.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 	if o.CPKInfo != nil {
@@ -234,7 +237,7 @@ func (o *SealOptions) format() *generated.AppendBlobClientSealOptions {
 	if o == nil {
 		return nil
 	}
-	// NOTE: no mapping for o.AppendPositionAccessConditions.MaxSize
+	// MaxSize is intentionally not mapped: the Seal Append Blob API does not support a conditional MaxSize.
 
 	opts := &generated.AppendBlobClientSealOptions{}
 	if o.AppendPositionAccessConditions != nil {

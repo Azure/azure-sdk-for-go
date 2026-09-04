@@ -143,7 +143,7 @@ func (o *DeleteOptions) format() *generated.ContainerClientDeleteOptions {
 		}
 	}
 
-	// Note: missing o.AccessConditions.ModifiedAccessConditions.IfMatch and o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
+	// IfMatch and IfNoneMatch are intentionally not mapped: Delete Container supports only If-Modified-Since and If-Unmodified-Since.
 	return opts
 }
 
@@ -388,7 +388,7 @@ func (o *SetMetadataOptions) format() *generated.ContainerClientSetMetadataOptio
 		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
 	}
 
-	// Note: missing mapping for most of o.ModifiedAccessConditions
+	// Only IfModifiedSince is mapped: Set Container Metadata does not support the other conditional headers.
 	return opts
 }
 
@@ -441,7 +441,7 @@ func (o *SetAccessPolicyOptions) format() *generated.ContainerClientSetAccessPol
 		}
 	}
 
-	// Note: missing mapping for o.AccessConditions.ModifiedAccessConditions.IfMatch,  o.AccessConditions.ModifiedAccessConditions.IfNoneMatch,
+	// IfMatch and IfNoneMatch are intentionally not mapped: Set Container ACL supports only If-Modified-Since and If-Unmodified-Since.
 	return opts
 }
 
@@ -512,6 +512,7 @@ func (o *BatchDeleteOptions) format() *generated.BlobClientDeleteOptions {
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 
@@ -539,7 +540,10 @@ func (o *BatchSetTierOptions) format() *generated.BlobClientSetTierOptions {
 		opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
 	}
 
-	// Note: missing mapping for o.AccessConditions.ModifiedAccessConditions
+	if o.AccessConditions != nil && o.AccessConditions.ModifiedAccessConditions != nil {
+		opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
+	}
+
 	return opts
 }
 

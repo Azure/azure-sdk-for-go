@@ -114,7 +114,7 @@ func (o *DownloadStreamOptions) format() *generated.BlobClientDownloadOptions {
 		}
 	}
 
-	// Note: no mapping for o.CPKScopeInfo
+	// CPKScopeInfo is intentionally not mapped: the Download Blob API does not support an encryption scope.
 
 	opts := &generated.BlobClientDownloadOptions{
 		RangeGetContentMD5: o.RangeGetContentMD5,
@@ -130,6 +130,7 @@ func (o *DownloadStreamOptions) format() *generated.BlobClientDownloadOptions {
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 	if o.CPKInfo != nil {
@@ -305,6 +306,7 @@ func (o *DeleteOptions) format() *generated.BlobClientDeleteOptions {
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 	if o.AccessTierConditions != nil {
@@ -348,8 +350,13 @@ func (o *SetTierOptions) format() *generated.BlobClientSetTierOptions {
 	opts := &generated.BlobClientSetTierOptions{
 		RehydratePriority: o.RehydratePriority,
 	}
-	if o.AccessConditions != nil && o.AccessConditions.LeaseAccessConditions != nil {
-		opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+	if o.AccessConditions != nil {
+		if o.AccessConditions.LeaseAccessConditions != nil {
+			opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
+		}
+		if o.AccessConditions.ModifiedAccessConditions != nil {
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
+		}
 	}
 
 	return opts
@@ -378,6 +385,7 @@ func (o *GetPropertiesOptions) format() *generated.BlobClientGetPropertiesOption
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 	if o.CPKInfo != nil {
@@ -417,6 +425,7 @@ func (o *SetHTTPHeadersOptions) format(httpHeaders HTTPHeaders) *generated.BlobC
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 
@@ -446,6 +455,7 @@ func (o *SetMetadataOptions) format(metadata map[string]*string) *generated.Blob
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 	if o.CPKInfo != nil {
@@ -485,6 +495,7 @@ func (o *CreateSnapshotOptions) format() *generated.BlobClientCreateSnapshotOpti
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 	if o.CPKInfo != nil {
@@ -548,6 +559,7 @@ func (o *StartCopyFromURLOptions) format() *generated.BlobClientStartCopyFromURL
 		opts.SourceIfModifiedSince = o.SourceModifiedAccessConditions.SourceIfModifiedSince
 		opts.SourceIfNoneMatch = o.SourceModifiedAccessConditions.SourceIfNoneMatch
 		opts.SourceIfUnmodifiedSince = o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince
+		opts.SourceIfTags = o.SourceModifiedAccessConditions.SourceIfTags
 	}
 	if o.AccessConditions != nil {
 		if o.AccessConditions.LeaseAccessConditions != nil {
@@ -558,6 +570,7 @@ func (o *StartCopyFromURLOptions) format() *generated.BlobClientStartCopyFromURL
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 
@@ -614,6 +627,9 @@ func (o *SetTagsOptions) format() *generated.BlobClientSetTagsOptions {
 	if o.AccessConditions != nil && o.AccessConditions.LeaseAccessConditions != nil {
 		opts.LeaseID = o.AccessConditions.LeaseAccessConditions.LeaseID
 	}
+	if o.AccessConditions != nil && o.AccessConditions.ModifiedAccessConditions != nil {
+		opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
+	}
 	if o.BlobModifiedAccessConditions != nil {
 		opts.IfMatch = o.BlobModifiedAccessConditions.IfMatch
 		opts.IfModifiedSince = o.BlobModifiedAccessConditions.IfModifiedSince
@@ -657,6 +673,7 @@ func (o *GetTagsOptions) format() *generated.BlobClientGetTagsOptions {
 			opts.IfModifiedSince = o.BlobAccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.BlobAccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.BlobAccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.BlobAccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 
@@ -794,6 +811,7 @@ func (o *CopyFromURLOptions) format() *generated.BlobClientCopyFromURLOptions {
 			opts.IfModifiedSince = o.BlobAccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.BlobAccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.BlobAccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.BlobAccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 	if o.CPKScopeInfo != nil {

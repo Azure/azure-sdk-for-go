@@ -72,6 +72,7 @@ func (o *UploadOptions) format() *generated.BlockBlobClientUploadOptions {
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 	if o.CPKInfo != nil {
@@ -156,6 +157,7 @@ func (o *UploadBlobFromURLOptions) format() *generated.BlockBlobClientUploadBlob
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 	if o.CPKInfo != nil {
@@ -179,6 +181,7 @@ func (o *UploadBlobFromURLOptions) format() *generated.BlockBlobClientUploadBlob
 		opts.SourceIfModifiedSince = o.SourceModifiedAccessConditions.SourceIfModifiedSince
 		opts.SourceIfNoneMatch = o.SourceModifiedAccessConditions.SourceIfNoneMatch
 		opts.SourceIfUnmodifiedSince = o.SourceModifiedAccessConditions.SourceIfUnmodifiedSince
+		opts.SourceIfTags = o.SourceModifiedAccessConditions.SourceIfTags
 	}
 	if o.SourceCustomerProvidedKey != nil {
 		opts.SourceEncryptionAlgorithm = o.SourceCustomerProvidedKey.SourceEncryptionAlgorithm
@@ -351,6 +354,7 @@ func (o *CommitBlockListOptions) format() *generated.BlockBlobClientCommitBlockL
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 	if o.CPKInfo != nil {
@@ -377,7 +381,8 @@ func (o *GetBlockListOptions) format() *generated.BlockBlobClientGetBlockListOpt
 	if o == nil {
 		return nil
 	}
-	// Note: the generated layer only exposes IfTags from ModifiedAccessConditions for this operation.
+
+	// Get Block List supports only IfTags (x-ms-if-tags) from ModifiedAccessConditions; no other conditional headers apply.
 
 	opts := &generated.BlockBlobClientGetBlockListOptions{
 		Snapshot: o.Snapshot,

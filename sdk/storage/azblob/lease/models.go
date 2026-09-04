@@ -31,6 +31,7 @@ func (o *BlobAcquireOptions) format(leaseID *string) *generated.BlobClientAcquir
 		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
 		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
 		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfTags = o.ModifiedAccessConditions.IfTags
 	}
 
 	return opts
@@ -65,6 +66,7 @@ func (o *BlobBreakOptions) format() *generated.BlobClientBreakLeaseOptions {
 		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
 		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
 		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfTags = o.ModifiedAccessConditions.IfTags
 	}
 
 	return opts
@@ -86,6 +88,7 @@ func (o *BlobChangeOptions) format() *generated.BlobClientChangeLeaseOptions {
 		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
 		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
 		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfTags = o.ModifiedAccessConditions.IfTags
 	}
 
 	return opts
@@ -107,6 +110,7 @@ func (o *BlobRenewOptions) format() *generated.BlobClientRenewLeaseOptions {
 		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
 		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
 		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfTags = o.ModifiedAccessConditions.IfTags
 	}
 
 	return opts
@@ -128,6 +132,7 @@ func (o *BlobReleaseOptions) format() *generated.BlobClientReleaseLeaseOptions {
 		opts.IfModifiedSince = o.ModifiedAccessConditions.IfModifiedSince
 		opts.IfNoneMatch = o.ModifiedAccessConditions.IfNoneMatch
 		opts.IfUnmodifiedSince = o.ModifiedAccessConditions.IfUnmodifiedSince
+		opts.IfTags = o.ModifiedAccessConditions.IfTags
 	}
 
 	return opts
@@ -139,7 +144,7 @@ type ContainerAcquireOptions struct {
 }
 
 func (o *ContainerAcquireOptions) format(leaseID *string) *generated.ContainerClientAcquireLeaseOptions {
-	// Note: missing mapping for o.ModifiedAccessConditions.IfMatch, o.ModifiedAccessConditions.IfNoneMatch
+	// IfMatch and IfNoneMatch are intentionally not mapped: Lease Container supports only If-Modified-Since and If-Unmodified-Since.
 	opts := &generated.ContainerClientAcquireLeaseOptions{
 		ProposedLeaseID: leaseID,
 	}
@@ -172,7 +177,7 @@ func (o *ContainerBreakOptions) format() *generated.ContainerClientBreakLeaseOpt
 		period = leasePeriodPointer(*o.BreakPeriod)
 	}
 
-	// Note: missing mapping for o.ModifiedAccessConditions.IfMatch, o.ModifiedAccessConditions.IfNoneMatch
+	// IfMatch and IfNoneMatch are intentionally not mapped: Lease Container supports only If-Modified-Since and If-Unmodified-Since.
 	opts := &generated.ContainerClientBreakLeaseOptions{
 		BreakPeriod: period,
 	}
@@ -193,7 +198,7 @@ func (o *ContainerChangeOptions) format() *generated.ContainerClientChangeLeaseO
 	if o == nil {
 		return nil
 	}
-	// Note: missing mapping for o.ModifiedAccessConditions.IfMatch, o.ModifiedAccessConditions.IfNoneMatch
+	// IfMatch and IfNoneMatch are intentionally not mapped: Lease Container supports only If-Modified-Since and If-Unmodified-Since.
 
 	opts := &generated.ContainerClientChangeLeaseOptions{}
 	if o.ModifiedAccessConditions != nil {
@@ -213,7 +218,7 @@ func (o *ContainerRenewOptions) format() *generated.ContainerClientRenewLeaseOpt
 	if o == nil {
 		return nil
 	}
-	// Note: missing mapping for o.ModifiedAccessConditions.IfMatch, o.ModifiedAccessConditions.IfNoneMatch
+	// IfMatch and IfNoneMatch are intentionally not mapped: Lease Container supports only If-Modified-Since and If-Unmodified-Since.
 
 	opts := &generated.ContainerClientRenewLeaseOptions{}
 	if o.ModifiedAccessConditions != nil {
@@ -233,7 +238,7 @@ func (o *ContainerReleaseOptions) format() *generated.ContainerClientReleaseLeas
 	if o == nil {
 		return nil
 	}
-	// Note: missing mapping for o.ModifiedAccessConditions.IfMatch, o.ModifiedAccessConditions.IfNoneMatch
+	// IfMatch and IfNoneMatch are intentionally not mapped: Lease Container supports only If-Modified-Since and If-Unmodified-Since.
 
 	opts := &generated.ContainerClientReleaseLeaseOptions{}
 	if o.ModifiedAccessConditions != nil {

@@ -103,6 +103,7 @@ func (o *CreateOptions) format() *generated.PageBlobClientCreateOptions {
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 
@@ -151,6 +152,7 @@ func (o *UploadPagesOptions) format() *generated.PageBlobClientUploadPagesOption
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 
@@ -220,6 +222,7 @@ func (o *UploadPagesFromURLOptions) format() *generated.PageBlobClientUploadPage
 			options.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			options.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			options.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			options.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 	if o.SourceCustomerProvidedKey != nil {
@@ -273,6 +276,7 @@ func (o *ClearPagesOptions) format() *generated.PageBlobClientClearPagesOptions 
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 
@@ -330,6 +334,7 @@ func (o *GetPageRangesOptions) format() *generated.PageBlobClientGetPageRangesOp
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 
@@ -395,6 +400,7 @@ func (o *GetPageRangesDiffOptions) format() *generated.PageBlobClientGetPageRang
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 
@@ -434,6 +440,7 @@ func (o *ResizeOptions) format() *generated.PageBlobClientResizeOptions {
 			opts.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			opts.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			opts.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			opts.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 
@@ -468,6 +475,7 @@ func (o *UpdateSequenceNumberOptions) format() *generated.PageBlobClientUpdateSe
 			options.IfModifiedSince = o.AccessConditions.ModifiedAccessConditions.IfModifiedSince
 			options.IfNoneMatch = o.AccessConditions.ModifiedAccessConditions.IfNoneMatch
 			options.IfUnmodifiedSince = o.AccessConditions.ModifiedAccessConditions.IfUnmodifiedSince
+			options.IfTags = o.AccessConditions.ModifiedAccessConditions.IfTags
 		}
 	}
 

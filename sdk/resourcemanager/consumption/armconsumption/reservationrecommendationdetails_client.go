@@ -18,7 +18,7 @@ import (
 // ReservationRecommendationDetailsClient contains the methods for the ReservationRecommendationDetails group.
 // Don't use this type directly, use NewReservationRecommendationDetailsClient() instead.
 //
-// Generated from API version 2024-08-01
+// Generated from API version 2026-06-01
 type ReservationRecommendationDetailsClient struct {
 	internal *arm.Client
 }
@@ -83,8 +83,11 @@ func (client *ReservationRecommendationDetailsClient) getCreateRequest(ctx conte
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}
-	reqQP.Set("api-version", version20240801)
+	reqQP.Set("api-version", version20260601)
 	reqQP.Set("lookBackPeriod", string(lookBackPeriod))
+	if options != nil && options.ManagementGroupID != nil {
+		reqQP.Set("managementGroupId", *options.ManagementGroupID)
+	}
 	reqQP.Set("product", product)
 	reqQP.Set("region", region)
 	reqQP.Set("scope", string(scope))

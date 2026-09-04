@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/EAPriceSheetForBillingPeriod.json
+// Generated from example definition: 2026-06-01/EAPriceSheetForBillingPeriod.json
 func ExamplePriceSheetClient_BeginDownloadByBillingAccountPeriod() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -45,7 +45,7 @@ func ExamplePriceSheetClient_BeginDownloadByBillingAccountPeriod() {
 	// }
 }
 
-// Generated from example definition: 2024-08-01/PriceSheet.json
+// Generated from example definition: 2026-06-01/PriceSheet.json
 func ExamplePriceSheetClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExamplePriceSheetClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-08-01/PriceSheetExpand.json
+// Generated from example definition: 2026-06-01/PriceSheetExpand.json
 func ExamplePriceSheetClient_GetByBillingPeriod_priceSheetExpand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +143,7 @@ func ExamplePriceSheetClient_GetByBillingPeriod_priceSheetExpand() {
 	// }
 }
 
-// Generated from example definition: 2024-08-01/PriceSheetForBillingPeriod.json
+// Generated from example definition: 2026-06-01/PriceSheetForBillingPeriod.json
 func ExamplePriceSheetClient_GetByBillingPeriod_priceSheetForBillingPeriod() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

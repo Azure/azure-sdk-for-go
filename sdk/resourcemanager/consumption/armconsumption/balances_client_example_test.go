@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/BalancesByBillingAccount.json
+// Generated from example definition: 2026-06-01/BalancesByBillingAccount.json
 func ExampleBalancesClient_GetByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleBalancesClient_GetByBillingAccount() {
 	// }
 }
 
-// Generated from example definition: 2024-08-01/BalancesByBillingAccountForBillingPeriod.json
+// Generated from example definition: 2026-06-01/BalancesByBillingAccountForBillingPeriod.json
 func ExampleBalancesClient_GetForBillingPeriodByBillingAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

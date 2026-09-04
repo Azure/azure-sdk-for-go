@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaces_CheckNameAvailability.json
+// Generated from example definition: 2026-08-01-preview/PlaywrightWorkspaces_CheckNameAvailability.json
 func ExampleWorkspacesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func ExampleWorkspacesClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaces_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01-preview/PlaywrightWorkspaces_CreateOrUpdate.json
 func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,6 +62,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 			LocalAuth:        to.Ptr(armplaywright.EnablementStatusEnabled),
 			Reporting:        to.Ptr(armplaywright.EnablementStatusEnabled),
 			StorageURI:       to.Ptr("https://examplestorageaccount.blob.core.windows.net"),
+			SubnetID:         to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
 		},
 	}, nil)
 	if err != nil {
@@ -84,6 +85,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	// 			Reporting: to.Ptr(armplaywright.EnablementStatusEnabled),
 	// 			WorkspaceID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			StorageURI: to.Ptr("https://examplestorageaccount.blob.core.windows.net"),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
 	// 			ProvisioningState: to.Ptr(armplaywright.ProvisioningStateSucceeded),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.LoadTestService/PlaywrightWorkspaces/myWorkspace"),
@@ -104,7 +106,7 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaces_Delete.json
+// Generated from example definition: 2026-08-01-preview/PlaywrightWorkspaces_Delete.json
 func ExampleWorkspacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +127,7 @@ func ExampleWorkspacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaces_Get.json
+// Generated from example definition: 2026-08-01-preview/PlaywrightWorkspaces_Get.json
 func ExampleWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,6 +155,7 @@ func ExampleWorkspacesClient_Get() {
 	// 			Reporting: to.Ptr(armplaywright.EnablementStatusEnabled),
 	// 			WorkspaceID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			StorageURI: to.Ptr("https://examplestorageaccount.blob.core.windows.net"),
+	// 			SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
 	// 			ProvisioningState: to.Ptr(armplaywright.ProvisioningStateSucceeded),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/dummyrg/providers/Microsoft.LoadTestService/PlaywrightWorkspaces/myWorkspace"),
@@ -173,7 +176,7 @@ func ExampleWorkspacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaces_ListByResourceGroup.json
+// Generated from example definition: 2026-08-01-preview/PlaywrightWorkspaces_ListByResourceGroup.json
 func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +233,7 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaces_ListBySubscription.json
+// Generated from example definition: 2026-08-01-preview/PlaywrightWorkspaces_ListBySubscription.json
 func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -287,7 +290,7 @@ func ExampleWorkspacesClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-02-01-preview/PlaywrightWorkspaces_Update.json
+// Generated from example definition: 2026-08-01-preview/PlaywrightWorkspaces_Update.json
 func ExampleWorkspacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -1,19 +1,6 @@
 # Release History
 
-## 1.8.1-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-* Fixed CRLF injection vulnerability in Blob Batch subrequest serialization. Header values containing CR or LF characters are now rejected before serialization, preventing header injection in batch requests.
-* Fixed WASM compilation by using heap-allocated buffers on JS targets.
-
-### Other Changes
-
-## 1.8.1-beta.1 (2026-07-24)
+## 1.8.1 (2026-09-04)
 
 ### Features Added
 * Added support for Structured Message CRC64 content validation on upload and download operations using `TransferValidationTypeComputeStructuredMessageCRC64`.
@@ -22,7 +9,9 @@
 * Blob put operations now return both `ContentMD5` and `ContentCRC64` in the response when a Content-MD5 header is provided (service version 2026-10-06+).
 
 ### Bugs Fixed
+* Fixed CRLF injection vulnerability in Blob Batch subrequest serialization. Header values containing CR or LF characters are now rejected before serialization, preventing header injection in batch requests.
 * Fixed `UploadFile`/`UploadBuffer` responses not including `ContentCRC64` when returned by the service.
+* Fixed WASM compilation by using heap-allocated buffers on JS targets.
 
 ### Other Changes
 * Updated code generator to `@autorest/go@4.0.0-preview.80`.

@@ -113,6 +113,49 @@ func TestSessionNotAvailableSingleMaster(t *testing.T) {
 	assert.True(t, verifier.requests[0].retryContext.sessionRetryCount == 1)
 }
 
+// TestSessionNotAvailableDisableEndpointDiscoverySuppressesRetry verifies that
+// a 404/1002 (ReadSessionNotAvailable) does not trigger a session-failover
+// retry when endpoint discovery is disabled. The retry reroutes to another
+// region / the write endpoint, but with discovery disabled every request is
+// pinned to the client endpoint, so the error must surface on the first
+// attempt without advancing session-retry state (matching Python).
+func TestSessionNotAvailableDisableEndpointDiscoverySuppressesRetry(t *testing.T) {
+	srv, closeFunc := mock.NewTLSServer()
+	defer closeFunc()
+
+	defaultEndpoint, err := url.Parse(srv.URL())
+	assert.NoError(t, err)
+
+	lc := CreateMockLC(*defaultEndpoint, false)
+	lc.disableEndpointDiscovery = true
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      srv.URL(),
+		preferredLocations:  []string{},
+		locationCache:       lc,
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Time{},
+	}
+
+	retryPolicy := &clientRetryPolicy{gem: gem}
+	verifier := clientRetryPolicyVerifier{}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{&verifier, retryPolicy}}, &policy.ClientOptions{Transport: srv})
+
+	srv.AppendResponse(
+		mock.WithHeader("x-ms-substatus", "1002"),
+		mock.WithStatusCode(404))
+	// Queued but must NOT be consumed if the retry is correctly suppressed.
+	srv.AppendResponse(mock.WithStatusCode(200))
+
+	client := &Client{endpoint: srv.URL(), endpointUrl: defaultEndpoint, internal: internalClient, gem: gem}
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+	assert.Error(t, err, "404/1002 must surface immediately when discovery is disabled")
+	assert.Equal(t, 0, verifier.requests[0].retryContext.sessionRetryCount, "session retry must not advance")
+	assert.Equal(t, 1, srv.Requests(), "no session-failover retry may be issued")
+}
+
 func TestSessionNotAvailableMultiMaster(t *testing.T) {
 	srv, closeFunc := mock.NewTLSServer()
 	defer closeFunc()

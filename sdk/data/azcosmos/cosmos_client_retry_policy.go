@@ -487,6 +487,13 @@ func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, i
 }
 
 func (p *clientRetryPolicy) attemptRetryOnSessionUnavailable(isWriteOperation bool, retryContext *retryContext) bool {
+	// Session-unavailable retries reroute to another region (multi-write) or
+	// to the write endpoint (single-master). With endpoint discovery disabled
+	// every request is pinned to the client endpoint, so there is nowhere to
+	// reroute; suppress the session failover entirely (matching Python).
+	if p.gem.locationCache.disableEndpointDiscovery {
+		return false
+	}
 	// Snapshot multi-write capability AND the relevant slice length
 	// under a single RLock. The async refresh paths (in this file and
 	// in globalEndpointManagerPolicy) can call locationCache.update

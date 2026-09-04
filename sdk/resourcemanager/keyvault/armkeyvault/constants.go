@@ -5,7 +5,7 @@
 package armkeyvault
 
 const (
-	version20260201 string = "2026-02-01"
+	version20260301Preview string = "2026-03-01-preview"
 )
 
 type AccessPolicyUpdateKind string
@@ -249,6 +249,7 @@ type JSONWebKeyType string
 const (
 	JSONWebKeyTypeEC     JSONWebKeyType = "EC"
 	JSONWebKeyTypeECHSM  JSONWebKeyType = "EC-HSM"
+	JSONWebKeyTypeOctHSM JSONWebKeyType = "oct-HSM"
 	JSONWebKeyTypeRSA    JSONWebKeyType = "RSA"
 	JSONWebKeyTypeRSAHSM JSONWebKeyType = "RSA-HSM"
 )
@@ -258,6 +259,7 @@ func PossibleJSONWebKeyTypeValues() []JSONWebKeyType {
 	return []JSONWebKeyType{
 		JSONWebKeyTypeEC,
 		JSONWebKeyTypeECHSM,
+		JSONWebKeyTypeOctHSM,
 		JSONWebKeyTypeRSA,
 		JSONWebKeyTypeRSAHSM,
 	}
@@ -352,10 +354,15 @@ func PossibleManagedHsmSKUFamilyValues() []ManagedHsmSKUFamily {
 type ManagedHsmSKUName string
 
 const (
-	ManagedHsmSKUNameCustomB32  ManagedHsmSKUName = "Custom_B32"
-	ManagedHsmSKUNameCustomB6   ManagedHsmSKUName = "Custom_B6"
-	ManagedHsmSKUNameCustomC10  ManagedHsmSKUName = "Custom_C10"
-	ManagedHsmSKUNameCustomC42  ManagedHsmSKUName = "Custom_C42"
+	// ManagedHsmSKUNameCustomB32 - Custom_B32 SKU
+	ManagedHsmSKUNameCustomB32 ManagedHsmSKUName = "Custom_B32"
+	// ManagedHsmSKUNameCustomB6 - Custom_B6 SKU
+	ManagedHsmSKUNameCustomB6 ManagedHsmSKUName = "Custom_B6"
+	// ManagedHsmSKUNameCustomC10 - Custom_C10 SKU
+	ManagedHsmSKUNameCustomC10 ManagedHsmSKUName = "Custom_C10"
+	// ManagedHsmSKUNameCustomC42 - Custom_C42 SKU
+	ManagedHsmSKUNameCustomC42 ManagedHsmSKUName = "Custom_C42"
+	// ManagedHsmSKUNameStandardB1 - Standard_B1 SKU
 	ManagedHsmSKUNameStandardB1 ManagedHsmSKUName = "Standard_B1"
 )
 
@@ -637,6 +644,52 @@ func PossibleStoragePermissionsValues() []StoragePermissions {
 		StoragePermissionsSet,
 		StoragePermissionsSetsas,
 		StoragePermissionsUpdate,
+	}
+}
+
+// TokenBindingMode - This specifies whether token binding is disabled, enabled or enforced.
+type TokenBindingMode string
+
+const (
+	// TokenBindingModeEnforced - Token binding is enforced for the vault. Only bounded tokens will be accepted. Bearer tokens
+	// will be rejected.
+	TokenBindingModeEnforced TokenBindingMode = "Enforced"
+	// TokenBindingModeNotEnforced - Token binding is not enforced for the vault. Bounded tokens will be rejected.
+	TokenBindingModeNotEnforced TokenBindingMode = "NotEnforced"
+)
+
+// PossibleTokenBindingModeValues returns the possible values for the TokenBindingMode const type.
+func PossibleTokenBindingModeValues() []TokenBindingMode {
+	return []TokenBindingMode{
+		TokenBindingModeEnforced,
+		TokenBindingModeNotEnforced,
+	}
+}
+
+// TokenBindingStrength - Must be one of the following values "NoValidation", "Unattested", "AttestedTrustedLaunch", "AttestedConfidential".
+// Strength of the token binding increases with each value in that order.
+type TokenBindingStrength string
+
+const (
+	// TokenBindingStrengthAttestedConfidential - Bounded Entra token must originate from a confidential VM with attestation proof
+	// from the attestation authority like Microsoft Azure Attestation.
+	TokenBindingStrengthAttestedConfidential TokenBindingStrength = "AttestedConfidential"
+	// TokenBindingStrengthAttestedTrustedLaunch - Bounded Entra token must originate from a trusted launch VM with attestation
+	// proof from the attestation authority like Microsoft Azure Attestation.
+	TokenBindingStrengthAttestedTrustedLaunch TokenBindingStrength = "AttestedTrustedLaunch"
+	// TokenBindingStrengthNoValidation - This is default when token binding is not enabled.
+	TokenBindingStrengthNoValidation TokenBindingStrength = "NoValidation"
+	// TokenBindingStrengthUnattested - No attestation proof is required for the bounded token.
+	TokenBindingStrengthUnattested TokenBindingStrength = "Unattested"
+)
+
+// PossibleTokenBindingStrengthValues returns the possible values for the TokenBindingStrength const type.
+func PossibleTokenBindingStrengthValues() []TokenBindingStrength {
+	return []TokenBindingStrength{
+		TokenBindingStrengthAttestedConfidential,
+		TokenBindingStrengthAttestedTrustedLaunch,
+		TokenBindingStrengthNoValidation,
+		TokenBindingStrengthUnattested,
 	}
 }
 

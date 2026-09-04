@@ -3112,6 +3112,37 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type TokenBindingParameters.
+func (t TokenBindingParameters) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "minimumTokenBindingStrength", t.MinimumTokenBindingStrength)
+	populate(objectMap, "mode", t.Mode)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type TokenBindingParameters.
+func (t *TokenBindingParameters) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "minimumTokenBindingStrength":
+			err = unpopulate(val, "MinimumTokenBindingStrength", &t.MinimumTokenBindingStrength)
+			delete(rawMsg, key)
+		case "mode":
+			err = unpopulate(val, "Mode", &t.Mode)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type TrackedResource.
 func (t TrackedResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -3486,6 +3517,7 @@ func (v VaultPatchProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "sku", v.SKU)
 	populate(objectMap, "softDeleteRetentionInDays", v.SoftDeleteRetentionInDays)
 	populate(objectMap, "tenantId", v.TenantID)
+	populate(objectMap, "tokenBindingParameters", v.TokenBindingParameters)
 	return json.Marshal(objectMap)
 }
 
@@ -3537,6 +3569,9 @@ func (v *VaultPatchProperties) UnmarshalJSON(data []byte) error {
 		case "tenantId":
 			err = unpopulate(val, "TenantID", &v.TenantID)
 			delete(rawMsg, key)
+		case "tokenBindingParameters":
+			err = unpopulate(val, "TokenBindingParameters", &v.TokenBindingParameters)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
@@ -3564,6 +3599,7 @@ func (v VaultProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "sku", v.SKU)
 	populate(objectMap, "softDeleteRetentionInDays", v.SoftDeleteRetentionInDays)
 	populate(objectMap, "tenantId", v.TenantID)
+	populate(objectMap, "tokenBindingParameters", v.TokenBindingParameters)
 	populate(objectMap, "vaultUri", v.VaultURI)
 	return json.Marshal(objectMap)
 }
@@ -3624,6 +3660,9 @@ func (v *VaultProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "tenantId":
 			err = unpopulate(val, "TenantID", &v.TenantID)
+			delete(rawMsg, key)
+		case "tokenBindingParameters":
+			err = unpopulate(val, "TokenBindingParameters", &v.TokenBindingParameters)
 			delete(rawMsg, key)
 		case "vaultUri":
 			err = unpopulate(val, "VaultURI", &v.VaultURI)

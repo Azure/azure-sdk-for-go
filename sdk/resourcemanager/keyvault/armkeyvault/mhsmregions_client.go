@@ -19,7 +19,7 @@ import (
 // MHSMRegionsClient contains the methods for the MHSMRegions group.
 // Don't use this type directly, use NewMHSMRegionsClient() instead.
 //
-// Generated from API version 2026-02-01
+// Generated from API version 2026-03-01-preview
 type MHSMRegionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -102,7 +102,7 @@ func (client *MHSMRegionsClient) listByResourceCreateRequest(ctx context.Context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260201)
+		reqQP.Set("api-version", version20260301Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

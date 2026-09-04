@@ -253,6 +253,29 @@ type GenerateReservationDetailsReportClientByBillingProfileIDResponse struct {
 	OperationStatus
 }
 
+// MarkupRulesClientCreateOrUpdateResponse contains the response from method MarkupRulesClient.CreateOrUpdate.
+type MarkupRulesClientCreateOrUpdateResponse struct {
+	// Markup rule
+	MarkupRule
+}
+
+// MarkupRulesClientDeleteResponse contains the response from method MarkupRulesClient.Delete.
+type MarkupRulesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MarkupRulesClientGetResponse contains the response from method MarkupRulesClient.Get.
+type MarkupRulesClientGetResponse struct {
+	// Markup rule
+	MarkupRule
+}
+
+// MarkupRulesClientListResponse contains the response from method MarkupRulesClient.NewListPager.
+type MarkupRulesClientListResponse struct {
+	// Markup rule list result. It contains a list of Markup rules.
+	MarkupRulePagedResponse
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// Result of listing cost management operations. It contains a list of operations and a URL link to get the next set of results.

@@ -145,7 +145,8 @@ func openDriver(cfg driverConfig) (*nativeDriver, error) {
 		_ = d.close()
 		return nil, err
 	}
-	// The token-provider handle now owns the credential reference.
+	// The account has copied the key, and the token-provider handle owns the credential reference.
+	d.cfg.accountKey = ""
 	d.cfg.tokenCredential = nil
 	// Before the driver rather than after it, because creating the driver is itself answered
 	// through this queue.
@@ -194,7 +195,7 @@ func (d *nativeDriver) ensureDriver(ctx context.Context) (*C.cosmos_driver_t, er
 				if isCancellation(inFlight.err) {
 					continue
 				}
-				return inFlight.driver, inFlight.err
+				return inFlight.driver, cloneError(inFlight.err)
 			case <-ctx.Done():
 				return nil, ctx.Err()
 			}
@@ -223,7 +224,7 @@ func (d *nativeDriver) ensureDriver(ctx context.Context) (*C.cosmos_driver_t, er
 		close(attempt.done)
 		d.mu.Unlock()
 
-		return driver, err
+		return driver, cloneError(err)
 	}
 }
 

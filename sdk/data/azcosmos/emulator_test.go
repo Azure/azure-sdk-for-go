@@ -132,11 +132,15 @@ type delayedTokenCredential struct {
 }
 
 func (c *delayedTokenCredential) GetToken(
-	_ context.Context,
+	ctx context.Context,
 	_ policy.TokenRequestOptions,
 ) (azcore.AccessToken, error) {
 	c.once.Do(func() { close(c.started) })
-	<-c.release
+	select {
+	case <-c.release:
+	case <-ctx.Done():
+		return azcore.AccessToken{}, ctx.Err()
+	}
 	return azcore.AccessToken{
 		Token:     "delayed-access-token",
 		ExpiresOn: time.Now().Add(time.Hour),

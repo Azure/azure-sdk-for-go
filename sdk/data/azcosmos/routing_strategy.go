@@ -39,7 +39,7 @@ func (r RoutingStrategy) clone() RoutingStrategy {
 	return r
 }
 
-// errProximityRoutingUnsupported is returned when a client is created with [ProximityTo].
+// newProximityRoutingUnsupportedError is returned when a client is created with [ProximityTo].
 //
 // Resolving a region to an order is a client-side table lookup, not something the driver does: the
 // C ABI takes a region list, so the SDK has to supply one. The Rust SDK's table is ~10k generated
@@ -48,17 +48,19 @@ func (r RoutingStrategy) clone() RoutingStrategy {
 //
 // It is reported when the client is constructed: resolving the order needs no driver, so there is
 // no reason to defer it to the first operation.
-var errProximityRoutingUnsupported = &Error{
-	Code: CodeClientError,
-	Message: "ProximityTo is not supported yet; list the regions explicitly with PreferredRegions, " +
-		"most preferred first",
+func newProximityRoutingUnsupportedError() *Error {
+	return &Error{
+		Code: CodeClientError,
+		Message: "ProximityTo is not supported yet; list the regions explicitly with PreferredRegions, " +
+			"most preferred first",
+	}
 }
 
 // preferredRegionOrder resolves the strategy to the region order the driver takes. The zero value
 // resolves to none, which leaves the order to the account.
 func (r RoutingStrategy) preferredRegionOrder() ([]Region, error) {
 	if r.proximityTo != "" {
-		return nil, errProximityRoutingUnsupported
+		return nil, newProximityRoutingUnsupportedError()
 	}
 	return r.preferredRegions, nil
 }

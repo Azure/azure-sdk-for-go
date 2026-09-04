@@ -35,13 +35,15 @@ type itemRequest struct {
 	ifNoneMatchETag string
 }
 
-// errDriverUnavailable says what this build is missing, rather than reporting the operation as
+// newDriverUnavailableError says what this build is missing, rather than reporting the operation as
 // merely unimplemented: the operation is implemented, but not in a build that cannot reach the
 // driver.
-var errDriverUnavailable = &Error{
-	Code: CodeClientError,
-	Message: "azcosmos: this build cannot reach the Cosmos driver. " +
-		"v2 requires CGO_ENABLED=1, a supported target, and a target-compatible C toolchain",
+func newDriverUnavailableError() *Error {
+	return &Error{
+		Code: CodeClientError,
+		Message: "azcosmos: this build cannot reach the Cosmos driver. " +
+			"v2 requires CGO_ENABLED=1, a supported target, and a target-compatible C toolchain",
+	}
 }
 
 // endToEndTimeout resolves the budget the driver should bound the operation by, given the caller's

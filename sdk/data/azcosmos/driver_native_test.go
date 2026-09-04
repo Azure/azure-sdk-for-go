@@ -9,7 +9,6 @@ import (
 	"context"
 	"errors"
 	"net"
-	"os"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -109,6 +108,18 @@ func TestNativeTokenCredentialAccepted(t *testing.T) {
 	require.NoError(t, client.Close())
 }
 
+func TestOpenDriverReleasesConfigurationCredentialReferences(t *testing.T) {
+	d, err := openDriver(driverConfig{
+		endpoint:   "https://myaccount.documents.azure.com",
+		accountKey: emulatorKey,
+	})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, d.close()) })
+
+	require.Empty(t, d.cfg.accountKey)
+	require.Nil(t, d.cfg.tokenCredential)
+}
+
 type blockingTokenCredential struct {
 	started     chan struct{}
 	stopped     chan struct{}
@@ -194,6 +205,9 @@ func TestNativeCancellationAfterSubmission(t *testing.T) {
 	select {
 	case err := <-initialized:
 		require.ErrorIs(t, err, context.Canceled)
+		var cosmosErr *Error
+		require.ErrorAs(t, err, &cosmosErr)
+		require.Equal(t, CodeOperationCancelled, cosmosErr.Code)
 	case <-time.After(time.Second):
 		t.Fatal("Initialize did not await the terminal cancellation completion")
 	}
@@ -237,13 +251,18 @@ func TestConcurrentCallersShareFailedInitialization(t *testing.T) {
 	close(credential.release)
 
 	var first error
+	var firstCosmosErr *Error
 	for range callers {
 		err := <-results
 		require.Error(t, err)
 		if first == nil {
 			first = err
+			require.ErrorAs(t, first, &firstCosmosErr)
 		} else {
-			require.Same(t, first, err)
+			require.EqualError(t, err, first.Error())
+			var cosmosErr *Error
+			require.ErrorAs(t, err, &cosmosErr)
+			require.NotSame(t, firstCosmosErr, cosmosErr)
 		}
 	}
 	require.Equal(t, int32(2), credential.attempts.Load(),
@@ -274,10 +293,7 @@ func TestInitializationWaiterReturnsOwnCancellationCause(t *testing.T) {
 // Initialize creates the driver and fills the account-properties and routing caches. The cached
 // handle proves a later operation will not initialize again.
 func TestNativeInitializeCreatesTheDriver(t *testing.T) {
-	endpoint := os.Getenv("AZCOSMOS_EMULATOR_ENDPOINT")
-	if endpoint == "" {
-		t.Skip("set AZCOSMOS_EMULATOR_ENDPOINT to run against a live emulator")
-	}
+	endpoint, _, _ := emulatorConfiguration(t)
 
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
@@ -488,4 +504,14 @@ func TestPreCancelledInitializeDoesNotSubmit(t *testing.T) {
 		t.Fatal("pre-cancelled Initialize submitted native driver creation")
 	default:
 	}
+}
+
+func TestAwaitCompletionDoesNotSubmitAfterCancellation(t *testing.T) {
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	submitted, err := (&nativeDriver{}).inspectAwaitCompletionSubmission(ctx)
+
+	require.ErrorIs(t, err, context.Canceled)
+	require.False(t, submitted)
 }

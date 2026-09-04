@@ -145,6 +145,12 @@ func TestErrorUnwrapsCancellation(t *testing.T) {
 	// Every other failure is a Cosmos failure and nothing else.
 	require.NotErrorIs(t, &Error{Code: CodeThrottled}, context.Canceled)
 	require.NoError(t, (&Error{Code: CodeThrottled}).Unwrap())
+
+	deadline := newOperationCancelledError(context.DeadlineExceeded, 2.5, "activity-id")
+	require.ErrorIs(t, deadline, context.DeadlineExceeded)
+	require.NotErrorIs(t, deadline, context.Canceled)
+	require.Equal(t, 2.5, deadline.RequestCharge)
+	require.Equal(t, "activity-id", deadline.ActivityID)
 }
 
 // The driver pairs a failure it produced itself with a synthetic 408 or 503, so classifying one on
@@ -253,13 +259,35 @@ func TestErrorAsRetrievesFields(t *testing.T) {
 // A build that cannot reach the driver reports that from every operation, so it has to satisfy the errors.As
 // idiom the package documents; a bare errors.New would not.
 func TestNotImplementedIsRetrievableAsError(t *testing.T) {
-	err := fmt.Errorf("reading item: %w", error(errDriverUnavailable))
+	err := fmt.Errorf("reading item: %w", error(newDriverUnavailableError()))
 
 	var cosmosErr *Error
 	require.True(t, errors.As(err, &cosmosErr))
 	require.Equal(t, CodeClientError, cosmosErr.Code)
 	require.False(t, cosmosErr.FromWire)
 	require.Zero(t, cosmosErr.StatusCode)
+}
+
+func TestPackageErrorsAreFresh(t *testing.T) {
+	driverErr := newDriverUnavailableError()
+	driverErr.Message = "mutated"
+	require.NotEqual(t, driverErr.Message, newDriverUnavailableError().Message)
+
+	routingErr := newProximityRoutingUnsupportedError()
+	routingErr.Message = "mutated"
+	require.NotEqual(t, routingErr.Message, newProximityRoutingUnsupportedError().Message)
+}
+
+func TestCloneErrorCopiesMutableState(t *testing.T) {
+	original := &Error{Code: CodeServiceError, Body: []byte("body")}
+	cloned, ok := cloneError(original).(*Error)
+	require.True(t, ok)
+	require.NotSame(t, original, cloned)
+
+	cloned.Code = CodeClientError
+	cloned.Body[0] = 'B'
+	require.Equal(t, CodeServiceError, original.Code)
+	require.Equal(t, []byte("body"), original.Body)
 }
 
 func TestErrorMessage(t *testing.T) {

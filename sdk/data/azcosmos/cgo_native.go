@@ -14,6 +14,43 @@ package azcosmos
 
 _Static_assert(sizeof(cosmos_status_code_t) == 4, "cosmos_status_code_t must remain 32-bit");
 _Static_assert((cosmos_status_code_t)-1 < 0, "cosmos_status_code_t must remain signed");
+_Static_assert(COSMOS_OPERATION_KIND_CREATE_ITEM == 19, "create-item operation discriminant changed");
+_Static_assert(COSMOS_OPERATION_KIND_READ_ITEM == 20, "read-item operation discriminant changed");
+
+_Static_assert(sizeof(cosmos_value_payload_t) == 8, "cosmos_value_payload_t ABI size changed");
+_Static_assert(_Alignof(cosmos_value_payload_t) == 8, "cosmos_value_payload_t ABI alignment changed");
+_Static_assert(sizeof(cosmos_value_t) == 16, "cosmos_value_t ABI size changed");
+_Static_assert(_Alignof(cosmos_value_t) == 8, "cosmos_value_t ABI alignment changed");
+COSMOS_ASSERT_OFFSET(cosmos_value_t, payload, 8);
+
+_Static_assert(sizeof(cosmos_partition_key_component_value_t) == 8, "partition-key value ABI size changed");
+_Static_assert(_Alignof(cosmos_partition_key_component_value_t) == 8, "partition-key value ABI alignment changed");
+_Static_assert(sizeof(cosmos_partition_key_component_t) == 16, "partition-key component ABI size changed");
+_Static_assert(_Alignof(cosmos_partition_key_component_t) == 8, "partition-key component ABI alignment changed");
+COSMOS_ASSERT_OFFSET(cosmos_partition_key_component_t, value, 8);
+
+_Static_assert(sizeof(cosmos_completion_queue_options_t) == 12, "completion-queue options ABI size changed");
+_Static_assert(_Alignof(cosmos_completion_queue_options_t) == 4, "completion-queue options ABI alignment changed");
+COSMOS_ASSERT_OFFSET(cosmos_completion_queue_options_t, include_error_details, 8);
+
+_Static_assert(sizeof(cosmos_runtime_options_t) == 40, "runtime options ABI size changed");
+_Static_assert(_Alignof(cosmos_runtime_options_t) == 8, "runtime options ABI alignment changed");
+COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, correlation_id, 8);
+COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, user_agent_suffix, 16);
+COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, wrapping_sdk_identifier, 24);
+COSMOS_ASSERT_OFFSET(cosmos_runtime_options_t, cpu_refresh_interval_ms, 32);
+
+_Static_assert(sizeof(cosmos_operation_options_t) == 88, "operation options ABI size changed");
+_Static_assert(_Alignof(cosmos_operation_options_t) == 8, "operation options ABI alignment changed");
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, end_to_end_timeout_ms, 24);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, excluded_regions, 48);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, excluded_regions_len, 56);
+COSMOS_ASSERT_OFFSET(cosmos_operation_options_t, binary_encoding_request_text_response, 81);
+
+_Static_assert(sizeof(cosmos_driver_options_config_t) == 24, "driver options ABI size changed");
+_Static_assert(_Alignof(cosmos_driver_options_config_t) == 8, "driver options ABI alignment changed");
+COSMOS_ASSERT_OFFSET(cosmos_driver_options_config_t, preferred_regions_len, 8);
+COSMOS_ASSERT_OFFSET(cosmos_driver_options_config_t, operation_options, 16);
 
 _Static_assert(sizeof(cosmos_completion_t) == 112, "cosmos_completion_t ABI size changed");
 _Static_assert(_Alignof(cosmos_completion_t) == 8, "cosmos_completion_t ABI alignment changed");

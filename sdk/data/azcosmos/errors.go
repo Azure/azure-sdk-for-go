@@ -92,9 +92,9 @@ const (
 	CodeClientOperationTimeout Code = "ClientOperationTimeout"
 
 	// CodeOperationCancelled means an operation already in flight was cancelled before it
-	// completed, because the caller's context was cancelled or because [Client.Close] shut the
-	// driver down underneath it. An [Error] carrying it unwraps to [context.Canceled], so
-	// errors.Is reports it the same way the rest of the standard library does. An operation
+	// completed, because the caller's context ended or the native driver cancelled it. An [Error]
+	// carrying it unwraps to the context error that caused cancellation,
+	// so errors.Is reports it the same way the rest of the standard library does. An operation
 	// started after the client was closed is [CodeClientClosed] instead, since it never ran.
 	CodeOperationCancelled Code = "OperationCancelled"
 )
@@ -170,6 +170,8 @@ type Error struct {
 	// client-side one leaves that unknown. The response-derived fields above are only populated
 	// when this is true.
 	FromWire bool
+
+	cause error
 }
 
 // Error implements the error interface. The format is not part of the published API; branch on
@@ -202,12 +204,35 @@ func (e *Error) Error() string {
 
 // Unwrap reports the standard library error a failure corresponds to, so that callers can use
 // errors.Is for the conditions Go already has a vocabulary for. A cancelled operation unwraps to
-// [context.Canceled], which is what callers of a context-aware API check for.
+// its caller's context error, or [context.Canceled] when the native driver initiated cancellation.
 func (e *Error) Unwrap() error {
+	if e.cause != nil {
+		return e.cause
+	}
 	if e.Code == CodeOperationCancelled {
 		return context.Canceled
 	}
 	return nil
+}
+
+func newOperationCancelledError(cause error, requestCharge float64, activityID string) *Error {
+	return &Error{
+		Code:          CodeOperationCancelled,
+		Message:       "azcosmos: the operation was cancelled",
+		RequestCharge: requestCharge,
+		ActivityID:    activityID,
+		cause:         cause,
+	}
+}
+
+func cloneError(err error) error {
+	cosmosErr, ok := err.(*Error)
+	if !ok {
+		return err
+	}
+	clone := *cosmosErr
+	clone.Body = append([]byte(nil), cosmosErr.Body...)
+	return &clone
 }
 
 // subStatusReadSessionNotAvailable is reported with 404 when the serving replica has not caught up

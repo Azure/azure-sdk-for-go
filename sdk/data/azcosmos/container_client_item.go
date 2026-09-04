@@ -64,11 +64,16 @@ func (c *ContainerClient) ReadItem(ctx context.Context, partitionKey PartitionKe
 		if err := options.SessionToken.validate(); err != nil {
 			return ItemResponse{}, err
 		}
-		if options.IfNoneMatchETag != nil &&
-			strings.IndexByte(string(*options.IfNoneMatchETag), 0) >= 0 {
-			return ItemResponse{}, errors.New(
-				"azcosmos: IfNoneMatchETag must not contain a NUL byte",
-			)
+		if options.IfNoneMatchETag != nil {
+			etag := string(*options.IfNoneMatchETag)
+			if etag == "" {
+				return ItemResponse{}, errors.New("azcosmos: IfNoneMatchETag must not be empty")
+			}
+			if strings.IndexByte(etag, 0) >= 0 {
+				return ItemResponse{}, errors.New(
+					"azcosmos: IfNoneMatchETag must not contain a NUL byte",
+				)
+			}
 		}
 	}
 	// The client is consulted before the context so that a call made after Close reports

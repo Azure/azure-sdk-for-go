@@ -70,7 +70,10 @@ func TestInitializeReportsUnavailableDriver(t *testing.T) {
 		t.Skip("the driver is available in this build")
 	}
 	client := newTestClient(t)
-	require.ErrorIs(t, client.Initialize(t.Context()), errDriverUnavailable)
+	err := client.Initialize(t.Context())
+	var cosmosErr *Error
+	require.ErrorAs(t, err, &cosmosErr)
+	require.Contains(t, cosmosErr.Message, "cannot reach the Cosmos driver")
 }
 
 // The zero value is what a caller gets if they ignore the error from NewKeyCredential.

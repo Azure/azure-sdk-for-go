@@ -69,7 +69,14 @@ func goCosmosTokenProviderGet(
 		scope = string(bytes) // The ABI borrows the scope only until this callback returns.
 	}
 
-	state := cgo.Handle(uintptr(userData)).Value().(*tokenProviderState)
+	value, valid := cgoHandleValue(cgo.Handle(uintptr(userData)))
+	if !valid {
+		return 1
+	}
+	state, ok := value.(*tokenProviderState)
+	if !ok {
+		return 1
+	}
 	requestID := C.uint64_t(request.request_id)
 	go completeTokenRequest(requestID, state, scope)
 	return 0
@@ -78,9 +85,16 @@ func goCosmosTokenProviderGet(
 //export goCosmosTokenProviderFree
 func goCosmosTokenProviderFree(userData C.intptr_t) {
 	handle := cgo.Handle(uintptr(userData))
-	state := handle.Value().(*tokenProviderState)
+	value, valid := cgoHandleValue(handle)
+	if !valid {
+		return
+	}
+	defer cgoHandleDelete(handle)
+	state, ok := value.(*tokenProviderState)
+	if !ok {
+		return
+	}
 	state.cancel()
-	handle.Delete()
 }
 
 func completeTokenRequest(

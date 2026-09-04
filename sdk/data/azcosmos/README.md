@@ -12,8 +12,7 @@ response model, partition keys, client construction, and reading and creating si
 
 v2 replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver, so that
 routing, retries, session handling, failover behavior and query fan-out are consistent across the
-Cosmos DB SDKs. The decision record is
-[`docs/adr/0001-go-v2-uses-ffi.md`](docs/adr/0001-go-v2-uses-ffi.md).
+Cosmos DB SDKs.
 
 ### Building with the driver
 

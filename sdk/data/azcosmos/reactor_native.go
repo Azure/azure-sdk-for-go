@@ -155,8 +155,11 @@ func (r *reactor) deliver(completion *C.cosmos_completion_t) {
 		return
 	}
 
-	handle := cgo.Handle(cookie)
-	pending, ok := handle.Value().(*pendingOperation)
+	value, valid := cgoHandleValue(cgo.Handle(cookie))
+	if !valid {
+		return
+	}
+	pending, ok := value.(*pendingOperation)
 	if !ok {
 		return
 	}

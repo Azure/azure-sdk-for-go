@@ -13,6 +13,7 @@ import "C"
 
 import (
 	"context"
+	"errors"
 	"runtime/cgo"
 	"unsafe"
 )
@@ -79,6 +80,10 @@ func (d *nativeDriver) awaitCompletion(
 	doing string,
 	submit func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t,
 ) (completionResult, error) {
+	if err := ctx.Err(); err != nil {
+		return completionResult{}, err
+	}
+
 	// Buffered so the reactor can always deliver without blocking, even after this goroutine has
 	// stopped waiting because the context was cancelled.
 	pending := &pendingOperation{result: make(chan completionResult, 1)}
@@ -104,15 +109,52 @@ func (d *nativeDriver) awaitCompletion(
 
 	select {
 	case result := <-pending.result:
+		if cause := ctx.Err(); cause != nil {
+			terminal, err := resultAfterCancellation(cause, result)
+			if err != nil {
+				result.release()
+			}
+			return terminal, err
+		}
 		return result, nil
 
 	case <-ctx.Done():
 		C.cosmos_operation_handle_cancel(op)
-		// The result is still awaited, and released rather than returned: an operation that
-		// completed just as the context expired may carry a handle nobody is going to take.
-		(<-pending.result).release()
-		return completionResult{}, ctx.Err()
+		// The terminal result is authoritative when completion and cancellation race. In
+		// particular, a successful write must not be reported as cancelled after it committed.
+		result := <-pending.result
+		terminal, err := resultAfterCancellation(ctx.Err(), result)
+		if err != nil {
+			result.release()
+		}
+		return terminal, err
 	}
+}
+
+func resultAfterCancellation(cause error, result completionResult) (completionResult, error) {
+	if !result.cancelled {
+		return result, nil
+	}
+	requestCharge := result.response.RequestCharge
+	activityID := result.response.ActivityID
+	var completionErr *Error
+	if errors.As(result.err, &completionErr) {
+		requestCharge = completionErr.RequestCharge
+		activityID = completionErr.ActivityID
+	}
+	return completionResult{}, newOperationCancelledError(cause, requestCharge, activityID)
+}
+
+// inspectAwaitCompletionSubmission reports whether awaitCompletion invoked its submit closure.
+// Tests use it because cgo types cannot appear directly in _test.go files.
+func (d *nativeDriver) inspectAwaitCompletionSubmission(ctx context.Context) (bool, error) {
+	submitted := false
+	_, err := d.awaitCompletion(ctx, "testing submission",
+		func(*C.cosmos_completion_queue_t, C.intptr_t, *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
+			submitted = true
+			return nil
+		})
+	return submitted, err
 }
 
 // newOperationRequest builds a request carrying only its identity and the driver's unset

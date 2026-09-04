@@ -27,7 +27,7 @@ func (d *nativeDriver) cancel() {}
 
 // initialize reports that the diagnostic build has no driver to initialize.
 func (d *nativeDriver) initialize(context.Context) error {
-	return errDriverUnavailable
+	return newDriverUnavailableError()
 }
 
 // openDriver reports success without acquiring anything. Operations fail when they are called,
@@ -44,5 +44,5 @@ func (d *nativeDriver) close() error {
 // execute reports that this build cannot reach the driver. The driver-backed build in
 // driver_native.go runs the operation instead.
 func (c *Client) execute(context.Context, itemRequest) (ItemResponse, []byte, error) {
-	return ItemResponse{}, nil, errDriverUnavailable
+	return ItemResponse{}, nil, newDriverUnavailableError()
 }

@@ -18,9 +18,19 @@ func newTestContainer(t *testing.T) *ContainerClient {
 
 	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, nil)
 	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
 	container, err := client.NewContainer("db", "items")
 	require.NoError(t, err)
 	return container
+}
+
+func requireNotDriverUnavailable(t *testing.T, err error) {
+	t.Helper()
+	var cosmosErr *Error
+	if errors.As(err, &cosmosErr) {
+		require.NotContains(t, cosmosErr.Message, "cannot reach the Cosmos driver",
+			"argument validation should run before the operation is attempted")
+	}
 }
 
 func TestReadItemRejectsEmptyID(t *testing.T) {
@@ -28,7 +38,7 @@ func TestReadItemRejectsEmptyID(t *testing.T) {
 
 	_, err := container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "", nil)
 	require.Error(t, err)
-	require.NotErrorIs(t, err, errDriverUnavailable, "argument validation should run before the operation is attempted")
+	requireNotDriverUnavailable(t, err)
 }
 
 func TestCreateItemRejectsEmptyItem(t *testing.T) {
@@ -37,7 +47,7 @@ func TestCreateItemRejectsEmptyItem(t *testing.T) {
 	for _, item := range [][]byte{nil, {}} {
 		_, err := container.CreateItem(context.Background(), NewPartitionKeyString("pk"), "item-1", item, nil)
 		require.Error(t, err)
-		require.NotErrorIs(t, err, errDriverUnavailable, "argument validation should run before the operation is attempted")
+		requireNotDriverUnavailable(t, err)
 	}
 }
 
@@ -48,7 +58,7 @@ func TestCreateItemRejectsEmptyID(t *testing.T) {
 
 	_, err := container.CreateItem(context.Background(), NewPartitionKeyString("pk"), "", []byte(`{"id":"item-1"}`), nil)
 	require.Error(t, err)
-	require.NotErrorIs(t, err, errDriverUnavailable, "argument validation should run before the operation is attempted")
+	requireNotDriverUnavailable(t, err)
 }
 
 // Argument validation runs before the context is consulted, so a caller's deterministic mistake is
@@ -75,11 +85,11 @@ func TestItemOperationsRejectEmptyPartitionKey(t *testing.T) {
 
 	_, err := container.ReadItem(context.Background(), PartitionKey{}, "item-1", nil)
 	require.Error(t, err)
-	require.NotErrorIs(t, err, errDriverUnavailable)
+	requireNotDriverUnavailable(t, err)
 
 	_, err = container.CreateItem(context.Background(), PartitionKey{}, "item-1", []byte(`{"id":"item-1"}`), nil)
 	require.Error(t, err)
-	require.NotErrorIs(t, err, errDriverUnavailable)
+	requireNotDriverUnavailable(t, err)
 }
 
 // An already-cancelled context must be honored rather than starting work that is bound to fail,
@@ -183,8 +193,7 @@ func TestReadItemRejectsUnknownConsistencyStrategy(t *testing.T) {
 	)
 
 	require.ErrorContains(t, err, "unknown read consistency strategy")
-	require.NotErrorIs(t, err, errDriverUnavailable,
-		"argument validation should run before the operation is attempted")
+	requireNotDriverUnavailable(t, err)
 }
 
 func TestItemOperationsRejectNULSessionToken(t *testing.T) {
@@ -221,6 +230,20 @@ func TestReadItemRejectsNULETag(t *testing.T) {
 	)
 
 	require.ErrorContains(t, err, "IfNoneMatchETag must not contain a NUL byte")
+}
+
+func TestReadItemRejectsEmptyETag(t *testing.T) {
+	container := newTestContainer(t)
+	etag := azcore.ETag("")
+
+	_, err := container.ReadItem(
+		context.Background(),
+		NewPartitionKeyString("pk"),
+		"item-1",
+		&ReadItemOptions{IfNoneMatchETag: &etag},
+	)
+
+	require.ErrorContains(t, err, "IfNoneMatchETag must not be empty")
 }
 
 // The driver's budget is what guarantees an operation terminates: cancelling the context stops it

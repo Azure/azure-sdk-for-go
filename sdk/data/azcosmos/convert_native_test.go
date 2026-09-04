@@ -202,8 +202,10 @@ func TestClientOptionsConvertToTheDriversConfig(t *testing.T) {
 		_, release, err := inspectNativeClientOptions(ClientOptions{Routing: ProximityTo(RegionEastUS)})
 		defer release()
 
-		require.ErrorIs(t, err, errProximityRoutingUnsupported,
+		var cosmosErr *Error
+		require.ErrorAs(t, err, &cosmosErr,
 			"silently leaving the order to the account would hide that the request had no effect")
+		require.Contains(t, cosmosErr.Message, "ProximityTo is not supported")
 	})
 
 	// The client-level value is sent explicitly rather than left unset, so the documented Go

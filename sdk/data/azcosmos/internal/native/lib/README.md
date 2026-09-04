@@ -26,10 +26,15 @@ module, but not yet one for `linux/amd64`, which is the platform CI runs on.
 At that point:
 
 1. Add the driver modules to `go.mod`.
-2. Delete the temporary `internal/native/{darwinarm64,linuxamd64}` packages and this directory.
-3. Move the archive link directives from `cgo_native.go` into the per-target modules.
+2. Update `link_darwin_arm64.go` and `link_linux_amd64.go` to import the corresponding external
+   target packages alongside the existing internal packages. Each external package must carry its
+   archive and the system linker flags currently in `internal/native/{darwinarm64,linuxamd64}/link.go`.
+3. Remove the `.syso` archives and linker flags from the internal target packages, but retain a cgo
+   Go file and `token_provider.c`; that shim defines `cosmos_go_token_provider` for the Go callbacks.
+4. Delete this directory, which contains only the temporary emulator, checksums, and these notes.
 
-Nothing else here depends on these files, so the revert is self-contained.
+The external archive imports and the retained callback shims must stay behind their existing target
+build constraints.
 
 ## Integrity and provenance
 
@@ -99,8 +104,10 @@ and build recipe as well as the checksum. Independent artifact attestation is tr
 ## While they are still here
 
 Only `linux/amd64` and `darwin/arm64` are present, because those are the platforms actually built
-and tested. Another platform needs its own `.syso` file in the module root — which is the cost these
-files impose, and the reason not to grow the set.
+and tested. Another platform needs its own target-constrained `internal/native/<goos><goarch>`
+package containing the `.syso` archive and its `link.go` settings, plus a matching conditionally
+built root package import. An unsuffixed `.syso` must not be placed in the module root, where every
+target could select and link it.
 
 The `.syso` suffix is required rather than merely convenient. Go preserves platform-specific
 `.syso` files in module zips and `go mod vendor`, then links the matching file automatically.

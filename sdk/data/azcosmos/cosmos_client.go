@@ -87,6 +87,15 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 		preferredRegions = o.PreferredRegions
 		disableEndpointDiscovery = o.DisableEndpointDiscovery
 	}
+	if disableEndpointDiscovery {
+		if len(preferredRegions) > 0 {
+			return nil, errors.New("azcosmos: PreferredRegions cannot be used together with DisableEndpointDiscovery; all requests are routed to the client endpoint")
+		}
+		// Discovery is disabled, so every request is pinned to the client
+		// endpoint. Cross-region retries would otherwise attempt a failover
+		// that resolves back to the same endpoint, so disable them too.
+		enableCrossRegionRetries = false
+	}
 	o = withDefaultTransport(o)
 
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newSharedKeyCredPolicy(cred), o), preferredRegions, 0, enableCrossRegionRetries, disableEndpointDiscovery)
@@ -136,6 +145,15 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if o != nil {
 		preferredRegions = o.PreferredRegions
 		disableEndpointDiscovery = o.DisableEndpointDiscovery
+	}
+	if disableEndpointDiscovery {
+		if len(preferredRegions) > 0 {
+			return nil, errors.New("azcosmos: PreferredRegions cannot be used together with DisableEndpointDiscovery; all requests are routed to the client endpoint")
+		}
+		// Discovery is disabled, so every request is pinned to the client
+		// endpoint. Cross-region retries would otherwise attempt a failover
+		// that resolves back to the same endpoint, so disable them too.
+		enableCrossRegionRetries = false
 	}
 	o = withDefaultTransport(o)
 	gem, err := newGlobalEndpointManager(endpoint, newInternalPipeline(newCosmosBearerTokenPolicy(cred, scope, nil), o), preferredRegions, 0, enableCrossRegionRetries, disableEndpointDiscovery)

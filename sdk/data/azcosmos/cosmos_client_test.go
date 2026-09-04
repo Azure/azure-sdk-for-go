@@ -859,9 +859,9 @@ func tokenOK() azcore.AccessToken {
 }
 
 // TestNewClientWithKeyDisableEndpointDiscovery verifies that the public
-// ClientOptions.DisableEndpointDiscovery flag is inverted and propagated
-// through NewClientWithKey into the location cache, so that a regression in
-// the constructor wiring (e.g. the flag being dropped or inverted) is caught
+// ClientOptions.DisableEndpointDiscovery flag is propagated through
+// NewClientWithKey into the location cache, so that a regression in the
+// constructor wiring (e.g. the flag being dropped or inverted) is caught
 // even though the lower-level cache tests bypass this path.
 func TestNewClientWithKeyDisableEndpointDiscovery(t *testing.T) {
 	cred, err := NewKeyCredential("dGVzdGtleQ==")
@@ -927,6 +927,32 @@ func TestNewClientDisableEndpointDiscovery(t *testing.T) {
 	}
 	if got := client.gem.locationCache.resolveServiceEndpoint(0, resourceTypeDocument, false /*isWriteOperation*/, false /*useWriteEndpoint*/); got != *wantEndpoint {
 		t.Errorf("NewClient DisableEndpointDiscovery=true: expected %s, got %s", wantEndpoint.String(), got.String())
+	}
+	// Discovery disabled must also turn off cross-region retries so failover
+	// does not attempt regions that all resolve back to the client endpoint.
+	if client.gem.locationCache.enableCrossRegionRetries {
+		t.Errorf("NewClient DisableEndpointDiscovery=true: expected cross-region retries to be disabled")
+	}
+}
+
+// TestNewClientDisableEndpointDiscoveryRejectsPreferredRegions verifies that
+// both constructors reject the contradictory combination of a pinned client
+// endpoint (DisableEndpointDiscovery) and PreferredRegions.
+func TestNewClientDisableEndpointDiscoveryRejectsPreferredRegions(t *testing.T) {
+	clientEndpoint := "https://client.documents.azure.com"
+	opts := &ClientOptions{DisableEndpointDiscovery: true, PreferredRegions: []string{"West US"}}
+
+	keyCred, err := NewKeyCredential("dGVzdGtleQ==")
+	if err != nil {
+		t.Fatalf("failed to create key credential: %v", err)
+	}
+	if _, err := NewClientWithKey(clientEndpoint, keyCred, opts); err == nil {
+		t.Errorf("NewClientWithKey: expected an error when PreferredRegions is set with DisableEndpointDiscovery")
+	}
+
+	tokenCred := &stubCred{t: t, onGet: func(scope string) (azcore.AccessToken, error) { return tokenOK(), nil }}
+	if _, err := NewClient(clientEndpoint, tokenCred, opts); err == nil {
+		t.Errorf("NewClient: expected an error when PreferredRegions is set with DisableEndpointDiscovery")
 	}
 }
 

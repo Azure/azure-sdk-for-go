@@ -23,9 +23,10 @@ type ClientOptions struct {
 	// This is required in environments where the account advertises an internal document
 	// endpoint (e.g. *.docdb.azs) that is not reachable from the client's network and all
 	// traffic must instead flow through the externally-routable endpoint (e.g. via a
-	// reverse proxy). Setting this to true also disables regional failover, so
-	// PreferredRegions has no effect. The default is false (routing follows discovery),
-	// matching prior behavior.
+	// reverse proxy). When true, PreferredRegions must not be set (the constructor
+	// returns an error otherwise) and cross-region retries are disabled, since all
+	// requests resolve to the single client endpoint. The default is false (routing
+	// follows discovery), matching prior behavior.
 	DisableEndpointDiscovery bool
 	// PriorityLevel defines the default priority level for all requests made by this client.
 	// This feature is currently in preview. For more information, see https://aka.ms/CosmosDB/PriorityBasedExecution

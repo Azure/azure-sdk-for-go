@@ -11,7 +11,43 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ManagedEnvironmentPrivateLinkResources_List.json
+// Generated from example definition: 2026-07-01/ManagedEnvironmentPrivateLinkResources_Get.json
+func ExampleManagedEnvironmentPrivateLinkResourcesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappcontainers.NewClientFactory("8efdecc5-919e-44eb-b179-915dca89ebf9", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewManagedEnvironmentPrivateLinkResourcesClient().Get(ctx, "examplerg", "managedEnv", "managedEnvironments", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappcontainers.ManagedEnvironmentPrivateLinkResourcesClientGetResponse{
+	// 	PrivateLinkResource: armappcontainers.PrivateLinkResource{
+	// 		Name: to.Ptr("managedEnvironments"),
+	// 		Type: to.Ptr("Microsoft.App/managedEnvironments/privateLinkResources"),
+	// 		ID: to.Ptr("/subscriptions/8efdecc5-919e-44eb-b179-915dca89ebf9/resourceGroups/examplerg/providers/Microsoft.App/managedEnvironments/managedEnv/privateLinkResources/managedEnvironments"),
+	// 		Properties: &armappcontainers.PrivateLinkResourceProperties{
+	// 			GroupID: to.Ptr("managedEnvironments"),
+	// 			RequiredMembers: []*string{
+	// 				to.Ptr("managedEnvironments"),
+	// 			},
+	// 			RequiredZoneNames: []*string{
+	// 				to.Ptr("privatelink.northcentralus.azurecontainerapps.io"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/ManagedEnvironmentPrivateLinkResources_List.json
 func ExampleManagedEnvironmentPrivateLinkResourcesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

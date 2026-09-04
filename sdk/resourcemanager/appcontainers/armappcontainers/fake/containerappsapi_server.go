@@ -101,7 +101,7 @@ func (c *ContainerAppsAPIServerTransport) dispatchGetCustomDomainVerificationID(
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsText(respContent, server.GetResponse(respr).Value, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Value, req)
 	if err != nil {
 		return nil, err
 	}

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/Certificates_CheckNameAvailability.json
+// Generated from example definition: 2026-07-01/Certificates_CheckNameAvailability.json
 func ExampleNamespacesClient_CheckNameAvailability_certificatesCheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,14 +35,12 @@ func ExampleNamespacesClient_CheckNameAvailability_certificatesCheckNameAvailabi
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappcontainers.NamespacesClientCheckNameAvailabilityResponse{
 	// 	CheckNameAvailabilityResponse: armappcontainers.CheckNameAvailabilityResponse{
-	// 		Message: to.Ptr(""),
 	// 		NameAvailable: to.Ptr(true),
-	// 		Reason: to.Ptr(armappcontainers.CheckNameAvailabilityReason("None")),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ContainerApps_CheckNameAvailability.json
+// Generated from example definition: 2026-07-01/ContainerApps_CheckNameAvailability.json
 func ExampleNamespacesClient_CheckNameAvailability_containerAppsCheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,9 +63,7 @@ func ExampleNamespacesClient_CheckNameAvailability_containerAppsCheckNameAvailab
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappcontainers.NamespacesClientCheckNameAvailabilityResponse{
 	// 	CheckNameAvailabilityResponse: armappcontainers.CheckNameAvailabilityResponse{
-	// 		Message: to.Ptr(""),
 	// 		NameAvailable: to.Ptr(true),
-	// 		Reason: to.Ptr(armappcontainers.CheckNameAvailabilityReason("None")),
 	// 	},
 	// }
 }

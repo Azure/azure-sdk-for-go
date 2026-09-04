@@ -4,28 +4,9 @@
 
 package armappcontainers
 
-// AppResiliencyClientCreateOrUpdateOptions contains the optional parameters for the AppResiliencyClient.CreateOrUpdate method.
-type AppResiliencyClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppResiliencyClientDeleteOptions contains the optional parameters for the AppResiliencyClient.Delete method.
-type AppResiliencyClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppResiliencyClientGetOptions contains the optional parameters for the AppResiliencyClient.Get method.
-type AppResiliencyClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppResiliencyClientListOptions contains the optional parameters for the AppResiliencyClient.NewListPager method.
-type AppResiliencyClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AppResiliencyClientUpdateOptions contains the optional parameters for the AppResiliencyClient.Update method.
-type AppResiliencyClientUpdateOptions struct {
+// AvailableEnvironmentModesClientListOptions contains the optional parameters for the AvailableEnvironmentModesClient.NewListPager
+// method.
+type AvailableEnvironmentModesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -37,69 +18,6 @@ type AvailableWorkloadProfilesClientGetOptions struct {
 
 // BillingMetersClientGetOptions contains the optional parameters for the BillingMetersClient.Get method.
 type BillingMetersClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BuildAuthTokenClientListOptions contains the optional parameters for the BuildAuthTokenClient.List method.
-type BuildAuthTokenClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BuildersClientBeginCreateOrUpdateOptions contains the optional parameters for the BuildersClient.BeginCreateOrUpdate method.
-type BuildersClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// BuildersClientBeginDeleteOptions contains the optional parameters for the BuildersClient.BeginDelete method.
-type BuildersClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// BuildersClientBeginUpdateOptions contains the optional parameters for the BuildersClient.BeginUpdate method.
-type BuildersClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// BuildersClientGetOptions contains the optional parameters for the BuildersClient.Get method.
-type BuildersClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BuildersClientListByResourceGroupOptions contains the optional parameters for the BuildersClient.NewListByResourceGroupPager
-// method.
-type BuildersClientListByResourceGroupOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BuildersClientListBySubscriptionOptions contains the optional parameters for the BuildersClient.NewListBySubscriptionPager
-// method.
-type BuildersClientListBySubscriptionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BuildsByBuilderResourceClientListOptions contains the optional parameters for the BuildsByBuilderResourceClient.NewListPager
-// method.
-type BuildsByBuilderResourceClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// BuildsClientBeginCreateOrUpdateOptions contains the optional parameters for the BuildsClient.BeginCreateOrUpdate method.
-type BuildsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// BuildsClientBeginDeleteOptions contains the optional parameters for the BuildsClient.BeginDelete method.
-type BuildsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// BuildsClientGetOptions contains the optional parameters for the BuildsClient.Get method.
-type BuildsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -261,6 +179,44 @@ type ConnectedEnvironmentsStoragesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ContainerAppPrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ContainerAppPrivateEndpointConnectionsClient.BeginCreateOrUpdate
+// method.
+type ContainerAppPrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ContainerAppPrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the ContainerAppPrivateEndpointConnectionsClient.BeginDelete
+// method.
+type ContainerAppPrivateEndpointConnectionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ContainerAppPrivateEndpointConnectionsClientGetOptions contains the optional parameters for the ContainerAppPrivateEndpointConnectionsClient.Get
+// method.
+type ContainerAppPrivateEndpointConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerAppPrivateEndpointConnectionsClientListOptions contains the optional parameters for the ContainerAppPrivateEndpointConnectionsClient.NewListPager
+// method.
+type ContainerAppPrivateEndpointConnectionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerAppPrivateLinkResourcesClientGetOptions contains the optional parameters for the ContainerAppPrivateLinkResourcesClient.Get
+// method.
+type ContainerAppPrivateLinkResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ContainerAppPrivateLinkResourcesClientListOptions contains the optional parameters for the ContainerAppPrivateLinkResourcesClient.NewListPager
+// method.
+type ContainerAppPrivateLinkResourcesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ContainerAppsAPIClientGetCustomDomainVerificationIDOptions contains the optional parameters for the ContainerAppsAPIClient.GetCustomDomainVerificationID
 // method.
 type ContainerAppsAPIClientGetCustomDomainVerificationIDOptions struct {
@@ -293,24 +249,6 @@ type ContainerAppsAuthConfigsClientGetOptions struct {
 // ContainerAppsAuthConfigsClientListByContainerAppOptions contains the optional parameters for the ContainerAppsAuthConfigsClient.NewListByContainerAppPager
 // method.
 type ContainerAppsAuthConfigsClientListByContainerAppOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerAppsBuildsByContainerAppClientListOptions contains the optional parameters for the ContainerAppsBuildsByContainerAppClient.NewListPager
-// method.
-type ContainerAppsBuildsByContainerAppClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerAppsBuildsClientBeginDeleteOptions contains the optional parameters for the ContainerAppsBuildsClient.BeginDelete
-// method.
-type ContainerAppsBuildsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ContainerAppsBuildsClientGetOptions contains the optional parameters for the ContainerAppsBuildsClient.Get method.
-type ContainerAppsBuildsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -440,39 +378,6 @@ type ContainerAppsLabelHistoryClientListLabelHistoryOptions struct {
 	Filter *string
 }
 
-// ContainerAppsPatchesClientBeginApplyOptions contains the optional parameters for the ContainerAppsPatchesClient.BeginApply
-// method.
-type ContainerAppsPatchesClientBeginApplyOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ContainerAppsPatchesClientBeginDeleteOptions contains the optional parameters for the ContainerAppsPatchesClient.BeginDelete
-// method.
-type ContainerAppsPatchesClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ContainerAppsPatchesClientBeginSkipConfigureOptions contains the optional parameters for the ContainerAppsPatchesClient.BeginSkipConfigure
-// method.
-type ContainerAppsPatchesClientBeginSkipConfigureOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ContainerAppsPatchesClientGetOptions contains the optional parameters for the ContainerAppsPatchesClient.Get method.
-type ContainerAppsPatchesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ContainerAppsPatchesClientListByContainerAppOptions contains the optional parameters for the ContainerAppsPatchesClient.NewListByContainerAppPager
-// method.
-type ContainerAppsPatchesClientListByContainerAppOptions struct {
-	// The filter to apply on the operation. For example, $filter=properties/patchApplyStatus eq 'Succeeded'
-	Filter *string
-}
-
 // ContainerAppsRevisionFunctionsClientGetOptions contains the optional parameters for the ContainerAppsRevisionFunctionsClient.Get
 // method.
 type ContainerAppsRevisionFunctionsClientGetOptions struct {
@@ -549,12 +454,6 @@ type ContainerAppsSessionPoolsClientBeginUpdateOptions struct {
 	ResumeToken string
 }
 
-// ContainerAppsSessionPoolsClientFetchMcpServerCredentialsOptions contains the optional parameters for the ContainerAppsSessionPoolsClient.FetchMcpServerCredentials
-// method.
-type ContainerAppsSessionPoolsClientFetchMcpServerCredentialsOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ContainerAppsSessionPoolsClientGetOptions contains the optional parameters for the ContainerAppsSessionPoolsClient.Get
 // method.
 type ContainerAppsSessionPoolsClientGetOptions struct {
@@ -573,36 +472,18 @@ type ContainerAppsSessionPoolsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerAppsSessionPoolsClientRotateMcpServerCredentialsOptions contains the optional parameters for the ContainerAppsSessionPoolsClient.RotateMcpServerCredentials
-// method.
-type ContainerAppsSessionPoolsClientRotateMcpServerCredentialsOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ContainerAppsSourceControlsClientBeginCreateOrUpdateOptions contains the optional parameters for the ContainerAppsSourceControlsClient.BeginCreateOrUpdate
 // method.
 type ContainerAppsSourceControlsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
-
-	// Github personal access token used for SourceControl.
-	XMSGithubAuxiliary *string
 }
 
 // ContainerAppsSourceControlsClientBeginDeleteOptions contains the optional parameters for the ContainerAppsSourceControlsClient.BeginDelete
 // method.
 type ContainerAppsSourceControlsClientBeginDeleteOptions struct {
-	// Delete workflow.
-	DeleteWorkflow *bool
-
-	// Ignore Workflow Deletion Failure.
-	IgnoreWorkflowDeletionFailure *bool
-
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
-
-	// Github personal access token used for SourceControl.
-	XMSGithubAuxiliary *string
 }
 
 // ContainerAppsSourceControlsClientGetOptions contains the optional parameters for the ContainerAppsSourceControlsClient.Get
@@ -664,27 +545,6 @@ type DaprComponentsClientListOptions struct {
 
 // DaprComponentsClientListSecretsOptions contains the optional parameters for the DaprComponentsClient.ListSecrets method.
 type DaprComponentsClientListSecretsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DaprSubscriptionsClientCreateOrUpdateOptions contains the optional parameters for the DaprSubscriptionsClient.CreateOrUpdate
-// method.
-type DaprSubscriptionsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DaprSubscriptionsClientDeleteOptions contains the optional parameters for the DaprSubscriptionsClient.Delete method.
-type DaprSubscriptionsClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DaprSubscriptionsClientGetOptions contains the optional parameters for the DaprSubscriptionsClient.Get method.
-type DaprSubscriptionsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DaprSubscriptionsClientListOptions contains the optional parameters for the DaprSubscriptionsClient.NewListPager method.
-type DaprSubscriptionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -882,13 +742,6 @@ type LogicAppsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LogicAppsClientDeployWorkflowArtifactsOptions contains the optional parameters for the LogicAppsClient.DeployWorkflowArtifacts
-// method.
-type LogicAppsClientDeployWorkflowArtifactsOptions struct {
-	// Application settings and files of the workflow.
-	WorkflowArtifacts *WorkflowArtifacts
-}
-
 // LogicAppsClientGetOptions contains the optional parameters for the LogicAppsClient.Get method.
 type LogicAppsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -896,11 +749,6 @@ type LogicAppsClientGetOptions struct {
 
 // LogicAppsClientGetWorkflowOptions contains the optional parameters for the LogicAppsClient.GetWorkflow method.
 type LogicAppsClientGetWorkflowOptions struct {
-	// placeholder for future optional parameters
-}
-
-// LogicAppsClientInvokeOptions contains the optional parameters for the LogicAppsClient.Invoke method.
-type LogicAppsClientInvokeOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1004,6 +852,12 @@ type ManagedEnvironmentPrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ManagedEnvironmentPrivateLinkResourcesClientGetOptions contains the optional parameters for the ManagedEnvironmentPrivateLinkResourcesClient.Get
+// method.
+type ManagedEnvironmentPrivateLinkResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ManagedEnvironmentPrivateLinkResourcesClientListOptions contains the optional parameters for the ManagedEnvironmentPrivateLinkResourcesClient.NewListPager
 // method.
 type ManagedEnvironmentPrivateLinkResourcesClientListOptions struct {
@@ -1035,6 +889,12 @@ type ManagedEnvironmentsClientBeginDeleteOptions struct {
 type ManagedEnvironmentsClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
+}
+
+// ManagedEnvironmentsClientCheckMigrationEligibilityOptions contains the optional parameters for the ManagedEnvironmentsClient.CheckMigrationEligibility
+// method.
+type ManagedEnvironmentsClientCheckMigrationEligibilityOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ManagedEnvironmentsClientGetAuthTokenOptions contains the optional parameters for the ManagedEnvironmentsClient.GetAuthToken
@@ -1107,7 +967,66 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// SandboxGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the SandboxGroupsClient.BeginCreateOrUpdate
+// method.
+type SandboxGroupsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SandboxGroupsClientBeginDeleteOptions contains the optional parameters for the SandboxGroupsClient.BeginDelete method.
+type SandboxGroupsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SandboxGroupsClientBeginUpdateOptions contains the optional parameters for the SandboxGroupsClient.BeginUpdate method.
+type SandboxGroupsClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SandboxGroupsClientGetOptions contains the optional parameters for the SandboxGroupsClient.Get method.
+type SandboxGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SandboxGroupsClientListByResourceGroupOptions contains the optional parameters for the SandboxGroupsClient.NewListByResourceGroupPager
+// method.
+type SandboxGroupsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SandboxGroupsClientListBySubscriptionOptions contains the optional parameters for the SandboxGroupsClient.NewListBySubscriptionPager
+// method.
+type SandboxGroupsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // UsagesClientListOptions contains the optional parameters for the UsagesClient.NewListPager method.
 type UsagesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VnetConnectionsClientBeginDeleteOptions contains the optional parameters for the VnetConnectionsClient.BeginDelete method.
+type VnetConnectionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VnetConnectionsClientCreateOrUpdateOptions contains the optional parameters for the VnetConnectionsClient.CreateOrUpdate
+// method.
+type VnetConnectionsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VnetConnectionsClientGetOptions contains the optional parameters for the VnetConnectionsClient.Get method.
+type VnetConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VnetConnectionsClientListBySandboxGroupOptions contains the optional parameters for the VnetConnectionsClient.NewListBySandboxGroupPager
+// method.
+type VnetConnectionsClientListBySandboxGroupOptions struct {
 	// placeholder for future optional parameters
 }

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsStorages_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsStorages_CreateOrUpdate.json
 func ExampleConnectedEnvironmentsStoragesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleConnectedEnvironmentsStoragesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsStorages_Delete.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsStorages_Delete.json
 func ExampleConnectedEnvironmentsStoragesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleConnectedEnvironmentsStoragesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsStorages_Get.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsStorages_Get.json
 func ExampleConnectedEnvironmentsStoragesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleConnectedEnvironmentsStoragesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsStorages_List.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsStorages_List.json
 func ExampleConnectedEnvironmentsStoragesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

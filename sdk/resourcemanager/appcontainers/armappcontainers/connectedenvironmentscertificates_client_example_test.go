@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsCertificate_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsCertificate_CreateOrUpdate.json
 func ExampleConnectedEnvironmentsCertificatesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -61,7 +61,7 @@ func ExampleConnectedEnvironmentsCertificatesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsCertificate_Delete.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsCertificate_Delete.json
 func ExampleConnectedEnvironmentsCertificatesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleConnectedEnvironmentsCertificatesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsCertificate_Get.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsCertificate_Get.json
 func ExampleConnectedEnvironmentsCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleConnectedEnvironmentsCertificatesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsCertificates_ListByConnectedEnvironment.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsCertificates_ListByConnectedEnvironment.json
 func ExampleConnectedEnvironmentsCertificatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +189,7 @@ func ExampleConnectedEnvironmentsCertificatesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/ConnectedEnvironmentsCertificates_Patch.json
+// Generated from example definition: 2026-07-01/ConnectedEnvironmentsCertificates_Patch.json
 func ExampleConnectedEnvironmentsCertificatesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

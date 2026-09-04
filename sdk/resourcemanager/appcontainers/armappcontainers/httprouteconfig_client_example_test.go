@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/HttpRouteConfig_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01/HttpRouteConfig_CreateOrUpdate.json
 func ExampleHTTPRouteConfigClient_CreateOrUpdate_createOrUpdateHttpRoute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,6 @@ func ExampleHTTPRouteConfigClient_CreateOrUpdate_createOrUpdateHttpRoute() {
 						{
 							ContainerApp: to.Ptr("capp-1"),
 							Revision:     to.Ptr("rev-1"),
-							Weight:       to.Ptr[int32](100),
 						},
 					},
 				},
@@ -95,7 +94,6 @@ func ExampleHTTPRouteConfigClient_CreateOrUpdate_createOrUpdateHttpRoute() {
 	// 						{
 	// 							ContainerApp: to.Ptr("capp-1"),
 	// 							Revision: to.Ptr("rev-1"),
-	// 							Weight: to.Ptr[int32](100),
 	// 						},
 	// 					},
 	// 				},
@@ -105,7 +103,7 @@ func ExampleHTTPRouteConfigClient_CreateOrUpdate_createOrUpdateHttpRoute() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/HttpRouteConfig_CreateOrUpdatePrefix.json
+// Generated from example definition: 2026-07-01/HttpRouteConfig_CreateOrUpdatePrefix.json
 func ExampleHTTPRouteConfigClient_CreateOrUpdate_createOrUpdateHttpRoutePrefixRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +194,7 @@ func ExampleHTTPRouteConfigClient_CreateOrUpdate_createOrUpdateHttpRoutePrefixRu
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/HttpRouteConfig_CreateOrUpdate_PathSepPrefix.json
+// Generated from example definition: 2026-07-01/HttpRouteConfig_CreateOrUpdate_PathSepPrefix.json
 func ExampleHTTPRouteConfigClient_CreateOrUpdate_createOrUpdateHttpRoutePathSeparatedPrefixRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -287,7 +285,7 @@ func ExampleHTTPRouteConfigClient_CreateOrUpdate_createOrUpdateHttpRoutePathSepa
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/HttpRouteConfig_Delete.json
+// Generated from example definition: 2026-07-01/HttpRouteConfig_Delete.json
 func ExampleHTTPRouteConfigClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -308,7 +306,7 @@ func ExampleHTTPRouteConfigClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/HttpRouteConfig_Get.json
+// Generated from example definition: 2026-07-01/HttpRouteConfig_Get.json
 func ExampleHTTPRouteConfigClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,7 +355,6 @@ func ExampleHTTPRouteConfigClient_Get() {
 	// 						{
 	// 							ContainerApp: to.Ptr("capp-1"),
 	// 							Revision: to.Ptr("rev-1"),
-	// 							Weight: to.Ptr[int32](100),
 	// 						},
 	// 					},
 	// 				},
@@ -367,7 +364,7 @@ func ExampleHTTPRouteConfigClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/HttpRouteConfig_ListByManagedEnvironment.json
+// Generated from example definition: 2026-07-01/HttpRouteConfig_ListByManagedEnvironment.json
 func ExampleHTTPRouteConfigClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -457,12 +454,10 @@ func ExampleHTTPRouteConfigClient_NewListPager() {
 		// 								{
 		// 									ContainerApp: to.Ptr("containerApp2"),
 		// 									Revision: to.Ptr("rev-2"),
-		// 									Weight: to.Ptr[int32](50),
 		// 								},
 		// 								{
 		// 									ContainerApp: to.Ptr("containerApp2"),
 		// 									Revision: to.Ptr("rev-3"),
-		// 									Weight: to.Ptr[int32](50),
 		// 								},
 		// 							},
 		// 						},
@@ -475,7 +470,7 @@ func ExampleHTTPRouteConfigClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-02-preview/HttpRouteConfig_Patch.json
+// Generated from example definition: 2026-07-01/HttpRouteConfig_Patch.json
 func ExampleHTTPRouteConfigClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -513,7 +508,6 @@ func ExampleHTTPRouteConfigClient_Update() {
 						{
 							ContainerApp: to.Ptr("capp-1"),
 							Revision:     to.Ptr("rev-1"),
-							Weight:       to.Ptr[int32](100),
 						},
 					},
 				},
@@ -558,7 +552,6 @@ func ExampleHTTPRouteConfigClient_Update() {
 	// 						{
 	// 							ContainerApp: to.Ptr("capp-1"),
 	// 							Revision: to.Ptr("rev-1"),
-	// 							Weight: to.Ptr[int32](100),
 	// 						},
 	// 					},
 	// 				},

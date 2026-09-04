@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/DeletedBackupVaults_Get.json
+// Generated from example definition: 2026-06-01/DeletedBackupVaults_Get.json
 func ExampleDeletedBackupVaultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleDeletedBackupVaultsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/DeletedBackupVaults_ListByLocation.json
+// Generated from example definition: 2026-06-01/DeletedBackupVaults_ListByLocation.json
 func ExampleDeletedBackupVaultsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

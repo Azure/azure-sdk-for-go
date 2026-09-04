@@ -19,7 +19,7 @@ import (
 // FetchCrossRegionRestoreJobsClient contains the methods for the FetchCrossRegionRestoreJobs group.
 // Don't use this type directly, use NewFetchCrossRegionRestoreJobsClient() instead.
 //
-// Generated from API version 2026-03-01
+// Generated from API version 2026-06-01
 type FetchCrossRegionRestoreJobsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -106,7 +106,7 @@ func (client *FetchCrossRegionRestoreJobsClient) listCreateRequest(ctx context.C
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20260301)
+		reqQP.Set("api-version", version20260601)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 		req.Raw().Header["Content-Type"] = []string{"application/json"}

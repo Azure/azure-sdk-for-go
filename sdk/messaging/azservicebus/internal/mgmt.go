@@ -262,6 +262,76 @@ func PeekMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string
 	return transformedMessages, nil
 }
 
+// BatchDeleteMessages deletes messages enqueued before enqueueTime and returns
+// the number of messages the service actually deleted.
+func BatchDeleteMessages(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string, messageCount int32, enqueueTime time.Time, sessionID *string) (int64, error) {
+	body := map[string]any{
+		"message-count":     messageCount,
+		"enqueued-time-utc": enqueueTime,
+	}
+	if sessionID != nil {
+		body["session-id"] = *sessionID
+	}
+
+	msg := &amqp.Message{
+		ApplicationProperties: map[string]any{
+			"operation": "com.microsoft:batch-delete-messages",
+		},
+		Value: body,
+	}
+	addAssociatedLinkName(linkName, msg)
+
+	resp, err := rpcLink.RPC(ctx, msg)
+	if err != nil {
+		var rpcErr RPCError
+		if !errors.As(err, &rpcErr) || rpcErr.Resp == nil || rpcErr.Resp.Code != 404 ||
+			responseErrorCondition(rpcErr.Resp) != "com.microsoft:message-not-found" {
+			return 0, err
+		}
+		resp = rpcErr.Resp
+	}
+	if resp.Code == 204 {
+		return 0, nil
+	}
+	messageNotFound := resp.Code == 404 && responseErrorCondition(resp) == "com.microsoft:message-not-found"
+	if resp.Code != 200 && !messageNotFound {
+		return 0, ErrAMQP(*resp)
+	}
+	if resp.Message == nil || resp.Message.Value == nil {
+		return 0, ErrMissingField("message-count")
+	}
+
+	value, ok := resp.Message.Value.(map[string]any)
+	if !ok {
+		return 0, NewErrIncorrectType("value", map[string]any{}, resp.Message.Value)
+	}
+	deletedCount, ok := value["message-count"]
+	if !ok {
+		return 0, ErrMissingField("message-count")
+	}
+	switch count := deletedCount.(type) {
+	case int32:
+		if count < 0 || count > messageCount {
+			return 0, fmt.Errorf("batch delete response contained invalid message-count %d for request %d", count, messageCount)
+		}
+		return int64(count), nil
+	case int64:
+		if count < 0 || count > int64(messageCount) {
+			return 0, fmt.Errorf("batch delete response contained invalid message-count %d for request %d", count, messageCount)
+		}
+		return count, nil
+	default:
+		return 0, NewErrIncorrectType("message-count", int32(0), deletedCount)
+	}
+}
+
+func responseErrorCondition(resp *amqpwrap.RPCResponse) string {
+	if resp.Message == nil || resp.Message.ApplicationProperties == nil {
+		return ""
+	}
+	return fmt.Sprint(resp.Message.ApplicationProperties["error-condition"])
+}
+
 // RenewLocks renews the locks in a single 'com.microsoft:renew-lock' operation.
 // NOTE: this function assumes all the messages received on the same link.
 func RenewLocks(ctx context.Context, rpcLink amqpwrap.RPCLink, linkName string, lockTokens []amqp.UUID) ([]time.Time, error) {

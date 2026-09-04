@@ -111,14 +111,113 @@ func ptrUint(v uint) *uint {
 // the management operation built, and answers 204 (no messages available) so the
 // caller returns without needing a payload.
 type capturingRPCLink struct {
-	Sent *amqp.Message
+	Sent     *amqp.Message
+	Response *amqpwrap.RPCResponse
+	Err      error
 }
 
 func (l *capturingRPCLink) Close(ctx context.Context) error { return nil }
 
 func (l *capturingRPCLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResponse, error) {
 	l.Sent = msg
+	if l.Err != nil {
+		return nil, l.Err
+	}
+	if l.Response != nil {
+		return l.Response, nil
+	}
 	return &amqpwrap.RPCResponse{Code: 204}, nil
+}
+
+func TestBatchDeleteMessages(t *testing.T) {
+	cutoff := time.Date(2026, time.August, 21, 12, 30, 0, 0, time.UTC)
+	link := &capturingRPCLink{
+		Response: &amqpwrap.RPCResponse{
+			Code: 200,
+			Message: &amqp.Message{Value: map[string]any{
+				"message-count": int32(37),
+			}},
+		},
+	}
+
+	deletedCount, err := BatchDeleteMessages(context.Background(), link, "receiver-link", 50, cutoff, ptrString("session-1"))
+	require.NoError(t, err)
+	require.EqualValues(t, 37, deletedCount)
+	require.Equal(t, "com.microsoft:batch-delete-messages", link.Sent.ApplicationProperties["operation"])
+	require.Equal(t, "receiver-link", link.Sent.ApplicationProperties["associated-link-name"])
+
+	body := link.Sent.Value.(map[string]any)
+	require.Equal(t, int32(50), body["message-count"])
+	require.Equal(t, cutoff, body["enqueued-time-utc"])
+	require.Equal(t, "session-1", body["session-id"])
+}
+
+func TestBatchDeleteMessagesNoMessages(t *testing.T) {
+	link := &capturingRPCLink{}
+
+	deletedCount, err := BatchDeleteMessages(context.Background(), link, "receiver-link", 1, time.Now().UTC(), nil)
+	require.NoError(t, err)
+	require.Zero(t, deletedCount)
+
+	body := link.Sent.Value.(map[string]any)
+	require.NotContains(t, body, "session-id")
+}
+
+func TestBatchDeleteMessagesMessageNotFound(t *testing.T) {
+	response := &amqpwrap.RPCResponse{
+		Code: 404,
+		Message: &amqp.Message{
+			ApplicationProperties: map[string]any{"error-condition": "com.microsoft:message-not-found"},
+			Value:                 map[string]any{"message-count": int32(2)},
+		},
+	}
+	link := &capturingRPCLink{Err: RPCError{Resp: response, Message: "message not found"}}
+
+	deletedCount, err := BatchDeleteMessages(context.Background(), link, "receiver-link", 10, time.Now().UTC(), nil)
+	require.NoError(t, err)
+	require.EqualValues(t, 2, deletedCount)
+}
+
+func TestBatchDeleteMessagesRejectsMessageNotFoundWithoutValidCount(t *testing.T) {
+	for _, value := range []any{nil, map[string]any{}, map[string]any{"message-count": "2"}} {
+		response := &amqpwrap.RPCResponse{
+			Code: 404,
+			Message: &amqp.Message{
+				ApplicationProperties: map[string]any{"error-condition": "com.microsoft:message-not-found"},
+				Value:                 value,
+			},
+		}
+		link := &capturingRPCLink{Err: RPCError{Resp: response, Message: "message not found"}}
+
+		_, err := BatchDeleteMessages(context.Background(), link, "receiver-link", 10, time.Now().UTC(), nil)
+		require.Error(t, err)
+	}
+}
+
+func TestBatchDeleteMessagesRejectsInvalidResponseCount(t *testing.T) {
+	for _, value := range []any{int32(-1), int32(11), float64(1)} {
+		link := &capturingRPCLink{Response: &amqpwrap.RPCResponse{
+			Code:    200,
+			Message: &amqp.Message{Value: map[string]any{"message-count": value}},
+		}}
+
+		_, err := BatchDeleteMessages(context.Background(), link, "receiver-link", 10, time.Now().UTC(), nil)
+		require.Error(t, err)
+	}
+}
+
+func TestBatchDeleteMessagesRejectsUnexpectedStatus(t *testing.T) {
+	link := &capturingRPCLink{Response: &amqpwrap.RPCResponse{
+		Code:    201,
+		Message: &amqp.Message{Value: map[string]any{"message-count": int32(1)}},
+	}}
+
+	_, err := BatchDeleteMessages(context.Background(), link, "receiver-link", 10, time.Now().UTC(), nil)
+	require.Error(t, err)
+}
+
+func ptrString(value string) *string {
+	return &value
 }
 
 // TestPeekMessagesDefersServerTimeoutToRPC pins the two conditions PeekMessages has

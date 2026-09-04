@@ -19,7 +19,7 @@ import (
 // CollectionClient contains the methods for the Collection group.
 // Don't use this type directly, use NewCollectionClient() instead.
 //
-// Generated from API version 2026-03-15
+// Generated from API version 2026-04-01-preview
 type CollectionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -112,7 +112,7 @@ func (client *CollectionClient) listMetricDefinitionsCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260315)
+		reqQP.Set("api-version", version20260401Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -203,7 +203,7 @@ func (client *CollectionClient) listMetricsCreateRequest(ctx context.Context, re
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
 		reqQP.Set("$filter", filter)
-		reqQP.Set("api-version", version20260315)
+		reqQP.Set("api-version", version20260401Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -293,7 +293,7 @@ func (client *CollectionClient) listUsagesCreateRequest(ctx context.Context, res
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20260315)
+		reqQP.Set("api-version", version20260401Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

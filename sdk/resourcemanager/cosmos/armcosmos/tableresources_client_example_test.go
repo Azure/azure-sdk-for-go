@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15/CosmosDBTableCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBTableCreateUpdate.json
 func ExampleTableResourcesClient_BeginCreateUpdateTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,13 +25,13 @@ func ExampleTableResourcesClient_BeginCreateUpdateTable() {
 	}
 	poller, err := clientFactory.NewTableResourcesClient().BeginCreateUpdateTable(ctx, "rg1", "ddb1", "tableName", armcosmos.TableCreateUpdateParameters{
 		Location: to.Ptr("West US"),
-		Tags:     map[string]*string{},
 		Properties: &armcosmos.TableCreateUpdateProperties{
+			Options: &armcosmos.CreateUpdateOptions{},
 			Resource: &armcosmos.TableResource{
 				ID: to.Ptr("tableName"),
 			},
-			Options: &armcosmos.CreateUpdateOptions{},
 		},
+		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,9 +45,9 @@ func ExampleTableResourcesClient_BeginCreateUpdateTable() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.TableResourcesClientCreateUpdateTableResponse{
 	// 	TableGetResults: armcosmos.TableGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/tables/tableName"),
 	// 		Name: to.Ptr("tableName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/tables"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/tables/tableName"),
 	// 		Location: to.Ptr("West US"),
 	// 		Properties: &armcosmos.TableGetProperties{
 	// 			Resource: &armcosmos.TableGetPropertiesResource{
@@ -58,7 +58,7 @@ func ExampleTableResourcesClient_BeginCreateUpdateTable() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/tablerbac/CosmosDBTableRoleAssignmentCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/tablerbac/CosmosDBTableRoleAssignmentCreateUpdate.json
 func ExampleTableResourcesClient_BeginCreateUpdateTableRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleTableResourcesClient_BeginCreateUpdateTableRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/tablerbac/CosmosDBTableRoleDefinitionCreateUpdate.json
+// Generated from example definition: 2026-04-01-preview/tablerbac/CosmosDBTableRoleDefinitionCreateUpdate.json
 func ExampleTableResourcesClient_BeginCreateUpdateTableRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -165,7 +165,7 @@ func ExampleTableResourcesClient_BeginCreateUpdateTableRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBTableDelete.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBTableDelete.json
 func ExampleTableResourcesClient_BeginDeleteTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +186,7 @@ func ExampleTableResourcesClient_BeginDeleteTable() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/tablerbac/CosmosDBTableRoleAssignmentDelete.json
+// Generated from example definition: 2026-04-01-preview/tablerbac/CosmosDBTableRoleAssignmentDelete.json
 func ExampleTableResourcesClient_BeginDeleteTableRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,7 +212,7 @@ func ExampleTableResourcesClient_BeginDeleteTableRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/tablerbac/CosmosDBTableRoleDefinitionDelete.json
+// Generated from example definition: 2026-04-01-preview/tablerbac/CosmosDBTableRoleDefinitionDelete.json
 func ExampleTableResourcesClient_BeginDeleteTableRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -238,7 +238,7 @@ func ExampleTableResourcesClient_BeginDeleteTableRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBTableGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBTableGet.json
 func ExampleTableResourcesClient_GetTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -258,25 +258,25 @@ func ExampleTableResourcesClient_GetTable() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.TableResourcesClientGetTableResponse{
 	// 	TableGetResults: armcosmos.TableGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/tables/tableName"),
 	// 		Name: to.Ptr("tableName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/tables"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/tables/tableName"),
 	// 		Location: to.Ptr("West US"),
-	// 		Tags: map[string]*string{
-	// 		},
 	// 		Properties: &armcosmos.TableGetProperties{
 	// 			Resource: &armcosmos.TableGetPropertiesResource{
-	// 				ID: to.Ptr("tableName"),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				ID: to.Ptr("tableName"),
 	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/tablerbac/CosmosDBTableRoleAssignmentGet.json
+// Generated from example definition: 2026-04-01-preview/tablerbac/CosmosDBTableRoleAssignmentGet.json
 func ExampleTableResourcesClient_GetTableRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -308,7 +308,7 @@ func ExampleTableResourcesClient_GetTableRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/tablerbac/CosmosDBTableRoleDefinitionGet.json
+// Generated from example definition: 2026-04-01-preview/tablerbac/CosmosDBTableRoleDefinitionGet.json
 func ExampleTableResourcesClient_GetTableRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -353,7 +353,7 @@ func ExampleTableResourcesClient_GetTableRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBTableThroughputGet.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBTableThroughputGet.json
 func ExampleTableResourcesClient_GetTableThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -373,29 +373,29 @@ func ExampleTableResourcesClient_GetTableThroughput() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.TableResourcesClientGetTableThroughputResponse{
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/tables/tableName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/tables/throughputSettings"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/tables/tableName/throughputSettings/default"),
 	// 		Location: to.Ptr("West US"),
-	// 		Tags: map[string]*string{
-	// 		},
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Throughput: to.Ptr[int32](400),
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("true"),
-	// 				InstantMaximumThroughput: to.Ptr("10000"),
-	// 				SoftAllowedMaximumThroughput: to.Ptr("1000000"),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				InstantMaximumThroughput: to.Ptr("10000"),
+	// 				MinimumThroughput: to.Ptr("400"),
+	// 				OfferReplacePending: to.Ptr("true"),
+	// 				SoftAllowedMaximumThroughput: to.Ptr("1000000"),
+	// 				Throughput: to.Ptr[int32](400),
 	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/tablerbac/CosmosDBTableRoleAssignmentList.json
+// Generated from example definition: 2026-04-01-preview/tablerbac/CosmosDBTableRoleAssignmentList.json
 func ExampleTableResourcesClient_NewListTableRoleAssignmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -436,7 +436,7 @@ func ExampleTableResourcesClient_NewListTableRoleAssignmentsPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/tablerbac/CosmosDBTableRoleDefinitionList.json
+// Generated from example definition: 2026-04-01-preview/tablerbac/CosmosDBTableRoleDefinitionList.json
 func ExampleTableResourcesClient_NewListTableRoleDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -490,7 +490,7 @@ func ExampleTableResourcesClient_NewListTableRoleDefinitionsPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBTableList.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBTableList.json
 func ExampleTableResourcesClient_NewListTablesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -516,16 +516,16 @@ func ExampleTableResourcesClient_NewListTablesPager() {
 		// 	TableListResult: armcosmos.TableListResult{
 		// 		Value: []*armcosmos.TableGetResults{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/tables/tableName"),
 		// 				Name: to.Ptr("tableName"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/tables"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/tables/tableName"),
 		// 				Location: to.Ptr("West US"),
-		// 				Tags: map[string]*string{
-		// 				},
 		// 				Properties: &armcosmos.TableGetProperties{
 		// 					Resource: &armcosmos.TableGetPropertiesResource{
 		// 						ID: to.Ptr("tableName"),
 		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
 		// 				},
 		// 			},
 		// 		},
@@ -534,7 +534,7 @@ func ExampleTableResourcesClient_NewListTablesPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBTableMigrateToAutoscale.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBTableMigrateToAutoscale.json
 func ExampleTableResourcesClient_BeginMigrateTableToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -560,22 +560,22 @@ func ExampleTableResourcesClient_BeginMigrateTableToAutoscale() {
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
 	// 				AutoscaleSettings: &armcosmos.AutoscaleSettingsResource{
 	// 					MaxThroughput: to.Ptr[int32](4000),
 	// 				},
 	// 				MinimumThroughput: to.Ptr("4000"),
 	// 				OfferReplacePending: to.Ptr("false"),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				Throughput: to.Ptr[int32](400),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBTableMigrateToManualThroughput.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBTableMigrateToManualThroughput.json
 func ExampleTableResourcesClient_BeginMigrateTableToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -601,19 +601,19 @@ func ExampleTableResourcesClient_BeginMigrateTableToManualThroughput() {
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Throughput: to.Ptr[int32](400),
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("true"),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				MinimumThroughput: to.Ptr("400"),
+	// 				OfferReplacePending: to.Ptr("true"),
+	// 				Throughput: to.Ptr[int32](400),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBTableBackupInformation.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBTableBackupInformation.json
 func ExampleTableResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -646,7 +646,7 @@ func ExampleTableResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15/CosmosDBTableThroughputUpdate.json
+// Generated from example definition: 2026-04-01-preview/CosmosDBTableThroughputUpdate.json
 func ExampleTableResourcesClient_BeginUpdateTableThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -659,12 +659,12 @@ func ExampleTableResourcesClient_BeginUpdateTableThroughput() {
 	}
 	poller, err := clientFactory.NewTableResourcesClient().BeginUpdateTableThroughput(ctx, "rg1", "ddb1", "tableName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr("West US"),
-		Tags:     map[string]*string{},
 		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
 			Resource: &armcosmos.ThroughputSettingsResource{
 				Throughput: to.Ptr[int32](400),
 			},
 		},
+		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -678,21 +678,21 @@ func ExampleTableResourcesClient_BeginUpdateTableThroughput() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.TableResourcesClientUpdateTableThroughputResponse{
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/tables/tableName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/tables/throughputSettings"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/tables/tableName/throughputSettings/default"),
 	// 		Location: to.Ptr("West US"),
-	// 		Tags: map[string]*string{
-	// 		},
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Throughput: to.Ptr[int32](400),
-	// 				MinimumThroughput: to.Ptr("400"),
-	// 				OfferReplacePending: to.Ptr("true"),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 				Rid: to.Ptr("PD5DALigDgw="),
 	// 				Ts: to.Ptr[float32](1459200611),
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
+	// 				MinimumThroughput: to.Ptr("400"),
+	// 				OfferReplacePending: to.Ptr("true"),
+	// 				Throughput: to.Ptr[int32](400),
 	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }

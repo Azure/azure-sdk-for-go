@@ -7,7 +7,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
 )
@@ -54,14 +53,14 @@ func ExampleSessionReceiver_PurgeMessages() {
 	sessionReceiver, err := client.AcceptSessionForQueue(context.TODO(), "exampleSessionQueue", sessionID, nil)
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		panic(err)
 	}
 	defer func() { _ = sessionReceiver.Close(context.TODO()) }()
 
 	result, err := sessionReceiver.PurgeMessages(context.TODO(), nil)
 	if err != nil {
 		// TODO: Update the following line with your application specific error handling logic
-		log.Fatalf("ERROR: %s", err)
+		panic(err)
 	}
 
 	fmt.Printf("Removed %d messages from session %s.", result.DeletedCount, sessionID)

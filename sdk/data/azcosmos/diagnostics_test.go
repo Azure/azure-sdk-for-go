@@ -658,7 +658,7 @@ func newTestDiagnosticsClient(t *testing.T, transport policy.Transporter, withRe
 
 	gem := &globalEndpointManager{
 		preferredLocations: []string{"local"},
-		locationCache:      newLocationCache([]string{"local"}, *endpointURL, true),
+		locationCache:      newLocationCache([]string{"local"}, *endpointURL, true, false /*disableEndpointDiscovery*/),
 	}
 
 	pipelineOptions := azruntime.PipelineOptions{}

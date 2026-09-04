@@ -858,6 +858,119 @@ func tokenOK() azcore.AccessToken {
 	}
 }
 
+// TestNewClientWithKeyDisableEndpointDiscovery verifies that the public
+// ClientOptions.DisableEndpointDiscovery flag is propagated through
+// NewClientWithKey into the location cache, so that a regression in the
+// constructor wiring (e.g. the flag being dropped or inverted) is caught
+// even though the lower-level cache tests bypass this path.
+func TestNewClientWithKeyDisableEndpointDiscovery(t *testing.T) {
+	cred, err := NewKeyCredential("dGVzdGtleQ==")
+	if err != nil {
+		t.Fatalf("failed to create key credential: %v", err)
+	}
+	clientEndpoint := "https://client.documents.azure.com"
+	wantEndpoint, err := url.Parse(clientEndpoint)
+	if err != nil {
+		t.Fatalf("failed to parse endpoint: %v", err)
+	}
+	dbAcct := CreateDatabaseAccount(true, false)
+
+	// Disabled: routing must ignore the account's advertised regional
+	// endpoints and always resolve to the endpoint the client was
+	// constructed with, for both reads and writes.
+	disabledClient, err := NewClientWithKey(clientEndpoint, cred, &ClientOptions{DisableEndpointDiscovery: true})
+	if err != nil {
+		t.Fatalf("failed to create client: %v", err)
+	}
+	if err := disabledClient.gem.locationCache.update(dbAcct.WriteRegions, dbAcct.ReadRegions, nil, &dbAcct.EnableMultipleWriteLocations); err != nil {
+		t.Fatalf("failed to update location cache: %v", err)
+	}
+	if got := disabledClient.gem.locationCache.resolveServiceEndpoint(0, resourceTypeDocument, false /*isWriteOperation*/, false /*useWriteEndpoint*/); got != *wantEndpoint {
+		t.Errorf("DisableEndpointDiscovery=true: expected read endpoint %s, got %s", wantEndpoint.String(), got.String())
+	}
+	if got := disabledClient.gem.locationCache.resolveServiceEndpoint(0, resourceTypeDocument, true /*isWriteOperation*/, false /*useWriteEndpoint*/); got != *wantEndpoint {
+		t.Errorf("DisableEndpointDiscovery=true: expected write endpoint %s, got %s", wantEndpoint.String(), got.String())
+	}
+
+	// Default (option omitted): routing follows discovery and resolves to an
+	// advertised regional endpoint, not the client endpoint.
+	defaultClient, err := NewClientWithKey(clientEndpoint, cred, nil)
+	if err != nil {
+		t.Fatalf("failed to create client: %v", err)
+	}
+	if err := defaultClient.gem.locationCache.update(dbAcct.WriteRegions, dbAcct.ReadRegions, nil, &dbAcct.EnableMultipleWriteLocations); err != nil {
+		t.Fatalf("failed to update location cache: %v", err)
+	}
+	if got := defaultClient.gem.locationCache.resolveServiceEndpoint(0, resourceTypeDocument, false /*isWriteOperation*/, false /*useWriteEndpoint*/); got == *wantEndpoint {
+		t.Errorf("default options: expected an advertised regional endpoint, but got the client endpoint %s", got.String())
+	}
+}
+
+// TestNewClientDisableEndpointDiscovery covers the same wiring for the token
+// credential constructor (NewClient), which threads the option separately from
+// NewClientWithKey.
+func TestNewClientDisableEndpointDiscovery(t *testing.T) {
+	cred := &stubCred{t: t, onGet: func(scope string) (azcore.AccessToken, error) { return tokenOK(), nil }}
+	clientEndpoint := "https://client.documents.azure.com"
+	wantEndpoint, err := url.Parse(clientEndpoint)
+	if err != nil {
+		t.Fatalf("failed to parse endpoint: %v", err)
+	}
+	dbAcct := CreateDatabaseAccount(true, false)
+
+	client, err := NewClient(clientEndpoint, cred, &ClientOptions{DisableEndpointDiscovery: true})
+	if err != nil {
+		t.Fatalf("failed to create client: %v", err)
+	}
+	if err := client.gem.locationCache.update(dbAcct.WriteRegions, dbAcct.ReadRegions, nil, &dbAcct.EnableMultipleWriteLocations); err != nil {
+		t.Fatalf("failed to update location cache: %v", err)
+	}
+	if got := client.gem.locationCache.resolveServiceEndpoint(0, resourceTypeDocument, false /*isWriteOperation*/, false /*useWriteEndpoint*/); got != *wantEndpoint {
+		t.Errorf("NewClient DisableEndpointDiscovery=true: expected %s, got %s", wantEndpoint.String(), got.String())
+	}
+	// Discovery disabled pins routing to the client endpoint, but same-region
+	// (same-endpoint) transport retries must be preserved -- cross-region
+	// failover is suppressed inside the retry policy, not by disabling the
+	// cross-region retry machinery wholesale.
+	if !client.gem.locationCache.enableCrossRegionRetries {
+		t.Errorf("NewClient DisableEndpointDiscovery=true: expected same-region retries to remain enabled")
+	}
+}
+
+// TestNewClientDisableEndpointDiscoveryAcceptsPreferredRegions verifies that
+// both constructors accept PreferredRegions together with
+// DisableEndpointDiscovery (matching the Python SDK): the regions are accepted
+// but have no effect on routing, which stays pinned to the client endpoint.
+func TestNewClientDisableEndpointDiscoveryAcceptsPreferredRegions(t *testing.T) {
+	clientEndpoint := "https://client.documents.azure.com"
+	wantEndpoint, err := url.Parse(clientEndpoint)
+	if err != nil {
+		t.Fatalf("failed to parse endpoint: %v", err)
+	}
+	dbAcct := CreateDatabaseAccount(true, false)
+	opts := &ClientOptions{DisableEndpointDiscovery: true, PreferredRegions: []string{"West US"}}
+
+	keyCred, err := NewKeyCredential("dGVzdGtleQ==")
+	if err != nil {
+		t.Fatalf("failed to create key credential: %v", err)
+	}
+	keyClient, err := NewClientWithKey(clientEndpoint, keyCred, opts)
+	if err != nil {
+		t.Fatalf("NewClientWithKey: unexpected error with PreferredRegions and DisableEndpointDiscovery: %v", err)
+	}
+	if err := keyClient.gem.locationCache.update(dbAcct.WriteRegions, dbAcct.ReadRegions, nil, &dbAcct.EnableMultipleWriteLocations); err != nil {
+		t.Fatalf("failed to update location cache: %v", err)
+	}
+	if got := keyClient.gem.locationCache.resolveServiceEndpoint(0, resourceTypeDocument, false /*isWriteOperation*/, false /*useWriteEndpoint*/); got != *wantEndpoint {
+		t.Errorf("NewClientWithKey: PreferredRegions must not affect routing; expected %s, got %s", wantEndpoint.String(), got.String())
+	}
+
+	tokenCred := &stubCred{t: t, onGet: func(scope string) (azcore.AccessToken, error) { return tokenOK(), nil }}
+	if _, err := NewClient(clientEndpoint, tokenCred, opts); err != nil {
+		t.Fatalf("NewClient: unexpected error with PreferredRegions and DisableEndpointDiscovery: %v", err)
+	}
+}
+
 func TestAddDefaultHeadersSetsActivityID(t *testing.T) {
 	srv, close := mock.NewTLSServer()
 	defer close()

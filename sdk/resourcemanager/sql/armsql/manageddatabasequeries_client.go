@@ -19,7 +19,7 @@ import (
 // ManagedDatabaseQueriesClient contains the methods for the ManagedDatabaseQueries group.
 // Don't use this type directly, use NewManagedDatabaseQueriesClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type ManagedDatabaseQueriesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -96,7 +96,7 @@ func (client *ManagedDatabaseQueriesClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -181,7 +181,7 @@ func (client *ManagedDatabaseQueriesClient) listByQueryCreateRequest(ctx context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.EndTime != nil {
 			reqQP.Set("endTime", *options.EndTime)
 		}

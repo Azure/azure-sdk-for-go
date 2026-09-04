@@ -19,7 +19,7 @@ import (
 // RecoverableManagedDatabasesClient contains the methods for the RecoverableManagedDatabases group.
 // Don't use this type directly, use NewRecoverableManagedDatabasesClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type RecoverableManagedDatabasesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -91,7 +91,7 @@ func (client *RecoverableManagedDatabasesClient) getCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -167,7 +167,7 @@ func (client *RecoverableManagedDatabasesClient) listByInstanceCreateRequest(ctx
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

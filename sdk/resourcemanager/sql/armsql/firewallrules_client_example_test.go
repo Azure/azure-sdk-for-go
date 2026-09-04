@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/FirewallRuleCreate.json
+// Generated from example definition: 2025-08-01-preview/FirewallRuleCreate.json
 func ExampleFirewallRulesClient_CreateOrUpdate_createAFirewallRuleMaxMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,7 @@ func ExampleFirewallRulesClient_CreateOrUpdate_createAFirewallRuleMaxMin() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/FirewallRuleUpdate.json
+// Generated from example definition: 2025-08-01-preview/FirewallRuleUpdate.json
 func ExampleFirewallRulesClient_CreateOrUpdate_updateAFirewallRuleMaxMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -84,7 +84,7 @@ func ExampleFirewallRulesClient_CreateOrUpdate_updateAFirewallRuleMaxMin() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/FirewallRuleDelete.json
+// Generated from example definition: 2025-08-01-preview/FirewallRuleDelete.json
 func ExampleFirewallRulesClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleFirewallRulesClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/FirewallRuleGet.json
+// Generated from example definition: 2025-08-01-preview/FirewallRuleGet.json
 func ExampleFirewallRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleFirewallRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/FirewallRuleList.json
+// Generated from example definition: 2025-08-01-preview/FirewallRuleList.json
 func ExampleFirewallRulesClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,7 +204,7 @@ func ExampleFirewallRulesClient_NewListByServerPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/FirewallRuleReplace.json
+// Generated from example definition: 2025-08-01-preview/FirewallRuleReplace.json
 func ExampleFirewallRulesClient_Replace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -20,7 +20,7 @@ import (
 // LongTermRetentionBackupsClient contains the methods for the LongTermRetentionBackups group.
 // Don't use this type directly, use NewLongTermRetentionBackupsClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type LongTermRetentionBackupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -120,7 +120,7 @@ func (client *LongTermRetentionBackupsClient) changeAccessTierCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -210,7 +210,7 @@ func (client *LongTermRetentionBackupsClient) changeAccessTierByResourceGroupCre
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -296,7 +296,7 @@ func (client *LongTermRetentionBackupsClient) copyCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -387,7 +387,7 @@ func (client *LongTermRetentionBackupsClient) copyByResourceGroupCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -472,7 +472,7 @@ func (client *LongTermRetentionBackupsClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -557,7 +557,7 @@ func (client *LongTermRetentionBackupsClient) deleteByResourceGroupCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -615,7 +615,7 @@ func (client *LongTermRetentionBackupsClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -691,7 +691,7 @@ func (client *LongTermRetentionBackupsClient) getByResourceGroupCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -772,7 +772,7 @@ func (client *LongTermRetentionBackupsClient) listByDatabaseCreateRequest(ctx co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.DatabaseState != nil {
 			reqQP.Set("databaseState", string(*options.DatabaseState))
 		}
@@ -850,7 +850,7 @@ func (client *LongTermRetentionBackupsClient) listByLocationCreateRequest(ctx co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.DatabaseState != nil {
 			reqQP.Set("databaseState", string(*options.DatabaseState))
 		}
@@ -944,7 +944,7 @@ func (client *LongTermRetentionBackupsClient) listByResourceGroupDatabaseCreateR
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.DatabaseState != nil {
 			reqQP.Set("databaseState", string(*options.DatabaseState))
 		}
@@ -1027,7 +1027,7 @@ func (client *LongTermRetentionBackupsClient) listByResourceGroupLocationCreateR
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.DatabaseState != nil {
 			reqQP.Set("databaseState", string(*options.DatabaseState))
 		}
@@ -1115,7 +1115,7 @@ func (client *LongTermRetentionBackupsClient) listByResourceGroupServerCreateReq
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.DatabaseState != nil {
 			reqQP.Set("databaseState", string(*options.DatabaseState))
 		}
@@ -1198,7 +1198,7 @@ func (client *LongTermRetentionBackupsClient) listByServerCreateRequest(ctx cont
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.DatabaseState != nil {
 			reqQP.Set("databaseState", string(*options.DatabaseState))
 		}
@@ -1298,7 +1298,7 @@ func (client *LongTermRetentionBackupsClient) lockTimeBasedImmutabilityCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1384,7 +1384,7 @@ func (client *LongTermRetentionBackupsClient) lockTimeBasedImmutabilityByResourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1465,7 +1465,7 @@ func (client *LongTermRetentionBackupsClient) removeLegalHoldImmutabilityCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1551,7 +1551,7 @@ func (client *LongTermRetentionBackupsClient) removeLegalHoldImmutabilityByResou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1632,7 +1632,7 @@ func (client *LongTermRetentionBackupsClient) removeTimeBasedImmutabilityCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1718,7 +1718,7 @@ func (client *LongTermRetentionBackupsClient) removeTimeBasedImmutabilityByResou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1799,7 +1799,7 @@ func (client *LongTermRetentionBackupsClient) setLegalHoldImmutabilityCreateRequ
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1885,7 +1885,7 @@ func (client *LongTermRetentionBackupsClient) setLegalHoldImmutabilityByResource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1967,7 +1967,7 @@ func (client *LongTermRetentionBackupsClient) updateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -2058,7 +2058,7 @@ func (client *LongTermRetentionBackupsClient) updateByResourceGroupCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

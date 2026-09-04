@@ -20,7 +20,7 @@ import (
 // JobVersionsClient contains the methods for the JobVersions group.
 // Don't use this type directly, use NewJobVersionsClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type JobVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -99,7 +99,7 @@ func (client *JobVersionsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -185,7 +185,7 @@ func (client *JobVersionsClient) listByJobCreateRequest(ctx context.Context, res
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

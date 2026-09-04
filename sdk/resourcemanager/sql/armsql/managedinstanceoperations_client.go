@@ -19,7 +19,7 @@ import (
 // ManagedInstanceOperationsClient contains the methods for the ManagedInstanceOperations group.
 // Don't use this type directly, use NewManagedInstanceOperationsClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type ManagedInstanceOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -94,7 +94,7 @@ func (client *ManagedInstanceOperationsClient) cancelCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -146,7 +146,7 @@ func (client *ManagedInstanceOperationsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -222,7 +222,7 @@ func (client *ManagedInstanceOperationsClient) listByManagedInstanceCreateReques
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

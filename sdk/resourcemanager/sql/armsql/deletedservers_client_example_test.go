@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/DeletedServerGet.json
+// Generated from example definition: 2025-08-01-preview/DeletedServerGet.json
 func ExampleDeletedServersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,12 +39,14 @@ func ExampleDeletedServersClient_Get() {
 	// 			FullyQualifiedDomainName: to.Ptr("sqlcrudtest-d-1414.database.windows.net"),
 	// 			OriginalID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/sqlcrudtest-d-1414"),
 	// 			Version: to.Ptr("12.0"),
+	// 			OriginalResourceGroup: to.Ptr("Default"),
+	// 			ScheduledPurgeTime: to.Ptr(time.Date(2017, time.June, 22, 11, 20, 0, 345000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/DeletedServerListBySubscription.json
+// Generated from example definition: 2025-08-01-preview/DeletedServerListBySubscription.json
 func ExampleDeletedServersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,6 +80,8 @@ func ExampleDeletedServersClient_NewListPager() {
 		// 					FullyQualifiedDomainName: to.Ptr("sqlcrudtest-d-1414.database.windows.net"),
 		// 					OriginalID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/sqlcrudtest-d-1414"),
 		// 					Version: to.Ptr("12.0"),
+		// 					OriginalResourceGroup: to.Ptr("Default"),
+		// 					ScheduledPurgeTime: to.Ptr(time.Date(2017, time.June, 20, 10, 10, 0, 678000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -89,6 +93,8 @@ func ExampleDeletedServersClient_NewListPager() {
 		// 					FullyQualifiedDomainName: to.Ptr("sqlcrudtest-d-2424.database.windows.net"),
 		// 					OriginalID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/sqlcrudtest-d-2424"),
 		// 					Version: to.Ptr("12.0"),
+		// 					OriginalResourceGroup: to.Ptr("Default"),
+		// 					ScheduledPurgeTime: to.Ptr(time.Date(2017, time.June, 20, 10, 10, 0, 678000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -97,7 +103,7 @@ func ExampleDeletedServersClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/DeletedServerList.json
+// Generated from example definition: 2025-08-01-preview/DeletedServerList.json
 func ExampleDeletedServersClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -131,6 +137,8 @@ func ExampleDeletedServersClient_NewListByLocationPager() {
 		// 					FullyQualifiedDomainName: to.Ptr("sqlcrudtest-d-1414.database.windows.net"),
 		// 					OriginalID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/sqlcrudtest-d-1414"),
 		// 					Version: to.Ptr("12.0"),
+		// 					OriginalResourceGroup: to.Ptr("Default"),
+		// 					ScheduledPurgeTime: to.Ptr(time.Date(2017, time.June, 20, 10, 10, 0, 678000000, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
@@ -142,6 +150,8 @@ func ExampleDeletedServersClient_NewListByLocationPager() {
 		// 					FullyQualifiedDomainName: to.Ptr("sqlcrudtest-d-2424.database.windows.net"),
 		// 					OriginalID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/sqlcrudtest-d-2424"),
 		// 					Version: to.Ptr("12.0"),
+		// 					OriginalResourceGroup: to.Ptr("Default"),
+		// 					ScheduledPurgeTime: to.Ptr(time.Date(2017, time.June, 20, 10, 10, 0, 678000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -150,7 +160,7 @@ func ExampleDeletedServersClient_NewListByLocationPager() {
 	}
 }
 
-// Generated from example definition: 2025-02-01-preview/DeletedServerRecover.json
+// Generated from example definition: 2025-08-01-preview/DeletedServerRecover.json
 func ExampleDeletedServersClient_BeginRecover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -182,6 +192,8 @@ func ExampleDeletedServersClient_BeginRecover() {
 	// 			FullyQualifiedDomainName: to.Ptr("sqlcrudtest-d-1414.database.windows.net"),
 	// 			OriginalID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/sqlcrudtest-d-1414"),
 	// 			Version: to.Ptr("12.0"),
+	// 			OriginalResourceGroup: to.Ptr("Default"),
+	// 			ScheduledPurgeTime: to.Ptr(time.Date(2017, time.June, 20, 10, 10, 0, 678000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

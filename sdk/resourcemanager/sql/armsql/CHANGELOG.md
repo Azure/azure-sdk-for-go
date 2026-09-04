@@ -1,5 +1,24 @@
 # Release History
 
+## 2.0.0-beta.9 (2026-08-21)
+### Breaking Changes
+
+- `PrivateEndpointProvisioningStateApproving`, `PrivateEndpointProvisioningStateDropping`, `PrivateEndpointProvisioningStateReady`, `PrivateEndpointProvisioningStateRejecting` from enum `PrivateEndpointProvisioningState` has been removed
+
+### Features Added
+
+- New value `PrivateEndpointProvisioningStateCanceled`, `PrivateEndpointProvisioningStateCreated`, `PrivateEndpointProvisioningStateInProgress`, `PrivateEndpointProvisioningStateSucceeded` added to enum type `PrivateEndpointProvisioningState`
+- New value `ServerNetworkAccessFlagSecuredByPerimeter` added to enum type `ServerNetworkAccessFlag`
+- New enum type `LinkModeType` with values `LinkModeTypeMultiDatabase`, `LinkModeTypeSingleDatabase`
+- New enum type `ManagedInstanceAdministratorPrincipalType` with values `ManagedInstanceAdministratorPrincipalTypeApplication`, `ManagedInstanceAdministratorPrincipalTypeGroup`, `ManagedInstanceAdministratorPrincipalTypeUser`
+- New struct `EndpointTrustedRootCertificateInfo`
+- New field `OriginalResourceGroup`, `ScheduledPurgeTime` in struct `DeletedServerProperties`
+- New field `LinkMode` in struct `DistributedAvailabilityGroupProperties`
+- New field `TrustedRootCertificates` in struct `EndpointCertificateProperties`
+- New field `PrincipalType` in struct `ManagedInstanceAdministratorProperties`
+- New field `NextResetTime`, `ResourceName` in struct `ServerUsageProperties`
+
+
 ## 2.0.0-beta.8 (2026-05-10)
 ### Breaking Changes
 

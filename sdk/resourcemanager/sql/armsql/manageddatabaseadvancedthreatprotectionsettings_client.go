@@ -20,7 +20,7 @@ import (
 // group.
 // Don't use this type directly, use NewManagedDatabaseAdvancedThreatProtectionSettingsClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type ManagedDatabaseAdvancedThreatProtectionSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -99,7 +99,7 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) createOrUpd
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -174,7 +174,7 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) getCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -255,7 +255,7 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) listByDatab
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

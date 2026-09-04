@@ -19,7 +19,7 @@ import (
 // SynapseLinkWorkspacesClient contains the methods for the SynapseLinkWorkspaces group.
 // Don't use this type directly, use NewSynapseLinkWorkspacesClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type SynapseLinkWorkspacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -107,7 +107,7 @@ func (client *SynapseLinkWorkspacesClient) listByDatabaseCreateRequest(ctx conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

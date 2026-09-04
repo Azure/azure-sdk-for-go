@@ -19,7 +19,7 @@ import (
 // MaintenanceWindowOptionsClient contains the methods for the MaintenanceWindowOptions group.
 // Don't use this type directly, use NewMaintenanceWindowOptionsClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type MaintenanceWindowOptionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -93,7 +93,7 @@ func (client *MaintenanceWindowOptionsClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	reqQP.Set("maintenanceWindowOptionsName", maintenanceWindowOptionsName)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}

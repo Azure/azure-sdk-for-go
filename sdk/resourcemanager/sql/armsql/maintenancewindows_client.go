@@ -19,7 +19,7 @@ import (
 // MaintenanceWindowsClient contains the methods for the MaintenanceWindows group.
 // Don't use this type directly, use NewMaintenanceWindowsClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type MaintenanceWindowsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -96,7 +96,7 @@ func (client *MaintenanceWindowsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	reqQP.Set("maintenanceWindowName", maintenanceWindowName)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -154,7 +154,7 @@ func (client *MaintenanceWindowsClient) getCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	reqQP.Set("maintenanceWindowName", maintenanceWindowName)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}

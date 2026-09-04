@@ -20,7 +20,7 @@ import (
 // LongTermRetentionManagedInstanceBackupsClient contains the methods for the LongTermRetentionManagedInstanceBackups group.
 // Don't use this type directly, use NewLongTermRetentionManagedInstanceBackupsClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type LongTermRetentionManagedInstanceBackupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -120,7 +120,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) deleteCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -205,7 +205,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) deleteByResourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -263,7 +263,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) getCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -339,7 +339,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) getByResourceGroupC
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -420,7 +420,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByDatabaseCreat
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.DatabaseState != nil {
 			reqQP.Set("databaseState", string(*options.DatabaseState))
 		}
@@ -503,7 +503,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByInstanceCreat
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.DatabaseState != nil {
 			reqQP.Set("databaseState", string(*options.DatabaseState))
 		}
@@ -590,7 +590,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByLocationCreat
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
 		}
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.DatabaseState != nil {
 			reqQP.Set("databaseState", string(*options.DatabaseState))
 		}
@@ -683,7 +683,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.DatabaseState != nil {
 			reqQP.Set("databaseState", string(*options.DatabaseState))
 		}
@@ -771,7 +771,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.DatabaseState != nil {
 			reqQP.Set("databaseState", string(*options.DatabaseState))
 		}
@@ -863,7 +863,7 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) listByResourceGroup
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
 		}
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.DatabaseState != nil {
 			reqQP.Set("databaseState", string(*options.DatabaseState))
 		}

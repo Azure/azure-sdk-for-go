@@ -19,7 +19,7 @@ import (
 // ElasticPoolOperationsClient contains the methods for the ElasticPoolOperations group.
 // Don't use this type directly, use NewElasticPoolOperationsClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type ElasticPoolOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -100,7 +100,7 @@ func (client *ElasticPoolOperationsClient) cancelCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -168,7 +168,7 @@ func (client *ElasticPoolOperationsClient) listByElasticPoolCreateRequest(ctx co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

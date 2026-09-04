@@ -21,7 +21,7 @@ import (
 // JobTargetExecutionsClient contains the methods for the JobTargetExecutions group.
 // Don't use this type directly, use NewJobTargetExecutionsClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type JobTargetExecutionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -113,7 +113,7 @@ func (client *JobTargetExecutionsClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -210,7 +210,7 @@ func (client *JobTargetExecutionsClient) listByJobExecutionCreateRequest(ctx con
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
 		}
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.CreateTimeMax != nil {
 			reqQP.Set("createTimeMax", datetime.RFC3339((*options.CreateTimeMax).UTC()).String())
 		}
@@ -328,7 +328,7 @@ func (client *JobTargetExecutionsClient) listByStepCreateRequest(ctx context.Con
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
 		}
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.CreateTimeMax != nil {
 			reqQP.Set("createTimeMax", datetime.RFC3339((*options.CreateTimeMax).UTC()).String())
 		}

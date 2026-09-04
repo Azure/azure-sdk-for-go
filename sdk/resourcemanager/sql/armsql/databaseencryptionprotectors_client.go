@@ -19,7 +19,7 @@ import (
 // DatabaseEncryptionProtectorsClient contains the methods for the DatabaseEncryptionProtectors group.
 // Don't use this type directly, use NewDatabaseEncryptionProtectorsClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type DatabaseEncryptionProtectorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -119,7 +119,7 @@ func (client *DatabaseEncryptionProtectorsClient) revalidateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -199,7 +199,7 @@ func (client *DatabaseEncryptionProtectorsClient) revertCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }

@@ -19,7 +19,7 @@ import (
 // ServerUsagesClient contains the methods for the ServerUsages group.
 // Don't use this type directly, use NewServerUsagesClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type ServerUsagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -102,7 +102,7 @@ func (client *ServerUsagesClient) listByServerCreateRequest(ctx context.Context,
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

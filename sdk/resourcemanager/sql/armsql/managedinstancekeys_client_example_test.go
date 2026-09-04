@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceKeyCreateOrUpdate.json
+// Generated from example definition: 2025-08-01-preview/ManagedInstanceKeyCreateOrUpdate.json
 func ExampleManagedInstanceKeysClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleManagedInstanceKeysClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceKeyDelete.json
+// Generated from example definition: 2025-08-01-preview/ManagedInstanceKeyDelete.json
 func ExampleManagedInstanceKeysClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleManagedInstanceKeysClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceKeyGet.json
+// Generated from example definition: 2025-08-01-preview/ManagedInstanceKeyGet.json
 func ExampleManagedInstanceKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -115,7 +115,7 @@ func ExampleManagedInstanceKeysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-02-01-preview/ManagedInstanceKeyList.json
+// Generated from example definition: 2025-08-01-preview/ManagedInstanceKeyList.json
 func ExampleManagedInstanceKeysClient_NewListByInstancePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

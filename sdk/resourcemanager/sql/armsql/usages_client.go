@@ -20,7 +20,7 @@ import (
 // UsagesClient contains the methods for the Usages group.
 // Don't use this type directly, use NewUsagesClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type UsagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -103,7 +103,7 @@ func (client *UsagesClient) listByInstancePoolCreateRequest(ctx context.Context,
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.ExpandChildren != nil {
 			reqQP.Set("expandChildren", strconv.FormatBool(*options.ExpandChildren))
 		}

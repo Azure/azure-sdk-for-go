@@ -21,7 +21,7 @@ import (
 // JobStepExecutionsClient contains the methods for the JobStepExecutions group.
 // Don't use this type directly, use NewJobStepExecutionsClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2025-08-01-preview
 type JobStepExecutionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -108,7 +108,7 @@ func (client *JobStepExecutionsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20250801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -205,7 +205,7 @@ func (client *JobStepExecutionsClient) listByJobExecutionCreateRequest(ctx conte
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(*options.Top, 10))
 		}
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20250801Preview)
 		if options != nil && options.CreateTimeMax != nil {
 			reqQP.Set("createTimeMax", datetime.RFC3339((*options.CreateTimeMax).UTC()).String())
 		}

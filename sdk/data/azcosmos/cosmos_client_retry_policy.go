@@ -358,6 +358,14 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 		return true, nil
 	}
 
+	// Cross-region failover is an endpoint-changing operation. When endpoint
+	// discovery is disabled every request is pinned to the client endpoint,
+	// so a "failover" would only resolve back to the same endpoint. Suppress
+	// it here while preserving the same-region retries budgeted above.
+	if p.gem.locationCache.disableEndpointDiscovery {
+		return false, nil
+	}
+
 	// At most one cross-region failover per request.
 	if retryContext.crossRegionFailoverDone {
 		return false, nil
@@ -412,7 +420,7 @@ func (p *clientRetryPolicy) attemptRetryOnNetworkError(req *policy.Request, kind
 }
 
 func (p *clientRetryPolicy) attemptRetryOnEndpointFailure(req *policy.Request, isWriteOperation bool, retryContext *retryContext) (bool, error) {
-	if (retryContext.retryCount > maxRetryCount) || !p.gem.locationCache.enableCrossRegionRetries {
+	if (retryContext.retryCount > maxRetryCount) || !p.gem.locationCache.enableCrossRegionRetries || p.gem.locationCache.disableEndpointDiscovery {
 		return false, nil
 	}
 	var wasAlreadyUnavailable bool
@@ -507,7 +515,7 @@ func (p *clientRetryPolicy) attemptRetryOnSessionUnavailable(isWriteOperation bo
 }
 
 func (p *clientRetryPolicy) attemptRetryOnServiceUnavailable(isWriteOperation bool, retryContext *retryContext) bool {
-	if !p.gem.locationCache.enableCrossRegionRetries || retryContext.preferredLocationIndex >= len(p.gem.preferredLocations) {
+	if !p.gem.locationCache.enableCrossRegionRetries || p.gem.locationCache.disableEndpointDiscovery || retryContext.preferredLocationIndex >= len(p.gem.preferredLocations) {
 		return false
 	}
 	if isWriteOperation && !p.gem.CanUseMultipleWriteLocations() {
@@ -539,7 +547,7 @@ func (p *clientRetryPolicy) attemptRetryOnServerError(isWriteOperation bool, ret
 		retryContext.serverErrorRetryCount += 1
 		return true, true
 	}
-	if !p.gem.locationCache.enableCrossRegionRetries || retryContext.preferredLocationIndex >= len(p.gem.preferredLocations) {
+	if !p.gem.locationCache.enableCrossRegionRetries || p.gem.locationCache.disableEndpointDiscovery || retryContext.preferredLocationIndex >= len(p.gem.preferredLocations) {
 		return false, false
 	}
 	if p.gem.locationCache.readEndpointCount() <= 1 {
@@ -560,7 +568,7 @@ func (p *clientRetryPolicy) attemptRetryOnRequestTimeout(req *policy.Request, is
 	if isWriteOperation {
 		return false, nil
 	}
-	if !p.gem.locationCache.enableCrossRegionRetries {
+	if !p.gem.locationCache.enableCrossRegionRetries || p.gem.locationCache.disableEndpointDiscovery {
 		return false, nil
 	}
 	if retryContext.requestTimeoutRetryDone {

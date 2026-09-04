@@ -729,6 +729,90 @@ func TestConnectionErrorReadFailsOverWhenGlobalEndpointIsUnreachable(t *testing.
 	assert.Equal(t, 1, goodSrv.Requests())
 }
 
+// TestDisableEndpointDiscoveryKeepsSameRegionRetriesButSuppressesFailover
+// verifies the two-concern separation requested in review: when endpoint
+// discovery is disabled, same-region (same-endpoint) transport retries must
+// still run (so a transient connect/DNS blip at the pinned endpoint is
+// tolerated), but cross-region failover must be suppressed (no MarkEndpoint
+// bookkeeping, no request against another advertised region).
+func TestDisableEndpointDiscoveryKeepsSameRegionRetriesButSuppressesFailover(t *testing.T) {
+	pinnedSrv, pinnedClose := mock.NewTLSServer()
+	defer pinnedClose()
+	otherSrv, otherClose := mock.NewTLSServer()
+	defer otherClose()
+
+	pinnedURL, err := url.Parse(pinnedSrv.URL())
+	require.NoError(t, err)
+	otherURL, err := url.Parse(otherSrv.URL())
+	require.NoError(t, err)
+
+	// Discovery disabled: resolveServiceEndpoint always returns the client
+	// (pinned) endpoint regardless of the advertised regional endpoints.
+	lc := newLocationCache([]string{"East US", "Central US"}, *pinnedURL, true /*enableCrossRegionRetries*/, true /*disableEndpointDiscovery*/)
+	require.NoError(t, lc.update(
+		[]accountRegion{{Name: "East US", Endpoint: pinnedSrv.URL()}},
+		[]accountRegion{
+			{Name: "East US", Endpoint: pinnedSrv.URL()},
+			{Name: "Central US", Endpoint: otherSrv.URL()},
+		},
+		[]string{"East US", "Central US"},
+		nil,
+	))
+
+	gem := &globalEndpointManager{
+		clientEndpoint:      pinnedSrv.URL(),
+		preferredLocations:  []string{"East US", "Central US"},
+		locationCache:       lc,
+		refreshTimeInterval: defaultExpirationTime,
+		lastUpdateTime:      time.Time{},
+	}
+
+	routingTransport := routingMockTransport{
+		byHost: map[string]*mock.Server{
+			pinnedURL.Host: pinnedSrv,
+			otherURL.Host:  otherSrv,
+		},
+	}
+
+	retryPolicy := &clientRetryPolicy{gem: gem}
+	verifier := &clientRetryPolicyVerifier{}
+	internalClient, _ := azcore.NewClient("azcosmostest", "v1.0.0", azruntime.PipelineOptions{PerRetry: []policy.Policy{verifier, retryPolicy}}, &policy.ClientOptions{Transport: &routingTransport})
+	client := &Client{endpoint: pinnedSrv.URL(), endpointUrl: pinnedURL, internal: internalClient, gem: gem}
+
+	// First call: two transient DNS failures at the pinned endpoint, then a
+	// success. Same-region retries must recover without any failover.
+	dnsErr := &net.DNSError{}
+	pinnedSrv.AppendError(dnsErr)
+	pinnedSrv.AppendError(dnsErr)
+	pinnedSrv.AppendResponse(mock.WithStatusCode(200))
+
+	db, _ := client.NewDatabase("database_id")
+	container, _ := db.NewContainer("container_id")
+	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("1"), "doc1", nil)
+	require.NoError(t, err, "same-region retries should recover the transient failure")
+	rc := verifier.requests[0].retryContext
+	assert.False(t, rc.crossRegionFailoverDone, "cross-region failover must be suppressed when discovery is disabled")
+	// 1 initial + 2 same-region retries, all against the pinned endpoint.
+	assert.Equal(t, 3, pinnedSrv.Requests())
+	assert.Equal(t, 0, otherSrv.Requests(), "no request may target another advertised region")
+
+	// Second call: exhaust the same-region budget (1 initial + 3 retries).
+	// With failover suppressed the call must fail fast without ever touching
+	// the other advertised region.
+	pinnedBefore := pinnedSrv.Requests()
+	otherBefore := otherSrv.Requests()
+	for i := 0; i < 5; i++ {
+		pinnedSrv.AppendError(dnsErr)
+	}
+	_, err = container.ReadItem(context.TODO(), NewPartitionKeyString("2"), "doc2", nil)
+	require.Error(t, err, "call must fail once same-region retries are exhausted (no failover)")
+	rc2 := verifier.requests[len(verifier.requests)-1].retryContext
+	assert.False(t, rc2.crossRegionFailoverDone, "cross-region failover must remain suppressed")
+	// 1 initial + 3 same-region retries against the pinned endpoint.
+	assert.Equal(t, 4, pinnedSrv.Requests()-pinnedBefore)
+	assert.Equal(t, 0, otherSrv.Requests()-otherBefore, "no failover request may target another region")
+}
+
 // routingMockTransport routes each request to the mock server matching
 // the request URL's host. This lets a single client see distinct backing
 // servers per region without azcore short-circuiting to a fixed mock.

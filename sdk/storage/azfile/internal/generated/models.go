@@ -31,6 +31,19 @@ func (f *FileClientUploadRangeOptions) SetStructuredBody(bodyType string, conten
 	f.StructuredContentLength = &contentLength
 }
 
+func (f *FileClientCreateOptions) SetMD5(v []byte) {
+	f.ContentMD5 = v
+}
+
+func (f *FileClientCreateOptions) SetCRC64([]byte) {
+	// no-op: Azure Files does not support transactional CRC64 headers on Create
+}
+
+func (f *FileClientCreateOptions) SetStructuredBody(bodyType string, contentLength int64) {
+	f.StructuredBodyType = &bodyType
+	f.StructuredContentLength = &contentLength
+}
+
 type SourceContentSetter interface {
 	SetSourceContentCRC64(v []byte)
 	// add SetSourceContentMD5() when Azure File service starts supporting it.

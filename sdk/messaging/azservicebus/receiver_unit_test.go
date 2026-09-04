@@ -170,7 +170,13 @@ func newBatchDeleteReceiver(responses ...int32) (*Receiver, *batchDeleteRPCLink,
 }
 
 func TestReceiverDeleteMessages(t *testing.T) {
-	for _, invalidCount := range []int{0, -1} {
+	invalidCounts := []int{0, -1}
+	if strconv.IntSize > 32 {
+		tooLarge := maxDirectDeleteMessageCount
+		tooLarge++
+		invalidCounts = append(invalidCounts, tooLarge)
+	}
+	for _, invalidCount := range invalidCounts {
 		receiver, rpcLink, links := newBatchDeleteReceiver()
 
 		result, err := receiver.DeleteMessages(context.Background(), invalidCount, nil)

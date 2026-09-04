@@ -5,9 +5,9 @@ package azappconfig
 
 import (
 	"context"
-	"fmt"
 	"net/url"
 	"reflect"
+	"strings"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -21,6 +21,11 @@ import (
 )
 
 const timeFormat = time.RFC3339Nano
+
+const (
+	appConfigStagingDomain = "appconfig-staging.azure.com"
+	defaultAudience        = "https://appconfig.azure.com"
+)
 
 // Client is the struct for interacting with an Azure App Configuration instance.
 type Client struct {
@@ -40,7 +45,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOpti
 		return nil, err
 	}
 
-	audience := fmt.Sprintf("%s://%s", u.Scheme, u.Host)
+	audience := getAudience(u)
 	if options != nil && !reflect.ValueOf(options.Cloud).IsZero() {
 		if cfg, ok := options.Cloud.Services[ServiceName]; ok && cfg.Audience != "" {
 			audience = cfg.Audience
@@ -48,6 +53,22 @@ func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOpti
 	}
 
 	return newClient(endpoint, runtime.NewBearerTokenPolicy(cred, []string{audience + "/.default"}, nil), options)
+}
+
+func getAudience(endpoint *url.URL) string {
+	host := strings.ToLower(endpoint.Hostname())
+	if strings.HasSuffix(host, "."+appConfigStagingDomain) {
+		return "https://" + appConfigStagingDomain
+	}
+
+	labels := strings.Split(host, ".")
+	for i := len(labels) - 1; i >= 0; i-- {
+		if labels[i] == "appconfig" || labels[i] == "azconfig" {
+			return "https://" + strings.Join(labels[i:], ".")
+		}
+	}
+
+	return defaultAudience
 }
 
 // NewClientFromConnectionString parses the connection string and returns a pointer to a Client object.
